@@ -22,7 +22,11 @@ setMethod("show", "pool.cluster", function(object) {
   }
 })
 
-
+#' calcProb
+#'
+#' @param object An instance of an item class
+#' @param theta A vector of theta values
+#'
 #' @rdname calcProb-methods
 #' @aliases calcProb,pool.cluster,numeric-method
 #' @examples

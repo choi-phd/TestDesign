@@ -3,15 +3,15 @@
 
 #' An S4 generic and its methods for Automated Test Assembly (ATA).
 #'
-#' @param config An \code{ATA.config} object containing configuration options.
-#' @param Constraints A list containing constraint information. Use \code{\link{LoadConstraints}} for this.
+#' @param config An \code{\linkS4class{ATA.config}} object containing configuration options.
+#' @param Constraints A list representing optimization constraints. Use \code{\link{LoadConstraints}} for this.
 #' @param plot Logical. Draws Fisher information plot from the selected items.
 #' @param plotrange Numeric. A vector of length 2 containing the lower and upper bounds of plot range. Default is \code{c(-3, 3)}.
 #' @export
 #' @docType methods
 #'
 #' @rdname ATA-methods
-#'
+
 setGeneric(name = "ATA",
            def = function(config, Constraints, plot, plotrange = c(-3, 3)) {
              standardGeneric("ATA")
@@ -22,9 +22,9 @@ setGeneric(name = "ATA",
 #'
 #' Perform Automated Test Assembly from specified configurations.
 #'
-#' @param config An \code{ATA.config} object containing configuration options.
-#' @param Constraints A list containing constraint information. Use \code{\link{LoadConstraints}} for this.
-#' @param plot Logical. Draws Fisher information plot from the selected items.
+#' @param config An \code{\linkS4class{ATA.config}} object containing configuration options.
+#' @param Constraints A list representing optimization constraints. Use \code{\link{LoadConstraints}} for this.
+#' @param plot Logical. If \code{TRUE}, draws Fisher information plot from the selected items.
 #' @param plotrange Numeric. A vector of length 2 containing the lower and upper bounds of plot range. Default is \code{c(-3, 3)}.
 #'
 #' @return A list containing the following entries:
