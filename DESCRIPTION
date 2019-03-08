@@ -26,3 +26,4 @@ RoxygenNote: 6.1.1
 Encoding: UTF-8
 LazyData: true
 RdMacros: Rdpack
+Remotes: choi-phd/IRTclass
