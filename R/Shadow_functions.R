@@ -66,7 +66,7 @@ STA = function(Constraints, objective, solver = "Symphony", xmat = NULL, xdir = 
     }
   } else if (toupper(solver) == "GUROBI") {
     DIR[DIR == "=="] = "="
-    invisible(capture.output(MIP <- gurobi(list(obj = obj, modelsense = "max", rhs = RHS, sense = DIR, vtype = "B", A = MAT), params = NULL, env = NULL)))
+    invisible(capture.output(MIP <- gurobi::gurobi(list(obj = obj, modelsense = "max", rhs = RHS, sense = DIR, vtype = "B", A = MAT), params = NULL, env = NULL)))
     status = MIP$status
     if (MIP$status != "OPTIMAL") {
       warning(sprintf("MIP solver returned non-zero status: %s", MIP$status))
@@ -2153,8 +2153,8 @@ setMethod(f = "Shadow",
                 plotAuditTrail()
               }
 
-              if(!is.null(session)){
-                updateProgressBar(session = session, id = "pb", value = j, total = nj)
+              if (!is.null(session)) {
+                shinyWidgets::updateProgressBar(session = session, id = "pb", value = j, total = nj)
               } else {
                 setTxtProgressBar(pb, j)
               }
