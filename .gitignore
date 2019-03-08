@@ -2,7 +2,9 @@
 .Rhistory
 .RData
 .Ruserdata
+.DS_store
 src/*.o
 src/*.so
 src/*.dll
 deploy.r
+R/run_47h.R
