@@ -5,33 +5,12 @@
 \name{show}
 \alias{show}
 \alias{show,ATA.config-method}
-\alias{show,item.1pl-method}
-\alias{show,item.2pl-method}
-\alias{show,item.3pl-method}
-\alias{show,item.pc-method}
-\alias{show,item.gpc-method}
-\alias{show,item.gr-method}
-\alias{show,item.pool-method}
 \alias{show,pool.cluster-method}
 \alias{show,Shadow.config-method}
 \alias{show,Shadow.output-method}
 \title{show}
 \usage{
 \S4method{show}{ATA.config}(object)
-
-\S4method{show}{item.1pl}(object)
-
-\S4method{show}{item.2pl}(object)
-
-\S4method{show}{item.3pl}(object)
-
-\S4method{show}{item.pc}(object)
-
-\S4method{show}{item.gpc}(object)
-
-\S4method{show}{item.gr}(object)
-
-\S4method{show}{item.pool}(object)
 
 \S4method{show}{pool.cluster}(object)
 
@@ -46,22 +25,6 @@
 \code{show} returns an invisible \code{NULL}.
 }
 \description{
-show
-
-show
-
-show
-
-show
-
-show
-
-show
-
-show
-
-show
-
 show
 
 show
