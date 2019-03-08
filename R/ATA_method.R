@@ -109,7 +109,7 @@ setMethod(f = "ATA",
               }
               constraints.dir = dir
               constraints.dir[constraints.dir == "=="] = "="
-              invisible(capture.output(MIP <- gurobi(list(obj = obj, modelsense = ifelse(maximize, "max", "min"), rhs = rhs, sense = constraints.dir, vtype = types, A = mat), params = list(TimeLimit = config@MIP$timeLimit), env = NULL)))
+              invisible(capture.output(MIP <- gurobi::gurobi(list(obj = obj, modelsense = ifelse(maximize, "max", "min"), rhs = rhs, sense = constraints.dir, vtype = types, A = mat), params = list(TimeLimit = config@MIP$timeLimit), env = NULL)))
               status = MIP$status
               if (MIP$status != "OPTIMAL") {
                 warning(sprintf("MIP solver returned non-zero status: %s", MIP$status))
