@@ -214,6 +214,8 @@ setClass("Shadow.config",
                           auditTrail = FALSE),
          validity = function(object) {
            if (!toupper(object@MIP$solver) %in% c("SYMPHONY", "GUROBI", "GLPK", "LPSOLVE")) stop("invalid option for MIP$solver")
+           if (toupper(object@MIP$solver) == "GUROBI" &
+               !requireNamespace("gurobi", quietly = TRUE)) stop("GUROBI was specified but is not installed")
            if (!object@itemSelection$method %in% c("MFI", "MPWI", "EB", "FB")) stop("invalid option for selectionCriterion")
            if (!object@contentBalancing$method %in% c("NONE", "STA")) stop("invalid option for contentBalancing")
            if (!object@refreshPolicy$method %in% c("ALWAYS", "POSITION", "INTERVAL", "THRESHOLD", "INTERVAL-THRESHOLD", "STIMULUS", "SET", "PASSAGE")) stop("invalid option for refreshPolicy")
