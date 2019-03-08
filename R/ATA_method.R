@@ -1,27 +1,6 @@
 # Documentation progress
 # Phase 2. Add simple descriptions: COMPLETE
 
-#' show
-#'
-#' show
-#'
-#' @docType methods
-#' @rdname show-methods
-#' @export
-setMethod("show", "ATA.config", function(object) {
-  cat("ATA Configuration Settings \n\n")
-  cat("  Item selection criterion \n")
-  cat("    Method         :", object@itemSelection$method, "\n") #c("MAXINFO", "TIF", "TCC")
-  cat("    Info type      :", object@itemSelection$infoType, "\n")
-  cat("    Theta Location :", object@itemSelection$targetLocation, "\n")
-  cat("    Target Value   :", object@itemSelection$targetValue, "\n\n")
-  cat("  MIP \n")
-  cat("    Solver         :", object@MIP$solver, "\n")
-  cat("    Verbosity      :", object@MIP$verbosity, "\n")
-  cat("    Time limit     :", object@MIP$timeLimit, "\n")
-  cat("    Gap limit      :", object@MIP$gapLimit, "\n\n")
-})
-
 #' An S4 generic and its methods for Automated Test Assembly (ATA).
 #'
 #' @param config An \code{ATA.config} object containing configuration options.
