@@ -1,0 +1,29 @@
+Package: Shadow
+Type: Package
+Title: Optimal Test Design Approach to Fixed and Adaptive Test Construction
+Version: 0.1
+Date: 2019-01-10
+Author: Seung W. Choi
+Maintainer: Seung W. Choi <schoi@austin.utexas.edu>
+Description: Use the optimal test design approach by Birnbaum and van der Linden to constructing fixed and adaptive tests.
+License: GPL (>= 2)
+Depends: R (>= 2.10)
+Imports:
+    Rcpp (>= 1.0.0),
+    methods,
+    Rsymphony,
+    gurobi,
+    Matrix,
+    Rglpk,
+    lpSolve,
+    IRTclass,
+    Rdpack,
+    foreach,
+    logitnorm,
+    lattice
+LinkingTo: Rcpp, IRTclass
+RoxygenNote: 6.1.1
+Encoding: UTF-8
+LazyData: true
+RdMacros: Rdpack
+Remotes: choi-phd/IRTclass
