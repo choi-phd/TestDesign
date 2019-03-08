@@ -2,7 +2,6 @@
 # Phase 2. Add simple descriptions: COMPLETE
 
 #' @import Rsymphony
-#' @import gurobi
 #' @import Rglpk
 #' @import Matrix
 #' @import lpSolve

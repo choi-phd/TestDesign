@@ -12,7 +12,6 @@ Imports:
     Rcpp (>= 1.0.0),
     methods,
     Rsymphony,
-    gurobi,
     Matrix,
     Rglpk,
     lpSolve,
@@ -21,6 +20,8 @@ Imports:
     foreach,
     logitnorm,
     lattice
+Suggests:
+    gurobi
 LinkingTo: Rcpp, IRTclass
 RoxygenNote: 6.1.1
 Encoding: UTF-8
