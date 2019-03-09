@@ -1,3 +1,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^\R\run_47h.R$
+^R\run_47h\.R$
+^data-raw$
+^shiny$
