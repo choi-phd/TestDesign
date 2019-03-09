@@ -5,5 +5,5 @@
 src/*.o
 src/*.so
 src/*.dll
-deploy.r
 R/run_47h.R
+shiny/deploy.R
