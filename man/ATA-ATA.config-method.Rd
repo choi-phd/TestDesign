@@ -11,9 +11,9 @@
 \arguments{
 \item{config}{An \code{ATA.config} object containing configuration options.}
 
-\item{Constraints}{A list containing constraint information. Use \code{\link{LoadConstraints}} for this.}
+\item{Constraints}{A list representing optimization constraints. Use \code{\link{LoadConstraints}} for this.}
 
-\item{plot}{Logical. Draws Fisher information plot from the selected items.}
+\item{plot}{Logical. If \code{TRUE}, draws Fisher information plot from the selected items.}
 
 \item{plotrange}{Numeric. A vector of length 2 containing the lower and upper bounds of plot range. Default is \code{c(-3, 3)}.}
 }

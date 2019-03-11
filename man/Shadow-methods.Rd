@@ -14,21 +14,21 @@ Shadow(object, config, trueTheta = NULL, Constraints = NULL,
   session = NULL)
 }
 \arguments{
-\item{object}{A nice parameter}
+\item{object}{An \code{item.pool} object.}
 
-\item{config}{A nice parameter}
+\item{config}{A \code{Shadow.config} object.}
 
-\item{trueTheta}{A nice parameter}
+\item{trueTheta}{Numeric. A vector of true theta values to be used in simulation.}
 
-\item{Constraints}{A nice parameter}
+\item{Constraints}{A list representing optimization constraints. Use \code{\link{LoadConstraints}} for this.}
 
-\item{prior}{A nice parameter}
+\item{prior}{Numeric. A matrix or a vector containing priors.}
 
-\item{priorPar}{A nice parameter}
+\item{priorPar}{Numeric. A vector of parameters for prior distribution.}
 
-\item{Data}{A nice parameter}
+\item{Data}{Numeric. A matrix containing item response data.}
 
-\item{session}{A nice parameter}
+\item{session}{Used to communicate with a Shiny session.}
 }
 \description{
 Shadow
