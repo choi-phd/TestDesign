@@ -1,30 +1,9 @@
 # Documentation progress
 # Phase 2. Add simple descriptions: COMPLETE
 
-#' show
-#' 
-#' show
-#' 
-#' @docType methods
-#' @rdname show-methods
-#' @export
-setMethod("show", "ATA.config", function(object) {
-  cat("ATA Configuration Settings \n\n")
-  cat("  Item selection criterion \n")
-  cat("    Method         :", object@itemSelection$method, "\n") #c("MAXINFO", "TIF", "TCC")
-  cat("    Info type      :", object@itemSelection$infoType, "\n")
-  cat("    Theta Location :", object@itemSelection$targetLocation, "\n")
-  cat("    Target Value   :", object@itemSelection$targetValue, "\n\n")
-  cat("  MIP \n")
-  cat("    Solver         :", object@MIP$solver, "\n")
-  cat("    Verbosity      :", object@MIP$verbosity, "\n")
-  cat("    Time limit     :", object@MIP$timeLimit, "\n")
-  cat("    Gap limit      :", object@MIP$gapLimit, "\n\n")
-})
-
 #' An S4 generic and its methods for Automated Test Assembly (ATA).
 #' 
-#' @param config An \code{ATA.config} object containing configuration options.
+#' @param config An \code{\linkS4class{ATA.config}} object containing configuration options.
 #' @param Constraints A list representing optimization constraints. Use \code{\link{LoadConstraints}} for this.
 #' @param plot Logical. Draws Fisher information plot from the selected items.
 #' @param plotrange Numeric. A vector of length 2 containing the lower and upper bounds of plot range. Default is \code{c(-3, 3)}.
@@ -32,7 +11,7 @@ setMethod("show", "ATA.config", function(object) {
 #' @docType methods
 #' 
 #' @rdname ATA-methods
-#' 
+
 setGeneric(name = "ATA",
            def = function(config, Constraints, plot, plotrange = c(-3, 3)) {
              standardGeneric("ATA")
@@ -43,7 +22,7 @@ setGeneric(name = "ATA",
 #'
 #' Perform Automated Test Assembly from specified configurations.
 #' 
-#' @param config An \code{ATA.config} object containing configuration options.
+#' @param config An \code{\linkS4class{ATA.config}} object containing configuration options.
 #' @param Constraints A list representing optimization constraints. Use \code{\link{LoadConstraints}} for this.
 #' @param plot Logical. If \code{TRUE}, draws Fisher information plot from the selected items.
 #' @param plotrange Numeric. A vector of length 2 containing the lower and upper bounds of plot range. Default is \code{c(-3, 3)}.
@@ -130,7 +109,7 @@ setMethod(f = "ATA",
               }
               constraints.dir = dir
               constraints.dir[constraints.dir == "=="] = "="
-              invisible(capture.output(MIP <- gurobi(list(obj = obj, modelsense = ifelse(maximize, "max", "min"), rhs = rhs, sense = constraints.dir, vtype = types, A = mat), params = list(TimeLimit = config@MIP$timeLimit), env = NULL)))
+              invisible(capture.output(MIP <- gurobi::gurobi(list(obj = obj, modelsense = ifelse(maximize, "max", "min"), rhs = rhs, sense = constraints.dir, vtype = types, A = mat), params = list(TimeLimit = config@MIP$timeLimit), env = NULL)))
               status = MIP$status
               if (MIP$status != "OPTIMAL") {
                 warning(sprintf("MIP solver returned non-zero status: %s", MIP$status))
