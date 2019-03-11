@@ -21,7 +21,8 @@ Imports:
     logitnorm,
     lattice
 Suggests:
-    gurobi
+    gurobi,
+    shinyWidgets
 LinkingTo: Rcpp, IRTclass
 RoxygenNote: 6.1.1
 Encoding: UTF-8

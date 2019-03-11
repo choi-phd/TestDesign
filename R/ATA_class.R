@@ -7,7 +7,7 @@
 #' 
 #' @slot itemSelection A list containing item selection criteria. This should have the following entries:
 #' \itemize{
-#'   \item{\code{method}} The type of criteria. Accepts \code{MAXINFO}, \code{TIF}, or \code{TCC}.
+#'   \item{\code{method}} The type of criteria. Accepts \code{MAXINFO, TIF, TCC}.
 #'   \item{\code{infoType}} The type of information. Accepts \code{FISHER}.
 #'   \item{\code{targetLocation}} A numeric vector containing the locations of target points. (e.g. \code{c(-1, 0, 1)})
 #'   \item{\code{targetValue}} A numeric vector containing the target values at each location. This should have the same length with \code{targetLocation}.
@@ -15,11 +15,11 @@
 #' }
 #' @slot MIP A list containing solver options. This should have the following entries:
 #' \itemize{
-#'   \item{\code{solver}} The type of solver. Accepts \code{SYMPHONY}, \code{GUROBI}, \code{GLPK}, or \code{LPSOLVE}.
+#'   \item{\code{solver}} The type of solver. Accepts \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.
 #'   \item{\code{verbosity}} Verbosity level.
-#'   \item{\code{timeLimit}} Time limit to be passed onto solver. Used in solvers \code{SYMPHONY}, \code{GUROBI}, and \code{GLPK}.
-#'   \item{\code{gapLimit}} Gap limit to be passed onto solver. Used in solvers  \code{SYMPHONY} and \code{GUROBI}.
-#'   \item{\code{gapLimitAbs}} Absolute gap limit to be passed onto optimizers \code{GUROBI}.
+#'   \item{\code{timeLimit}} Time limit to be passed onto solver. Used in solvers \code{SYMPHONY, GUROBI, GLPK}.
+#'   \item{\code{gapLimit}} Gap limit to be passed onto solver. Used in solvers  \code{SYMPHONY, GUROBI}.
+#'   \item{\code{gapLimitAbs}} Absolute gap limit to be passed onto \code{GUROBI}.
 #' }
 #' 
 #' @export
@@ -47,3 +47,26 @@ setClass("ATA.config",
            return(TRUE)
          }
 )
+
+#' @inherit methods::show
+#' 
+#' @name show
+#' 
+#' @aliases show,ATA.config-method
+#' 
+#' @docType methods
+#' @rdname show-methods
+#' @export
+setMethod("show", "ATA.config", function(object) {
+  cat("ATA Configuration Settings \n\n")
+  cat("  Item selection criterion \n")
+  cat("    Method         :", object@itemSelection$method, "\n") #c("MAXINFO", "TIF", "TCC")
+  cat("    Info type      :", object@itemSelection$infoType, "\n")
+  cat("    Theta Location :", object@itemSelection$targetLocation, "\n")
+  cat("    Target Value   :", object@itemSelection$targetValue, "\n\n")
+  cat("  MIP \n")
+  cat("    Solver         :", object@MIP$solver, "\n")
+  cat("    Verbosity      :", object@MIP$verbosity, "\n")
+  cat("    Time limit     :", object@MIP$timeLimit, "\n")
+  cat("    Gap limit      :", object@MIP$gapLimit, "\n\n")
+})
