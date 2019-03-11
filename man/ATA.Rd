@@ -8,7 +8,7 @@
 ATA(config, Constraints, plot, plotrange = c(-3, 3))
 }
 \arguments{
-\item{config}{An \code{ATA.config} object containing configuration options.}
+\item{config}{An \code{\linkS4class{ATA.config}} object containing configuration options.}
 
 \item{Constraints}{A list representing optimization constraints. Use \code{\link{LoadConstraints}} for this.}
 

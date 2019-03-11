@@ -22,7 +22,7 @@ NULL
 #'
 #' @param Constraints A list representing optimization constraints. Use \code{\link{LoadConstraints}} for this.
 #' @param objective A vector of objective values.
-#' @param solver The type of solver. Accepts \code{SYMPHONY}, \code{GUROBI}, \code{GLPK}, or \code{LPSOLVE}.
+#' @param solver The type of solver. Accepts \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.
 #' @param xmat A nice parameter
 #' @param xdir A nice parameter
 #' @param xrhs A vector of right-side values.
@@ -32,7 +32,7 @@ NULL
 #' @param verbosity Verbosity level.
 #' @param time_limit Time limit to be passed onto solver.
 #' @param gap_limit Gap limit to be passed onto solver.
-#' @param ... Only used when \code{solver} is \code{SYMPHONY}. Additional parameters to be passed onto \code{Rsymphony_solve_LP}.
+#' @param ... Only used when \code{solver} is \code{SYMPHONY}. Additional parameters to be passed onto \code{\link[Rsymphony]{Rsymphony_solve_LP}}.
 #' 
 #' @return An output
 #'
@@ -66,7 +66,7 @@ STA = function(Constraints, objective, solver = "Symphony", xmat = NULL, xdir = 
     }
   } else if (toupper(solver) == "GUROBI") {
     DIR[DIR == "=="] = "="
-    invisible(capture.output(MIP <- gurobi(list(obj = obj, modelsense = "max", rhs = RHS, sense = DIR, vtype = "B", A = MAT), params = NULL, env = NULL)))
+    invisible(capture.output(MIP <- gurobi::gurobi(list(obj = obj, modelsense = "max", rhs = RHS, sense = DIR, vtype = "B", A = MAT), params = NULL, env = NULL)))
     status = MIP$status
     if (MIP$status != "OPTIMAL") {
       warning(sprintf("MIP solver returned non-zero status: %s", MIP$status))
@@ -164,7 +164,7 @@ STA = function(Constraints, objective, solver = "Symphony", xmat = NULL, xdir = 
 #' @param object A nice parameter
 #' 
 #' @docType methods
-#' @rdname show-methods
+#' @noRd
 #' @export
 setMethod("show", "Shadow.config", function(object) {
   cat("Shadow Configuration Settings \n\n")
@@ -229,7 +229,7 @@ setMethod("show", "Shadow.config", function(object) {
 #' 
 #' @docType methods
 #' 
-#' @rdname show-methods
+#' @noRd
 #' @export
 setMethod("show", "Shadow.output", function(object) {
   if (length(object@administeredItemIndex) > 0) {
@@ -1226,8 +1226,8 @@ MakeItemPoolCluster = function(pools, names = NULL) {
 
 #' Shadow
 #' 
-#' @param object An \code{item.pool} object.
-#' @param config A \code{Shadow.config} object.
+#' @param object An \code{\linkS4class{item.pool}} object. Use \code{\link[IRTclass]{LoadItemPool}} for this.
+#' @param config A \code{\linkS4class{Shadow.config}} object.
 #' @param trueTheta Numeric. A vector of true theta values to be used in simulation.
 #' @param Constraints A list representing optimization constraints. Use \code{\link{LoadConstraints}} for this.
 #' @param prior Numeric. A matrix or a vector containing priors.
@@ -2247,8 +2247,8 @@ setMethod(f = "Shadow",
                 plotAuditTrail()
               }
               
-              if(!is.null(session)){
-                updateProgressBar(session = session, id = "pb", value = j, total = nj)
+              if (!is.null(session)) {
+                shinyWidgets::updateProgressBar(session = session, id = "pb", value = j, total = nj)
               } else {
                 setTxtProgressBar(pb, j)
               }

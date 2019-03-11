@@ -14,9 +14,9 @@ Shadow(object, config, trueTheta = NULL, Constraints = NULL,
   session = NULL)
 }
 \arguments{
-\item{object}{An \code{item.pool} object.}
+\item{object}{An \code{\linkS4class{item.pool}} object. Use \code{\link[IRTclass]{LoadItemPool}} for this.}
 
-\item{config}{A \code{Shadow.config} object.}
+\item{config}{A \code{\linkS4class{Shadow.config}} object.}
 
 \item{trueTheta}{Numeric. A vector of true theta values to be used in simulation.}
 

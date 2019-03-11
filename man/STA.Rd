@@ -13,7 +13,7 @@ STA(Constraints, objective, solver = "Symphony", xmat = NULL,
 
 \item{objective}{A vector of objective values.}
 
-\item{solver}{The type of solver. Accepts \code{SYMPHONY}, \code{GUROBI}, \code{GLPK}, or \code{LPSOLVE}.}
+\item{solver}{The type of solver. Accepts \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.}
 
 \item{xmat}{A nice parameter}
 
@@ -33,7 +33,7 @@ STA(Constraints, objective, solver = "Symphony", xmat = NULL,
 
 \item{gap_limit}{Gap limit to be passed onto solver.}
 
-\item{...}{Only used when \code{solver} is \code{SYMPHONY}. Additional parameters to be passed onto \code{Rsymphony_solve_LP}.}
+\item{...}{Only used when \code{solver} is \code{SYMPHONY}. Additional parameters to be passed onto \code{\link[Rsymphony]{Rsymphony_solve_LP}}.}
 }
 \value{
 An output
