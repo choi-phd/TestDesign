@@ -92,17 +92,62 @@ setClass("test.cluster",
 )
 
 #' Shadow.config
+#' 
+#' An S4 object to store configurations for Shadow Test Assembly (STA).
 #'
-#' @slot itemSelection A list.
-#' @slot contentBalancing A list.
-#' @slot MIP A list.
-#' @slot MCMC A list.
-#' @slot refreshPolicy A list.
+#' @slot itemSelection A list containing item selection criteria.
+#' \itemize{
+#'   \item{\code{method}} The type of criteria. Accepts one of \code{MAXINFO, TIF, TCC}
+#'   \item{\code{infoType}} The type of information. Accepts \code{FISHER}.
+#'   \item{\code{initialTheta}} 
+#'   \item{\code{fixedTheta}} 
+#' }
+#' @slot contentBalancing A list containing content balancing options.
+#' \itemize{
+#'   \item{\code{method}} The type of balancing method. Accepts \code{NONE}, or \code{STA}.
+#' }
+#' @slot MIP A list containing solver options.
+#' \itemize{
+#'   \item{\code{solver}} The type of solver. Accepts one of \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.
+#'   \item{\code{verbosity}} Verbosity level.
+#'   \item{\code{timeLimit}} Time limit to be passed onto solver. Used in solvers \code{SYMPHONY, GUROBI, GLPK}.
+#'   \item{\code{gapLimit}} Gap limit to be passed onto solver. Used in solvers  \code{SYMPHONY, GUROBI}.
+#' }
+#' @slot MCMC A list containing Markov-chain Monte Carlo configurations.
+#' \itemize{
+#'   \item{\code{burnIn}} Numeric. The number of chains from the start to discard.
+#'   \item{\code{postBurnIn}}  Numeric. The number of chains to use after discarding the first \code{burnIn} chains.
+#'   \item{\code{thin}} Thin.
+#'   \item{\code{jumpfactor}} JumpFactor.
+#' }
+#' @slot refreshPolicy A list containing refresh policy for obtaining a new shadow test.
+#' \itemize{
+#'   \item{\code{method}} The type of policy. Accepts one of \code{ALWAYS, POSITION, INTERVAL, THRESHOLD, INTERVAL-THRESHOLD, STIMULUS, SET, PASSAGE}.
+#'   \item{\code{interval}}
+#'   \item{\code{threshold}}
+#'   \item{\code{position}}
+#' }
 #' @slot exposureControl A list.
 #' @slot stoppingCriterion A list.
-#' @slot interimTheta A list.
-#' @slot finalTheta A list.
-#' @slot thetaGrid Numeric.
+#' @slot interimTheta A list containing interim theta estimation options.
+#' \itemize{
+#'   \item{\code{method}} The type of estimation. Accepts one of \code{EAP, EB, FB}.
+#'   \item{\code{priorDist}} The type of prior distribution. Accepts one of \code{NORMAL, UNIF}.
+#'   \item{\code{priorPar}} Distributional parameters for the prior.
+#'   \item{\code{boundML}}
+#'   \item{\code{maxIter}}
+#'   \item{\code{crit}}
+#' }
+#' @slot finalTheta A list containing final theta estimation options.
+#' \itemize{
+#'   \item{\code{method}} The type of estimation. Accepts one of \code{EAP, EB, FB}.
+#'   \item{\code{priorDist}} The type of prior distribution. Accepts one of \code{NORMAL, UNIF}.
+#'   \item{\code{priorPar}} Distributional parameters for the prior.
+#'   \item{\code{boundML}}
+#'   \item{\code{maxIter}}
+#'   \item{\code{crit}}
+#' }
+#' @slot thetaGrid Numeric. A vector of theta values to represent the continuum.
 #' @slot auditTrail Logical.
 #' 
 #' @export
@@ -203,6 +248,7 @@ setClass("Shadow.config",
 #' @slot posteriorSample Numeric.
 #' @slot likelihood Numeric.
 #' @slot shadowTest A list.
+#' 
 #' @export
 
 #define class for Shadow.output per examinee
