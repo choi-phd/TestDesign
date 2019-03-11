@@ -48,6 +48,12 @@ setClass("ATA.config",
          }
 )
 
+#' @inherit methods::show
+#' 
+#' @name show
+#' 
+#' @aliases show,ATA.config-method
+#' 
 #' @docType methods
 #' @rdname show-methods
 #' @export
