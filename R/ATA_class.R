@@ -48,11 +48,8 @@ setClass("ATA.config",
          }
 )
 
-#' show
-#' 
-#' show
-#' 
-#' @noRd
+#' @docType methods
+#' @rdname show-methods
 #' @export
 setMethod("show", "ATA.config", function(object) {
   cat("ATA Configuration Settings \n\n")
