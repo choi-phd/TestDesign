@@ -6,12 +6,6 @@
 #' @importMethodsFrom IRTclass calcProb calcEscore calcFisher
 NULL
 
-#' @inherit methods::show
-#' 
-#' @name show
-#' 
-#' @aliases show,pool.cluster-method
-#' 
 #' @docType methods
 #' @rdname show-methods
 #' @export
