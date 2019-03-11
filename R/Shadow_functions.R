@@ -20,19 +20,19 @@ NULL
 #'
 #' Do fancy stuff.
 #'
-#' @param Constraints A nice parameter
-#' @param objective A nice parameter
-#' @param solver A nice parameter
+#' @param Constraints A list representing optimization constraints. Use \code{\link{LoadConstraints}} for this.
+#' @param objective A vector of objective values.
+#' @param solver The type of solver. Accepts \code{SYMPHONY}, \code{GUROBI}, \code{GLPK}, or \code{LPSOLVE}.
 #' @param xmat A nice parameter
 #' @param xdir A nice parameter
-#' @param xrhs A nice parameter
-#' @param maximize A nice parameter
-#' @param mps A nice parameter
-#' @param lp A nice parameter
-#' @param verbosity A nice parameter
-#' @param time_limit A nice parameter
-#' @param gap_limit A nice parameter
-#' @param ... Some dots
+#' @param xrhs A vector of right-side values.
+#' @param maximize If \code{TRUE}, treat as a maximization problem.
+#' @param mps Only used when \code{solver} is \code{SYMPHONY}. If \code{TRUE}, print an MPS representation of the problem for debugging purposes.
+#' @param lp Only used when \code{solver} is \code{SYMPHONY}. If \code{TRUE}, print an LP representation of the problem for debugging purposes.
+#' @param verbosity Verbosity level.
+#' @param time_limit Time limit to be passed onto solver.
+#' @param gap_limit Gap limit to be passed onto solver.
+#' @param ... Only used when \code{solver} is \code{SYMPHONY}. Additional parameters to be passed onto \code{Rsymphony_solve_LP}.
 #' 
 #' @return An output
 #'
@@ -1226,14 +1226,14 @@ MakeItemPoolCluster = function(pools, names = NULL) {
 
 #' Shadow
 #' 
-#' @param object A nice parameter
-#' @param config A nice parameter
-#' @param trueTheta A nice parameter
-#' @param Constraints A nice parameter
-#' @param prior A nice parameter
-#' @param priorPar A nice parameter
-#' @param Data A nice parameter
-#' @param session A nice parameter
+#' @param object An \code{item.pool} object.
+#' @param config A \code{Shadow.config} object.
+#' @param trueTheta Numeric. A vector of true theta values to be used in simulation.
+#' @param Constraints A list representing optimization constraints. Use \code{\link{LoadConstraints}} for this.
+#' @param prior Numeric. A matrix or a vector containing priors.
+#' @param priorPar Numeric. A vector of parameters for prior distribution.
+#' @param Data Numeric. A matrix containing item response data.
+#' @param session Used to communicate with a Shiny session.
 #' 
 #' @rdname Shadow-methods
 #' @export
