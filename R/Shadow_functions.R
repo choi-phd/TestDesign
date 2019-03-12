@@ -18,7 +18,7 @@ NULL
 
 #' STA
 #'
-#' Do fancy stuff.
+#' Shadow Test Approach to CAT.
 #'
 #' @param Constraints A nice parameter
 #' @param objective A nice parameter
@@ -2398,7 +2398,7 @@ plotEligibilityStats = function(object = NULL, objectNoFading = NULL, file = NUL
     
     plot(examinee, p_alpha, main = paste("Segment", segment, "- Item", i), type = "n", ylim = c(0, 1), xlab = "Examinees", ylab = "Rate")
     if (is.null(eligibilityStatsNoFading)) {
-      legend("topright", c("alpha", "epsilon", "Pr{eligible}"), lty = c(1, 2, 3), col = c("red", "blue", "purple"))
+      legend("topright", c("alpha", "epsilon", "Pr{eligible}"), lty = c(1, 2, 3), col = c("red", "blue", "purple"), lwd = c(2, 2, 2), bg = "white")
     } else {
       lines(examinee, p_epsilon_noFading, col = addTrans("blue", 20), lty = 1, type = "h")
       lines(examinee, p_alpha_noFading, col = addTrans("red", 20), lty = 1, type = "h")
