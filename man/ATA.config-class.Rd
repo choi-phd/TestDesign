@@ -12,7 +12,7 @@ An S4 object to store configurations for Automated Test Assembly (ATA).
 \describe{
 \item{\code{itemSelection}}{A list containing item selection criteria. This should have the following entries:
 \itemize{
-  \item{\code{method}} The type of criteria. Accepts \code{MAXINFO}, \code{TIF}, or \code{TCC}.
+  \item{\code{method}} The type of criteria. Accepts \code{MAXINFO, TIF, TCC}.
   \item{\code{infoType}} The type of information. Accepts \code{FISHER}.
   \item{\code{targetLocation}} A numeric vector containing the locations of target points. (e.g. \code{c(-1, 0, 1)})
   \item{\code{targetValue}} A numeric vector containing the target values at each location. This should have the same length with \code{targetLocation}.
@@ -21,11 +21,11 @@ An S4 object to store configurations for Automated Test Assembly (ATA).
 
 \item{\code{MIP}}{A list containing solver options. This should have the following entries:
 \itemize{
-  \item{\code{solver}} The type of solver. Accepts \code{SYMPHONY}, \code{GUROBI}, \code{GLPK}, or \code{LPSOLVE}.
+  \item{\code{solver}} The type of solver. Accepts \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.
   \item{\code{verbosity}} Verbosity level.
-  \item{\code{timeLimit}} Time limit to be passed onto solver. Used in solvers \code{SYMPHONY}, \code{GUROBI}, and \code{GLPK}.
-  \item{\code{gapLimit}} Gap limit to be passed onto solver. Used in solvers  \code{SYMPHONY} and \code{GUROBI}.
-  \item{\code{gapLimitAbs}} Absolute gap limit to be passed onto optimizers \code{GUROBI}.
+  \item{\code{timeLimit}} Time limit to be passed onto solver. Used in solvers \code{SYMPHONY, GUROBI, GLPK}.
+  \item{\code{gapLimit}} Gap limit to be passed onto solver. Used in solvers  \code{SYMPHONY, GUROBI}.
+  \item{\code{gapLimitAbs}} Absolute gap limit to be passed onto \code{GUROBI}.
 }}
 }}
 
