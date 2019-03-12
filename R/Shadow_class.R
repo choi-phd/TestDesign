@@ -92,17 +92,62 @@ setClass("test.cluster",
 )
 
 #' Shadow.config
+#' 
+#' An S4 object to store configurations for Shadow Test Assembly (STA).
 #'
-#' @slot itemSelection A list.
-#' @slot contentBalancing A list.
-#' @slot MIP A list.
-#' @slot MCMC A list.
-#' @slot refreshPolicy A list.
+#' @slot itemSelection A list containing item selection criteria.
+#' \itemize{
+#'   \item{\code{method}} The type of criteria. Accepts one of \code{MAXINFO, TIF, TCC}
+#'   \item{\code{infoType}} The type of information. Accepts \code{FISHER}.
+#'   \item{\code{initialTheta}} 
+#'   \item{\code{fixedTheta}} 
+#' }
+#' @slot contentBalancing A list containing content balancing options.
+#' \itemize{
+#'   \item{\code{method}} The type of balancing method. Accepts \code{NONE}, or \code{STA}.
+#' }
+#' @slot MIP A list containing solver options.
+#' \itemize{
+#'   \item{\code{solver}} The type of solver. Accepts one of \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.
+#'   \item{\code{verbosity}} Verbosity level.
+#'   \item{\code{timeLimit}} Time limit to be passed onto solver. Used in solvers \code{SYMPHONY, GUROBI, GLPK}.
+#'   \item{\code{gapLimit}} Gap limit to be passed onto solver. Used in solvers  \code{SYMPHONY, GUROBI}.
+#' }
+#' @slot MCMC A list containing Markov-chain Monte Carlo configurations.
+#' \itemize{
+#'   \item{\code{burnIn}} Numeric. The number of chains from the start to discard.
+#'   \item{\code{postBurnIn}}  Numeric. The number of chains to use after discarding the first \code{burnIn} chains.
+#'   \item{\code{thin}} Thin.
+#'   \item{\code{jumpfactor}} JumpFactor.
+#' }
+#' @slot refreshPolicy A list containing refresh policy for obtaining a new shadow test.
+#' \itemize{
+#'   \item{\code{method}} The type of policy. Accepts one of \code{ALWAYS, POSITION, INTERVAL, THRESHOLD, INTERVAL-THRESHOLD, STIMULUS, SET, PASSAGE}.
+#'   \item{\code{interval}}
+#'   \item{\code{threshold}}
+#'   \item{\code{position}}
+#' }
 #' @slot exposureControl A list.
 #' @slot stoppingCriterion A list.
-#' @slot interimTheta A list.
-#' @slot finalTheta A list.
-#' @slot thetaGrid Numeric.
+#' @slot interimTheta A list containing interim theta estimation options.
+#' \itemize{
+#'   \item{\code{method}} The type of estimation. Accepts one of \code{EAP, EB, FB}.
+#'   \item{\code{priorDist}} The type of prior distribution. Accepts one of \code{NORMAL, UNIF}.
+#'   \item{\code{priorPar}} Distributional parameters for the prior.
+#'   \item{\code{boundML}}
+#'   \item{\code{maxIter}}
+#'   \item{\code{crit}}
+#' }
+#' @slot finalTheta A list containing final theta estimation options.
+#' \itemize{
+#'   \item{\code{method}} The type of estimation. Accepts one of \code{EAP, EB, FB}.
+#'   \item{\code{priorDist}} The type of prior distribution. Accepts one of \code{NORMAL, UNIF}.
+#'   \item{\code{priorPar}} Distributional parameters for the prior.
+#'   \item{\code{boundML}}
+#'   \item{\code{maxIter}}
+#'   \item{\code{crit}}
+#' }
+#' @slot thetaGrid Numeric. A vector of theta values to represent the continuum.
 #' @slot auditTrail Logical.
 #' 
 #' @export
@@ -169,6 +214,8 @@ setClass("Shadow.config",
                           auditTrail = FALSE),
          validity = function(object) {
            if (!toupper(object@MIP$solver) %in% c("SYMPHONY", "GUROBI", "GLPK", "LPSOLVE")) stop("invalid option for MIP$solver")
+           if (toupper(object@MIP$solver) == "GUROBI" &
+               !requireNamespace("gurobi", quietly = TRUE)) stop("GUROBI was specified but is not installed")
            if (!object@itemSelection$method %in% c("MFI", "MPWI", "EB", "FB")) stop("invalid option for selectionCriterion")
            if (!object@contentBalancing$method %in% c("NONE", "STA")) stop("invalid option for contentBalancing")
            if (!object@refreshPolicy$method %in% c("ALWAYS", "POSITION", "INTERVAL", "THRESHOLD", "INTERVAL-THRESHOLD", "STIMULUS", "SET", "PASSAGE")) stop("invalid option for refreshPolicy")
@@ -180,6 +227,66 @@ setClass("Shadow.config",
            return(TRUE)
          }
 )
+
+#' @docType methods
+#' @rdname show-methods
+#' @export
+setMethod("show", "Shadow.config", function(object) {
+  cat("Shadow Configuration Settings \n\n")
+  cat("  Item selection criterion \n")
+  cat("    Method         :", object@itemSelection$method, "\n")
+  cat("    Info type      :", object@itemSelection$infoType, "\n")
+  cat("    Initial theta  :", object@itemSelection$initialTheta, "\n\n")
+  cat("  Content balancing \n")
+  cat("    Method         :", object@contentBalancing$method, "\n\n")
+  cat("  MIP \n")
+  cat("    Solver         :", object@MIP$solver, "\n")
+  cat("    Verbosity      :", object@MIP$verbosity, "\n")
+  cat("    Time limit     :", object@MIP$timeLimit, "\n")
+  cat("    Gap limit      :", object@MIP$gapLimit, "\n\n")
+  cat("  MCMC \n")
+  cat("    Burn in        :", object@MCMC$burnIn, "\n")
+  cat("    Post burn in   :", object@MCMC$postBurnIn, "\n")
+  cat("    Thin           :", object@MCMC$thin, "\n")
+  cat("    Jump factor    :", object@MCMC$jumpFactor, "\n\n")
+  cat("  Refresh policy \n")
+  cat("    Method         :", object@refreshPolicy$method, "\n")
+  cat("    Interval       :", object@refreshPolicy$interval, "\n")
+  cat("    Threshold      :", object@refreshPolicy$threshold, "\n")
+  cat("    Position       :", object@refreshPolicy$position, "\n\n")
+  cat("  Exposure control \n")
+  cat("    Method         :", object@exposureControl$method, "\n")
+  cat("    Big M          :", object@exposureControl$M, "\n")
+  cat("    Max Exposure   :", object@exposureControl$maxExposureRate, "\n")
+  cat("    N Segment      :", object@exposureControl$nSegment, "\n")
+  cat("    Segment cut    :", object@exposureControl$segmentCut, "\n")
+  cat("    Fading factor  :", object@exposureControl$fadingFactor, "\n")
+  cat("    Acceleration   :", object@exposureControl$accelerationFactor, "\n")
+  cat("    Diagnostics    :", object@exposureControl$diagnosticStats, "\n\n")
+  cat("  Stopping criterion \n")
+  cat("    Method         :", object@stoppingCriterion$method, "\n")
+  if (toupper(object@stoppingCriterion$method) == "FIXED") {
+    cat("    Test Length    :", object@stoppingCriterion$testLength, "\n")
+  } else {
+    cat("    Min # of items :", object@stoppingCriterion$minNI, "\n")
+    cat("    Max # of items :", object@stoppingCriterion$maxNI, "\n")
+    cat("    SE threshold   :", object@stoppingCriterion$SeThreshold, "\n")
+  }
+  cat("    Min # of items :", object@stoppingCriterion$minNI, "\n")
+  cat("    Max # of items :", object@stoppingCriterion$maxNI, "\n")
+  cat("    SE threshold   :", ifelse(toupper(object@stoppingCriterion$method) == "VARIABLE", object@stoppingCriterion$SeThreshold, NA), "\n\n")
+  cat("  Interim theta estimator \n")
+  cat("    Method         :", object@interimTheta$method, "\n")
+  cat("    Prior dist     :", ifelse(toupper(object@interimTheta$method == "EAP"), object@interimTheta$priorDist, NA), "\n")
+  cat("    Prior parm     :", ifelse(toupper(object@interimTheta$method == "EAP"), sprintf(ifelse(toupper(object@interimTheta$priorDist) == "NORMAL", "Mean = %5.3f, SD = %5.3f", "Min = %5.3f, Max = %5.3f"), object@interimTheta$priorPar[1], object@interimTheta$priorPar[2]), NA), "\n\n")
+  cat("  Final theta estimator \n")
+  cat("    Method         :", object@finalTheta$method, "\n")
+  cat("    Prior dist     :", ifelse(toupper(object@finalTheta$method == "EAP"), object@finalTheta$priorDist, NA), "\n")
+  cat("    Prior parm     :", ifelse(toupper(object@finalTheta$method == "EAP"), sprintf(ifelse(toupper(object@finalTheta$priorDist) == "NORMAL", "Mean = %5.3f, SD = %5.3f", "Min = %5.3f, Max = %5.3f"), object@finalTheta$priorPar[1], object@finalTheta$priorPar[2]), NA), "\n\n")
+  cat("  Theta Grid \n")
+  print(object@thetaGrid)
+  cat("\n  Plot Audit Trail: ", object@auditTrail, "\n")
+})
 
 #' Shadow.output
 #'
@@ -203,6 +310,7 @@ setClass("Shadow.config",
 #' @slot posteriorSample Numeric.
 #' @slot likelihood Numeric.
 #' @slot shadowTest A list.
+#' 
 #' @export
 
 #define class for Shadow.output per examinee
@@ -253,3 +361,26 @@ setClass("Shadow.output",
            return(TRUE)
          }
 )
+
+#' @docType methods
+#' @rdname show-methods
+#' @export
+setMethod("show", "Shadow.output", function(object) {
+  if (length(object@administeredItemIndex) > 0) {
+    cat("Simulee Index          :", object@simuleeIndex, "\n")
+    cat("  True Theta           :", object@trueTheta, "\n")
+    cat("  Final Theta Estimate :", object@finalThetaEst, "\n")
+    cat("  Final SE Estimate    :", object@finalSeEst, "\n")
+    output = data.frame(Stage = 1:length(object@administeredItemIndex),
+                        StimulusIndex = ifelse(is.nan(object@administeredStimulusIndex), rep(NA, length(object@administeredItemIndex)), object@administeredStimulusIndex),
+                        ItemIndex = object@administeredItemIndex, 
+                        ItemResp = object@administeredItemResp,
+                        InterimTheta = object@interimThetaEst,
+                        InterimSE = object@interimSeEst,
+                        ThetaSegment = object@thetaSegmentIndex)
+    print(output)
+  } else {
+    cat("empty object of class Shadow.output\n")
+  }
+  cat("\n")
+})

@@ -9,31 +9,31 @@ STA(Constraints, objective, solver = "Symphony", xmat = NULL,
   lp = FALSE, verbosity = -2, time_limit = 5, gap_limit = -1, ...)
 }
 \arguments{
-\item{Constraints}{A nice parameter}
+\item{Constraints}{A list representing optimization constraints. Use \code{\link{LoadConstraints}} for this.}
 
-\item{objective}{A nice parameter}
+\item{objective}{A vector of objective values.}
 
-\item{solver}{A nice parameter}
+\item{solver}{The type of solver. Accepts \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.}
 
 \item{xmat}{A nice parameter}
 
 \item{xdir}{A nice parameter}
 
-\item{xrhs}{A nice parameter}
+\item{xrhs}{A vector of right-side values.}
 
-\item{maximize}{A nice parameter}
+\item{maximize}{If \code{TRUE}, treat as a maximization problem.}
 
-\item{mps}{A nice parameter}
+\item{mps}{Only used when \code{solver} is \code{SYMPHONY}. If \code{TRUE}, print an MPS representation of the problem for debugging purposes.}
 
-\item{lp}{A nice parameter}
+\item{lp}{Only used when \code{solver} is \code{SYMPHONY}. If \code{TRUE}, print an LP representation of the problem for debugging purposes.}
 
-\item{verbosity}{A nice parameter}
+\item{verbosity}{Verbosity level.}
 
-\item{time_limit}{A nice parameter}
+\item{time_limit}{Time limit to be passed onto solver.}
 
-\item{gap_limit}{A nice parameter}
+\item{gap_limit}{Gap limit to be passed onto solver.}
 
-\item{...}{Some dots}
+\item{...}{Only used when \code{solver} is \code{SYMPHONY}. Additional parameters to be passed onto \code{\link[Rsymphony]{Rsymphony_solve_LP}}.}
 }
 \value{
 An output

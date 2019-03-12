@@ -20,19 +20,19 @@ NULL
 #'
 #' Shadow Test Approach to CAT.
 #'
-#' @param Constraints A nice parameter
-#' @param objective A nice parameter
-#' @param solver A nice parameter
+#' @param Constraints A list representing optimization constraints. Use \code{\link{LoadConstraints}} for this.
+#' @param objective A vector of objective values.
+#' @param solver The type of solver. Accepts \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.
 #' @param xmat A nice parameter
 #' @param xdir A nice parameter
-#' @param xrhs A nice parameter
-#' @param maximize A nice parameter
-#' @param mps A nice parameter
-#' @param lp A nice parameter
-#' @param verbosity A nice parameter
-#' @param time_limit A nice parameter
-#' @param gap_limit A nice parameter
-#' @param ... Some dots
+#' @param xrhs A vector of right-side values.
+#' @param maximize If \code{TRUE}, treat as a maximization problem.
+#' @param mps Only used when \code{solver} is \code{SYMPHONY}. If \code{TRUE}, print an MPS representation of the problem for debugging purposes.
+#' @param lp Only used when \code{solver} is \code{SYMPHONY}. If \code{TRUE}, print an LP representation of the problem for debugging purposes.
+#' @param verbosity Verbosity level.
+#' @param time_limit Time limit to be passed onto solver.
+#' @param gap_limit Gap limit to be passed onto solver.
+#' @param ... Only used when \code{solver} is \code{SYMPHONY}. Additional parameters to be passed onto \code{\link[Rsymphony]{Rsymphony_solve_LP}}.
 #' 
 #' @return An output
 #'
@@ -66,7 +66,7 @@ STA = function(Constraints, objective, solver = "Symphony", xmat = NULL, xdir = 
     }
   } else if (toupper(solver) == "GUROBI") {
     DIR[DIR == "=="] = "="
-    invisible(capture.output(MIP <- gurobi(list(obj = obj, modelsense = "max", rhs = RHS, sense = DIR, vtype = "B", A = MAT), params = NULL, env = NULL)))
+    invisible(capture.output(MIP <- gurobi::gurobi(list(obj = obj, modelsense = "max", rhs = RHS, sense = DIR, vtype = "B", A = MAT), params = NULL, env = NULL)))
     status = MIP$status
     if (MIP$status != "OPTIMAL") {
       warning(sprintf("MIP solver returned non-zero status: %s", MIP$status))
@@ -156,100 +156,6 @@ STA = function(Constraints, objective, solver = "Symphony", xmat = NULL, xdir = 
 #              return(x)
 #            }
 # )
-
-#' show
-#' 
-#' show
-#' 
-#' @param object A nice parameter
-#' 
-#' @docType methods
-#' @rdname show-methods
-#' @export
-setMethod("show", "Shadow.config", function(object) {
-  cat("Shadow Configuration Settings \n\n")
-  cat("  Item selection criterion \n")
-  cat("    Method         :", object@itemSelection$method, "\n")
-  cat("    Info type      :", object@itemSelection$infoType, "\n")
-  cat("    Initial theta  :", object@itemSelection$initialTheta, "\n\n")
-  cat("  Content balancing \n")
-  cat("    Method         :", object@contentBalancing$method, "\n\n")
-  cat("  MIP \n")
-  cat("    Solver         :", object@MIP$solver, "\n")
-  cat("    Verbosity      :", object@MIP$verbosity, "\n")
-  cat("    Time limit     :", object@MIP$timeLimit, "\n")
-  cat("    Gap limit      :", object@MIP$gapLimit, "\n\n")
-  cat("  MCMC \n")
-  cat("    Burn in        :", object@MCMC$burnIn, "\n")
-  cat("    Post burn in   :", object@MCMC$postBurnIn, "\n")
-  cat("    Thin           :", object@MCMC$thin, "\n")
-  cat("    Jump factor    :", object@MCMC$jumpFactor, "\n\n")
-  cat("  Refresh policy \n")
-  cat("    Method         :", object@refreshPolicy$method, "\n")
-  cat("    Interval       :", object@refreshPolicy$interval, "\n")
-  cat("    Threshold      :", object@refreshPolicy$threshold, "\n")
-  cat("    Position       :", object@refreshPolicy$position, "\n\n")
-  cat("  Exposure control \n")
-  cat("    Method         :", object@exposureControl$method, "\n")
-  cat("    Big M          :", object@exposureControl$M, "\n")
-  cat("    Max Exposure   :", object@exposureControl$maxExposureRate, "\n")
-  cat("    N Segment      :", object@exposureControl$nSegment, "\n")
-  cat("    Segment cut    :", object@exposureControl$segmentCut, "\n")
-  cat("    Fading factor  :", object@exposureControl$fadingFactor, "\n")
-  cat("    Acceleration   :", object@exposureControl$accelerationFactor, "\n")
-  cat("    Diagnostics    :", object@exposureControl$diagnosticStats, "\n\n")
-  cat("  Stopping criterion \n")
-  cat("    Method         :", object@stoppingCriterion$method, "\n")
-  if (toupper(object@stoppingCriterion$method) == "FIXED") {
-    cat("    Test Length    :", object@stoppingCriterion$testLength, "\n")
-  } else {
-    cat("    Min # of items :", object@stoppingCriterion$minNI, "\n")
-    cat("    Max # of items :", object@stoppingCriterion$maxNI, "\n")
-    cat("    SE threshold   :", object@stoppingCriterion$SeThreshold, "\n")
-  }
-  cat("    Min # of items :", object@stoppingCriterion$minNI, "\n")
-  cat("    Max # of items :", object@stoppingCriterion$maxNI, "\n")
-  cat("    SE threshold   :", ifelse(toupper(object@stoppingCriterion$method) == "VARIABLE", object@stoppingCriterion$SeThreshold, NA), "\n\n")
-  cat("  Interim theta estimator \n")
-  cat("    Method         :", object@interimTheta$method, "\n")
-  cat("    Prior dist     :", ifelse(toupper(object@interimTheta$method == "EAP"), object@interimTheta$priorDist, NA), "\n")
-  cat("    Prior parm     :", ifelse(toupper(object@interimTheta$method == "EAP"), sprintf(ifelse(toupper(object@interimTheta$priorDist) == "NORMAL", "Mean = %5.3f, SD = %5.3f", "Min = %5.3f, Max = %5.3f"), object@interimTheta$priorPar[1], object@interimTheta$priorPar[2]), NA), "\n\n")
-  cat("  Final theta estimator \n")
-  cat("    Method         :", object@finalTheta$method, "\n")
-  cat("    Prior dist     :", ifelse(toupper(object@finalTheta$method == "EAP"), object@finalTheta$priorDist, NA), "\n")
-  cat("    Prior parm     :", ifelse(toupper(object@finalTheta$method == "EAP"), sprintf(ifelse(toupper(object@finalTheta$priorDist) == "NORMAL", "Mean = %5.3f, SD = %5.3f", "Min = %5.3f, Max = %5.3f"), object@finalTheta$priorPar[1], object@finalTheta$priorPar[2]), NA), "\n\n")
-  cat("  Theta Grid \n")
-  print(object@thetaGrid)
-  cat("\n  Plot Audit Trail: ", object@auditTrail, "\n")
-})
-
-#' show
-#' 
-#' show
-#' 
-#' @docType methods
-#' 
-#' @rdname show-methods
-#' @export
-setMethod("show", "Shadow.output", function(object) {
-  if (length(object@administeredItemIndex) > 0) {
-    cat("Simulee Index          :", object@simuleeIndex, "\n")
-    cat("  True Theta           :", object@trueTheta, "\n")
-    cat("  Final Theta Estimate :", object@finalThetaEst, "\n")
-    cat("  Final SE Estimate    :", object@finalSeEst, "\n")
-    output = data.frame(Stage = 1:length(object@administeredItemIndex),
-                        StimulusIndex = ifelse(is.nan(object@administeredStimulusIndex), rep(NA, length(object@administeredItemIndex)), object@administeredStimulusIndex),
-                        ItemIndex = object@administeredItemIndex, 
-                        ItemResp = object@administeredItemResp,
-                        InterimTheta = object@interimThetaEst,
-                        InterimSE = object@interimSeEst,
-                        ThetaSegment = object@thetaSegmentIndex)
-    print(output)
-  } else {
-    cat("empty object of class Shadow.output\n")
-  }
-  cat("\n")
-})
 
 #' saveOutput
 #'
@@ -1226,14 +1132,14 @@ MakeItemPoolCluster = function(pools, names = NULL) {
 
 #' Shadow
 #' 
-#' @param object A nice parameter
-#' @param config A nice parameter
-#' @param trueTheta A nice parameter
-#' @param Constraints A nice parameter
-#' @param prior A nice parameter
-#' @param priorPar A nice parameter
-#' @param Data A nice parameter
-#' @param session A nice parameter
+#' @param object An \code{\linkS4class{item.pool}} object. Use \code{\link[IRTclass]{LoadItemPool}} for this.
+#' @param config A \code{\linkS4class{Shadow.config}} object.
+#' @param trueTheta Numeric. A vector of true theta values to be used in simulation.
+#' @param Constraints A list representing optimization constraints. Use \code{\link{LoadConstraints}} for this.
+#' @param prior Numeric. A matrix or a vector containing priors.
+#' @param priorPar Numeric. A vector of parameters for prior distribution.
+#' @param Data Numeric. A matrix containing item response data.
+#' @param session Used to communicate with a Shiny session.
 #' 
 #' @rdname Shadow-methods
 #' @export
@@ -2247,8 +2153,8 @@ setMethod(f = "Shadow",
                 plotAuditTrail()
               }
               
-              if(!is.null(session)){
-                updateProgressBar(session = session, id = "pb", value = j, total = nj)
+              if (!is.null(session)) {
+                shinyWidgets::updateProgressBar(session = session, id = "pb", value = j, total = nj)
               } else {
                 setTxtProgressBar(pb, j)
               }
