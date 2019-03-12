@@ -18,7 +18,7 @@ NULL
 
 #' STA
 #'
-#' Do fancy stuff.
+#' Shadow Test Approach to CAT.
 #'
 #' @param Constraints A list representing optimization constraints. Use \code{\link{LoadConstraints}} for this.
 #' @param objective A vector of objective values.
