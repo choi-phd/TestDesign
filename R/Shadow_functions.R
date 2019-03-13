@@ -2235,6 +2235,7 @@ addTrans = function(color,trans)
 #' 
 #' plotEligibilityStats
 #' 
+#' @param config A \code{\linkS4class{Shadow.config}} object.                                            
 #' @param object A nice parameter
 #' @param objectNoFading A nice parameter
 #' @param file A nice parameter
@@ -2246,7 +2247,9 @@ addTrans = function(color,trans)
 #' @param discardFirst A nice parameter
 #' 
 #' @export
-plotEligibilityStats = function(object = NULL, objectNoFading = NULL, file = NULL, fileNoFading = NULL, segment = 1, items = c(1), PDF = NULL, maxRate = 0.25, discardFirst = NULL) {
+plotEligibilityStats = function(config, object = NULL, objectNoFading = NULL, file = NULL, fileNoFading = NULL, segment = 1, items = c(1), PDF = NULL, maxRate = 0.25, discardFirst = NULL) {
+  
+  fadingFactor = config@exposureControl$fadingFactor
   
   if (!is.null(PDF)) {
     pdf(file = PDF)
@@ -2281,13 +2284,18 @@ plotEligibilityStats = function(object = NULL, objectNoFading = NULL, file = NUL
   
   examinee = eligibilityStatsSegment$TrueSegmentCount
   nExaminee = length(examinee)
+  fadingExaminee = examinee
+  for (j in 2:length(examinee)) {
+    fadingExaminee[j] = fadingExaminee[j - 1] * fadingFactor + 1
+  }
   
   for (i in items) {
     
     alpha = eligibilityStatsSegment[[paste("a_g", segment, "i", i, sep = "_")]]
     epsilon = eligibilityStatsSegment[[paste("e_g", segment, "i", i, sep = "_")]]
-    p_alpha = alpha / examinee
-    p_epsilon = epsilon / examinee
+    p_alpha = alpha / fadingExaminee
+    p_epsilon = epsilon / fadingExaminee
+    p_epsilon[p_epsilon > 1] = 1
     p_eligibility = rep(1, nExaminee)
     for (j in 2:nExaminee) {
       if (alpha[j - 1] > 0) {
@@ -2303,6 +2311,10 @@ plotEligibilityStats = function(object = NULL, objectNoFading = NULL, file = NUL
     }
     
     plot(examinee, p_alpha, main = paste("Segment", segment, "- Item", i), type = "n", ylim = c(0, 1), xlab = "Examinees", ylab = "Rate")
+    lines(examinee, p_alpha, col = "red", lty = 1, lwd = 3)
+    lines(examinee, p_epsilon, col = "blue", lty = 2, lwd = 3)
+    lines(examinee, p_eligibility, col = "purple", lty = 3, lwd = 3)
+    
     if (is.null(eligibilityStatsNoFading)) {
       legend("topright", c("alpha", "epsilon", "Pr{eligible}"), lty = c(1, 2, 3), col = c("red", "blue", "purple"), lwd = c(2, 2, 2), bg = "white")
     } else {
@@ -2311,9 +2323,6 @@ plotEligibilityStats = function(object = NULL, objectNoFading = NULL, file = NUL
       legend("topright", c("alpha", "epsilon", "Pr{eligible}", "alpha empirical", "epsilon empirical"), lty = c(1, 2, 3, 1, 1), lwd = c(2, 2, 2, 5, 5), col = c("red", "blue", "purple", addTrans("red", 100), addTrans("blue", 100)))
     }
     abline(h = maxRate, col = "gray")
-    lines(examinee, p_alpha, col = "red", lty = 1, lwd = 3)
-    lines(examinee, p_epsilon, col = "blue", lty = 2, lwd = 3)
-    lines(examinee, p_eligibility, col = "purple", lty = 3, lwd = 3)
   }
   
   if (!is.null(PDF)) {
