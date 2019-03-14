@@ -39,5 +39,5 @@ STA(Constraints, objective, solver = "Symphony", xmat = NULL,
 An output
 }
 \description{
-Do fancy stuff.
+Shadow Test Approach to CAT.
 }

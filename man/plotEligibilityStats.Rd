@@ -4,11 +4,13 @@
 \alias{plotEligibilityStats}
 \title{plotEligibilityStats}
 \usage{
-plotEligibilityStats(object = NULL, objectNoFading = NULL,
+plotEligibilityStats(config, object = NULL, objectNoFading = NULL,
   file = NULL, fileNoFading = NULL, segment = 1, items = c(1),
   PDF = NULL, maxRate = 0.25, discardFirst = NULL)
 }
 \arguments{
+\item{config}{A \code{\linkS4class{Shadow.config}} object.}
+
 \item{object}{A nice parameter}
 
 \item{objectNoFading}{A nice parameter}
