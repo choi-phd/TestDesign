@@ -1750,15 +1750,25 @@ setMethod(f = "Shadow",
                           }
                         }
                         
-                        optimal = STA(Constraints, info, xmat = rbind(xmat, imat), xdir = c(xdir, idir), xrhs = c(xrhs, irhs), maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit)
+                        optimal = STA(Constraints, info, xmat = rbind(xmat, imat), xdir = c(xdir, idir), xrhs = c(xrhs, irhs), maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit, solver = config@MIP$solver)
                         
                         #nrow(optimal$shadowTest) can be less than testLength when names(optimal$status) == "PREP_OPTIMAL_SOLUTION_FOUND" - this causes the program to stop
-                        if (!names(optimal$status) %in% c("TM_OPTIMAL_SOLUTION_FOUND", "PREP_OPTIMAL_SOLUTION_FOUND")) {
+                        if (toupper(config@MIP$solver) == "SYMPHONY"){
+                          is_optimal = names(optimal$status) %in% c("TM_OPTIMAL_SOLUTION_FOUND", "PREP_OPTIMAL_SOLUTION_FOUND")
+                        }
+                        if (toupper(config@MIP$solver) == "GUROBI"){
+                          is_optimal = optimal$status %in% c("OPTIMAL")
+                        }
+                        if (toupper(config@MIP$solver) == "LPSOLVE"){
+                          is_optimal = optimal$status == 0
+                        }
+                        
+                        if (!is_optimal){
                           #if (optimal$status != 0) {
                           #if infeasible - "PREP_NO_SOLUTION"
                           output@shadowTestFeasible[position] = FALSE #superflous; initialized to FALSE
                           #remove all ineligibility constraints
-                          optimal = STA(Constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit)
+                          optimal = STA(Constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit, solver = config@MIP$solver)
                           #optimal = STA(Constraints, info, xmat = NULL, xdir = NULL, xrhs = NULL, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit)
                         } else {
                           output@shadowTestFeasible[position] = TRUE
@@ -1772,17 +1782,27 @@ setMethod(f = "Shadow",
                           info[itemIneligible == 1] = -1 * maxInfo - 1
                         }
                         
-                        optimal = STA(Constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit)
+                        optimal = STA(Constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit, solver = config@MIP$solver)
                         output@shadowTestFeasible[position] = TRUE
                       } 
                       #end itemIneligibilityControl
                     } else {
                       #if not itemEligibilityControl
-                      optimal = STA(Constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit)
+                      optimal = STA(Constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit, solver = config@MIP$solver)
                       output@shadowTestFeasible[position] = TRUE #safe assumption
                     }
                     
-                    if (!names(optimal$status) %in% c("TM_OPTIMAL_SOLUTION_FOUND", "PREP_OPTIMAL_SOLUTION_FOUND")) {
+                    if (toupper(config@MIP$solver) == "SYMPHONY"){
+                      is_optimal = names(optimal$status) %in% c("TM_OPTIMAL_SOLUTION_FOUND", "PREP_OPTIMAL_SOLUTION_FOUND")
+                    }
+                    if (toupper(config@MIP$solver) == "GUROBI"){
+                      is_optimal = optimal$status %in% c("OPTIMAL")
+                    }
+                    if (toupper(config@MIP$solver) == "LPSOLVE"){
+                      is_optimal = optimal$status == 0
+                    }
+                    
+                    if (!is_optimal) {
                     #if (optimal$status != 0) {
                       stop(sprintf("MIP returned non-zero status: Examinee %i at position %i", j, position))
                     }

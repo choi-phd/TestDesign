@@ -154,6 +154,8 @@ if(FALSE){
   conf@finalTheta$priorDist = "NORMAL"
   conf@finalTheta$priorPar = c(0, 2)
   
+  conf@MIP$solver = "lpsolve"
+  
   object = itempool
   config = conf
   Constraints = const
