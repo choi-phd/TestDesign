@@ -1,0 +1,96 @@
+ID,Content
+FATIMP1,To what degree did you have to push yourself to get things done because of your fatigue?
+FATIMP2,To what degree did your fatigue make you feel slowed down in your thinking?
+FATIMP3,How often did you have to push yourself to get things done because of your fatigue?
+FATIMP4,How often did your fatigue interfere with your social activities?
+FATIMP5,How often were you less effective at work due to your fatigue (include work at home)?
+FATIMP6,How often did your fatigue make you feel slowed down in your thinking?
+FATIMP8,How often were you too tired to watch television?
+FATIMP9,How often did your fatigue make it difficult to plan activities ahead of time?
+FATIMP10,How often did your fatigue make it difficult to start anything new?
+FATIMP11,How often did your fatigue make you more forgetful?
+FATIMP13,How often were you too tired to do errands?
+FATIMP14,How often did your fatigue make it difficult to organize your thoughts when doing things at work (include work at home)?
+FATIMP15,How often did your fatigue interfere with your ability to engage in recreational activities?
+FATIMP16,How often did you have trouble finishing things because of your fatigue?
+FATIMP17,How often did your fatigue make it difficult to make decisions?
+FATIMP18,How often did you have to limit your social activities because of your fatigue?
+FATIMP19,How often were you too tired to do your household chores?
+FATIMP20,How often did your fatigue make you feel less alert?
+FATIMP21,How often were you too tired to take a bath or shower?
+FATIMP22,How often did your fatigue make it difficult to organize your thoughts when doing things at home?
+FATIMP24,How often did you have trouble starting things because of your fatigue?
+FATIMP25,How often was it an effort to carry on a conversation because of your fatigue?
+FATIMP26,How often were you too tired to socialize with your family?
+FATIMP27,To what degree did you have trouble starting things because of your fatigue?
+FATIMP28,How hard was it for you to carry on a conversation because of your fatigue?
+FATIMP29,How often were you too tired to leave the house?
+FATIMP30,How often were you too tired to think clearly?
+FATIMP33,How often did your fatigue limit you at work (include work at home)?
+FATIMP34,To what degree did you have to limit your social activities because of your fatigue?
+FATIMP35,To what degree did your fatigue make it difficult to organize your thoughts when doing things at home?
+FATIMP36,To what degree did your fatigue make it difficult to start anything new?
+FATIMP37,Due to your fatigue were you less effective at work (include work at home)?
+FATIMP38,To what degree did your fatigue make it difficult to make decisions?
+FATIMP40,How often did you have enough energy to exercise strenuously?
+FATIMP42,How often were you less effective at home due to your fatigue?
+FATIMP43,To what degree did your fatigue make it difficult to organize your thoughts when doing things at work (include work at home)?
+FATIMP44,To what degree did your fatigue make you more forgetful?
+FATIMP45,To what degree did your fatigue interfere with your ability to engage in recreational activities?
+FATIMP47,To what degree did you have to force yourself to get up and do things because of your fatigue?
+FATIMP48,To what degree did your fatigue interfere with your social activities?
+FATIMP49,To what degree did your fatigue interfere with your physical functioning?
+FATIMP50,Did fatigue make you less effective at home?
+FATIMP51,To what degree did you have trouble finishing things because of your fatigue?
+FATIMP52,To what degree did your fatigue make you feel less alert?
+FATIMP53,How often were you too tired to take a short walk?
+FATIMP55,How often did you have to force yourself to get up and do things because of your fatigue?
+FATIMP56,How often were you too tired to socialize with your friends?
+FATEXP2,How often did you feel run-down?
+FATEXP5,How often did you experience extreme exhaustion?
+FATEXP6,How often did you feel tired even when you hadn't done anything?
+FATEXP7,How often did you feel your fatigue was beyond your control?
+FATEXP12,To what degree did you feel tired even when you hadn't done anything?
+FATEXP13,How bushed were you on average?
+FATEXP16,How often were you sluggish?
+FATEXP18,How often did you run out of energy?
+FATEXP19,How often were you physically drained?
+FATEXP20,How often did you feel tired?
+FATEXP21,How fatigued were you when your fatigue was at its worst?
+FATEXP22,How often were you bothered by your fatigue?
+FATEXP24,How often did you have enough energy to enjoy the things you do for fun?
+FATEXP26,How often were you too tired to enjoy life?
+FATEXP28,How often were you too tired to feel happy?
+FATEXP29,How often did you feel totally drained?
+FATEXP31,How often were you energetic?
+FATEXP34,How tired did you feel on average?
+FATEXP35,How much were you bothered by your fatigue on average?
+FATEXP36,How exhausted were you on average?
+FATEXP38,How fatigued were you on the day you felt most fatigued?
+FATEXP40,How fatigued were you on average?
+FATEXP41,How run-down did you feel on average?
+FATEXP42,How much mental energy did you have on average?
+FATEXP43,How physically drained were you on average?
+FATEXP44,How energetic were you on average?
+FATEXP45,How sluggish were you on average?
+FATEXP46,On how many days was your fatigue worse in the morning?
+FATEXP48,How often did you find yourself getting tired easily?
+FATEXP49,How often did you think about your fatigue?
+FATEXP50,How fatigued were you on the day you felt least fatigued?
+FATEXP51,How easily did you find yourself getting tired on average?
+FATEXP52,How wiped out were you on average?
+FATEXP54,How often did you have physical energy?
+FATEXP56,What was the level of your fatigue on most days?
+HI7,I feel fatigued
+HI12,I feel weak all over
+AN1,"I feel listless (""washed out"")"
+AN2,I feel tired
+AN3,I have trouble <U>starting</U> things because I am tired
+AN4,I have trouble <U>finishing</U> things because I am tired
+AN8,I need to sleep during the day
+AN12,I am too tired to eat
+AN14,I need help doing my usual activities
+AN15,I am frustrated by being too tired to do the things I want to do
+AN16,I have to limit my social activity because I am tired
+AN5,I have energy
+AN7,I am able to do my usual activities
