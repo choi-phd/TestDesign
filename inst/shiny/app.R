@@ -347,7 +347,9 @@ server <- function(input, output, session) {
 
     if (!is.null(v$fit)){
       if (is_text_parsable(input$simulee_id)){
-        eval(parse(text = paste0("v$simulee_id = c(", input$simulee_id, ")[1]")))
+        eval(parse(text = paste0("simulee_id = c(", input$simulee_id, ")[1]")))
+        if (simulee_id <= input$n_simulees)
+          v$simulee_id = simulee_id
       } else {
         v$text = "Number of simulees should be an integer."
         break
