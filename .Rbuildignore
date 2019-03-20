@@ -1,5 +1,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^R\run_47h\.R$
+^run_47h$
+^deploy$
 ^data-raw$
-^shiny$
