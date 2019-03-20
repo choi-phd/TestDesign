@@ -59,7 +59,12 @@ setMethod(f = "ATA",
             types = rep("B", nv)
             obj = numeric(nv)
             if (toupper(config@itemSelection$method) == "MAXINFO") {
-              objective = as.vector(config@itemSelection$targetWeight %*% calcFisher(Constraints$pool, config@itemSelection$targetLocation))
+              if (length(config@itemSelection$targetWeight) == length(config@itemSelection$targetLocation)) {
+                objective = as.vector(config@itemSelection$targetWeight %*% calcFisher(Constraints$pool, config@itemSelection$targetLocation))
+              } else {
+                warning("config@itemSelection$targetWeight and config@itemSelection$targetLocation are of different lengths: not weighting...")
+                objective = calcFisher(Constraints$pool, config@itemSelection$targetLocation)
+              }
               obj[1:ni] = objective
               maximize = TRUE
             } else {
