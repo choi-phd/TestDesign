@@ -20,11 +20,11 @@
 \value{
 A list containing the following entries:
 \itemize{
-  \item{MIP} Foo.
-  \item{Selected} Foo.
-  \item{solver} Foo.
-  \item{obj.value} Foo.
-  \item{solve.time} Foo.
+  \item{MIP} MIP model.
+  \item{Selected} Solution returned.
+  \item{solver} MIP solver.
+  \item{obj.value} Objective value returned.
+  \item{solve.time} Solver elapsed time.
 }
 }
 \description{
