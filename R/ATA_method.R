@@ -13,7 +13,7 @@
 #' @rdname ATA-methods
 
 setGeneric(name = "ATA",
-           def = function(config, Constraints, plot, plotrange = c(-3, 3)) {
+           def = function(config, Constraints, plot = FALSE, plotrange = c(-3, 3)) {
              standardGeneric("ATA")
            }
 )
@@ -46,7 +46,7 @@ setGeneric(name = "ATA",
 
 setMethod(f = "ATA",
           signature = c("ATA.config"),
-          definition = function(config, Constraints, plot, plotrange = c(-3, 3)) {
+          definition = function(config, Constraints, plot = FALSE, plotrange = c(-3, 3)) {
             if (!validObject(config)) {
               stop("invalid configuration options specified")
             }
@@ -202,6 +202,8 @@ setMethod(f = "ATA",
               p = recordPlot()
               plot.new()
               dev.off()
+            } else {
+              p = NULL
             }
 
             return(list(MIP = MIP, Selected = Selected, solver = config@MIP$solver, obj.value = obj.value, solve.time = solve.time, plot = p))

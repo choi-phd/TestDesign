@@ -5,8 +5,8 @@
 \alias{ATA,ATA.config-method}
 \title{Run Automated Test Assembly}
 \usage{
-\S4method{ATA}{ATA.config}(config, Constraints, plot, plotrange = c(-3,
-  3))
+\S4method{ATA}{ATA.config}(config, Constraints, plot = FALSE,
+  plotrange = c(-3, 3))
 }
 \arguments{
 \item{config}{An \code{\linkS4class{ATA.config}} object containing configuration options.}
