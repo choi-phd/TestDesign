@@ -207,9 +207,11 @@ setMethod(f = "ATA",
               p = recordPlot()
               plot.new()
               dev.off()
+            } else {
+              p = NULL
             }
             
-            return(list(MIP = MIP, Selected = Selected, solver = config@MIP$solver, obj.value = obj.value, solve.time = solve.time, plot = ifelse(plot, p, NULL)))
+            return(list(MIP = MIP, Selected = Selected, solver = config@MIP$solver, obj.value = obj.value, solve.time = solve.time, plot = p))
           }
 )
 
