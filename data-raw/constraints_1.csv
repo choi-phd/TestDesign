@@ -3,7 +3,7 @@ CONSTRAINT,TYPE,WHAT,CONDITION,LB,UB
 2,Number,Item,RC == "A",7,11
 3,Number,Item,RC == "B",13,17
 4,Number,Item,RC == "C",6,9
-5,Number,Item,CONTENT.AREA == "RED",6,9
+5,Number,Item,CONTENT.AREA == "RD",6,9
 6,Number,Item,CONTENT.AREA == "WRI",6,9
 7,Number,Item,CONTENT.AREA == "LIS",6,9
 8,Number,Item,CONTENT.AREA == "SPK",6,9
