@@ -1,7 +1,7 @@
 # Documentation progress
 # Phase 1: Create a skeleton structure    -- complete
 
-#' attrib_pool_A
+#' item_attribs_A
 #'
 #' A pretty dataset you won't find anywhere else
 #'
@@ -11,11 +11,11 @@
 #'
 #' @docType data
 #' @keywords datasets
-#' @name attrib_pool_A
+#' @name item_attribs_A
 #' @format A neat format
 NULL
 
-#' attrib_pool_B
+#' item_attribs_B
 #'
 #' A pretty dataset you won't find anywhere else
 #'
@@ -25,11 +25,11 @@ NULL
 #'
 #' @docType data
 #' @keywords datasets
-#' @name attrib_pool_B
+#' @name item_attribs_B
 #' @format A neat format
 NULL
 
-#' attrib_pool_C
+#' item_attribs_C
 #'
 #' A pretty dataset you won't find anywhere else
 #'
@@ -39,7 +39,7 @@ NULL
 #'
 #' @docType data
 #' @keywords datasets
-#' @name attrib_pool_C
+#' @name item_attribs_C
 #' @format A neat format
 NULL
 
@@ -71,7 +71,7 @@ NULL
 #' @format A neat format
 NULL
 
-#' par_mixed
+#' item_params_A
 #'
 #' A pretty dataset you won't find anywhere else
 #'
@@ -81,11 +81,11 @@ NULL
 #'
 #' @docType data
 #' @keywords datasets
-#' @name par_mixed
+#' @name item_params_A
 #' @format A neat format
 NULL
 
-#' par_Pool_A
+#' item_params_B
 #'
 #' A pretty dataset you won't find anywhere else
 #'
@@ -95,11 +95,11 @@ NULL
 #'
 #' @docType data
 #' @keywords datasets
-#' @name par_Pool_A
+#' @name item_params_B
 #' @format A neat format
 NULL
 
-#' par_Pool_B
+#' item_params_C
 #'
 #' A pretty dataset you won't find anywhere else
 #'
@@ -109,11 +109,11 @@ NULL
 #'
 #' @docType data
 #' @keywords datasets
-#' @name par_Pool_B
+#' @name item_params_C
 #' @format A neat format
 NULL
 
-#' par_Pool_C
+#' item_se_A
 #'
 #' A pretty dataset you won't find anywhere else
 #'
@@ -123,11 +123,11 @@ NULL
 #'
 #' @docType data
 #' @keywords datasets
-#' @name par_Pool_C
+#' @name item_se_A
 #' @format A neat format
 NULL
 
-#' se_Pool_A
+#' item_se_B
 #'
 #' A pretty dataset you won't find anywhere else
 #'
@@ -137,11 +137,11 @@ NULL
 #'
 #' @docType data
 #' @keywords datasets
-#' @name se_Pool_A
+#' @name item_se_B
 #' @format A neat format
 NULL
 
-#' se_Pool_B
+#' item_se_C
 #'
 #' A pretty dataset you won't find anywhere else
 #'
@@ -151,11 +151,11 @@ NULL
 #'
 #' @docType data
 #' @keywords datasets
-#' @name se_Pool_B
+#' @name item_se_C
 #' @format A neat format
 NULL
 
-#' se_Pool_C
+#' item_params_stimbased
 #'
 #' A pretty dataset you won't find anywhere else
 #'
@@ -165,6 +165,119 @@ NULL
 #'
 #' @docType data
 #' @keywords datasets
-#' @name se_Pool_C
+#' @name item_params_stimbased
+#' @format A neat format
+NULL
+
+#' item_attribs_stimbased
+#'
+#' A pretty dataset you won't find anywhere else
+#'
+#' \itemize{
+#'   \item var. A nice variable
+#' }
+#'
+#' @docType data
+#' @keywords datasets
+#' @name item_attribs_stimbased
+#' @format A neat format
+NULL
+
+#' stim_attribs_stimbased
+#'
+#' A pretty dataset you won't find anywhere else
+#'
+#' \itemize{
+#'   \item var. A nice variable
+#' }
+#'
+#' @docType data
+#' @keywords datasets
+#' @name stim_attribs_stimbased
+#' @format A neat format
+NULL
+
+#' constraints_stimbased
+#'
+#' A pretty dataset you won't find anywhere else
+#'
+#' \itemize{
+#'   \item var. A nice variable
+#' }
+#'
+#' @docType data
+#' @keywords datasets
+#' @name constraints_stimbased
+#' @format A neat format
+NULL
+
+
+#' item_params_fatigue
+#'
+#' A pretty dataset you won't find anywhere else
+#'
+#' \itemize{
+#'   \item var. A nice variable
+#' }
+#'
+#' @docType data
+#' @keywords datasets
+#' @name item_params_fatigue
+#' @format A neat format
+NULL
+
+#' item_attribs_fatigue
+#'
+#' A pretty dataset you won't find anywhere else
+#'
+#' \itemize{
+#'   \item var. A nice variable
+#' }
+#'
+#' @docType data
+#' @keywords datasets
+#' @name item_attribs_fatigue
+#' @format A neat format
+NULL
+
+#' constraints_fatigue
+#'
+#' A pretty dataset you won't find anywhere else
+#'
+#' \itemize{
+#'   \item var. A nice variable
+#' }
+#'
+#' @docType data
+#' @keywords datasets
+#' @name constraints_fatigue
+#' @format A neat format
+NULL
+
+#' raw_fatigue
+#'
+#' A pretty dataset you won't find anywhere else
+#'
+#' \itemize{
+#'   \item var. A nice variable
+#' }
+#'
+#' @docType data
+#' @keywords datasets
+#' @name raw_fatigue
+#' @format A neat format
+NULL
+
+#' item_contents_fatigue
+#'
+#' A pretty dataset you won't find anywhere else
+#'
+#' \itemize{
+#'   \item var. A nice variable
+#' }
+#'
+#' @docType data
+#' @keywords datasets
+#' @name item_contents_fatigue
 #' @format A neat format
 NULL

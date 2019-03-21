@@ -5,7 +5,7 @@
 \alias{ATA}
 \title{An S4 generic and its methods for Automated Test Assembly (ATA).}
 \usage{
-ATA(config, Constraints, plot, plotrange = c(-3, 3))
+ATA(config, Constraints, plot = FALSE, plotrange = c(-3, 3))
 }
 \arguments{
 \item{config}{An \code{\linkS4class{ATA.config}} object containing configuration options.}
