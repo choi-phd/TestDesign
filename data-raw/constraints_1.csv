@@ -1,15 +1,15 @@
 CONSTRAINT,TYPE,WHAT,CONDITION,LB,UB
-1,Number,Item,,30,30
-2,Number,Item,RC == "A",7,11
-3,Number,Item,RC == "B",13,17
-4,Number,Item,RC == "C",6,9
-5,Number,Item,CONTENT.AREA == "RD",6,9
-6,Number,Item,CONTENT.AREA == "WRI",6,9
-7,Number,Item,CONTENT.AREA == "LIS",6,9
-8,Number,Item,CONTENT.AREA == "SPK",6,9
-9,Number,Item,FORMAT == "CV",4,6
-10,Number,Item,FORMAT == "DR",9,12
-11,Number,Item,FORMAT == "RS",13,17
-12,Number,Item,DOK == 1,1,5
-13,Number,Item,DOK == 2,19,26
-14,Number,Item,DOK == 3,3,8
+1,Number,Item,"",30,30
+2,Number,Item,"RC == ""A""",7,11
+3,Number,Item,"RC == ""B""",13,17
+4,Number,Item,"RC == ""C""",6,9
+5,Number,Item,"CONTENT.AREA == ""RD""",6,9
+6,Number,Item,"CONTENT.AREA == ""WRI""",6,9
+7,Number,Item,"CONTENT.AREA == ""LIS""",6,9
+8,Number,Item,"CONTENT.AREA == ""SPK""",6,9
+9,Number,Item,"FORMAT == ""CV""",4,6
+10,Number,Item,"FORMAT == ""DR""",9,12
+11,Number,Item,"FORMAT == ""RS""",13,17
+12,Number,Item,"DOK == 1",1,5
+13,Number,Item,"DOK == 2",19,26
+14,Number,Item,"DOK == 3",3,8
