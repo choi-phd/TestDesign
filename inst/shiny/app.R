@@ -347,7 +347,9 @@ server <- function(input, output, session) {
 
     if (!is.null(v$fit)){
       if (is_text_parsable(input$simulee_id)){
-        eval(parse(text = paste0("v$simulee_id = c(", input$simulee_id, ")[1]")))
+        eval(parse(text = paste0("simulee_id = c(", input$simulee_id, ")[1]")))
+        if (simulee_id <= input$n_simulees)
+          v$simulee_id = simulee_id
       } else {
         v$text = "Number of simulees should be an integer."
         break
@@ -536,11 +538,11 @@ server <- function(input, output, session) {
 
       v$plotoutput = plotCAT(v$fit$output[[v$simulee_id]])
       v$shadowplot = plotShadow(v$fit$output[[v$simulee_id]], v$const)
-
+        
       v$time = Sys.time() - v$time
-
+        
       v$text = paste0(conf@MIP$solver, ": simulation complete in ", sprintf("%3.3f", v$time), "s")
-
+      
       updateCheckboxGroupButtons(
         session = session,
         inputId = "runsolver",

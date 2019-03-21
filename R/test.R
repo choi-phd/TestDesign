@@ -128,11 +128,18 @@ if(FALSE){
   
   # Stimulus based SHADOW
   
-  itempool = LoadItemPool("data-raw/item_pool_RD_45.csv")
-  itemattrib = LoadItemAttrib("data-raw/item_attrib_RD_45.csv", itempool)
-  stimattrib = LoadStAttrib("data-raw/stimulus_attrib_RD_45.csv", itemattrib)
+  itempool = LoadItemPool("data-raw/base/item_pool_RD_45.csv")
+  itemattrib = LoadItemAttrib("data-raw/base/item_attrib_RD_45.csv", itempool)
+  stimattrib = LoadStAttrib("data-raw/base/stimulus_attrib_RD_45.csv", itemattrib)
   
-  const = LoadConstraints("data-raw/constraints_RD_45.csv", itempool, itemattrib, stimattrib)
+  const = LoadConstraints("data-raw/base/constraints_RD_45.csv", itempool, itemattrib, stimattrib)
+  
+  
+  itempool = LoadItemPool("data-raw/item_pool_SET.csv")
+  itemattrib = LoadItemAttrib("data-raw/item_attrib_SET.csv", itempool)
+  stimattrib = LoadStAttrib("data-raw/st_attrib_SET.csv", itemattrib)
+  
+  const = LoadConstraints("data-raw/constraints_SET.csv", itempool, itemattrib, stimattrib)
   
   thetaGrid = seq(-3, 3, 1)
   trueTheta = runif(1, min = -3.5, max = 3.5)
@@ -154,8 +161,6 @@ if(FALSE){
   conf@finalTheta$priorDist = "NORMAL"
   conf@finalTheta$priorPar = c(0, 2)
   
-  conf@MIP$solver = "lpsolve"
-  
   object = itempool
   config = conf
   Constraints = const
@@ -163,9 +168,10 @@ if(FALSE){
   priorPar = c(0,1)
   Data = respData
   
-  fit = Shadow(itempool, conf, trueTheta, Constraints = const, prior = NULL, priorPar = c(0, 1), Data = respData)
+  fit = try(Shadow(itempool, conf, trueTheta, Constraints = const, prior = NULL, priorPar = c(0, 1), Data = respData))
+class(fit)
 
-  
+
   # ATA maxinfo plot
   itempoolA = LoadItemPool("data-raw/par_Pool_A.csv")
   itemattribA = LoadItemAttrib("data-raw/attrib_Pool_A.csv", itempoolA)
