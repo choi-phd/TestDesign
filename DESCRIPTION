@@ -15,8 +15,7 @@ Suggests:
     shinythemes,
     shinyWidgets,
     shinyjs,
-    DT,
-    readxl
+    DT
 LinkingTo: Rcpp, IRTclass
 RoxygenNote: 6.1.1
 Encoding: UTF-8
