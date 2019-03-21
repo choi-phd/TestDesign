@@ -5,7 +5,6 @@ library(shinyjs)
 library(IRTclass)
 library(Shadow)
 library(DT)
-library(readxl)
 
 ui <- fluidPage(
   theme = shinytheme("lumen"),
@@ -41,11 +40,26 @@ label, .form-group, .progress {
 
         h3(""),
 
-        fileInput("itempool_file", buttonLabel = "Item parameters", label = NULL),
-        fileInput("itemattrib_file", buttonLabel = "Item attributes", label = NULL),
-        fileInput("stimattrib_file", buttonLabel = "Stimulus attributes (optional)", label = NULL),
-        fileInput("const_file", buttonLabel = "Solver constraints", label = NULL),
-        fileInput("content_file", buttonLabel = "Item contents (optional)", label = NULL),
+        fileInput("itempool_file", buttonLabel = "Item parameters", label = NULL, accept = c(
+          "text/csv",
+          "text/comma-separated-values,text/plain",
+          ".csv")),
+        fileInput("itemattrib_file", buttonLabel = "Item attributes", label = NULL, accept = c(
+          "text/csv",
+          "text/comma-separated-values,text/plain",
+          ".csv")),
+        fileInput("stimattrib_file", buttonLabel = "Stimulus attributes (optional)", label = NULL, accept = c(
+          "text/csv",
+          "text/comma-separated-values,text/plain",
+          ".csv")),
+        fileInput("const_file", buttonLabel = "Solver constraints", label = NULL, accept = c(
+          "text/csv",
+          "text/comma-separated-values,text/plain",
+          ".csv")),
+        fileInput("content_file", buttonLabel = "Item contents (optional)", label = NULL, accept = c(
+          "text/csv",
+          "text/comma-separated-values,text/plain",
+          ".csv")),
 
         circle = FALSE, status = "primary",
         icon = icon("file-import"), width = "100%",
@@ -295,8 +309,8 @@ server <- function(input, output, session) {
   })
 
   observeEvent(input$content_file, {
-    v$content = try(read_excel(input$content_file$datapath))
-    if (class(v$content)[1] == "tbl_df"){
+    v$content = try(read.csv(input$content_file$datapath))
+    if (class(v$content) == "data.frame"){
       v$content.exists = TRUE
       v$text = "Optional Step. Item contents: OK."
     } else {
@@ -413,7 +427,7 @@ server <- function(input, output, session) {
         selected.item.names = v$itemattrib[selected.idx,][['ID']]
         if (v$content.exists){
           idx.from.content = v$content$ID %in% selected.item.names
-          v$results = v$content[idx.from.content,c(1:4)]
+          v$results = v$content[idx.from.content,]
         } else {
           v$results = v$itemattrib[selected.idx,]
         }
