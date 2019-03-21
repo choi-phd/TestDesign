@@ -15,7 +15,6 @@ app <- function() {
   if (!requireNamespace("shinyWidgets")) tmp = c(tmp, "'shinyWidgets'")
   if (!requireNamespace("shinyjs")) tmp = c(tmp, "'shinyjs'")
   if (!requireNamespace("DT")) tmp = c(tmp, "'DT'")
-  if (!requireNamespace("readxl")) tmp = c(tmp, "'readxl'")
 
   if (!is.null(tmp)){
     tmp = paste(tmp, collapse = ", ")
