@@ -220,7 +220,7 @@ setClass("Shadow.config",
            if (!object@contentBalancing$method %in% c("NONE", "STA")) stop("invalid option for contentBalancing")
            if (!object@refreshPolicy$method %in% c("ALWAYS", "POSITION", "INTERVAL", "THRESHOLD", "INTERVAL-THRESHOLD", "STIMULUS", "SET", "PASSAGE")) stop("invalid option for refreshPolicy")
            if (!object@exposureControl$method %in% c("NONE", "ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) stop("invalid option for exposureControl")
-           if (object@exposureControl$nSegnement != length(object@exposureControl$segmentCut) - 1) stop("nSegment and segmentCut are incongruent")
+           if (object@exposureControl$nSegment != length(object@exposureControl$segmentCut) - 1) stop("nSegment and segmentCut are incongruent")
            if (!object@stoppingCriterion$method %in% c("FIXED")) stop("invalid option for stoppingCriterion")
            if (!object@interimTheta$method %in% c("EAP", "EB", "FB")) stop("invalid option for interimTheta")
            if (!object@finalTheta$method %in% c("EAP", "EB", "FB")) stop("invalid option for finalTheta")
