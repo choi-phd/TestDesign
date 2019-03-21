@@ -4,13 +4,8 @@
 \name{constraints_0}
 \alias{constraints_0}
 \title{constraints_0}
-\format{A neat format}
+\format{A data.frame.}
 \description{
-A pretty dataset you won't find anywhere else
-}
-\details{
-\itemize{
-  \item var. A nice variable
-}
+A simple constraint set (1 constraint) to use with \code{item_params_A, item_params_B, item_params_C, item_attribs_A, item_attribs_B, item_attribs_C}.
 }
 \keyword{datasets}
