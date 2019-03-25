@@ -1236,17 +1236,17 @@ setMethod(f = "Shadow",
               maxNI = config@stoppingCriterion$maxNI
               maxSE = config@stoppingCriterion$SeThreshold
             } 
-           
-           if (!is.null(Data)) {
-             #Test = MakeTest(object, config@thetaGrid, infoType = config@itemSelection$infoType, trueTheta = NULL)
-             Test = MakeTest(object, config@thetaGrid, infoType = "FISHER", trueTheta = NULL)
-             Test@Data = as.matrix(Data)
-           } else if (!is.null(trueTheta)) {
-             #Test = MakeTest(object, config@thetaGrid, infoType = config@itemSelection$infoType, trueTheta)
-             Test = MakeTest(object, config@thetaGrid, infoType = "FISHER", trueTheta)
-           } else {
-             stop("both Data and trueTheta cannot be NULL")
-           }
+            
+            if (!is.null(Data)) {
+              #Test = MakeTest(object, config@thetaGrid, infoType = config@itemSelection$infoType, trueTheta = NULL)
+              Test = MakeTest(object, config@thetaGrid, infoType = "FISHER", trueTheta = NULL)
+              Test@Data = as.matrix(Data)
+            } else if (!is.null(trueTheta)) {
+              #Test = MakeTest(object, config@thetaGrid, infoType = config@itemSelection$infoType, trueTheta)
+              Test = MakeTest(object, config@thetaGrid, infoType = "FISHER", trueTheta)
+            } else {
+              stop("both Data and trueTheta cannot be NULL")
+            }
             
             maxInfo = max(Test@Info)
             
@@ -1303,7 +1303,9 @@ setMethod(f = "Shadow",
               fadingFactor = config@exposureControl$fadingFactor
               accelerationFactor = config@exposureControl$accelerationFactor
               nSegment = config@exposureControl$nSegment
-              
+              if (!length(maxExposureRate) %in% c(1, nSegment)) {
+                stop("length(maxExposureRate) must be 1 or nSegment")
+              }
               trueSegmentFreq = numeric(nSegment)
               estSegmentFreq = numeric(nSegment)
               trueSegmentCount = numeric(nj)
@@ -1536,7 +1538,7 @@ setMethod(f = "Shadow",
             for (j in 1:nj) {
               output = new("Shadow.output")
               output@simuleeIndex = j
-            
+              
               if (!is.null(trueTheta)) {
                 output@trueTheta = trueTheta[j]
               } else {
@@ -1652,7 +1654,7 @@ setMethod(f = "Shadow",
                       (refreshPolicy == "THRESHOLD" && abs(thetaChange) > config@refreshPolicy$threshold) ||
                       (refreshPolicy == "INTERVAL-THRESHOLD" && refreshShadow[position] && abs(thetaChange) > config@refreshPolicy$threshold) || 
                       (refreshPolicy %in% c("STIMULUS", "SET", "PASSAGE") && setBased && endSet)) {
-
+                    
                     output@shadowTestRefreshed[position] = TRUE
                     
                     if (position > 1) {
@@ -1750,25 +1752,15 @@ setMethod(f = "Shadow",
                           }
                         }
                         
-                        optimal = STA(Constraints, info, xmat = rbind(xmat, imat), xdir = c(xdir, idir), xrhs = c(xrhs, irhs), maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit, solver = config@MIP$solver)
+                        optimal = STA(Constraints, info, xmat = rbind(xmat, imat), xdir = c(xdir, idir), xrhs = c(xrhs, irhs), maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit)
                         
                         #nrow(optimal$shadowTest) can be less than testLength when names(optimal$status) == "PREP_OPTIMAL_SOLUTION_FOUND" - this causes the program to stop
-                        if (toupper(config@MIP$solver) == "SYMPHONY"){
-                          is_optimal = names(optimal$status) %in% c("TM_OPTIMAL_SOLUTION_FOUND", "PREP_OPTIMAL_SOLUTION_FOUND")
-                        }
-                        if (toupper(config@MIP$solver) == "GUROBI"){
-                          is_optimal = optimal$status %in% c("OPTIMAL")
-                        }
-                        if (toupper(config@MIP$solver) == "LPSOLVE"){
-                          is_optimal = optimal$status == 0
-                        }
-                        
-                        if (!is_optimal){
+                        if (!names(optimal$status) %in% c("TM_OPTIMAL_SOLUTION_FOUND", "PREP_OPTIMAL_SOLUTION_FOUND")) {
                           #if (optimal$status != 0) {
                           #if infeasible - "PREP_NO_SOLUTION"
                           output@shadowTestFeasible[position] = FALSE #superflous; initialized to FALSE
                           #remove all ineligibility constraints
-                          optimal = STA(Constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit, solver = config@MIP$solver)
+                          optimal = STA(Constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit)
                           #optimal = STA(Constraints, info, xmat = NULL, xdir = NULL, xrhs = NULL, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit)
                         } else {
                           output@shadowTestFeasible[position] = TRUE
@@ -1782,28 +1774,18 @@ setMethod(f = "Shadow",
                           info[itemIneligible == 1] = -1 * maxInfo - 1
                         }
                         
-                        optimal = STA(Constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit, solver = config@MIP$solver)
+                        optimal = STA(Constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit)
                         output@shadowTestFeasible[position] = TRUE
                       } 
                       #end itemIneligibilityControl
                     } else {
                       #if not itemEligibilityControl
-                      optimal = STA(Constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit, solver = config@MIP$solver)
+                      optimal = STA(Constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit)
                       output@shadowTestFeasible[position] = TRUE #safe assumption
                     }
                     
-                    if (toupper(config@MIP$solver) == "SYMPHONY"){
-                      is_optimal = names(optimal$status) %in% c("TM_OPTIMAL_SOLUTION_FOUND", "PREP_OPTIMAL_SOLUTION_FOUND")
-                    }
-                    if (toupper(config@MIP$solver) == "GUROBI"){
-                      is_optimal = optimal$status %in% c("OPTIMAL")
-                    }
-                    if (toupper(config@MIP$solver) == "LPSOLVE"){
-                      is_optimal = optimal$status == 0
-                    }
-                    
-                    if (!is_optimal) {
-                    #if (optimal$status != 0) {
+                    if (!names(optimal$status) %in% c("TM_OPTIMAL_SOLUTION_FOUND", "PREP_OPTIMAL_SOLUTION_FOUND")) {
+                      #if (optimal$status != 0) {
                       stop(sprintf("MIP returned non-zero status: Examinee %i at position %i", j, position))
                     }
                     
@@ -1923,13 +1905,25 @@ setMethod(f = "Shadow",
                 estSegmentFreq[segmentFinal] = estSegmentFreq[segmentFinal] + 1
                 estSegmentCount[j] = estSegmentFreq[segmentFinal]
                 segmentVisited = sort(unique(output@thetaSegmentIndex))
+                segmentOther = segmentVisited[segmentVisited != segmentFinal]
                 
                 if (exposureControl %in% c("ELIGIBILITY")) {
                   n_jk[segmentFinal] = fadingFactor *  n_jk[segmentFinal] + 1
                   
                   alpha_ijk[segmentFinal, ] = fadingFactor * alpha_ijk[segmentFinal, ]
                   alpha_ijk[segmentFinal, output@administeredItemIndex] = alpha_ijk[segmentFinal, output@administeredItemIndex] + 1
-                  
+                  # this nested for-loop is experimental 3/21/19
+                  if (length(segmentOther) > 0) {
+                    if (any(!eligibleInFinalSegment[output@administeredItemIndex])) {
+                      for (k in segmentOther) {
+                        for (i in output@administeredItemIndex[output@thetaSegmentIndex == k]) {
+                          if (!eligibleInFinalSegment[i]) {
+                            alpha_ijk[k, i] = alpha_ijk[k, i] + 1
+                          }
+                        }
+                      }
+                    }
+                  }
                   if (fadingFactor != 1) {
                     noFading_n_jk[segmentFinal] = noFading_n_jk[segmentFinal] + 1
                     noFading_alpha_ijk[segmentFinal, output@administeredItemIndex] = noFading_alpha_ijk[segmentFinal, output@administeredItemIndex] + 1
@@ -1962,8 +1956,15 @@ setMethod(f = "Shadow",
                     p_alpha_ijk[is.na(p_alpha_ijk)] = 0
                     p_rho_ijk[is.na(p_rho_ijk)] = 1
                     flag_alpha_ijk = p_alpha_ijk > maxExposureRate       #flagging items
-                    pe_i[flag_alpha_ijk] = 1 - nf_ijk[flag_alpha_ijk] + (maxExposureRate / p_alpha_ijk[flag_alpha_ijk])^accelerationFactor * nf_ijk[flag_alpha_ijk] * p_rho_ijk[flag_alpha_ijk]
-                    pe_i[!flag_alpha_ijk] = 1 - nf_ijk[!flag_alpha_ijk] + maxExposureRate * nf_ijk[!flag_alpha_ijk] * rho_ijk[!flag_alpha_ijk] / alpha_ijk[!flag_alpha_ijk]
+                    if (length(maxExposureRate) == nSegment) {
+                      for (k in 1:nSegment) {
+                        pe_i[k, flag_alpha_ijk[k, ]] = 1 - nf_ijk[k, flag_alpha_ijk[k, ]] + (maxExposureRate[k] / p_alpha_ijk[k, flag_alpha_ijk[k, ]])^accelerationFactor * nf_ijk[k, flag_alpha_ijk[k, ]] * p_rho_ijk[k, flag_alpha_ijk[k, ]]
+                        pe_i[k, !flag_alpha_ijk[k, ]] = 1 - nf_ijk[k, !flag_alpha_ijk[k, ]] + maxExposureRate[k] * nf_ijk[k, !flag_alpha_ijk[k, ]] * rho_ijk[k, !flag_alpha_ijk[k, ]] / alpha_ijk[k, !flag_alpha_ijk[k, ]]
+                      }
+                    } else {
+                      pe_i[flag_alpha_ijk] = 1 - nf_ijk[flag_alpha_ijk] + (maxExposureRate / p_alpha_ijk[flag_alpha_ijk])^accelerationFactor * nf_ijk[flag_alpha_ijk] * p_rho_ijk[flag_alpha_ijk]
+                      pe_i[!flag_alpha_ijk] = 1 - nf_ijk[!flag_alpha_ijk] + maxExposureRate * nf_ijk[!flag_alpha_ijk] * rho_ijk[!flag_alpha_ijk] / alpha_ijk[!flag_alpha_ijk]
+                    }
                   } else {
                     pe_i = 1 - nf_ijk + maxExposureRate * nf_ijk * rho_ijk / alpha_ijk
                   }
@@ -1999,14 +2000,21 @@ setMethod(f = "Shadow",
                     nf_sjk = matrix(n_jk / phi_jk, nSegment, ns)
                     
                     if (accelerationFactor > 1) {
-
+                      
                       p_alpha_sjk = alpha_sjk / matrix(n_jk, nSegment, ns)     # Note: Error when using ELIGIBILITY + EAP
                       p_rho_sjk = rho_sjk / matrix(n_jk, nSegment, ns)
                       p_alpha_sjk[is.na(p_alpha_sjk)] = 0
                       p_rho_sjk[is.na(p_rho_sjk)] = 1
                       flag_alpha_sjk = p_alpha_sjk > maxExposureRate
-                      pe_s[flag_alpha_sjk] = 1 - nf_sjk[flag_alpha_sjk] + (maxExposureRate / p_alpha_sjk[flag_alpha_sjk])^accelerationFactor * nf_sjk[flag_alpha_sjk] * p_rho_sjk[flag_alpha_sjk]
-                      pe_s[!flag_alpha_sjk] = 1 - nf_sjk[!flag_alpha_sjk] + maxExposureRate * nf_sjk[!flag_alpha_sjk] * rho_sjk[!flag_alpha_sjk] / alpha_sjk[!flag_alpha_sjk]
+                      if (length(maxExposureRate) == nSegment) {
+                        for (k in 1:nSegment) {
+                          pe_s[k, flag_alpha_sjk[k, ]] = 1 - nf_sjk[k, flag_alpha_sjk[k, ]] + (maxExposureRate[k] / p_alpha_sjk[k, flag_alpha_sjk[k, ]])^accelerationFactor * nf_sjk[k, flag_alpha_sjk[k, ]] * p_rho_sjk[k, flag_alpha_sjk[k, ]]
+                          pe_s[k, !flag_alpha_sjk[k, ]] = 1 - nf_sjk[k, !flag_alpha_sjk[k, ]] + maxExposureRate[k] * nf_sjk[k, !flag_alpha_sjk[k, ]] * rho_sjk[k, !flag_alpha_sjk[k, ]] / alpha_sjk[k, !flag_alpha_sjk[k, ]]
+                        }
+                      } else {
+                        pe_s[flag_alpha_sjk] = 1 - nf_sjk[flag_alpha_sjk] + (maxExposureRate / p_alpha_sjk[flag_alpha_sjk])^accelerationFactor * nf_sjk[flag_alpha_sjk] * p_rho_sjk[flag_alpha_sjk]
+                        pe_s[!flag_alpha_sjk] = 1 - nf_sjk[!flag_alpha_sjk] + maxExposureRate * nf_sjk[!flag_alpha_sjk] * rho_sjk[!flag_alpha_sjk] / alpha_sjk[!flag_alpha_sjk]
+                      }
                     } else {
                       pe_s = 1 - nf_sjk + maxExposureRate * nf_sjk * rho_sjk / alpha_sjk
                     }
@@ -2018,7 +2026,19 @@ setMethod(f = "Shadow",
                   
                   alpha_ijk[segmentFinal, ] = fadingFactor * alpha_ijk[segmentFinal, ]
                   alpha_ijk[segmentFinal, output@administeredItemIndex] = alpha_ijk[segmentFinal, output@administeredItemIndex] + 1
-
+                  # this nested for-loop is experimental 3/21/19
+                  if (length(segmentOther) > 0) {
+                    if (any(!eligibleInFinalSegment[output@administeredItemIndex])) {
+                      for (k in segmentOther) {
+                        for (i in output@administeredItemIndex[output@thetaSegmentIndex == k]) {
+                          if (!eligibleInFinalSegment[i]) {
+                            alpha_ijk[k, i] = alpha_ijk[k, i] + 1
+                          }
+                        }
+                      }
+                    }
+                  }
+                  
                   rho_ijk[segmentFinal, ] = fadingFactor * rho_ijk[segmentFinal, ] #number of test takers through j who visited item pool k when item i was eligible 
                   rho_ijk[segmentFinal, eligibleInFinalSegment] = rho_ijk[segmentFinal, eligibleInFinalSegment] + 1
                   
@@ -2034,8 +2054,15 @@ setMethod(f = "Shadow",
                     p_alpha_ijk[is.na(p_alpha_ijk)] = 0
                     p_rho_ijk[is.na(p_rho_ijk)] = 1
                     flag_alpha_ijk = p_alpha_ijk > maxExposureRate
-                    pe_i[flag_alpha_ijk] = (maxExposureRate / p_alpha_ijk[flag_alpha_ijk])^accelerationFactor * p_rho_ijk[flag_alpha_ijk]
-                    pe_i[!flag_alpha_ijk] = maxExposureRate * rho_ijk[!flag_alpha_ijk] / alpha_ijk[!flag_alpha_ijk]
+                    if (length(maxExposureRate) == nSegment) {
+                      for (k in 1:nSegment) {
+                        pe_i[k, flag_alpha_ijk[k, ]] = (maxExposureRate[k] / p_alpha_ijk[k, flag_alpha_ijk[k, ]])^accelerationFactor * p_rho_ijk[k, flag_alpha_ijk[k, ]]
+                        pe_i[k, !flag_alpha_ijk[k, ]] = maxExposureRate[k] * rho_ijk[k, !flag_alpha_ijk[k, ]] / alpha_ijk[k, !flag_alpha_ijk[k, ]]
+                      }
+                    } else {
+                      pe_i[flag_alpha_ijk] = (maxExposureRate / p_alpha_ijk[flag_alpha_ijk])^accelerationFactor * p_rho_ijk[flag_alpha_ijk]
+                      pe_i[!flag_alpha_ijk] = maxExposureRate * rho_ijk[!flag_alpha_ijk] / alpha_ijk[!flag_alpha_ijk]
+                    }
                   } else {
                     pe_i = maxExposureRate * rho_ijk / alpha_ijk
                   }
@@ -2062,8 +2089,15 @@ setMethod(f = "Shadow",
                       p_alpha_sjk[is.na(p_alpha_sjk)] = 0
                       p_rho_sjk[is.na(p_rho_sjk)] = 1
                       flag_alpha_sjk = p_alpha_sjk > maxExposureRate
-                      pe_s[flag_alpha_sjk] = (maxExposureRate / p_alpha_sjk[flag_alpha_sjk])^accelerationFactor * p_rho_sjk[flag_alpha_sjk]
-                      pe_s[!flag_alpha_sjk] = maxExposureRate * rho_sjk[!flag_alpha_sjk] / alpha_sjk[!flag_alpha_sjk]
+                      if (length(maxExposureRate) == nSegment) {
+                        for (k in 1:nSegment) {
+                          pe_s[k, flag_alpha_sjk[k, ]] = (maxExposureRate[k] / p_alpha_sjk[k, flag_alpha_sjk[k, ]])^accelerationFactor * p_rho_sjk[k, flag_alpha_sjk[k, ]]
+                          pe_s[k, !flag_alpha_sjk[k, ]] = maxExposureRate[k] * rho_sjk[k, !flag_alpha_sjk[k, ]] / alpha_sjk[k, !flag_alpha_sjk[k, ]]
+                        }
+                      } else {
+                        pe_s[flag_alpha_sjk] = (maxExposureRate / p_alpha_sjk[flag_alpha_sjk])^accelerationFactor * p_rho_sjk[flag_alpha_sjk]
+                        pe_s[!flag_alpha_sjk] = maxExposureRate * rho_sjk[!flag_alpha_sjk] / alpha_sjk[!flag_alpha_sjk]
+                      }
                     } else {
                       pe_s = maxExposureRate * rho_sjk / alpha_sjk
                     }
@@ -2083,9 +2117,22 @@ setMethod(f = "Shadow",
                   rho_ijk = fadingFactor * rho_ijk
                   alpha_ijk = fadingFactor * alpha_ijk
                   alpha_ijk[, output@administeredItemIndex] = alpha_ijk[, output@administeredItemIndex] + segmentProb
+                  # this nested for-loop is experimental 3/21/19
+                  if (length(segmentOther) > 0) {
+                    if (any(!eligibleInFinalSegment[output@administeredItemIndex])) {
+                      for (k in segmentOther) {
+                        for (i in output@administeredItemIndex[output@thetaSegmentIndex == k]) {
+                          if (!eligibleInFinalSegment[i]) {
+                            alpha_ijk[k, i] = alpha_ijk[k, i] + segmentProb[k]
+                          }
+                        }
+                      }
+                    }
+                  }
                   
                   for (segment in 1:nSegment) {
                     eligible = ineligible_i[segment, ] == 0
+                    #eligible = ineligible_i[segment, ] == 0 & eligibleInFinalSegment
                     rho_ijk[segment, eligible] = rho_ijk[segment, eligible] + segmentProb[segment]
                   }
                   
@@ -2104,8 +2151,15 @@ setMethod(f = "Shadow",
                     p_alpha_ijk[is.na(p_alpha_ijk)] = 0
                     p_rho_ijk[is.na(p_rho_ijk)] = 1
                     flag_alpha_ijk = p_alpha_ijk > maxExposureRate
-                    pe_i[flag_alpha_ijk] = (maxExposureRate / p_alpha_ijk[flag_alpha_ijk])^accelerationFactor * p_rho_ijk[flag_alpha_ijk]
-                    pe_i[!flag_alpha_ijk] = maxExposureRate * rho_ijk[!flag_alpha_ijk] / alpha_ijk[!flag_alpha_ijk]
+                    if (length(maxExposureRate) == nSegment) {
+                      for (k in 1:nSegment) {
+                        pe_i[k, flag_alpha_ijk[k, ]] = (maxExposureRate[k] / p_alpha_ijk[k, flag_alpha_ijk[k, ]])^accelerationFactor * p_rho_ijk[k, flag_alpha_ijk[k, ]]
+                        pe_i[k, !flag_alpha_ijk[k, ]] = maxExposureRate[k] * rho_ijk[k, !flag_alpha_ijk[k, ]] / alpha_ijk[k, !flag_alpha_ijk[k, ]]
+                      }
+                    } else {
+                      pe_i[flag_alpha_ijk] = (maxExposureRate / p_alpha_ijk[flag_alpha_ijk])^accelerationFactor * p_rho_ijk[flag_alpha_ijk]
+                      pe_i[!flag_alpha_ijk] = maxExposureRate * rho_ijk[!flag_alpha_ijk] / alpha_ijk[!flag_alpha_ijk]
+                    }
                   } else {
                     pe_i = maxExposureRate * rho_ijk / alpha_ijk
                   }
@@ -2135,8 +2189,15 @@ setMethod(f = "Shadow",
                       p_alpha_sjk[is.na(p_alpha_sjk)] = 0
                       p_rho_sjk[is.na(p_rho_sjk)] = 1
                       flag_alpha_sjk = p_alpha_sjk > maxExposureRate
-                      pe_s[flag_alpha_sjk] = (maxExposureRate / p_alpha_sjk[flag_alpha_sjk])^accelerationFactor * p_rho_sjk[flag_alpha_sjk]
-                      pe_s[!flag_alpha_sjk] = maxExposureRate * rho_sjk[!flag_alpha_sjk] / alpha_sjk[!flag_alpha_sjk]
+                      if (length(maxExposureRate) == nSegment) {
+                        for (k in 1:nSegment) {
+                          pe_s[k, flag_alpha_sjk[k, ]] = (maxExposureRate[k] / p_alpha_sjk[k, flag_alpha_sjk[k, ]])^accelerationFactor * p_rho_sjk[k, flag_alpha_sjk[k, ]]
+                          pe_s[k, !flag_alpha_sjk[k, ]] = maxExposureRate[k] * rho_sjk[k, !flag_alpha_sjk[k, ]] / alpha_sjk[k, !flag_alpha_sjk[k, ]]
+                        }
+                      } else {
+                        pe_s[flag_alpha_sjk] = (maxExposureRate / p_alpha_sjk[flag_alpha_sjk])^accelerationFactor * p_rho_sjk[flag_alpha_sjk]
+                        pe_s[!flag_alpha_sjk] = maxExposureRate * rho_sjk[!flag_alpha_sjk] / alpha_sjk[!flag_alpha_sjk]
+                      }
                     } else {
                       pe_s = maxExposureRate * rho_sjk / alpha_sjk
                     }
@@ -2184,14 +2245,14 @@ setMethod(f = "Shadow",
             finalSeEst = unlist(lapply(1:nj, function(j) outputList[[j]]@finalSeEst))
             
             exposureRate = colSums(usageMatrix) / nj
-          
+            
             eligibilityStats = NULL
             checkEligibilityStats = NULL
             noFadingEligibilityStats = NULL
             
             if (itemEligibilityControl) {
               eligibilityStats = list(pe_i = pe_i, n_jk = n_jk, alpha_ijk = alpha_ijk, phi_jk = phi_jk, rho_ijk = rho_ijk, pe_s = pe_s, alpha_sjk = alpha_sjk, rho_sjk = rho_sjk)
-
+              
               if (config@exposureControl$diagnosticStats) {
                 checkEligibilityStats = as.data.frame(cbind(1:nj, trueTheta, findSegment(segmentCut, trueTheta), trueSegmentCount, alpha_g_i, epsilon_g_i), row.names = NULL) 
                 names(checkEligibilityStats) = c("Examinee", "TrueTheta", "TrueSegment", "TrueSegmentCount", paste("a", "g", rep(1:nSegment, rep(ni, nSegment)), "i", rep(1:ni, nSegment), sep = "_"), paste("e", "g", rep(1:nSegment, rep(ni, nSegment)), "i", rep(1:ni, nSegment), sep = "_"))
