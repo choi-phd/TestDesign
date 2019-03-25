@@ -1303,7 +1303,9 @@ setMethod(f = "Shadow",
               fadingFactor = config@exposureControl$fadingFactor
               accelerationFactor = config@exposureControl$accelerationFactor
               nSegment = config@exposureControl$nSegment
-
+              if (!length(maxExposureRate) %in% c(1, nSegment)) {
+                stop("length(maxExposureRate) must be 1 or nSegment")
+              }
               trueSegmentFreq = numeric(nSegment)
               estSegmentFreq = numeric(nSegment)
               trueSegmentCount = numeric(nj)
@@ -1923,13 +1925,25 @@ setMethod(f = "Shadow",
                 estSegmentFreq[segmentFinal] = estSegmentFreq[segmentFinal] + 1
                 estSegmentCount[j] = estSegmentFreq[segmentFinal]
                 segmentVisited = sort(unique(output@thetaSegmentIndex))
+                segmentOther = segmentVisited[segmentVisited != segmentFinal]
 
                 if (exposureControl %in% c("ELIGIBILITY")) {
                   n_jk[segmentFinal] = fadingFactor *  n_jk[segmentFinal] + 1
 
                   alpha_ijk[segmentFinal, ] = fadingFactor * alpha_ijk[segmentFinal, ]
                   alpha_ijk[segmentFinal, output@administeredItemIndex] = alpha_ijk[segmentFinal, output@administeredItemIndex] + 1
-
+                  # this nested for-loop is experimental 3/21/19
+                  if (length(segmentOther) > 0) {
+                    if (any(!eligibleInFinalSegment[output@administeredItemIndex])) {
+                      for (k in segmentOther) {
+                        for (i in output@administeredItemIndex[output@thetaSegmentIndex == k]) {
+                          if (!eligibleInFinalSegment[i]) {
+                            alpha_ijk[k, i] = alpha_ijk[k, i] + 1
+                          }
+                        }
+                      }
+                    }
+                  }
                   if (fadingFactor != 1) {
                     noFading_n_jk[segmentFinal] = noFading_n_jk[segmentFinal] + 1
                     noFading_alpha_ijk[segmentFinal, output@administeredItemIndex] = noFading_alpha_ijk[segmentFinal, output@administeredItemIndex] + 1
@@ -1962,8 +1976,15 @@ setMethod(f = "Shadow",
                     p_alpha_ijk[is.na(p_alpha_ijk)] = 0
                     p_rho_ijk[is.na(p_rho_ijk)] = 1
                     flag_alpha_ijk = p_alpha_ijk > maxExposureRate       #flagging items
-                    pe_i[flag_alpha_ijk] = 1 - nf_ijk[flag_alpha_ijk] + (maxExposureRate / p_alpha_ijk[flag_alpha_ijk])^accelerationFactor * nf_ijk[flag_alpha_ijk] * p_rho_ijk[flag_alpha_ijk]
-                    pe_i[!flag_alpha_ijk] = 1 - nf_ijk[!flag_alpha_ijk] + maxExposureRate * nf_ijk[!flag_alpha_ijk] * rho_ijk[!flag_alpha_ijk] / alpha_ijk[!flag_alpha_ijk]
+                    if (length(maxExposureRate) == nSegment) {
+                      for (k in 1:nSegment) {
+                        pe_i[k, flag_alpha_ijk[k, ]] = 1 - nf_ijk[k, flag_alpha_ijk[k, ]] + (maxExposureRate[k] / p_alpha_ijk[k, flag_alpha_ijk[k, ]])^accelerationFactor * nf_ijk[k, flag_alpha_ijk[k, ]] * p_rho_ijk[k, flag_alpha_ijk[k, ]]
+                        pe_i[k, !flag_alpha_ijk[k, ]] = 1 - nf_ijk[k, !flag_alpha_ijk[k, ]] + maxExposureRate[k] * nf_ijk[k, !flag_alpha_ijk[k, ]] * rho_ijk[k, !flag_alpha_ijk[k, ]] / alpha_ijk[k, !flag_alpha_ijk[k, ]]
+                      }
+                    } else {
+                      pe_i[flag_alpha_ijk] = 1 - nf_ijk[flag_alpha_ijk] + (maxExposureRate / p_alpha_ijk[flag_alpha_ijk])^accelerationFactor * nf_ijk[flag_alpha_ijk] * p_rho_ijk[flag_alpha_ijk]
+                      pe_i[!flag_alpha_ijk] = 1 - nf_ijk[!flag_alpha_ijk] + maxExposureRate * nf_ijk[!flag_alpha_ijk] * rho_ijk[!flag_alpha_ijk] / alpha_ijk[!flag_alpha_ijk]
+                    }
                   } else {
                     pe_i = 1 - nf_ijk + maxExposureRate * nf_ijk * rho_ijk / alpha_ijk
                   }
@@ -2005,8 +2026,15 @@ setMethod(f = "Shadow",
                       p_alpha_sjk[is.na(p_alpha_sjk)] = 0
                       p_rho_sjk[is.na(p_rho_sjk)] = 1
                       flag_alpha_sjk = p_alpha_sjk > maxExposureRate
-                      pe_s[flag_alpha_sjk] = 1 - nf_sjk[flag_alpha_sjk] + (maxExposureRate / p_alpha_sjk[flag_alpha_sjk])^accelerationFactor * nf_sjk[flag_alpha_sjk] * p_rho_sjk[flag_alpha_sjk]
-                      pe_s[!flag_alpha_sjk] = 1 - nf_sjk[!flag_alpha_sjk] + maxExposureRate * nf_sjk[!flag_alpha_sjk] * rho_sjk[!flag_alpha_sjk] / alpha_sjk[!flag_alpha_sjk]
+                      if (length(maxExposureRate) == nSegment) {
+                        for (k in 1:nSegment) {
+                          pe_s[k, flag_alpha_sjk[k, ]] = 1 - nf_sjk[k, flag_alpha_sjk[k, ]] + (maxExposureRate[k] / p_alpha_sjk[k, flag_alpha_sjk[k, ]])^accelerationFactor * nf_sjk[k, flag_alpha_sjk[k, ]] * p_rho_sjk[k, flag_alpha_sjk[k, ]]
+                          pe_s[k, !flag_alpha_sjk[k, ]] = 1 - nf_sjk[k, !flag_alpha_sjk[k, ]] + maxExposureRate[k] * nf_sjk[k, !flag_alpha_sjk[k, ]] * rho_sjk[k, !flag_alpha_sjk[k, ]] / alpha_sjk[k, !flag_alpha_sjk[k, ]]
+                        }
+                      } else {
+                        pe_s[flag_alpha_sjk] = 1 - nf_sjk[flag_alpha_sjk] + (maxExposureRate / p_alpha_sjk[flag_alpha_sjk])^accelerationFactor * nf_sjk[flag_alpha_sjk] * p_rho_sjk[flag_alpha_sjk]
+                        pe_s[!flag_alpha_sjk] = 1 - nf_sjk[!flag_alpha_sjk] + maxExposureRate * nf_sjk[!flag_alpha_sjk] * rho_sjk[!flag_alpha_sjk] / alpha_sjk[!flag_alpha_sjk]
+                      }
                     } else {
                       pe_s = 1 - nf_sjk + maxExposureRate * nf_sjk * rho_sjk / alpha_sjk
                     }
@@ -2018,6 +2046,18 @@ setMethod(f = "Shadow",
 
                   alpha_ijk[segmentFinal, ] = fadingFactor * alpha_ijk[segmentFinal, ]
                   alpha_ijk[segmentFinal, output@administeredItemIndex] = alpha_ijk[segmentFinal, output@administeredItemIndex] + 1
+                  # this nested for-loop is experimental 3/21/19
+                  if (length(segmentOther) > 0) {
+                    if (any(!eligibleInFinalSegment[output@administeredItemIndex])) {
+                      for (k in segmentOther) {
+                        for (i in output@administeredItemIndex[output@thetaSegmentIndex == k]) {
+                          if (!eligibleInFinalSegment[i]) {
+                            alpha_ijk[k, i] = alpha_ijk[k, i] + 1
+                          }
+                        }
+                      }
+                    }
+                  }
 
                   rho_ijk[segmentFinal, ] = fadingFactor * rho_ijk[segmentFinal, ] #number of test takers through j who visited item pool k when item i was eligible
                   rho_ijk[segmentFinal, eligibleInFinalSegment] = rho_ijk[segmentFinal, eligibleInFinalSegment] + 1
@@ -2034,8 +2074,15 @@ setMethod(f = "Shadow",
                     p_alpha_ijk[is.na(p_alpha_ijk)] = 0
                     p_rho_ijk[is.na(p_rho_ijk)] = 1
                     flag_alpha_ijk = p_alpha_ijk > maxExposureRate
-                    pe_i[flag_alpha_ijk] = (maxExposureRate / p_alpha_ijk[flag_alpha_ijk])^accelerationFactor * p_rho_ijk[flag_alpha_ijk]
-                    pe_i[!flag_alpha_ijk] = maxExposureRate * rho_ijk[!flag_alpha_ijk] / alpha_ijk[!flag_alpha_ijk]
+                    if (length(maxExposureRate) == nSegment) {
+                      for (k in 1:nSegment) {
+                        pe_i[k, flag_alpha_ijk[k, ]] = (maxExposureRate[k] / p_alpha_ijk[k, flag_alpha_ijk[k, ]])^accelerationFactor * p_rho_ijk[k, flag_alpha_ijk[k, ]]
+                        pe_i[k, !flag_alpha_ijk[k, ]] = maxExposureRate[k] * rho_ijk[k, !flag_alpha_ijk[k, ]] / alpha_ijk[k, !flag_alpha_ijk[k, ]]
+                      }
+                    } else {
+                      pe_i[flag_alpha_ijk] = (maxExposureRate / p_alpha_ijk[flag_alpha_ijk])^accelerationFactor * p_rho_ijk[flag_alpha_ijk]
+                      pe_i[!flag_alpha_ijk] = maxExposureRate * rho_ijk[!flag_alpha_ijk] / alpha_ijk[!flag_alpha_ijk]
+                    }
                   } else {
                     pe_i = maxExposureRate * rho_ijk / alpha_ijk
                   }
@@ -2062,8 +2109,15 @@ setMethod(f = "Shadow",
                       p_alpha_sjk[is.na(p_alpha_sjk)] = 0
                       p_rho_sjk[is.na(p_rho_sjk)] = 1
                       flag_alpha_sjk = p_alpha_sjk > maxExposureRate
-                      pe_s[flag_alpha_sjk] = (maxExposureRate / p_alpha_sjk[flag_alpha_sjk])^accelerationFactor * p_rho_sjk[flag_alpha_sjk]
-                      pe_s[!flag_alpha_sjk] = maxExposureRate * rho_sjk[!flag_alpha_sjk] / alpha_sjk[!flag_alpha_sjk]
+                      if (length(maxExposureRate) == nSegment) {
+                        for (k in 1:nSegment) {
+                          pe_s[k, flag_alpha_sjk[k, ]] = (maxExposureRate[k] / p_alpha_sjk[k, flag_alpha_sjk[k, ]])^accelerationFactor * p_rho_sjk[k, flag_alpha_sjk[k, ]]
+                          pe_s[k, !flag_alpha_sjk[k, ]] = maxExposureRate[k] * rho_sjk[k, !flag_alpha_sjk[k, ]] / alpha_sjk[k, !flag_alpha_sjk[k, ]]
+                        }
+                      } else {
+                        pe_s[flag_alpha_sjk] = (maxExposureRate / p_alpha_sjk[flag_alpha_sjk])^accelerationFactor * p_rho_sjk[flag_alpha_sjk]
+                        pe_s[!flag_alpha_sjk] = maxExposureRate * rho_sjk[!flag_alpha_sjk] / alpha_sjk[!flag_alpha_sjk]
+                      }
                     } else {
                       pe_s = maxExposureRate * rho_sjk / alpha_sjk
                     }
@@ -2083,9 +2137,22 @@ setMethod(f = "Shadow",
                   rho_ijk = fadingFactor * rho_ijk
                   alpha_ijk = fadingFactor * alpha_ijk
                   alpha_ijk[, output@administeredItemIndex] = alpha_ijk[, output@administeredItemIndex] + segmentProb
+                  # this nested for-loop is experimental 3/21/19
+                  if (length(segmentOther) > 0) {
+                    if (any(!eligibleInFinalSegment[output@administeredItemIndex])) {
+                      for (k in segmentOther) {
+                        for (i in output@administeredItemIndex[output@thetaSegmentIndex == k]) {
+                          if (!eligibleInFinalSegment[i]) {
+                            alpha_ijk[k, i] = alpha_ijk[k, i] + segmentProb[k]
+                          }
+                        }
+                      }
+                    }
+                  }
 
                   for (segment in 1:nSegment) {
                     eligible = ineligible_i[segment, ] == 0
+                    #eligible = ineligible_i[segment, ] == 0 & eligibleInFinalSegment
                     rho_ijk[segment, eligible] = rho_ijk[segment, eligible] + segmentProb[segment]
                   }
 
@@ -2104,8 +2171,15 @@ setMethod(f = "Shadow",
                     p_alpha_ijk[is.na(p_alpha_ijk)] = 0
                     p_rho_ijk[is.na(p_rho_ijk)] = 1
                     flag_alpha_ijk = p_alpha_ijk > maxExposureRate
-                    pe_i[flag_alpha_ijk] = (maxExposureRate / p_alpha_ijk[flag_alpha_ijk])^accelerationFactor * p_rho_ijk[flag_alpha_ijk]
-                    pe_i[!flag_alpha_ijk] = maxExposureRate * rho_ijk[!flag_alpha_ijk] / alpha_ijk[!flag_alpha_ijk]
+                    if (length(maxExposureRate) == nSegment) {
+                      for (k in 1:nSegment) {
+                        pe_i[k, flag_alpha_ijk[k, ]] = (maxExposureRate[k] / p_alpha_ijk[k, flag_alpha_ijk[k, ]])^accelerationFactor * p_rho_ijk[k, flag_alpha_ijk[k, ]]
+                        pe_i[k, !flag_alpha_ijk[k, ]] = maxExposureRate[k] * rho_ijk[k, !flag_alpha_ijk[k, ]] / alpha_ijk[k, !flag_alpha_ijk[k, ]]
+                      }
+                    } else {
+                      pe_i[flag_alpha_ijk] = (maxExposureRate / p_alpha_ijk[flag_alpha_ijk])^accelerationFactor * p_rho_ijk[flag_alpha_ijk]
+                      pe_i[!flag_alpha_ijk] = maxExposureRate * rho_ijk[!flag_alpha_ijk] / alpha_ijk[!flag_alpha_ijk]
+                    }
                   } else {
                     pe_i = maxExposureRate * rho_ijk / alpha_ijk
                   }
@@ -2135,8 +2209,15 @@ setMethod(f = "Shadow",
                       p_alpha_sjk[is.na(p_alpha_sjk)] = 0
                       p_rho_sjk[is.na(p_rho_sjk)] = 1
                       flag_alpha_sjk = p_alpha_sjk > maxExposureRate
-                      pe_s[flag_alpha_sjk] = (maxExposureRate / p_alpha_sjk[flag_alpha_sjk])^accelerationFactor * p_rho_sjk[flag_alpha_sjk]
-                      pe_s[!flag_alpha_sjk] = maxExposureRate * rho_sjk[!flag_alpha_sjk] / alpha_sjk[!flag_alpha_sjk]
+                      if (length(maxExposureRate) == nSegment) {
+                        for (k in 1:nSegment) {
+                          pe_s[k, flag_alpha_sjk[k, ]] = (maxExposureRate[k] / p_alpha_sjk[k, flag_alpha_sjk[k, ]])^accelerationFactor * p_rho_sjk[k, flag_alpha_sjk[k, ]]
+                          pe_s[k, !flag_alpha_sjk[k, ]] = maxExposureRate[k] * rho_sjk[k, !flag_alpha_sjk[k, ]] / alpha_sjk[k, !flag_alpha_sjk[k, ]]
+                        }
+                      } else {
+                        pe_s[flag_alpha_sjk] = (maxExposureRate / p_alpha_sjk[flag_alpha_sjk])^accelerationFactor * p_rho_sjk[flag_alpha_sjk]
+                        pe_s[!flag_alpha_sjk] = maxExposureRate * rho_sjk[!flag_alpha_sjk] / alpha_sjk[!flag_alpha_sjk]
+                      }
                     } else {
                       pe_s = maxExposureRate * rho_sjk / alpha_sjk
                     }
