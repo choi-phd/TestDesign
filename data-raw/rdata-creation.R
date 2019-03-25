@@ -41,7 +41,7 @@ for (i in 1:3){
 }
 
 constraints_0 = read.csv("data-raw/base/constraints_0.csv")
-write.csv(constraints_0, "data-raw/constraints_0.csv", row.names = F, quote = F, na =)
+write.csv(constraints_0, "data-raw/constraints_0.csv", row.names = F, quote = F, na = '""')
 
 constraints_1 = read.csv("data-raw/base/constraints_1.csv", as.is = T)
 

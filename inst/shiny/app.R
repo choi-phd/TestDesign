@@ -543,6 +543,7 @@ server <- function(input, output, session) {
         break
       }
 
+      conf@itemSelection$method = input$itemselection_method
       conf@refreshPolicy$method = input$refreshpolicy
       conf@MIP$solver = input$solvertype
 
