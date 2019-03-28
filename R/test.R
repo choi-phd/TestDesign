@@ -1,17 +1,10 @@
 if(FALSE){
-  library(IRTclass)
   library(Shadow)
   
   # ATA testing (Github repository version), working fine
-  itempoolA = LoadItemPool("data-raw/par_Pool_A.csv")
-  itemattribA = LoadItemAttrib("data-raw/attrib_Pool_A.csv", itempoolA)
+  itempoolA = LoadItemPool("data-raw/item_params_A.csv")
+  itemattribA = LoadItemAttrib("data-raw/item_attribs_A.csv", itempoolA)
   constA = LoadConstraints("data-raw/constraints_0.csv", itempoolA, itemattribA)
-  
-  data.frame(model = itempoolA@model, itempoolA@ipar)
-  
-  itempoolA@parms
-  
-  slotNames(itempoolA)
   
   conf = new("ATA.config")
   conf@MIP$solver = "symphony"
@@ -128,18 +121,10 @@ if(FALSE){
   
   # Stimulus based SHADOW
   
-  itempool = LoadItemPool("data-raw/base/item_pool_RD_45.csv")
-  itemattrib = LoadItemAttrib("data-raw/base/item_attrib_RD_45.csv", itempool)
-  stimattrib = LoadStAttrib("data-raw/base/stimulus_attrib_RD_45.csv", itemattrib)
-  
-  const = LoadConstraints("data-raw/base/constraints_RD_45.csv", itempool, itemattrib, stimattrib)
-  
-  
-  itempool = LoadItemPool("data-raw/item_pool_SET.csv")
-  itemattrib = LoadItemAttrib("data-raw/item_attrib_SET.csv", itempool)
-  stimattrib = LoadStAttrib("data-raw/st_attrib_SET.csv", itemattrib)
-  
-  const = LoadConstraints("data-raw/constraints_SET.csv", itempool, itemattrib, stimattrib)
+  itempool = LoadItemPool("data-raw/item_params_stimbased.csv")
+  itemattrib = LoadItemAttrib("data-raw/item_attribs_stimbased.csv", itempool)
+  stimattrib = LoadStAttrib("data-raw/stim_attribs_stimbased.csv", itemattrib)
+  const = LoadConstraints("data-raw/constraints_stimbased.csv", itempool, itemattrib, stimattrib)
   
   thetaGrid = seq(-3, 3, 1)
   trueTheta = runif(1, min = -3.5, max = 3.5)
@@ -169,7 +154,8 @@ if(FALSE){
   Data = respData
   
   fit = try(Shadow(itempool, conf, trueTheta, Constraints = const, prior = NULL, priorPar = c(0, 1), Data = respData))
-class(fit)
+
+  class(fit)
 
 
   # ATA maxinfo plot
