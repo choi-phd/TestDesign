@@ -82,6 +82,7 @@ STA = function(Constraints, objective, solver = "Symphony", xmat = NULL, xdir = 
     }
   } else if (toupper(solver) == "LPSOLVE") {
     MIP = lp(direction = ifelse(maximize, "max", "min"), obj, MAT, DIR, RHS, all.bin = TRUE, presolve = TRUE)
+    status = MIP$status
     if (MIP$status != 0) {
       warning(sprintf("MIP solver returned non-zero status: %s", MIP$status))
       return(list(status = status, MIP = NULL, Selected = NULL))
