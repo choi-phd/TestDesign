@@ -64,6 +64,9 @@ setMethod(f = "ATA",
               } else {
                 warning("config@itemSelection$targetWeight and config@itemSelection$targetLocation are of different lengths: not weighting...")
                 objective = calcFisher(Constraints$pool, config@itemSelection$targetLocation)
+                if (is.matrix(objective)) {
+                  objective = colSums(objective)
+                }
               }
               obj[1:ni] = objective
               maximize = TRUE
