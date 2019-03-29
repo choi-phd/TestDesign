@@ -63,7 +63,7 @@ setMethod("show", "ATA.config", function(object) {
   cat("    Method         :", object@itemSelection$method, "\n") #c("MAXINFO", "TIF", "TCC")
   cat("    Info type      :", object@itemSelection$infoType, "\n")
   cat("    Theta Location :", object@itemSelection$targetLocation, "\n")
-  cat("    Target Weight  :", object@targetWeight, "\n")
+  cat("    Target Weight  :", object@itemSelection$targetWeight, "\n")
   cat("    Target Value   :", object@itemSelection$targetValue, "\n\n")
   cat("  MIP \n")
   cat("    Solver         :", object@MIP$solver, "\n")
