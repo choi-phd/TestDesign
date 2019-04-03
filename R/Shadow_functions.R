@@ -1505,7 +1505,7 @@ setMethod(f = "Shadow",
             }
 
             plotAuditTrail = function() {
-              par(mfrow = c(2, 1))
+              par(mar = c(2, 3, 1, 1) + 0.1, mfrow = c(2, 1))
               plot(1:maxNI, seq(minTheta, maxTheta, length = maxNI), main = paste0("Examinee ", j), xlab = "Items Administered", ylab = "Theta", type = "n", las = 1)
               points(1:maxNI, output@interimThetaEst, type="b", pch = 9, col = "blue")
               if (!is.null(trueTheta)) {
