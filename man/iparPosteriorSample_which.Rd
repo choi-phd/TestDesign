@@ -7,7 +7,7 @@
 iparPosteriorSample_which(pool, nSample = 500)
 }
 \arguments{
-\item{pool}{A nice parameter}
+\item{pool}{An \code{item.pool} object.}
 
 \item{nSample}{A nice parameter}
 }

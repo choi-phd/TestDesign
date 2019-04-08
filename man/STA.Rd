@@ -21,7 +21,7 @@ STA(Constraints, objective, solver = "Symphony", xmat = NULL,
 
 \item{xrhs}{A vector of right-side values.}
 
-\item{maximize}{If \code{TRUE}, treat as a maximization problem.}
+\item{maximize}{If \code{TRUE}, treat as a maximization problem. Otherwise treat as a minimization problem.}
 
 \item{mps}{Only used when \code{solver} is \code{SYMPHONY}. If \code{TRUE}, print an MPS representation of the problem for debugging purposes.}
 
@@ -29,11 +29,11 @@ STA(Constraints, objective, solver = "Symphony", xmat = NULL,
 
 \item{verbosity}{Verbosity level.}
 
-\item{time_limit}{Time limit to be passed onto solver.}
+\item{time_limit}{Time limit passed onto the solver.}
 
-\item{gap_limit}{Gap limit to be passed onto solver.}
+\item{gap_limit}{Gap limit passed onto the solver.}
 
-\item{...}{Only used when \code{solver} is \code{SYMPHONY}. Additional parameters to be passed onto \code{\link[Rsymphony]{Rsymphony_solve_LP}}.}
+\item{...}{Only used when \code{solver} is \code{SYMPHONY}. Additional parameters to be passed onto the solver.}
 }
 \value{
 An output

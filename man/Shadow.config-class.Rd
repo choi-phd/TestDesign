@@ -12,7 +12,7 @@ An S4 object to store configurations for Shadow Test Assembly (STA).
 \describe{
 \item{\code{itemSelection}}{A list containing item selection criteria.
 \itemize{
-  \item{\code{method}} The type of criteria. Accepts one of \code{MAXINFO, TIF, TCC}
+  \item{\code{method}} The type of criteria. Accepts one of \code{MFI, MPWI, FB, EB}.
   \item{\code{infoType}} The type of information. Accepts \code{FISHER}.
   \item{\code{initialTheta}}
   \item{\code{fixedTheta}}
@@ -20,7 +20,7 @@ An S4 object to store configurations for Shadow Test Assembly (STA).
 
 \item{\code{contentBalancing}}{A list containing content balancing options.
 \itemize{
-  \item{\code{method}} The type of balancing method. Accepts \code{NONE}, or \code{STA}.
+  \item{\code{method}} The type of balancing method. Accepts one of \code{NONE, STA}.
 }}
 
 \item{\code{MIP}}{A list containing solver options.
@@ -42,8 +42,8 @@ An S4 object to store configurations for Shadow Test Assembly (STA).
 \item{\code{refreshPolicy}}{A list containing refresh policy for obtaining a new shadow test.
 \itemize{
   \item{\code{method}} The type of policy. Accepts one of \code{ALWAYS, POSITION, INTERVAL, THRESHOLD, INTERVAL-THRESHOLD, STIMULUS, SET, PASSAGE}.
-  \item{\code{interval}}
-  \item{\code{threshold}}
+  \item{\code{interval}} Integer. Set to 1 to refresh at each position, 2 to refresh at every two positions, and so on.
+  \item{\code{threshold}} Numeric. The shadow test is refreshed when the absolute change in theta estimate is greater than this value.
   \item{\code{position}}
 }}
 

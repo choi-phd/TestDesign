@@ -12,7 +12,7 @@ LoadStAttrib(file.csv, ItemAttrib)
 \item{ItemAttrib}{A \code{data.frame} containing item attributes. Use \code{\link{LoadItemAttrib}} for this.}
 }
 \value{
-An output
+A \code{data.frame} containing stimulus attributes.
 }
 \description{
 Read set attributes from specified file.

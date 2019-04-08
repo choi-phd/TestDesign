@@ -7,10 +7,10 @@
 lnHyperPars(mean, sd)
 }
 \arguments{
-\item{mean}{A nice parameter}
+\item{mean}{Mean of the distribution.}
 
-\item{sd}{A nice parameter}
+\item{sd}{Standard deviation of the distribution.}
 }
 \description{
-lnHyperPars
+Calculate hyperparameters for log-normal distribution.
 }

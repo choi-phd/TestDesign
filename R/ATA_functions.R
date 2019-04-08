@@ -60,7 +60,7 @@ LoadItemAttrib = function(file.csv, pool) {
 #' @param file.csv Character. The name of the file containing item attributes.
 #' @param ItemAttrib A \code{data.frame} containing item attributes. Use \code{\link{LoadItemAttrib}} for this.
 #'
-#' @return An output
+#' @return A \code{data.frame} containing stimulus attributes.
 #'
 #' @export
 
@@ -98,7 +98,7 @@ LoadStAttrib = function(file.csv, ItemAttrib) {
 #' @return A list containing the following entries:
 #' \itemize{
 #'   \item{\code{Constraints}} A \code{data.frame} containing constraint specifications.
-#'   \item{\code{ListConstraints}} Foo.
+#'   \item{\code{ListConstraints}} A list of \code{constraint} objects.
 #'   \item{\code{pool}} An \code{item.pool} object.
 #'   \item{\code{ItemAttrib}} A \code{data.frame} containing item attributes.
 #'   \item{\code{StAttrib}} Foo.
@@ -111,7 +111,7 @@ LoadStAttrib = function(file.csv, ItemAttrib) {
 #'   \item{\code{MAT}} Foo.
 #'   \item{\code{DIR}} Foo.
 #'   \item{\code{RHS}} Foo.
-#'   \item{\code{setBased}} Foo.
+#'   \item{\code{setBased}} Logical. \code{TRUE} if the constraint is stimulus-based.
 #'   \item{\code{ItemOrder}} Foo.
 #'   \item{\code{ItemOrderBy}} Foo.
 #'   \item{\code{StimulusOrder}} Foo.
@@ -707,6 +707,7 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
 #' @param file.ItemAttrib Character. The name of the file containing item attributes.
 #' @param file.StAttrib Character. The name of the file containing set attributes.
 #' @return A list containing the parsed constraints. See th output section of \link{LoadConstraints} for details.
+#'
 #' @export
 
 BuildConstraints = function(pool, file.Constraints, file.ItemAttrib, file.StAttrib = NULL) {
