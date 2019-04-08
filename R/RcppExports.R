@@ -7,8 +7,6 @@
 #' @param item_parm A nice parameter
 #' @param ncat A nice parameter
 #' @param model A nice parameter
-#'
-#' @export
 calc_info_EB <- function(x, item_parm, ncat, model) {
     .Call('_Shadow_calc_info_EB', PACKAGE = 'Shadow', x, item_parm, ncat, model)
 }
@@ -20,8 +18,6 @@ calc_info_EB <- function(x, item_parm, ncat, model) {
 #' @param ncat A nice parameter
 #' @param model A nice parameter
 #' @param useEAP A nice parameter
-#'
-#' @export
 calc_info_FB <- function(x, items_list, ncat, model, useEAP = FALSE) {
     .Call('_Shadow_calc_info_FB', PACKAGE = 'Shadow', x, items_list, ncat, model, useEAP)
 }
@@ -32,8 +28,6 @@ calc_info_FB <- function(x, items_list, ncat, model, useEAP = FALSE) {
 #' @param items_list A nice parameter
 #' @param ncat A nice parameter
 #' @param model A nice parameter
-#'
-#' @export
 calc_MI_FB <- function(x, items_list, ncat, model) {
     .Call('_Shadow_calc_MI_FB', PACKAGE = 'Shadow', x, items_list, ncat, model)
 }
@@ -180,8 +174,6 @@ theta_EAP_matrix <- function(theta_grid, item_parm, Resp, ncat, model, prior, pr
 #' @param model A nice parameter
 #' @param prior A nice parameter
 #' @param prior_parm A nice parameter
-#'
-#' @export
 theta_EB <- function(nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_Shadow_theta_EB', PACKAGE = 'Shadow', nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm)
 }
@@ -197,8 +189,6 @@ theta_EB <- function(nx, theta_init, theta_prop, item_parm, resp, ncat, model, p
 #' @param model A nice parameter
 #' @param prior A nice parameter
 #' @param prior_parm A nice parameter
-#'
-#' @export
 theta_EB_single <- function(nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_Shadow_theta_EB_single', PACKAGE = 'Shadow', nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm)
 }
@@ -215,8 +205,6 @@ theta_EB_single <- function(nx, theta_init, theta_prop, item_parm, resp, ncat, m
 #' @param model A nice parameter
 #' @param prior A nice parameter
 #' @param prior_parm A nice parameter
-#'
-#' @export
 theta_FB <- function(nx, theta_init, theta_prop, items_list, item_init, resp, ncat, model, prior, prior_parm) {
     .Call('_Shadow_theta_FB', PACKAGE = 'Shadow', nx, theta_init, theta_prop, items_list, item_init, resp, ncat, model, prior, prior_parm)
 }
@@ -233,8 +221,6 @@ theta_FB <- function(nx, theta_init, theta_prop, items_list, item_init, resp, nc
 #' @param model A nice parameter
 #' @param prior A nice parameter
 #' @param prior_parm A nice parameter
-#'
-#' @export
 theta_FB_single <- function(nx, theta_init, theta_prop, item_mcmc, item_init, resp, ncat, model, prior, prior_parm) {
     .Call('_Shadow_theta_FB_single', PACKAGE = 'Shadow', nx, theta_init, theta_prop, item_mcmc, item_init, resp, ncat, model, prior, prior_parm)
 }

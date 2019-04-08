@@ -111,7 +111,6 @@ setMethod(f = "calcFisher",
 #'
 #' @return Item location values
 #'
-#' @export
 #' @docType methods
 #'
 #' @rdname calcLocation-methods
@@ -256,7 +255,6 @@ setMethod(f = "calcLocation",
 #'
 #' @return First derivative values
 #'
-#' @export
 #' @docType methods
 #'
 #' @rdname calcDerivative-methods
@@ -442,7 +440,6 @@ setMethod(f = "calcDerivative",
 #'
 #' @return Second derivative values
 #'
-#' @export
 #' @docType methods
 #'
 #' @rdname calcDerivative2-methods
@@ -626,7 +623,6 @@ setMethod(f = "calcDerivative2",
 #' @param resp Response data
 #' @return First derivative values of log-likelihoods
 #'
-#' @export
 #' @docType methods
 #'
 #' @rdname calcJacobian-methods
@@ -799,7 +795,6 @@ setMethod(f = "calcJacobian",
 #' @param resp Response data
 #' @return Second derivative values of log-likelihoods
 #'
-#' @export
 #' @docType methods
 #'
 #' @rdname calcHessian-methods
