@@ -2,9 +2,12 @@
 .Rhistory
 .RData
 .Ruserdata
-*.DS_store
-src/*.o
-src/*.so
-src/*.dll
+**/*.DS_Store
+*.o
+*.so
+*.dll
+*.dcf
+src-i386/
+src-x64/
 R/run_47h.R
 R/deploy.R

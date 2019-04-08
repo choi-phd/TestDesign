@@ -111,7 +111,6 @@ setMethod(f = "calcFisher",
 #' 
 #' @return Item location values
 #' 
-#' @export
 #' @docType methods
 #' 
 #' @rdname calcLocation-methods
@@ -127,8 +126,10 @@ setGeneric(name = "calcLocation",
 #' @rdname calcLocation-methods
 #' @aliases calcLocation,item.1pl,numeric-method
 #' @examples 
+#' \dontrun{
 #' item.1 = new("item.1pl", difficulty = 0.5)
 #' theta.item.1 = calcLocation(item.1)
+#' }
 #' @references{
 #'   \insertRef{rasch_probabilistic_1960}{IRTclass}
 #' }
@@ -142,8 +143,10 @@ setMethod(f = "calcLocation",
 #' @rdname calcLocation-methods
 #' @aliases calcLocation,item.2pl,numeric-method
 #' @examples 
+#' \dontrun{
 #' item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
 #' theta.item.2 = calcLocation(item.2)
+#' }
 #' @references{
 #'   \insertRef{lord_theory_1952}{IRTclass}
 #'   
@@ -162,9 +165,11 @@ setMethod(f = "calcLocation",
 
 #' @rdname calcLocation-methods
 #' @aliases calcLocation,item.3pl,numeric-method
-#' @examples 
+#' @examples
+#' \dontrun{ 
 #' item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 #' theta.item.3 = calcLocation(item.3)
+#' }
 #' @references{
 #'   \insertRef{birnbaum_latent_1968}{IRTclass}
 #' }
@@ -178,9 +183,11 @@ setMethod(f = "calcLocation",
 
 #' @rdname calcLocation-methods
 #' @aliases calcLocation,item.pc,numeric-method
-#' @examples 
+#' @examples
+#' \dontrun{ 
 #' item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
 #' theta.item.4 = calcLocation(item.4)
+#' }
 #' @references{
 #'   \insertRef{masters_rasch_1982}{IRTclass}
 #'   
@@ -196,9 +203,11 @@ setMethod(f = "calcLocation",
 
 #' @rdname calcLocation-methods
 #' @aliases calcLocation,item.gpc,numeric-method
-#' @examples 
+#' @examples
+#' \dontrun{ 
 #' item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 #' theta.item.5 = calcLocation(item.5)
+#' }
 #' @references{
 #'   \insertRef{muraki_generalized_1992}{IRTclass}
 #' }
@@ -211,9 +220,11 @@ setMethod(f = "calcLocation",
 
 #' @rdname calcLocation-methods
 #' @aliases calcLocation,item.gr,numeric-method
-#' @examples 
+#' @examples
+#' \dontrun{ 
 #' item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
 #' theta.item.6 = calcLocation(item.6)
+#' }
 #' @references{
 #'   \insertRef{samejima_estimation_1969}{IRTclass}
 #' }
@@ -256,7 +267,6 @@ setMethod(f = "calcLocation",
 #' 
 #' @return First derivative values
 #' 
-#' @export
 #' @docType methods
 #' 
 #' @rdname calcDerivative-methods
@@ -271,9 +281,11 @@ setGeneric(name = "calcDerivative",
 
 #' @rdname calcDerivative-methods
 #' @aliases calcDerivative,item.1pl,numeric-method
-#' @examples 
+#' @examples
+#' \dontrun{ 
 #' item.1 = new("item.1pl", difficulty = 0.5)
 #' d.item.1 = calcDerivative(item.1, seq(-3, 3, 1))
+#' }
 #' @references{
 #'   \insertRef{rasch_probabilistic_1960}{IRTclass}
 #' }
@@ -288,9 +300,11 @@ setMethod(f = "calcDerivative",
 
 #' @rdname calcDerivative-methods
 #' @aliases calcDerivative,item.2pl,numeric-method
-#' @examples 
+#' @examples
+#' \dontrun{ 
 #' item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
 #' d.item.2 = calcDerivative(item.2, seq(-3, 3, 1))
+#' }
 #' @references{
 #'   \insertRef{lord_theory_1952}{IRTclass}
 #'   
@@ -311,9 +325,11 @@ setMethod(f = "calcDerivative",
 
 #' @rdname calcDerivative-methods
 #' @aliases calcDerivative,item.3pl,numeric-method
-#' @examples 
+#' @examples
+#' \dontrun{ 
 #' item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 #' d.item.3 = calcDerivative(item.3, seq(-3, 3, 1))
+#' }
 #' @references{
 #'   \insertRef{birnbaum_latent_1968}{IRTclass}
 #' }
@@ -328,9 +344,11 @@ setMethod(f = "calcDerivative",
 
 #' @rdname calcDerivative-methods
 #' @aliases calcDerivative,item.pc,numeric-method
-#' @examples 
+#' @examples
+#' \dontrun{ 
 #' item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
 #' d.item.4 = calcDerivative(item.4, seq(-3, 3, 1))
+#' }
 #' @references{
 #'   \insertRef{masters_rasch_1982}{IRTclass}
 #'   
@@ -351,9 +369,11 @@ setMethod(f = "calcDerivative",
 
 #' @rdname calcDerivative-methods
 #' @aliases calcDerivative,item.gpc,numeric-method
-#' @examples 
+#' @examples
+#' \dontrun{ 
 #' item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 #' d.item.5 = calcDerivative(item.5, seq(-3, 3, 1))
+#' }
 #' @references{
 #'   \insertRef{muraki_generalized_1992}{IRTclass}
 #' }
@@ -372,9 +392,11 @@ setMethod(f = "calcDerivative",
 
 #' @rdname calcDerivative-methods
 #' @aliases calcDerivative,item.gr,numeric-method
-#' @examples 
+#' @examples
+#' \dontrun{ 
 #' item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
 #' d.item.6 = calcDerivative(item.6, seq(-3, 3, 1))
+#' }
 #' @references{
 #'   \insertRef{samejima_estimation_1969}{IRTclass}
 #' }
@@ -442,7 +464,6 @@ setMethod(f = "calcDerivative",
 #' 
 #' @return Second derivative values
 #' 
-#' @export
 #' @docType methods
 #' 
 #' @rdname calcDerivative2-methods
@@ -456,8 +477,10 @@ setGeneric(name = "calcDerivative2",
 #' @rdname calcDerivative2-methods
 #' @aliases calcDerivative2,item.1pl,numeric-method
 #' @examples 
+#' \dontrun{
 #' item.1 = new("item.1pl", difficulty = 0.5)
 #' dd.item.1 = calcDerivative2(item.1, seq(-3, 3, 1))
+#' }
 #' @references{
 #'   \insertRef{rasch_probabilistic_1960}{IRTclass}
 #' }
@@ -473,8 +496,10 @@ setMethod(f = "calcDerivative2",
 #' @rdname calcDerivative2-methods
 #' @aliases calcDerivative2,item.2pl,numeric-method
 #' @examples 
+#' \dontrun{
 #' item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
 #' dd.item.2 = calcDerivative2(item.2, seq(-3, 3, 1))
+#' }
 #' @references{
 #'   \insertRef{lord_theory_1952}{IRTclass}
 #'   
@@ -496,8 +521,10 @@ setMethod(f = "calcDerivative2",
 #' @rdname calcDerivative2-methods
 #' @aliases calcDerivative2,item.3pl,numeric-method
 #' @examples 
+#' \dontrun{
 #' item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 #' dd.item.3 = calcDerivative2(item.3, seq(-3, 3, 1))
+#' }
 #' @references{
 #'   \insertRef{birnbaum_latent_1968}{IRTclass}
 #' }
@@ -513,8 +540,10 @@ setMethod(f = "calcDerivative2",
 #' @rdname calcDerivative2-methods
 #' @aliases calcDerivative2,item.pc,numeric-method
 #' @examples 
+#' \dontrun{
 #' item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
 #' dd.item.4 = calcDerivative2(item.4, seq(-3, 3, 1))
+#' }
 #' @references{
 #'   \insertRef{masters_rasch_1982}{IRTclass}
 #'   
@@ -536,8 +565,10 @@ setMethod(f = "calcDerivative2",
 #' @rdname calcDerivative2-methods
 #' @aliases calcDerivative2,item.gpc,numeric-method
 #' @examples 
+#' \dontrun{
 #' item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 #' dd.item.5 = calcDerivative2(item.5, seq(-3, 3, 1))
+#' }
 #' @references{
 #'   \insertRef{muraki_generalized_1992}{IRTclass}
 #' }
@@ -557,8 +588,10 @@ setMethod(f = "calcDerivative2",
 #' @rdname calcDerivative2-methods
 #' @aliases calcDerivative2,item.gr,numeric-method
 #' @examples 
+#' \dontrun{
 #' item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
 #' dd.item.6 = calcDerivative2(item.6, seq(-3, 3, 1))
+#' }
 #' @references{
 #'   \insertRef{samejima_estimation_1969}{IRTclass}
 #' }
@@ -626,7 +659,6 @@ setMethod(f = "calcDerivative2",
 #' @param resp Response data
 #' @return First derivative values of log-likelihoods
 #' 
-#' @export
 #' @docType methods
 #' 
 #' @rdname calcJacobian-methods
@@ -642,9 +674,11 @@ setGeneric(name = "calcJacobian",
 
 #' @rdname calcJacobian-methods
 #' @aliases calcJacobian,item.1pl,numeric-method
-#' @examples 
+#' @examples
+#' \dontrun{ 
 #' item.1 = new("item.1pl", difficulty = 0.5)
 #' j.item.1 = calcJacobian(item.1, seq(-3, 3, 1), 0)
+#' }
 #' @references{
 #'   \insertRef{rasch_probabilistic_1960}{IRTclass}
 #' }
@@ -658,9 +692,11 @@ setMethod(f = "calcJacobian",
 
 #' @rdname calcJacobian-methods
 #' @aliases calcJacobian,item.2pl,numeric-method
-#' @examples 
+#' @examples
+#' \dontrun{ 
 #' item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
 #' j.item.2 = calcJacobian(item.2, seq(-3, 3, 1), 0)
+#' }
 #' @references{
 #'   \insertRef{lord_theory_1952}{IRTclass}
 #'   
@@ -680,9 +716,11 @@ setMethod(f = "calcJacobian",
 
 #' @rdname calcJacobian-methods
 #' @aliases calcJacobian,item.3pl,numeric-method
-#' @examples 
+#' @examples
+#' \dontrun{ 
 #' item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 #' j.item.3 = calcJacobian(item.3, seq(-3, 3, 1), 0)
+#' }
 #' @references{
 #'   \insertRef{birnbaum_latent_1968}{IRTclass}
 #' }
@@ -697,9 +735,11 @@ setMethod(f = "calcJacobian",
 
 #' @rdname calcJacobian-methods
 #' @aliases calcJacobian,item.pc,numeric-method
-#' @examples 
+#' @examples
+#' \dontrun{ 
 #' item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
 #' j.item.4 = calcJacobian(item.4, seq(-3, 3, 1), 0)
+#' }
 #' @references{
 #'   \insertRef{masters_rasch_1982}{IRTclass}
 #'   
@@ -715,9 +755,11 @@ setMethod(f = "calcJacobian",
 
 #' @rdname calcJacobian-methods
 #' @aliases calcJacobian,item.gpc,numeric-method
-#' @examples 
+#' @examples
+#' \dontrun{ 
 #' item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 #' j.item.5 = calcJacobian(item.5, seq(-3, 3, 1), 0)
+#' }
 #' @references{
 #'   \insertRef{muraki_generalized_1992}{IRTclass}
 #' }
@@ -731,9 +773,11 @@ setMethod(f = "calcJacobian",
 
 #' @rdname calcJacobian-methods
 #' @aliases calcJacobian,item.gr,numeric-method
-#' @examples 
+#' @examples
+#' \dontrun{ 
 #' item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
 #' j.item.6 = calcJacobian(item.6, seq(-3, 3, 1), 0)
+#' }
 #' @references{
 #'   \insertRef{samejima_estimation_1969}{IRTclass}
 #' }
@@ -799,7 +843,6 @@ setMethod(f = "calcJacobian",
 #' @param resp Response data
 #' @return Second derivative values of log-likelihoods
 #' 
-#' @export
 #' @docType methods
 #' 
 #' @rdname calcHessian-methods
@@ -816,9 +859,11 @@ setGeneric(name = "calcHessian",
 
 #' @rdname calcHessian-methods
 #' @aliases calcHessian,item.1pl,numeric-method
-#' @examples 
+#' @examples
+#' \dontrun{ 
 #' item.1 = new("item.1pl", difficulty = 0.5)
 #' h.item.1 = calcHessian(item.1, seq(-3, 3, 1), 0)
+#' }
 #' @references{
 #'   \insertRef{rasch_probabilistic_1960}{IRTclass}
 #' }
@@ -832,9 +877,11 @@ setMethod(f = "calcHessian",
 
 #' @rdname calcHessian-methods
 #' @aliases calcHessian,item.2pl,numeric-method
-#' @examples 
+#' @examples
+#' \dontrun{ 
 #' item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
 #' h.item.2 = calcHessian(item.2, seq(-3, 3, 1), 0)
+#' }
 #' @references{
 #'   \insertRef{lord_theory_1952}{IRTclass}
 #'   
@@ -854,9 +901,11 @@ setMethod(f = "calcHessian",
 
 #' @rdname calcHessian-methods
 #' @aliases calcHessian,item.3pl,numeric-method
-#' @examples 
+#' @examples
+#' \dontrun{ 
 #' item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 #' h.item.3 = calcHessian(item.3, seq(-3, 3, 1), 0)
+#' }
 #' @references{
 #'   \insertRef{birnbaum_latent_1968}{IRTclass}
 #' }
@@ -871,9 +920,11 @@ setMethod(f = "calcHessian",
 
 #' @rdname calcHessian-methods
 #' @aliases calcHessian,item.pc,numeric-method
-#' @examples 
+#' @examples
+#' \dontrun{ 
 #' item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
 #' h.item.4 = calcHessian(item.4, seq(-3, 3, 1), 0)
+#' }
 #' @references{
 #'   \insertRef{masters_rasch_1982}{IRTclass}
 #'   
@@ -889,9 +940,11 @@ setMethod(f = "calcHessian",
 
 #' @rdname calcHessian-methods
 #' @aliases calcHessian,item.gpc,numeric-method
-#' @examples 
+#' @examples
+#' \dontrun{ 
 #' item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 #' h.item.5 = calcHessian(item.5, seq(-3, 3, 1), 0)
+#' }
 #' @references{
 #'   \insertRef{muraki_generalized_1992}{IRTclass}
 #' }
@@ -905,9 +958,11 @@ setMethod(f = "calcHessian",
 
 #' @rdname calcHessian-methods
 #' @aliases calcHessian,item.gr,numeric-method
-#' @examples 
+#' @examples
+#' \dontrun{ 
 #' item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
 #' h.item.6 = calcHessian(item.6, seq(-3, 3, 1), 0)
+#' }
 #' @references{
 #'   \insertRef{samejima_estimation_1969}{IRTclass}
 #' }

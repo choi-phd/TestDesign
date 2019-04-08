@@ -3,3 +3,6 @@
 ^run_47h$
 ^deploy$
 ^data-raw$
+^\.html$
+^\.rmd$
+^tutorial$
