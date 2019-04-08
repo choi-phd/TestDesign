@@ -97,7 +97,7 @@ setClass("test.cluster",
 #'
 #' @slot itemSelection A list containing item selection criteria.
 #' \itemize{
-#'   \item{\code{method}} The type of criteria. Accepts one of \code{MAXINFO, TIF, TCC}
+#'   \item{\code{method}} The type of criteria. Accepts one of \code{MFI, MPWI}
 #'   \item{\code{infoType}} The type of information. Accepts \code{FISHER}.
 #'   \item{\code{initialTheta}} 
 #'   \item{\code{fixedTheta}} 

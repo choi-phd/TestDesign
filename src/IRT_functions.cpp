@@ -10,8 +10,6 @@ using namespace Rcpp;
 //' @param item_parm A nice parameter
 //' @param ncat A nice parameter
 //' @param model A nice parameter
-//' 
-//' @export
 // [[Rcpp::export]]
 NumericVector calc_info_EB(NumericVector x,
                            NumericMatrix item_parm,
@@ -42,8 +40,6 @@ NumericVector calc_info_EB(NumericVector x,
 //' @param ncat A nice parameter
 //' @param model A nice parameter
 //' @param useEAP A nice parameter
-//' 
-//' @export
 // [[Rcpp::export]]
 NumericVector calc_info_FB(NumericVector x,
                            List items_list,
@@ -155,8 +151,6 @@ NumericVector calc_info_FB(NumericVector x,
 //' @param items_list A nice parameter
 //' @param ncat A nice parameter
 //' @param model A nice parameter
-//' 
-//' @export
 // [[Rcpp::export]]
 NumericVector calc_MI_FB(NumericVector x,
                          List items_list,
@@ -926,8 +920,6 @@ NumericMatrix theta_EAP_matrix(NumericVector theta_grid,
 //' @param model A nice parameter
 //' @param prior A nice parameter
 //' @param prior_parm A nice parameter
-//' 
-//' @export
 // [[Rcpp::export]]
 NumericVector theta_EB(const int& nx,
                        const double& theta_init,
@@ -989,8 +981,6 @@ NumericVector theta_EB(const int& nx,
 //' @param model A nice parameter
 //' @param prior A nice parameter
 //' @param prior_parm A nice parameter
-//' 
-//' @export
 // [[Rcpp::export]]
 NumericVector theta_EB_single(const int& nx,
                               const double& theta_init,
@@ -1051,8 +1041,6 @@ NumericVector theta_EB_single(const int& nx,
 //' @param model A nice parameter
 //' @param prior A nice parameter
 //' @param prior_parm A nice parameter
-//' 
-//' @export
 // [[Rcpp::export]]
 NumericVector theta_FB(const int& nx,
                        const double& theta_init,
@@ -1148,8 +1136,6 @@ NumericVector theta_FB(const int& nx,
 //' @param model A nice parameter
 //' @param prior A nice parameter
 //' @param prior_parm A nice parameter
-//' 
-//' @export
 // [[Rcpp::export]]
 NumericVector theta_FB_single(const int& nx,
                               const double& theta_init,

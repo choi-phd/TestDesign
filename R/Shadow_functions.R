@@ -32,7 +32,7 @@ NULL
 #' @param verbosity Verbosity level.
 #' @param time_limit Time limit to be passed onto solver.
 #' @param gap_limit Gap limit to be passed onto solver.
-#' @param ... Only used when \code{solver} is \code{SYMPHONY}. Additional parameters to be passed onto \code{\link[Rsymphony]{Rsymphony_solve_LP}}.
+#' @param ... Only used when \code{solver} is \code{SYMPHONY}. Additional parameters to be passed onto the solver.
 #' 
 #' @return An output
 #'
@@ -484,8 +484,6 @@ setMethod(f = "plotCAT",
 #' @param maxIter A nice parameter
 #' @param conv A nice parameter
 #' @param startTheta A nice parameter
-#' 
-#' @export
 calcRP = function(object, rp = .50, maxIter = 100, conv = 0.0001, startTheta = 0) {
   RP = numeric(object@ni)
   for (i in 1:object@ni) {
@@ -784,7 +782,6 @@ setMethod(f = "MakeTest",
 #' 
 #' @docType methods
 #' @rdname MakeTestCluster-methods
-#' @export
 setGeneric(name = "MakeTestCluster",
            def = function(object, theta, trueTheta) {
              standardGeneric("MakeTestCluster")
@@ -797,7 +794,6 @@ setGeneric(name = "MakeTestCluster",
 #' 
 #' @docType methods
 #' @rdname MakeTestCluster-methods
-#' @export
 setMethod(f = "MakeTestCluster",
           signature = c("pool.cluster", "numeric", "numeric"),
           definition = function(object, theta, trueTheta) {
@@ -815,7 +811,6 @@ setMethod(f = "MakeTestCluster",
 #' 
 #' @docType methods
 #' @rdname MakeTestCluster-methods
-#' @export
 setMethod(f = "MakeTestCluster",
           signature = c("pool.cluster", "numeric", "list"),
           definition = function(object, theta, trueTheta) {
@@ -838,7 +833,6 @@ setMethod(f = "MakeTestCluster",
 #' 
 #' @docType methods
 #' @rdname MLE-methods
-#' @export
 # TODO: define methods to score test data using MLE
 setGeneric(name = "MLE",
            def = function(object, startTheta = NULL, rangeTheta = c(-4, 4), maxIter = 100, crit = 0.001, select = NULL) {
@@ -852,7 +846,6 @@ setGeneric(name = "MLE",
 #' 
 #' @docType methods
 #' @rdname MLE-methods
-#' @export
 setMethod(f = "MLE",
           signature = "test",
           definition = function(object, startTheta = NULL, rangeTheta = c(-4, 4), maxIter = 100, crit = 0.001, select = NULL) {
@@ -982,7 +975,6 @@ setMethod(f = "eap",
 #' 
 #' @docType methods
 #' @rdname eaparray-methods
-#' @export
 # define methods to score test data using EAP
 setGeneric(name = "EAP",
            def = function(object, prior, select = NULL, resetPrior = FALSE) {
@@ -996,7 +988,6 @@ setGeneric(name = "EAP",
 #' 
 #' @docType methods
 #' @rdname eaparray-methods
-#' @export
 setMethod(f = "EAP",
           signature = "test",
           definition = function(object, prior, select = NULL, resetPrior = FALSE) {
@@ -1041,7 +1032,6 @@ setMethod(f = "EAP",
 #' 
 #' @docType methods
 #' @rdname eaparray-methods
-#' @export
 setMethod(f = "EAP",
           signature = "test.cluster",
           definition = function(object, prior, select = NULL, resetPrior = FALSE) {
@@ -1100,8 +1090,6 @@ subsetItemPool = function(pool, select = NULL) {
 #' 
 #' @param pools A nice parameter
 #' @param names A nice parameter
-#' 
-#' @export
 MakeItemPoolCluster = function(pools, names = NULL) {
   np = length(pools)
   if (np == 0) {
@@ -2348,8 +2336,6 @@ addTrans = function(color,trans)
 #' @param PDF A nice parameter
 #' @param maxRate A nice parameter
 #' @param discardFirst A nice parameter
-#' 
-#' @export
 plotEligibilityStats = function(config, object = NULL, objectNoFading = NULL, file = NULL, fileNoFading = NULL, segment = 1, items = c(1), PDF = NULL, maxRate = 0.25, discardFirst = NULL) {
   
   fadingFactor = config@exposureControl$fadingFactor
@@ -2440,8 +2426,6 @@ plotEligibilityStats = function(config, object = NULL, objectNoFading = NULL, fi
 #' @param x A nice parameter
 #' @param y A nice parameter
 #' @param conditional A nice parameter
-#' 
-#' @export
 RMSE = function(x, y, conditional = TRUE) {
   if (length(x) != length(y)) {
     stop("length(x) and length(y) are not equal")
@@ -2460,8 +2444,6 @@ RMSE = function(x, y, conditional = TRUE) {
 #' 
 #' @param RMSE.foc A nice parameter
 #' @param RMSE.ref A nice parameter
-#' 
-#' @export
 RE = function(RMSE.foc, RMSE.ref) {
   if (length(RMSE.foc) != length(RMSE.ref)) {
     stop("length(x) and length(y) are not equal")
@@ -2485,8 +2467,6 @@ RE = function(RMSE.foc, RMSE.ref) {
 #' @param constraints A nice parameter
 #' @param usageMatrix A nice parameter
 #' @param trueTheta A nice parameter
-#' 
-#' @export
 checkConstraints = function(constraints, usageMatrix, trueTheta = NULL) {
   Constraints = constraints$Constraints
   ListConstraints = constraints$ListConstraints
@@ -2687,8 +2667,6 @@ plotRMSE = function(..., title = NULL, legendTitle = NULL, legendLabels = NULL, 
 #' @param width A nice parameter
 #' @param height A nice parameter
 #' @param mfrow A nice parameter
-#' 
-#' @export
 plotExposureRateBySegment = function(object, config, maxRate = 0.25, pdfFile = NULL, width = 7, height = 6, mfrow = c(2, 4)) {
   trueTheta = object$trueTheta
   estTheta = object$finalThetaEst
@@ -2764,8 +2742,6 @@ plotExposureRateBySegment = function(object, config, maxRate = 0.25, pdfFile = N
 #' @param width A nice parameter
 #' @param height A nice parameter
 #' @param mfrow A nice parameter
-#' 
-#' @export
 plotExposureRate = function(object, config = NULL, maxRate = 0.25, theta = "Estimated", segmentCut = NULL, color = "red", pdfFile = NULL, width = 7, height = 6, mfrow = c(2, 4)) {
   trueTheta = object$trueTheta
   estTheta = object$finalThetaEst
@@ -2862,8 +2838,6 @@ plotExposureRate = function(object, config = NULL, maxRate = 0.25, theta = "Esti
 #' @param mfrow A nice parameter
 #' @param burnIn A nice parameter
 #' @param retain A nice parameter
-#' 
-#' @export
 plotExposureRateFinal = function(object, config =NULL, maxRate = 0.25, theta = "Estimated", segmentCut = NULL, color = "red", pdfFile = NULL, width = 7, height = 6, mfrow = c(2, 4), burnIn = 0, retain = NULL) {
   #object is an instance of the Shadow.output class
   trueTheta = object$trueTheta
@@ -3017,8 +2991,6 @@ plotExposureRateFinal = function(object, config =NULL, maxRate = 0.25, theta = "
 #' @param height A nice parameter
 #' @param color A nice parameter
 #' @param mfrow A nice parameter
-#' 
-#' @export
 plotExposureRateFinalFlag = function(object, pool, theta = seq(-3, 3, .1), flagCriterior = 0.4, pdfFile = NULL, width = 7, height = 6, color = "red", mfrow = c(2, 4)) {
   #object is an output from plotExposureRateFinal
   #pool is of class item.pool
@@ -3077,8 +3049,6 @@ plotExposureRateFinalFlag = function(object, pool, theta = seq(-3, 3, .1), flagC
 #' @param pdfFile A nice parameter
 #' @param width A nice parameter
 #' @param height A nice parameter
-#' 
-#' @export
 plotAvgSegmentVisit = function(object, pdfFile = NULL, width = 7, height = 6) {
   #object is an output from plotExposureRateFinal
   #lattice xyplot is not automatically generated within a function; it needs to be printed using the print() function
@@ -3157,8 +3127,6 @@ plotInfo = function(object, theta, infoType = "FISHER", select = NULL, pdfFile =
 #' @param color A nice parameter
 #' @param width A nice parameter
 #' @param height A nice parameter
-#' 
-#' @export
 plotInfoOverlay = function(object, theta, infoType = "FISHER", select = NULL, pdfFile = NULL, color = "red", width = 7, height = 6) {
   if (toupper(infoType) == "FISHER") {
     Info = calcFisher(object, theta)

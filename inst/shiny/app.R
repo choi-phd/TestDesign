@@ -2,7 +2,6 @@ library(shiny)
 library(shinythemes)
 library(shinyWidgets)
 library(shinyjs)
-library(IRTclass)
 library(Shadow)
 library(DT)
 
@@ -34,7 +33,7 @@ label, .form-group, .progress {
         tags$style(type="text/css", ".span4 { min-width: 100%; max-width: 100%; }"),
         tags$style(type="text/css", ".well { min-width: 100%; max-width: 100%; }")
       ),
-      helpText("This is a demo of Adaptive Test Assembly (ATA)."),
+      helpText("This is a demo of Optimal Test Assembly."),
 
       dropdownButton(
 
@@ -52,7 +51,7 @@ label, .form-group, .progress {
           "text/csv",
           "text/comma-separated-values,text/plain",
           ".csv")),
-        fileInput("const_file", buttonLabel = "Solver constraints", label = NULL, accept = c(
+        fileInput("const_file", buttonLabel = "Constraints", label = NULL, accept = c(
           "text/csv",
           "text/comma-separated-values,text/plain",
           ".csv")),
@@ -71,7 +70,7 @@ label, .form-group, .progress {
 
       radioGroupButtons(
         inputId = "problemtype",
-        choiceNames = c("Fixed-length", "Shadow"),
+        choiceNames = c("Fixed", "Adaptive"),
         choiceValues = 1:2,
         selected = 1,
         justified = TRUE
@@ -93,7 +92,7 @@ label, .form-group, .progress {
 
       checkboxGroupButtons(
         inputId = "maxinfo_button",
-        choices = c("Check allowed info range"),
+        choices = c("Check obtainable info range"),
         checkIcon = list(yes = icon("less-than-equal"), no = icon("less-than-equal")),
         justified = TRUE
       ),
@@ -191,7 +190,9 @@ label, .form-group, .progress {
         circle = FALSE,
         icon = icon("cog"), width = "100%",
         label = "Refresh policy"
-      )
+      ),
+
+      downloadButton("export_data", "Export data")
     ),
 
 
@@ -213,29 +214,29 @@ label, .form-group, .progress {
       hr(),
       tabsetPanel(id = "tabs",
         tabPanel("Main",
-                 plotOutput("plotoutput", width = "100%", height = "700px"),
+                 plotOutput("plotoutput", width = "100%", height = "65vh"),
                  value = 1),
-        tabPanel("Result items",
-                 plotOutput("shadowplot", width = "100%", height = "700px"),
+        tabPanel("Output",
+                 plotOutput("shadowplot", width = "100%", height = "65vh"),
                  value = 2),
-        tabPanel("Result items",
-                 style = "overflow-y:scroll; max-height: 700px",
+        tabPanel("Output",
+                 style = "overflow-y:scroll; max-height: 65vh",
                  DTOutput("results"),
                  value = 3),
         tabPanel("Item parameters",
-                 style = "overflow-y:scroll; max-height: 700px",
+                 style = "overflow-y:scroll; max-height: 65vh",
                  DTOutput("table_itempool"),
                  value = 4),
         tabPanel("Item attributes",
-                 style = "overflow-y:scroll; max-height: 700px",
+                 style = "overflow-y:scroll; max-height: 65vh",
                  DTOutput("table_itemattrib"),
                  value = 5),
         tabPanel("Stimulus attributes",
-                 style = "overflow-y:scroll; max-height: 700px",
+                 style = "overflow-y:scroll; max-height: 65vh",
                  DTOutput("table_stimattrib"),
                  value = 6),
         tabPanel("Constraints",
-                 style = "overflow-y:scroll; max-height: 700px",
+                 style = "overflow-y:scroll; max-height: 65vh",
                  DTOutput("table_constraints"),
                  value = 7)
 
@@ -249,9 +250,14 @@ is_text_parsable = function(arg.text){
   return(txt == arg.text)
 }
 
+return_object_or_null = function(arg.object){
+  if (is.null(arg.object)) return(NULL)
+  return(arg.object)
+}
+
 # Define server logic required to draw a histogram
 server <- function(input, output, session) {
-  v = reactiveValues(itempool.exists = F, const.exists = F, content.exists = F, stimattrib.exists = F)
+  v = reactiveValues(itempool.exists = F, const.exists = F, content.exists = F, stimattrib.exists = F, problemtype = 0)
 
   observeEvent(input$itempool_file, {
     if (!is.null(input$itempool_file)){
@@ -299,7 +305,7 @@ server <- function(input, output, session) {
       if (class(v$const) == "list"){
         v$const.exists = TRUE
         v$text = "Step 3. Constraints: OK. Press button to run solver."
-        enable("runsolver")
+        shinyjs::enable("runsolver")
       } else {
         v$const.exists = FALSE
         v$text = "Step 3 Error: Constraints are not in the correct format."
@@ -358,19 +364,19 @@ server <- function(input, output, session) {
   })
 
   observeEvent(input$simulee_id, {
-
-    if (!is.null(v$fit)){
-      if (is_text_parsable(input$simulee_id)){
-        eval(parse(text = paste0("simulee_id = c(", input$simulee_id, ")[1]")))
-        if (simulee_id <= input$n_simulees)
-          v$simulee_id = simulee_id
-      } else {
-        v$text = "Number of simulees should be an integer."
-        break
+    if (v$problemtype == 2){
+      if (!is.null(v$fit)){
+        if (is_text_parsable(input$simulee_id)){
+          eval(parse(text = paste0("simulee_id = c(", input$simulee_id, ")[1]")))
+          if (simulee_id <= v$n_simulees)
+            v$simulee_id = simulee_id
+        } else {
+          v$text = "Number of simulees should be an integer."
+          break
+        }
+        v$plotoutput = plotCAT(v$fit$output[[v$simulee_id]])
+        v$shadowplot = plotShadow(v$fit$output[[v$simulee_id]], v$const)
       }
-
-      v$plotoutput = plotCAT(v$fit$output[[v$simulee_id]])
-      v$shadowplot = plotShadow(v$fit$output[[v$simulee_id]], v$const)
     }
   })
 
@@ -386,205 +392,187 @@ server <- function(input, output, session) {
   })
 
   observeEvent(input$runsolver, {
-    if (input$problemtype == 1 & v$const.exists){
 
-      shinyjs::disable("runsolver")
+    shinyjs::disable("runsolver")
 
-      conf = new("ATA.config")
+    for (do in 1){
 
-      conf@itemSelection$method = input$objtype
-      conf@MIP$solver = input$solvertype
+      if (input$problemtype == 1 & v$const.exists){
 
-      if (is_text_parsable(input$thetas)){
-        eval(parse(text = paste0("conf@itemSelection$targetLocation = c(", input$thetas, ")")))
-      } else {
-        v$text = "Theta values should be comma-separated numbers."
-        shinyjs::enable("runsolver")
-        break
-      }
+        v$problemtype = 1
 
-      if (is_text_parsable(input$targets)){
-        eval(parse(text = paste0("conf@itemSelection$targetValue = c(", input$targets, ")")))
-      } else {
-        v$text = "Target values should be comma-separated numbers."
-        shinyjs::enable("runsolver")
-        break
-      }
+        conf = new("ATA.config")
 
-      conf@itemSelection$targetWeight = rep(1, length(conf@itemSelection$targetLocation))
+        conf@itemSelection$method = input$objtype
+        conf@MIP$solver = input$solvertype
 
-      v$text = "Solving.."
-
-      v$fit = ATA(conf, v$const, T)
-
-      if (is.null(v$fit$MIP)){
-        v$text = "Solver did not find a solution. Try relaxing the target values."
-      } else {
-        v$plotoutput = v$fit$plot
-
-        v$text = paste0(conf@MIP$solver, ": solved in ", sprintf("%3.3f", v$fit$solve.time[3]), "s")
-        selected.idx = which(v$fit$MIP$solution == 1)
-        selected.item.names = v$itemattrib[selected.idx,][['ID']]
-        if (v$content.exists){
-          idx.from.content = v$content$ID %in% selected.item.names
-          v$results = v$content[idx.from.content,]
+        if (is_text_parsable(input$thetas)){
+          eval(parse(text = paste0("conf@itemSelection$targetLocation = c(", input$thetas, ")")))
         } else {
-          v$results = v$itemattrib[selected.idx,]
+          v$text = "Theta values should be comma-separated numbers."
+          break
+        }
+
+        if (is_text_parsable(input$targets)){
+          eval(parse(text = paste0("conf@itemSelection$targetValue = c(", input$targets, ")")))
+        } else {
+          v$text = "Target values should be comma-separated numbers."
+          break
+        }
+
+        conf@itemSelection$targetWeight = rep(1, length(conf@itemSelection$targetLocation))
+
+        v$text = "Solving.."
+
+        v$fit = ATA(conf, v$const, T)
+
+        if (is.null(v$fit$MIP)){
+          v$text = "Solver did not find a solution. Try relaxing the target values."
+        } else {
+          v$plotoutput = v$fit$plot
+
+          v$text = paste0(conf@MIP$solver, ": solved in ", sprintf("%3.3f", v$fit$solve.time[3]), "s")
+          v$selected.idx = which(v$fit$MIP$solution == 1)
+          v$selected.item.names = v$itemattrib[v$selected.idx,][['ID']]
+          if (v$content.exists){
+            v$idx.from.content = v$content$ID %in% v$selected.item.names
+            v$results = v$content[v$idx.from.content,]
+          } else {
+            v$results = v$itemattrib[v$selected.idx,]
+          }
         }
       }
 
-      updateCheckboxGroupButtons(
-        session = session,
-        inputId = "runsolver",
-        selected = character(0)
-      )
-      shinyjs::enable("runsolver")
-    }
+      if (input$problemtype == 2 & v$const.exists){
 
+        v$problemtype = 2
 
-    if (input$problemtype == 2 & v$const.exists){
+        if (input$exposure_method == "BIGM-BAYESIAN"){
+          if (!input$interim_method %in% c("EB", "FB")){
+            exposure_method_legit = F
+            v$text = "BIGM-BAYESIAN requires interim methods EB or FB."
+            break
+        }}
 
-      shinyjs::disable("runsolver")
-
-      if (input$exposure_method == "BIGM-BAYESIAN"){
-        if (!input$interim_method %in% c("EB", "FB")){
-          exposure_method_legit = F
-          v$text = "BIGM-BAYESIAN requires interim methods EB or FB."
-          shinyjs::enable("runsolver")
-          break
-      }}
-
-      if (is_text_parsable(input$n_simulees)){
-        eval(parse(text = paste0("n_simulees = c(", input$n_simulees, ")[1]")))
-        updateProgressBar(session = session, id = "pb", value = 0, total = n_simulees)
-      } else {
-        v$text = "Number of simulees should be an integer."
-        shinyjs::enable("runsolver")
-        break
-      }
-
-      if (is_text_parsable(input$simulee_id)){
-        eval(parse(text = paste0("v$simulee_id = c(", input$simulee_id, ")[1]")))
-      } else {
-        v$text = "Number of simulees should be an integer."
-        shinyjs::enable("runsolver")
-        break
-      }
-
-      if (is_text_parsable(input$simulee_theta_params)){
-        eval(parse(text = paste0("v$simulee_theta_params = c(", input$simulee_theta_params, ")[1:2]")))
-      } else {
-        v$text = "Theta distribution parameters should be two numbers."
-        shinyjs::enable("runsolver")
-        break
-      }
-
-      if(input$simulee_theta_distribution == "NORMAL"){
-        trueTheta = rnorm(n_simulees, v$simulee_theta_params[1], v$simulee_theta_params[2])
-      }
-      if(input$simulee_theta_distribution == "UNIF"){
-        trueTheta = runif(n_simulees, min = v$simulee_theta_params[1], max = v$simulee_theta_params[2])
-      }
-
-      thetaGrid = seq(-3, 3, 1)
-      testData = MakeTest(v$itempool, thetaGrid, infoType = "FISHER", trueTheta = trueTheta)
-      respData = testData@Data
-
-      conf = new("Shadow.config")
-
-      # parse exposure control settings
-
-      conf@exposureControl$fadingFactor = input$exposure_ff
-
-      if (is_text_parsable(input$exposure_af)){
-        eval(parse(text = paste0("conf@exposureControl$accelerationFactor = c(", input$targets, ")[1]")))
-        if (conf@exposureControl$accelerationFactor < 1){
-          v$text = "Acceleration factor should be at least 1."
-          shinyjs::enable("runsolver")
+        if (is_text_parsable(input$n_simulees)){
+          eval(parse(text = paste0("v$n_simulees = c(", input$n_simulees, ")[1]")))
+          v$n_simulees = min(100, v$n_simulees)
+          updateProgressBar(session = session, id = "pb", value = 0, total = v$n_simulees)
+        } else {
+          v$text = "Number of simulees should be an integer."
           break
         }
-      } else {
-        v$text = "Acceleration factor should be a number."
-        shinyjs::enable("runsolver")
-        break
-      }
 
-      conf@exposureControl$method = input$exposure_method
-      conf@exposureControl$diagnosticStats = TRUE
+        if (is_text_parsable(input$simulee_id)){
+          eval(parse(text = paste0("v$simulee_id = c(", input$simulee_id, ")[1]")))
+        } else {
+          v$text = "Number of simulees should be an integer."
+          break
+        }
 
-      conf@interimTheta$method    = input$interim_method
-      conf@interimTheta$priorDist = input$interim_prior
-      if (is_text_parsable(input$interim_priorpar)){
-        eval(parse(text = paste0("conf@interimTheta$priorPar = c(", input$interim_priorpar, ")")))
-        if (length(conf@interimTheta$priorPar) != 2){
+        if (is_text_parsable(input$simulee_theta_params)){
+          eval(parse(text = paste0("v$simulee_theta_params = c(", input$simulee_theta_params, ")[1:2]")))
+        } else {
+          v$text = "Theta distribution parameters should be two numbers."
+          break
+        }
+
+        if(input$simulee_theta_distribution == "NORMAL"){
+          trueTheta = rnorm(v$n_simulees, v$simulee_theta_params[1], v$simulee_theta_params[2])
+        }
+        if(input$simulee_theta_distribution == "UNIF"){
+          trueTheta = runif(v$n_simulees, min = v$simulee_theta_params[1], max = v$simulee_theta_params[2])
+        }
+
+        thetaGrid = seq(-3, 3, 1)
+        testData = MakeTest(v$itempool, thetaGrid, infoType = "FISHER", trueTheta = trueTheta)
+        respData = testData@Data
+
+        conf = new("Shadow.config")
+
+        # parse exposure control settings
+
+        conf@exposureControl$fadingFactor = input$exposure_ff
+
+        if (is_text_parsable(input$exposure_af)){
+          eval(parse(text = paste0("conf@exposureControl$accelerationFactor = c(", input$targets, ")[1]")))
+          if (conf@exposureControl$accelerationFactor < 1){
+            v$text = "Acceleration factor should be at least 1."
+            break
+          }
+        } else {
+          v$text = "Acceleration factor should be a number."
+          break
+        }
+
+        conf@exposureControl$method = input$exposure_method
+        conf@exposureControl$diagnosticStats = TRUE
+
+        conf@itemSelection$method = input$itemselection_method
+
+        conf@interimTheta$method    = input$interim_method
+        conf@interimTheta$priorDist = input$interim_prior
+        if (is_text_parsable(input$interim_priorpar)){
+          eval(parse(text = paste0("conf@interimTheta$priorPar = c(", input$interim_priorpar, ")")))
+          if (length(conf@interimTheta$priorPar) != 2){
+            v$text = "Interim prior parameters should be two values."
+            break
+          }
+        } else {
           v$text = "Interim prior parameters should be two values."
-          shinyjs::enable("runsolver")
           break
         }
-      } else {
-        v$text = "Interim prior parameters should be two values."
-        shinyjs::enable("runsolver")
-        break
-      }
 
-      conf@finalTheta$method      = input$final_method
-      conf@finalTheta$priorDist   = input$final_prior
-
-      if (is_text_parsable(input$final_priorpar)){
-        eval(parse(text = paste0("conf@finalTheta$priorPar = c(", input$final_priorpar, ")")))
-        if (length(conf@finalTheta$priorPar) != 2){
+        conf@finalTheta$method      = input$final_method
+        conf@finalTheta$priorDist   = input$final_prior
+        if (is_text_parsable(input$final_priorpar)){
+          eval(parse(text = paste0("conf@finalTheta$priorPar = c(", input$final_priorpar, ")")))
+          if (length(conf@finalTheta$priorPar) != 2){
+            v$text = "Final prior parameters should be two values."
+            break
+          }
+        } else {
           v$text = "Final prior parameters should be two values."
-          shinyjs::enable("runsolver")
           break
         }
-      } else {
-        v$text = "Final prior parameters should be two values."
-        shinyjs::enable("runsolver")
-        break
+
+        conf@refreshPolicy$method = input$refreshpolicy
+        conf@MIP$solver = input$solvertype
+
+        v$text = "Simulating.."
+        v$time = Sys.time()
+        v$fit <- Shadow(v$itempool, conf, trueTheta, Constraints = v$const, prior = NULL, priorPar = c(0, 1), Data = respData, session = session)
+
+        if (v$simulee_id > v$n_simulees) v$simulee_id = 1
+
+        v$plotoutput = plotCAT(v$fit$output[[v$simulee_id]])
+        v$shadowplot = plotShadow(v$fit$output[[v$simulee_id]], v$const)
+
+        v$time = Sys.time() - v$time
+
+        v$text = paste0(conf@MIP$solver, ": simulation complete in ", sprintf("%3.3f", v$time), "s")
       }
-
-      conf@itemSelection$method = input$itemselection_method
-      conf@refreshPolicy$method = input$refreshpolicy
-      conf@MIP$solver = input$solvertype
-
-      v$text = "Simulating.."
-      v$time = Sys.time()
-      v$fit <- Shadow(v$itempool, conf, trueTheta, Constraints = v$const, prior = NULL, priorPar = c(0, 1), Data = respData, session = session)
-
-      v$plotoutput = plotCAT(v$fit$output[[v$simulee_id]])
-      v$shadowplot = plotShadow(v$fit$output[[v$simulee_id]], v$const)
-        
-      v$time = Sys.time() - v$time
-        
-      v$text = paste0(conf@MIP$solver, ": simulation complete in ", sprintf("%3.3f", v$time), "s")
-      
-      updateCheckboxGroupButtons(
-        session = session,
-        inputId = "runsolver",
-        selected = character(0)
-      )
-
-      shinyjs::enable("runsolver")
     }
+
+    updateCheckboxGroupButtons(
+      session = session,
+      inputId = "runsolver",
+      selected = character(0)
+    )
+    shinyjs::enable("runsolver")
   })
-
-
 
   output$table_itempool <- renderDT({
     if (is.null(v$itempool)) return()
     v$itempool@ipar},
-    server = F,
-    selection = list(selected = c(0)),
     options = list(pageLength = 100)
   )
-  output$table_itemattrib <- renderDT({
-    if (is.null(v$itemattrib)) return()
-    v$itemattrib},
+  output$table_itemattrib <- renderDT(
+    return_object_or_null(v$itemattrib),
     options = list(pageLength = 100)
   )
-  output$table_stimattrib <- renderDT({
-    if (is.null(v$stimattrib)) return()
-    v$stimattrib},
+  output$table_stimattrib <- renderDT(
+    return_object_or_null(v$stimattrib),
     options = list(pageLength = 100)
   )
   output$table_constraints <- renderDT({
@@ -592,25 +580,92 @@ server <- function(input, output, session) {
     v$const$Constraints},
     options = list(pageLength = 100)
   )
-  output$results <- renderDT({
-    if (is.null(v$results)) return()
-    v$results},
+  output$results <- renderDT(
+    return_object_or_null(v$results),
     options = list(pageLength = 100)
   )
 
+  output$textoutput <- renderText(return_object_or_null(v$text))
+  output$plotoutput <- renderPlot(return_object_or_null(v$plotoutput))
+  output$shadowplot <- renderPlot(return_object_or_null(v$shadowplot))
 
-  output$textoutput <- renderText({
-    if (is.null(v$text)) return()
-    v$text
-  })
-  output$plotoutput <- renderPlot({
-    if (is.null(v$plotoutput)) return()
-    v$plotoutput
-  })
-  output$shadowplot <- renderPlot({
-    if (is.null(v$shadowplot)) return()
-    v$shadowplot
-  })
+  output$export_data <- downloadHandler(
+    filename = function() {
+      paste("data-", Sys.Date(), ".zip", sep="")
+    },
+    content = function(fname) {
+      fs <- c()
+      tmpdir <- tempdir()
+      setwd(tempdir())
+
+      if (!is.null(v$itempool)){
+        path = "raw_data_item_params.csv"
+        fs = c(fs, path)
+        write.csv(v$itempool@ipar, path)
+      }
+      if (!is.null(v$itemattrib)){
+        path = "raw_data_item_attribs.csv"
+        fs = c(fs, path)
+        write.csv(v$itemattrib, path)
+      }
+      if (!is.null(v$stimattrib)){
+        path = "raw_data_stim_attribs.csv"
+        fs = c(fs, path)
+        write.csv(v$stimattrib, path)
+      }
+      if (!is.null(v$const)){
+        path = "raw_data_constraints.csv"
+        fs = c(fs, path)
+        write.csv(v$const$Constraints, path)
+      }
+
+      if (v$problemtype == 1){
+        if (!is.null(v$plotoutput)){
+          path = "plot.pdf"
+          fs = c(fs, path)
+          pdf(path)
+          p = v$plotoutput
+          print(p)
+          dev.off()
+        }
+        if (v$content.exists){
+          if (!is.null(v$idx.from.content)){
+            path = "selected_item_contents.csv"
+            fs = c(fs, path)
+            write.csv(v$content[v$idx.from.content,], path)
+          }
+        }
+        if (!is.null(v$itemattrib)){
+          if (!is.null(v$selected.idx)){
+            path = "selected_item_attribs.csv"
+            fs = c(fs, path)
+            write.csv(v$itemattrib[v$selected.idx,], path)
+          }
+        }
+      }
+
+      if (v$problemtype == 2){
+        if (!is.null(v$fit)){
+          path = paste0("theta_plot_", v$simulee_id, ".pdf")
+          fs <- c(fs, path)
+          pdf(path)
+          p = plotCAT(v$fit$output[[v$simulee_id]])
+          print(p)
+          dev.off()
+        }
+        if (!is.null(v$fit)){
+          path = paste0("shadowtest_chart_", v$simulee_id, ".pdf")
+          fs <- c(fs, path)
+          pdf(path)
+          p = plotShadow(v$fit$output[[v$simulee_id]], v$const)
+          print(p)
+          dev.off()
+        }
+      }
+      zip(zipfile = fname, files = fs, flags = "-j")
+    },
+    contentType = "application/zip"
+  )
 }
 
 # Run the application
