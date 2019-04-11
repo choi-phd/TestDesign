@@ -43,18 +43,30 @@ First derivative values
 An S4 generic and its methods to calculate the first derivative of the probability function
 }
 \examples{
+\dontrun{ 
 item.1 = new("item.1pl", difficulty = 0.5)
 d.item.1 = calcDerivative(item.1, seq(-3, 3, 1))
+}
+\dontrun{ 
 item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
 d.item.2 = calcDerivative(item.2, seq(-3, 3, 1))
+}
+\dontrun{ 
 item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 d.item.3 = calcDerivative(item.3, seq(-3, 3, 1))
+}
+\dontrun{ 
 item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
 d.item.4 = calcDerivative(item.4, seq(-3, 3, 1))
+}
+\dontrun{ 
 item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 d.item.5 = calcDerivative(item.5, seq(-3, 3, 1))
+}
+\dontrun{ 
 item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
 d.item.6 = calcDerivative(item.6, seq(-3, 3, 1))
+}
 \dontrun{
 itemPool.1 = LoadItemPool("C:/item_par.csv")
 d.itemPool.1 = calcDerivative(itemPool.1, seq(-3, 3, 1))

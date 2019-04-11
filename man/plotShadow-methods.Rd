@@ -16,16 +16,14 @@ plotShadow(object, Constraints, sortByDifficulty = FALSE, PDF = NULL)
   sortByDifficulty = FALSE, PDF = NULL)
 }
 \arguments{
-\item{object}{A nice parameter}
+\item{object}{An output from \code{\link{Shadow}} function.}
 
-\item{Constraints}{A nice parameter}
+\item{Constraints}{The constraint object used in obtaining the output.}
 
-\item{sortByDifficulty}{A nice parameter}
+\item{sortByDifficulty}{Sort the items by difficulty.}
 
-\item{PDF}{A nice parameter}
+\item{PDF}{If supplied a filename, save as a PDF file.}
 }
 \description{
-plotShadow
-
-plotShadow
+Draw a chart of shadow tests. The index of a column represents the position of item administration process, and each column represents the item pool.
 }

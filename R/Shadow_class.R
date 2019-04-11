@@ -3,11 +3,13 @@
 
 #' constraint
 #'
-#' @slot CONSTRAINT Character.
-#' @slot mat A matrix.
-#' @slot dir Character.
-#' @slot rhs Numeric.
-#' @slot nc Numeric.
+#' Represents a set of constriants.
+#' 
+#' @slot CONSTRAINT Character. The index of the constraint set.
+#' @slot mat A matrix representing the left-hand side weights. Has nc rows.
+#' @slot dir A vector of length nc. Each entry represents a logical operator relating the left-hand side to the right-hand side.
+#' @slot rhs A vector of length nc. Each entry represents the right-hand side of the constraint.
+#' @slot nc Numeric. The number of constraints represented in this object.
 #' 
 #' @export
 
@@ -97,14 +99,14 @@ setClass("test.cluster",
 #'
 #' @slot itemSelection A list containing item selection criteria.
 #' \itemize{
-#'   \item{\code{method}} The type of criteria. Accepts one of \code{MFI, MPWI}
+#'   \item{\code{method}} The type of criteria. Accepts one of \code{MFI, MPWI, FB, EB}.
 #'   \item{\code{infoType}} The type of information. Accepts \code{FISHER}.
 #'   \item{\code{initialTheta}} 
 #'   \item{\code{fixedTheta}} 
 #' }
 #' @slot contentBalancing A list containing content balancing options.
 #' \itemize{
-#'   \item{\code{method}} The type of balancing method. Accepts \code{NONE}, or \code{STA}.
+#'   \item{\code{method}} The type of balancing method. Accepts one of \code{NONE, STA}.
 #' }
 #' @slot MIP A list containing solver options.
 #' \itemize{
@@ -123,8 +125,8 @@ setClass("test.cluster",
 #' @slot refreshPolicy A list containing refresh policy for obtaining a new shadow test.
 #' \itemize{
 #'   \item{\code{method}} The type of policy. Accepts one of \code{ALWAYS, POSITION, INTERVAL, THRESHOLD, INTERVAL-THRESHOLD, STIMULUS, SET, PASSAGE}.
-#'   \item{\code{interval}}
-#'   \item{\code{threshold}}
+#'   \item{\code{interval}} Integer. Set to 1 to refresh at each position, 2 to refresh at every two positions, and so on.
+#'   \item{\code{threshold}} Numeric. The shadow test is refreshed when the absolute change in theta estimate is greater than this value.
 #'   \item{\code{position}}
 #' }
 #' @slot exposureControl A list.
@@ -291,26 +293,26 @@ setMethod("show", "Shadow.config", function(object) {
 
 #' Shadow.output
 #'
-#' @slot simuleeIndex Numeric.
-#' @slot trueTheta Numeric or NULL.
-#' @slot trueThetaSegment Numeric or NULL.
-#' @slot finalThetaEst Numeric.
-#' @slot finalSeEst Numeric.
-#' @slot administeredItemIndex Numeric.
-#' @slot administeredItemResp Numeric.
-#' @slot administeredStimulusIndex Numeric.
-#' @slot shadowTestRefreshed Logical.
-#' @slot shadowTestFeasible Logical.
-#' @slot solveTime Numeric.
-#' @slot interimThetaEst Numeric.
-#' @slot interimSeEst Numeric.
-#' @slot thetaSegmentIndex Numeric.
+#' @slot simuleeIndex Numeric. The index of the simulee.
+#' @slot trueTheta Numeric or NULL. True theta value of the simulee if supplied in advance.
+#' @slot trueThetaSegment Numeric or NULL. Which segment the true theta value is in.
+#' @slot finalThetaEst Numeric. The estimated theta after the last administered item.
+#' @slot finalSeEst Numeric. The standard error of estimation after the last administered item.
+#' @slot administeredItemIndex Numeric. A vector of item indices administered at each position.
+#' @slot administeredItemResp Numeric. A vector of responses at each position.
+#' @slot administeredStimulusIndex Numeric. A vector of stimulus indices administered at each position.
+#' @slot shadowTestRefreshed Logical. A vector of logical values indicating whether the shadow test was refreshed before administering an item at each position.
+#' @slot shadowTestFeasible Logical. A vector of logical values indicating whether a feasible solution to the shadow test was available in each position.
+#' @slot solveTime Numeric. A vector of values indicating the time taken in obtaining a shadow test. 
+#' @slot interimThetaEst Numeric. A vector containing estimated thetas at each position.
+#' @slot interimSeEst Numeric. A vector containing standard errors at each position.
+#' @slot thetaSegmentIndex Numeric. A vector containing which segments the estimated thetas were in at each position.
 #' @slot prior Numeric.
 #' @slot priorPar Numeric.
 #' @slot posterior Numeric.
 #' @slot posteriorSample Numeric.
 #' @slot likelihood Numeric.
-#' @slot shadowTest A list.
+#' @slot shadowTest A list of vectors containing item indices of the shadow test at each position.
 #' 
 #' @export
 
