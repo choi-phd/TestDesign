@@ -2421,11 +2421,11 @@ plotEligibilityStats = function(config, object = NULL, objectNoFading = NULL, fi
 
 #' RMSE
 #' 
-#' RMSE
+#' Root Mean Squared Error between two vectors.
 #' 
-#' @param x A nice parameter
-#' @param y A nice parameter
-#' @param conditional A nice parameter
+#' @param x A vector of values.
+#' @param y A vector of values.
+#' @param conditional If \code{TRUE}, calculate a conditional RMSE.
 RMSE = function(x, y, conditional = TRUE) {
   if (length(x) != length(y)) {
     stop("length(x) and length(y) are not equal")
@@ -3408,7 +3408,7 @@ iparPosteriorSample_lapply = function(pool, nSample = 500) {
 #' 
 #' iparPosteriorSample_which
 #' 
-#' @param pool A nice parameter
+#' @param pool An \code{item.pool} object.
 #' @param nSample A nice parameter
 #' 
 #' @export

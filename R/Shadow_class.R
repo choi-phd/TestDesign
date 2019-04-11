@@ -106,7 +106,7 @@ setClass("test.cluster",
 #' }
 #' @slot contentBalancing A list containing content balancing options.
 #' \itemize{
-#'   \item{\code{method}} The type of balancing method. Accepts \code{NONE}, or \code{STA}.
+#'   \item{\code{method}} The type of balancing method. Accepts one of \code{NONE, STA}.
 #' }
 #' @slot MIP A list containing solver options.
 #' \itemize{
