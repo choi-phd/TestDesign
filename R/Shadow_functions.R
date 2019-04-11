@@ -3186,13 +3186,12 @@ checkExposureRate = function(object, config) {
 
 #' lnHyperPars
 #' 
-#' lnHyperPars
+#' Calculate hyperparameters for log-normal distribution.
 #' 
-#' @param mean A nice parameter
-#' @param sd A nice parameter
+#' @param mean Mean of the distribution.
+#' @param sd Standard deviation of the distribution.
 #' 
 #' @export
-#calculate hyperparameters for lognormal distribution
 lnHyperPars = function(mean, sd) {
   location = log(mean^2 / sqrt(sd^2 + mean^2))
   scale = sqrt(log(1 + sd^2 / mean^2))
@@ -3201,13 +3200,12 @@ lnHyperPars = function(mean, sd) {
 
 #' logitHyperPars
 #' 
-#' logitHyperPars
+#' Calculate hyperparameters for logit-normal distribution.
 #' 
-#' @param mean A nice parameter
-#' @param sd A nice parameter
+#' @param mean Mean of the distribution.
+#' @param sd Standard deviation of the distribution.
 #' 
 #' @export
-#calculate hyperparameters for logit-normal distribution
 logitHyperPars = function(mean, sd) {
   logitSamples = numeric(10000)
   counter = 0
@@ -3420,7 +3418,7 @@ iparPosteriorSample_which = function(pool, nSample = 500) {
   iparList = vector(mode = "list", length = pool@ni)
   
   items.1pl = which(pool@model == "item.1pl")
-  items.2pl = which(pool@model == "item.1pl")
+  items.2pl = which(pool@model == "item.2pl")
   items.3pl = which(pool@model == "item.3pl")
   items.pc  = which(pool@model == "item.pc")
   items.gpc = which(pool@model == "item.gpc")
