@@ -10,33 +10,33 @@ Shadow.output
 \section{Slots}{
 
 \describe{
-\item{\code{simuleeIndex}}{Numeric.}
+\item{\code{simuleeIndex}}{Numeric. The index of the simulee.}
 
-\item{\code{trueTheta}}{Numeric or NULL.}
+\item{\code{trueTheta}}{Numeric or NULL. True theta value of the simulee if supplied in advance.}
 
-\item{\code{trueThetaSegment}}{Numeric or NULL.}
+\item{\code{trueThetaSegment}}{Numeric or NULL. Which segment the true theta value is in.}
 
-\item{\code{finalThetaEst}}{Numeric.}
+\item{\code{finalThetaEst}}{Numeric. The estimated theta after the last administered item.}
 
-\item{\code{finalSeEst}}{Numeric.}
+\item{\code{finalSeEst}}{Numeric. The standard error of estimation after the last administered item.}
 
-\item{\code{administeredItemIndex}}{Numeric.}
+\item{\code{administeredItemIndex}}{Numeric. A vector of item indices administered at each position.}
 
-\item{\code{administeredItemResp}}{Numeric.}
+\item{\code{administeredItemResp}}{Numeric. A vector of responses at each position.}
 
-\item{\code{administeredStimulusIndex}}{Numeric.}
+\item{\code{administeredStimulusIndex}}{Numeric. A vector of stimulus indices administered at each position.}
 
-\item{\code{shadowTestRefreshed}}{Logical.}
+\item{\code{shadowTestRefreshed}}{Logical. A vector of logical values indicating whether the shadow test was refreshed before administering an item at each position.}
 
-\item{\code{shadowTestFeasible}}{Logical.}
+\item{\code{shadowTestFeasible}}{Logical. A vector of logical values indicating whether a feasible solution to the shadow test was available in each position.}
 
-\item{\code{solveTime}}{Numeric.}
+\item{\code{solveTime}}{Numeric. A vector of values indicating the time taken in obtaining a shadow test.}
 
-\item{\code{interimThetaEst}}{Numeric.}
+\item{\code{interimThetaEst}}{Numeric. A vector containing estimated thetas at each position.}
 
-\item{\code{interimSeEst}}{Numeric.}
+\item{\code{interimSeEst}}{Numeric. A vector containing standard errors at each position.}
 
-\item{\code{thetaSegmentIndex}}{Numeric.}
+\item{\code{thetaSegmentIndex}}{Numeric. A vector containing which segments the estimated thetas were in at each position.}
 
 \item{\code{prior}}{Numeric.}
 
@@ -48,6 +48,6 @@ Shadow.output
 
 \item{\code{likelihood}}{Numeric.}
 
-\item{\code{shadowTest}}{A list.}
+\item{\code{shadowTest}}{A list of vectors containing item indices of the shadow test at each position.}
 }}
 

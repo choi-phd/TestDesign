@@ -3,9 +3,9 @@
 
 #' An S4 class to represent a cluster of item pools
 #' 
-#' @slot np a scalar to indicate the number of item pools in the cluster
-#' @slot pools a list of item.pool class objects
-#' @slot names a character vector of item pool names of length np
+#' @slot np A scalar to indicate the number of item pools in the cluster.
+#' @slot pools A list of \code{item.pool} objects.
+#' @slot names A character vector of item pool names of length np.
 setClass("pool.cluster",
          slots = c(np = "numeric",
                    pools = "list",

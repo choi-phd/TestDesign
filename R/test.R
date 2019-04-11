@@ -93,10 +93,10 @@ if(FALSE){
   
   # Stimulus based ATA
   
-  itempool = LoadItemPool("data-raw/item_pool_RD_45.csv")
-  itemattrib = LoadItemAttrib("data-raw/item_attrib_RD_45.csv", itempool)
-  stimattrib = LoadStAttrib("data-raw/stimulus_attrib_RD_45.csv", itemattrib)
-  const = LoadConstraints("data-raw/constraints_RD_45.csv", itempool, itemattrib, stimattrib)
+  itempool = LoadItemPool("data-raw/item_params_stimbased.csv")
+  itemattrib = LoadItemAttrib("data-raw/item_attribs_stimbased.csv", itempool)
+  stimattrib = LoadStAttrib("data-raw/stim_attribs_stimbased.csv", itemattrib)
+  const = LoadConstraints("data-raw/constraints_stimbased.csv", itempool, itemattrib, stimattrib)
   
   conf = new("ATA.config")
   conf@MIP$solver = "symphony"
@@ -155,6 +155,11 @@ if(FALSE){
   
   fit = try(Shadow(itempool, conf, trueTheta, Constraints = const, prior = NULL, priorPar = c(0, 1), Data = respData))
 
+  
+  names(fit)
+  fit$output[[1]]@trueTheta
+  
+  class(fit$output)
   class(fit)
 
 

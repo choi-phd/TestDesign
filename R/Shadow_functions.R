@@ -26,12 +26,12 @@ NULL
 #' @param xmat A nice parameter
 #' @param xdir A nice parameter
 #' @param xrhs A vector of right-side values.
-#' @param maximize If \code{TRUE}, treat as a maximization problem.
+#' @param maximize If \code{TRUE}, treat as a maximization problem. Otherwise treat as a minimization problem.
 #' @param mps Only used when \code{solver} is \code{SYMPHONY}. If \code{TRUE}, print an MPS representation of the problem for debugging purposes.
 #' @param lp Only used when \code{solver} is \code{SYMPHONY}. If \code{TRUE}, print an LP representation of the problem for debugging purposes.
 #' @param verbosity Verbosity level.
-#' @param time_limit Time limit to be passed onto solver.
-#' @param gap_limit Gap limit to be passed onto solver.
+#' @param time_limit Time limit passed onto the solver.
+#' @param gap_limit Gap limit passed onto the solver.
 #' @param ... Only used when \code{solver} is \code{SYMPHONY}. Additional parameters to be passed onto the solver.
 #' 
 #' @return An output
@@ -192,10 +192,10 @@ saveOutput = function(objectList, file = NULL) {
 
 #' An S4 generic
 #' 
-#' @param object A nice parameter
-#' @param Constraints A nice parameter
-#' @param sortByDifficulty A nice parameter
-#' @param PDF A nice parameter
+#' @param object An output from \code{\link{Shadow}} function.
+#' @param Constraints The constraint object used in obtaining the output.
+#' @param sortByDifficulty Sort the items by difficulty.
+#' @param PDF If supplied a filename, save as a PDF file.
 #' 
 #' @docType methods
 #' @rdname plotShadow-methods
@@ -208,7 +208,7 @@ setGeneric(name = "plotShadow",
 
 #' plotShadow
 #' 
-#' plotShadow
+#' Draw a chart of shadow tests. The index of a column represents the position of item administration process, and each column represents the item pool.
 #' 
 #' @docType methods
 #' @rdname plotShadow-methods
@@ -334,7 +334,7 @@ setMethod(f = "plotShadow",
 
 #' plotShadow
 #' 
-#' plotShadow
+#' @inherit plotShadow
 #' 
 #' @docType methods
 #' @rdname plotShadow-methods
@@ -2421,11 +2421,11 @@ plotEligibilityStats = function(config, object = NULL, objectNoFading = NULL, fi
 
 #' RMSE
 #' 
-#' RMSE
+#' Root Mean Squared Error between two vectors.
 #' 
-#' @param x A nice parameter
-#' @param y A nice parameter
-#' @param conditional A nice parameter
+#' @param x A vector of values.
+#' @param y A vector of values.
+#' @param conditional If \code{TRUE}, calculate a conditional RMSE.
 RMSE = function(x, y, conditional = TRUE) {
   if (length(x) != length(y)) {
     stop("length(x) and length(y) are not equal")
@@ -3186,13 +3186,12 @@ checkExposureRate = function(object, config) {
 
 #' lnHyperPars
 #' 
-#' lnHyperPars
+#' Calculate hyperparameters for log-normal distribution.
 #' 
-#' @param mean A nice parameter
-#' @param sd A nice parameter
+#' @param mean Mean of the distribution.
+#' @param sd Standard deviation of the distribution.
 #' 
 #' @export
-#calculate hyperparameters for lognormal distribution
 lnHyperPars = function(mean, sd) {
   location = log(mean^2 / sqrt(sd^2 + mean^2))
   scale = sqrt(log(1 + sd^2 / mean^2))
@@ -3201,13 +3200,12 @@ lnHyperPars = function(mean, sd) {
 
 #' logitHyperPars
 #' 
-#' logitHyperPars
+#' Calculate hyperparameters for logit-normal distribution.
 #' 
-#' @param mean A nice parameter
-#' @param sd A nice parameter
+#' @param mean Mean of the distribution.
+#' @param sd Standard deviation of the distribution.
 #' 
 #' @export
-#calculate hyperparameters for logit-normal distribution
 logitHyperPars = function(mean, sd) {
   logitSamples = numeric(10000)
   counter = 0
@@ -3410,7 +3408,7 @@ iparPosteriorSample_lapply = function(pool, nSample = 500) {
 #' 
 #' iparPosteriorSample_which
 #' 
-#' @param pool A nice parameter
+#' @param pool An \code{item.pool} object.
 #' @param nSample A nice parameter
 #' 
 #' @export
@@ -3420,7 +3418,7 @@ iparPosteriorSample_which = function(pool, nSample = 500) {
   iparList = vector(mode = "list", length = pool@ni)
   
   items.1pl = which(pool@model == "item.1pl")
-  items.2pl = which(pool@model == "item.1pl")
+  items.2pl = which(pool@model == "item.2pl")
   items.3pl = which(pool@model == "item.3pl")
   items.pc  = which(pool@model == "item.pc")
   items.gpc = which(pool@model == "item.gpc")
