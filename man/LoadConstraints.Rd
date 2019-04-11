@@ -19,7 +19,7 @@ LoadConstraints(file.csv, pool, ItemAttrib, StAttrib = NULL)
 A list containing the following entries:
 \itemize{
   \item{\code{Constraints}} A \code{data.frame} containing constraint specifications.
-  \item{\code{ListConstraints}} Foo.
+  \item{\code{ListConstraints}} A list of \code{constraint} objects.
   \item{\code{pool}} An \code{item.pool} object.
   \item{\code{ItemAttrib}} A \code{data.frame} containing item attributes.
   \item{\code{StAttrib}} Foo.
@@ -32,7 +32,7 @@ A list containing the following entries:
   \item{\code{MAT}} Foo.
   \item{\code{DIR}} Foo.
   \item{\code{RHS}} Foo.
-  \item{\code{setBased}} Foo.
+  \item{\code{setBased}} Logical. \code{TRUE} if the constraint is stimulus-based.
   \item{\code{ItemOrder}} Foo.
   \item{\code{ItemOrderBy}} Foo.
   \item{\code{StimulusOrder}} Foo.

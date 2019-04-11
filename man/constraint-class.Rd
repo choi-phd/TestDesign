@@ -5,19 +5,19 @@
 \alias{constraint-class}
 \title{constraint}
 \description{
-constraint
+Represents a set of constriants.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{CONSTRAINT}}{Character.}
+\item{\code{CONSTRAINT}}{Character. The index of the constraint set.}
 
-\item{\code{mat}}{A matrix.}
+\item{\code{mat}}{A matrix representing the left-hand side weights. Has nc rows.}
 
-\item{\code{dir}}{Character.}
+\item{\code{dir}}{A vector of length nc. Each entry represents a logical operator relating the left-hand side to the right-hand side.}
 
-\item{\code{rhs}}{Numeric.}
+\item{\code{rhs}}{A vector of length nc. Each entry represents the right-hand side of the constraint.}
 
-\item{\code{nc}}{Numeric.}
+\item{\code{nc}}{Numeric. The number of constraints represented in this object.}
 }}
 
