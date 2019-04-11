@@ -1,214 +1,152 @@
-# Documentation progress
-# Phase 1: Create a skeleton structure    -- complete
-
-#' item_params_A
+#' par_science
 #'
-#' Item-based pool A (n = 300).
+#' Item-based example item pool (1000 items).
 #' 
 #' This pool is associated with the following objects:
 #' \itemize{
-#'   \item \code{item_params_A} Item parameters.
-#'   \item \code{item_se_A} Standard errors of the item parameters.
-#'   \item \code{item_attribs_A} Item attributes.
-#'   \item \code{constraints_0} A simple constraint set (1 constraint).
-#'   \item \code{constraints_1} A complex constraint set (14 constraints).
+#'   \item \code{par_science} Item parameters.
+#'   \item \code{item_attrib_science} Item attributes.
+#'   \item \code{constraints_science} A constraint set (36 constraints).
 #' }
 #'
 #' @docType data
 #' @keywords datasets
-#' @rdname dataset_A
-#' @name item_params_A
+#' @rdname dataset_science
+#' @name par_science
+#' @examples
+#' \dontrun{
+#' write.csv(par_science, "par_science.csv", row.names = F)
+#' itempool.science = LoadItemPool("par_science.csv")
+#' 
+#' write.csv(item_attrib_science, "item_attrib_science.csv", row.names = F)
+#' itemattrib.science = LoadItemAttrib("item_attrib_science.csv", itempool.science)
+#' 
+#' write.csv(constraints_science, "constraints_science.csv", row.names = F)
+#' constraints.science = LoadConstraints("constraints_science.csv", itempool.science, itemattrib.science)
+#' }
 NULL
 
-#' item_se_A
+#' item_attrib_science
 #'
 #' @docType data
 #' @keywords datasets
-#' @rdname dataset_A
-#' @name item_se_A
+#' @rdname dataset_science
+#' @name item_attrib_science
 NULL
 
-#' item_attribs_A
+#' constraints_science
 #'
 #' @docType data
 #' @keywords datasets
-#' @rdname dataset_A
-#' @name item_attribs_A
+#' @rdname dataset_science
+#' @name constraints_science
 NULL
 
 
 
-#' item_params_B
+#' par_reading
 #'
-#' Item-based pool B (n = 300).
+#' Stimulus-based example item pool.
 #' 
 #' This pool is associated with the following objects:
 #' \itemize{
-#'   \item \code{item_params_B} Item parameters.
-#'   \item \code{item_se_B} Standard errors of the item parameters.
-#'   \item \code{item_attribs_B} Item attributes.
-#'   \item \code{constraints_0} A simple constraint set (1 constraint).
-#'   \item \code{constraints_1} A complex constraint set (14 constraints).
+#'   \item \code{par_reading} Item parameters.
+#'   \item \code{item_attrib_reading} Item attributes.
+#'   \item \code{stimulus_attrib_reading} Stimulus attributes.
+#'   \item \code{constraints_reading} A constraint set (18 constraints).
 #' }
 #'
 #' @docType data
 #' @keywords datasets
-#' @rdname dataset_B
-#' @name item_params_B
-NULL
-
-#' item_se_B
-#'
-#' @docType data
-#' @keywords datasets
-#' @rdname dataset_B
-#' @name item_se_B
-NULL
-
-#' item_attribs_B
-#'
-#' @docType data
-#' @keywords datasets
-#' @rdname dataset_B
-#' @name item_attribs_B
-NULL
-
-
-#' item_params_C
-#'
-#' Item-based pool C (n = 300).
+#' @rdname dataset_reading
+#' @name par_reading
+#' @examples
+#' \dontrun{
+#' write.csv(par_reading, "par_reading.csv", row.names = F)
+#' itempool.reading = LoadItemPool("par_reading.csv")
 #' 
-#' This pool is associated with the following objects:
-#' \itemize{
-#'   \item \code{item_params_C} Item parameters.
-#'   \item \code{item_se_C} Standard errors of the item parameters.
-#'   \item \code{item_attribs_C} Item attributes.
-#'   \item \code{constraints_0} A simple constraint set (1 constraint).
-#'   \item \code{constraints_1} A complex constraint set (14 constraints).
+#' write.csv(item_attrib_reading, "item_attrib_reading.csv", row.names = F)
+#' itemattrib.reading = LoadItemAttrib("item_attrib_reading.csv", itempool.reading)
+#' 
+#' write.csv(stimulus_attrib_reading, "stimulus_attrib_reading.csv", row.names = F)
+#' stimattrib.reading = LoadStAttrib("stimulus_attrib_reading.csv", itemattrib.reading)
+#' 
+#' write.csv(constraints_reading, "constraints_reading.csv", row.names = F)
+#' constraints.reading = LoadConstraints("constraints_reading.csv", itempool.reading, itemattrib.reading, stimattrib.reading)
 #' }
+NULL
+
+#' item_attrib_reading
 #'
 #' @docType data
 #' @keywords datasets
-#' @rdname dataset_C
-#' @name item_params_C
+#' @rdname dataset_reading
+#' @name item_attrib_reading
 NULL
 
-#' item_se_C
+#' stimulus_attrib_reading
 #'
 #' @docType data
 #' @keywords datasets
-#' @rdname dataset_C
-#' @name item_se_C
+#' @rdname dataset_reading
+#' @name stimulus_attrib_reading
 NULL
 
-#' item_attribs_C
+#' constraints_reading
 #'
 #' @docType data
 #' @keywords datasets
-#' @rdname dataset_C
-#' @name item_attribs_C
+#' @rdname dataset_reading
+#' @name constraints_reading
 NULL
 
 
-#' constraints_0
-#'
-#' A simple constraint set (1 constraint) to use with \code{item_params_A, item_params_B, item_params_C, item_attribs_A, item_attribs_B, item_attribs_C}.
-#' 
-#' @docType data
-#' @keywords datasets
-#' @name constraints_0
-#' @format A data.frame.
-NULL
-
-#' constraints_1
-#'
-#' A more complex constraint set (14 constraints) to use with \code{item_params_A, item_params_B, item_params_C, item_attribs_A, item_attribs_B, item_attribs_C}.
-#'
-#' @docType data
-#' @keywords datasets
-#' @name constraints_1
-#' @format A data.frame.
-NULL
 
 
-#' item_params_stimbased
+#' par_fatigue
 #'
-#' Stimulus-based pool.
+#' An item-based example pool with item contents.
 #' 
 #' This pool is associated with the following objects:
 #' \itemize{
-#'   \item \code{item_params_stimbased} Item parameters.
-#'   \item \code{item_attribs_stimbased} Item attributes.
-#'   \item \code{stim_attribs_stimbased} Stimulus attributes.
-#'   \item \code{constraints_stimbased} A constraint set.
-#' }
-#'
-#' @docType data
-#' @keywords datasets
-#' @rdname dataset_stimbased
-#' @name item_params_stimbased
-NULL
-
-#' item_attribs_stimbased
-#'
-#' @docType data
-#' @keywords datasets
-#' @rdname dataset_stimbased
-#' @name item_attribs_stimbased
-NULL
-
-#' stim_attribs_stimbased
-#'
-#' @docType data
-#' @keywords datasets
-#' @rdname dataset_stimbased
-#' @name stim_attribs_stimbased
-NULL
-
-#' constraints_stimbased
-#'
-#' @docType data
-#' @keywords datasets
-#' @rdname dataset_stimbased
-#' @name constraints_stimbased
-NULL
-
-
-
-
-#' item_params_fatigue
-#'
-#' Item-based pool with item contents.
-#' 
-#' This pool is associated with the following objects:
-#' \itemize{
-#'   \item \code{item_params_fatigue} Item parameters.
-#'   \item \code{item_attribs_fatigue} Item attributes.
-#'   \item \code{item_contents_fatigue} Item contents.
-#'   \item \code{constraints_fatigue} A constraint set.
+#'   \item \code{par_fatigue} Item parameters.
+#'   \item \code{item_attrib_fatigue} Item attributes.
+#'   \item \code{item_content_fatigue} Item contents.
+#'   \item \code{constraints_fatigue} A constraint set (111 constraints).
 #'   \item \code{raw_fatigue} Raw response data.
 #' }
 #'
 #' @docType data
 #' @keywords datasets
 #' @rdname dataset_fatigue
-#' @name item_params_fatigue
+#' @name par_fatigue
+#' @examples 
+#' \dontrun{
+#' write.csv(par_fatigue, "par_fatigue.csv", row.names = F)
+#' itempool.fatigue = LoadItemPool("par_fatigue.csv")
+#' 
+#' write.csv(item_attrib_fatigue, "item_attrib_fatigue.csv", row.names = F)
+#' itemattrib.fatigue = LoadItemAttrib("item_attrib_fatigue.csv", itempool.fatigue)
+#' 
+#' write.csv(constraints_fatigue, "constraints_fatigue.csv", row.names = F)
+#' constraints.fatigue = LoadConstraints("constraints_fatigue.csv", itempool.fatigue, itemattrib.fatigue)
+#' }
 NULL
 
-#' item_attribs_fatigue
+#' item_attrib_fatigue
 #'
 #' @docType data
 #' @keywords datasets
 #' @rdname dataset_fatigue
-#' @name item_attribs_fatigue
+#' @name item_attrib_fatigue
 NULL
 
-#' item_contents_fatigue
+#' item_content_fatigue
 #'
 #' @docType data
 #' @keywords datasets
 #' @rdname dataset_fatigue
-#' @name item_contents_fatigue
+#' @name item_content_fatigue
 NULL
 
 #' constraints_fatigue
