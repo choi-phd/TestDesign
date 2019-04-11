@@ -304,15 +304,15 @@ setMethod("show", "Shadow.config", function(object) {
 #' @slot shadowTestRefreshed Logical. A vector of logical values indicating whether the shadow test was refreshed before administering an item at each position.
 #' @slot shadowTestFeasible Logical. A vector of logical values indicating whether a feasible solution to the shadow test was available in each position.
 #' @slot solveTime Numeric. A vector of values indicating the time taken in obtaining a shadow test. 
-#' @slot interimThetaEst Numeric.
-#' @slot interimSeEst Numeric.
-#' @slot thetaSegmentIndex Numeric.
+#' @slot interimThetaEst Numeric. A vector containing estimated thetas at each position.
+#' @slot interimSeEst Numeric. A vector containing standard errors at each position.
+#' @slot thetaSegmentIndex Numeric. A vector containing which segments the estimated thetas were in at each position.
 #' @slot prior Numeric.
 #' @slot priorPar Numeric.
 #' @slot posterior Numeric.
 #' @slot posteriorSample Numeric.
 #' @slot likelihood Numeric.
-#' @slot shadowTest A list.
+#' @slot shadowTest A list of vectors containing item indices of the shadow test at each position.
 #' 
 #' @export
 
