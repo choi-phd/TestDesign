@@ -26,12 +26,12 @@ NULL
 #' @param xmat A nice parameter
 #' @param xdir A nice parameter
 #' @param xrhs A vector of right-side values.
-#' @param maximize If \code{TRUE}, treat as a maximization problem.
+#' @param maximize If \code{TRUE}, treat as a maximization problem. Otherwise treat as a minimization problem.
 #' @param mps Only used when \code{solver} is \code{SYMPHONY}. If \code{TRUE}, print an MPS representation of the problem for debugging purposes.
 #' @param lp Only used when \code{solver} is \code{SYMPHONY}. If \code{TRUE}, print an LP representation of the problem for debugging purposes.
 #' @param verbosity Verbosity level.
-#' @param time_limit Time limit to be passed onto solver.
-#' @param gap_limit Gap limit to be passed onto solver.
+#' @param time_limit Time limit passed onto the solver.
+#' @param gap_limit Gap limit passed onto the solver.
 #' @param ... Only used when \code{solver} is \code{SYMPHONY}. Additional parameters to be passed onto the solver.
 #' 
 #' @return An output
@@ -192,10 +192,10 @@ saveOutput = function(objectList, file = NULL) {
 
 #' An S4 generic
 #' 
-#' @param object A nice parameter
-#' @param Constraints A nice parameter
-#' @param sortByDifficulty A nice parameter
-#' @param PDF A nice parameter
+#' @param object An output from \code{\link{Shadow}} function.
+#' @param Constraints The constraint object used in obtaining the output.
+#' @param sortByDifficulty Sort the items by difficulty.
+#' @param PDF If supplied a filename, save as a PDF file.
 #' 
 #' @docType methods
 #' @rdname plotShadow-methods
@@ -208,7 +208,7 @@ setGeneric(name = "plotShadow",
 
 #' plotShadow
 #' 
-#' plotShadow
+#' Draw a chart of shadow tests. The index of a column represents the position of item administration process, and each column represents the item pool.
 #' 
 #' @docType methods
 #' @rdname plotShadow-methods
@@ -334,7 +334,7 @@ setMethod(f = "plotShadow",
 
 #' plotShadow
 #' 
-#' plotShadow
+#' @inherit plotShadow
 #' 
 #' @docType methods
 #' @rdname plotShadow-methods

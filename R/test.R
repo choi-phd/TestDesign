@@ -155,6 +155,11 @@ if(FALSE){
   
   fit = try(Shadow(itempool, conf, trueTheta, Constraints = const, prior = NULL, priorPar = c(0, 1), Data = respData))
 
+  
+  names(fit)
+  fit$output[[1]]@trueTheta
+  
+  class(fit$output)
   class(fit)
 
 

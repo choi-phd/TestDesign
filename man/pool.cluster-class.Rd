@@ -10,10 +10,10 @@ An S4 class to represent a cluster of item pools
 \section{Slots}{
 
 \describe{
-\item{\code{np}}{a scalar to indicate the number of item pools in the cluster}
+\item{\code{np}}{A scalar to indicate the number of item pools in the cluster.}
 
-\item{\code{pools}}{a list of item.pool class objects}
+\item{\code{pools}}{A list of \code{item.pool} objects.}
 
-\item{\code{names}}{a character vector of item pool names of length np}
+\item{\code{names}}{A character vector of item pool names of length np.}
 }}
 
