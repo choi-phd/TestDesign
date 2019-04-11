@@ -3,6 +3,8 @@ if(FALSE){
   
   # ATA testing (Github repository version), working fine
   itempoolA = LoadItemPool("data-raw/item_params_A.csv")
+  iparPosteriorSample_which(itempoolA, 10)
+  
   itemattribA = LoadItemAttrib("data-raw/item_attribs_A.csv", itempoolA)
   constA = LoadConstraints("data-raw/constraints_0.csv", itempoolA, itemattribA)
   
