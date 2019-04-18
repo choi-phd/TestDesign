@@ -9,11 +9,11 @@ item_attrib_reading      = read.csv("data-raw/item_attrib_reading_303.csv", head
 stimulus_attrib_reading  = read.csv("data-raw/stimulus_attrib_reading_303.csv", header = T)
 constraints_reading      = read.csv("data-raw/constraints_reading_303.csv", header = T)
 
-par_fatigue              = read.csv("data-raw/par_fatigue.csv", header = T)
-item_attrib_fatigue      = read.csv("data-raw/item_attrib_fatigue.csv", header = T)
-item_content_fatigue     = read.csv("data-raw/item_content_fatigue.csv", header = T)
-constraints_fatigue      = read.csv("data-raw/constraints_fatigue.csv", header = T)
-raw_fatigue              = read.csv("data-raw/dat_fatigue.csv", header = F)
+par_fatigue              = read.csv("data-raw/par_fatigue_95.csv", header = T)
+item_attrib_fatigue      = read.csv("data-raw/item_attrib_fatigue_95.csv", header = T)
+item_content_fatigue     = read.csv("data-raw/item_content_fatigue_95.csv", header = T)
+constraints_fatigue      = read.csv("data-raw/constraints_fatigue_95.csv", header = T)
+raw_fatigue              = read.csv("data-raw/dat_fatigue_95.csv", header = F)
 
 
 usethis::use_data(par_science            , overwrite = T)
@@ -32,6 +32,7 @@ usethis::use_data(constraints_fatigue    , overwrite = T)
 usethis::use_data(raw_fatigue            , overwrite = T)
 
 if (FALSE){
+  
 write.csv(par_science, "par_science.csv", row.names = F)
 itempool.science = LoadItemPool("par_science.csv")
 write.csv(item_attrib_science, "item_attrib_science.csv", row.names = F)
@@ -55,5 +56,5 @@ write.csv(item_attrib_fatigue, "item_attrib_fatigue.csv", row.names = F)
 itemattrib.fatigue = LoadItemAttrib("item_attrib_fatigue.csv", itempool.fatigue)
 write.csv(constraints_fatigue, "constraints_fatigue.csv", row.names = F)
 constraints.fatigue = LoadConstraints("constraints_fatigue.csv", itempool.fatigue, itemattrib.fatigue)
-}
-
+} 
+ 
