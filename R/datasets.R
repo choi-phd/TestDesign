@@ -22,7 +22,8 @@
 #' itemattrib.science = LoadItemAttrib("item_attrib_science.csv", itempool.science)
 #' 
 #' write.csv(constraints_science, "constraints_science.csv", row.names = F)
-#' constraints.science = LoadConstraints("constraints_science.csv", itempool.science, itemattrib.science)
+#' constraints.science = LoadConstraints("constraints_science.csv",
+#'           itempool.science, itemattrib.science)
 #' }
 NULL
 
@@ -72,7 +73,8 @@ NULL
 #' stimattrib.reading = LoadStAttrib("stimulus_attrib_reading.csv", itemattrib.reading)
 #' 
 #' write.csv(constraints_reading, "constraints_reading.csv", row.names = F)
-#' constraints.reading = LoadConstraints("constraints_reading.csv", itempool.reading, itemattrib.reading, stimattrib.reading)
+#' constraints.reading = LoadConstraints("constraints_reading.csv",
+#'           itempool.reading, itemattrib.reading, stimattrib.reading)
 #' }
 NULL
 
@@ -129,7 +131,8 @@ NULL
 #' itemattrib.fatigue = LoadItemAttrib("item_attrib_fatigue.csv", itempool.fatigue)
 #' 
 #' write.csv(constraints_fatigue, "constraints_fatigue.csv", row.names = F)
-#' constraints.fatigue = LoadConstraints("constraints_fatigue.csv", itempool.fatigue, itemattrib.fatigue)
+#' constraints.fatigue = LoadConstraints("constraints_fatigue.csv",
+#'           itempool.fatigue, itemattrib.fatigue)
 #' }
 NULL
 

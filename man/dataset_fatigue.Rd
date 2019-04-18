@@ -30,7 +30,8 @@ write.csv(item_attrib_fatigue, "item_attrib_fatigue.csv", row.names = F)
 itemattrib.fatigue = LoadItemAttrib("item_attrib_fatigue.csv", itempool.fatigue)
 
 write.csv(constraints_fatigue, "constraints_fatigue.csv", row.names = F)
-constraints.fatigue = LoadConstraints("constraints_fatigue.csv", itempool.fatigue, itemattrib.fatigue)
+constraints.fatigue = LoadConstraints("constraints_fatigue.csv",
+          itempool.fatigue, itemattrib.fatigue)
 }
 }
 \keyword{datasets}
