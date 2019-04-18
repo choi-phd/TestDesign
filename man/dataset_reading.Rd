@@ -31,7 +31,8 @@ write.csv(stimulus_attrib_reading, "stimulus_attrib_reading.csv", row.names = F)
 stimattrib.reading = LoadStAttrib("stimulus_attrib_reading.csv", itemattrib.reading)
 
 write.csv(constraints_reading, "constraints_reading.csv", row.names = F)
-constraints.reading = LoadConstraints("constraints_reading.csv", itempool.reading, itemattrib.reading, stimattrib.reading)
+constraints.reading = LoadConstraints("constraints_reading.csv",
+          itempool.reading, itemattrib.reading, stimattrib.reading)
 }
 }
 \keyword{datasets}

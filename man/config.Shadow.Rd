@@ -3,14 +3,15 @@
 \docType{class}
 \name{Shadow.config-class}
 \alias{Shadow.config-class}
-\title{Shadow.config}
-\description{
-An S4 object to store configurations for Shadow Test Assembly (STA).
+\alias{config.Shadow}
+\title{config.Shadow}
+\usage{
+config.Shadow(itemSelection, contentBalancing, MIP = NULL, MCMC,
+  refreshPolicy, exposureControl, stoppingCriterion, interimTheta,
+  finalTheta, thetaGrid = seq(-4, 4, 0.1), auditTrail = F)
 }
-\section{Slots}{
-
-\describe{
-\item{\code{itemSelection}}{A list containing item selection criteria.
+\arguments{
+\item{itemSelection}{A list containing item selection criteria.
 \itemize{
   \item{\code{method}} The type of criteria. Accepts one of \code{MFI, MPWI, FB, EB}.
   \item{\code{infoType}} The type of information. Accepts \code{FISHER}.
@@ -18,12 +19,12 @@ An S4 object to store configurations for Shadow Test Assembly (STA).
   \item{\code{fixedTheta}} 
 }}
 
-\item{\code{contentBalancing}}{A list containing content balancing options.
+\item{contentBalancing}{A list containing content balancing options.
 \itemize{
   \item{\code{method}} The type of balancing method. Accepts one of \code{NONE, STA}.
 }}
 
-\item{\code{MIP}}{A list containing solver options.
+\item{MIP}{A list containing solver options.
 \itemize{
   \item{\code{solver}} The type of solver. Accepts one of \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.
   \item{\code{verbosity}} Verbosity level.
@@ -31,7 +32,7 @@ An S4 object to store configurations for Shadow Test Assembly (STA).
   \item{\code{gapLimit}} Gap limit to be passed onto solver. Used in solvers  \code{SYMPHONY, GUROBI}.
 }}
 
-\item{\code{MCMC}}{A list containing Markov-chain Monte Carlo configurations.
+\item{MCMC}{A list containing Markov-chain Monte Carlo configurations.
 \itemize{
   \item{\code{burnIn}} Numeric. The number of chains from the start to discard.
   \item{\code{postBurnIn}}  Numeric. The number of chains to use after discarding the first \code{burnIn} chains.
@@ -39,7 +40,7 @@ An S4 object to store configurations for Shadow Test Assembly (STA).
   \item{\code{jumpfactor}} JumpFactor.
 }}
 
-\item{\code{refreshPolicy}}{A list containing refresh policy for obtaining a new shadow test.
+\item{refreshPolicy}{A list containing refresh policy for obtaining a new shadow test.
 \itemize{
   \item{\code{method}} The type of policy. Accepts one of \code{ALWAYS, POSITION, INTERVAL, THRESHOLD, INTERVAL-THRESHOLD, STIMULUS, SET, PASSAGE}.
   \item{\code{interval}} Integer. Set to 1 to refresh at each position, 2 to refresh at every two positions, and so on.
@@ -47,13 +48,33 @@ An S4 object to store configurations for Shadow Test Assembly (STA).
   \item{\code{position}}
 }}
 
-\item{\code{exposureControl}}{A list.}
+\item{exposureControl}{A list containing exposure control settings.
+\itemize{
+  \item{\code{method}} Accepts one of \code{"NONE", "ELIGIBILITY", "BIGM", "BIGM-BAYESIAN"}.
+  \item{\code{M}} 
+  \item{\code{maxExposureRate}} 
+  \item{\code{accelerationFactor}}
+  \item{\code{nSegment}}
+  \item{\code{firstSegment}}
+  \item{\code{segmentCut}}
+  \item{\code{initialEligibilityStats}}
+  \item{\code{fadingFactor}}
+  \item{\code{diagnosticStats}}
+}}
 
-\item{\code{stoppingCriterion}}{A list.}
+\item{stoppingCriterion}{A list containing stopping criterion.
+\itemize{
+  \item{\code{method}} Accepts one of \code{"FIXED"}.
+  \item{\code{testLength}} 
+  \item{\code{minNI}}
+  \item{\code{maxNI}}
+  \item{\code{SeThreshold}}
+}}
 
-\item{\code{interimTheta}}{A list containing interim theta estimation options.
+\item{interimTheta}{A list containing interim theta estimation options.
 \itemize{
   \item{\code{method}} The type of estimation. Accepts one of \code{EAP, EB, FB}.
+  \item{\code{shrinkageCorrection}}
   \item{\code{priorDist}} The type of prior distribution. Accepts one of \code{NORMAL, UNIF}.
   \item{\code{priorPar}} Distributional parameters for the prior.
   \item{\code{boundML}}
@@ -61,9 +82,10 @@ An S4 object to store configurations for Shadow Test Assembly (STA).
   \item{\code{crit}}
 }}
 
-\item{\code{finalTheta}}{A list containing final theta estimation options.
+\item{finalTheta}{A list containing final theta estimation options.
 \itemize{
   \item{\code{method}} The type of estimation. Accepts one of \code{EAP, EB, FB}.
+  \item{\code{shrinkageCorrection}}
   \item{\code{priorDist}} The type of prior distribution. Accepts one of \code{NORMAL, UNIF}.
   \item{\code{priorPar}} Distributional parameters for the prior.
   \item{\code{boundML}}
@@ -71,8 +93,10 @@ An S4 object to store configurations for Shadow Test Assembly (STA).
   \item{\code{crit}}
 }}
 
-\item{\code{thetaGrid}}{Numeric. A vector of theta values to represent the continuum.}
+\item{thetaGrid}{A numeric vector. Theta values to represent the continuum.}
 
-\item{\code{auditTrail}}{Logical.}
-}}
-
+\item{auditTrail}{Logical.}
+}
+\description{
+Create a \code{\linkS4class{Shadow.config}} object for Shadow Test Assembly (STA).
+}
