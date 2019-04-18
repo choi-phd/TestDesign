@@ -1,4 +1,4 @@
-﻿Constraint,TYPE,WHAT,Condition,LB,UB
+CONSTRAINT,TYPE,WHAT,CONDITION,LB,UB
 1,Number,Item,,30,30
 2,Number,Item,LEVEL == 3,10,10
 3,Number,Item,LEVEL == 4,10,10
