@@ -31,7 +31,7 @@ usethis::use_data(item_content_fatigue   , overwrite = T)
 usethis::use_data(constraints_fatigue    , overwrite = T)
 usethis::use_data(raw_fatigue            , overwrite = T)
 
-
+if (FALSE){
 write.csv(par_science, "par_science.csv", row.names = F)
 itempool.science = LoadItemPool("par_science.csv")
 write.csv(item_attrib_science, "item_attrib_science.csv", row.names = F)
@@ -55,4 +55,5 @@ write.csv(item_attrib_fatigue, "item_attrib_fatigue.csv", row.names = F)
 itemattrib.fatigue = LoadItemAttrib("item_attrib_fatigue.csv", itempool.fatigue)
 write.csv(constraints_fatigue, "constraints_fatigue.csv", row.names = F)
 constraints.fatigue = LoadConstraints("constraints_fatigue.csv", itempool.fatigue, itemattrib.fatigue)
+}
 
