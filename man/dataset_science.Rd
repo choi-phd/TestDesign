@@ -26,7 +26,8 @@ write.csv(item_attrib_science, "item_attrib_science.csv", row.names = F)
 itemattrib.science = LoadItemAttrib("item_attrib_science.csv", itempool.science)
 
 write.csv(constraints_science, "constraints_science.csv", row.names = F)
-constraints.science = LoadConstraints("constraints_science.csv", itempool.science, itemattrib.science)
+constraints.science = LoadConstraints("constraints_science.csv",
+          itempool.science, itemattrib.science)
 }
 }
 \keyword{datasets}

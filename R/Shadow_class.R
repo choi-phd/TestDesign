@@ -93,66 +93,9 @@ setClass("test.cluster",
          }
 )
 
-#' Shadow.config
+#' config.Shadow
 #' 
-#' An S4 object to store configurations for Shadow Test Assembly (STA).
-#'
-#' @slot itemSelection A list containing item selection criteria.
-#' \itemize{
-#'   \item{\code{method}} The type of criteria. Accepts one of \code{MFI, MPWI, FB, EB}.
-#'   \item{\code{infoType}} The type of information. Accepts \code{FISHER}.
-#'   \item{\code{initialTheta}} 
-#'   \item{\code{fixedTheta}} 
-#' }
-#' @slot contentBalancing A list containing content balancing options.
-#' \itemize{
-#'   \item{\code{method}} The type of balancing method. Accepts one of \code{NONE, STA}.
-#' }
-#' @slot MIP A list containing solver options.
-#' \itemize{
-#'   \item{\code{solver}} The type of solver. Accepts one of \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.
-#'   \item{\code{verbosity}} Verbosity level.
-#'   \item{\code{timeLimit}} Time limit to be passed onto solver. Used in solvers \code{SYMPHONY, GUROBI, GLPK}.
-#'   \item{\code{gapLimit}} Gap limit to be passed onto solver. Used in solvers  \code{SYMPHONY, GUROBI}.
-#' }
-#' @slot MCMC A list containing Markov-chain Monte Carlo configurations.
-#' \itemize{
-#'   \item{\code{burnIn}} Numeric. The number of chains from the start to discard.
-#'   \item{\code{postBurnIn}}  Numeric. The number of chains to use after discarding the first \code{burnIn} chains.
-#'   \item{\code{thin}} Thin.
-#'   \item{\code{jumpfactor}} JumpFactor.
-#' }
-#' @slot refreshPolicy A list containing refresh policy for obtaining a new shadow test.
-#' \itemize{
-#'   \item{\code{method}} The type of policy. Accepts one of \code{ALWAYS, POSITION, INTERVAL, THRESHOLD, INTERVAL-THRESHOLD, STIMULUS, SET, PASSAGE}.
-#'   \item{\code{interval}} Integer. Set to 1 to refresh at each position, 2 to refresh at every two positions, and so on.
-#'   \item{\code{threshold}} Numeric. The shadow test is refreshed when the absolute change in theta estimate is greater than this value.
-#'   \item{\code{position}}
-#' }
-#' @slot exposureControl A list.
-#' @slot stoppingCriterion A list.
-#' @slot interimTheta A list containing interim theta estimation options.
-#' \itemize{
-#'   \item{\code{method}} The type of estimation. Accepts one of \code{EAP, EB, FB}.
-#'   \item{\code{priorDist}} The type of prior distribution. Accepts one of \code{NORMAL, UNIF}.
-#'   \item{\code{priorPar}} Distributional parameters for the prior.
-#'   \item{\code{boundML}}
-#'   \item{\code{maxIter}}
-#'   \item{\code{crit}}
-#' }
-#' @slot finalTheta A list containing final theta estimation options.
-#' \itemize{
-#'   \item{\code{method}} The type of estimation. Accepts one of \code{EAP, EB, FB}.
-#'   \item{\code{priorDist}} The type of prior distribution. Accepts one of \code{NORMAL, UNIF}.
-#'   \item{\code{priorPar}} Distributional parameters for the prior.
-#'   \item{\code{boundML}}
-#'   \item{\code{maxIter}}
-#'   \item{\code{crit}}
-#' }
-#' @slot thetaGrid Numeric. A vector of theta values to represent the continuum.
-#' @slot auditTrail Logical.
-#' 
-#' @export
+#' @rdname config.Shadow
 
 setClass("Shadow.config",
          slots = c(itemSelection = "list",
@@ -230,6 +173,117 @@ setClass("Shadow.config",
            return(TRUE)
          }
 )
+
+#' config.Shadow
+#' 
+#' Create a \code{\linkS4class{Shadow.config}} object for Shadow Test Assembly (STA).
+#' 
+#' @param itemSelection A list containing item selection criteria.
+#' \itemize{
+#'   \item{\code{method}} The type of criteria. Accepts one of \code{MFI, MPWI, FB, EB}.
+#'   \item{\code{infoType}} The type of information. Accepts \code{FISHER}.
+#'   \item{\code{initialTheta}} 
+#'   \item{\code{fixedTheta}} 
+#' }
+#' @param contentBalancing A list containing content balancing options.
+#' \itemize{
+#'   \item{\code{method}} The type of balancing method. Accepts one of \code{NONE, STA}.
+#' }
+#' @param MIP A list containing solver options.
+#' \itemize{
+#'   \item{\code{solver}} The type of solver. Accepts one of \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.
+#'   \item{\code{verbosity}} Verbosity level.
+#'   \item{\code{timeLimit}} Time limit to be passed onto solver. Used in solvers \code{SYMPHONY, GUROBI, GLPK}.
+#'   \item{\code{gapLimit}} Gap limit to be passed onto solver. Used in solvers  \code{SYMPHONY, GUROBI}.
+#' }
+#' @param MCMC A list containing Markov-chain Monte Carlo configurations.
+#' \itemize{
+#'   \item{\code{burnIn}} Numeric. The number of chains from the start to discard.
+#'   \item{\code{postBurnIn}}  Numeric. The number of chains to use after discarding the first \code{burnIn} chains.
+#'   \item{\code{thin}} Thin.
+#'   \item{\code{jumpfactor}} JumpFactor.
+#' }
+#' @param refreshPolicy A list containing refresh policy for obtaining a new shadow test.
+#' \itemize{
+#'   \item{\code{method}} The type of policy. Accepts one of \code{ALWAYS, POSITION, INTERVAL, THRESHOLD, INTERVAL-THRESHOLD, STIMULUS, SET, PASSAGE}.
+#'   \item{\code{interval}} Integer. Set to 1 to refresh at each position, 2 to refresh at every two positions, and so on.
+#'   \item{\code{threshold}} Numeric. The shadow test is refreshed when the absolute change in theta estimate is greater than this value.
+#'   \item{\code{position}}
+#' }
+#' @param exposureControl A list containing exposure control settings.
+#' \itemize{
+#'   \item{\code{method}} Accepts one of \code{"NONE", "ELIGIBILITY", "BIGM", "BIGM-BAYESIAN"}.
+#'   \item{\code{M}} 
+#'   \item{\code{maxExposureRate}} 
+#'   \item{\code{accelerationFactor}}
+#'   \item{\code{nSegment}}
+#'   \item{\code{firstSegment}}
+#'   \item{\code{segmentCut}}
+#'   \item{\code{initialEligibilityStats}}
+#'   \item{\code{fadingFactor}}
+#'   \item{\code{diagnosticStats}}
+#' }
+#' @param stoppingCriterion A list containing stopping criterion.
+#' \itemize{
+#'   \item{\code{method}} Accepts one of \code{"FIXED"}.
+#'   \item{\code{testLength}} 
+#'   \item{\code{minNI}}
+#'   \item{\code{maxNI}}
+#'   \item{\code{SeThreshold}}
+#' }
+#' @param interimTheta A list containing interim theta estimation options.
+#' \itemize{
+#'   \item{\code{method}} The type of estimation. Accepts one of \code{EAP, EB, FB}.
+#'   \item{\code{shrinkageCorrection}}
+#'   \item{\code{priorDist}} The type of prior distribution. Accepts one of \code{NORMAL, UNIF}.
+#'   \item{\code{priorPar}} Distributional parameters for the prior.
+#'   \item{\code{boundML}}
+#'   \item{\code{maxIter}}
+#'   \item{\code{crit}}
+#' }
+#' @param finalTheta A list containing final theta estimation options.
+#' \itemize{
+#'   \item{\code{method}} The type of estimation. Accepts one of \code{EAP, EB, FB}.
+#'   \item{\code{shrinkageCorrection}}
+#'   \item{\code{priorDist}} The type of prior distribution. Accepts one of \code{NORMAL, UNIF}.
+#'   \item{\code{priorPar}} Distributional parameters for the prior.
+#'   \item{\code{boundML}}
+#'   \item{\code{maxIter}}
+#'   \item{\code{crit}}
+#' }
+#' @param thetaGrid A numeric vector. Theta values to represent the continuum.
+#' @param auditTrail Logical.
+#' 
+#' @rdname config.Shadow
+#' @export
+config.Shadow = function(itemSelection, contentBalancing, MIP = NULL, MCMC,
+                         refreshPolicy, exposureControl, stoppingCriterion,
+                         interimTheta, finalTheta, thetaGrid = seq(-4, 4, .1), auditTrail = F){
+  conf = new("Shadow.config")
+  conf@itemSelection = itemSelection
+  conf@contentBalancing = contentBalancing
+  
+  if (!is.null(MIP)){
+    conf@MIP = MIP
+  }
+  
+  if (!is.null(MCMC)){
+    conf@MCMC = MCMC
+  }
+  
+  conf@refreshPolicy = refreshPolicy
+  conf@stoppingCriterion = stoppingCriterion
+  conf@interimTheta = interimTheta
+  conf@finalTheta = finalTheta
+  
+  if (!is.null(thetaGrid)){
+    conf@thetaGrid = thetaGrid
+  }
+  conf@auditTrail = auditTrail
+  
+  v = validObject(conf)
+  if (v) return(conf)
+}
 
 #' @docType methods
 #' @rdname show-methods
