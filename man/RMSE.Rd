@@ -7,12 +7,12 @@
 RMSE(x, y, conditional = TRUE)
 }
 \arguments{
-\item{x}{A nice parameter}
+\item{x}{A vector of values.}
 
-\item{y}{A nice parameter}
+\item{y}{A vector of values.}
 
-\item{conditional}{A nice parameter}
+\item{conditional}{If \code{TRUE}, calculate a conditional RMSE.}
 }
 \description{
-RMSE
+Root Mean Squared Error between two vectors.
 }

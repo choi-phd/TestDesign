@@ -20,7 +20,7 @@ An S4 object to store configurations for Shadow Test Assembly (STA).
 
 \item{\code{contentBalancing}}{A list containing content balancing options.
 \itemize{
-  \item{\code{method}} The type of balancing method. Accepts \code{NONE}, or \code{STA}.
+  \item{\code{method}} The type of balancing method. Accepts one of \code{NONE, STA}.
 }}
 
 \item{\code{MIP}}{A list containing solver options.
