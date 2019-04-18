@@ -1,28 +1,9 @@
 # Documentation progress
 # Phase 2. Add simple descriptions: COMPLETE
 
-#' ATA.config
+#' config.ATA
 #'
-#' An S4 object to store configurations for Automated Test Assembly (ATA).
-#'
-#' @slot itemSelection A list containing item selection criteria. This should have the following entries:
-#' \itemize{
-#'   \item{\code{method}} The type of criteria. Accepts \code{MAXINFO, TIF, TCC}.
-#'   \item{\code{infoType}} The type of information. Accepts \code{FISHER}.
-#'   \item{\code{targetLocation}} A numeric vector containing the locations of target points. (e.g. \code{c(-1, 0, 1)})
-#'   \item{\code{targetValue}} A numeric vector containing the target values at each location. This should have the same length with \code{targetLocation}.
-#'   \item{\code{targetWeight}} A numeric vector containing the weights for each location.
-#' }
-#' @slot MIP A list containing solver options. This should have the following entries:
-#' \itemize{
-#'   \item{\code{solver}} The type of solver. Accepts \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.
-#'   \item{\code{verbosity}} Verbosity level.
-#'   \item{\code{timeLimit}} Time limit to be passed onto solver. Used in solvers \code{SYMPHONY, GUROBI, GLPK}.
-#'   \item{\code{gapLimit}} Gap limit to be passed onto solver. Used in solvers  \code{SYMPHONY, GUROBI}.
-#'   \item{\code{gapLimitAbs}} Absolute gap limit to be passed onto \code{GUROBI}.
-#' }
-#'
-#' @export
+#' @rdname config.ATA
 
 setClass("ATA.config",
          slots = c(itemSelection = "list",
@@ -39,14 +20,86 @@ setClass("ATA.config",
                                      gapLimitAbs = 1)),
          validity = function(object) {
            if (!toupper(object@itemSelection$method) %in% c("MAXINFO", "TIF", "TCC")) stop("invalid option for itemSelection$method: accepts MaxInfo, TIF, TCC")
-           if (toupper(object@itemSelection$method) == "MAXINFO" &
-               !is.null(object@itemSelection$targetValue)) warning("MaxInfo method was specified: ignoring targetValue")
+           if (toupper(object@itemSelection$method) == "MAXINFO"){
+             if (!is.null(object@itemSelection$targetValue)) warning("MaxInfo method was specified: ignoring targetValue")
+             target_lengths = unique(c(
+               length(object@itemSelection$targetLocation),
+               length(object@itemSelection$targetWeight)
+             ))
+             if (length(target_lengths) != 1){
+               stop("itemSelection$targetLocation, itemSelection$targetWeight have different lengths: should have same lengths")
+             }
+           }
+
+           if (toupper(object@itemSelection$method) != "MAXINFO"){
+             target_lengths = unique(c(
+               length(object@itemSelection$targetLocation),
+               length(object@itemSelection$targetValue),
+               length(object@itemSelection$targetWeight)
+             ))
+             if (length(target_lengths) != 1){
+               stop("itemSelection$targetLocation, itemSelection$targetValue, itemSelection$targetWeight have different lengths: should have same lengths")
+             }
+           }
+
            if (toupper(object@itemSelection$infoType) != "FISHER") stop("invalid option for itemSelection$infoType: accepts Fisher")
-           if (!all(length(object@itemSelection$targetLocation), length(object@itemSelection$targetLocation), length(object@itemSelection$targetWeight))) stop("itemSelection$targetLocation, itemSelection$targetValue, itemSelection$targetWeight are of different lengths")
+
            if (!toupper(object@MIP$solver) %in% c("SYMPHONY", "GUROBI", "GLPK", "LPSOLVE")) stop("invalid option for MIP$solver: accepts Symphony, Gurobi, GLPK, LpSolve")
            return(TRUE)
          }
 )
+
+#' config.ATA
+#'
+#' Create an \code{\linkS4class{ATA.config}} object for Automated Test Assembly (ATA).
+#'
+#' @param itemSelection A list containing item selection criteria. This should have the following entries:
+#' \itemize{
+#'   \item{\code{method}} The type of criteria. Accepts \code{MAXINFO, TIF, TCC}.
+#'   \item{\code{infoType}} The type of information. Accepts \code{FISHER}.
+#'   \item{\code{targetLocation}} A numeric vector containing the locations of target points. (e.g. \code{c(-1, 0, 1)})
+#'   \item{\code{targetValue}} A numeric vector containing the target values at each location. This should have the same length with \code{targetLocation}. Ignored if method is \code{MAXINFO}.
+#'   \item{\code{targetWeight}} A numeric vector containing the weights for each location. This should have the same length with \code{targetlocation}. Defaults to a vector of 1s.
+#' }
+#' @param MIP A list containing solver options. This should have the following entries:
+#' \itemize{
+#'   \item{\code{solver}} The type of solver. Accepts \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.
+#'   \item{\code{verbosity}} Verbosity level of the solver. Defaults to -2.
+#'   \item{\code{timeLimit}} Time limit in seconds passed onto the solver. Defaults to 60. Used in solvers \code{SYMPHONY, GUROBI, GLPK}.
+#'   \item{\code{gapLimit}} Termination criteria in relative scale passed onto the solver. Defaults to .05. Used in solvers  \code{SYMPHONY, GUROBI}.
+#'   \item{\code{gapLimitAbs}} Termination criteria in absolute scale passed onto the solver. Defaults to 1. Used in solver \code{GUROBI}.
+#' }
+#'
+#' @examples
+#' conf.1 = config.ATA(list(method = "MAXINFO",
+#'                          infoType = "FISHER",
+#'                          targetLocation = c(-1, 0, 1),
+#'                          targetWeight   = c( 1, 1, 1)))
+#'
+#' conf.2 = config.ATA(list(method = "TIF",
+#'                          infoType = "FISHER",
+#'                          targetLocation = c(-1, 0, 1),
+#'                          targetWeight   = c( 1, 1, 1),
+#'                          targetValue    = c( 8,10,12)))
+#'
+#' conf.3 = config.ATA(list(method = "TCC",
+#'                          infoType = "FISHER",
+#'                          targetLocation = c(-1, 0, 1),
+#'                          targetWeight   = c( 1, 1, 1),
+#'                          targetValue    = c(10,15,20)))
+#' @rdname config.ATA
+#'
+#' @export
+config.ATA = function(itemSelection, MIP = NULL){
+  conf = new("ATA.config")
+  conf@itemSelection = itemSelection
+  if (!is.null(MIP)){
+    conf@MIP = MIP
+  }
+
+  v = validObject(conf)
+  if (v) return(conf)
+}
 
 #' @inherit methods::show
 #'
