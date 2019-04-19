@@ -286,8 +286,6 @@ config.Shadow = function(itemSelection = NULL, contentBalancing = NULL, MIP = NU
   if (v) return(conf)
 }
 
-config.Shadow()
-
 #' @docType methods
 #' @rdname show-methods
 #' @export
