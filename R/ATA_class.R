@@ -90,11 +90,24 @@ setClass("ATA.config",
 #' @rdname config.ATA
 #'
 #' @export
-config.ATA = function(itemSelection, MIP = NULL){
+config.ATA = function(itemSelection = NULL, MIP = NULL){
   conf = new("ATA.config")
-  conf@itemSelection = itemSelection
-  if (!is.null(MIP)){
-    conf@MIP = MIP
+
+  arg.names = c("itemSelection", "MIP")
+  obj.names = c()
+
+  for (arg in arg.names){
+    if (!is.null(eval(parse(text = arg)))){
+      eval(parse(text = paste0("obj.names = names(conf@", arg, ")")))
+      for (entry in obj.names){
+        entry.l = paste0("conf@", arg, "$", entry)
+        entry.r = paste0(arg, "$", entry)
+        tmp = eval(parse(text = entry.r))
+        if (!is.null(tmp)){
+          eval(parse(text = paste0(entry.l, " = ", entry.r)))
+        }
+      }
+    }
   }
 
   v = validObject(conf)

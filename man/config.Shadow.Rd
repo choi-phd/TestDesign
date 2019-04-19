@@ -6,9 +6,11 @@
 \alias{config.Shadow}
 \title{config.Shadow}
 \usage{
-config.Shadow(itemSelection, contentBalancing, MIP = NULL, MCMC,
-  refreshPolicy, exposureControl, stoppingCriterion, interimTheta,
-  finalTheta, thetaGrid = seq(-4, 4, 0.1), auditTrail = F)
+config.Shadow(itemSelection = NULL, contentBalancing = NULL,
+  MIP = NULL, MCMC = NULL, refreshPolicy = NULL,
+  exposureControl = NULL, stoppingCriterion = NULL,
+  interimTheta = NULL, finalTheta = NULL, thetaGrid = seq(-4, 4,
+  0.1), auditTrail = F)
 }
 \arguments{
 \item{itemSelection}{A list containing item selection criteria.
