@@ -256,30 +256,31 @@ setClass("Shadow.config",
 #' 
 #' @rdname config.Shadow
 #' @export
-config.Shadow = function(itemSelection, contentBalancing, MIP = NULL, MCMC,
-                         refreshPolicy, exposureControl, stoppingCriterion,
-                         interimTheta, finalTheta, thetaGrid = seq(-4, 4, .1), auditTrail = F){
+config.Shadow = function(itemSelection = NULL, contentBalancing = NULL, MIP = NULL, MCMC = NULL,
+                         refreshPolicy = NULL, exposureControl = NULL, stoppingCriterion = NULL,
+                         interimTheta = NULL, finalTheta = NULL, thetaGrid = seq(-4, 4, .1), auditTrail = F){
   conf = new("Shadow.config")
-  conf@itemSelection = itemSelection
-  conf@contentBalancing = contentBalancing
   
-  if (!is.null(MIP)){
-    conf@MIP = MIP
+  arg.names = c("itemSelection", "contentBalancing", "MIP", "MCMC",
+                "refreshPolicy", "exposureControl", "stoppingCriterion",
+                "interimTheta", "finalTheta")
+  
+  for (arg in arg.names){
+    if (!is.null(eval(parse(text = arg)))){
+      eval(parse(text = paste0("obj.names = names(conf@", arg, ")")))
+      for (entry in obj.names){
+        entry.l = paste0("conf@", arg, "$", entry)
+        entry.r = paste0(arg, "$", entry)
+        tmp = eval(parse(text = entry.r))
+        if (!is.null(tmp)){
+          eval(parse(text = paste0(entry.l, " = ", entry.r)))
+        }
+      }
+    }
   }
   
-  if (!is.null(MCMC)){
-    conf@MCMC = MCMC
-  }
-  
-  conf@refreshPolicy = refreshPolicy
-  conf@stoppingCriterion = stoppingCriterion
-  conf@interimTheta = interimTheta
-  conf@finalTheta = finalTheta
-  
-  if (!is.null(thetaGrid)){
-    conf@thetaGrid = thetaGrid
-  }
-  conf@auditTrail = auditTrail
+  if (!is.null(thetaGrid))  conf@thetaGrid  = thetaGrid
+  if (!is.null(auditTrail)) conf@auditTrail = auditTrail
   
   v = validObject(conf)
   if (v) return(conf)
