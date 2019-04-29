@@ -6,7 +6,7 @@
 \alias{config.ATA}
 \title{config.ATA}
 \usage{
-config.ATA(itemSelection, MIP = NULL)
+config.ATA(itemSelection = NULL, MIP = NULL)
 }
 \arguments{
 \item{itemSelection}{A list containing item selection criteria. This should have the following entries:
