@@ -80,34 +80,34 @@ theta.itemPool.1 = calcLocation(itemPool.1)
 }
 \references{
 {
-  \insertRef{rasch_probabilistic_1960}{IRTclass}
+  \insertRef{rasch_probabilistic_1960}{Shadow}
 }
 
 {
-  \insertRef{lord_theory_1952}{IRTclass}
+  \insertRef{lord_theory_1952}{Shadow}
   
-  \insertRef{birnbaum_efficient_1957}{IRTclass}
+  \insertRef{birnbaum_efficient_1957}{Shadow}
   
-  \insertRef{birnbaum_estimation_1958}{IRTclass}
+  \insertRef{birnbaum_estimation_1958}{Shadow}
   
-  \insertRef{birnbaum_further_1958}{IRTclass}
+  \insertRef{birnbaum_further_1958}{Shadow}
 }
 
 {
-  \insertRef{birnbaum_latent_1968}{IRTclass}
+  \insertRef{birnbaum_latent_1968}{Shadow}
 }
 
 {
-  \insertRef{masters_rasch_1982}{IRTclass}
+  \insertRef{masters_rasch_1982}{Shadow}
   
-  \insertRef{andrich_rating_1978}{IRTclass}
+  \insertRef{andrich_rating_1978}{Shadow}
 }
 
 {
-  \insertRef{muraki_generalized_1992}{IRTclass}
+  \insertRef{muraki_generalized_1992}{Shadow}
 }
 
 {
-  \insertRef{samejima_estimation_1969}{IRTclass}
+  \insertRef{samejima_estimation_1969}{Shadow}
 }
 }

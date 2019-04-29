@@ -1,8 +1,528 @@
-// [[Rcpp::depends(IRTclass)]]
+
 
 #include <Rcpp.h>
-#include <IRTclass.h>
 using namespace Rcpp;
+
+//' Calculate the probability of a correct response according to the 1pl model 
+//' 
+//' @param x a length-one numeric vector for a theta value
+//' @param b a length-one numeric vector for the difficulty parameter
+//' @template 1pl-ref
+//' @export
+// [[Rcpp::export]]
+double p_1pl(const double& x, const double& b){
+  return 1/(1+exp(b-x));
+}
+
+//' Calculate the probability of a correct response for a vector of theta values according to the 1pl model 
+//' 
+//' @param x a numeric vector of theta values
+//' @param b a length-one numeric vector for the difficulty parameter
+//' @template 1pl-ref
+//' @export
+// [[Rcpp::export]]
+NumericVector array_p_1pl(NumericVector x, const double& b){
+  int nx = x.size();
+  NumericVector p_array(nx);
+  for(int j = 0; j < nx; j++) {
+    p_array[j] = p_1pl(x[j],b);
+  }
+  return p_array;
+}
+
+//' Calculate the probability of a correct response according to the 2pl model 
+//' 
+//' @param x a length-one numeric vector for a theta value
+//' @param a a length-one numeric vector for the slope parameter
+//' @param b a length-one numeric vector for the difficulty parameter
+//' @template 2pl-ref
+//' @export
+// [[Rcpp::export]]
+double p_2pl(const double& x, const double& a, const double& b){
+  return 1/(1+exp(-a*(x-b)));
+}
+
+//' Calculate the probability of a correct response for a vector of theta values according to the 2pl model 
+//' 
+//' @param x a numeric vector of theta values
+//' @param a a length-one numeric vector for the slope parameter
+//' @param b a length-one numeric vector for the difficulty parameter
+//' @template 2pl-ref
+//' @export
+// [[Rcpp::export]]
+NumericVector array_p_2pl(NumericVector x, const double& a, const double& b){
+  int nx = x.size();
+  NumericVector p_array(nx);
+  for(int j = 0; j < nx; j++) {
+    p_array[j] = p_2pl(x[j],a,b);
+  }
+  return p_array;
+}
+
+//' Calculate the probability of a correct response according to the 3pl model 
+//' 
+//' @param x a length-one numeric vector for a theta value
+//' @param a a length-one numeric vector for the slope parameter
+//' @param b a length-one numeric vector for the difficulty parameter
+//' @param c a length-one numeric vector for the guessing parameter
+//' @template 3pl-ref
+//' @export
+// [[Rcpp::export]]
+double p_3pl(const double& x, const double& a, const double& b, const double& c){
+  return c+(1-c)/(1+exp(-a*(x-b)));
+}
+
+//' Calculate the probability of a correct response for a vector of theta values according to the 3pl model 
+//' 
+//' @param x a numeric vector of theta values
+//' @param a a length-one numeric vector for the slope parameter
+//' @param b a length-one numeric vector for the difficulty parameter
+//' @param c a length-one numeric vector for the guessing parameter
+//' @template 3pl-ref
+//' @export
+// [[Rcpp::export]]
+NumericVector array_p_3pl(NumericVector x, const double& a, const double& b, const double& c){
+  int nx = x.size();
+  NumericVector p_array(nx);
+  for(int j = 0; j < nx; j++) {
+    p_array[j] = p_3pl(x[j],a,b,c);
+  }
+  return p_array;
+}
+
+//' Calculate the response probabilities according to the partial credit model
+//' 
+//' @param x a length-one numeric vector for a theta value
+//' @param b a numeric vector for the threshold parameters
+//' @template pc-ref
+//' @export
+// [[Rcpp::export]]
+NumericVector p_pc(const double& x, NumericVector b){
+  int nk = b.size()+1;
+  NumericVector z(nk);
+  z[0] = x;
+  for(int k=1; k<nk; k++) {
+    z[k] = x-b[k-1];
+  }
+  NumericVector zz = cumsum(z);
+  NumericVector pp = exp(zz);
+  double psum = sum(pp);
+  return pp/psum;
+}
+
+//' Calculate the response probabilities for a vector of theta values according to the partial credit model
+//' 
+//' @param x a numeric vector of theta values
+//' @param b a numeric vector for the threshold parameters
+//' @template pc-ref
+//' @export
+// [[Rcpp::export]]
+NumericMatrix array_p_pc(NumericVector x, NumericVector b){
+  int nx = x.size();
+  int nk = b.size()+1;
+  NumericMatrix p_array(nx,nk);
+  NumericVector p(nk);
+  for(int j = 0; j < nx; j++) {
+    p = p_pc(x[j],b);
+    for(int k = 0; k < nk; k++) {
+      p_array(j,k) = p[k];
+    }
+  }
+  return p_array;
+}
+
+//' Calculate the response probabilities according to the generalizaed partial credit model
+//' 
+//' @param x a length-one numeric vector for a theta value
+//' @param a a length-one numeric vector for the slope parameter
+//' @param b a numeric vector for the threshold parameters
+//' @template gpc-ref
+//' @export
+// [[Rcpp::export]]
+NumericVector p_gpc(const double& x, const double& a, NumericVector b){
+  int nk = b.size()+1;
+  NumericVector z(nk);
+  z[0] = a*x;
+  for(int k=1; k<nk; k++) {
+    z[k] = a*(x-b[k-1]);
+  }
+  NumericVector zz = cumsum(z);
+  NumericVector pp = exp(zz);
+  double psum = sum(pp);
+  return pp/psum;
+}
+
+//' Calculate the response probabilities for a vector of theta values according to the generalized partial credit model
+//' 
+//' @param x a numeric vector of theta values
+//' @param a a length-one numeric vector for the slope parameter
+//' @param b a numeric vector for the threshold parameters
+//' @template gpc-ref
+//' @export
+// [[Rcpp::export]]
+NumericMatrix array_p_gpc(NumericVector x, const double& a, NumericVector b){
+  int nx = x.size();
+  int nk = b.size()+1;
+  NumericMatrix p_array(nx,nk);
+  NumericVector p(nk);
+  for(int j = 0; j < nx; j++) {
+    p = p_gpc(x[j],a,b);
+    for(int k = 0; k < nk; k++) {
+      p_array(j,k) = p[k];
+    }
+  }
+  return p_array;
+}
+
+//' Calculate the response probabilities according to the graded response model
+//' 
+//' @param x a length-one numeric vector for a theta value
+//' @param a a length-one numeric vector for the slope parameter
+//' @param b a numeric vector for the category boundary parameters
+//' @template gr-ref
+//' @export
+// [[Rcpp::export]]
+NumericVector p_gr(const double& x, const double& a, NumericVector b){
+  int nk = b.size()+1;
+  NumericVector p(nk), p_star(nk+1);
+  p_star[0] = 1;
+  p_star[nk] = 0;
+  for(int k = 1; k < nk; k++){
+    p_star[k] = p_2pl(x,a,b[k-1]);
+  }
+  for(int k = 0; k < nk; k++){
+    p[k] = p_star[k]-p_star[k+1];
+  }
+  return p;
+}
+
+//' Calculate the response probabilities for a vector of theta values according to the graded response model
+//' 
+//' @param x a numeric vector of theta values
+//' @param a a length-one numeric vector for the slope parameter
+//' @param b a numeric vector for the category boundary parameters
+//' @template gr-ref
+//' @export
+// [[Rcpp::export]]
+NumericMatrix array_p_gr(NumericVector x, const double& a, NumericVector b){
+  int nx = x.size();
+  int nk = b.size()+1;
+  NumericMatrix p_array(nx,nk);
+  NumericVector p(nk);
+  for(int j = 0; j < nx; j++) {
+    p = p_gr(x[j],a,b);
+    for(int k = 0; k < nk; k++) {
+      p_array(j,k) = p[k];
+    }
+  }
+  return p_array;
+}
+
+//' Calculate the Fisher information according to the 1pl model
+//' 
+//' @param x a length-one numeric vector for a theta value
+//' @param b a numeric vector for the threshold parameters
+//' @template 1pl-ref
+//' @export
+// [[Rcpp::export]]
+double info_1pl(const double& x, const double& b){
+  double p = p_1pl(x,b);
+  return p*(1-p);
+}
+
+//' Calculate the Fisher information for a vector of theta values according to the 1pl model
+//' 
+//' @param x a vector of theta value
+//' @param b a length-one numeric vector for the difficulty parameter
+//' @template 1pl-ref
+//' @export
+// [[Rcpp::export]]
+NumericVector array_info_1pl(NumericVector x, const double& b){
+  int nx = x.size();
+  NumericVector info_array(nx);
+  for(int j = 0; j < nx; j++) {
+    info_array[j] = info_1pl(x[j],b);
+  }
+  return info_array;
+}
+
+//' Calculate the Fisher information according to the 2pl model
+//' 
+//' @param x a length-one numeric vector for a theta value
+//' @param a a length-one numeric vector for the slope parameter
+//' @param b a length-one numeric vector for the difficulty parameter
+//' @template 2pl-ref
+//' @export
+// [[Rcpp::export]]
+double info_2pl(const double& x, const double& a, const double& b){
+  double p = p_2pl(x,a,b);
+  return pow(a,2)*p*(1-p);
+}
+
+//' Calculate the Fisher information for a vector of theta values according to the 2pl model
+//' 
+//' @param x a vector of theta values
+//' @param a a length-one numeric vector for the slope parameter
+//' @param b a length-one numeric vector for the difficulty parameter
+//' @template 2pl-ref
+//' @export
+// [[Rcpp::export]]
+NumericVector array_info_2pl(NumericVector x, const double& a, const double& b){
+  int nx = x.size();
+  NumericVector info_array(nx);
+  for(int j = 0; j < nx; j++) {
+    info_array[j] = info_2pl(x[j],a,b);
+  }
+  return info_array;
+}
+
+//' Calculate the Fisher information according to the 3pl model
+//' 
+//' @param x a length-one numeric vector for a theta value
+//' @param a a length-one numeric vector for the slope parameter
+//' @param b a length-one numeric vector for the difficulty parameter
+//' @param c a length-one numeric vector for the guessing parameter
+//' @template 3pl-ref
+//' @export
+// [[Rcpp::export]]
+double info_3pl(const double& x, const double& a, const double& b, const double& c){
+  double p = p_3pl(x,a,b,c);
+  return pow(a,2)*(1-p)/p*pow((p-c)/(1-c),2);
+}
+
+//' Calculate the Fisher information for a vector of theta values according to the 3pl model
+//' 
+//' @param x a vector of theta values
+//' @param a a length-one numeric vector for the slope parameter
+//' @param b a length-one numeric vector for the difficulty parameter
+//' @param c a length-one numeric vector for the guessing parameter
+//' @template 3pl-ref
+//' @export
+// [[Rcpp::export]]
+NumericVector array_info_3pl(NumericVector x, const double& a, const double& b, const double& c){
+  int nx = x.size();
+  NumericVector info_array(nx);
+  for(int j = 0; j < nx; j++) {
+    info_array[j] = info_3pl(x[j],a,b,c);
+  }
+  return info_array;
+}
+
+//' Calculate the Fisher information according to the partial credit model
+//' 
+//' @param x a length-one numeric vector for a theta value
+//' @param b a numeric vector for the threshold parameters
+//' @template pc-ref
+//' @export
+// [[Rcpp::export]]
+double info_pc(const double& x, NumericVector b){
+  NumericVector p = p_pc(x,b);
+  int nk = b.size()+1;
+  double const_1 = 0, const_2 = 0;
+  for(int i = 0; i < nk; i++){
+    const_1 += i*p[i];
+    const_2 += i*i*p[i];
+  }
+  return const_2-pow(const_1,2);
+}
+
+//' Calculate the Fisher information for a vector of theta values according to the partial credit model
+//' 
+//' @param x a vector of theta values
+//' @param b a numeric vector for the threshold parameters
+//' @template pc-ref
+//' @export
+// [[Rcpp::export]]
+NumericVector array_info_pc(NumericVector x, NumericVector b){
+  int nx = x.size();
+  NumericVector info_array(nx);
+  for(int j = 0; j < nx; j++) {
+    info_array[j] = info_pc(x[j],b);
+  }
+  return info_array;
+}
+
+//' Calculate the Fisher information according to the generalized partial credit model
+//' 
+//' @param x a length-one numeric vector for a theta value
+//' @param a a length-one numeric vector for the slope parameter
+//' @param b a numeric vector for the threshold parameters
+//' @template gpc-ref
+//' @export
+// [[Rcpp::export]]
+double info_gpc(const double& x, const double& a, NumericVector b){
+  NumericVector p = p_gpc(x,a,b);
+  int nk = b.size()+1;
+  double const_1 = 0, const_2 = 0;
+  for(int i = 0; i < nk; i++){
+    const_1 += i*p[i];
+    const_2 += i*i*p[i];
+  }
+  return pow(a,2)*(const_2-pow(const_1,2));
+}
+
+//' Calculate the Fisher information for a vector of theta values according to the generalized partial credit model
+//' 
+//' @param x a vector of theta values
+//' @param a a length-one numeric vector for the slope parameter
+//' @param b a numeric vector for the threshold parameters
+//' @template gpc-ref
+//' @export
+// [[Rcpp::export]]
+NumericVector array_info_gpc(NumericVector x, const double& a, NumericVector b){
+  int nx = x.size();
+  NumericVector info_array(nx);
+  for(int j = 0; j < nx; j++) {
+    info_array[j] = info_gpc(x[j],a,b);
+  }
+  return info_array;
+}
+
+//' Calculate the Fisher information according to the graded response model
+//' 
+//' @param x a length-one numeric vector for a theta value
+//' @param a a length-one numeric vector for the slope parameter
+//' @param b a numeric vector for the category boundary parameters
+//' @template gr-ref
+//' @export
+// [[Rcpp::export]]
+double info_gr(const double& x, const double& a, NumericVector b){
+  int nk = b.size()+1;
+  NumericVector p_star(nk+1);
+  p_star[0] = 1;
+  p_star[nk] = 0;
+  for(int k = 1; k < nk; k++){
+    p_star[k] = p_2pl(x,a,b[k-1]);
+  }
+  double out = 0;
+  for(int k = 0; k < nk; k++){
+    out += (p_star[k]-p_star[k+1])*pow(1-p_star[k]-p_star[k+1],2);
+  }
+  return out *= pow(a,2);
+}
+
+//' Calculate the Fisher information for a vector of theta values according to the graded response model
+//' 
+//' @param x a vector of theta values
+//' @param a a length-one numeric vector for the slope parameter
+//' @param b a numeric vector for the category boundary parameters
+//' @template gr-ref
+//' @export
+// [[Rcpp::export]]
+NumericVector array_info_gr(NumericVector x, const double& a, NumericVector b){
+  int nx = x.size();
+  NumericVector info_array(nx);
+  for(int j = 0; j < nx; j++) {
+    info_array[j] = info_gr(x[j],a,b);
+  }
+  return info_array;
+}
+
+//' Calculate the Fisher information matrix for a single theta value and a set of items, potentially with a mixture of different models
+//' 
+//' @param x a length-one numeric vector for a theta value
+//' @param item_parm a matrix of item parameters
+//' @param ncat a numeric vector of the number of response categories by item
+//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
+//' @export
+// [[Rcpp::export]]
+NumericVector calc_info(const double& x,
+                        NumericMatrix item_parm,
+                        IntegerVector ncat,
+                        IntegerVector model){
+  
+  int ni = item_parm.nrow();
+  NumericVector info_array(ni);
+  for (int i = 0; i < ni; i++){
+    if (model[1] == 1){
+      double b = item_parm(i,0);
+      info_array[i] = info_1pl(x,b);
+    } else if (model[i] == 2){
+      double a = item_parm(i,0),b = item_parm(i,1);
+      info_array[i] = info_2pl(x,a,b);
+    } else if (model[i] == 3){
+      double a = item_parm(i,0), b = item_parm(i,1), c = item_parm(i,2);
+      info_array[i] = info_3pl(x,a,b,c);
+    } else if (model[i] == 4){
+      NumericVector b(ncat[i]-1);
+      for (int j = 0; j < ncat[i]-1; j++){
+        b[j] = item_parm(i,j);
+      }
+      info_array[i] = info_pc(x,b);
+    } else {
+      double a = item_parm(i,0);
+      NumericVector b(ncat[i]-1);
+      for (int j = 0; j < ncat[i]-1; j++){
+        b[j] = item_parm(i,j+1);
+      }
+      if (model[i] == 5){
+        info_array[i] = info_gpc(x,a,b);
+      } else if (model[i] == 6){ 
+        info_array[i] = info_gr(x,a,b);
+      }
+    }
+  }
+  return info_array;
+}
+
+//' Calculate the Fisher information matrix for a vector of theta values and a set of items, potentially with a mixture of different models
+//' 
+//' @param x a numeric vector of theta values
+//' @param item_parm a matrix of item parameters
+//' @param ncat a numeric vector of the number of response categories by item
+//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
+//' @export
+// [[Rcpp::export]]
+NumericMatrix calc_info_matrix(NumericVector x,
+                               NumericMatrix item_parm,
+                               IntegerVector ncat,
+                               IntegerVector model) {
+  int nx = x.size();
+  int ni = item_parm.nrow(); 
+  NumericMatrix info_matrix(nx,ni);
+  for (int i = 0; i < ni; i++) {
+    if (model[i] == 1){
+      double b = item_parm(i,0);
+      for (int q = 0; q < nx; q++) {
+        info_matrix(q,i) = info_1pl(x[q],b);
+      }
+    } else if (model[i] == 2){
+      double a = item_parm(i,0), b = item_parm(i,1);
+      for (int q = 0; q < nx; q++) {
+        info_matrix(q,i) = info_2pl(x[q],a,b);
+      }
+    } else if (model[i] == 3){
+      double a = item_parm(i,0), b = item_parm(i,1), c = item_parm(i,2);
+      for (int q = 0; q < nx; q++) {
+        info_matrix(q,i) = info_3pl(x[q],a,b,c);
+      }
+    } else if (model[i] == 4){
+      NumericVector b(ncat[i]-1);
+      for (int j = 0; j < ncat[i]-1; j++){
+        b[j] = item_parm(i,j);
+      }
+      for (int q = 0; q < nx; q++) {
+        info_matrix(q,i) = info_pc(x[q],b);
+      }
+    } else {
+      double a = item_parm(i,0);
+      NumericVector b(ncat[i]-1);
+      for (int j = 0; j < ncat[i]-1; j++){
+        b[j] = item_parm(i,j+1);
+      }
+      if (model[i] == 5){
+        for (int q = 0; q < nx; q++) {
+          info_matrix(q,i) = info_gpc(x[q],a,b);
+        }
+      } else if (model[i] == 6){
+        for (int q = 0; q < nx; q++) {
+          info_matrix(q,i) = info_gr(x[q],a,b);
+        }
+      }
+    }
+  }
+  return info_matrix;
+}
 
 //' calc_info_EB
 //' 
@@ -25,7 +545,7 @@ NumericVector calc_info_EB(NumericVector x,
   int ni = item_parm.nrow(); //number of items
   NumericVector info_array(ni); //filled with 0
   for(int j = 0; j < nx; j++){
-    NumericVector info = IRTclass::calc_info(x[j],item_parm,ncat,model);
+    NumericVector info = calc_info(x[j],item_parm,ncat,model);
     for(int i = 0; i < ni; i++){
       info_array[i] += info[i];
     }
@@ -67,7 +587,7 @@ NumericVector calc_info_FB(NumericVector x,
         
         double b = item_parm(s,0);
         
-        info_sum += IRTclass::info_1pl(x[j],b);
+        info_sum += info_1pl(x[j],b);
         
         s += 1;
         if (s >= ns) { s = 0; }
@@ -78,7 +598,7 @@ NumericVector calc_info_FB(NumericVector x,
         double a = item_parm(s,0);
         double b = item_parm(s,1);
         
-        info_sum += IRTclass::info_2pl(x[j],a,b);
+        info_sum += info_2pl(x[j],a,b);
         
         s += 1;
         if (s >= ns) { s = 0; }
@@ -90,7 +610,7 @@ NumericVector calc_info_FB(NumericVector x,
         double b = item_parm(s,1);
         double c = item_parm(s,2);
         
-        info_sum += IRTclass::info_3pl(x[j],a,b,c);
+        info_sum += info_3pl(x[j],a,b,c);
         
         s += 1;
         if (s >= ns) { s = 0; }
@@ -104,7 +624,7 @@ NumericVector calc_info_FB(NumericVector x,
           b[k] = item_parm(s,k);
         }
         
-        info_sum += IRTclass::info_pc(x[j],b);
+        info_sum += info_pc(x[j],b);
         
         s += 1;
         if (s >= ns) { s = 0; }
@@ -119,7 +639,7 @@ NumericVector calc_info_FB(NumericVector x,
           b[k] = item_parm(s,k+1);
         }
         
-        info_sum += IRTclass::info_gpc(x[j],a,b);
+        info_sum += info_gpc(x[j],a,b);
         
         s += 1;
         if (s >= ns) { s = 0; }
@@ -134,7 +654,7 @@ NumericVector calc_info_FB(NumericVector x,
           b[k] = item_parm(s,k+1);
         }
         
-        info_sum += IRTclass::info_gr(x[j],a,b);
+        info_sum += info_gr(x[j],a,b);
         
         s += 1;
         if (s >= ns) { s = 0; }
@@ -181,7 +701,7 @@ NumericVector calc_MI_FB(NumericVector x,
         
         double b = item_parm(s,0);
         
-        p[1] = IRTclass::p_1pl(x[j],b);
+        p[1] = p_1pl(x[j],b);
         p[0] = 1-p[1];
         posterior_k(j,_) = p;
         
@@ -193,7 +713,7 @@ NumericVector calc_MI_FB(NumericVector x,
         
         double a = item_parm(s,0), b = item_parm(s,1);
         
-        p[1] = IRTclass::p_2pl(x[j],a,b);
+        p[1] = p_2pl(x[j],a,b);
         p[0] = 1-p[1];
         posterior_k(j,_) = p;
         
@@ -207,7 +727,7 @@ NumericVector calc_MI_FB(NumericVector x,
         double b = item_parm(s,1);
         double c = item_parm(s,2);
         
-        p[1] = IRTclass::p_3pl(x[j],a,b,c);
+        p[1] = p_3pl(x[j],a,b,c);
         p[0] = 1-p[1];
         posterior_k(j,_) = p;
         
@@ -223,7 +743,7 @@ NumericVector calc_MI_FB(NumericVector x,
           b[k] = item_parm(s,k);
         }
         
-        p = IRTclass::p_pc(x[j],b);
+        p = p_pc(x[j],b);
         posterior_k(j,_) = p;
         
         s += 1;
@@ -239,7 +759,7 @@ NumericVector calc_MI_FB(NumericVector x,
           b[k] = item_parm(s,k+1);
         }
         
-        p = IRTclass::p_gpc(x[j],a,b);
+        p = p_gpc(x[j],a,b);
         posterior_k(j,_) = p;
         
         s += 1;
@@ -255,7 +775,7 @@ NumericVector calc_MI_FB(NumericVector x,
           b[k] = item_parm(s,k+1);
         }
         
-        p = IRTclass::p_gr(x[j],a,b);
+        p = p_gr(x[j],a,b);
         posterior_k(j,_) = p;
         
         s += 1;
@@ -299,7 +819,7 @@ double calc_likelihood(const double& x,
       
       double b = item_parm(i,0);
       
-      p = IRTclass::p_1pl(x,b);
+      p = p_1pl(x,b);
       
       if (resp[i] == 0) { p = (1-p); }
       lh *= p;
@@ -309,7 +829,7 @@ double calc_likelihood(const double& x,
       double a = item_parm(i,0);
       double b = item_parm(i,1);
       
-      p = IRTclass::p_2pl(x,a,b);
+      p = p_2pl(x,a,b);
       
       if (resp[i] == 0) { p = (1-p); }
       lh *= p;
@@ -320,7 +840,7 @@ double calc_likelihood(const double& x,
       double b = item_parm(i,1);
       double c = item_parm(i,2);
       
-      p = IRTclass::p_3pl(x,a,b,c);
+      p = p_3pl(x,a,b,c);
       
       if (resp[i] == 0) { p = (1-p); }
       lh *= p;
@@ -334,7 +854,7 @@ double calc_likelihood(const double& x,
       }
       
       NumericVector pp(ncat[i]);
-      pp = IRTclass::p_pc(x,b);
+      pp = p_pc(x,b);
       lh *= pp[resp[i]];
       
     } else if (model[i] == 5) {
@@ -347,7 +867,7 @@ double calc_likelihood(const double& x,
       }
       
       NumericVector pp(ncat[i]);
-      pp = IRTclass::p_gpc(x,a,b);
+      pp = p_gpc(x,a,b);
       lh *= pp[resp[i]];
       
     } else if (model[i] == 6) {
@@ -360,7 +880,7 @@ double calc_likelihood(const double& x,
       }
       
       NumericVector pp(ncat[i]);
-      pp = IRTclass::p_gr(x,a,b);
+      pp = p_gr(x,a,b);
       lh *= pp[resp[i]];
       
     }
@@ -397,7 +917,7 @@ NumericVector calc_likelihood_function(NumericVector theta_grid,
       
       double b = item_parm(i,0);
       
-      pp(_,1) = IRTclass::array_p_1pl(theta_grid,b);
+      pp(_,1) = array_p_1pl(theta_grid,b);
       pp(_,0) = 1 - pp(_,1);
       
     } else if (model[i] == 2) {
@@ -405,7 +925,7 @@ NumericVector calc_likelihood_function(NumericVector theta_grid,
       double a = item_parm(i,0);
       double b = item_parm(i,1);
       
-      pp(_,1) = IRTclass::array_p_2pl(theta_grid,a,b);
+      pp(_,1) = array_p_2pl(theta_grid,a,b);
       pp(_,0) = 1 - pp(_,1);
       
     } else if (model[i] == 3) {
@@ -414,7 +934,7 @@ NumericVector calc_likelihood_function(NumericVector theta_grid,
       double b = item_parm(i,1);
       double c = item_parm(i,2);
       
-      pp(_,1) = IRTclass::array_p_3pl(theta_grid,a,b,c);
+      pp(_,1) = array_p_3pl(theta_grid,a,b,c);
       pp(_,0) = 1 - pp(_,1);
       
     } else if (model[i] == 4) {
@@ -425,7 +945,7 @@ NumericVector calc_likelihood_function(NumericVector theta_grid,
         b[k] = item_parm(i,k);
       }
       
-      pp = IRTclass::array_p_pc(theta_grid,b);
+      pp = array_p_pc(theta_grid,b);
       
     } else if (model[i] == 5) {
       
@@ -436,7 +956,7 @@ NumericVector calc_likelihood_function(NumericVector theta_grid,
         b[k] = item_parm(i,k+1);
       }
       
-      pp = IRTclass::array_p_gpc(theta_grid,a,b);
+      pp = array_p_gpc(theta_grid,a,b);
       
     } else if (model[i] == 6) {
       
@@ -447,7 +967,7 @@ NumericVector calc_likelihood_function(NumericVector theta_grid,
         b[k] = item_parm(i,k+1);
       }
       
-      pp = IRTclass::array_p_gr(theta_grid,a,b);
+      pp = array_p_gr(theta_grid,a,b);
       
     }
 
@@ -486,7 +1006,7 @@ double calc_log_likelihood(const double& x,
 
       double b = item_parm(i,0);
       
-      p = IRTclass::p_1pl(x,b);
+      p = p_1pl(x,b);
       
       if (resp[i] == 0) { p = (1-p); }
       llh += log(p);
@@ -495,7 +1015,7 @@ double calc_log_likelihood(const double& x,
       
       double a = item_parm(i,0), b = item_parm(i,1);
       
-      p = IRTclass::p_2pl(x,a,b);
+      p = p_2pl(x,a,b);
       
       if (resp[i] == 0) { p = (1-p); }
       llh += log(p);
@@ -504,7 +1024,7 @@ double calc_log_likelihood(const double& x,
       
       double a = item_parm(i,0), b = item_parm(i,1), c = item_parm(i,2);
       
-      p = IRTclass::p_3pl(x,a,b,c);
+      p = p_3pl(x,a,b,c);
       
       if (resp[i] == 0) { p = (1-p); }
       llh += log(p);
@@ -518,7 +1038,7 @@ double calc_log_likelihood(const double& x,
       }
       
       NumericVector pp(ncat[i]);
-      pp = IRTclass::p_pc(x,b);
+      pp = p_pc(x,b);
       llh += log(pp[resp[i]]);
       
     } else if (model[i] == 5) {
@@ -531,7 +1051,7 @@ double calc_log_likelihood(const double& x,
       }
       
       NumericVector pp(ncat[i]);
-      pp = IRTclass::p_gpc(x,a,b);
+      pp = p_gpc(x,a,b);
       llh += log(pp[resp[i]]);
       
     } else if (model[i] == 6) {
@@ -544,7 +1064,7 @@ double calc_log_likelihood(const double& x,
       }
       
       NumericVector pp(ncat[i]);
-      pp = IRTclass::p_gr(x,a,b);
+      pp = p_gr(x,a,b);
       llh += log(pp[resp[i]]);
       
     }
@@ -586,7 +1106,7 @@ NumericVector calc_log_likelihood_function(NumericVector theta_grid,
       
       double b = item_parm(i,0);
       
-      pp(_,1) = IRTclass::array_p_1pl(theta_grid,b);
+      pp(_,1) = array_p_1pl(theta_grid,b);
       pp(_,0) = 1 - pp(_,1);
       
     } else if (model[i] == 2){
@@ -594,7 +1114,7 @@ NumericVector calc_log_likelihood_function(NumericVector theta_grid,
       double a = item_parm(i,0);
       double b = item_parm(i,1);
       
-      pp(_,1) = IRTclass::array_p_2pl(theta_grid,a,b);
+      pp(_,1) = array_p_2pl(theta_grid,a,b);
       pp(_,0) = 1 - pp(_,1);
       
     } else if (model[i] == 3){
@@ -603,7 +1123,7 @@ NumericVector calc_log_likelihood_function(NumericVector theta_grid,
       double b = item_parm(i,1);
       double c = item_parm(i,2);
       
-      pp(_,1) = IRTclass::array_p_3pl(theta_grid,a,b,c);
+      pp(_,1) = array_p_3pl(theta_grid,a,b,c);
       pp(_,0) = 1 - pp(_,1);
       
     } else if (model[i] == 4){
@@ -614,7 +1134,7 @@ NumericVector calc_log_likelihood_function(NumericVector theta_grid,
         b[k] = item_parm(i,k);
       }
       
-      pp = IRTclass::array_p_pc(theta_grid,b);
+      pp = array_p_pc(theta_grid,b);
       
     } else if (model[i] == 5){
       
@@ -625,7 +1145,7 @@ NumericVector calc_log_likelihood_function(NumericVector theta_grid,
         b[k] = item_parm(i,k+1);
       }
       
-      pp = IRTclass::array_p_gpc(theta_grid,a,b);
+      pp = array_p_gpc(theta_grid,a,b);
       
     } else if (model[i] == 6){
       
@@ -636,7 +1156,7 @@ NumericVector calc_log_likelihood_function(NumericVector theta_grid,
         b[k] = item_parm(i,k+1);
       }
       
-      pp = IRTclass::array_p_gr(theta_grid,a,b);
+      pp = array_p_gr(theta_grid,a,b);
       
     }
       
@@ -745,7 +1265,7 @@ double calc_posterior_single(const double& x,
   if (model == 1){
     
     double b = item_parm[0];
-    double p = IRTclass::p_1pl(x,b);
+    double p = p_1pl(x,b);
     
     if (resp == 0) { p = (1-p); }
     pos = p;
@@ -754,7 +1274,7 @@ double calc_posterior_single(const double& x,
     
     double a = item_parm[0];
     double b = item_parm[1];
-    double p = IRTclass::p_2pl(x,a,b);
+    double p = p_2pl(x,a,b);
     
     if (resp == 0) { p = (1-p); }
     pos = p;
@@ -764,7 +1284,7 @@ double calc_posterior_single(const double& x,
     double a = item_parm[0];
     double b = item_parm[1];
     double c = item_parm[2];
-    double p = IRTclass::p_3pl(x,a,b,c);
+    double p = p_3pl(x,a,b,c);
     
     if (resp == 0) { p = (1-p); }
     pos = p;
@@ -778,7 +1298,7 @@ double calc_posterior_single(const double& x,
     }
     
     NumericVector p(ncat);
-    p = IRTclass::p_pc(x,b);
+    p = p_pc(x,b);
     
     pos = p[resp];
     
@@ -792,7 +1312,7 @@ double calc_posterior_single(const double& x,
     }
     
     NumericVector p(ncat);
-    p = IRTclass::p_gpc(x,a,b);
+    p = p_gpc(x,a,b);
     
     pos = p[resp];
     
@@ -806,7 +1326,7 @@ double calc_posterior_single(const double& x,
     }
     
     NumericVector p(ncat);
-    p = IRTclass::p_gr(x,a,b);
+    p = p_gr(x,a,b);
     
     pos = p[resp];
   }
