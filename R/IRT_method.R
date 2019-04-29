@@ -130,9 +130,7 @@ setGeneric(name = "calcLocation",
 #' item.1 = new("item.1pl", difficulty = 0.5)
 #' theta.item.1 = calcLocation(item.1)
 #' }
-#' @references{
-#'   \insertRef{rasch_probabilistic_1960}{IRTclass}
-#' }
+#' @template 1pl-ref
 setMethod(f = "calcLocation",
           signature = c("item.1pl"),
           definition = function(object) {
@@ -147,15 +145,7 @@ setMethod(f = "calcLocation",
 #' item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
 #' theta.item.2 = calcLocation(item.2)
 #' }
-#' @references{
-#'   \insertRef{lord_theory_1952}{IRTclass}
-#'
-#'   \insertRef{birnbaum_efficient_1957}{IRTclass}
-#'
-#'   \insertRef{birnbaum_estimation_1958}{IRTclass}
-#'
-#'   \insertRef{birnbaum_further_1958}{IRTclass}
-#' }
+#' @template 2pl-ref
 setMethod(f = "calcLocation",
           signature = c("item.2pl"),
           definition = function(object) {
@@ -170,9 +160,7 @@ setMethod(f = "calcLocation",
 #' item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 #' theta.item.3 = calcLocation(item.3)
 #' }
-#' @references{
-#'   \insertRef{birnbaum_latent_1968}{IRTclass}
-#' }
+#' @template 3pl-ref
 setMethod(f = "calcLocation",
           signature = c("item.3pl"),
           definition = function(object) {
@@ -188,11 +176,7 @@ setMethod(f = "calcLocation",
 #' item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
 #' theta.item.4 = calcLocation(item.4)
 #' }
-#' @references{
-#'   \insertRef{masters_rasch_1982}{IRTclass}
-#'
-#'   \insertRef{andrich_rating_1978}{IRTclass}
-#' }
+#' @template pc-ref
 setMethod(f = "calcLocation",
           signature = c("item.pc"),
           definition = function(object) {
@@ -208,9 +192,7 @@ setMethod(f = "calcLocation",
 #' item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 #' theta.item.5 = calcLocation(item.5)
 #' }
-#' @references{
-#'   \insertRef{muraki_generalized_1992}{IRTclass}
-#' }
+#' @template gpc-ref
 setMethod(f = "calcLocation",
           signature = c("item.gpc"),
           definition = function(object) {
@@ -225,9 +207,7 @@ setMethod(f = "calcLocation",
 #' item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
 #' theta.item.6 = calcLocation(item.6)
 #' }
-#' @references{
-#'   \insertRef{samejima_estimation_1969}{IRTclass}
-#' }
+#' @template gr-ref
 setMethod(f = "calcLocation",
           signature = c("item.gr"),
           definition = function(object) {
@@ -286,9 +266,7 @@ setGeneric(name = "calcDerivative",
 #' item.1 = new("item.1pl", difficulty = 0.5)
 #' d.item.1 = calcDerivative(item.1, seq(-3, 3, 1))
 #' }
-#' @references{
-#'   \insertRef{rasch_probabilistic_1960}{IRTclass}
-#' }
+#' @template 1pl-ref
 setMethod(f = "calcDerivative",
           signature = c("item.1pl", "numeric"),
           definition = function(object, theta) {
@@ -305,15 +283,7 @@ setMethod(f = "calcDerivative",
 #' item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
 #' d.item.2 = calcDerivative(item.2, seq(-3, 3, 1))
 #' }
-#' @references{
-#'   \insertRef{lord_theory_1952}{IRTclass}
-#'
-#'   \insertRef{birnbaum_efficient_1957}{IRTclass}
-#'
-#'   \insertRef{birnbaum_estimation_1958}{IRTclass}
-#'
-#'   \insertRef{birnbaum_further_1958}{IRTclass}
-#' }
+#' @template 2pl-ref
 setMethod(f = "calcDerivative",
           signature = c("item.2pl", "numeric"),
           definition = function(object, theta) {
@@ -330,9 +300,7 @@ setMethod(f = "calcDerivative",
 #' item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 #' d.item.3 = calcDerivative(item.3, seq(-3, 3, 1))
 #' }
-#' @references{
-#'   \insertRef{birnbaum_latent_1968}{IRTclass}
-#' }
+#' @template 3pl-ref
 setMethod(f = "calcDerivative",
           signature = c("item.3pl", "numeric"),
           definition = function(object, theta) {
@@ -349,11 +317,7 @@ setMethod(f = "calcDerivative",
 #' item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
 #' d.item.4 = calcDerivative(item.4, seq(-3, 3, 1))
 #' }
-#' @references{
-#'   \insertRef{masters_rasch_1982}{IRTclass}
-#'
-#'   \insertRef{andrich_rating_1978}{IRTclass}
-#' }
+#' @template pc-ref
 setMethod(f = "calcDerivative",
           signature = c("item.pc", "numeric"),
           definition = function(object, theta) {
@@ -374,9 +338,7 @@ setMethod(f = "calcDerivative",
 #' item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 #' d.item.5 = calcDerivative(item.5, seq(-3, 3, 1))
 #' }
-#' @references{
-#'   \insertRef{muraki_generalized_1992}{IRTclass}
-#' }
+#' @template gpc-ref
 setMethod(f = "calcDerivative",
           signature = c("item.gpc", "numeric"),
           definition = function(object, theta) {
@@ -397,9 +359,7 @@ setMethod(f = "calcDerivative",
 #' item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
 #' d.item.6 = calcDerivative(item.6, seq(-3, 3, 1))
 #' }
-#' @references{
-#'   \insertRef{samejima_estimation_1969}{IRTclass}
-#' }
+#' @template gr-ref
 setMethod(f = "calcDerivative",
           signature = c("item.gr", "numeric"),
           definition = function(object, theta) {
@@ -481,9 +441,7 @@ setGeneric(name = "calcDerivative2",
 #' item.1 = new("item.1pl", difficulty = 0.5)
 #' dd.item.1 = calcDerivative2(item.1, seq(-3, 3, 1))
 #' }
-#' @references{
-#'   \insertRef{rasch_probabilistic_1960}{IRTclass}
-#' }
+#' @template 1pl-ref
 setMethod(f = "calcDerivative2",
           signature = c("item.1pl", "numeric"),
           definition = function(object, theta) {
@@ -500,15 +458,7 @@ setMethod(f = "calcDerivative2",
 #' item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
 #' dd.item.2 = calcDerivative2(item.2, seq(-3, 3, 1))
 #' }
-#' @references{
-#'   \insertRef{lord_theory_1952}{IRTclass}
-#'
-#'   \insertRef{birnbaum_efficient_1957}{IRTclass}
-#'
-#'   \insertRef{birnbaum_estimation_1958}{IRTclass}
-#'
-#'   \insertRef{birnbaum_further_1958}{IRTclass}
-#' }
+#' @template 2pl-ref
 setMethod(f = "calcDerivative2",
           signature = c("item.2pl", "numeric"),
           definition = function(object, theta) {
@@ -525,9 +475,7 @@ setMethod(f = "calcDerivative2",
 #' item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 #' dd.item.3 = calcDerivative2(item.3, seq(-3, 3, 1))
 #' }
-#' @references{
-#'   \insertRef{birnbaum_latent_1968}{IRTclass}
-#' }
+#' @template 3pl-ref
 setMethod(f = "calcDerivative2",
           signature = c("item.3pl", "numeric"),
           definition = function(object, theta) {
@@ -544,11 +492,7 @@ setMethod(f = "calcDerivative2",
 #' item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
 #' dd.item.4 = calcDerivative2(item.4, seq(-3, 3, 1))
 #' }
-#' @references{
-#'   \insertRef{masters_rasch_1982}{IRTclass}
-#'
-#'   \insertRef{andrich_rating_1978}{IRTclass}
-#' }
+#' @template pc-ref
 setMethod(f = "calcDerivative2",
           signature = c("item.pc", "numeric"),
           definition = function(object, theta) {
@@ -569,9 +513,7 @@ setMethod(f = "calcDerivative2",
 #' item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 #' dd.item.5 = calcDerivative2(item.5, seq(-3, 3, 1))
 #' }
-#' @references{
-#'   \insertRef{muraki_generalized_1992}{IRTclass}
-#' }
+#' @template gpc-ref
 setMethod(f = "calcDerivative2",
           signature = c("item.gpc", "numeric"),
           definition = function(object, theta) {
@@ -592,9 +534,7 @@ setMethod(f = "calcDerivative2",
 #' item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
 #' dd.item.6 = calcDerivative2(item.6, seq(-3, 3, 1))
 #' }
-#' @references{
-#'   \insertRef{samejima_estimation_1969}{IRTclass}
-#' }
+#' @template gr-ref
 setMethod(f = "calcDerivative2",
           signature = c("item.gr", "numeric"),
           definition = function(object, theta) {
@@ -679,9 +619,7 @@ setGeneric(name = "calcJacobian",
 #' item.1 = new("item.1pl", difficulty = 0.5)
 #' j.item.1 = calcJacobian(item.1, seq(-3, 3, 1), 0)
 #' }
-#' @references{
-#'   \insertRef{rasch_probabilistic_1960}{IRTclass}
-#' }
+#' @template 1pl-ref
 setMethod(f = "calcJacobian",
           signature = c("item.1pl", "numeric", "numeric"),
           definition = function(object, theta, resp) {
@@ -697,15 +635,7 @@ setMethod(f = "calcJacobian",
 #' item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
 #' j.item.2 = calcJacobian(item.2, seq(-3, 3, 1), 0)
 #' }
-#' @references{
-#'   \insertRef{lord_theory_1952}{IRTclass}
-#'
-#'   \insertRef{birnbaum_efficient_1957}{IRTclass}
-#'
-#'   \insertRef{birnbaum_estimation_1958}{IRTclass}
-#'
-#'   \insertRef{birnbaum_further_1958}{IRTclass}
-#' }
+#' @template 2pl-ref
 setMethod(f = "calcJacobian",
           signature = c("item.2pl", "numeric", "numeric"),
           definition = function(object, theta, resp) {
@@ -721,9 +651,7 @@ setMethod(f = "calcJacobian",
 #' item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 #' j.item.3 = calcJacobian(item.3, seq(-3, 3, 1), 0)
 #' }
-#' @references{
-#'   \insertRef{birnbaum_latent_1968}{IRTclass}
-#' }
+#' @template 3pl-ref
 setMethod(f = "calcJacobian",
           signature = c("item.3pl", "numeric", "numeric"),
           definition = function(object, theta, resp) {
@@ -740,11 +668,7 @@ setMethod(f = "calcJacobian",
 #' item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
 #' j.item.4 = calcJacobian(item.4, seq(-3, 3, 1), 0)
 #' }
-#' @references{
-#'   \insertRef{masters_rasch_1982}{IRTclass}
-#'
-#'   \insertRef{andrich_rating_1978}{IRTclass}
-#' }
+#' @template pc-ref
 setMethod(f = "calcJacobian",
           signature = c("item.pc", "numeric", "numeric"),
           definition = function(object, theta, resp) {
@@ -760,9 +684,7 @@ setMethod(f = "calcJacobian",
 #' item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 #' j.item.5 = calcJacobian(item.5, seq(-3, 3, 1), 0)
 #' }
-#' @references{
-#'   \insertRef{muraki_generalized_1992}{IRTclass}
-#' }
+#' @template gpc-ref
 setMethod(f = "calcJacobian",
           signature = c("item.gpc", "numeric", "numeric"),
           definition = function(object, theta, resp) {
@@ -778,9 +700,7 @@ setMethod(f = "calcJacobian",
 #' item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
 #' j.item.6 = calcJacobian(item.6, seq(-3, 3, 1), 0)
 #' }
-#' @references{
-#'   \insertRef{samejima_estimation_1969}{IRTclass}
-#' }
+#' @template gr-ref
 setMethod(f = "calcJacobian",
           signature = c("item.gr", "numeric", "numeric"),
           definition = function(object, theta, resp) {
@@ -864,9 +784,7 @@ setGeneric(name = "calcHessian",
 #' item.1 = new("item.1pl", difficulty = 0.5)
 #' h.item.1 = calcHessian(item.1, seq(-3, 3, 1), 0)
 #' }
-#' @references{
-#'   \insertRef{rasch_probabilistic_1960}{IRTclass}
-#' }
+#' @template 1pl-ref
 setMethod(f = "calcHessian",
           signature = c("item.1pl", "numeric", "numeric"),
           definition = function(object, theta, resp) {
@@ -882,15 +800,7 @@ setMethod(f = "calcHessian",
 #' item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
 #' h.item.2 = calcHessian(item.2, seq(-3, 3, 1), 0)
 #' }
-#' @references{
-#'   \insertRef{lord_theory_1952}{IRTclass}
-#'
-#'   \insertRef{birnbaum_efficient_1957}{IRTclass}
-#'
-#'   \insertRef{birnbaum_estimation_1958}{IRTclass}
-#'
-#'   \insertRef{birnbaum_further_1958}{IRTclass}
-#' }
+#' @template 2pl-ref
 setMethod(f = "calcHessian",
           signature = c("item.2pl", "numeric", "numeric"),
           definition = function(object, theta, resp) {
@@ -906,9 +816,7 @@ setMethod(f = "calcHessian",
 #' item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 #' h.item.3 = calcHessian(item.3, seq(-3, 3, 1), 0)
 #' }
-#' @references{
-#'   \insertRef{birnbaum_latent_1968}{IRTclass}
-#' }
+#' @template 3pl-ref
 setMethod(f = "calcHessian",
           signature = c("item.3pl", "numeric", "numeric"),
           definition = function(object, theta, resp) {
@@ -925,11 +833,7 @@ setMethod(f = "calcHessian",
 #' item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
 #' h.item.4 = calcHessian(item.4, seq(-3, 3, 1), 0)
 #' }
-#' @references{
-#'   \insertRef{masters_rasch_1982}{IRTclass}
-#'
-#'   \insertRef{andrich_rating_1978}{IRTclass}
-#' }
+#' @template pc-ref
 setMethod(f = "calcHessian",
           signature = c("item.pc", "numeric", "numeric"),
           definition = function(object, theta, resp) {
@@ -945,9 +849,7 @@ setMethod(f = "calcHessian",
 #' item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 #' h.item.5 = calcHessian(item.5, seq(-3, 3, 1), 0)
 #' }
-#' @references{
-#'   \insertRef{muraki_generalized_1992}{IRTclass}
-#' }
+#' @template gpc-ref
 setMethod(f = "calcHessian",
           signature = c("item.gpc", "numeric", "numeric"),
           definition = function(object, theta, resp) {
@@ -963,9 +865,7 @@ setMethod(f = "calcHessian",
 #' item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
 #' h.item.6 = calcHessian(item.6, seq(-3, 3, 1), 0)
 #' }
-#' @references{
-#'   \insertRef{samejima_estimation_1969}{IRTclass}
-#' }
+#' @template gr-ref
 setMethod(f = "calcHessian",
           signature = c("item.gr", "numeric", "numeric"),
           definition = function(object, theta, resp) {
@@ -1047,9 +947,7 @@ setGeneric(name = "simResp",
 #' @examples
 #' item.1 = new("item.1pl", difficulty = 0.5)
 #' sim.item.1 = simResp(item.1, seq(-3, 3, 1))
-#' @references{
-#'   \insertRef{rasch_probabilistic_1960}{IRTclass}
-#' }
+#' @template 1pl-ref
 setMethod(f = "simResp",
           signature = c("item.1pl", "numeric"),
           definition = function(object, theta) {
@@ -1066,15 +964,7 @@ setMethod(f = "simResp",
 #' @examples
 #' item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
 #' sim.item.2 = simResp(item.2, seq(-3, 3, 1))
-#' @references{
-#'   \insertRef{lord_theory_1952}{IRTclass}
-#'
-#'   \insertRef{birnbaum_efficient_1957}{IRTclass}
-#'
-#'   \insertRef{birnbaum_estimation_1958}{IRTclass}
-#'
-#'   \insertRef{birnbaum_further_1958}{IRTclass}
-#' }
+#' @template 2pl-ref
 setMethod(f = "simResp",
           signature = c("item.2pl", "numeric"),
           definition = function(object, theta) {
@@ -1091,9 +981,7 @@ setMethod(f = "simResp",
 #' @examples
 #' item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 #' sim.item.3 = simResp(item.3, seq(-3, 3, 1))
-#' @references{
-#'   \insertRef{birnbaum_latent_1968}{IRTclass}
-#' }
+#' @template 3pl-ref
 setMethod(f = "simResp",
           signature = c("item.3pl", "numeric"),
           definition = function(object, theta) {
@@ -1110,11 +998,7 @@ setMethod(f = "simResp",
 #' @examples
 #' item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
 #' sim.item.4 = simResp(item.4, seq(-3, 3, 1))
-#' @references{
-#'   \insertRef{masters_rasch_1982}{IRTclass}
-#'
-#'   \insertRef{andrich_rating_1978}{IRTclass}
-#' }
+#' @template pc-ref
 setMethod(f = "simResp",
           signature = c("item.pc", "numeric"),
           definition = function(object, theta) {
@@ -1135,9 +1019,7 @@ setMethod(f = "simResp",
 #' @examples
 #' item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 #' sim.item.5 = simResp(item.5, seq(-3, 3, 1))
-#' @references{
-#'   \insertRef{muraki_generalized_1992}{IRTclass}
-#' }
+#' @template gpc-ref
 setMethod(f = "simResp",
           signature = c("item.gpc", "numeric"),
           definition = function(object, theta) {
@@ -1158,9 +1040,7 @@ setMethod(f = "simResp",
 #' @examples
 #' item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
 #' sim.item.6 = simResp(item.6, seq(-3, 3, 1))
-#' @references{
-#'   \insertRef{samejima_estimation_1969}{IRTclass}
-#' }
+#' @template gr-ref
 setMethod(f = "simResp",
           signature = c("item.gr", "numeric"),
           definition = function(object, theta) {
