@@ -6,3 +6,4 @@
 ^\.html$
 ^\.rmd$
 ^tutorial$
+^.*\.eps$
