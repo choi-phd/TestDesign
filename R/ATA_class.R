@@ -94,6 +94,7 @@ config.ATA = function(itemSelection = NULL, MIP = NULL){
   conf = new("ATA.config")
   
   arg.names = c("itemSelection", "MIP")
+  obj.names = c()
   
   for (arg in arg.names){
     if (!is.null(eval(parse(text = arg)))){

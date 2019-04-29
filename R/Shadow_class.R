@@ -264,6 +264,7 @@ config.Shadow = function(itemSelection = NULL, contentBalancing = NULL, MIP = NU
   arg.names = c("itemSelection", "contentBalancing", "MIP", "MCMC",
                 "refreshPolicy", "exposureControl", "stoppingCriterion",
                 "interimTheta", "finalTheta")
+  obj.names = c()
   
   for (arg in arg.names){
     if (!is.null(eval(parse(text = arg)))){
