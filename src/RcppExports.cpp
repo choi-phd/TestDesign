@@ -5,6 +5,342 @@
 
 using namespace Rcpp;
 
+// p_1pl
+double p_1pl(const double& x, const double& b);
+RcppExport SEXP _Shadow_p_1pl(SEXP xSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const double& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(p_1pl(x, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_p_1pl
+NumericVector array_p_1pl(NumericVector x, const double& b);
+RcppExport SEXP _Shadow_array_p_1pl(SEXP xSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_p_1pl(x, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// p_2pl
+double p_2pl(const double& x, const double& a, const double& b);
+RcppExport SEXP _Shadow_p_2pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const double& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(p_2pl(x, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_p_2pl
+NumericVector array_p_2pl(NumericVector x, const double& a, const double& b);
+RcppExport SEXP _Shadow_array_p_2pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_p_2pl(x, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// p_3pl
+double p_3pl(const double& x, const double& a, const double& b, const double& c);
+RcppExport SEXP _Shadow_p_3pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP, SEXP cSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const double& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
+    Rcpp::traits::input_parameter< const double& >::type c(cSEXP);
+    rcpp_result_gen = Rcpp::wrap(p_3pl(x, a, b, c));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_p_3pl
+NumericVector array_p_3pl(NumericVector x, const double& a, const double& b, const double& c);
+RcppExport SEXP _Shadow_array_p_3pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP, SEXP cSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
+    Rcpp::traits::input_parameter< const double& >::type c(cSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_p_3pl(x, a, b, c));
+    return rcpp_result_gen;
+END_RCPP
+}
+// p_pc
+NumericVector p_pc(const double& x, NumericVector b);
+RcppExport SEXP _Shadow_p_pc(SEXP xSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const double& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(p_pc(x, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_p_pc
+NumericMatrix array_p_pc(NumericVector x, NumericVector b);
+RcppExport SEXP _Shadow_array_p_pc(SEXP xSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_p_pc(x, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// p_gpc
+NumericVector p_gpc(const double& x, const double& a, NumericVector b);
+RcppExport SEXP _Shadow_p_gpc(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const double& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(p_gpc(x, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_p_gpc
+NumericMatrix array_p_gpc(NumericVector x, const double& a, NumericVector b);
+RcppExport SEXP _Shadow_array_p_gpc(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_p_gpc(x, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// p_gr
+NumericVector p_gr(const double& x, const double& a, NumericVector b);
+RcppExport SEXP _Shadow_p_gr(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const double& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(p_gr(x, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_p_gr
+NumericMatrix array_p_gr(NumericVector x, const double& a, NumericVector b);
+RcppExport SEXP _Shadow_array_p_gr(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_p_gr(x, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// info_1pl
+double info_1pl(const double& x, const double& b);
+RcppExport SEXP _Shadow_info_1pl(SEXP xSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const double& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(info_1pl(x, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_info_1pl
+NumericVector array_info_1pl(NumericVector x, const double& b);
+RcppExport SEXP _Shadow_array_info_1pl(SEXP xSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_info_1pl(x, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// info_2pl
+double info_2pl(const double& x, const double& a, const double& b);
+RcppExport SEXP _Shadow_info_2pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const double& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(info_2pl(x, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_info_2pl
+NumericVector array_info_2pl(NumericVector x, const double& a, const double& b);
+RcppExport SEXP _Shadow_array_info_2pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_info_2pl(x, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// info_3pl
+double info_3pl(const double& x, const double& a, const double& b, const double& c);
+RcppExport SEXP _Shadow_info_3pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP, SEXP cSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const double& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
+    Rcpp::traits::input_parameter< const double& >::type c(cSEXP);
+    rcpp_result_gen = Rcpp::wrap(info_3pl(x, a, b, c));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_info_3pl
+NumericVector array_info_3pl(NumericVector x, const double& a, const double& b, const double& c);
+RcppExport SEXP _Shadow_array_info_3pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP, SEXP cSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
+    Rcpp::traits::input_parameter< const double& >::type c(cSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_info_3pl(x, a, b, c));
+    return rcpp_result_gen;
+END_RCPP
+}
+// info_pc
+double info_pc(const double& x, NumericVector b);
+RcppExport SEXP _Shadow_info_pc(SEXP xSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const double& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(info_pc(x, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_info_pc
+NumericVector array_info_pc(NumericVector x, NumericVector b);
+RcppExport SEXP _Shadow_array_info_pc(SEXP xSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_info_pc(x, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// info_gpc
+double info_gpc(const double& x, const double& a, NumericVector b);
+RcppExport SEXP _Shadow_info_gpc(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const double& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(info_gpc(x, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_info_gpc
+NumericVector array_info_gpc(NumericVector x, const double& a, NumericVector b);
+RcppExport SEXP _Shadow_array_info_gpc(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_info_gpc(x, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// info_gr
+double info_gr(const double& x, const double& a, NumericVector b);
+RcppExport SEXP _Shadow_info_gr(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const double& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(info_gr(x, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_info_gr
+NumericVector array_info_gr(NumericVector x, const double& a, NumericVector b);
+RcppExport SEXP _Shadow_array_info_gr(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_info_gr(x, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// calc_info
+NumericVector calc_info(const double& x, NumericMatrix item_parm, IntegerVector ncat, IntegerVector model);
+RcppExport SEXP _Shadow_calc_info(SEXP xSEXP, SEXP item_parmSEXP, SEXP ncatSEXP, SEXP modelSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const double& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type item_parm(item_parmSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type ncat(ncatSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type model(modelSEXP);
+    rcpp_result_gen = Rcpp::wrap(calc_info(x, item_parm, ncat, model));
+    return rcpp_result_gen;
+END_RCPP
+}
+// calc_info_matrix
+NumericMatrix calc_info_matrix(NumericVector x, NumericMatrix item_parm, IntegerVector ncat, IntegerVector model);
+RcppExport SEXP _Shadow_calc_info_matrix(SEXP xSEXP, SEXP item_parmSEXP, SEXP ncatSEXP, SEXP modelSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type item_parm(item_parmSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type ncat(ncatSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type model(modelSEXP);
+    rcpp_result_gen = Rcpp::wrap(calc_info_matrix(x, item_parm, ncat, model));
+    return rcpp_result_gen;
+END_RCPP
+}
 // calc_info_EB
 NumericVector calc_info_EB(NumericVector x, NumericMatrix item_parm, IntegerVector ncat, IntegerVector model);
 RcppExport SEXP _Shadow_calc_info_EB(SEXP xSEXP, SEXP item_parmSEXP, SEXP ncatSEXP, SEXP modelSEXP) {
@@ -289,6 +625,32 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_Shadow_p_1pl", (DL_FUNC) &_Shadow_p_1pl, 2},
+    {"_Shadow_array_p_1pl", (DL_FUNC) &_Shadow_array_p_1pl, 2},
+    {"_Shadow_p_2pl", (DL_FUNC) &_Shadow_p_2pl, 3},
+    {"_Shadow_array_p_2pl", (DL_FUNC) &_Shadow_array_p_2pl, 3},
+    {"_Shadow_p_3pl", (DL_FUNC) &_Shadow_p_3pl, 4},
+    {"_Shadow_array_p_3pl", (DL_FUNC) &_Shadow_array_p_3pl, 4},
+    {"_Shadow_p_pc", (DL_FUNC) &_Shadow_p_pc, 2},
+    {"_Shadow_array_p_pc", (DL_FUNC) &_Shadow_array_p_pc, 2},
+    {"_Shadow_p_gpc", (DL_FUNC) &_Shadow_p_gpc, 3},
+    {"_Shadow_array_p_gpc", (DL_FUNC) &_Shadow_array_p_gpc, 3},
+    {"_Shadow_p_gr", (DL_FUNC) &_Shadow_p_gr, 3},
+    {"_Shadow_array_p_gr", (DL_FUNC) &_Shadow_array_p_gr, 3},
+    {"_Shadow_info_1pl", (DL_FUNC) &_Shadow_info_1pl, 2},
+    {"_Shadow_array_info_1pl", (DL_FUNC) &_Shadow_array_info_1pl, 2},
+    {"_Shadow_info_2pl", (DL_FUNC) &_Shadow_info_2pl, 3},
+    {"_Shadow_array_info_2pl", (DL_FUNC) &_Shadow_array_info_2pl, 3},
+    {"_Shadow_info_3pl", (DL_FUNC) &_Shadow_info_3pl, 4},
+    {"_Shadow_array_info_3pl", (DL_FUNC) &_Shadow_array_info_3pl, 4},
+    {"_Shadow_info_pc", (DL_FUNC) &_Shadow_info_pc, 2},
+    {"_Shadow_array_info_pc", (DL_FUNC) &_Shadow_array_info_pc, 2},
+    {"_Shadow_info_gpc", (DL_FUNC) &_Shadow_info_gpc, 3},
+    {"_Shadow_array_info_gpc", (DL_FUNC) &_Shadow_array_info_gpc, 3},
+    {"_Shadow_info_gr", (DL_FUNC) &_Shadow_info_gr, 3},
+    {"_Shadow_array_info_gr", (DL_FUNC) &_Shadow_array_info_gr, 3},
+    {"_Shadow_calc_info", (DL_FUNC) &_Shadow_calc_info, 4},
+    {"_Shadow_calc_info_matrix", (DL_FUNC) &_Shadow_calc_info_matrix, 4},
     {"_Shadow_calc_info_EB", (DL_FUNC) &_Shadow_calc_info_EB, 4},
     {"_Shadow_calc_info_FB", (DL_FUNC) &_Shadow_calc_info_FB, 5},
     {"_Shadow_calc_MI_FB", (DL_FUNC) &_Shadow_calc_MI_FB, 4},
