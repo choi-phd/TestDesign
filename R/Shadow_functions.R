@@ -1121,7 +1121,7 @@ MakeItemPoolCluster = function(pools, names = NULL) {
 
 #' Shadow
 #'
-#' @param object An \code{\linkS4class{item.pool}} object. Use \code{\link[IRTclass]{LoadItemPool}} for this.
+#' @param object An \code{\linkS4class{item.pool}} object. Use \code{\link{LoadItemPool}} for this.
 #' @param config A \code{\linkS4class{Shadow.config}} object.
 #' @param trueTheta Numeric. A vector of true theta values to be used in simulation.
 #' @param Constraints A list representing optimization constraints. Use \code{\link{LoadConstraints}} for this.
