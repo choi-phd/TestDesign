@@ -1,10 +1,377 @@
 # Documentation progress
-# Phase 1a: Check redundancy and use IRTclass    -- complete
 
 #' @importFrom Rdpack reprompt
-#' @import IRTclass
-#' @importMethodsFrom IRTclass calcProb calcEscore calcFisher
 NULL
+
+#' An S4 generic and its methods to calculate item response probabilities for different item classes
+#'
+#' @param object An instance of an item class
+#' @param theta A vector of theta values
+#'
+#' @return A matrix of probability values with a dimension (nq, ncat) for a single item or a list of matrices for an instance of "item.pool"
+#'
+#' @export
+#' @docType methods
+#'
+#' @rdname calcProb-methods
+#'
+setGeneric(name = "calcProb",
+           def = function(object, theta) {
+             standardGeneric("calcProb")
+           }
+)
+
+#' @rdname calcProb-methods
+#' @aliases calcProb,item.1pl,numeric-method
+#' @examples
+#' item.1 = new("item.1pl", difficulty = 0.5)
+#' prob.item.1 = calcProb(item.1, seq(-3, 3, 1))
+#' @template 1pl-ref
+setMethod(f = "calcProb",
+          signature = c("item.1pl", "numeric"),
+          definition = function(object, theta) {
+            prob = matrix(NA, length(theta), 2)
+            prob[, 2] = array_p_1pl(theta, object@difficulty)
+            prob[, 1] = 1 - prob[, 2]
+            return(prob)
+          }
+)
+
+#' @rdname calcProb-methods
+#' @aliases calcProb,item.2pl,numeric-method
+#' @examples
+#' item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
+#' prob.item.2 = calcProb(item.2, seq(-3, 3, 1))
+#' @template 2pl-ref
+setMethod(f = "calcProb",
+          signature = c("item.2pl", "numeric"),
+          definition = function(object, theta) {
+            prob = matrix(NA, length(theta), 2)
+            prob[, 2] = array_p_2pl(theta, object@slope, object@difficulty)
+            prob[, 1] = 1 - prob[, 2]
+            return(prob)
+          }
+)
+
+#' @rdname calcProb-methods
+#' @aliases calcProb,item.3pl,numeric-method
+#' @examples
+#' item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+#' prob.item.3 = calcProb(item.3, seq(-3, 3, 1))
+#' @template 3pl-ref
+setMethod(f = "calcProb",
+          signature = c("item.3pl", "numeric"),
+          definition = function(object, theta) {
+            prob = matrix(NA, length(theta), 2)
+            prob[, 2] = array_p_3pl(theta, object@slope, object@difficulty, object@guessing)
+            prob[, 1] = 1 - prob[, 2]
+            return(prob)
+          }
+)
+
+#' @rdname calcProb-methods
+#' @aliases calcProb,item.pc,numeric-method
+#' @examples
+#' item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
+#' prob.item.4 = calcProb(item.4, seq(-3, 3, 1))
+#' @template pc-ref
+setMethod(f = "calcProb",
+          signature = c("item.pc", "numeric"),
+          definition = function(object, theta) {
+            prob = array_p_pc(theta, object@threshold)
+            return(prob)
+          }
+)
+
+#' @rdname calcProb-methods
+#' @aliases calcProb,item.gpc,numeric-method
+#' @examples
+#' item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+#' prob.item.5 = calcProb(item.5, seq(-3, 3, 1))
+#' @template gpc-ref
+setMethod(f = "calcProb",
+          signature = c("item.gpc", "numeric"),
+          definition = function(object, theta) {
+            prob = array_p_gpc(theta, object@slope, object@threshold)
+            return(prob)
+          }
+)
+
+#' @rdname calcProb-methods
+#' @aliases calcProb,item.gr,numeric-method
+#' @examples
+#' item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
+#' prob.item.6 = calcProb(item.6, seq(-3, 3, 1))
+#' @template gr-ref
+setMethod(f = "calcProb",
+          signature = c("item.gr", "numeric"),
+          definition = function(object, theta) {
+            prob = array_p_gr(theta, object@slope, object@category)
+            return(prob)
+          }
+)
+
+#' @rdname calcProb-methods
+#' @aliases calcProb,item.pool,numeric-method
+#' @examples
+#' \dontrun{
+#' itemPool.1 = LoadItemPool("C:/item_par.csv")
+#' prob.itemPool.1 = calcProb(itemPool.1, seq(-3, 3, 1))
+#' }
+setMethod(f = "calcProb",
+          signature = c("item.pool", "numeric"),
+          definition = function(object, theta) {
+            if (length(theta) > 0 && all(!is.na(theta))) {
+              Prob = lapply(object@parms, calcProb, theta)
+            } else {
+              stop("theta is of length 0 or contains missing values")
+            }
+            return(Prob)
+          }
+)
+
+#' An S4 generic and its methods to calculate expected scores given a vector of thetas for different item classes
+#'
+#' @param object An instance of an item class
+#' @param theta A vector of theta values
+#'
+#' @return A vector of expected scores of length nq (the number of values on theta grid)
+#'
+#' @export
+#' @docType methods
+#'
+#' @rdname calcEscore-methods
+setGeneric(name = "calcEscore",
+           def = function(object, theta) {
+             standardGeneric("calcEscore")
+           }
+)
+
+#' @rdname calcEscore-methods
+#' @aliases calcEscore,item.1pl,numeric-method
+#' @examples
+#' item.1 = new("item.1pl", difficulty = 0.5)
+#' ICC.item.1 = calcEscore(item.1, seq(-3, 3, 1))
+#' @template 1pl-ref
+setMethod(f = "calcEscore",
+          signature = c("item.1pl", "numeric"),
+          definition = function(object, theta) {
+            return(calcProb(object, theta)[, 2])
+          }
+)
+
+#' @rdname calcEscore-methods
+#' @aliases calcEscore,item.2pl,numeric-method
+#' @examples
+#' item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
+#' ICC.item.2 = calcEscore(item.2, seq(-3, 3, 1))
+#' @template 2pl-ref
+setMethod(f = "calcEscore",
+          signature = c("item.2pl", "numeric"),
+          definition = function(object, theta) {
+            return(calcProb(object, theta)[, 2])
+          }
+)
+
+#' @rdname calcEscore-methods
+#' @aliases calcEscore,item.3pl,numeric-method
+#' @examples
+#' item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+#' ICC.item.3 = calcEscore(item.3, seq(-3, 3, 1))
+#' @template 3pl-ref
+setMethod(f = "calcEscore",
+          signature = c("item.3pl", "numeric"),
+          definition = function(object, theta) {
+            return(calcProb(object, theta)[, 2])
+          }
+)
+
+#' @rdname calcEscore-methods
+#' @aliases calcEscore,item.pc,numeric-method
+#' @examples
+#' item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
+#' ICC.item.4 = calcEscore(item.4, seq(-3, 3, 1))
+#' @template pc-ref
+setMethod(f = "calcEscore",
+          signature = c("item.pc", "numeric"),
+          definition = function(object, theta) {
+            prob = calcProb(object, theta)
+            ES = as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
+            return(ES)
+          }
+)
+
+#' @rdname calcEscore-methods
+#' @aliases calcEscore,item.gpc,numeric-method
+#' @examples
+#' item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+#' ICC.item.5 = calcEscore(item.5, seq(-3, 3, 1))
+#' @template gpc-ref
+setMethod(f = "calcEscore",
+          signature = c("item.gpc", "numeric"),
+          definition = function(object, theta) {
+            prob = calcProb(object, theta)
+            ES = as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
+            return(ES)
+          }
+)
+
+#' @rdname calcEscore-methods
+#' @aliases calcEscore,item.gr,numeric-method
+#' @examples
+#' item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
+#' ICC.item.6 = calcEscore(item.6, seq(-3, 3, 1))
+#' @template gr-ref
+setMethod(f = "calcEscore",
+          signature = c("item.gr", "numeric"),
+          definition = function(object, theta) {
+            prob = calcProb(object, theta)
+            ES = as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
+            return(ES)
+          }
+)
+
+#' @rdname calcEscore-methods
+#' @aliases calcEscore,item.pool,numeric-method
+#' @examples
+#' \dontrun{
+#' itemPool.1 = LoadItemPool("C:/item_par.csv")
+#' TCC.itemPool.1 = calcEscore(itemPool.1, seq(-3, 3, 1))
+#' }
+setMethod(f = "calcEscore",
+          signature = c("item.pool", "numeric"),
+          definition = function(object, theta) {
+            if (length(theta) > 0 && all(!is.na(theta))) {
+              ES = as.vector(Reduce('+', lapply(object@parms, calcEscore, theta)))
+            } else {
+              stop("theta is of length 0 or contains missing values")
+            }
+            return(ES)
+          }
+)
+
+#' An S4 generic and its methods to calculate Fisher information given a vector of thetas for different item classes
+#'
+#' @param object An instance of an item class
+#' @param theta A vector of theta values
+#'
+#' @return A vector of Fisher information values over theta (nq values) for a single item or a matrix of dimension (nq, ni) for an "item.pool"
+#'
+#' @export
+#' @docType methods
+#'
+#' @rdname calcFisher-methods
+#'
+setGeneric(name = "calcFisher",
+           def = function(object, theta) {
+             standardGeneric("calcFisher")
+           }
+)
+
+#' @rdname calcFisher-methods
+#' @aliases calcFisher,item.1pl,numeric-method
+#' @examples
+#' item.1 = new("item.1pl", difficulty = 0.5)
+#' info.item.1 = calcFisher(item.1, seq(-3, 3, 1))
+#' @template 1pl-ref
+setMethod(f = "calcFisher",
+          signature = c("item.1pl", "numeric"),
+          definition = function(object, theta) {
+            Fisher = array_info_1pl(theta, object@difficulty)
+            return(Fisher)
+          }
+)
+
+#' @rdname calcFisher-methods
+#' @aliases calcFisher,item.2pl,numeric-method
+#' @examples
+#' item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
+#' info.item.2 = calcFisher(item.2, seq(-3, 3, 1))
+#' @template 2pl-ref
+setMethod(f = "calcFisher",
+          signature = c("item.2pl", "numeric"),
+          definition = function(object, theta) {
+            Fisher = array_info_2pl(theta, object@slope, object@difficulty)
+            return(Fisher)
+          }
+)
+
+#' @rdname calcFisher-methods
+#' @aliases calcFisher,item.3pl,numeric-method
+#' @examples
+#' item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+#' info.item.3 = calcFisher(item.3, seq(-3, 3, 1))
+#' @template 3pl-ref
+setMethod(f = "calcFisher",
+          signature = c("item.3pl", "numeric"),
+          definition = function(object, theta) {
+            Fisher = array_info_3pl(theta, object@slope, object@difficulty, object@guessing)
+            return(Fisher)
+          }
+)
+
+#' @rdname calcFisher-methods
+#' @aliases calcFisher,item.pc,numeric-method
+#' item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
+#' info.item.4 = calcFisher(item.4, seq(-3, 3, 1))
+#' @template pc-ref
+setMethod(f = "calcFisher",
+          signature = c("item.pc", "numeric"),
+          definition = function(object, theta) {
+            Fisher = array_info_pc(theta, object@threshold)
+            return(Fisher)
+          }
+)
+
+#' @rdname calcFisher-methods
+#' @aliases calcFisher,item.gpc,numeric-method
+#' @examples
+#' item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+#' info.item.5 = calcFisher(item.5, seq(-3, 3, 1))
+#' @template gpc-ref
+setMethod(f = "calcFisher",
+          signature = c("item.gpc", "numeric"),
+          definition = function(object, theta) {
+            Fisher = array_info_gpc(theta, object@slope, object@threshold)
+            return(Fisher)
+          }
+)
+
+#' @rdname calcFisher-methods
+#' @aliases calcFisher,item.gr,numeric-method
+#' @examples
+#' item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
+#' info.item.6 = calcFisher(item.6, seq(-3, 3, 1))
+#' @template gr-ref
+setMethod(f = "calcFisher",
+          signature = c("item.gr", "numeric"),
+          definition = function(object, theta) {
+            Fisher = array_info_gr(theta, object@slope, object@category)
+            return(Fisher)
+          }
+)
+
+#' @rdname calcFisher-methods
+#' @aliases calcFisher,item.pool,numeric-method
+#' @examples
+#' \dontrun{
+#' itemPool.1 = LoadItemPool("C:/item_par.csv")
+#' info.itemPool.1 = calcFisher(itemPool.1, seq(-3, 3, 1))
+#' }
+setMethod(f = "calcFisher",
+          signature = c("item.pool", "numeric"),
+          definition = function(object, theta) {
+            if (length(theta) > 0 && all(!is.na(theta))) {
+              Fisher = matrix(NA, length(theta), object@ni)
+              for (i in 1:object@ni) {
+                Fisher[, i] = calcFisher(object@parms[[i]], theta)
+              }
+            } else {
+              stop("theta is of length 0 or contains missing values")
+            }
+            return(Fisher)
+          }
+)
 
 #' @docType methods
 #' @rdname show-methods
@@ -22,11 +389,6 @@ setMethod("show", "pool.cluster", function(object) {
   }
 })
 
-#' calcProb
-#'
-#' @param object An instance of an item class
-#' @param theta A vector of theta values
-#'
 #' @rdname calcProb-methods
 #' @aliases calcProb,pool.cluster,numeric-method
 #' @examples
@@ -51,11 +413,6 @@ setMethod(f = "calcProb",
           }
 )
 
-#' calcEscore
-#'
-#' @param object An instance of an item class
-#' @param theta A vector of theta values
-#'
 #' @rdname calcEscore-methods
 #' @aliases calcEscore,pool.cluster,numeric-method
 #' @examples
@@ -76,11 +433,6 @@ setMethod(f = "calcEscore",
           }
 )
 
-#' calcFisher
-#'
-#' @param object An instance of an item class
-#' @param theta A vector of theta values
-#'
 #' @rdname calcFisher-methods
 #' @aliases calcFisher,pool.cluster,numeric-method
 #' @examples
