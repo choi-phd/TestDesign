@@ -1,28 +1,106 @@
 if(FALSE){
   library(Shadow)
   
-  # ATA testing (Github repository version), working fine
-  itempoolA = LoadItemPool("data-raw/item_params_A.csv")
-  iparPosteriorSample_which(itempoolA, 10)
+  # Example 1
   
-  itemattribA = LoadItemAttrib("data-raw/item_attribs_A.csv", itempoolA)
-  constA = LoadConstraints("data-raw/constraints_0.csv", itempoolA, itemattribA)
+  write.csv(par_science, "par_sc.csv", row.names = F)
+  write.csv(item_attrib_science, "item_attrib_sc.csv", row.names = F)
+  write.csv(constraints_science, "constraints_sc.csv", row.names = F)
   
-  conf = new("ATA.config")
-  conf@MIP$solver = "symphony"
+  itempool_sc = LoadItemPool("par_sc.csv")
+  itemattr_sc = LoadItemAttrib("item_attrib_sc.csv", itempool_sc)
+  constrnt_sc = LoadConstraints("constraints_sc.csv", itempool_sc, itemattr_sc)
   
-  thetas = c(1,2)
-  target = c(15,20)
+  conf_sc = config.ATA(itemSelection = list(method = "MAXINFO",targetLocation = c(-1, 0, 1)))
   
-  conf@itemSelection$method = "MAXINFO"
-  conf@itemSelection$targetLocation = thetas
-  conf@itemSelection$targetValue = target
-  conf@itemSelection$targetWeight = rep(1, length(thetas))
+  fit = ATA(conf, constrnt_sc, plot = T)
   
+  fit$Selected
   
-  fit = ATA(conf, constA, T)
+  setEPS()
+  postscript("example-1.eps", width = 8, height = 5)
   fit$plot
-
+  dev.off()
+  
+  set.seed(1)
+  
+  thetaGrid = seq(-3, 3, 1)
+  trueTheta = runif(1, min = -3.5, max = 3.5)
+  testData = MakeTest(itempool_sc, thetaGrid, infoType = "FISHER", trueTheta = trueTheta)
+  respData = testData@Data
+  
+  conf2_sc = config.Shadow()
+  
+  fit = Shadow(itempool_sc, conf2_sc,
+               trueTheta, constrnt_sc, Data = respData)
+  
+  setEPS()
+  postscript("example-plotcat.eps", width = 8, height = 8)
+  p = plotCAT(fit$output[[1]])
+  p
+  dev.off()
+  
+  setEPS()
+  postscript("example-plotshadow.eps", width = 8, height = 8)
+  p = plotShadow(fit$output[[1]], constrnt_sc)
+  p
+  dev.off()
+  
+  # Example 2
+  
+  write.csv(par_reading, "par_rd.csv", row.names = F)
+  write.csv(item_attrib_reading, "item_attrib_rd.csv", row.names = F)
+  write.csv(stimulus_attrib_reading, "stimulus_attrib_rd.csv", row.names = F)
+  write.csv(constraints_reading, "constraints_rd.csv", row.names = F)
+  
+  itempool_rd = LoadItemPool("par_rd.csv")
+  itemattr_rd = LoadItemAttrib("item_attrib_rd.csv", itempool_rd)
+  stimattr_rd = LoadStAttrib("stimulus_attrib_rd.csv", itemattr_rd)
+  constrnt_rd = LoadConstraints("constraints_rd.csv",
+                                   itempool_rd, itemattr_rd, stimattr_rd)
+  
+  conf_rd = config.ATA(itemSelection = list(method = "TCC",
+                                         targetLocation = c(-1, 0, 1),
+                                         targetValue = c(15,20,25)))
+  
+  fit = ATA(conf, constrnt_rd, plot = T)
+  fit$Selected
+  fit$plot
+  
+  set.seed(1)
+  
+  thetaGrid = seq(-3, 3, 1)
+  trueTheta = runif(1, min = -3.5, max = 3.5)
+  testData = MakeTest(itempool_rd, thetaGrid, infoType = "FISHER", trueTheta = trueTheta)
+  respData = testData@Data
+  
+  conf2_rd = config.Shadow()
+  
+  fit = Shadow(itempool_rd, conf2_rd,
+               trueTheta, constrnt_rd, Data = respData)
+  
+  setEPS()
+  postscript("example-plotcat.eps", width = 8, height = 8)
+  p = plotCAT(fit$output[[1]])
+  p
+  dev.off()
+  
+  plotShadow(fit$output[[1]], constrnt_sc)
+  
+  
+  # Example 3
+  
+  
+  
+  
+  write.csv(par_fatigue, "par_ft.csv", row.names = F)
+  write.csv(item_attrib_fatigue, "item_attrib_ft.csv", row.names = F)
+  write.csv(constraints_fatigue, "constraints_ft.csv", row.names = F)
+  
+  itempool_ft = LoadItemPool("par_ft.csv")
+  itemattr_ft = LoadItemAttrib("item_attrib_ft.csv", itempool_ft)
+  constrnt_ft = LoadConstraints("constraints_ft.csv", itempool_ft, itemattr_ft)
+  
   
   thetas = c(0)
   target = c(15)
@@ -38,7 +116,7 @@ if(FALSE){
   
   fit = ATA(conf, constA, T)
   fit$plot
-  
+  fit$Selected
   
   
   thetas = c(0,1)
