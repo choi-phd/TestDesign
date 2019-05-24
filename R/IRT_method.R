@@ -31,7 +31,23 @@ setMethod(f = "calcProb",
           signature = c("item.1pl", "numeric"),
           definition = function(object, theta) {
             prob = matrix(NA, length(theta), 2)
-            prob[, 2] = array_p_1pl(theta, object@difficulty)
+            prob[, 2] = array_p_m_1pl(matrix(theta), object@difficulty)
+            prob[, 1] = 1 - prob[, 2]
+            return(prob)
+          }
+)
+
+#' @rdname calcProb-methods
+#' @aliases calcProb,item.1pl,matrix-method
+#' @examples 
+#' item.1 = new("item.1pl", difficulty = 0.5)
+#' prob.item.1 = calcProb(item.1, seq(-3, 3, 1))
+#' @template 1pl-ref
+setMethod(f = "calcProb",
+          signature = c("item.1pl", "matrix"),
+          definition = function(object, theta) {
+            prob = matrix(NA, dim(theta)[1], 2)
+            prob[, 2] = array_p_m_1pl(theta, object@difficulty)
             prob[, 1] = 1 - prob[, 2]
             return(prob)
           }
@@ -47,7 +63,23 @@ setMethod(f = "calcProb",
           signature = c("item.2pl", "numeric"),
           definition = function(object, theta) {
             prob = matrix(NA, length(theta), 2)
-            prob[, 2] = array_p_2pl(theta, object@slope, object@difficulty)
+            prob[, 2] = array_p_m_2pl(matrix(theta), object@slope, object@difficulty)
+            prob[, 1] = 1 - prob[, 2]
+            return(prob)
+          }
+)
+
+#' @rdname calcProb-methods
+#' @aliases calcProb,item.2pl,matrix-method
+#' @examples 
+#' item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
+#' prob.item.2 = calcProb(item.2, seq(-3, 3, 1))
+#' @template 2pl-ref
+setMethod(f = "calcProb",
+          signature = c("item.2pl", "matrix"),
+          definition = function(object, theta) {
+            prob = matrix(NA, dim(theta)[1], 2)
+            prob[, 2] = array_p_m_2pl(theta, object@slope, object@difficulty)
             prob[, 1] = 1 - prob[, 2]
             return(prob)
           }
@@ -70,6 +102,22 @@ setMethod(f = "calcProb",
 )
 
 #' @rdname calcProb-methods
+#' @aliases calcProb,item.3pl,matrix-method
+#' @examples 
+#' item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+#' prob.item.3 = calcProb(item.3, seq(-3, 3, 1))
+#' @template 3pl-ref
+setMethod(f = "calcProb",
+          signature = c("item.3pl", "matrix"),
+          definition = function(object, theta) {
+            prob = matrix(NA, dim(theta)[1], 2)
+            prob[, 2] = array_p_m_3pl(theta, object@slope, object@difficulty, object@guessing)
+            prob[, 1] = 1 - prob[, 2]
+            return(prob)
+          }
+)
+
+#' @rdname calcProb-methods
 #' @aliases calcProb,item.pc,numeric-method
 #' @examples 
 #' item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
@@ -79,6 +127,20 @@ setMethod(f = "calcProb",
           signature = c("item.pc", "numeric"),
           definition = function(object, theta) {
             prob = array_p_pc(theta, object@threshold)
+            return(prob)
+          }
+)
+
+#' @rdname calcProb-methods
+#' @aliases calcProb,item.pc,matrix-method
+#' @examples 
+#' item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
+#' prob.item.4 = calcProb(item.4, seq(-3, 3, 1))
+#' @template pc-ref
+setMethod(f = "calcProb",
+          signature = c("item.pc", "matrix"),
+          definition = function(object, theta) {
+            prob = array_p_m_pc(theta, object@threshold)
             return(prob)
           }
 )
@@ -98,6 +160,20 @@ setMethod(f = "calcProb",
 )
 
 #' @rdname calcProb-methods
+#' @aliases calcProb,item.gpc,matrix-method
+#' @examples 
+#' item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+#' prob.item.5 = calcProb(item.5, seq(-3, 3, 1))
+#' @template gpc-ref
+setMethod(f = "calcProb",
+          signature = c("item.gpc", "matrix"),
+          definition = function(object, theta) {
+            prob = array_p_m_gpc(theta, object@slope, object@threshold)
+            return(prob)
+          }
+)
+
+#' @rdname calcProb-methods
 #' @aliases calcProb,item.gr,numeric-method
 #' @examples 
 #' item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
@@ -107,6 +183,20 @@ setMethod(f = "calcProb",
           signature = c("item.gr", "numeric"),
           definition = function(object, theta) {
             prob = array_p_gr(theta, object@slope, object@category)
+            return(prob)
+          }
+)
+
+#' @rdname calcProb-methods
+#' @aliases calcProb,item.gr,matrix-method
+#' @examples 
+#' item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
+#' prob.item.6 = calcProb(item.6, seq(-3, 3, 1))
+#' @template gr-ref
+setMethod(f = "calcProb",
+          signature = c("item.gr", "matrix"),
+          definition = function(object, theta) {
+            prob = array_p_m_gr(theta, object@slope, object@category)
             return(prob)
           }
 )

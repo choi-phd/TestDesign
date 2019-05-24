@@ -4,11 +4,17 @@
 \name{calcProb}
 \alias{calcProb}
 \alias{calcProb,item.1pl,numeric-method}
+\alias{calcProb,item.1pl,matrix-method}
 \alias{calcProb,item.2pl,numeric-method}
+\alias{calcProb,item.2pl,matrix-method}
 \alias{calcProb,item.3pl,numeric-method}
+\alias{calcProb,item.3pl,matrix-method}
 \alias{calcProb,item.pc,numeric-method}
+\alias{calcProb,item.pc,matrix-method}
 \alias{calcProb,item.gpc,numeric-method}
+\alias{calcProb,item.gpc,matrix-method}
 \alias{calcProb,item.gr,numeric-method}
+\alias{calcProb,item.gr,matrix-method}
 \alias{calcProb,item.pool,numeric-method}
 \alias{calcProb,pool.cluster,numeric-method}
 \title{An S4 generic and its methods to calculate item response probabilities for different item classes}
@@ -17,15 +23,27 @@ calcProb(object, theta)
 
 \S4method{calcProb}{item.1pl,numeric}(object, theta)
 
+\S4method{calcProb}{item.1pl,matrix}(object, theta)
+
 \S4method{calcProb}{item.2pl,numeric}(object, theta)
+
+\S4method{calcProb}{item.2pl,matrix}(object, theta)
 
 \S4method{calcProb}{item.3pl,numeric}(object, theta)
 
+\S4method{calcProb}{item.3pl,matrix}(object, theta)
+
 \S4method{calcProb}{item.pc,numeric}(object, theta)
+
+\S4method{calcProb}{item.pc,matrix}(object, theta)
 
 \S4method{calcProb}{item.gpc,numeric}(object, theta)
 
+\S4method{calcProb}{item.gpc,matrix}(object, theta)
+
 \S4method{calcProb}{item.gr,numeric}(object, theta)
+
+\S4method{calcProb}{item.gr,matrix}(object, theta)
 
 \S4method{calcProb}{item.pool,numeric}(object, theta)
 
@@ -45,14 +63,26 @@ An S4 generic and its methods to calculate item response probabilities for diffe
 \examples{
 item.1 = new("item.1pl", difficulty = 0.5)
 prob.item.1 = calcProb(item.1, seq(-3, 3, 1))
+item.1 = new("item.1pl", difficulty = 0.5)
+prob.item.1 = calcProb(item.1, seq(-3, 3, 1))
+item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
+prob.item.2 = calcProb(item.2, seq(-3, 3, 1))
 item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
 prob.item.2 = calcProb(item.2, seq(-3, 3, 1))
 item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 prob.item.3 = calcProb(item.3, seq(-3, 3, 1))
+item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+prob.item.3 = calcProb(item.3, seq(-3, 3, 1))
+item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
+prob.item.4 = calcProb(item.4, seq(-3, 3, 1))
 item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
 prob.item.4 = calcProb(item.4, seq(-3, 3, 1))
 item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 prob.item.5 = calcProb(item.5, seq(-3, 3, 1))
+item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+prob.item.5 = calcProb(item.5, seq(-3, 3, 1))
+item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
+prob.item.6 = calcProb(item.6, seq(-3, 3, 1))
 item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
 prob.item.6 = calcProb(item.6, seq(-3, 3, 1))
 \dontrun{
@@ -74,6 +104,20 @@ prob.itemPools = calcProb(itemPools, seq(-3, 3, 1))
 }
 
 {
+  \insertRef{rasch_probabilistic_1960}{Shadow}
+}
+
+{
+  \insertRef{lord_theory_1952}{Shadow}
+  
+  \insertRef{birnbaum_efficient_1957}{Shadow}
+  
+  \insertRef{birnbaum_estimation_1958}{Shadow}
+  
+  \insertRef{birnbaum_further_1958}{Shadow}
+}
+
+{
   \insertRef{lord_theory_1952}{Shadow}
   
   \insertRef{birnbaum_efficient_1957}{Shadow}
@@ -88,6 +132,16 @@ prob.itemPools = calcProb(itemPools, seq(-3, 3, 1))
 }
 
 {
+  \insertRef{birnbaum_latent_1968}{Shadow}
+}
+
+{
+  \insertRef{masters_rasch_1982}{Shadow}
+  
+  \insertRef{andrich_rating_1978}{Shadow}
+}
+
+{
   \insertRef{masters_rasch_1982}{Shadow}
   
   \insertRef{andrich_rating_1978}{Shadow}
@@ -95,6 +149,14 @@ prob.itemPools = calcProb(itemPools, seq(-3, 3, 1))
 
 {
   \insertRef{muraki_generalized_1992}{Shadow}
+}
+
+{
+  \insertRef{muraki_generalized_1992}{Shadow}
+}
+
+{
+  \insertRef{samejima_estimation_1969}{Shadow}
 }
 
 {

@@ -11,6 +11,16 @@ p_1pl <- function(x, b) {
     .Call('_Shadow_p_1pl', PACKAGE = 'Shadow', x, b)
 }
 
+#' Calculate the probability of a correct response according to the 1pl model (multivariate)
+#' 
+#' @param x a length-one numeric vector for a theta value
+#' @param b a length-one numeric vector for the difficulty parameter
+#' @template 1pl-ref
+#' @export
+p_m_1pl <- function(x, b) {
+    .Call('_Shadow_p_m_1pl', PACKAGE = 'Shadow', x, b)
+}
+
 #' Calculate the probability of a correct response for a vector of theta values according to the 1pl model 
 #' 
 #' @param x a numeric vector of theta values
@@ -19,6 +29,16 @@ p_1pl <- function(x, b) {
 #' @export
 array_p_1pl <- function(x, b) {
     .Call('_Shadow_array_p_1pl', PACKAGE = 'Shadow', x, b)
+}
+
+#' Calculate the probability of a correct response for a vector of theta values according to the 1pl model 
+#' 
+#' @param x a numeric vector of theta values
+#' @param b a length-one numeric vector for the difficulty parameter
+#' @template 1pl-ref
+#' @export
+array_p_m_1pl <- function(x, b) {
+    .Call('_Shadow_array_p_m_1pl', PACKAGE = 'Shadow', x, b)
 }
 
 #' Calculate the probability of a correct response according to the 2pl model 
@@ -32,6 +52,17 @@ p_2pl <- function(x, a, b) {
     .Call('_Shadow_p_2pl', PACKAGE = 'Shadow', x, a, b)
 }
 
+#' Calculate the probability of a correct response according to the 2pl model (multivariate)
+#' 
+#' @param x a length-one numeric vector for a theta value
+#' @param a a length-one numeric vector for the slope parameter
+#' @param b a length-one numeric vector for the difficulty parameter
+#' @template 2pl-ref
+#' @export
+p_m_2pl <- function(x, a, b) {
+    .Call('_Shadow_p_m_2pl', PACKAGE = 'Shadow', x, a, b)
+}
+
 #' Calculate the probability of a correct response for a vector of theta values according to the 2pl model 
 #' 
 #' @param x a numeric vector of theta values
@@ -41,6 +72,18 @@ p_2pl <- function(x, a, b) {
 #' @export
 array_p_2pl <- function(x, a, b) {
     .Call('_Shadow_array_p_2pl', PACKAGE = 'Shadow', x, a, b)
+}
+
+#' Calculate the probability of a correct response for a vector of theta values according to the 2pl model (multivariate)
+#' 
+#' @param x a numeric vector of theta values
+#' @param b a length-one numeric vector for the difficulty parameter
+#' @references{
+#'   \insertRef{rasch_probabilistic_1960}{IRTclass}
+#' }
+#' @export
+array_p_m_2pl <- function(x, a, b) {
+    .Call('_Shadow_array_p_m_2pl', PACKAGE = 'Shadow', x, a, b)
 }
 
 #' Calculate the probability of a correct response according to the 3pl model 
@@ -55,6 +98,18 @@ p_3pl <- function(x, a, b, c) {
     .Call('_Shadow_p_3pl', PACKAGE = 'Shadow', x, a, b, c)
 }
 
+#' Calculate the probability of a correct response according to the 2pl model (multivariate)
+#' 
+#' @param x a length-one numeric vector for a theta value
+#' @param b a length-one numeric vector for the difficulty parameter
+#' @references{
+#'   \insertRef{rasch_probabilistic_1960}{IRTclass}
+#' }
+#' @export
+p_m_3pl <- function(x, a, b, c) {
+    .Call('_Shadow_p_m_3pl', PACKAGE = 'Shadow', x, a, b, c)
+}
+
 #' Calculate the probability of a correct response for a vector of theta values according to the 3pl model 
 #' 
 #' @param x a numeric vector of theta values
@@ -67,6 +122,18 @@ array_p_3pl <- function(x, a, b, c) {
     .Call('_Shadow_array_p_3pl', PACKAGE = 'Shadow', x, a, b, c)
 }
 
+#' Calculate the probability of a correct response for a vector of theta values according to the 2pl model (multivariate)
+#' 
+#' @param x a numeric vector of theta values
+#' @param b a length-one numeric vector for the difficulty parameter
+#' @references{
+#'   \insertRef{rasch_probabilistic_1960}{IRTclass}
+#' }
+#' @export
+array_p_m_3pl <- function(x, a, b, c) {
+    .Call('_Shadow_array_p_m_3pl', PACKAGE = 'Shadow', x, a, b, c)
+}
+
 #' Calculate the response probabilities according to the partial credit model
 #' 
 #' @param x a length-one numeric vector for a theta value
@@ -77,6 +144,16 @@ p_pc <- function(x, b) {
     .Call('_Shadow_p_pc', PACKAGE = 'Shadow', x, b)
 }
 
+#' Calculate the response probabilities according to the partial credit model (multivariate)
+#' 
+#' @param x a length-one numeric vector for a theta value
+#' @param b a numeric vector for the threshold parameters
+#' @template pc-ref
+#' @export
+p_m_pc <- function(x, b) {
+    .Call('_Shadow_p_m_pc', PACKAGE = 'Shadow', x, b)
+}
+
 #' Calculate the response probabilities for a vector of theta values according to the partial credit model
 #' 
 #' @param x a numeric vector of theta values
@@ -85,6 +162,18 @@ p_pc <- function(x, b) {
 #' @export
 array_p_pc <- function(x, b) {
     .Call('_Shadow_array_p_pc', PACKAGE = 'Shadow', x, b)
+}
+
+#' Calculate the probability of a correct response for a vector of theta values according to the 2pl model (multivariate)
+#' 
+#' @param x a numeric vector of theta values
+#' @param b a length-one numeric vector for the difficulty parameter
+#' @references{
+#'   \insertRef{rasch_probabilistic_1960}{IRTclass}
+#' }
+#' @export
+array_p_m_pc <- function(x, b) {
+    .Call('_Shadow_array_p_m_pc', PACKAGE = 'Shadow', x, b)
 }
 
 #' Calculate the response probabilities according to the generalizaed partial credit model
@@ -98,6 +187,17 @@ p_gpc <- function(x, a, b) {
     .Call('_Shadow_p_gpc', PACKAGE = 'Shadow', x, a, b)
 }
 
+#' Calculate the response probabilities according to the generalizaed partial credit model (multivariate)
+#' 
+#' @param x a length-one numeric vector for a theta value
+#' @param a a length-one numeric vector for the slope parameter
+#' @param b a numeric vector for the threshold parameters
+#' @template gpc-ref
+#' @export
+p_m_gpc <- function(x, a, b) {
+    .Call('_Shadow_p_m_gpc', PACKAGE = 'Shadow', x, a, b)
+}
+
 #' Calculate the response probabilities for a vector of theta values according to the generalized partial credit model
 #' 
 #' @param x a numeric vector of theta values
@@ -107,6 +207,17 @@ p_gpc <- function(x, a, b) {
 #' @export
 array_p_gpc <- function(x, a, b) {
     .Call('_Shadow_array_p_gpc', PACKAGE = 'Shadow', x, a, b)
+}
+
+#' Calculate the probability of a correct response for a vector of theta values according to the 2pl model (multivariate)
+#' 
+#' @param x a numeric vector of theta values
+#' @param a a length-one numeric vector for the slope parameter
+#' @param b a numeric vector for the threshold parameters
+#' @template gpc-ref
+#' @export
+array_p_m_gpc <- function(x, a, b) {
+    .Call('_Shadow_array_p_m_gpc', PACKAGE = 'Shadow', x, a, b)
 }
 
 #' Calculate the response probabilities according to the graded response model
@@ -120,6 +231,17 @@ p_gr <- function(x, a, b) {
     .Call('_Shadow_p_gr', PACKAGE = 'Shadow', x, a, b)
 }
 
+#' Calculate the response probabilities according to the graded response model (multivariate)
+#' 
+#' @param x a length-one numeric vector for a theta value
+#' @param a a length-one numeric vector for the slope parameter
+#' @param b a numeric vector for the category boundary parameters
+#' @template gr-ref
+#' @export
+p_m_gr <- function(x, a, b) {
+    .Call('_Shadow_p_m_gr', PACKAGE = 'Shadow', x, a, b)
+}
+
 #' Calculate the response probabilities for a vector of theta values according to the graded response model
 #' 
 #' @param x a numeric vector of theta values
@@ -129,6 +251,19 @@ p_gr <- function(x, a, b) {
 #' @export
 array_p_gr <- function(x, a, b) {
     .Call('_Shadow_array_p_gr', PACKAGE = 'Shadow', x, a, b)
+}
+
+#' Calculate the response probabilities for a vector of theta values according to the graded response model
+#' 
+#' @param x a numeric vector of theta values
+#' @param a a length-one numeric vector for the slope parameter
+#' @param b a numeric vector for the category boundary parameters
+#' @references{
+#'   \insertRef{samejima_estimation_1969}{IRTclass}
+#' }
+#' @export
+array_p_m_gr <- function(x, a, b) {
+    .Call('_Shadow_array_p_m_gr', PACKAGE = 'Shadow', x, a, b)
 }
 
 #' Calculate the Fisher information according to the 1pl model

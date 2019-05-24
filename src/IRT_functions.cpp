@@ -1,7 +1,8 @@
-
-
-#include <Rcpp.h>
+#include <RcppArmadillo.h>
 using namespace Rcpp;
+using namespace arma;
+
+// [[Rcpp::depends(RcppArmadillo)]]
 
 //' Calculate the probability of a correct response according to the 1pl model 
 //' 
@@ -12,6 +13,20 @@ using namespace Rcpp;
 // [[Rcpp::export]]
 double p_1pl(const double& x, const double& b){
   return 1/(1+exp(b-x));
+}
+
+//' Calculate the probability of a correct response according to the 1pl model (multivariate)
+//' 
+//' @param x a length-one numeric vector for a theta value
+//' @param b a length-one numeric vector for the difficulty parameter
+//' @template 1pl-ref
+//' @export
+// [[Rcpp::export]]
+double p_m_1pl(arma::rowvec x, const double& b){
+  mat a(1, x.n_cols, fill::ones);
+  mat x_array = a * x.t();
+  double xmul = x_array(0,0);
+  return 1 / (1 + exp(b - xmul));
 }
 
 //' Calculate the probability of a correct response for a vector of theta values according to the 1pl model 
@@ -30,6 +45,22 @@ NumericVector array_p_1pl(NumericVector x, const double& b){
   return p_array;
 }
 
+//' Calculate the probability of a correct response for a vector of theta values according to the 1pl model 
+//' 
+//' @param x a numeric vector of theta values
+//' @param b a length-one numeric vector for the difficulty parameter
+//' @template 1pl-ref
+//' @export
+// [[Rcpp::export]]
+arma::colvec array_p_m_1pl(arma::mat x, const double& b){
+  int nx = x.n_rows;
+  colvec p_array(nx);
+  for(int j = 0; j < nx; j++) {
+    p_array(j) = p_m_1pl(x.row(j), b);
+  }
+  return p_array;
+}
+
 //' Calculate the probability of a correct response according to the 2pl model 
 //' 
 //' @param x a length-one numeric vector for a theta value
@@ -40,6 +71,20 @@ NumericVector array_p_1pl(NumericVector x, const double& b){
 // [[Rcpp::export]]
 double p_2pl(const double& x, const double& a, const double& b){
   return 1/(1+exp(-a*(x-b)));
+}
+
+//' Calculate the probability of a correct response according to the 2pl model (multivariate)
+//' 
+//' @param x a length-one numeric vector for a theta value
+//' @param a a length-one numeric vector for the slope parameter
+//' @param b a length-one numeric vector for the difficulty parameter
+//' @template 2pl-ref
+//' @export
+// [[Rcpp::export]]
+double p_m_2pl(arma::rowvec x, arma::rowvec a, const double& b){
+  mat x_array = -a * (x - b).t();
+  double xmul = x_array(0,0);
+  return 1 / (1 + exp(xmul));
 }
 
 //' Calculate the probability of a correct response for a vector of theta values according to the 2pl model 
@@ -59,6 +104,24 @@ NumericVector array_p_2pl(NumericVector x, const double& a, const double& b){
   return p_array;
 }
 
+//' Calculate the probability of a correct response for a vector of theta values according to the 2pl model (multivariate)
+//' 
+//' @param x a numeric vector of theta values
+//' @param b a length-one numeric vector for the difficulty parameter
+//' @references{
+//'   \insertRef{rasch_probabilistic_1960}{IRTclass}
+//' }
+//' @export
+// [[Rcpp::export]]
+arma::colvec array_p_m_2pl(arma::mat x, arma::rowvec a, const double& b){
+  int nx = x.n_rows;
+  colvec p_array(nx);
+  for(int j = 0; j < nx; j++) {
+    p_array(j) = p_m_2pl(x.row(j), a, b);
+  }
+  return p_array;
+}
+
 //' Calculate the probability of a correct response according to the 3pl model 
 //' 
 //' @param x a length-one numeric vector for a theta value
@@ -70,6 +133,21 @@ NumericVector array_p_2pl(NumericVector x, const double& a, const double& b){
 // [[Rcpp::export]]
 double p_3pl(const double& x, const double& a, const double& b, const double& c){
   return c+(1-c)/(1+exp(-a*(x-b)));
+}
+
+//' Calculate the probability of a correct response according to the 2pl model (multivariate)
+//' 
+//' @param x a length-one numeric vector for a theta value
+//' @param b a length-one numeric vector for the difficulty parameter
+//' @references{
+//'   \insertRef{rasch_probabilistic_1960}{IRTclass}
+//' }
+//' @export
+// [[Rcpp::export]]
+double p_m_3pl(arma::rowvec x, arma::rowvec a, const double& b, const double& c){
+  mat x_array = a * x.t();
+  double xmul = x_array(0,0);
+  return c + (1 - c) / (1 + exp(b - xmul));
 }
 
 //' Calculate the probability of a correct response for a vector of theta values according to the 3pl model 
@@ -90,6 +168,28 @@ NumericVector array_p_3pl(NumericVector x, const double& a, const double& b, con
   return p_array;
 }
 
+
+//' Calculate the probability of a correct response for a vector of theta values according to the 2pl model (multivariate)
+//' 
+//' @param x a numeric vector of theta values
+//' @param b a length-one numeric vector for the difficulty parameter
+//' @references{
+//'   \insertRef{rasch_probabilistic_1960}{IRTclass}
+//' }
+//' @export
+// [[Rcpp::export]]
+arma::colvec array_p_m_3pl(arma::mat x, arma::rowvec a, const double& b, const double& c){
+  
+  int nx = x.n_rows;
+  colvec p_array(nx);
+  
+  for(int j = 0; j < nx; j++) {
+    p_array(j) = p_m_3pl(x.row(j), a, b, c);
+  }
+  
+  return p_array;
+}
+
 //' Calculate the response probabilities according to the partial credit model
 //' 
 //' @param x a length-one numeric vector for a theta value
@@ -106,6 +206,31 @@ NumericVector p_pc(const double& x, NumericVector b){
   }
   NumericVector zz = cumsum(z);
   NumericVector pp = exp(zz);
+  double psum = sum(pp);
+  return pp/psum;
+}
+
+//' Calculate the response probabilities according to the partial credit model (multivariate)
+//' 
+//' @param x a length-one numeric vector for a theta value
+//' @param b a numeric vector for the threshold parameters
+//' @template pc-ref
+//' @export
+// [[Rcpp::export]]
+arma::rowvec p_m_pc(arma::rowvec x, arma::rowvec b){
+  mat a(1, x.n_cols, fill::ones);
+  mat x_array = a * x.t();
+  double xmul = x_array(0,0);
+  
+  int nk = b.n_cols + 1;
+  rowvec z(nk);
+  z[0] = xmul;
+  for(int k=1; k<nk; k++) {
+    z[k] = xmul-b[k-1];
+  }
+  
+  rowvec zz = cumsum(z);
+  rowvec pp = exp(zz);
   double psum = sum(pp);
   return pp/psum;
 }
@@ -131,6 +256,29 @@ NumericMatrix array_p_pc(NumericVector x, NumericVector b){
   return p_array;
 }
 
+//' Calculate the probability of a correct response for a vector of theta values according to the 2pl model (multivariate)
+//' 
+//' @param x a numeric vector of theta values
+//' @param b a length-one numeric vector for the difficulty parameter
+//' @references{
+//'   \insertRef{rasch_probabilistic_1960}{IRTclass}
+//' }
+//' @export
+// [[Rcpp::export]]
+arma::mat array_p_m_pc(arma::mat x, arma::rowvec b){
+  
+  int nx = x.n_rows;
+  int nk = b.n_cols + 1;
+  
+  mat p_array(nx, nk);
+  rowvec p(nk);
+  for(int j = 0; j < nx; j++) {
+    p_array.row(j) = p_m_pc(x.row(j), b);
+  }
+  
+  return p_array;
+}
+
 //' Calculate the response probabilities according to the generalizaed partial credit model
 //' 
 //' @param x a length-one numeric vector for a theta value
@@ -152,6 +300,34 @@ NumericVector p_gpc(const double& x, const double& a, NumericVector b){
   return pp/psum;
 }
 
+//' Calculate the response probabilities according to the generalizaed partial credit model (multivariate)
+//' 
+//' @param x a length-one numeric vector for a theta value
+//' @param a a length-one numeric vector for the slope parameter
+//' @param b a numeric vector for the threshold parameters
+//' @template gpc-ref
+//' @export
+// [[Rcpp::export]]
+arma::rowvec p_m_gpc(arma::rowvec x, arma::rowvec a, arma::rowvec b){
+  mat x_array = a * x.t();
+  double xmul = x_array(0,0);
+  
+  int nk = b.n_cols + 1;
+  rowvec z(nk);
+  
+  z(0) = xmul;
+  for(int k = 1; k < nk; k++) {
+    mat x_array = a * (x - b(k - 1)).t();
+    double xmul = x_array(0,0);
+    z(k) = xmul;
+  }
+  
+  rowvec zz = cumsum(z);
+  rowvec pp = exp(zz);
+  double psum = sum(pp);
+  return pp / psum;
+}
+
 //' Calculate the response probabilities for a vector of theta values according to the generalized partial credit model
 //' 
 //' @param x a numeric vector of theta values
@@ -171,6 +347,28 @@ NumericMatrix array_p_gpc(NumericVector x, const double& a, NumericVector b){
       p_array(j,k) = p[k];
     }
   }
+  return p_array;
+}
+
+//' Calculate the probability of a correct response for a vector of theta values according to the 2pl model (multivariate)
+//' 
+//' @param x a numeric vector of theta values
+//' @param a a length-one numeric vector for the slope parameter
+//' @param b a numeric vector for the threshold parameters
+//' @template gpc-ref
+//' @export
+// [[Rcpp::export]]
+arma::mat array_p_m_gpc(arma::mat x, arma::rowvec a, arma::rowvec b){
+  
+  int nx = x.n_rows;
+  int nk = b.n_cols + 1;
+  
+  mat p_array(nx, nk);
+  rowvec p(nk);
+  for(int j = 0; j < nx; j++) {
+    p_array.row(j) = p_m_gpc(x.row(j), a, b);
+  }
+  
   return p_array;
 }
 
@@ -196,6 +394,31 @@ NumericVector p_gr(const double& x, const double& a, NumericVector b){
   return p;
 }
 
+
+//' Calculate the response probabilities according to the graded response model (multivariate)
+//' 
+//' @param x a length-one numeric vector for a theta value
+//' @param a a length-one numeric vector for the slope parameter
+//' @param b a numeric vector for the category boundary parameters
+//' @template gr-ref
+//' @export
+// [[Rcpp::export]]
+arma::rowvec p_m_gr(arma::rowvec x, arma::rowvec a, arma::rowvec b){
+  
+  int nk = b.n_cols + 1;
+  rowvec p(nk), p_star(nk + 1);
+  p_star(0) = 1;
+  p_star(nk) = 0;
+  
+  for(int k = 1; k < nk; k++){
+    p_star(k) = p_m_2pl(x, a, b(k - 1));
+  }
+  for(int k = 0; k < nk; k++){
+    p(k) = p_star(k) - p_star(k + 1);
+  }
+  return p;
+}
+
 //' Calculate the response probabilities for a vector of theta values according to the graded response model
 //' 
 //' @param x a numeric vector of theta values
@@ -214,6 +437,29 @@ NumericMatrix array_p_gr(NumericVector x, const double& a, NumericVector b){
     for(int k = 0; k < nk; k++) {
       p_array(j,k) = p[k];
     }
+  }
+  return p_array;
+}
+
+//' Calculate the response probabilities for a vector of theta values according to the graded response model
+//' 
+//' @param x a numeric vector of theta values
+//' @param a a length-one numeric vector for the slope parameter
+//' @param b a numeric vector for the category boundary parameters
+//' @references{
+//'   \insertRef{samejima_estimation_1969}{IRTclass}
+//' }
+//' @export
+// [[Rcpp::export]]
+arma::mat array_p_m_gr(arma::mat x, arma::rowvec a, arma::rowvec b){
+  
+  int nx = x.n_rows;
+  int nk = b.n_cols + 1;
+  
+  mat p_array(nx, nk);
+  
+  for(int j = 0; j < nx; j++) {
+    p_array.row(j) = p_m_gr(x.row(j), a, b);
   }
   return p_array;
 }

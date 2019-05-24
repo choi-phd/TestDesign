@@ -7,7 +7,7 @@
 #'
 #' @noRd
 validity_slope = function(object){
-  if(object@slope <= 0) return("A non-positive value for the slope parameter is not permissible.")
+  if (!all(object@slope >= 0)) return("A non-positive value for the slope parameter is not permissible.")
 }
 
 #' Validate the guessing parameter
