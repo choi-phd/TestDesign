@@ -63,8 +63,10 @@ validity_order = function(object){
 #' item.1 = new("item.1pl", difficulty = 0.5)
 #' @template 1pl-ref
 setClass("item.1pl",
-         slots = c(difficulty = "numeric"),
-         prototype = list(difficulty = numeric(0))
+         slots = c(difficulty = "numeric",
+                   intercept = "numeric"),
+         prototype = list(difficulty = numeric(0),
+                          intercept = numeric(0))
 )
 
 #' @inherit methods::show
@@ -79,6 +81,7 @@ setClass("item.1pl",
 setMethod("show", "item.1pl", function(object) {
   cat("One-parameter logistic or Rasch model (item.1pl)\n")
   cat("  Difficulty     :", object@difficulty, "\n")
+  cat("  Intercept      :", object@intercept,  "\n")
 })
 
 #' An S4 class to represent an item of the 2pl model
@@ -91,9 +94,11 @@ setMethod("show", "item.1pl", function(object) {
 #' @template 2pl-ref
 setClass("item.2pl",
          slots = c(slope = "numeric", 
-                   difficulty = "numeric"),
+                   difficulty = "numeric",
+                   intercept = "numeric"),
          prototype = list(slope = numeric(0), 
-                          difficulty = numeric(0)),
+                          difficulty = numeric(0),
+                          intercept = numeric(0)),
          validity = function(object){
            errors = character()
            errors = c(errors, validity_slope(object))
@@ -108,6 +113,7 @@ setMethod("show", "item.2pl", function(object) {
   cat("Two-parameter logistic model (item.2pl) \n")
   cat("  Slope          :", object@slope, "\n")
   cat("  Difficulty     :", object@difficulty, "\n")
+  cat("  Intercept      :", object@intercept,  "\n")
 })
 
 #' An S4 class to represent an item of the 3pl model
@@ -121,10 +127,12 @@ setMethod("show", "item.2pl", function(object) {
 #' @template 3pl-ref
 setClass("item.3pl",
          slots = c(slope = "numeric", 
-                   difficulty = "numeric", 
+                   difficulty = "numeric",
+                   intercept = "numeric",
                    guessing = "numeric"),
          prototype = list(slope = numeric(0), 
                           difficulty = numeric(0), 
+                          intercept = numeric(0),
                           guessing = numeric(0)),
          validity = function(object){
            errors = character()
@@ -141,6 +149,7 @@ setMethod("show", "item.3pl", function(object) {
   cat("Three-parameter logistic model (item.3pl)\n")
   cat("  Slope          :", object@slope, "\n")
   cat("  Difficulty     :", object@difficulty, "\n")
+  cat("  Intercept      :", object@intercept, "\n")
   cat("  Guessing       :", object@guessing, "\n")
 })
 
@@ -154,8 +163,10 @@ setMethod("show", "item.3pl", function(object) {
 #' @template pc-ref
 setClass("item.pc",
          slots = c(threshold = "numeric", 
+                   intercept = "numeric",
                    ncat = "numeric"),
          prototype = list(threshold = numeric(0),
+                          intercept = numeric(0),
                           ncat = numeric(0)),
          validity = function(object){
            errors = character()
@@ -171,6 +182,7 @@ setClass("item.pc",
 setMethod("show", "item.pc", function(object) {
   cat("Partial credit model (item.pc)\n")
   cat("  Threshold     :", object@threshold, "\n")
+  cat("  Intercept     :", object@intercept, "\n")
   cat("  N categories  :", object@ncat, "\n")
 })
 
@@ -185,10 +197,12 @@ setMethod("show", "item.pc", function(object) {
 #' @template gpc-ref
 setClass("item.gpc",
          slots = c(slope = "numeric", 
-                   threshold = "numeric", 
+                   threshold = "numeric",
+                   intercept = "numeric",
                    ncat = "numeric"),
          prototype = list(slope = numeric(0), 
-                          threshold = numeric(0), 
+                          threshold = numeric(0),
+                          intercept = numeric(0),
                           ncat = numeric(0)),
          validity = function(object){
            errors = character()
@@ -205,6 +219,7 @@ setMethod("show", "item.gpc", function(object) {
   cat("Generalized partial credit model (item.gpc)\n")
   cat("  Slope         :", object@slope, "\n")
   cat("  Threshold     :", object@threshold, "\n")
+  cat("  Intercept     :", object@intercept, "\n")
   cat("  N categories  :", object@ncat, "\n")
 })
 
@@ -220,9 +235,11 @@ setMethod("show", "item.gpc", function(object) {
 setClass("item.gr",
          slots = c(slope = "numeric",
                    category = "numeric",
+                   intercept = "numeric",
                    ncat = "numeric"),
          prototype = list(slope = numeric(0),
                           category = numeric(0),
+                          intercept = numeric(0),
                           ncat = numeric(0)),
          validity = function(object){
            errors = character()
@@ -241,6 +258,7 @@ setMethod("show", "item.gr", function(object) {
   cat("Graded response model (item.gr)\n")
   cat("  Slope         :", object@slope, "\n")
   cat("  Category b    :", object@category, "\n")
+  cat("  Category d    :", object@intercept, "\n")
   cat("  N categories  :", object@ncat, "\n")
 })
 

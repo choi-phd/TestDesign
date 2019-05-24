@@ -12,21 +12,7 @@ using namespace arma;
 //' @export
 // [[Rcpp::export]]
 double p_1pl(const double& x, const double& b){
-  return 1/(1+exp(b-x));
-}
-
-//' Calculate the probability of a correct response according to the 1pl model (multivariate)
-//' 
-//' @param x a length-one numeric vector for a theta value
-//' @param b a length-one numeric vector for the difficulty parameter
-//' @template 1pl-ref
-//' @export
-// [[Rcpp::export]]
-double p_m_1pl(arma::rowvec x, const double& b){
-  mat a(1, x.n_cols, fill::ones);
-  mat x_array = a * x.t();
-  double xmul = x_array(0,0);
-  return 1 / (1 + exp(b - xmul));
+  return 1/(1 + exp(-(x - b)));
 }
 
 //' Calculate the probability of a correct response for a vector of theta values according to the 1pl model 
@@ -40,23 +26,37 @@ NumericVector array_p_1pl(NumericVector x, const double& b){
   int nx = x.size();
   NumericVector p_array(nx);
   for(int j = 0; j < nx; j++) {
-    p_array[j] = p_1pl(x[j],b);
+    p_array[j] = p_1pl(x[j], b);
   }
   return p_array;
+}
+
+//' Calculate the probability of a correct response according to the 1pl model (multivariate)
+//' 
+//' @param x a length-one numeric vector for a theta value
+//' @param d a length-one numeric vector for the intercept parameter
+//' @template 1pl-ref
+//' @export
+// [[Rcpp::export]]
+double p_m_1pl(arma::rowvec x, const double& d){
+  mat a(1, x.n_cols, fill::ones);
+  mat x_array = a * x.t();
+  double xmul = x_array(0,0);
+  return 1 / (1 + exp(-(xmul + d)));
 }
 
 //' Calculate the probability of a correct response for a vector of theta values according to the 1pl model 
 //' 
 //' @param x a numeric vector of theta values
-//' @param b a length-one numeric vector for the difficulty parameter
+//' @param d a length-one numeric vector for the intercept parameter
 //' @template 1pl-ref
 //' @export
 // [[Rcpp::export]]
-arma::colvec array_p_m_1pl(arma::mat x, const double& b){
+arma::colvec array_p_m_1pl(arma::mat x, const double& d){
   int nx = x.n_rows;
   colvec p_array(nx);
   for(int j = 0; j < nx; j++) {
-    p_array(j) = p_m_1pl(x.row(j), b);
+    p_array(j) = p_m_1pl(x.row(j), d);
   }
   return p_array;
 }
@@ -70,21 +70,7 @@ arma::colvec array_p_m_1pl(arma::mat x, const double& b){
 //' @export
 // [[Rcpp::export]]
 double p_2pl(const double& x, const double& a, const double& b){
-  return 1/(1+exp(-a*(x-b)));
-}
-
-//' Calculate the probability of a correct response according to the 2pl model (multivariate)
-//' 
-//' @param x a length-one numeric vector for a theta value
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a length-one numeric vector for the difficulty parameter
-//' @template 2pl-ref
-//' @export
-// [[Rcpp::export]]
-double p_m_2pl(arma::rowvec x, arma::rowvec a, const double& b){
-  mat x_array = -a * (x - b).t();
-  double xmul = x_array(0,0);
-  return 1 / (1 + exp(xmul));
+  return 1/(1+exp(-(a*(x-b))));
 }
 
 //' Calculate the probability of a correct response for a vector of theta values according to the 2pl model 
@@ -104,20 +90,34 @@ NumericVector array_p_2pl(NumericVector x, const double& a, const double& b){
   return p_array;
 }
 
+//' Calculate the probability of a correct response according to the 2pl model (multivariate)
+//' 
+//' @param x a length-one numeric vector for a theta value
+//' @param a a length-one numeric vector for the slope parameter
+//' @param d a length-one numeric vector for the intercept parameter
+//' @template 2pl-ref
+//' @export
+// [[Rcpp::export]]
+double p_m_2pl(arma::rowvec x, arma::rowvec a, const double& d){
+  mat x_array = a * x.t();
+  double xmul = x_array(0,0);
+  return 1 / (1 + exp(-(xmul + d)));
+}
+
 //' Calculate the probability of a correct response for a vector of theta values according to the 2pl model (multivariate)
 //' 
 //' @param x a numeric vector of theta values
-//' @param b a length-one numeric vector for the difficulty parameter
+//' @param d a length-one numeric vector for the difficulty parameter
 //' @references{
 //'   \insertRef{rasch_probabilistic_1960}{IRTclass}
 //' }
 //' @export
 // [[Rcpp::export]]
-arma::colvec array_p_m_2pl(arma::mat x, arma::rowvec a, const double& b){
+arma::colvec array_p_m_2pl(arma::mat x, arma::rowvec a, const double& d){
   int nx = x.n_rows;
   colvec p_array(nx);
   for(int j = 0; j < nx; j++) {
-    p_array(j) = p_m_2pl(x.row(j), a, b);
+    p_array(j) = p_m_2pl(x.row(j), a, d);
   }
   return p_array;
 }
@@ -132,7 +132,7 @@ arma::colvec array_p_m_2pl(arma::mat x, arma::rowvec a, const double& b){
 //' @export
 // [[Rcpp::export]]
 double p_3pl(const double& x, const double& a, const double& b, const double& c){
-  return c+(1-c)/(1+exp(-a*(x-b)));
+  return c + (1 - c) / (1 + exp(-(a*(x - b))));
 }
 
 //' Calculate the probability of a correct response according to the 2pl model (multivariate)
@@ -144,10 +144,10 @@ double p_3pl(const double& x, const double& a, const double& b, const double& c)
 //' }
 //' @export
 // [[Rcpp::export]]
-double p_m_3pl(arma::rowvec x, arma::rowvec a, const double& b, const double& c){
+double p_m_3pl(arma::rowvec x, arma::rowvec a, const double& d, const double& c){
   mat x_array = a * x.t();
   double xmul = x_array(0,0);
-  return c + (1 - c) / (1 + exp(b - xmul));
+  return c + (1 - c) / (1 + exp(-(xmul + d)));
 }
 
 //' Calculate the probability of a correct response for a vector of theta values according to the 3pl model 
@@ -178,13 +178,13 @@ NumericVector array_p_3pl(NumericVector x, const double& a, const double& b, con
 //' }
 //' @export
 // [[Rcpp::export]]
-arma::colvec array_p_m_3pl(arma::mat x, arma::rowvec a, const double& b, const double& c){
+arma::colvec array_p_m_3pl(arma::mat x, arma::rowvec a, const double& d, const double& c){
   
   int nx = x.n_rows;
   colvec p_array(nx);
   
   for(int j = 0; j < nx; j++) {
-    p_array(j) = p_m_3pl(x.row(j), a, b, c);
+    p_array(j) = p_m_3pl(x.row(j), a, d, c);
   }
   
   return p_array;
@@ -202,7 +202,7 @@ NumericVector p_pc(const double& x, NumericVector b){
   NumericVector z(nk);
   z[0] = x;
   for(int k=1; k<nk; k++) {
-    z[k] = x-b[k-1];
+    z[k] = x - b[k-1];
   }
   NumericVector zz = cumsum(z);
   NumericVector pp = exp(zz);
@@ -217,16 +217,16 @@ NumericVector p_pc(const double& x, NumericVector b){
 //' @template pc-ref
 //' @export
 // [[Rcpp::export]]
-arma::rowvec p_m_pc(arma::rowvec x, arma::rowvec b){
+arma::rowvec p_m_pc(arma::rowvec x, arma::rowvec d){
   mat a(1, x.n_cols, fill::ones);
   mat x_array = a * x.t();
   double xmul = x_array(0,0);
   
-  int nk = b.n_cols + 1;
+  int nk = d.n_cols + 1;
   rowvec z(nk);
   z[0] = xmul;
   for(int k=1; k<nk; k++) {
-    z[k] = xmul-b[k-1];
+    z[k] = xmul + d(k-1);
   }
   
   rowvec zz = cumsum(z);
@@ -248,7 +248,7 @@ NumericMatrix array_p_pc(NumericVector x, NumericVector b){
   NumericMatrix p_array(nx,nk);
   NumericVector p(nk);
   for(int j = 0; j < nx; j++) {
-    p = p_pc(x[j],b);
+    p = p_pc(x[j], b);
     for(int k = 0; k < nk; k++) {
       p_array(j,k) = p[k];
     }
@@ -260,20 +260,18 @@ NumericMatrix array_p_pc(NumericVector x, NumericVector b){
 //' 
 //' @param x a numeric vector of theta values
 //' @param b a length-one numeric vector for the difficulty parameter
-//' @references{
-//'   \insertRef{rasch_probabilistic_1960}{IRTclass}
-//' }
+//' @template pc-ref
 //' @export
 // [[Rcpp::export]]
-arma::mat array_p_m_pc(arma::mat x, arma::rowvec b){
+arma::mat array_p_m_pc(arma::mat x, arma::rowvec d){
   
   int nx = x.n_rows;
-  int nk = b.n_cols + 1;
+  int nk = d.n_cols + 1;
   
   mat p_array(nx, nk);
   rowvec p(nk);
   for(int j = 0; j < nx; j++) {
-    p_array.row(j) = p_m_pc(x.row(j), b);
+    p_array.row(j) = p_m_pc(x.row(j), d);
   }
   
   return p_array;
@@ -292,7 +290,7 @@ NumericVector p_gpc(const double& x, const double& a, NumericVector b){
   NumericVector z(nk);
   z[0] = a*x;
   for(int k=1; k<nk; k++) {
-    z[k] = a*(x-b[k-1]);
+    z[k] = a*(x - b[k-1]);
   }
   NumericVector zz = cumsum(z);
   NumericVector pp = exp(zz);
@@ -308,18 +306,16 @@ NumericVector p_gpc(const double& x, const double& a, NumericVector b){
 //' @template gpc-ref
 //' @export
 // [[Rcpp::export]]
-arma::rowvec p_m_gpc(arma::rowvec x, arma::rowvec a, arma::rowvec b){
+arma::rowvec p_m_gpc(arma::rowvec x, arma::rowvec a, arma::rowvec d){
   mat x_array = a * x.t();
   double xmul = x_array(0,0);
   
-  int nk = b.n_cols + 1;
+  int nk = d.n_cols + 1;
   rowvec z(nk);
   
   z(0) = xmul;
   for(int k = 1; k < nk; k++) {
-    mat x_array = a * (x - b(k - 1)).t();
-    double xmul = x_array(0,0);
-    z(k) = xmul;
+    z(k) = xmul + d(k - 1);
   }
   
   rowvec zz = cumsum(z);
@@ -358,15 +354,15 @@ NumericMatrix array_p_gpc(NumericVector x, const double& a, NumericVector b){
 //' @template gpc-ref
 //' @export
 // [[Rcpp::export]]
-arma::mat array_p_m_gpc(arma::mat x, arma::rowvec a, arma::rowvec b){
+arma::mat array_p_m_gpc(arma::mat x, arma::rowvec a, arma::rowvec d){
   
   int nx = x.n_rows;
-  int nk = b.n_cols + 1;
+  int nk = d.n_cols + 1;
   
   mat p_array(nx, nk);
   rowvec p(nk);
   for(int j = 0; j < nx; j++) {
-    p_array.row(j) = p_m_gpc(x.row(j), a, b);
+    p_array.row(j) = p_m_gpc(x.row(j), a, d);
   }
   
   return p_array;
@@ -386,10 +382,10 @@ NumericVector p_gr(const double& x, const double& a, NumericVector b){
   p_star[0] = 1;
   p_star[nk] = 0;
   for(int k = 1; k < nk; k++){
-    p_star[k] = p_2pl(x,a,b[k-1]);
+    p_star[k] = p_2pl(x, a, b[k-1]);
   }
   for(int k = 0; k < nk; k++){
-    p[k] = p_star[k]-p_star[k+1];
+    p[k] = p_star[k] - p_star[k+1];
   }
   return p;
 }
@@ -403,15 +399,15 @@ NumericVector p_gr(const double& x, const double& a, NumericVector b){
 //' @template gr-ref
 //' @export
 // [[Rcpp::export]]
-arma::rowvec p_m_gr(arma::rowvec x, arma::rowvec a, arma::rowvec b){
+arma::rowvec p_m_gr(arma::rowvec x, arma::rowvec a, arma::rowvec d){
   
-  int nk = b.n_cols + 1;
+  int nk = d.n_cols + 1;
   rowvec p(nk), p_star(nk + 1);
   p_star(0) = 1;
   p_star(nk) = 0;
   
   for(int k = 1; k < nk; k++){
-    p_star(k) = p_m_2pl(x, a, b(k - 1));
+    p_star(k) = p_m_2pl(x, a, d(k - 1));
   }
   for(int k = 0; k < nk; k++){
     p(k) = p_star(k) - p_star(k + 1);

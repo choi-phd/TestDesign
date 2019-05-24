@@ -18,18 +18,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// p_m_1pl
-double p_m_1pl(arma::rowvec x, const double& b);
-RcppExport SEXP _Shadow_p_m_1pl(SEXP xSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::rowvec >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_m_1pl(x, b));
-    return rcpp_result_gen;
-END_RCPP
-}
 // array_p_1pl
 NumericVector array_p_1pl(NumericVector x, const double& b);
 RcppExport SEXP _Shadow_array_p_1pl(SEXP xSEXP, SEXP bSEXP) {
@@ -42,15 +30,27 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// p_m_1pl
+double p_m_1pl(arma::rowvec x, const double& d);
+RcppExport SEXP _Shadow_p_m_1pl(SEXP xSEXP, SEXP dSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::rowvec >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(p_m_1pl(x, d));
+    return rcpp_result_gen;
+END_RCPP
+}
 // array_p_m_1pl
-arma::colvec array_p_m_1pl(arma::mat x, const double& b);
-RcppExport SEXP _Shadow_array_p_m_1pl(SEXP xSEXP, SEXP bSEXP) {
+arma::colvec array_p_m_1pl(arma::mat x, const double& d);
+RcppExport SEXP _Shadow_array_p_m_1pl(SEXP xSEXP, SEXP dSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(array_p_m_1pl(x, b));
+    Rcpp::traits::input_parameter< const double& >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_p_m_1pl(x, d));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -67,19 +67,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// p_m_2pl
-double p_m_2pl(arma::rowvec x, arma::rowvec a, const double& b);
-RcppExport SEXP _Shadow_p_m_2pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::rowvec >::type x(xSEXP);
-    Rcpp::traits::input_parameter< arma::rowvec >::type a(aSEXP);
-    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_m_2pl(x, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
 // array_p_2pl
 NumericVector array_p_2pl(NumericVector x, const double& a, const double& b);
 RcppExport SEXP _Shadow_array_p_2pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
@@ -93,16 +80,29 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// p_m_2pl
+double p_m_2pl(arma::rowvec x, arma::rowvec a, const double& d);
+RcppExport SEXP _Shadow_p_m_2pl(SEXP xSEXP, SEXP aSEXP, SEXP dSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::rowvec >::type x(xSEXP);
+    Rcpp::traits::input_parameter< arma::rowvec >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(p_m_2pl(x, a, d));
+    return rcpp_result_gen;
+END_RCPP
+}
 // array_p_m_2pl
-arma::colvec array_p_m_2pl(arma::mat x, arma::rowvec a, const double& b);
-RcppExport SEXP _Shadow_array_p_m_2pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+arma::colvec array_p_m_2pl(arma::mat x, arma::rowvec a, const double& d);
+RcppExport SEXP _Shadow_array_p_m_2pl(SEXP xSEXP, SEXP aSEXP, SEXP dSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
     Rcpp::traits::input_parameter< arma::rowvec >::type a(aSEXP);
-    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(array_p_m_2pl(x, a, b));
+    Rcpp::traits::input_parameter< const double& >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_p_m_2pl(x, a, d));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -121,16 +121,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // p_m_3pl
-double p_m_3pl(arma::rowvec x, arma::rowvec a, const double& b, const double& c);
-RcppExport SEXP _Shadow_p_m_3pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP, SEXP cSEXP) {
+double p_m_3pl(arma::rowvec x, arma::rowvec a, const double& d, const double& c);
+RcppExport SEXP _Shadow_p_m_3pl(SEXP xSEXP, SEXP aSEXP, SEXP dSEXP, SEXP cSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::rowvec >::type x(xSEXP);
     Rcpp::traits::input_parameter< arma::rowvec >::type a(aSEXP);
-    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
+    Rcpp::traits::input_parameter< const double& >::type d(dSEXP);
     Rcpp::traits::input_parameter< const double& >::type c(cSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_m_3pl(x, a, b, c));
+    rcpp_result_gen = Rcpp::wrap(p_m_3pl(x, a, d, c));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -149,16 +149,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // array_p_m_3pl
-arma::colvec array_p_m_3pl(arma::mat x, arma::rowvec a, const double& b, const double& c);
-RcppExport SEXP _Shadow_array_p_m_3pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP, SEXP cSEXP) {
+arma::colvec array_p_m_3pl(arma::mat x, arma::rowvec a, const double& d, const double& c);
+RcppExport SEXP _Shadow_array_p_m_3pl(SEXP xSEXP, SEXP aSEXP, SEXP dSEXP, SEXP cSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
     Rcpp::traits::input_parameter< arma::rowvec >::type a(aSEXP);
-    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
+    Rcpp::traits::input_parameter< const double& >::type d(dSEXP);
     Rcpp::traits::input_parameter< const double& >::type c(cSEXP);
-    rcpp_result_gen = Rcpp::wrap(array_p_m_3pl(x, a, b, c));
+    rcpp_result_gen = Rcpp::wrap(array_p_m_3pl(x, a, d, c));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -175,14 +175,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // p_m_pc
-arma::rowvec p_m_pc(arma::rowvec x, arma::rowvec b);
-RcppExport SEXP _Shadow_p_m_pc(SEXP xSEXP, SEXP bSEXP) {
+arma::rowvec p_m_pc(arma::rowvec x, arma::rowvec d);
+RcppExport SEXP _Shadow_p_m_pc(SEXP xSEXP, SEXP dSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::rowvec >::type x(xSEXP);
-    Rcpp::traits::input_parameter< arma::rowvec >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_m_pc(x, b));
+    Rcpp::traits::input_parameter< arma::rowvec >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(p_m_pc(x, d));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -199,14 +199,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // array_p_m_pc
-arma::mat array_p_m_pc(arma::mat x, arma::rowvec b);
-RcppExport SEXP _Shadow_array_p_m_pc(SEXP xSEXP, SEXP bSEXP) {
+arma::mat array_p_m_pc(arma::mat x, arma::rowvec d);
+RcppExport SEXP _Shadow_array_p_m_pc(SEXP xSEXP, SEXP dSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
-    Rcpp::traits::input_parameter< arma::rowvec >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(array_p_m_pc(x, b));
+    Rcpp::traits::input_parameter< arma::rowvec >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_p_m_pc(x, d));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -224,15 +224,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // p_m_gpc
-arma::rowvec p_m_gpc(arma::rowvec x, arma::rowvec a, arma::rowvec b);
-RcppExport SEXP _Shadow_p_m_gpc(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+arma::rowvec p_m_gpc(arma::rowvec x, arma::rowvec a, arma::rowvec d);
+RcppExport SEXP _Shadow_p_m_gpc(SEXP xSEXP, SEXP aSEXP, SEXP dSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::rowvec >::type x(xSEXP);
     Rcpp::traits::input_parameter< arma::rowvec >::type a(aSEXP);
-    Rcpp::traits::input_parameter< arma::rowvec >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_m_gpc(x, a, b));
+    Rcpp::traits::input_parameter< arma::rowvec >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(p_m_gpc(x, a, d));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -250,15 +250,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // array_p_m_gpc
-arma::mat array_p_m_gpc(arma::mat x, arma::rowvec a, arma::rowvec b);
-RcppExport SEXP _Shadow_array_p_m_gpc(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+arma::mat array_p_m_gpc(arma::mat x, arma::rowvec a, arma::rowvec d);
+RcppExport SEXP _Shadow_array_p_m_gpc(SEXP xSEXP, SEXP aSEXP, SEXP dSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
     Rcpp::traits::input_parameter< arma::rowvec >::type a(aSEXP);
-    Rcpp::traits::input_parameter< arma::rowvec >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(array_p_m_gpc(x, a, b));
+    Rcpp::traits::input_parameter< arma::rowvec >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_p_m_gpc(x, a, d));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -276,15 +276,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // p_m_gr
-arma::rowvec p_m_gr(arma::rowvec x, arma::rowvec a, arma::rowvec b);
-RcppExport SEXP _Shadow_p_m_gr(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+arma::rowvec p_m_gr(arma::rowvec x, arma::rowvec a, arma::rowvec d);
+RcppExport SEXP _Shadow_p_m_gr(SEXP xSEXP, SEXP aSEXP, SEXP dSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::rowvec >::type x(xSEXP);
     Rcpp::traits::input_parameter< arma::rowvec >::type a(aSEXP);
-    Rcpp::traits::input_parameter< arma::rowvec >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_m_gr(x, a, b));
+    Rcpp::traits::input_parameter< arma::rowvec >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(p_m_gr(x, a, d));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -781,12 +781,12 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_Shadow_p_1pl", (DL_FUNC) &_Shadow_p_1pl, 2},
-    {"_Shadow_p_m_1pl", (DL_FUNC) &_Shadow_p_m_1pl, 2},
     {"_Shadow_array_p_1pl", (DL_FUNC) &_Shadow_array_p_1pl, 2},
+    {"_Shadow_p_m_1pl", (DL_FUNC) &_Shadow_p_m_1pl, 2},
     {"_Shadow_array_p_m_1pl", (DL_FUNC) &_Shadow_array_p_m_1pl, 2},
     {"_Shadow_p_2pl", (DL_FUNC) &_Shadow_p_2pl, 3},
-    {"_Shadow_p_m_2pl", (DL_FUNC) &_Shadow_p_m_2pl, 3},
     {"_Shadow_array_p_2pl", (DL_FUNC) &_Shadow_array_p_2pl, 3},
+    {"_Shadow_p_m_2pl", (DL_FUNC) &_Shadow_p_m_2pl, 3},
     {"_Shadow_array_p_m_2pl", (DL_FUNC) &_Shadow_array_p_m_2pl, 3},
     {"_Shadow_p_3pl", (DL_FUNC) &_Shadow_p_3pl, 4},
     {"_Shadow_p_m_3pl", (DL_FUNC) &_Shadow_p_m_3pl, 4},

@@ -45,7 +45,7 @@ LoadItemPool = function(file.csv, ipar = NULL, se.file.csv = NULL) {
       NCAT[i] = 2
       b = ipar[[3]][i]
       pool@model[i] = "item.1pl"
-      parms[[i]] = new("item.1pl", difficulty = b)
+      parms[[i]] = new("item.1pl", difficulty = b, intercept = -b)
       valid[i] = TRUE
       pool@ipar[i, 1] = b
       if (loadSE) {
@@ -57,7 +57,7 @@ LoadItemPool = function(file.csv, ipar = NULL, se.file.csv = NULL) {
       b = ipar[[4]][i]
       if (a > 0) {
         pool@model[i] = "item.2pl"
-        parms[[i]] = new("item.2pl", slope = a, difficulty = b)
+        parms[[i]] = new("item.2pl", slope = a, difficulty = b, intercept = -a*b)
         valid[i] = TRUE
         pool@ipar[i, 1:2] = c(a, b)
         if (loadSE) {
@@ -71,7 +71,7 @@ LoadItemPool = function(file.csv, ipar = NULL, se.file.csv = NULL) {
       c = ipar[[5]][i]
       if (a > 0 && c >= 0 && c < 1) {
         pool@model[i] = "item.3pl"
-        parms[[i]] = new("item.3pl", slope = a, difficulty = b, guessing = c)
+        parms[[i]] = new("item.3pl", slope = a, difficulty = b, intercept = -a*b, guessing = c)
         valid[i] = TRUE
         pool@ipar[i, 1:3] = c(a, b, c)
         if (loadSE) {
@@ -94,7 +94,7 @@ LoadItemPool = function(file.csv, ipar = NULL, se.file.csv = NULL) {
       b = as.numeric(ipar[i, 4:nfields[i]])
       if (a > 0) {
         pool@model[i] = "item.gpc"
-        parms[[i]] = new("item.gpc", slope = a, threshold = b, ncat = NCAT[i])
+        parms[[i]] = new("item.gpc", slope = a, threshold = b, intercept = -a*b, ncat = NCAT[i])
         valid[i] = TRUE
         pool@ipar[i, 1:NCAT[i]] = c(a, b)
         if (loadSE) {
@@ -107,7 +107,7 @@ LoadItemPool = function(file.csv, ipar = NULL, se.file.csv = NULL) {
       b = as.numeric(ipar[i, 4:nfields[i]]) 
       if (a > 0 && (!is.unsorted(b))) {
         pool@model[i] = "item.gr"
-        parms[[i]] = new("item.gr", slope = a, category = b, ncat = NCAT[i])
+        parms[[i]] = new("item.gr", slope = a, category = b, intercept = -a*b, ncat = NCAT[i])
         valid[i] = TRUE
         pool@ipar[i, 1:NCAT[i]] = c(a, b)
         if (loadSE) {

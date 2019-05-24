@@ -31,7 +31,7 @@ setMethod(f = "calcProb",
           signature = c("item.1pl", "numeric"),
           definition = function(object, theta) {
             prob = matrix(NA, length(theta), 2)
-            prob[, 2] = array_p_m_1pl(matrix(theta), object@difficulty)
+            prob[, 2] = array_p_1pl(theta, object@difficulty)
             prob[, 1] = 1 - prob[, 2]
             return(prob)
           }
@@ -47,7 +47,7 @@ setMethod(f = "calcProb",
           signature = c("item.1pl", "matrix"),
           definition = function(object, theta) {
             prob = matrix(NA, dim(theta)[1], 2)
-            prob[, 2] = array_p_m_1pl(theta, object@difficulty)
+            prob[, 2] = array_p_m_1pl(theta, object@intercept)
             prob[, 1] = 1 - prob[, 2]
             return(prob)
           }
@@ -63,7 +63,7 @@ setMethod(f = "calcProb",
           signature = c("item.2pl", "numeric"),
           definition = function(object, theta) {
             prob = matrix(NA, length(theta), 2)
-            prob[, 2] = array_p_m_2pl(matrix(theta), object@slope, object@difficulty)
+            prob[, 2] = array_p_2pl(theta, object@slope, object@difficulty)
             prob[, 1] = 1 - prob[, 2]
             return(prob)
           }
@@ -79,7 +79,7 @@ setMethod(f = "calcProb",
           signature = c("item.2pl", "matrix"),
           definition = function(object, theta) {
             prob = matrix(NA, dim(theta)[1], 2)
-            prob[, 2] = array_p_m_2pl(theta, object@slope, object@difficulty)
+            prob[, 2] = array_p_m_2pl(theta, object@slope, object@intercept)
             prob[, 1] = 1 - prob[, 2]
             return(prob)
           }
@@ -111,7 +111,7 @@ setMethod(f = "calcProb",
           signature = c("item.3pl", "matrix"),
           definition = function(object, theta) {
             prob = matrix(NA, dim(theta)[1], 2)
-            prob[, 2] = array_p_m_3pl(theta, object@slope, object@difficulty, object@guessing)
+            prob[, 2] = array_p_m_3pl(theta, object@slope, object@intercept, object@guessing)
             prob[, 1] = 1 - prob[, 2]
             return(prob)
           }
@@ -140,7 +140,7 @@ setMethod(f = "calcProb",
 setMethod(f = "calcProb",
           signature = c("item.pc", "matrix"),
           definition = function(object, theta) {
-            prob = array_p_m_pc(theta, object@threshold)
+            prob = array_p_m_pc(theta, object@intercept)
             return(prob)
           }
 )
@@ -168,7 +168,7 @@ setMethod(f = "calcProb",
 setMethod(f = "calcProb",
           signature = c("item.gpc", "matrix"),
           definition = function(object, theta) {
-            prob = array_p_m_gpc(theta, object@slope, object@threshold)
+            prob = array_p_m_gpc(theta, object@slope, object@intercept)
             return(prob)
           }
 )
@@ -196,7 +196,7 @@ setMethod(f = "calcProb",
 setMethod(f = "calcProb",
           signature = c("item.gr", "matrix"),
           definition = function(object, theta) {
-            prob = array_p_m_gr(theta, object@slope, object@category)
+            prob = array_p_m_gr(theta, object@slope, object@intercept)
             return(prob)
           }
 )
@@ -367,7 +367,7 @@ setGeneric(name = "calcFisher",
 setMethod(f = "calcFisher",
           signature = c("item.1pl", "numeric"),
           definition = function(object, theta) {
-            Fisher = array_info_1pl(theta, object@difficulty)
+            Fisher = array_info_1pl(theta, object@intercept)
             return(Fisher)
           }
 )
