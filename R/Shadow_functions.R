@@ -2739,8 +2739,7 @@ iparPosteriorSample = function(pool, nSample = 500) {
 maxinfo_plot = function(pool, const){
   idx.nitems = which(toupper(const$Constraints[['WHAT']]) == "ITEM" &
                      toupper(const$Constraints[['CONDITION']]) == "")
-  n.items = const$Constraints[idx.nitems,]['LB'][1,1]
-
+  n.items = const$Constraints[idx.nitems,]['LB'][1, 1]
   continuum = seq(-3, 3, .5)
   max.info = min.info = continuum * 0
   for(i in 1:length(continuum)){
@@ -2748,8 +2747,7 @@ maxinfo_plot = function(pool, const){
     min.info[i] = sum(sort(calcFisher(pool, continuum[i]), F)[1:n.items])
   }
   pdf(NULL, bg = 'white')
-  dev.control(displaylist="enable")
-
+  dev.control(displaylist = "enable")
   plot(0, 0, type = 'n', xlim = c(-3, 3), ylim = c(0, max(max.info)),
        xlab = 'theta', ylab = 'Information')
   lines(continuum, max.info, lty = 2, lwd = 2)
