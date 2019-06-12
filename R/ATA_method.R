@@ -87,7 +87,6 @@ setMethod(f = "ATA",
               dir = c(dir, ">=")
               rhs = c(rhs, 0)
             }
-
             solve.time = proc.time()
             if (toupper(config@MIP$solver) == "SYMPHONY") {
               if (!maximize){
@@ -158,11 +157,9 @@ setMethod(f = "ATA",
               Selected = Selected[order(Selected[[Constraints$StimulusOrderBy]], Selected[["STID"]]), ]
             }
             row.names(Selected) = 1:nrow(Selected)
-
             if (plot){
               continuum = seq(plotrange[1], plotrange[2], .1)
               continuum = sort(c(continuum, config@itemSelection$targetLocation))
-
               idx = which(MIP$solution[1:ni] == 1)
               if (toupper(config@itemSelection$method) == "TIF"){
                 mat.sub = calcFisher(Constraints$pool, continuum)[,idx]
@@ -188,9 +185,7 @@ setMethod(f = "ATA",
                 ylab = "Information"
                 title = "Test Information Function based on the selected items"
               }
-
               ymax = max(vec.sub, config@itemSelection$targetValue)
-
               pdf(NULL, bg = 'white')
               dev.control(displaylist="enable")
               plot(continuum, vec.sub, xlim = c(min(continuum), max(continuum)), ylim = c(0, ymax),
@@ -204,7 +199,6 @@ setMethod(f = "ATA",
             } else {
               p = NULL
             }
-
             return(list(MIP = MIP, Selected = Selected, solver = config@MIP$solver, obj.value = obj.value, solve.time = solve.time, plot = p))
           }
 )
