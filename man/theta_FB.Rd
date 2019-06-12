@@ -2,32 +2,32 @@
 % Please edit documentation in R/RcppExports.R
 \name{theta_FB}
 \alias{theta_FB}
-\title{theta_FB}
+\title{Calculate a fully Bayesian estimate of theta for an examinee}
 \usage{
 theta_FB(nx, theta_init, theta_prop, items_list, item_init, resp, ncat,
   model, prior, prior_parm)
 }
 \arguments{
-\item{nx}{A nice parameter}
+\item{nx}{a number of MCMC draws}
 
-\item{theta_init}{A nice parameter}
+\item{theta_init}{an initial theta estimate}
 
-\item{theta_prop}{A nice parameter}
+\item{theta_prop}{SD of the proposal distribution}
 
-\item{items_list}{A nice parameter}
+\item{items_list}{a list of item_parm matrices}
 
-\item{item_init}{A nice parameter}
+\item{item_init}{a matrix of item parameter estimates (one row per item)}
 
-\item{resp}{A nice parameter}
+\item{resp}{a numeric vector of item responses}
 
-\item{ncat}{A nice parameter}
+\item{ncat}{a numeric vector of the number of response categories by item}
 
-\item{model}{A nice parameter}
+\item{model}{a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)}
 
-\item{prior}{A nice parameter}
+\item{prior}{prior distribution (1: normal, 2: uniform)}
 
-\item{prior_parm}{A nice parameter}
+\item{prior_parm}{a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)}
 }
 \description{
-theta_FB
+Calculate a fully Bayesian estimate of theta for an examinee
 }

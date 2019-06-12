@@ -5,25 +5,25 @@
 \title{plotInfoOverlay}
 \usage{
 plotInfoOverlay(object, theta, infoType = "FISHER", select = NULL,
-  pdfFile = NULL, color = "red", width = 7, height = 6)
+  PDF = NULL, color = "red", width = 7, height = 6)
 }
 \arguments{
-\item{object}{A nice parameter}
+\item{object}{An object of class \code{\linkS4class{item.pool}}}
 
-\item{theta}{A nice parameter}
+\item{theta}{A theta grid}
 
-\item{infoType}{A nice parameter}
+\item{infoType}{Type of information}
 
-\item{select}{A nice parameter}
+\item{select}{A vector of item indexes to subset}
 
-\item{pdfFile}{A nice parameter}
+\item{PDF}{If supplied a filename, save as a PDF file}
 
-\item{color}{A nice parameter}
+\item{color}{Plotting color}
 
-\item{width}{A nice parameter}
+\item{width}{Width of the graphics device}
 
-\item{height}{A nice parameter}
+\item{height}{Height of the graphics device}
 }
 \description{
-plotInfoOverlay
+Overlay item information plots
 }
