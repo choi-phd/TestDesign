@@ -1,6 +1,3 @@
-# Documentation progress
-# Phase 2. Add simple descriptions: COMPLETE
-
 #' Validate the slope parameter
 #'
 #' @param object An S4 class object for an item.
