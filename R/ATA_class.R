@@ -52,9 +52,9 @@ setClass("ATA.config",
 #' \itemize{
 #'   \item{\code{method}} The type of criteria. Accepts \code{MAXINFO, TIF, TCC}.
 #'   \item{\code{infoType}} The type of information. Accepts \code{FISHER}.
-#'   \item{\code{targetLocation}} A numeric vector containing the locations of target points. (e.g. \code{c(-1, 0, 1)})
-#'   \item{\code{targetValue}} A numeric vector containing the target values at each location. This should have the same length with \code{targetLocation}. Ignored if method is \code{MAXINFO}.
-#'   \item{\code{targetWeight}} A numeric vector containing the weights for each location. This should have the same length with \code{targetlocation}. Defaults to a vector of 1s.
+#'   \item{\code{targetLocation}} A numeric vector containing the locations of target theta points. (e.g. \code{c(-1, 0, 1)})
+#'   \item{\code{targetValue}} A numeric vector containing the target values at each theta location. This should have the same length with \code{targetLocation}. Ignored if method is \code{MAXINFO}.
+#'   \item{\code{targetWeight}} A numeric vector containing the weights for each theta location. This should have the same length with \code{targetlocation}. Defaults to a vector of 1s.
 #' }
 #' @param MIP A list containing solver options. This should have the following entries:
 #' \itemize{

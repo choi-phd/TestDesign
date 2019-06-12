@@ -230,7 +230,7 @@ double info_1pl(const double& x, const double& b){
 
 //' Calculate the Fisher information for a vector of theta values according to the 1pl model
 //'
-//' @param x a vector of theta value
+//' @param x a vector of theta values
 //' @param b a length-one numeric vector for the difficulty parameter
 //' @template 1pl-ref
 //' @export
@@ -326,7 +326,7 @@ double info_pc(const double& x, NumericVector b){
 
 //' Calculate the Fisher information for a vector of theta values according to the partial credit model
 //'
-//' @param x a vector of theta values
+//' @param x a numeric vector of theta values
 //' @param b a numeric vector for the threshold parameters
 //' @template pc-ref
 //' @export
@@ -361,7 +361,7 @@ double info_gpc(const double& x, const double& a, NumericVector b){
 
 //' Calculate the Fisher information for a vector of theta values according to the generalized partial credit model
 //'
-//' @param x a vector of theta values
+//' @param x a numeric vector of theta values
 //' @param a a length-one numeric vector for the slope parameter
 //' @param b a numeric vector for the threshold parameters
 //' @template gpc-ref
@@ -401,7 +401,7 @@ double info_gr(const double& x, const double& a, NumericVector b){
 
 //' Calculate the Fisher information for a vector of theta values according to the graded response model
 //'
-//' @param x a vector of theta values
+//' @param x a numeric vector of theta values
 //' @param a a length-one numeric vector for the slope parameter
 //' @param b a numeric vector for the category boundary parameters
 //' @template gr-ref
@@ -521,12 +521,12 @@ NumericMatrix calc_info_matrix(NumericVector x,
   return info_matrix;
 }
 
-//' calc_info_EB
+//' Calculate the Fisher information using empirical Bayes
 //'
-//' @param x A nice parameter
-//' @param item_parm A nice parameter
-//' @param ncat A nice parameter
-//' @param model A nice parameter
+//' @param x a numeric vector of MCMC sampled theta values
+//' @param item_parm a numeric matrix of item parameters
+//' @param ncat a numeric vector of the number of response categories by item
+//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
 // [[Rcpp::export]]
 NumericVector calc_info_EB(NumericVector x,
                            NumericMatrix item_parm,
@@ -544,13 +544,13 @@ NumericVector calc_info_EB(NumericVector x,
   return info_array / (double)nx;
 }
 
-//' calc_info_FB
+//' Calculate the Fisher information using fully Bayesian
 //'
-//' @param x A nice parameter
-//' @param items_list A nice parameter
-//' @param ncat A nice parameter
-//' @param model A nice parameter
-//' @param useEAP A nice parameter
+//' @param x a numeric vector of MCMC sampled theta values
+//' @param items_list a list of item_parm matrices
+//' @param ncat a numeric vector of the number of response categories by item
+//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
+//' @param useEAP true to use the mean of MCMC theta draws
 // [[Rcpp::export]]
 NumericVector calc_info_FB(NumericVector x,
                            List items_list,

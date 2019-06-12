@@ -7,7 +7,7 @@
 array_info_pc(x, b)
 }
 \arguments{
-\item{x}{a vector of theta values}
+\item{x}{a numeric vector of theta values}
 
 \item{b}{a numeric vector for the threshold parameters}
 }
