@@ -535,22 +535,16 @@ NumericVector calc_info_EB(NumericVector x,
                            NumericMatrix item_parm,
                            IntegerVector ncat,
                            IntegerVector model){
-  /*
-  Emperical Bayes
-  x: input vector of theta sampled values
-  item_parm: matrix for item parameters
-  ncat: number of levels/categories
-  */
-  int nx = x.size(); //number of theta values sampled
-  int ni = item_parm.nrow(); //number of items
-  NumericVector info_array(ni); //filled with 0
+  int nx = x.size();
+  int ni = item_parm.nrow();
+  NumericVector info_array(ni);
   for(int j = 0; j < nx; j++){
     NumericVector info = calc_info(x[j],item_parm,ncat,model);
     for(int i = 0; i < ni; i++){
       info_array[i] += info[i];
     }
   }
-  return info_array / (double)nx; //casting is superflous per Rcpp
+  return info_array / (double)nx;
 }
 
 //' calc_info_FB
@@ -566,23 +560,16 @@ NumericVector calc_info_FB(NumericVector x,
                            IntegerVector ncat,
                            IntegerVector model,
                            bool useEAP = false){
-  /*
-  Fully Bayesian
-  x: input vector of theta values
-  items_list: a list of length ni and each element is a matrix of parameters for one item
-  ncat: number of levels/categories
-  model: vector of IRT models (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-  */
-  int nx = x.size(); //number of MCMC theta samples
-  int ni = ncat.size(); //number of items
-  NumericVector info_array(ni); //filled with 0
-  if (useEAP) x = rep(mean(x), nx); //use EAP of MCMC sample
+  int nx = x.size();
+  int ni = ncat.size();
+  NumericVector info_array(ni);
+  if (useEAP) x = rep(mean(x), nx);
   for(int i = 0; i < ni; i++){
     NumericMatrix item_parm = as<NumericMatrix>(items_list[i]);
-    int ns = item_parm.nrow(); //number of sampled parameter estimates for item i
-    int s = 0; //index for MCMC draws for item i
+    int ns = item_parm.nrow();
+    int s = 0;
     double info_sum = 0;
-    if (model[i] == 1) { // 1PL model
+    if (model[i] == 1) {
       for(int j = 0; j < nx; j++) {
 
         double b = item_parm(s,0);
@@ -592,7 +579,7 @@ NumericVector calc_info_FB(NumericVector x,
         s += 1;
         if (s >= ns) { s = 0; }
       }
-    } else if (model[i] == 2) { // 2PL model
+    } else if (model[i] == 2) {
       for(int j = 0; j < nx; j++) {
 
         double a = item_parm(s,0);
@@ -603,7 +590,7 @@ NumericVector calc_info_FB(NumericVector x,
         s += 1;
         if (s >= ns) { s = 0; }
       }
-    } else if (model[i] == 3) { // 3PL model
+    } else if (model[i] == 3) {
       for(int j = 0; j < nx; j++) {
 
         double a = item_parm(s,0);
@@ -615,7 +602,7 @@ NumericVector calc_info_FB(NumericVector x,
         s += 1;
         if (s >= ns) { s = 0; }
       }
-    } else if (model[i] == 4) { // PC
+    } else if (model[i] == 4) {
       for(int j = 0; j < nx; j++) {
 
         NumericVector b(ncat[i]-1);
@@ -629,7 +616,7 @@ NumericVector calc_info_FB(NumericVector x,
         s += 1;
         if (s >= ns) { s = 0; }
       }
-    } else if (model[i] == 5) { // GPCM
+    } else if (model[i] == 5) {
       for(int j = 0; j < nx; j++) {
 
         double a = item_parm(s,0);
@@ -644,7 +631,7 @@ NumericVector calc_info_FB(NumericVector x,
         s += 1;
         if (s >= ns) { s = 0; }
       }
-    } else if (model[i] == 6) { // GR
+    } else if (model[i] == 6) {
       for(int j = 0; j < nx; j++) {
 
         double a = item_parm(s,0);
@@ -662,7 +649,7 @@ NumericVector calc_info_FB(NumericVector x,
     }
     info_array[i] = info_sum;
   }
-  return info_array / (double)nx;  //casting is superflous per Rcpp
+  return info_array / (double)nx;
 }
 
 //' calc_MI_FB
@@ -676,27 +663,19 @@ NumericVector calc_MI_FB(NumericVector x,
                          List items_list,
                          IntegerVector ncat,
                          IntegerVector model){
-  /*
-  Mutual Information
-  Fully Bayesian
-  x: input vector of theta values
-  items_list: a list of length ni and each element is a matrix of parameters for one item
-  ncat: number of levels/categories
-  model: vector of IRT models (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-  */
-  int nx = x.size(); //number of MCMC theta samples
-  int ni = ncat.size(); //number of items
-  NumericVector info_array(ni); //filled with 0
+  int nx = x.size();
+  int ni = ncat.size();
+  NumericVector info_array(ni);
   for(int i = 0; i < ni; i++){
     NumericMatrix posterior_k(nx, ncat[i]);
     NumericVector prob(ncat[i]);
     NumericVector p(ncat[i]);
     NumericMatrix item_parm = as<NumericMatrix>(items_list[i]);
-    int ns = item_parm.nrow(); //number of sampled parameter estimates for item i
-    int s = 0; //index for MCMC draws for item i
+    int ns = item_parm.nrow();
+    int s = 0;
     double info_sum = 0;
     double sumP;
-    if (model[i] == 1) {  // 1PL model
+    if (model[i] == 1) {
       for(int j = 0; j < nx; j++) {
 
         double b = item_parm(s,0);
@@ -707,8 +686,7 @@ NumericVector calc_MI_FB(NumericVector x,
 
         s += 1;
         if (s >= ns) { s = 0; }
-
-    }} else if (model[i] == 2) {  // 2PL model
+    }} else if (model[i] == 2) {
       for(int j = 0; j < nx; j++) {
 
         double a = item_parm(s,0), b = item_parm(s,1);
@@ -719,8 +697,7 @@ NumericVector calc_MI_FB(NumericVector x,
 
         s += 1;
         if (s >= ns) { s = 0; }
-
-    }} else if (model[i] == 3) { // 3PL model
+    }} else if (model[i] == 3) {
       for(int j = 0; j < nx; j++) {
 
         double a = item_parm(s,0);
@@ -733,8 +710,7 @@ NumericVector calc_MI_FB(NumericVector x,
 
         s += 1;
         if (s >= ns) { s = 0; }
-
-    }} else if (model[i] == 4) { // PC model
+    }} else if (model[i] == 4) {
       for(int j = 0; j < nx; j++) {
 
         NumericVector b(ncat[i]-1);

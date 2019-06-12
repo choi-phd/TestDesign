@@ -1,6 +1,3 @@
-# Documentation progress
-# Phase 2. Add simple descriptions: COMPLETE
-
 #' @import Rsymphony
 #' @import Rglpk
 #' @import Matrix
@@ -22,7 +19,6 @@ NULL
 #'
 #' @export
 
-#TODO: define function to load item attributes
 LoadItemAttrib = function(file.csv, pool) {
   if (is.null(pool) || class(pool) != "item.pool") stop("pool is missing or not of class \"item.pool\"")
 
@@ -64,7 +60,6 @@ LoadItemAttrib = function(file.csv, pool) {
 #'
 #' @export
 
-#TODO: define function to load set/stimulus/passage attributes
 LoadStAttrib = function(file.csv, ItemAttrib) {
   StAttrib = read.csv(file.csv, header = TRUE, as.is = TRUE)
   names(StAttrib) = toupper(names(StAttrib))
@@ -122,7 +117,6 @@ LoadStAttrib = function(file.csv, ItemAttrib) {
 #'
 #' @export
 
-#TODO: define function to load constraints
 LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
 
   if (class(pool) != "item.pool")
@@ -165,12 +159,9 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
   }
 
   # Validation: Pool
-
-  # ----------------------------------------------------------------------
-
-  ni = pool@ni           # number of items
-  ns = 0                 # number of stimuli
-  x = numeric(ni)        # decision variables for items
+  ni = pool@ni
+  ns = 0
+  x = numeric(ni)
   nc = nrow(Constraints)
 
   if (nrow(ItemAttrib) != ni)
@@ -188,14 +179,8 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
     ItemConstraints = which(Constraints$WHAT == "ITEM")
     StimulusConstraints = which(Constraints$WHAT %in% c("STIMULUS", "PASSAGE", "SET", "TESTLET"))
   }
-
-  # Determine the input type
-  # Case 1: Stimulus-based
-  # Case 2:
-  # Case 3:
-  ItemOrder     = ItemOrderBy     = NULL # field by which items should be ordered
-  StimulusOrder = StimulusOrderBy = NULL # field by which stimuli should be ordered
-
+  ItemOrder     = ItemOrderBy     = NULL
+  StimulusOrder = StimulusOrderBy = NULL
   if (length(StimulusConstraints) > 0) {
     if (is.null(StAttrib))
       stop("for stimulus-based, StAttrib must not be NULL")
@@ -204,24 +189,19 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
 
     setBased = TRUE
     ID = c(ItemAttrib$ID, StAttrib$STID)
-    ns = nrow(StAttrib) #total number of stimuli
-    nv = ni + ns #total number of decision variables
+    ns = nrow(StAttrib)
+    nv = ni + ns
     item.id.by.stimulus = split(ItemAttrib$ID, as.factor(ItemAttrib$STID))
     item.index.by.stimulus = lapply(item.id.by.stimulus, function(x) which(ItemAttrib$ID %in% x))
     item.index.by.stimulus = lapply(StAttrib$STID, function(x) item.index.by.stimulus[[x]])
     if (any(ItemAttrib$STID %in% c("", " ", "N/A", "n/a"))) {
-      #discrete items
       ItemAttrib$STID[ItemAttrib$STID %in% c("", " ", "N/A", "n/a")] = NA
     }
     stimulus.id.by.item = ItemAttrib$STID
     stimulus.index.by.item = sapply(stimulus.id.by.item, function(x) which(StAttrib$STID == x))
-    #need to determine if the LB/UB should be set for each stimulus separately or the same for all stimuli
     if (any(toupper(Constraints$CONDITION) %in% c("PER STIMULUS", "PER PASSAGE", "PER SET", "PER TESTLET"))) {
-      #a common set of LB/UB to be set for all stimuli
-      #this takes a precedence over setting a separate LB/UB for each stimulus
       common.stimulus.length = TRUE
     } else if (all(c("LB", "UB") %in% names(StAttrib))) {
-      #if PER STIMULUS option is not set and StAttrib contains LB/UB
       common.stimulus.length = FALSE
       stimulus.length.LB = StAttrib$LB
       stimulus.length.UB = StAttrib$UB
@@ -233,7 +213,7 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
     }
   } else if (length(ItemConstraints) > 0) {
     setBased = FALSE
-    nv = ni #total number of decision variables
+    nv = ni
     ID = ItemAttrib$ID
     item.index.by.stimulus = NULL
     stimulus.index.by.item = NULL
@@ -249,8 +229,8 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
     if (Constraints$TYPE[index] %in% c("NUMBER", "COUNT")) {
       ConstraintTypeIsValid = TRUE
       if (toupper(Constraints$CONDITION[index]) %in% c("", " ", "PER TEST", "TEST")) {
-        test.length.LB = round(Constraints$LB[index]) #LB of test length (number of items)
-        test.length.UB = round(Constraints$UB[index]) #UB of test length (number of items)
+        test.length.LB = round(Constraints$LB[index])
+        test.length.UB = round(Constraints$UB[index])
         if (any(c(test.length.LB, test.length.UB) < 0) || test.length.LB > test.length.UB) {
           stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
         } else if (test.length.LB == test.length.UB) {
@@ -260,19 +240,12 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
           ListConstraints[[index]]@dir = "=="
           ListConstraints[[index]]@rhs = test.length.UB
         } else {
-          #if (test.length.LB < test.length.UB)
           stop("LB and UB for ITEM NUMBER must be set equal")
-          # testLength = c(test.length.LB, test.length.UB)
-          # ListConstraints[[index]]@mat = matrix(0, nrow = 2, ncol = nv)
-          # ListConstraints[[index]]@mat[, 1:ni] = 1
-          # ListConstraints[[index]]@dir = c(">=", "<=")
-          # ListConstraints[[index]]@rhs = c(test.length.LB, test.length.UB)
         }
         if (setBased && !common.stimulus.length) {
-          n.LB.eq.UB = sum(stimulus.length.LB == stimulus.length.UB) #number of stimulus with LB == UB
-          n.LB.ne.UB = sum(stimulus.length.LB != stimulus.length.UB) #number of stimulus with LB != UB
+          n.LB.eq.UB = sum(stimulus.length.LB == stimulus.length.UB)
+          n.LB.ne.UB = sum(stimulus.length.LB != stimulus.length.UB)
           tmp.mat = matrix(0, nrow = ns + n.LB.ne.UB, ncol = nv)
-          #tmp.dir = rep("<=", ns + n.LB.ne.UB)
           tmp.dir = character(ns + n.LB.ne.UB)
           tmp.rhs = rep(0, ns + n.LB.ne.UB)
           tmp.index = 1
@@ -298,14 +271,11 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
           ListConstraints[[index]]@rhs = c(ListConstraints[[index]]@rhs, tmp.rhs)
         }
       } else if (toupper(Constraints$CONDITION[index]) %in% c("PER STIMULUS", "PER PASSAGE", "PER SET", "PER TESTLET")) {
-        #for all stimuli, set a common LB/UB on the number of items
-        #if this constraint type is not invoked, i.e., if a coomon LB/UB is not set for all stimuli, it can be set for each stimulus separately
-        #for that option, StAttrib must contain columns LB and UB which set the LB/UB for each stimulus
         if (!setBased) {
           stop(sprintf("Constraints must include at least one \"STIMULUS\" under WHAT for CONDITION: %s", toupper(Constraints$CONDITION[index])))
         }
-        stimulus.length.LB = round(Constraints$LB[index]) #a common LB for all stimuli
-        stimulus.length.UB = round(Constraints$UB[index]) #a common UB for all stimuli
+        stimulus.length.LB = round(Constraints$LB[index])
+        stimulus.length.UB = round(Constraints$UB[index])
         if (any(c(stimulus.length.LB, stimulus.length.UB) < 0) || stimulus.length.LB > stimulus.length.UB) {
           stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
         } else if (stimulus.length.LB == stimulus.length.UB) {
@@ -318,7 +288,6 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
           }
         } else {
           ListConstraints[[index]]@mat = matrix(0, nrow = ns * 2, ncol = nv)
-          #ListConstraints[[index]]@dir = rep("<=", ns * 2)
           ListConstraints[[index]]@dir = rep(c(">=", "<="), ns)
           ListConstraints[[index]]@rhs = rep(0, ns * 2)
           for (s in 1:ns) {
@@ -353,8 +322,6 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
           }
         }
       } else {
-        #if CONDITION != ""
-        #with(ItemAttrib, eval(parse(text=Constraints$CONDITION[index])))
         condition.met = which(with(ItemAttrib, eval(parse(text = Constraints$CONDITION[index]))))
         if (length(condition.met) == 0) {
           stop(sprintf("CONSTRAINT %s returned 0 items meeting CONDITION: %s", index, Constraints$CONDITION[index]))
@@ -386,13 +353,12 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
           stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
         } else if (Constraints$LB[index] == Constraints$UB[index]) {
           ListConstraints[[index]]@mat = matrix(0, nrow = 1, ncol = nv)
-          ListConstraints[[index]]@dir = "<=" #equality constraint does not work for quantitative attributes
+          ListConstraints[[index]]@dir = "<="
           ListConstraints[[index]]@rhs = Constraints$UB[index]
           if (Constraints$TYPE[index] == "SUM") {
             ListConstraints[[index]]@mat[1, 1:ni] = ItemAttrib[[Constraints$CONDITION[index]]]
           } else if (Constraints$TYPE[index] %in% c("AVERAGE", "MEAN")) {
             ListConstraints[[index]]@mat[1, 1:ni] = ItemAttrib[[Constraints$CONDITION[index]]] / test.length.UB
-            #ListConstraints[[index]]@rhs = ListConstraints[[index]]@rhs * test.length.UB
           }
         } else {
           ListConstraints[[index]]@mat = matrix(0, nrow = 2, ncol = nv)
@@ -401,9 +367,6 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
           if (Constraints$TYPE[index] == "SUM") {
             ListConstraints[[index]]@mat[, 1:ni] = ItemAttrib[[Constraints$CONDITION[index]]]
           } else if (Constraints$TYPE[index] %in% c("AVERAGE", "MEAN")) {
-            #ListConstraints[[index]]@rhs = ListConstraints[[index]]@rhs / mean(test.length.LB, test.length.UB)
-            #ListConstraints[[index]]@rhs[1] = ListConstraints[[index]]@rhs[1] * test.length.LB
-            #ListConstraints[[index]]@rhs[2] = ListConstraints[[index]]@rhs[2] * test.length.UB
             ListConstraints[[index]]@mat[1, 1:ni] = ItemAttrib[[Constraints$CONDITION[index]]] / test.length.UB
             ListConstraints[[index]]@mat[2, 1:ni] = ItemAttrib[[Constraints$CONDITION[index]]] / test.length.LB
           }
@@ -568,13 +531,11 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
           if (any(is.na(StAttrib[[Constraints$CONDITION[index]]]))) {
             stop(sprintf("CONSTRAINT %s: %s must not have a missing value", index, Constraints$CONDITION[index]))
           }
-          #(any(c(Constraints$LB[index], Constraints$UB[index]) < 0) || Constraints$LB[index] > Constraints$UB[index])
           if (any(c(Constraints$LB[index], Constraints$UB[index]) < 0) || Constraints$LB[index] > Constraints$UB[index]) {
             stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
           } else if (Constraints$LB[index] == Constraints$UB[index]) {
-            #for quantitative attributes imposing an equality constraint does not work well
             ListConstraints[[index]]@mat = matrix(0, nrow = 1, ncol = nv)
-            ListConstraints[[index]]@dir = "<=" #will impose <= UB
+            ListConstraints[[index]]@dir = "<="
             ListConstraints[[index]]@rhs = Constraints$UB[index]
             if (Constraints$TYPE[index] == "SUM") {
               ListConstraints[[index]]@mat[1, (ni + 1):nv] = StAttrib[[Constraints$CONDITION[index]]]
@@ -588,7 +549,6 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
             if (Constraints$TYPE[index] == "SUM") {
               ListConstraints[[index]]@mat[, (ni + 1):nv] = StAttrib[[Constraints$CONDITION[index]]]
             } else if (Constraints$TYPE[index] %in% c("AVERAGE", "MEAN")) {
-              #ListConstraints[[index]]@rhs = ListConstraints[[index]]@rhs / mean(test.length.LB, test.length.UB)
               ListConstraints[[index]]@mat[1, (ni + 1):nv] = StAttrib[[Constraints$CONDITION[index]]] / number.stimulus.UB
               ListConstraints[[index]]@mat[2, (ni + 1):nv] = StAttrib[[Constraints$CONDITION[index]]] / number.stimulus.LB
             }
@@ -596,7 +556,6 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
         }
       }
       if (Constraints$TYPE[index] == "INCLUDE") {
-        #TODO: add a constraint to make sure at least LB items within each included passage are administered
         ConstraintTypeIsValid = TRUE
         condition.met = which(with(StAttrib, eval(parse(text = Constraints$CONDITION[index]))))
         if (length(condition.met) == 0) {
@@ -619,7 +578,6 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
           ListConstraints[[index]]@dir = "=="
           ListConstraints[[index]]@rhs = 0
           for (s in condition.met) {
-            #items within each excluded passage
             ListConstraints[[index]]@mat[1, item.index.by.stimulus[[s]]] = 1
           }
         }

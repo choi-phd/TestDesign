@@ -1,6 +1,3 @@
-# Documentation progress
-# Phase 2. Add simple descriptions: COMPLETE
-
 #' config.ATA
 #'
 #' @rdname config.ATA
