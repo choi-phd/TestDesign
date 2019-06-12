@@ -8,16 +8,16 @@ calcRP(object, rp = 0.5, maxIter = 100, conv = 1e-04,
   startTheta = 0)
 }
 \arguments{
-\item{object}{A nice parameter}
+\item{object}{An \code{\linkS4class{item.pool}} object}
 
-\item{rp}{A nice parameter}
+\item{rp}{A response probability value}
 
-\item{maxIter}{A nice parameter}
+\item{maxIter}{A maximum number of iterations}
 
-\item{conv}{A nice parameter}
+\item{conv}{A convergence criterion}
 
-\item{startTheta}{A nice parameter}
+\item{startTheta}{A starting theta value}
 }
 \description{
-calcRP
+Find theta corresponding to a response probability value for each item
 }

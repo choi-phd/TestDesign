@@ -7,10 +7,10 @@
 subsetTest(test, select = NULL)
 }
 \arguments{
-\item{test}{A nice parameter}
+\item{test}{An \code{\linkS4class{test}} object}
 
-\item{select}{A nice parameter}
+\item{select}{A vector of item indexes to subset}
 }
 \description{
-subsetTest
+Create a subset of a test object
 }

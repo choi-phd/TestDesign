@@ -2,19 +2,19 @@
 % Please edit documentation in R/RcppExports.R
 \name{calc_info_EB}
 \alias{calc_info_EB}
-\title{calc_info_EB}
+\title{Calculate the Fisher information using empirical Bayes}
 \usage{
 calc_info_EB(x, item_parm, ncat, model)
 }
 \arguments{
-\item{x}{A nice parameter}
+\item{x}{a numeric vector of MCMC sampled theta values}
 
-\item{item_parm}{A nice parameter}
+\item{item_parm}{a numeric matrix of item parameters}
 
-\item{ncat}{A nice parameter}
+\item{ncat}{a numeric vector of the number of response categories by item}
 
-\item{model}{A nice parameter}
+\item{model}{a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)}
 }
 \description{
-calc_info_EB
+Calculate the Fisher information using empirical Bayes
 }

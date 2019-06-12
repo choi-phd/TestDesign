@@ -2,26 +2,26 @@
 % Please edit documentation in R/RcppExports.R
 \name{calc_posterior_function}
 \alias{calc_posterior_function}
-\title{calc_posterior_function}
+\title{Calculate a posterior distribution of theta}
 \usage{
 calc_posterior_function(theta_grid, item_parm, resp, ncat, model, prior,
   prior_parm)
 }
 \arguments{
-\item{theta_grid}{A nice parameter}
+\item{theta_grid}{an equi-spaced grid of theta values}
 
-\item{item_parm}{A nice parameter}
+\item{item_parm}{a numeric matrix of item parameters}
 
-\item{resp}{A nice parameter}
+\item{resp}{a numeric vector of item responses}
 
-\item{ncat}{A nice parameter}
+\item{ncat}{a numeric vector of the number of response categories by item}
 
-\item{model}{A nice parameter}
+\item{model}{a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)}
 
-\item{prior}{A nice parameter}
+\item{prior}{prior distribution (1: normal, 2: uniform)}
 
-\item{prior_parm}{A nice parameter}
+\item{prior_parm}{a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)}
 }
 \description{
-calc_posterior_function
+Calculate a posterior distribution of theta
 }
