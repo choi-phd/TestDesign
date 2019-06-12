@@ -1,4 +1,5 @@
 ^man-roxygen$
+^.vscode$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^run_47h$
