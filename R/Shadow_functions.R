@@ -2370,127 +2370,24 @@ plotExposureRateBySegment = function(object, config, maxRate = 0.25, PDF = NULL,
       exposureRateSegment[[k]] = object$eligibilityStats$alpha_ijk[k, ] / object$eligibilityStats$n_jk[k]
     }
   }
-
   plotER = function(ni, exposureRate, maxRate = maxRate, title = NULL) {
     plot(1:ni, sort(exposureRate, decreasing = TRUE), type = "n", lwd = 2, ylim = c(0, 1), xlab = "Item", ylab = "Exposure Rate", main = title)
     lines(1:ni, sort(exposureRate, decreasing = TRUE), type = "l", lty = 1, lwd = 2, col = "blue")
     points(1:ni, sort(exposureRate, decreasing = TRUE), type = "h", lwd = 1, col = "blue")
     abline(h = maxRate, col="gray")
   }
-
-  if (!is.null(pdfFile)) {
-    pdf(file = pdfFile, width = width, height = height)
+  if (!is.null(PDF)) {
+    pdf(file = PDF, width = width, height = height)
   }
-
   par(mfrow = mfrow)
-
-  #plotER(ni, exposureRate, maxRate = maxRate, title = "Overall")
   plotER(ni, exposureRate, maxRate = maxRate, title = paste0("Overall (N = ", nj, ")"))
-
   for (k in 1:config@exposureControl$nSegment) {
-    #plotER(ni, exposureRateSegment[[k]], maxRate = maxRate, title = segmentLabel[k])
     plotER(ni, exposureRateSegment[[k]], maxRate = maxRate, title = paste0(segmentLabel[k], " (n = ", round(object$eligibilityStats$n_jk[k], 1), ")"))
   }
-
-  if (!is.null(pdfFile)) {
+  if (!is.null(PDF)) {
     dev.off()
   }
-
   return(exposureRateSegment)
-}
-
-#' plotExposureRate
-#'
-#' plotExposureRate
-#'
-#' @param object A nice parameter
-#' @param config A nice parameter
-#' @param maxRate A nice parameter
-#' @param theta A nice parameter
-#' @param segmentCut A nice parameter
-#' @param color A nice parameter
-#' @param pdfFile A nice parameter
-#' @param width A nice parameter
-#' @param height A nice parameter
-#' @param mfrow A nice parameter
-plotExposureRate = function(object, config = NULL, maxRate = 0.25, theta = "Estimated", segmentCut = NULL, color = "red", pdfFile = NULL, width = 7, height = 6, mfrow = c(2, 4)) {
-  trueTheta = object$trueTheta
-  estTheta = object$finalThetaEst
-  nj = length(trueTheta)
-  ni = ncol(object$usageMatrix)
-
-  if (is.null(config)) {
-    config = object$config
-  }
-
-  if (is.null(segmentCut)) {
-    segmentCut = config@exposureControl$segmentCut
-  }
-
-  nSegment = length(segmentCut) - 1
-  cutLower = segmentCut[1:nSegment]
-  cutUpper = segmentCut[2:(nSegment + 1)]
-  segmentLabel = character(nSegment)
-  thetaSegmentIndex = numeric(nj)
-
-  if (toupper(theta) == "TRUE") {
-    for (k in 1:nSegment) {
-      thetaSegmentIndex[trueTheta > cutLower[k] & trueTheta <= cutUpper[k]] = k
-    }
-  } else {
-    for (k in 1:nSegment) {
-      thetaSegmentIndex[estTheta > cutLower[k] & estTheta <= cutUpper[k]] = k
-    }
-  }
-
-  for (k in 1:nSegment) {
-    if (k < nSegment ) {
-      segmentLabel[k] = paste0("(", cutLower[k], ",", cutUpper[k], "]")
-    } else {
-      segmentLabel[k] = paste0("(", cutLower[k], ",", cutUpper[k], ")")
-    }
-  }
-
-  exposureRate = colSums(object$usageMatrix) / nj
-
-  exposureRateSegment = vector("list", nSegment)
-  names(exposureRateSegment) = segmentLabel
-
-  for (k in 1:nSegment) {
-    if (sum(thetaSegmentIndex == k) > 2) {
-      exposureRateSegment[[k]] = colMeans(object$usageMatrix[thetaSegmentIndex == k, ])
-    }
-    if (is.null(exposureRateSegment[[k]])) {
-      exposureRateSegment[[k]] = numeric(ni)
-    } else if (any(is.nan(exposureRateSegment[[k]]))) {
-      exposureRateSegment[[k]][is.nan(exposureRateSegment[[k]])] = 0
-    }
-  }
-
-  plotER = function(ni, exposureRate, maxRate = maxRate, title = NULL) {
-    plot(1:ni, sort(exposureRate, decreasing = TRUE), type = "n", lwd = 2, ylim = c(0, 1), xlab = "Item", ylab = "Exposure Rate", main = title)
-    lines(1:ni, sort(exposureRate, decreasing = TRUE), type = "l", lty = 1, lwd = 2, col = color)
-    points(1:ni, sort(exposureRate, decreasing = TRUE), type = "h", lwd = 1, col = color)
-    abline(h = maxRate, col="gray")
-  }
-
-  if (!is.null(pdfFile)) {
-    pdf(file = pdfFile, width = width, height = height)
-  }
-
-  par(mfrow = mfrow)
-
-  plotER(ni, exposureRate, maxRate = maxRate, title = paste0("Overall (N = ", nj, ")"))
-
-  for (k in 1:nSegment) {
-    plotER(ni, exposureRateSegment[[k]], maxRate = maxRate, title = paste0(segmentLabel[k], " (n = ", sum(thetaSegmentIndex == k), ")"))
-  }
-
-  if (!is.null(pdfFile)) {
-    dev.off()
-  }
-
-  return(list(exposureRate = exposureRate, exposureRateSegment = exposureRateSegment))
 }
 
 #' plotExposureRateFinal
@@ -2608,23 +2505,17 @@ plotExposureRateFinal = function(object, config = NULL, maxRate = 0.25, theta = 
     points(1:ni, exposureRateFinalOrdered, type = "h", lwd = 1, lty = 1, col = "yellow")
     abline(h = maxRate, col="gray")
   }
-
-  if (!is.null(pdfFile)) {
-    pdf(file = pdfFile, width = width, height = height)
+  if (!is.null(PDF)) {
+    pdf(file = PDF, width = width, height = height)
   }
-
   par(mfrow = mfrow)
-
   plotER(ni, exposureRate, exposureRateFinal, maxRate = maxRate, title = paste0("Overall (N = ", nRetained, ")"))
-
   for (k in 1:nSegment) {
     plotER(ni, exposureRateSegment[[k]], exposureRateSegmentFinal[[k]], maxRate = maxRate, title = paste0(segmentLabel[k], " (n = ", segmentN[k], ")"))
   }
-
-  if (!is.null(pdfFile)) {
+  if (!is.null(PDF)) {
     dev.off()
   }
-
   return(list(exposureRate = exposureRate, exposureRateSegment = exposureRateSegment, exposureRateSegmentFinal = exposureRateSegmentFinal, segmentRateTable = segmentRateTable, nSegment = nSegment, segmentN = segmentN, segmentCut = segmentCut, segmentLabel = segmentLabel))
 }
 
