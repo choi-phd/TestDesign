@@ -1,5 +1,3 @@
-
-
 #include <Rcpp.h>
 using namespace Rcpp;
 
@@ -430,7 +428,6 @@ NumericVector calc_info(const double& x,
                         NumericMatrix item_parm,
                         IntegerVector ncat,
                         IntegerVector model){
-
   int ni = item_parm.nrow();
   NumericVector info_array(ni);
   for (int i = 0; i < ni; i++){
@@ -571,78 +568,57 @@ NumericVector calc_info_FB(NumericVector x,
     double info_sum = 0;
     if (model[i] == 1) {
       for(int j = 0; j < nx; j++) {
-
         double b = item_parm(s,0);
-
         info_sum += info_1pl(x[j],b);
-
         s += 1;
         if (s >= ns) { s = 0; }
       }
     } else if (model[i] == 2) {
       for(int j = 0; j < nx; j++) {
-
         double a = item_parm(s,0);
         double b = item_parm(s,1);
-
         info_sum += info_2pl(x[j],a,b);
-
         s += 1;
         if (s >= ns) { s = 0; }
       }
     } else if (model[i] == 3) {
       for(int j = 0; j < nx; j++) {
-
         double a = item_parm(s,0);
         double b = item_parm(s,1);
         double c = item_parm(s,2);
-
         info_sum += info_3pl(x[j],a,b,c);
-
         s += 1;
         if (s >= ns) { s = 0; }
       }
     } else if (model[i] == 4) {
       for(int j = 0; j < nx; j++) {
-
         NumericVector b(ncat[i]-1);
-
         for (int k = 0; k < ncat[i]-1; k++){
           b[k] = item_parm(s,k);
         }
-
         info_sum += info_pc(x[j],b);
-
         s += 1;
         if (s >= ns) { s = 0; }
       }
     } else if (model[i] == 5) {
       for(int j = 0; j < nx; j++) {
-
         double a = item_parm(s,0);
         NumericVector b(ncat[i]-1);
-
         for (int k = 0; k < ncat[i]-1; k++){
           b[k] = item_parm(s,k+1);
         }
-
         info_sum += info_gpc(x[j],a,b);
-
         s += 1;
         if (s >= ns) { s = 0; }
       }
     } else if (model[i] == 6) {
       for(int j = 0; j < nx; j++) {
-
         double a = item_parm(s,0);
         NumericVector b(ncat[i]-1);
-
         for (int k = 0; k < ncat[i]-1; k++){
           b[k] = item_parm(s,k+1);
         }
-
         info_sum += info_gr(x[j],a,b);
-
         s += 1;
         if (s >= ns) { s = 0; }
       }

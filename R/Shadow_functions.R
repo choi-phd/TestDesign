@@ -377,11 +377,9 @@ setMethod(f = "plotCAT",
               pdf(NULL, bg = 'white')
               dev.control(displaylist="enable")
             }
-
             if (nItems > 0) {
               par(mar = c(2, 3, 1, 1) + 0.1)
               layout(rbind(c(1, 1), c(1, 1), c(1, 1), c(1, 1), c(2, 2)))
-
               plot(1:nItems, seq(minTheta, maxTheta, length = nItems), ylab = "Theta", type = "n", las = 1, xlim = c(0, nItems), xaxt = "n", yaxt = "n")
               grid()
               text(nItems/2, maxTheta, paste0("Examinee ID: ", object@simuleeIndex), adj = c(0.5, 0.5), cex = 2)
@@ -396,19 +394,16 @@ setMethod(f = "plotCAT",
               lines(1:nItems, object@interimThetaEst, lty = 3, col = "blue", lwd = 1.5)
               points(1:nItems, object@interimThetaEst, pch = 16, cex = 2.5, col = "blue")
               points(1:nItems, object@interimThetaEst, pch = 1, cex = 2.5, col = "purple4")
-
               if (!is.null(object@trueTheta)) {
                 abline(h = object@trueTheta, lty = 1, col = "red")
               } else {
                 abline(h = object@finalThetaEst, lty = 1, col = "red")
               }
-
               for (i in 1:nItems) {
                 if (object@shadowTestRefreshed[i]) {
                   text(i, minTheta, "S", col = "red", cex = 1.5)
                 }
               }
-
               plot(1:nItems, seq(minScore, maxScore, length.out = nItems), type = "n", xaxt = "n", ylim = c(minScore - 1, maxScore + 1), xlim = c(0, nItems), yaxt = "n", ylab = "")
               mtext("Position", side = 1, line = 1, outer = FALSE, cex = 1.5)
               axis(2, at = (minScore + maxScore)/2, labels = "Response", cex.axis = 2, tick = FALSE)
@@ -426,14 +421,12 @@ setMethod(f = "plotCAT",
             } else {
               cat("Shadow.output is empty\n")
             }
-
             if (!is.null(PDF)) {
               dev.off()
             } else {
               p = recordPlot()
               plot.new()
               dev.off()
-
               return(p)
             }
           }
@@ -523,19 +516,15 @@ setMethod(f = "simResp",
 #' @export
 "+.item.pool" = function(pool1, pool2) {
   if(class(pool1) != "item.pool" || class(pool2) != "item.pool") stop("operarands must be of class \"item.pool\" ")
-
   if (validObject(pool1) && validObject(pool2)) {
     combined.pool = new("item.pool")
-
     ID = c(pool1@ID, pool2@ID)
     model = c(pool1@model, pool2@model)
     NCAT = c(pool1@NCAT, pool2@NCAT)
     parms = c(pool1@parms, pool2@parms)
     ipar = cbind(pool1@ipar, pool2@ipar)
     SEs = cbind(pool1@ipar, pool2@ipar)
-
     is.unique = which(!duplicated(ID))
-
     combined.pool@ni = length(is.unique)
     combined.pool@maxCat = max(NCAT[is.unique])
     combined.pool@index = 1:combined.pool@ni
@@ -543,12 +532,10 @@ setMethod(f = "simResp",
     combined.pool@model = model[is.unique]
     combined.pool@NCAT = NCAT[is.unique]
     combined.pool@parms = parms[is.unique]
-
     if (sum(duplicated(ID)) > 0) {
       warning("duplicate items were found and removed")
       cat("duplicate ID:", ID[duplicated(ID)], "\n")
     }
-
     return(combined.pool)
   } else {
     stop("invlid pool(s) submitted")
@@ -838,7 +825,6 @@ setMethod(f = "MLE",
             ni = ncol(object@Data)
             nj = nrow(object@Data)
             nq = length(object@theta)
-
             if (is.null(select)) {
               select = 1:object@pool@ni
               Resp = object@Data
@@ -848,7 +834,6 @@ setMethod(f = "MLE",
               }
               Resp = object@Data[, unique(select)]
             }
-
             for (j in 1:nj) {
               theta_0 = 0
               converged = FALSE
@@ -891,9 +876,7 @@ setMethod(f = "eap",
           definition = function(object, theta, prior, resp, select = NULL) {
             ni = object@ni
             nq = length(theta)
-
             Prob = calcProb(object, theta)
-
             if (is.vector(resp)) {
               nj = 1
             } else if (is.matrix(resp)) {
@@ -904,13 +887,10 @@ setMethod(f = "eap",
             } else {
               stop("resp must be of class either vector or matrix")
             }
-
             posterior = matrix(rep(prior, nj), nj, nq, byrow = TRUE)
-
             if (length(prior) != nq) {
               stop("theta and prior must be equal in length")
             }
-
             if (!is.null(select)) {
               if (length(resp) != length(select)) {
                 stop("resp and select must be equal in length when select is not NULL")
@@ -927,7 +907,6 @@ setMethod(f = "eap",
             } else {
               items = 1:ni
             }
-
             if (nj == 1) {
               for (i in 1:length(items)) {
                 if (resp[i] >= 0 && resp[i] < object@maxCat) {
@@ -1083,24 +1062,19 @@ MakeItemPoolCluster = function(pools, names = NULL) {
   } else if (np == 1) {
     stop("only one pool found in pools - expecting 2 or more")
   }
-
   if (is.null(names)) {
     names = paste0("Pool_", 1:np)
   } else {
     if (length(names) != np) stop("pools and names are of different lengths")
   }
-
   PoolCluster = new("pool.cluster")
-
   PoolCluster@np = np
   PoolCluster@pools = vector(mode = "list", length = np)
   PoolCluster@names = names
-
   for (i in 1:np) {
     if (class(pools[[i]]) != "item.pool") stop(paste0("pool.list[[", i, "]] is not of class \"item.pool\""))
     PoolCluster@pools[[i]] = pools[[i]]
   }
-
   if (validObject(PoolCluster)) return(PoolCluster)
 }
 
@@ -1136,7 +1110,6 @@ setMethod(f = "Shadow",
             if (!validObject(config)) {
               stop("invalid configuration options specified")
             }
-
             if (!is.null(Constraints)) {
               ni = Constraints$ni
               ns = Constraints$ns
@@ -1144,7 +1117,6 @@ setMethod(f = "Shadow",
             } else {
               ni = object@ni
             }
-
             model = object@model
             model[which(model == "item.1pl")] = 1
             model[which(model == "item.2pl")] = 2
@@ -1153,7 +1125,6 @@ setMethod(f = "Shadow",
             model[which(model == "item.gpc")] = 5
             model[which(model == "item.gr")]  = 6
             model = as.numeric(model)
-
             if (!is.null(trueTheta)) {
               nj = length(trueTheta)       # number of simulees
             } else if (!is.null(Data)) {
@@ -1161,15 +1132,11 @@ setMethod(f = "Shadow",
             } else {
               stop("either trueTheta or Data should be provided at a minimum")
             }
-
             nq = length(config@thetaGrid)  # number of theta quadrature points
-
             minTheta = min(config@thetaGrid)
             maxTheta = max(config@thetaGrid)
-
             exposureControl = toupper(config@exposureControl$method)
             refreshPolicy = toupper(config@refreshPolicy$method)
-
             if (toupper(config@contentBalancing$method %in% c("STA", "SHADOW", "SHADOWTEST", "SHADOW TEST"))) {
               if (is.null(Constraints)) {
                 stop("Constraints must not be NULL for STA")
@@ -1179,9 +1146,7 @@ setMethod(f = "Shadow",
                 testLength = Constraints$testLength
                 minNI = Constraints$testLength
                 maxNI = Constraints$testLength
-
                 refreshShadow = rep(FALSE, testLength)
-
                 if (refreshPolicy %in% c("ALWAYS", "THRESHOLD")) {
                   refreshShadow = rep(TRUE, testLength)
                 } else if (refreshPolicy == "POSITION") {
@@ -1210,7 +1175,6 @@ setMethod(f = "Shadow",
               maxNI = config@stoppingCriterion$maxNI
               maxSE = config@stoppingCriterion$SeThreshold
             }
-
             if (!is.null(Data)) {
               Test = MakeTest(object, config@thetaGrid, infoType = "FISHER", trueTheta = NULL)
               Test@Data = as.matrix(Data)
@@ -1219,9 +1183,7 @@ setMethod(f = "Shadow",
             } else {
               stop("both Data and trueTheta cannot be NULL")
             }
-
             maxInfo = max(Test@Info)
-
             if (is.null(prior)) {
               if (!is.null(priorPar)) {
                 if (is.vector(priorPar) && length(priorPar) == 2) {
@@ -1246,23 +1208,19 @@ setMethod(f = "Shadow",
             } else {
               stop("misspecification for prior or priorPar")
             }
-
             if (toupper(config@interimTheta$method) %in% c("EB", "FB")) {
               nSample = config@MCMC$burnIn + config@MCMC$postBurnIn
               if (toupper(config@interimTheta$method) == "FB") {
                 iparList = iparPosteriorSample(object, nSample = nSample)
               }
             }
-
             if (!is.null(config@itemSelection$initialTheta)) {
               initialTheta = rep(config@itemSelection$initialTheta, nj)
             } else {
               initialTheta = as.vector(posterior %*% matrix(config@thetaGrid, ncol = 1))
             }
-
             itemsAdministered = matrix(FALSE, nj, ni)
             outputList = vector(mode = "list", length = nj)
-
             if (exposureControl %in% c("ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
               itemEligibilityControl = TRUE
               maxExposureRate = config@exposureControl$maxExposureRate
@@ -1276,7 +1234,6 @@ setMethod(f = "Shadow",
               estSegmentFreq = numeric(nSegment)
               trueSegmentCount = numeric(nj)
               estSegmentCount = numeric(nj)
-
               segmentCut = config@exposureControl$segmentCut
               cutLower = segmentCut[1:nSegment]
               cutUpper = segmentCut[2:(nSegment + 1)]
@@ -1288,27 +1245,22 @@ setMethod(f = "Shadow",
                 alpha_sjk = NULL
                 rho_sjk = NULL
               }
-
               if (config@exposureControl$diagnosticStats) {
                 alpha_g_i = matrix(0, nrow = nj, ncol = nSegment * ni)
                 epsilon_g_i = matrix(0, nrow = nj, ncol = nSegment * ni)
-
                 if (setBased) {
                   alpha_g_s = matrix(0, nrow = nj, ncol = nSegment * ns)
                   epsilon_g_s = matrix(0, nrow = nj, ncol = nSegment * ns)
                 }
-
                 if (fadingFactor != 1) {
                   noFading_alpha_g_i = matrix(0, nrow = nj, ncol = nSegment * ni)
                   noFading_epsilon_g_i = matrix(0, nrow = nj, ncol = nSegment * ni)
-
                   if (setBased) {
                     noFading_alpha_g_s = matrix(0, nrow = nj, ncol = nSegment * ns)
                     noFading_epsilon_g_s = matrix(0, nrow = nj, ncol = nSegment * ns)
                   }
                 }
               }
-
               if (!is.null(config@exposureControl$initialEligibilityStats)) {
                 n_jk = config@exposureControl$initialEligibilityStats$n_jk
                 alpha_ijk = config@exposureControl$initialEligibilityStats$alpha_ijk
@@ -1357,13 +1309,11 @@ setMethod(f = "Shadow",
             } else {
               selectAtFixedTheta = FALSE
             }
-
             if (setBased) {
               usageMatrix = matrix(FALSE, nrow = nj, ncol = nv)
             } else {
               usageMatrix = matrix(FALSE, nrow = nj, ncol = ni)
             }
-
             getInfo = function() {
               if (selectAtFixedTheta) {
                 info = infoFixedTheta[[j]]
@@ -1382,28 +1332,23 @@ setMethod(f = "Shadow",
               } else {
                 stop("invalid option for config@itemSelection$method")
               }
-
               return(info)
             }
-
             selectItem = function() {
               if (position > 1) {
                 info[output@administeredItemIndex[1:(position - 1)]] = -1
               }
               infoIndex = order(info, decreasing = TRUE)
               itemSelected = infoIndex[1]
-
               if (itemSelected %in% output@administeredItemIndex[1:(position - 1)]) {
                 stop(sprintf("the selected item %i has been already administered", itemSelected))
               }
               return(itemSelected)
             }
-
             selectItemShadowTest = function() {
               nRemaining = testLength - position
               newStimulusSelected = FALSE
               lastStimulusIndex = 0
-
               if (!setBased) {
                 stimulusSelected = NA
                 stimulusFinished = FALSE
@@ -1431,13 +1376,10 @@ setMethod(f = "Shadow",
                   } else {
                     selected = remaining[1]
                   }
-
                   stimulusSelected = optimal$shadowTest$STINDEX[selected]
-
                   if (lastStimulusIndex != stimulusSelected) {
                     newStimulusSelected = TRUE
                   }
-
                   if (nRemaining == 0) {
                     stimulusFinished = TRUE
                   } else {
@@ -1452,7 +1394,6 @@ setMethod(f = "Shadow",
               itemSelected = optimal$shadowTest$INDEX[selected]
               return(list(itemSelected = itemSelected, stimulusSelected = stimulusSelected, stimulusFinished = stimulusFinished, lastStimulusIndex = lastStimulusIndex, newStimulusSelected = newStimulusSelected, nRemaining = nRemaining))
             }
-
             plotAuditTrail = function() {
               par(mar = c(2, 3, 1, 1) + 0.1, mfrow = c(2, 1))
               plot(1:maxNI, seq(minTheta, maxTheta, length = maxNI), main = paste0("Examinee ", j), xlab = "Items Administered", ylab = "Theta", type = "n", las = 1)
@@ -1462,7 +1403,6 @@ setMethod(f = "Shadow",
               } else {
                 abline(h = output@finalThetaEst, lty = 2, col = "red")
               }
-
               item.string = paste(output@administeredItemIndex, collapse = ",")
               text(1, maxTheta, paste0("Items: ", item.string), cex = 0.7, adj = 0)
               text(1, minTheta + 0.3, paste("Theta: ", round(output@finalThetaEst, digits = 2)," SE: ", round(output@finalSeEst, digits = 2)), cex = 0.8, adj = 0)
@@ -1478,22 +1418,18 @@ setMethod(f = "Shadow",
               plot(config@thetaGrid, output@posterior, main = "Final Posterior Distribution", xlab = "Theta", ylab = "Posterior", type = "l", col = "blue", yaxt = "n")
               text(minTheta, max(output@posterior), paste0("Responses: ", resp.string), cex = 0.7, adj = 0)
             }
-
             pb = txtProgressBar(0, nj, char = "|", style = 3)
             ###########################################################################################
             ############## FOR LOOP OVER SIMULEES #####################################################
             ###########################################################################################
-
             for (j in 1:nj) {
               output = new("Shadow.output")
               output@simuleeIndex = j
-
               if (!is.null(trueTheta)) {
                 output@trueTheta = trueTheta[j]
               } else {
                 output@trueTheta = NULL
               }
-
               output@prior = posterior[j, ]
               output@administeredItemIndex = numeric(maxNI)
               output@administeredItemResp = numeric(maxNI)
@@ -1502,7 +1438,6 @@ setMethod(f = "Shadow",
               output@interimSeEst = numeric(maxNI)
               output@administeredStimulusIndex = NaN
               output@shadowTest = vector(mode = "list", length = maxNI)
-
               if (config@interimTheta$method %in% c("EAP")) {
                 currentTheta = initialTheta[j]
               } else if (toupper(config@interimTheta$method) %in% c("EB", "FB")) {
@@ -1513,20 +1448,17 @@ setMethod(f = "Shadow",
                 } else {
                   output@priorPar = config@interimTheta$priorPar
                 }
-
                 output@posteriorSample = rnorm(nSample, mean = output@priorPar[1], sd = output@priorPar[2])
                 output@posteriorSample = output@posteriorSample[seq(from = config@MCMC$burnIn + 1, to = nSample, by = config@MCMC$thin)]
                 currentTheta = mean(output@posteriorSample)
                 currentSE = sd(output@posteriorSample) * config@MCMC$jumpFactor
               }
-
               if (setBased) {
                 output@administeredStimulusIndex = numeric(maxNI)
                 endSet = TRUE
                 finishedStimulusIndex = NULL
                 finishedStimulusItemCount = NULL
               }
-
               if (sta) {
                 output@shadowTestFeasible = logical(testLength)
                 output@shadowTestRefreshed = logical(testLength)
@@ -1539,12 +1471,10 @@ setMethod(f = "Shadow",
                   srhs = NULL
                 }
               }
-
               likelihood = rep(1, nq)
               thetaChange = 10000
               done = FALSE
               position = 0
-
               if (exposureControl %in% c("ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
                 ineligible_i = matrix(0, nSegment, ni)
                 prob_random = matrix(runif(nSegment * ni), nSegment, ni)
@@ -1562,18 +1492,15 @@ setMethod(f = "Shadow",
                     }
                   }
                 }
-
                 if (exposureControl %in% c("ELIGIBILITY")) {
                   xmat = NULL
                   xdir = NULL
                   xrhs = NULL
                 }
               }
-
               while (!done) {
                 position = position + 1
                 info = getInfo()
-
                 if (sta) {
                   if (exposureControl %in% c("ELIGIBILITY", "BIGM")) {
                     if (!is.null(config@exposureControl$firstSegment) && length(config@exposureControl$firstSegment) >= position && all(config@exposureControl$firstSegment >= 1) && all(config@exposureControl$firstSegment <= nSegment)) {
@@ -1589,14 +1516,12 @@ setMethod(f = "Shadow",
                     segmentProb[segmentClassified] = segmentDistribution
                     output@thetaSegmentIndex[position] = which.max(segmentProb)
                   }
-
                   if (position == 1 ||
                       (refreshPolicy == "ALWAYS") ||
                       (refreshPolicy %in% c("POSITION", "INTERVAL") && refreshShadow[position]) ||
                       (refreshPolicy == "THRESHOLD" && abs(thetaChange) > config@refreshPolicy$threshold) ||
                       (refreshPolicy == "INTERVAL-THRESHOLD" && refreshShadow[position] && abs(thetaChange) > config@refreshPolicy$threshold) ||
                       (refreshPolicy %in% c("STIMULUS", "SET", "PASSAGE") && setBased && endSet)) {
-
                     output@shadowTestRefreshed[position] = TRUE
                     if (position > 1) {
                       imat = matrix(0, nrow = position - 1, ncol = nv)
@@ -1605,7 +1530,6 @@ setMethod(f = "Shadow",
                       }
                       idir = rep("==", position - 1)
                       irhs = rep(1, position - 1)
-
                       if (setBased) {
                         if (sum(output@administeredStimulusIndex[1:(position - 1)] > 0) > 0) {
                           administeredStimulusIndex = unique(output@administeredStimulusIndex[1:(position - 1)])
@@ -1616,7 +1540,6 @@ setMethod(f = "Shadow",
                           }
                           sdir = rep("==", length(administeredStimulusIndex))
                           srhs = rep(1, length(administeredStimulusIndex))
-
                           imat = rbind(imat, smat)
                           idir = c(idir, sdir)
                           irhs = c(irhs, srhs)
@@ -1656,21 +1579,18 @@ setMethod(f = "Shadow",
                       if (setBased) {
                         stimulusIneligible = ineligible_s[output@thetaSegmentIndex[position], ]
                       }
-
                       if (position > 1) {
                         itemIneligible[output@administeredItemIndex[1:(position - 1)]] = 0
                         if (setBased) {
                           stimulusIneligible[unique(output@administeredStimulusIndex[1:(position - 1)])] = 0
                         }
                       }
-
                       if (exposureControl %in% c("ELIGIBILITY")) {
                         if (any(itemIneligible == 1)) {
                           xmat = numeric(nv)
                           xmat[1:ni] = itemIneligible
                           xdir = "=="
                           xrhs = 0
-
                           if (setBased) {
                             if (any(stimulusIneligible == 1)) {
                               xmat[(ni + 1):nv] = stimulusIneligible
@@ -1683,7 +1603,6 @@ setMethod(f = "Shadow",
                             }
                           }
                         }
-
                         optimal = STA(Constraints, info, xmat = rbind(xmat, imat), xdir = c(xdir, idir), xrhs = c(xrhs, irhs), maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit, solver = config@MIP$solver)
                         if (toupper(config@MIP$solver) == "SYMPHONY"){
                           is_optimal = names(optimal$status) %in% c("TM_OPTIMAL_SOLUTION_FOUND", "PREP_OPTIMAL_SOLUTION_FOUND")
@@ -1694,7 +1613,6 @@ setMethod(f = "Shadow",
                         if (toupper(config@MIP$solver) == "LPSOLVE"){
                           is_optimal = optimal$status == 0
                         }
-
                         if (!is_optimal){
                           output@shadowTestFeasible[position] = FALSE
                           optimal = STA(Constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit, solver = config@MIP$solver)
@@ -1707,7 +1625,6 @@ setMethod(f = "Shadow",
                         } else {
                           info[itemIneligible == 1] = -1 * maxInfo - 1
                         }
-
                         optimal = STA(Constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit, solver = config@MIP$solver)
                         output@shadowTestFeasible[position] = TRUE
                       }
@@ -1715,7 +1632,6 @@ setMethod(f = "Shadow",
                       optimal = STA(Constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit, solver = config@MIP$solver)
                       output@shadowTestFeasible[position] = TRUE
                     }
-
                     if (toupper(config@MIP$solver) == "SYMPHONY"){
                       is_optimal = names(optimal$status) %in% c("TM_OPTIMAL_SOLUTION_FOUND", "PREP_OPTIMAL_SOLUTION_FOUND")
                     }
@@ -1725,11 +1641,9 @@ setMethod(f = "Shadow",
                     if (toupper(config@MIP$solver) == "LPSOLVE"){
                       is_optimal = optimal$status == 0
                     }
-
                     if (!is_optimal) {
                       stop(sprintf("MIP returned non-zero status: Examinee %i at position %i", j, position))
                     }
-
                     output@solveTime[position] = optimal$solve.time
                   } else {
                     output@shadowTestRefreshed[position] = FALSE
@@ -1741,7 +1655,6 @@ setMethod(f = "Shadow",
                 } else {
                   output@administeredItemIndex[position] = selectItem()
                 }
-
                 if (setBased) {
                   output@administeredStimulusIndex[position] = selection$stimulusSelected
                   if (selection$stimulusFinished) {
@@ -1749,20 +1662,16 @@ setMethod(f = "Shadow",
                   } else {
                     endSet = FALSE
                   }
-
                   if (selection$newStimulusSelected && selection$lastStimulusIndex != 0) {
                     finishedStimulusIndex = c(finishedStimulusIndex, selection$lastStimulusIndex)
                     finishedStimulusItemCount = c(finishedStimulusItemCount, sum(output@administeredStimulusIndex[1:(position - 1)] == selection$lastStimulusIndex))
                   }
                 }
-
                 output@administeredItemResp[position] = Test@Data[j, output@administeredItemIndex[position]]
                 itemsAdministered[j, output@administeredItemIndex[position]] = TRUE
-
                 probResp = Test@Prob[[output@administeredItemIndex[position]]][, output@administeredItemResp[position] + 1]
                 posterior[j, ] = posterior[j, ] * probResp
                 likelihood = likelihood * probResp
-
                 if (toupper(config@interimTheta$method) == "EAP") {
                   output@interimThetaEst[position] = sum(posterior[j, ] * Test@theta) / sum(posterior[j, ])
                   output@interimSeEst[position] = sqrt(sum(posterior[j, ] * (Test@theta - output@interimThetaEst[position])^2) / sum(posterior[j, ]))
@@ -1785,17 +1694,14 @@ setMethod(f = "Shadow",
                 } else {
                   stop("invalid interimTheta@method specified")
                 }
-
                 thetaChange = output@interimThetaEst[position] - currentTheta
                 currentTheta = output@interimThetaEst[position]
                 currentSE = output@interimSeEst[position]
-
                 if (refreshPolicy == "THRESHOLD") {
                   if ((abs(thetaChange) > config@refreshPolicy$threshold) && (position < testLength)) {
                     refreshShadow[position + 1] = TRUE
                   }
                 }
-
                 if (position == maxNI) {
                   done = TRUE
                   output@likelihood = likelihood
@@ -1815,15 +1721,11 @@ setMethod(f = "Shadow",
                 output@finalThetaEst = sum(output@posterior * config@thetaGrid) / sum(output@posterior)
                 output@finalSeEst = sqrt(sum(output@posterior * (config@thetaGrid - output@finalThetaEst)^2)/sum(output@posterior))
               }
-
               usageMatrix[j, output@administeredItemIndex] = TRUE
-
               if (setBased) {
                 usageMatrix[j, ni + unique(output@administeredStimulusIndex)] = TRUE
               }
-
               outputList[[j]] = output
-
               if (itemEligibilityControl) {
                 if (!is.null(trueTheta)) {
                   segmentTrue = findSegment(segmentCut, output@trueTheta)
@@ -1837,10 +1739,8 @@ setMethod(f = "Shadow",
                 estSegmentCount[j] = estSegmentFreq[segmentFinal]
                 segmentVisited = sort(unique(output@thetaSegmentIndex))
                 segmentOther = segmentVisited[segmentVisited != segmentFinal]
-
                 if (exposureControl %in% c("ELIGIBILITY")) {
                   n_jk[segmentFinal] = fadingFactor *  n_jk[segmentFinal] + 1
-
                   alpha_ijk[segmentFinal, ] = fadingFactor * alpha_ijk[segmentFinal, ]
                   alpha_ijk[segmentFinal, output@administeredItemIndex] = alpha_ijk[segmentFinal, output@administeredItemIndex] + 1
                   if (length(segmentOther) > 0) {
@@ -1858,10 +1758,8 @@ setMethod(f = "Shadow",
                     noFading_n_jk[segmentFinal] = noFading_n_jk[segmentFinal] + 1
                     noFading_alpha_ijk[segmentFinal, output@administeredItemIndex] = noFading_alpha_ijk[segmentFinal, output@administeredItemIndex] + 1
                   }
-
                   segmentFeasible = unique(output@thetaSegmentIndex[output@shadowTestFeasible == TRUE])
                   segmentInfeasible = unique(output@thetaSegmentIndex[output@shadowTestFeasible == FALSE])
-
                   phi_jk[segmentFinal] = fadingFactor * phi_jk[segmentFinal]
                   rho_ijk[segmentFinal, ] = fadingFactor * rho_ijk[segmentFinal, ]
                   if (segmentFinal %in% segmentFeasible) {
@@ -1876,9 +1774,7 @@ setMethod(f = "Shadow",
                       noFading_rho_ijk[segmentFinal, ] = noFading_rho_ijk[segmentFinal, ] + 1
                     }
                   }
-
                   nf_ijk = matrix(n_jk / phi_jk, nSegment, ni)
-
                   if (accelerationFactor > 1) {
                     p_alpha_ijk = alpha_ijk / matrix(n_jk, nSegment, ni)
                     p_rho_ijk = rho_ijk / matrix(n_jk, nSegment, ni)
@@ -1897,23 +1793,16 @@ setMethod(f = "Shadow",
                   } else {
                     pe_i = 1 - nf_ijk + maxExposureRate * nf_ijk * rho_ijk / alpha_ijk
                   }
-
                   pe_i[is.na(pe_i) | alpha_ijk == 0] = 1
                   pe_i[pe_i > 1] = 1
-
                   if (setBased) {
-
                     alpha_sjk[segmentFinal, ] = fadingFactor * alpha_sjk[segmentFinal, ]
                     alpha_sjk[segmentFinal, output@administeredStimulusIndex] = alpha_sjk[segmentFinal, output@administeredStimulusIndex] + 1
-
                     eligibleSetInFinalSegment = ineligible_s[segmentFinal, ] == 0
-
                     if (fadingFactor != 1) {
                       noFading_alpha_sjk[segmentFinal, output@administeredStimulusIndex] = noFading_alpha_sjk[segmentFinal, output@administeredStimulusIndex] + 1
                     }
-
                     rho_sjk[segmentFinal, ] = fadingFactor * rho_sjk[segmentFinal, ]
-
                     if (segmentFinal %in% segmentFeasible) {
                       rho_sjk[segmentFinal, eligibleSetInFinalSegment] = rho_sjk[segmentFinal, eligibleSetInFinalSegment] + 1
                       if (fadingFactor != 1) {
@@ -1925,9 +1814,7 @@ setMethod(f = "Shadow",
                         noFading_rho_sjk[segmentFinal, ] = noFading_rho_sjk[segmentFinal, ] + 1
                       }
                     }
-
                     nf_sjk = matrix(n_jk / phi_jk, nSegment, ns)
-
                     if (accelerationFactor > 1) {
                       p_alpha_sjk = alpha_sjk / matrix(n_jk, nSegment, ns)
                       p_rho_sjk = rho_sjk / matrix(n_jk, nSegment, ns)
@@ -1966,13 +1853,11 @@ setMethod(f = "Shadow",
                   }
                   rho_ijk[segmentFinal, ] = fadingFactor * rho_ijk[segmentFinal, ]
                   rho_ijk[segmentFinal, eligibleInFinalSegment] = rho_ijk[segmentFinal, eligibleInFinalSegment] + 1
-
                   if (fadingFactor != 1) {
                     noFading_n_jk[segmentFinal] = noFading_n_jk[segmentFinal] + 1
                     noFading_alpha_ijk[segmentFinal, output@administeredItemIndex] = noFading_alpha_ijk[segmentFinal, output@administeredItemIndex] + 1
                     noFading_rho_ijk[segmentFinal, eligibleInFinalSegment] = noFading_rho_ijk[segmentFinal, eligibleInFinalSegment] + 1
                   }
-
                   if (accelerationFactor > 1) {
                     p_alpha_ijk = alpha_ijk / matrix(n_jk, nSegment, ni)
                     p_rho_ijk = rho_ijk / matrix(n_jk, nSegment, ni)
@@ -1993,21 +1878,16 @@ setMethod(f = "Shadow",
                   }
                   pe_i[is.na(pe_i) | alpha_ijk == 0] = 1
                   pe_i[pe_i > 1] = 1
-
                   if (setBased) {
                     alpha_sjk[segmentFinal, ] = fadingFactor * alpha_sjk[segmentFinal, ]
                     alpha_sjk[segmentFinal, output@administeredStimulusIndex] = alpha_sjk[segmentFinal, output@administeredStimulusIndex] + 1
-
                     eligibleSetInFinalSegment = ineligible_s[segmentFinal, ] == 0
-
                     rho_sjk[segmentFinal, ] = fadingFactor * rho_sjk[segmentFinal ]
                     rho_sjk[segmentFinal, eligibleSetInFinalSegment] = rho_sjk[segmentFinal, eligibleSetInFinalSegment] + 1
-
                     if (fadingFactor != 1) {
                       noFading_alpha_sjk[segmentFinal, output@administeredStimulusIndex] = noFading_alpha_sjk[segmentFinal, output@administeredStimulusIndex] + 1
                       noFading_rho_sjk[segmentFinal, eligibleSetInFinalSegment] = noFading_rho_sjk[segmentFinal, eligibleSetInFinalSegment] + 1
                     }
-
                     if (accelerationFactor > 1) {
                       p_alpha_sjk = alpha_sjk / matrix(n_jk, nSegment, ns)
                       p_rho_sjk = rho_sjk / matrix(n_jk, nSegment, ns)
@@ -2026,7 +1906,6 @@ setMethod(f = "Shadow",
                     } else {
                       pe_s = maxExposureRate * rho_sjk / alpha_sjk
                     }
-
                     pe_s[is.na(pe_s) | alpha_sjk == 0] = 1
                     pe_s[pe_s > 1] = 1
                   }
@@ -2037,7 +1916,6 @@ setMethod(f = "Shadow",
                   segmentClassified = as.numeric(names(segmentDistribution))
                   segmentProb = numeric(nSegment)
                   segmentProb[segmentClassified] = segmentDistribution
-
                   n_jk = fadingFactor * n_jk + segmentProb
                   rho_ijk = fadingFactor * rho_ijk
                   alpha_ijk = fadingFactor * alpha_ijk
@@ -2053,12 +1931,10 @@ setMethod(f = "Shadow",
                       }
                     }
                   }
-
                   for (segment in 1:nSegment) {
                     eligible = ineligible_i[segment, ] == 0
                     rho_ijk[segment, eligible] = rho_ijk[segment, eligible] + segmentProb[segment]
                   }
-
                   if (fadingFactor != 1) {
                     noFading_n_jk = noFading_n_jk + segmentProb
                     noFading_alpha_ijk[, output@administeredItemIndex] = noFading_alpha_ijk[, output@administeredItemIndex] + segmentProb
@@ -2067,7 +1943,6 @@ setMethod(f = "Shadow",
                       noFading_rho_ijk[segment, eligible] = noFading_rho_ijk[segment, eligible] + segmentProb[segment]
                     }
                   }
-
                   if (accelerationFactor > 1) {
                     p_alpha_ijk = alpha_ijk / matrix(n_jk, nSegment, ni)
                     p_rho_ijk = rho_ijk / matrix(n_jk, nSegment, ni)
@@ -2086,26 +1961,21 @@ setMethod(f = "Shadow",
                   } else {
                     pe_i = maxExposureRate * rho_ijk / alpha_ijk
                   }
-
                   pe_i[is.na(pe_i) | alpha_ijk == 0] = 1
                   pe_i[pe_i > 1] = 1
-
                   if (setBased) {
                     alpha_sjk = fadingFactor * alpha_sjk
                     rho_sjk = fadingFactor * rho_sjk
                     alpha_sjk[, output@administeredStimulusIndex] = alpha_sjk[, output@administeredStimulusIndex] + segmentProb
-
                     for (segment in 1:nSegment) {
                       rho_sjk[segment, ineligible_s[segment, ] == 0] = rho_sjk[segment, ineligible_s[segment, ] == 0] + segmentProb[segment]
                     }
-
                     if (fadingFactor != 1) {
                       noFading_alpha_sjk[, output@administeredStimulusIndex] = noFading_alpha_sjk[, output@administeredStimulusIndex] + segmentProb
                       for (segment in 1:nSegment) {
                         noFading_rho_sjk[segment, ineligible_s[segment, ] == 0] = noFading_rho_sjk[segment, ineligible_s[segment, ] == 0] + segmentProb[k]
                       }
                     }
-
                     if (accelerationFactor > 1) {
                       p_alpha_sjk = alpha_sjk / matrix(n_jk, nSegment, ns)
                       p_rho_sjk = rho_sjk / matrix(n_jk, nSegment, ns)
@@ -2128,12 +1998,10 @@ setMethod(f = "Shadow",
                     pe_s[pe_s > 1] = 1
                   }
                 }
-
                 if (config@exposureControl$diagnosticStats) {
                   for (g in 1:nSegment) {
                     alpha_g_i[j, (g - 1) * ni + 1:ni] = alpha_ijk[g, ]
                     epsilon_g_i[j, (g - 1) * ni + 1:ni] = rho_ijk[g, ]
-
                     if (setBased) {
                       alpha_g_s[j, (g - 1) * ns + 1:ns] = alpha_sjk[g, ]
                       epsilon_g_s[j, (g - 1) * ns + 1:ns] = rho_sjk[g, ]
@@ -2143,7 +2011,6 @@ setMethod(f = "Shadow",
                     for (g in 1:nSegment) {
                       noFading_alpha_g_i[j, (g - 1) * ni + 1:ni] = noFading_alpha_ijk[g, ]
                       noFading_epsilon_g_i[j, (g - 1) * ni + 1:ni] = noFading_rho_ijk[g, ]
-
                       if (setBased) {
                         noFading_alpha_g_s[j, (g - 1) * ns + 1:ns] = noFading_alpha_sjk[g, ]
                         noFading_epsilon_g_s[j, (g - 1) * ns + 1:ns] = noFading_rho_sjk[g, ]
@@ -2155,7 +2022,6 @@ setMethod(f = "Shadow",
               if (config@auditTrail) {
                 plotAuditTrail()
               }
-
               if (!is.null(session)) {
                 shinyWidgets::updateProgressBar(session = session, id = "pb", value = j, total = nj)
               } else {
@@ -2164,16 +2030,12 @@ setMethod(f = "Shadow",
             }
             finalThetaEst = unlist(lapply(1:nj, function(j) outputList[[j]]@finalThetaEst))
             finalSeEst = unlist(lapply(1:nj, function(j) outputList[[j]]@finalSeEst))
-
             exposureRate = colSums(usageMatrix) / nj
-
             eligibilityStats = NULL
             checkEligibilityStats = NULL
             noFadingEligibilityStats = NULL
-
             if (itemEligibilityControl) {
               eligibilityStats = list(pe_i = pe_i, n_jk = n_jk, alpha_ijk = alpha_ijk, phi_jk = phi_jk, rho_ijk = rho_ijk, pe_s = pe_s, alpha_sjk = alpha_sjk, rho_sjk = rho_sjk)
-
               if (config@exposureControl$diagnosticStats) {
                 checkEligibilityStats = as.data.frame(cbind(1:nj, trueTheta, findSegment(segmentCut, trueTheta), trueSegmentCount, alpha_g_i, epsilon_g_i), row.names = NULL)
                 names(checkEligibilityStats) = c("Examinee", "TrueTheta", "TrueSegment", "TrueSegmentCount", paste("a", "g", rep(1:nSegment, rep(ni, nSegment)), "i", rep(1:ni, nSegment), sep = "_"), paste("e", "g", rep(1:nSegment, rep(ni, nSegment)), "i", rep(1:ni, nSegment), sep = "_"))
@@ -2193,7 +2055,6 @@ setMethod(f = "Shadow",
                 }
               }
             }
-
             if (sta) {
               freqInfeasible = table(unlist(lapply(1:nj, function(j) sum(!outputList[[j]]@shadowTestFeasible))))
             } else {
@@ -2248,13 +2109,10 @@ addTrans = function(color,trans)
 #' @param maxRate A nice parameter
 #' @param discardFirst A nice parameter
 plotEligibilityStats = function(config, object = NULL, objectNoFading = NULL, file = NULL, fileNoFading = NULL, segment = 1, items = c(1), PDF = NULL, maxRate = 0.25, discardFirst = NULL) {
-
   fadingFactor = config@exposureControl$fadingFactor
-
   if (!is.null(PDF)) {
     pdf(file = PDF)
   }
-
   if (is.null(object) && is.null(file)) {
     stop("Both object and file are NULL")
   } else if (!is.null(object)) {
@@ -2262,15 +2120,12 @@ plotEligibilityStats = function(config, object = NULL, objectNoFading = NULL, fi
   } else if (!is.null(file)) {
     eligibilityStats = read.csv(file, header = TRUE, sep = ",")
   }
-
   eligibilityStatsNoFading = NULL
-
   if (!is.null(objectNoFading)) {
     eligibilityStatsNoFading = objectNoFading
   } else if (!is.null(fileNoFading)) {
     eligibilityStatsNoFading = read.csv(fileNoFading, header = TRUE, sep = ",")
   }
-
   eligibilityStatsSegment = split(eligibilityStats, eligibilityStats$TrueSegment)[[segment[1]]]
   if (!is.null(eligibilityStatsNoFading)) {
     eligibilityStatsSegmentNoFading = split(eligibilityStatsNoFading, eligibilityStatsNoFading$TrueSegment)[[segment[1]]]
@@ -2281,16 +2136,13 @@ plotEligibilityStats = function(config, object = NULL, objectNoFading = NULL, fi
       eligibilityStatsSegmentNoFading = eligibilityStatsSegmentNoFading[eligibilityStatsSegmentNoFading$TrueSegmentCount > discardFirst, ]
     }
   }
-
   examinee = eligibilityStatsSegment$TrueSegmentCount
   nExaminee = length(examinee)
   fadingExaminee = examinee
   for (j in 2:length(examinee)) {
     fadingExaminee[j] = fadingExaminee[j - 1] * fadingFactor + 1
   }
-
   for (i in items) {
-
     alpha = eligibilityStatsSegment[[paste("a_g", segment, "i", i, sep = "_")]]
     epsilon = eligibilityStatsSegment[[paste("e_g", segment, "i", i, sep = "_")]]
     p_alpha = alpha / fadingExaminee
@@ -2302,19 +2154,16 @@ plotEligibilityStats = function(config, object = NULL, objectNoFading = NULL, fi
         p_eligibility[j] = min(epsilon[j - 1] * maxRate / alpha[j - 1], 1)
       }
     }
-
     if (!is.null(eligibilityStatsNoFading)) {
       alpha_noFading = eligibilityStatsSegmentNoFading[[paste("a_g", segment, "i", i, sep = "_")]]
       epsilon_noFading = eligibilityStatsSegmentNoFading[[paste("e_g", segment, "i", i, sep = "_")]]
       p_alpha_noFading = alpha_noFading / examinee
       p_epsilon_noFading = epsilon_noFading / examinee
     }
-
     plot(examinee, p_alpha, main = paste("Segment", segment, "- Item", i), type = "n", ylim = c(0, 1), xlab = "Examinees", ylab = "Rate")
     lines(examinee, p_alpha, col = "red", lty = 1, lwd = 3)
     lines(examinee, p_epsilon, col = "blue", lty = 2, lwd = 3)
     lines(examinee, p_eligibility, col = "purple", lty = 3, lwd = 3)
-
     if (is.null(eligibilityStatsNoFading)) {
       legend("topright", c("alpha", "epsilon", "Pr{eligible}"), lty = c(1, 2, 3), col = c("red", "blue", "purple"), lwd = c(2, 2, 2), bg = "white")
     } else {
@@ -2324,7 +2173,6 @@ plotEligibilityStats = function(config, object = NULL, objectNoFading = NULL, fi
     }
     abline(h = maxRate, col = "gray")
   }
-
   if (!is.null(PDF)) {
     dev.off()
   }
@@ -2359,7 +2207,6 @@ RE = function(RMSE.foc, RMSE.ref) {
   if (length(RMSE.foc) != length(RMSE.ref)) {
     stop("length(x) and length(y) are not equal")
   }
-
   RE = RMSE.ref^2 / RMSE.foc^2
   return(RE)
 }
@@ -2374,25 +2221,20 @@ RE = function(RMSE.foc, RMSE.ref) {
 checkConstraints = function(constraints, usageMatrix, trueTheta = NULL) {
   Constraints = constraints$Constraints
   ListConstraints = constraints$ListConstraints
-
   nc = nrow(Constraints)
   nj = nrow(usageMatrix)
   ni = ncol(usageMatrix)
-
   MET = matrix(FALSE, nrow = nj, ncol = nc)
   COUNT = matrix(NA, nrow = nj, ncol = nc)
-
   if (ni != constraints$ni) {
     stop("unequal number of items in constraints and usageMatrix ")
   }
-
   byTheta = FALSE
   MEAN = rep(NA, nc)
   SD = rep(NA, nc)
   MIN = rep(NA, nc)
   MAX = rep(NA, nc)
   HIT = rep(NA, nc)
-
   if (!is.null(trueTheta)) {
     if (length(trueTheta) != nj) {
       stop("length of trueTheta is not equal to nrow of usageMatrix")
@@ -2410,24 +2252,19 @@ checkConstraints = function(constraints, usageMatrix, trueTheta = NULL) {
     groupMAX = NULL
     groupHIT = NULL
   }
-
   nEnemy = sum(Constraints$TYPE == "ENEMY")
-
   if (nEnemy > 0) {
     enemyIndex = which(Constraints$TYPE == "ENEMY")
     Constraints$LB[enemyIndex] = 0
     Constraints$UB[enemyIndex] = 1
   }
-
   numberIndex = which(Constraints$TYPE == "NUMBER")
-
   for (index in 1:nc) {
     if (Constraints$WHAT[index] == "ITEM") {
       if (Constraints$TYPE[index] %in% c("NUMBER", "ENEMY")) {
         items = which(ListConstraints[[index]]@mat[1, ] == 1)
         COUNT[, index] = rowSums(usageMatrix[, items])
         MET[, index] =  COUNT[, index] >= Constraints$LB[index] & COUNT[, index] <= Constraints$UB[index]
-
         if (byTheta) {
           groupMEAN[index, ] = round(tapply(COUNT[, index], trueTheta, mean), 3)
           groupSD[index, ] = round(tapply(COUNT[, index], trueTheta, sd), 3)
@@ -2435,7 +2272,6 @@ checkConstraints = function(constraints, usageMatrix, trueTheta = NULL) {
           groupMAX[index, ] = tapply(COUNT[, index], trueTheta, max)
           groupHIT[index, ] = round(tapply(MET[, index], trueTheta, mean), 3)
         }
-
         MEAN[index] = round(mean(COUNT[, index]), 2)
         SD[index] = round(sd(COUNT[, index]), 2)
         MIN[index] = min(COUNT[, index])
@@ -2444,12 +2280,10 @@ checkConstraints = function(constraints, usageMatrix, trueTheta = NULL) {
       }
     }
   }
-
   LD = NULL
   if (nEnemy > 0) {
     LD = rowSums(COUNT[, enemyIndex] > 1)
   }
-
   Check = data.frame(Constraints, MEAN = MEAN, SD = SD, MIN = MIN, MAX = MAX, HIT = HIT)
   return(list(Check = Check[Constraints$TYPE == "NUMBER", ], LD = LD, groupMEAN = groupMEAN[numberIndex, ], groupSD = groupSD[numberIndex, ], groupMIN = groupMIN[numberIndex, ], groupMAX = groupMAX[numberIndex, ], groupHIT = groupHIT[numberIndex, ]))
 }
@@ -2514,14 +2348,11 @@ plotExposureRateBySegment = function(object, config, maxRate = 0.25, pdfFile = N
   estTheta = object$finalThetaEst
   nj = length(trueTheta)
   ni = ncol(object$usageMatrix)
-
   segmentCut = config@exposureControl$segmentCut
-
   nSegment = config@exposureControl$nSegment
   cutLower = segmentCut[1:nSegment]
   cutUpper = segmentCut[2:(nSegment + 1)]
   segmentLabel = character(nSegment)
-
   for (k in 1:nSegment) {
     if (k < nSegment ) {
       segmentLabel[k] = paste0("(", round(cutLower[k], 1), ",", round(cutUpper[k], 1), "]")
@@ -2529,11 +2360,9 @@ plotExposureRateBySegment = function(object, config, maxRate = 0.25, pdfFile = N
       segmentLabel[k] = paste0("(", round(cutLower[k], 1), ",", round(cutUpper[k], 1), ")")
     }
   }
-
   exposureRate = colSums(object$usageMatrix) / nj
   exposureRateSegment = vector("list", nSegment)
   names(exposureRateSegment) = segmentLabel
-
   for (k in 1:nSegment) {
     if (object$eligibilityStats$n_jk[k] == 0) {
       exposureRateSegment[[k]] = numeric(ni)
@@ -2685,7 +2514,6 @@ plotExposureRateFinal = function(object, config =NULL, maxRate = 0.25, theta = "
   trueTheta = object$trueTheta
   estTheta = object$finalThetaEst
   nj = length(trueTheta)
-
   if (burnIn > 0) {
     if (toupper(theta) == "TRUE") {
       retained = object$trueSegmentCount > burnIn
@@ -2697,25 +2525,19 @@ plotExposureRateFinal = function(object, config =NULL, maxRate = 0.25, theta = "
   } else {
     retained = rep(TRUE, nj)
   }
-
   nRetained = sum(retained)
   ni = ncol(object$usageMatrix)
-
   if (is.null(config)) {
     config = object$config
   }
-
   if (is.null(segmentCut)) {
     segmentCut = config@exposureControl$segmentCut
   }
-
   nSegment = length(segmentCut) - 1
   cutLower = segmentCut[1:nSegment]
   cutUpper = segmentCut[2:(nSegment + 1)]
   segmentLabel = character(nSegment)
-
   thetaSegmentIndex = numeric(sum(retained))
-
   if (toupper(theta) == "TRUE") {
     thetaSegmentIndex = findSegment(segmentCut, trueTheta[retained])
   } else {
@@ -2725,7 +2547,6 @@ plotExposureRateFinal = function(object, config =NULL, maxRate = 0.25, theta = "
   segmentDist = table(thetaSegmentIndex)
   segmentN[as.numeric(names(segmentDist))] = segmentDist
   segmentIndexTable = matrix(NA, nRetained, object$Constraints$testLength)
-
   for (k in 1:nSegment) {
     if (k < nSegment ) {
       segmentLabel[k] = paste0("(", cutLower[k], ",", cutUpper[k], "]")
@@ -2733,10 +2554,8 @@ plotExposureRateFinal = function(object, config =NULL, maxRate = 0.25, theta = "
       segmentLabel[k] = paste0("(", cutLower[k], ",", cutUpper[k], ")")
     }
   }
-
   usageMatrix = object$usageMatrix[retained, ]
   usageMatrixFinal = object$usageMatrix[retained, ]
-
   idx = 0
   for (j in 1:nj) {
     if (retained[j]) {
@@ -2745,9 +2564,7 @@ plotExposureRateFinal = function(object, config =NULL, maxRate = 0.25, theta = "
       segmentIndexTable[idx, ] = object$output[[j]]@thetaSegmentIndex
     }
   }
-
   segmentFreq = matrix(0, nSegment, nSegment)
-
   for (i in 1:object$Constraints$testLength) {
     segmentTable = tapply(segmentIndexTable[, i], thetaSegmentIndex, table)
     for (s in 1:nSegment) {
@@ -2756,15 +2573,12 @@ plotExposureRateFinal = function(object, config =NULL, maxRate = 0.25, theta = "
   }
   segmentRate = segmentFreq / segmentN
   segmentRateTable = data.frame(segmentClass = factor(rep(segmentLabel, rep(nSegment, nSegment)), levels = segmentLabel), segment = rep(1:nSegment, nSegment), avgVisit = matrix(t(segmentRate), nrow = nSegment^2, ncol = 1))
-
   exposureRate = colSums(usageMatrix) / nRetained
   exposureRateFinal = colSums(usageMatrixFinal) / nRetained
-
   exposureRateSegment = vector("list", nSegment)
   exposureRateSegmentFinal = vector("list", nSegment)
   names(exposureRateSegment) = segmentLabel
   names(exposureRateSegmentFinal) = segmentLabel
-
   for (k in 1:nSegment) {
     if (segmentN[k] > 2) {
       exposureRateSegment[[k]] = colMeans(usageMatrix[thetaSegmentIndex == k, ])
@@ -2775,7 +2589,6 @@ plotExposureRateFinal = function(object, config =NULL, maxRate = 0.25, theta = "
       exposureRateSegment[[k]][is.nan(exposureRateSegment[[k]])] = 0
     }
   }
-
   for (k in 1:nSegment) {
     if (segmentN[k] > 2) {
       exposureRateSegmentFinal[[k]] = colMeans(usageMatrixFinal[thetaSegmentIndex == k, ])
@@ -2786,7 +2599,6 @@ plotExposureRateFinal = function(object, config =NULL, maxRate = 0.25, theta = "
       exposureRateSegmentFinal[[k]][is.nan(exposureRateSegmentFinal[[k]])] = 0
     }
   }
-
   plotER = function(ni, exposureRate, exposureRateFinal, maxRate = maxRate, title = NULL) {
     ER.order = order(exposureRate, decreasing = TRUE)
     exposureRateOrdered = exposureRate[ER.order]
@@ -2841,28 +2653,21 @@ plotExposureRateFinalFlag = function(object, pool, theta = seq(-3, 3, .1), flagC
   segmentCut[1] = min(theta)
   segmentCut[length(segmentCut)] = max(theta)
   segmentLabel = object$segmentLabel
-
   itemsFlaggedSegment = lapply(seq_len(object$nSegment), function(j) which(object$exposureRateSegment[[j]] > flagCriterior))
 
   if (!is.null(pdfFile)) {
     pdf(file = pdfFile, width = width, height = height)
   }
-
   par(mfrow = mfrow)
-
   for (k in 1:nSegment) {
     thetaSegmentRange = which(theta >= segmentCut[k] & theta <= segmentCut[k + 1])
     thetaSegmentRangeOutside = which(theta <= segmentCut[k] | theta >= segmentCut[k + 1])
-
     plot(theta, Info[, 1], xlab = "Theta", ylab = "Info", main = segmentLabel[k], type = "n", ylim = c(0, max(Info)))
-
     for (i in 1:ni) {
       lines(theta, Info[, i], col = "light grey", lwd = 0.5)
       lines(theta[thetaSegmentRange], Info[thetaSegmentRange, i], col = "grey", lwd = 1.0)
     }
-
     itemsFlagged = itemsFlaggedSegment[[k]]
-
     if (length(itemsFlagged) > 0) {
       for (i in itemsFlagged) {
         lines(theta[thetaSegmentRange], Info[thetaSegmentRange, i], col = color, lwd = 2)
@@ -2876,7 +2681,6 @@ plotExposureRateFinalFlag = function(object, pool, theta = seq(-3, 3, .1), flagC
   if (!is.null(pdfFile)) {
     dev.off()
   }
-
   return(itemsFlaggedSegment)
 }
 
@@ -2907,15 +2711,11 @@ plotInfo = function(object, theta, infoType = "FISHER", select = NULL, pdfFile =
   if (!is.null(pdfFile)) {
     pdf(file = pdfFile, width = width, height = height)
   }
-
   par(mfrow = mfrow)
-
   items = 1:object@ni
-
   if (!is.null(select) && all(select %in% items)) {
     items = select
   }
-
   for (i in items) {
     plot(theta, Info[, i], xlab = "Theta", ylab = "Info", main = object@ID[i], type = "l", col = color, ylim = c(0, max(Info)))
   }
@@ -2948,19 +2748,14 @@ plotInfoOverlay = function(object, theta, infoType = "FISHER", select = NULL, pd
   if (!is.null(pdfFile)) {
     pdf(file = pdfFile, width = width, height = height)
   }
-
   items = 1:object@ni
-
   if (!is.null(select) && all(select %in% items)) {
     items = select
   }
-
   plot(theta, Info[, 1], xlab = "Theta", ylab = "Info", main = "", type = "n", ylim = c(0, max(Info)))
-
   for (i in 1:object@ni) {
     lines(theta, Info[, i], col = "light grey", lwd = 0.5)
   }
-
   for (i in items) {
     lines(theta, Info[, i], col = color, lwd = 2)
   }
@@ -3015,9 +2810,7 @@ logitHyperPars = function(mean, sd) {
 #' @export
 iparPosteriorSample = function(pool, nSample = 500) {
   requireNamespace("logitnorm")
-
   iparList = vector(mode = "list", length = pool@ni)
-
   for (i in 1:pool@ni) {
     if (pool@model[i] == "item.1pl") {
       iparList[[i]] = matrix(NA, nrow = nSample, ncol = 1)
@@ -3078,12 +2871,10 @@ maxinfo_plot = function(pool, const){
 
   continuum = seq(-3, 3, .5)
   max.info = min.info = continuum * 0
-
   for(i in 1:length(continuum)){
     max.info[i] = sum(sort(calcFisher(pool, continuum[i]), T)[1:n.items])
     min.info[i] = sum(sort(calcFisher(pool, continuum[i]), F)[1:n.items])
   }
-
   pdf(NULL, bg = 'white')
   dev.control(displaylist="enable")
 
@@ -3092,10 +2883,8 @@ maxinfo_plot = function(pool, const){
   lines(continuum, max.info, lty = 2, lwd = 2)
   lines(continuum, min.info, lty = 2, lwd = 2)
   grid()
-
   p = recordPlot()
   plot.new()
   dev.off()
-
   return(p)
 }

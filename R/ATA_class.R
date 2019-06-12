@@ -27,7 +27,6 @@ setClass("ATA.config",
                stop("itemSelection$targetLocation, itemSelection$targetWeight have different lengths: should have same lengths")
              }
            }
-
            if (toupper(object@itemSelection$method) != "MAXINFO"){
              target_lengths = unique(c(
                length(object@itemSelection$targetLocation),
@@ -38,7 +37,6 @@ setClass("ATA.config",
                stop("itemSelection$targetLocation, itemSelection$targetValue, itemSelection$targetWeight have different lengths: should have same lengths")
              }
            }
-
            if (toupper(object@itemSelection$infoType) != "FISHER") stop("invalid option for itemSelection$infoType: accepts Fisher")
 
            if (!toupper(object@MIP$solver) %in% c("SYMPHONY", "GUROBI", "GLPK", "LPSOLVE")) stop("invalid option for MIP$solver: accepts Symphony, Gurobi, GLPK, LpSolve")
@@ -89,10 +87,8 @@ setClass("ATA.config",
 #' @export
 config.ATA = function(itemSelection = NULL, MIP = NULL){
   conf = new("ATA.config")
-
   arg.names = c("itemSelection", "MIP")
   obj.names = c()
-
   for (arg in arg.names){
     if (!is.null(eval(parse(text = arg)))){
       eval(parse(text = paste0("obj.names = names(conf@", arg, ")")))
@@ -106,7 +102,6 @@ config.ATA = function(itemSelection = NULL, MIP = NULL){
       }
     }
   }
-
   v = validObject(conf)
   if (v) return(conf)
 }
