@@ -2,32 +2,32 @@
 % Please edit documentation in R/RcppExports.R
 \name{theta_FB_single}
 \alias{theta_FB_single}
-\title{theta_FB_single}
+\title{Calculate a fully Bayesian estimate of theta for a single item}
 \usage{
 theta_FB_single(nx, theta_init, theta_prop, item_mcmc, item_init, resp,
   ncat, model, prior, prior_parm)
 }
 \arguments{
-\item{nx}{A nice parameter}
+\item{nx}{a number of MCMC draws}
 
-\item{theta_init}{A nice parameter}
+\item{theta_init}{an initial theta estimate}
 
-\item{theta_prop}{A nice parameter}
+\item{theta_prop}{SD of the proposal distribution}
 
-\item{item_mcmc}{A nice parameter}
+\item{item_mcmc}{a matrix of sampled item parameters for one item}
 
-\item{item_init}{A nice parameter}
+\item{item_init}{a matrix of item parameter estimates (one row per item)}
 
-\item{resp}{A nice parameter}
+\item{resp}{a numeric vector of item responses}
 
-\item{ncat}{A nice parameter}
+\item{ncat}{a numeric vector of the number of response categories by item}
 
-\item{model}{A nice parameter}
+\item{model}{a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)}
 
-\item{prior}{A nice parameter}
+\item{prior}{prior distribution (1: normal, 2: uniform)}
 
-\item{prior_parm}{A nice parameter}
+\item{prior_parm}{a numeric vector of hyper parameters for the prior distribution, c(mu,sigma) or c(ll,ul)}
 }
 \description{
-theta_FB_single
+Calculate a fully Bayesian estimate of theta for a single item
 }

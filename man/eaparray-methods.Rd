@@ -24,7 +24,7 @@ EAP(object, prior, select = NULL, resetPrior = FALSE)
 \item{resetPrior}{A nice parameter}
 }
 \description{
-EAP
+Generate expected a posteriori estimates of theta
 
-EAP
+Genereate expected a posteriori estimates of theta
 }

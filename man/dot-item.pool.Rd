@@ -7,10 +7,10 @@
 \method{-}{item.pool}(pool1, pool2)
 }
 \arguments{
-\item{pool1}{A nice parameter}
+\item{pool1}{An \code{\linkS4class{item.pool}} object}
 
-\item{pool2}{A nice parameter}
+\item{pool2}{An \code{\linkS4class{item.pool}} object}
 }
 \description{
--.item.pool
+Subtract the second from the first if the two item.pool objects overlap
 }

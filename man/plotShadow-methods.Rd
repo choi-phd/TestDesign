@@ -25,5 +25,5 @@ plotShadow(object, Constraints, sortByDifficulty = FALSE, PDF = NULL)
 \item{PDF}{If supplied a filename, save as a PDF file.}
 }
 \description{
-Draw a chart of shadow tests. The index of a column represents the position of item administration process, and each column represents the item pool.
+Draw a chart of shadow tests constructed for each simulee. The index of a column represents the position of item administration process, and each column represents the item pool.
 }
