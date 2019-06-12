@@ -7,10 +7,10 @@
 RE(RMSE.foc, RMSE.ref)
 }
 \arguments{
-\item{RMSE.foc}{A nice parameter}
+\item{RMSE.foc}{A vector of RMSE values for a focal group}
 
-\item{RMSE.ref}{A nice parameter}
+\item{RMSE.ref}{A vector of RMSE values for a reference group}
 }
 \description{
-RE
+Calculate Relative Errors
 }

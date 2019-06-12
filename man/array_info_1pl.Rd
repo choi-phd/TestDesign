@@ -7,7 +7,7 @@
 array_info_1pl(x, b)
 }
 \arguments{
-\item{x}{a vector of theta value}
+\item{x}{a vector of theta values}
 
 \item{b}{a length-one numeric vector for the difficulty parameter}
 }

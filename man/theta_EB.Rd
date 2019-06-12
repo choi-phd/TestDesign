@@ -2,30 +2,30 @@
 % Please edit documentation in R/RcppExports.R
 \name{theta_EB}
 \alias{theta_EB}
-\title{theta_EB}
+\title{Calculate an empirical Bayes estimate of theta for one examinee}
 \usage{
 theta_EB(nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior,
   prior_parm)
 }
 \arguments{
-\item{nx}{A nice parameter}
+\item{nx}{a number of MCMC draws}
 
-\item{theta_init}{A nice parameter}
+\item{theta_init}{an initial theta estimate}
 
-\item{theta_prop}{A nice parameter}
+\item{theta_prop}{SD of the proposal distribution}
 
-\item{item_parm}{A nice parameter}
+\item{item_parm}{a numeric matrix of item parameters}
 
-\item{resp}{A nice parameter}
+\item{resp}{a numeric vector of item responses}
 
-\item{ncat}{A nice parameter}
+\item{ncat}{a numeric vector of the number of response categories by item}
 
-\item{model}{A nice parameter}
+\item{model}{a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)}
 
-\item{prior}{A nice parameter}
+\item{prior}{prior distribution (1: normal, 2: uniform)}
 
-\item{prior_parm}{A nice parameter}
+\item{prior_parm}{a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)}
 }
 \description{
-theta_EB
+Calculate an empirical Bayes estimate of theta for one examinee
 }

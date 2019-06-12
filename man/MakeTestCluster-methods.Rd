@@ -16,14 +16,14 @@ MakeTestCluster(object, theta, trueTheta)
   trueTheta)
 }
 \arguments{
-\item{object}{A nice parameter}
+\item{object}{An \code{\linkS4class{pool.cluster}} object}
 
-\item{theta}{A nice parameter}
+\item{theta}{A grid of theta values}
 
-\item{trueTheta}{A nice parameter}
+\item{trueTheta}{An optional vector of true theta values to simulate response data}
 }
 \description{
-MakeTestCluster
+Generate an \code{\linkS4class{test.cluster}} object
 
-MakeTestCluster
+Generate a \code{\linkS4class{test.cluster}} object
 }

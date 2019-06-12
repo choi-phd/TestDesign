@@ -13,18 +13,18 @@ MLE(object, startTheta = NULL, rangeTheta = c(-4, 4), maxIter = 100,
   maxIter = 100, crit = 0.001, select = NULL)
 }
 \arguments{
-\item{object}{A nice parameter}
+\item{object}{A \code{\linkS4class{test}} object}
 
-\item{startTheta}{A nice parameter}
+\item{startTheta}{An optional vector of start theta values}
 
-\item{rangeTheta}{A nice parameter}
+\item{rangeTheta}{Lower and upper limit of theta values}
 
-\item{maxIter}{A nice parameter}
+\item{maxIter}{Maximum number of iterations}
 
-\item{crit}{A nice parameter}
+\item{crit}{Convergence criterion}
 
-\item{select}{A nice parameter}
+\item{select}{A vector of item indexes to subset}
 }
 \description{
-MLE
+Generate maximum likelihood estimates of theta
 }

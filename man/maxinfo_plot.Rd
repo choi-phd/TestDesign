@@ -7,7 +7,7 @@
 maxinfo_plot(pool, const)
 }
 \arguments{
-\item{pool}{A nice parameter}
+\item{pool}{An \code{\linkS4class{item.pool}} object}
 
 \item{const}{A nice parameter}
 }

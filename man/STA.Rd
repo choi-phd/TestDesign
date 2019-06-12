@@ -15,11 +15,11 @@ STA(Constraints, objective, solver = "Symphony", xmat = NULL,
 
 \item{solver}{The type of solver. Accepts \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.}
 
-\item{xmat}{A nice parameter}
+\item{xmat}{A matrix of additional constraint coefficients for any previously administered items.}
 
-\item{xdir}{A nice parameter}
+\item{xdir}{A character vector with the directions for the constraints in \code{xmat}.}
 
-\item{xrhs}{A vector of right-side values.}
+\item{xrhs}{A vector of right-side values for the constraints in \code{xmat}.}
 
 \item{maximize}{If \code{TRUE}, treat as a maximization problem. Otherwise treat as a minimization problem.}
 
@@ -36,7 +36,7 @@ STA(Constraints, objective, solver = "Symphony", xmat = NULL,
 \item{...}{Only used when \code{solver} is \code{SYMPHONY}. Additional parameters to be passed onto the solver.}
 }
 \value{
-An output
+A list containing the optimal solution and pertinent diagnostics.
 }
 \description{
 Shadow Test Approach to CAT.

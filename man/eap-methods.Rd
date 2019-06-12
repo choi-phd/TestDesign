@@ -22,5 +22,5 @@ eap(object, theta, prior, resp, select = NULL)
 \item{select}{A nice parameter}
 }
 \description{
-eap
+Generate expected a posteriori estimates of theta
 }

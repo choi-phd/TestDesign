@@ -2,21 +2,21 @@
 % Please edit documentation in R/RcppExports.R
 \name{calc_likelihood_function}
 \alias{calc_likelihood_function}
-\title{calc_likelihood_function}
+\title{Calculate a likelihood function of theta}
 \usage{
 calc_likelihood_function(theta_grid, item_parm, resp, ncat, model)
 }
 \arguments{
-\item{theta_grid}{A nice parameter}
+\item{theta_grid}{an equi-spaced grid of theta values}
 
-\item{item_parm}{A nice parameter}
+\item{item_parm}{a numeric matrix of item parameters}
 
-\item{resp}{A nice parameter}
+\item{resp}{a numeric vector of item responses}
 
-\item{ncat}{A nice parameter}
+\item{ncat}{a numeric vector of the number of response categories by item}
 
-\item{model}{A nice parameter}
+\item{model}{a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)}
 }
 \description{
-calc_likelihood_function
+Calculate a likelihood function of theta
 }
