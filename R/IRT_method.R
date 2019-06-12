@@ -852,7 +852,7 @@ setMethod(f = "calcDerivative2",
             for (k in 1:object@ncat) {
               derivative = derivative + prob[, k] * (k - ES) * k
             }
-            # return(derivative2) #not done
+            return(derivative2)
           }
 )
 
@@ -873,7 +873,7 @@ setMethod(f = "calcDerivative2",
             for (k in 1:object@ncat) {
               derivative = derivative + object@slope * prob[, k] * (k - ES) * k
             }
-            # return(derivative2) #not done
+            return(derivative2)
           }
 )
 
@@ -899,7 +899,7 @@ setMethod(f = "calcDerivative2",
             for (k in 1:object@ncat) {
               derivative = derivative + object@slope * (ps[, k] * (1 - ps[, k]) - ps[, k + 1] * (1 - ps[, k + 1]))
             }
-            # return(derivative2) #not done
+            return(derivative2)
           }
 )
 
@@ -921,7 +921,7 @@ setMethod(f = "calcDerivative2",
             } else {
               stop("theta is of length 0 or contains missing values")
             }
-            # return(derivative2) #not done
+            return(derivative2)
           }
 )
 
@@ -938,7 +938,7 @@ setMethod(f = "calcDerivative2",
             } else {
               stop("theta is of length 0 or contains missing values")
             }
-            #return(derivative2L) #not done
+            return(derivative2L)
           }
 )
 
