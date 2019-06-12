@@ -1,5 +1,3 @@
-# Documentation progress
-
 #' @importFrom Rdpack reprompt
 NULL
 
@@ -960,10 +958,6 @@ setGeneric(name = "calcJacobian",
            }
 )
 
-# TODO: MAKE PROPER EXAMPLES FOR JACOBIANS --------------------------------------------------
-# The "resp" arguments are temporarily set to zero to suppress build errors -----------------
-# -------------------------------------------------------------------------------------------
-
 #' @rdname calcJacobian-methods
 #' @aliases calcJacobian,item.1pl,numeric-method
 #' @examples
@@ -1124,10 +1118,6 @@ setGeneric(name = "calcHessian",
              standardGeneric("calcHessian")
            }
 )
-
-# TODO: MAKE PROPER EXAMPLES FOR HESSIANS ---------------------------------------------------
-# The "resp" arguments are temporarily set to zero to suppress build errors -----------------
-# -------------------------------------------------------------------------------------------
 
 #' @rdname calcHessian-methods
 #' @aliases calcHessian,item.1pl,numeric-method
