@@ -8,20 +8,20 @@ plotRMSE(..., title = NULL, legendTitle = NULL, legendLabels = NULL,
   ltySet = NULL, colSet = NULL, theta = seq(-2, 2, 1))
 }
 \arguments{
-\item{...}{Some dots}
+\item{...}{A series of RMSE values}
 
-\item{title}{A nice parameter}
+\item{title}{A plot title}
 
-\item{legendTitle}{A nice parameter}
+\item{legendTitle}{A legend title}
 
-\item{legendLabels}{A nice parameter}
+\item{legendLabels}{A vector of labels for the series}
 
-\item{ltySet}{A nice parameter}
+\item{ltySet}{A vector of line types for the series}
 
-\item{colSet}{A nice parameter}
+\item{colSet}{A vector of colors for the series}
 
-\item{theta}{A nice parameter}
+\item{theta}{A theta grid}
 }
 \description{
-plotRMSE
+Draw RMSE plots
 }
