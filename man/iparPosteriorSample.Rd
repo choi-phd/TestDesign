@@ -7,10 +7,10 @@
 iparPosteriorSample(pool, nSample = 500)
 }
 \arguments{
-\item{pool}{A nice parameter}
+\item{pool}{An object of class \code{\linkS4class{item.pool}}}
 
-\item{nSample}{A nice parameter}
+\item{nSample}{An integer as the number of sampled parameters}
 }
 \description{
-iparPosteriorSample
+Sample item parameter estimates from their posterior distributions
 }

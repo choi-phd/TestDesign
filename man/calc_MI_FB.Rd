@@ -2,19 +2,19 @@
 % Please edit documentation in R/RcppExports.R
 \name{calc_MI_FB}
 \alias{calc_MI_FB}
-\title{calc_MI_FB}
+\title{Calculate the mutual information using fully Bayesian}
 \usage{
 calc_MI_FB(x, items_list, ncat, model)
 }
 \arguments{
-\item{x}{A nice parameter}
+\item{x}{a numeric vector of MCMC sampled theta values}
 
-\item{items_list}{A nice parameter}
+\item{items_list}{a list of item_parm matrices}
 
-\item{ncat}{A nice parameter}
+\item{ncat}{a numeric vector of the number of response categories by item}
 
-\item{model}{A nice parameter}
+\item{model}{a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)}
 }
 \description{
-calc_MI_FB
+Calculate the mutual information using fully Bayesian
 }
