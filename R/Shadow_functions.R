@@ -2061,6 +2061,7 @@ setMethod(f = "Shadow",
               freqInfeasible = NULL
             }
             return(list(output = outputList, pool = object, config = config, trueTheta = trueTheta, Constraints = Constraints, prior = prior, priorPar = priorPar, Data = Test@Data, finalThetaEst = finalThetaEst, finalSeEst = finalSeEst, exposureRate = exposureRate, usageMatrix = usageMatrix, trueSegmentCount = trueSegmentCount, estSegmentCount = estSegmentCount, eligibilityStats = eligibilityStats, checkEligibilityStats = checkEligibilityStats, noFadingEligibilityStats = noFadingEligibilityStats, freqInfeasible = freqInfeasible))
+            }
           }
 )
 
