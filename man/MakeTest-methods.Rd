@@ -12,14 +12,14 @@ MakeTest(object, theta, infoType = "FISHER", trueTheta = NULL)
   trueTheta = NULL)
 }
 \arguments{
-\item{object}{A nice parameter}
+\item{object}{An \code{\linkS4class{item.pool}} object}
 
-\item{theta}{A nice parameter}
+\item{theta}{A grid of theta values}
 
-\item{infoType}{A nice parameter}
+\item{infoType}{An information type}
 
-\item{trueTheta}{A nice parameter}
+\item{trueTheta}{An optional vector of true theta values to simulate response data}
 }
 \description{
-MakeTest
+Generate an \code{\linkS4class{test}} object
 }

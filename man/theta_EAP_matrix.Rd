@@ -2,26 +2,26 @@
 % Please edit documentation in R/RcppExports.R
 \name{theta_EAP_matrix}
 \alias{theta_EAP_matrix}
-\title{theta_EAP_matrix}
+\title{Calculate expected a posteriori mestimates of theta for a group of examinees}
 \usage{
 theta_EAP_matrix(theta_grid, item_parm, Resp, ncat, model, prior,
   prior_parm)
 }
 \arguments{
-\item{theta_grid}{A nice parameter}
+\item{theta_grid}{an equi-spaced theta grid}
 
-\item{item_parm}{A nice parameter}
+\item{item_parm}{a numeric matrix of item parameters}
 
-\item{Resp}{A nice parameter}
+\item{Resp}{a numeric matrix of item responses}
 
-\item{ncat}{A nice parameter}
+\item{ncat}{a numeric vector of the number of response categories by item}
 
-\item{model}{A nice parameter}
+\item{model}{a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)}
 
-\item{prior}{A nice parameter}
+\item{prior}{prior distribution (1: normal, 2: uniform)}
 
-\item{prior_parm}{A nice parameter}
+\item{prior_parm}{a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)}
 }
 \description{
-theta_EAP_matrix
+Calculate expected a posteriori mestimates of theta for a group of examinees
 }

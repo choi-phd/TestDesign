@@ -11,8 +11,8 @@ RMSE(x, y, conditional = TRUE)
 
 \item{y}{A vector of values.}
 
-\item{conditional}{If \code{TRUE}, calculate a conditional RMSE.}
+\item{conditional}{If \code{TRUE}, calculate RMSE conditional on x.}
 }
 \description{
-Root Mean Squared Error between two vectors.
+Calculate Root Mean Squared Error
 }

@@ -1,6 +1,3 @@
-# Documentation progress
-# Phase 2. Add simple descriptions: COMPLETE
-
 #' An S4 generic and its methods for Automated Test Assembly (ATA).
 #' 
 #' @param config An \code{\linkS4class{ATA.config}} object containing configuration options.
@@ -38,19 +35,13 @@ setGeneric(name = "ATA",
 #'
 #' @export
 
-# list(Constraints = Constraints, ListConstraints = ListConstraints, pool = pool, ItemAttrib = ItemAttrib, StAttrib = StAttrib, 
-#      testLength = testLength, nv = nv, ni = ni, ns = ns, ID = ID, INDEX = INDEX, MAT = MAT, DIR = DIR, RHS = RHS, setBased = setBased, 
-#      ItemOrder = ItemOrder, ItemOrderBy = ItemOrderBy, StimulusOrder = StimulusOrder, StimulusOrderBy = StimulusOrderBy,
-#      ItemIndexByStimulus = item.index.by.stimulus, StimulusIntexByItem = stimulus.index.by.item)
-# Fisher = matrix(NA, length(theta), object@ni)
-
 setMethod(f = "ATA",
           signature = c("ATA.config"),
           definition = function(config, Constraints, plot = FALSE, plotrange = c(-3, 3)) {
             if (!validObject(config)) {
               stop("invalid configuration options specified")
             }
-            nt = length(config@itemSelection$targetLocation) #number of target points
+            nt = length(config@itemSelection$targetLocation) 
             mat = Constraints$MAT
             dir = Constraints$DIR
             rhs = Constraints$RHS
@@ -72,13 +63,13 @@ setMethod(f = "ATA",
               maximize = TRUE
             } else {
               maximize = FALSE
-              mat = cbind(mat, numeric(nrow(mat))) #add a column of 0's to the right of mat 
+              mat = cbind(mat, numeric(nrow(mat)))  
               types = c(types, "C")
               obj = c(rep(0, nv), 1)
               if (toupper(config@itemSelection$method) == "TIF") {
-                objective = calcFisher(Constraints$pool, config@itemSelection$targetLocation) #matrix of dim c(nt, ni)
+                objective = calcFisher(Constraints$pool, config@itemSelection$targetLocation) 
               } else if (toupper(config@itemSelection$method) == "TCC") {
-                objective = sapply(Constraints$pool@parms, calcEscore, config@itemSelection$targetLocation) #matrix of dim c(nt, ni)
+                objective = sapply(Constraints$pool@parms, calcEscore, config@itemSelection$targetLocation) 
                 if(nt == 1) objective = t(as.matrix(objective))
               }
               for (k in 1:nt) {
@@ -94,9 +85,8 @@ setMethod(f = "ATA",
               add.mat = c(rep(0, nv), 1)
               mat = rbind(mat, add.mat)
               dir = c(dir, ">=")
-              rhs = c(rhs, 0) #non-negative constraint on the real-valued decision variable
+              rhs = c(rhs, 0) 
             }
-            
             solve.time = proc.time()
             if (toupper(config@MIP$solver) == "SYMPHONY") {
               if (!maximize){
@@ -167,11 +157,9 @@ setMethod(f = "ATA",
               Selected = Selected[order(Selected[[Constraints$StimulusOrderBy]], Selected[["STID"]]), ]
             }
             row.names(Selected) = 1:nrow(Selected)
-            
             if (plot){
               continuum = seq(plotrange[1], plotrange[2], .1)
               continuum = sort(c(continuum, config@itemSelection$targetLocation))
-              
               idx = which(MIP$solution[1:ni] == 1)
               if (toupper(config@itemSelection$method) == "TIF"){
                 mat.sub = calcFisher(Constraints$pool, continuum)[,idx]
@@ -197,9 +185,7 @@ setMethod(f = "ATA",
                 ylab = "Information"
                 title = "Test Information Function based on the selected items"           
               }
-              
               ymax = max(vec.sub, config@itemSelection$targetValue)
-              
               pdf(NULL, bg = 'white')
               dev.control(displaylist="enable")
               plot(continuum, vec.sub, xlim = c(min(continuum), max(continuum)), ylim = c(0, ymax),
@@ -213,7 +199,6 @@ setMethod(f = "ATA",
             } else {
               p = NULL
             }
-            
             return(list(MIP = MIP, Selected = Selected, solver = config@MIP$solver, obj.value = obj.value, solve.time = solve.time, plot = p))
           }
 )

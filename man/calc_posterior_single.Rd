@@ -2,25 +2,25 @@
 % Please edit documentation in R/RcppExports.R
 \name{calc_posterior_single}
 \alias{calc_posterior_single}
-\title{calc_posterior_single}
+\title{Calculate a posterior value of theta for a single item}
 \usage{
 calc_posterior_single(x, item_parm, resp, ncat, model, prior, prior_parm)
 }
 \arguments{
-\item{x}{A nice parameter}
+\item{x}{a length-one numeric vector for a theta value}
 
-\item{item_parm}{A nice parameter}
+\item{item_parm}{a numeric vector of item parameters (for one item)}
 
-\item{resp}{A nice parameter}
+\item{resp}{a length-one numeric vector of item responses}
 
-\item{ncat}{A nice parameter}
+\item{ncat}{a length-one numeric vector of the number of response categories by item}
 
-\item{model}{A nice parameter}
+\item{model}{a length-one numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)}
 
-\item{prior}{A nice parameter}
+\item{prior}{prior distribution (1: normal, 2: uniform)}
 
-\item{prior_parm}{A nice parameter}
+\item{prior_parm}{a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)}
 }
 \description{
-calc_posterior_single
+Calculate a posterior value of theta for a single item
 }
