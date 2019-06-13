@@ -7,7 +7,7 @@
 array_info_gpc(x, a, b)
 }
 \arguments{
-\item{x}{a vector of theta values}
+\item{x}{a numeric vector of theta values}
 
 \item{a}{a length-one numeric vector for the slope parameter}
 

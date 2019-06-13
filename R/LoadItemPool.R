@@ -21,7 +21,7 @@ NULL
 
 LoadItemPool = function(file.csv, ipar = NULL, se.file.csv = NULL) {
   if (is.null(ipar)) {
-    ipar = read.csv(file.csv, header = FALSE, as.is = TRUE)
+    ipar = read.csv(file.csv, header = TRUE, as.is = TRUE)
   }
   pool = new("item.pool")
   ni = nrow(ipar)
@@ -34,7 +34,7 @@ LoadItemPool = function(file.csv, ipar = NULL, se.file.csv = NULL) {
   valid = logical(ni)
   pool@ipar = matrix(NA, nrow = ni, ncol = max(nfields) - 2)
   if (!is.null(se.file.csv)) {
-    ipar.se = read.csv(se.file.csv, header = FALSE, as.is = TRUE)
+    ipar.se = read.csv(se.file.csv, header = TRUE, as.is = TRUE)
     loadSE = TRUE
     SEs = matrix(NA, nrow = ni, ncol = max(nfields) - 2)
   } else {

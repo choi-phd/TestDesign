@@ -7,13 +7,13 @@
 saveOutput(objectList, file = NULL)
 }
 \arguments{
-\item{objectList}{A nice parameter}
+\item{objectList}{A list of output objects generated from \code{STA}.}
 
-\item{file}{A nice parameter}
+\item{file}{An optional file name as a character string to save the output.}
 }
 \value{
-An output
+None
 }
 \description{
-Do fancy stuff.
+Save or print audit trails for all simulees.
 }

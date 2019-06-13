@@ -1,5 +1,3 @@
-# Documentation progress
-
 #' @importFrom Rdpack reprompt
 NULL
 
@@ -854,7 +852,7 @@ setMethod(f = "calcDerivative2",
             for (k in 1:object@ncat) {
               derivative = derivative + prob[, k] * (k - ES) * k
             }
-            # return(derivative2) #not done
+            return(derivative2) 
           }
 )
 
@@ -875,7 +873,7 @@ setMethod(f = "calcDerivative2",
             for (k in 1:object@ncat) {
               derivative = derivative + object@slope * prob[, k] * (k - ES) * k
             }
-            # return(derivative2) #not done
+            return(derivative2) 
           }
 )
 
@@ -901,7 +899,7 @@ setMethod(f = "calcDerivative2",
             for (k in 1:object@ncat) {
               derivative = derivative + object@slope * (ps[, k] * (1 - ps[, k]) - ps[, k + 1] * (1 - ps[, k + 1]))
             }
-            # return(derivative2) #not done
+            return(derivative2) 
           }
 )
 
@@ -923,7 +921,7 @@ setMethod(f = "calcDerivative2",
             } else {
               stop("theta is of length 0 or contains missing values")
             }
-            # return(derivative2) #not done
+            return(derivative2) 
           }
 )
 
@@ -940,7 +938,7 @@ setMethod(f = "calcDerivative2",
             } else {
               stop("theta is of length 0 or contains missing values")
             }
-            #return(derivative2L) #not done
+            return(derivative2L) 
           }
 )
 
@@ -959,10 +957,6 @@ setGeneric(name = "calcJacobian",
              standardGeneric("calcJacobian")
            }
 )
-
-# TODO: MAKE PROPER EXAMPLES FOR JACOBIANS --------------------------------------------------
-# The "resp" arguments are temporarily set to zero to suppress build errors -----------------
-# -------------------------------------------------------------------------------------------
 
 #' @rdname calcJacobian-methods
 #' @aliases calcJacobian,item.1pl,numeric-method
@@ -1124,10 +1118,6 @@ setGeneric(name = "calcHessian",
              standardGeneric("calcHessian")
            }
 )
-
-# TODO: MAKE PROPER EXAMPLES FOR HESSIANS ---------------------------------------------------
-# The "resp" arguments are temporarily set to zero to suppress build errors -----------------
-# -------------------------------------------------------------------------------------------
 
 #' @rdname calcHessian-methods
 #' @aliases calcHessian,item.1pl,numeric-method

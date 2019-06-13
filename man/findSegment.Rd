@@ -2,15 +2,15 @@
 % Please edit documentation in R/RcppExports.R
 \name{findSegment}
 \alias{findSegment}
-\title{findSegment}
+\title{Find the segment to which each theta value belongs}
 \usage{
 findSegment(segment, x)
 }
 \arguments{
-\item{segment}{A nice parameter}
+\item{segment}{a numeric vector of segment cuts}
 
-\item{x}{A nice parameter}
+\item{x}{a numeric vector of theta values}
 }
 \description{
-findSegment
+Find the segment to which each theta value belongs
 }

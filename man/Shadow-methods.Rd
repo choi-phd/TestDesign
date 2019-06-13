@@ -31,5 +31,5 @@ Shadow(object, config, trueTheta = NULL, Constraints = NULL,
 \item{session}{Used to communicate with a Shiny session.}
 }
 \description{
-Shadow
+Run generalized shadow-test approach to CAT
 }

@@ -1,6 +1,3 @@
-# Documentation progress
-# Phase 2. Add simple descriptions: COMPLETE
-
 #' config.ATA
 #' 
 #' @rdname config.ATA
@@ -30,7 +27,6 @@ setClass("ATA.config",
                stop("itemSelection$targetLocation, itemSelection$targetWeight have different lengths: should have same lengths")
              }
            }
-            
            if (toupper(object@itemSelection$method) != "MAXINFO"){
              target_lengths = unique(c(
                length(object@itemSelection$targetLocation),
@@ -41,7 +37,6 @@ setClass("ATA.config",
                stop("itemSelection$targetLocation, itemSelection$targetValue, itemSelection$targetWeight have different lengths: should have same lengths")
              }
            }
-           
            if (toupper(object@itemSelection$infoType) != "FISHER") stop("invalid option for itemSelection$infoType: accepts Fisher")
            
            if (!toupper(object@MIP$solver) %in% c("SYMPHONY", "GUROBI", "GLPK", "LPSOLVE")) stop("invalid option for MIP$solver: accepts Symphony, Gurobi, GLPK, LpSolve")
@@ -57,9 +52,9 @@ setClass("ATA.config",
 #' \itemize{
 #'   \item{\code{method}} The type of criteria. Accepts \code{MAXINFO, TIF, TCC}.
 #'   \item{\code{infoType}} The type of information. Accepts \code{FISHER}.
-#'   \item{\code{targetLocation}} A numeric vector containing the locations of target points. (e.g. \code{c(-1, 0, 1)})
-#'   \item{\code{targetValue}} A numeric vector containing the target values at each location. This should have the same length with \code{targetLocation}. Ignored if method is \code{MAXINFO}.
-#'   \item{\code{targetWeight}} A numeric vector containing the weights for each location. This should have the same length with \code{targetlocation}. Defaults to a vector of 1s.
+#'   \item{\code{targetLocation}} A numeric vector containing the locations of target theta points. (e.g. \code{c(-1, 0, 1)})
+#'   \item{\code{targetValue}} A numeric vector containing the target values at each theta location. This should have the same length with \code{targetLocation}. Ignored if method is \code{MAXINFO}.
+#'   \item{\code{targetWeight}} A numeric vector containing the weights for each theta location. This should have the same length with \code{targetlocation}. Defaults to a vector of 1s.
 #' }
 #' @param MIP A list containing solver options. This should have the following entries:
 #' \itemize{
@@ -92,10 +87,8 @@ setClass("ATA.config",
 #' @export
 config.ATA = function(itemSelection = NULL, MIP = NULL){
   conf = new("ATA.config")
-  
   arg.names = c("itemSelection", "MIP")
   obj.names = c()
-  
   for (arg in arg.names){
     if (!is.null(eval(parse(text = arg)))){
       eval(parse(text = paste0("obj.names = names(conf@", arg, ")")))
@@ -109,7 +102,6 @@ config.ATA = function(itemSelection = NULL, MIP = NULL){
       }
     }
   }
-
   v = validObject(conf)
   if (v) return(conf)
 }
@@ -129,8 +121,8 @@ setMethod("show", "ATA.config", function(object) {
   cat("    Method         :", object@itemSelection$method, "\n") #c("MAXINFO", "TIF", "TCC")
   cat("    Info type      :", object@itemSelection$infoType, "\n")
   cat("    Theta Location :", object@itemSelection$targetLocation, "\n")
-  cat("    Target Weight  :", object@itemSelection$targetWeight, "\n")
-  cat("    Target Value   :", object@itemSelection$targetValue, "\n\n")
+  cat("    Target Value  :", object@itemSelection$targetValue, "\n")
+  cat("    Target Weight   :", object@itemSelection$targetWeight, "\n\n")
   cat("  MIP \n")
   cat("    Solver         :", object@MIP$solver, "\n")
   cat("    Verbosity      :", object@MIP$verbosity, "\n")

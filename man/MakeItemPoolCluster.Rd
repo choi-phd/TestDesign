@@ -12,5 +12,5 @@ MakeItemPoolCluster(pools, names = NULL)
 \item{names}{A nice parameter}
 }
 \description{
-MakeItemPoolCluster
+Create a \code{\linkS4class{pool.cluster}} object
 }

@@ -7,10 +7,10 @@
 subsetPool(pool, select = NULL)
 }
 \arguments{
-\item{pool}{A nice parameter}
+\item{pool}{An \code{\linkS4class{item.pool}} object}
 
-\item{select}{A nice parameter}
+\item{select}{A vector of item indexes to subset}
 }
 \description{
-subsetPool
+Create a subset of an \code{\linkS4class{item.pool}} object
 }
