@@ -5,24 +5,17 @@ library(shinyjs)
 library(Shadow)
 library(DT)
 
-ui <- fluidPage(
+acceptedfiles = c("text/csv", "text/comma-separated-values,text/plain", ".csv")
+css.y = "overflow-y:scroll; max-height: 65vh"
+
+ui = fluidPage(
   theme = shinytheme("lumen"),
   shinyjs::useShinyjs(),
   tags$head(tags$style(HTML("
-h3 {
-  font-size: 125%;
-}
-i {
-  display: inline-block;
-  margin-right: 0.2em;
-}
-label, .form-group, .progress {
-  margin-bottom: 0px;
-}
-.btn {
-  width: 100%;
-}
-
+h3 { font-size: 125%; }
+i { display: inline-block; margin-right: 0.2em; }
+label, .form-group, .progress { margin-bottom: 0px; }
+.btn { width: 100%; }
 "))),
   titlePanel("Shadow"),
 
@@ -36,165 +29,108 @@ label, .form-group, .progress {
       helpText("This is a demo of Optimal Test Assembly."),
 
       dropdownButton(
-
         h3(""),
-
-        fileInput("itempool_file", buttonLabel = "Item parameters", label = NULL, accept = c(
-          "text/csv",
-          "text/comma-separated-values,text/plain",
-          ".csv")),
-        fileInput("itemattrib_file", buttonLabel = "Item attributes", label = NULL, accept = c(
-          "text/csv",
-          "text/comma-separated-values,text/plain",
-          ".csv")),
-        fileInput("stimattrib_file", buttonLabel = "Stimulus attributes (optional)", label = NULL, accept = c(
-          "text/csv",
-          "text/comma-separated-values,text/plain",
-          ".csv")),
-        fileInput("const_file", buttonLabel = "Constraints", label = NULL, accept = c(
-          "text/csv",
-          "text/comma-separated-values,text/plain",
-          ".csv")),
-        fileInput("content_file", buttonLabel = "Item contents (optional)", label = NULL, accept = c(
-          "text/csv",
-          "text/comma-separated-values,text/plain",
-          ".csv")),
-
-        circle = FALSE, status = "primary",
-        icon = icon("file-import"), width = "100%",
-
-        label = "Load files"
+        label = "Load files",
+        fileInput("itempool.file"  , buttonLabel = "Item parameters"                , label = NULL, accept = acceptedfiles),
+        fileInput("itemse.file"    , buttonLabel = "Item standard errors (optional)", label = NULL, accept = acceptedfiles),
+        fileInput("itemattrib.file", buttonLabel = "Item attributes"                , label = NULL, accept = acceptedfiles),
+        fileInput("stimattrib.file", buttonLabel = "Stimulus attributes (optional)" , label = NULL, accept = acceptedfiles),
+        fileInput("const.file"     , buttonLabel = "Constraints"                    , label = NULL, accept = acceptedfiles),
+        fileInput("content.file"   , buttonLabel = "Item contents (optional)"       , label = NULL, accept = acceptedfiles),
+        circle = F, status = "primary", icon = icon("file-import"), width = "100%"
       ),
 
       h3(""),
 
       radioGroupButtons(
-        inputId = "problemtype",
-        choiceNames = c("Fixed", "Adaptive"),
-        choiceValues = 1:2,
-        selected = 1,
-        justified = TRUE
+        inputId = "problemtype", justified = T,
+        choiceNames = c("Fixed", "Adaptive"), choiceValues = 1:2, selected = 1
       ),
       radioGroupButtons(
-        inputId = "solvertype",
-        choices = c("Symphony", "Gurobi", "GLPK", "lpSolve"),
-        checkIcon = list(yes = icon("drafting-compass"), no = icon("drafting-compass")),
-        justified = TRUE
+        inputId = "solvertype", justified = T,
+        choices = c("Symphony", "Gurobi", "GLPK", "lpSolve"), checkIcon = list(yes = icon("drafting-compass"), no = icon("drafting-compass"))
       ),
       radioGroupButtons(
-        inputId = "objtype",
-        label = h3("Objective type:"),
-        choices = c("TCC", "TIF", "MAXINFO"),
-        justified = TRUE
+        inputId = "objtype", justified = T, label = h3("Objective type:"),
+        choices = c("TCC", "TIF", "MAXINFO")
       ),
-      textInput("thetas", label = h3("Theta values (comma-separated)"), value = "0,1"),
-      textInput("targets", label = h3("Target values (comma-separated)"), value = "15,20"),
+
+      textInput("thetas", label = h3("Theta values (comma-separated)"), value = "0, 1"),
+      textInput("targets", label = h3("Target values (comma-separated)"), value = "15, 20"),
 
       checkboxGroupButtons(
-        inputId = "maxinfo_button",
-        choices = c("Check obtainable info range"),
-        checkIcon = list(yes = icon("less-than-equal"), no = icon("less-than-equal")),
-        justified = TRUE
+        inputId = "maxinfo.button", justified = T,
+        choices = c("Check obtainable info range"), checkIcon = list(yes = icon("less-than-equal"), no = icon("less-than-equal"))
       ),
 
       dropdownButton(
-        inputId = "simulation_dropdown",
+        inputId = "simulation.dropdown", label = "Simulation settings",
         radioGroupButtons(
-          inputId = "simulee_theta_distribution",
-          choices = c("NORMAL", "UNIF"),
-          justified = TRUE
+          inputId = "simulee.theta.distribution", justified = T,
+          choices = c("NORMAL", "UNIF")
         ),
-        textInput("simulee_theta_params", label = "True theta distribution parameters", value = "0, 1"),
-
-        textInput("n_simulees", label = h3("# of simulees"), value = "1"),
-        textInput("simulee_id", label = h3("Display plots for simulee:"), value = "1"),
-
-        circle = FALSE,
-        icon = icon("database"), width = "100%",
-        status = "danger",
-        label = "Simulation settings"
+        textInput("simulee.theta.params", label = "True theta distribution parameters", value = "0, 1"),
+        textInput("n.simulees", label = h3("# of simulees"), value = "1"),
+        textInput("simulee.id", label = h3("Display plots for simulee:"), value = "1"),
+        circle = F, icon = icon("database"), width = "100%", status = "danger"
       ),
 
       dropdownButton(
-        inputId = "exposure_dropdown",
+        inputId = "exposure.dropdown", label = "Exposure control settings",
         radioGroupButtons(
-          inputId = "exposure_method",
-          choices = c("ELIGIBILITY", "BIGM", "BIGM-BAYESIAN"),
-          justified = TRUE
+          inputId = "exposure.method", justified = TRUE,
+          choices = c("ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")
         ),
-        sliderInput("exposure_ff", label = h3("Fading factor"), min = .9, max = 1.0, value = 1.0, step = .01),
-        textInput("exposure_af", label = h3("Acceleration factor"), value = "2"),
-        circle = FALSE,
-        icon = icon("cog"), width = "100%",
-        label = "Exposure control settings"
+        sliderInput("exposure.ff", label = h3("Fading factor"), min = .9, max = 1.0, value = 1.0, step = .01),
+        textInput("exposure.af", label = h3("Acceleration factor"), value = "2"),
+        circle = F, icon = icon("cog"), width = "100%"
       ),
 
       dropdownButton(
-
-        inputId = "theta_settings",
-
+        inputId = "theta.settings", label = "Estimation Settings for interim & final thetas",
         h3("Interim theta"),
-
         radioGroupButtons(
-          inputId = "interim_method",
-          choices = c("EAP", "FB", "EB"),
-          justified = TRUE
+          inputId = "interim.method", justified = T,
+          choices = c("EAP", "FB", "EB")
         ),
         radioGroupButtons(
-          inputId = "interim_prior",
-          choices = c("NORMAL", "UNIF"),
-          justified = TRUE
+          inputId = "interim.prior", justified = T,
+          choices = c("NORMAL", "UNIF")
         ),
-        textInput("interim_priorpar", label = "Prior distribution parameters", value = "0, 1"),
-
+        textInput("interim.priorpar", label = "Prior distribution parameters", value = "0, 1"),
         h3("Final theta"),
-
         radioGroupButtons(
-          inputId = "final_method",
-          choices = c("EAP", "FB", "EB"),
-          justified = TRUE
+          inputId = "final.method", justified = T,
+          choices = c("EAP", "FB", "EB")
         ),
         radioGroupButtons(
-          inputId = "final_prior",
-          choices = c("NORMAL", "UNIF"),
-          justified = TRUE
+          inputId = "final.prior", justified = T,
+          choices = c("NORMAL", "UNIF")
         ),
-        textInput("final_priorpar", label = "Prior distribution parameters", value = "0, 1"),
-
-        circle = FALSE,
-        icon = icon("cog"), width = "100%",
-        label = "Estimation Settings for interim & final thetas"
+        textInput("final.priorpar", label = "Prior distribution parameters", value = "0, 1"),
+        circle = F, icon = icon("cog"), width = "100%"
       ),
 
       radioGroupButtons(
-        inputId = "itemselection_method",
-        label = h3("Item selection method"),
-        choices = c("MFI", "MPWI", "FB", "EB"),
-        justified = TRUE
+        inputId = "itemselection.method", justified = T, label = h3("Item selection method"),
+        choices = c("MFI", "MPWI", "FB", "EB")
       ),
       radioGroupButtons(
-        inputId = "contentbalancing_method",
-        label = h3("Content balancing method"),
-        choices = c("NONE", "STA"),
-        justified = TRUE
+        inputId = "contentbalancing.method", justified = T, label = h3("Content balancing method"),
+        choices = c("NONE", "STA")
       ),
 
       dropdownButton(
-        inputId = "refreshpolicy_dropdown",
+        inputId = "refreshpolicy.dropdown", label = "Refresh policy",
         radioGroupButtons(
-          inputId = "refreshpolicy",
-          choices = c("ALWAYS", "POSITION", "INTERVAL", "THRESHOLD", "INTERVAL-THRESHOLD", "STIMULUS", "SET", "PASSAGE"),
-          justified = TRUE,
-          direction = "vertical"   # SET is the generic option, condense last 3 options
+          inputId = "refreshpolicy", justified = T, direction = "vertical",
+          choices = c("ALWAYS", "POSITION", "INTERVAL", "THRESHOLD", "INTERVAL-THRESHOLD", "SET")
         ),
-        circle = FALSE,
-        icon = icon("cog"), width = "100%",
-        label = "Refresh policy"
+        circle = FALSE, icon = icon("cog"), width = "100%"
       ),
 
-      downloadButton("export_data", "Export data")
+      downloadButton("export.data", "Export data")
     ),
-
 
     mainPanel(
       tags$head(
@@ -202,191 +138,155 @@ label, .form-group, .progress {
       ),
       disabled(
         checkboxGroupButtons(
-          inputId = "runsolver",
-          choices = c("Run Solver"),
-          checkIcon = list(yes = icon("drafting-compass"), no = icon("drafting-compass")),
-          status = "primary",
-          justified = TRUE
+          inputId = "runsolver", justified = T,
+          choices = c("Run Solver"), checkIcon = list(yes = icon("drafting-compass"), no = icon("drafting-compass")), status = "primary"
         )
       ),
       verbatimTextOutput("textoutput", placeholder = T),
-      progressBar(id = "pb", value = 0, total = 1, display_pct = TRUE),
+      progressBar(id = "pb", value = 0, total = 1, display_pct = T),
       hr(),
       tabsetPanel(id = "tabs",
-        tabPanel("Main",
-                 plotOutput("plotoutput", width = "100%", height = "65vh"),
-                 value = 1),
-        tabPanel("Output",
-                 plotOutput("shadowplot", width = "100%", height = "65vh"),
-                 value = 2),
-        tabPanel("Output",
-                 style = "overflow-y:scroll; max-height: 65vh",
-                 DTOutput("results"),
-                 value = 3),
-        tabPanel("Item parameters",
-                 style = "overflow-y:scroll; max-height: 65vh",
-                 DTOutput("table_itempool"),
-                 value = 4),
-        tabPanel("Item attributes",
-                 style = "overflow-y:scroll; max-height: 65vh",
-                 DTOutput("table_itemattrib"),
-                 value = 5),
-        tabPanel("Stimulus attributes",
-                 style = "overflow-y:scroll; max-height: 65vh",
-                 DTOutput("table_stimattrib"),
-                 value = 6),
-        tabPanel("Constraints",
-                 style = "overflow-y:scroll; max-height: 65vh",
-                 DTOutput("table_constraints"),
-                 value = 7)
-
+        tabPanel("Main",                value = 1, plotOutput("plotoutput", width = "100%", height = "65vh")),
+        tabPanel("Output",              value = 2, plotOutput("shadowplot", width = "100%", height = "65vh")),
+        tabPanel("Output",              value = 3, DTOutput("results")          , style = css.y),
+        tabPanel("Item parameters",     value = 4, DTOutput("table.itempool")   , style = css.y),
+        tabPanel("Item attributes",     value = 5, DTOutput("table.itemattrib") , style = css.y),
+        tabPanel("Stimulus attributes", value = 6, DTOutput("table.stimattrib") , style = css.y),
+        tabPanel("Constraints",         value = 7, DTOutput("table.constraints"), style = css.y)
       )
     )
   )
 )
 
-is_text_parsable = function(arg.text){
+is.text.parsable = function(arg.text){
   txt = gsub("[^0-9\\., \\-]", "", arg.text) # Limits eval to only accept legit inputs
   return(txt == arg.text)
 }
 
-return_object_or_null = function(arg.object){
+return.object.or.null = function(arg.object){
   if (is.null(arg.object)) return(NULL)
   return(arg.object)
 }
 
-# Define server logic required to draw a histogram
-server <- function(input, output, session) {
-  v = reactiveValues(itempool.exists = F, const.exists = F, content.exists = F, stimattrib.exists = F, problemtype = 0)
+server = function(input, output, session) {
+  v = reactiveValues(itempool.exists = F,
+    const.exists = F,
+    content.exists = F,
+    stimattrib.exists = F,
+    problemtype = 0)
 
-  observeEvent(input$itempool_file, {
-    if (!is.null(input$itempool_file)){
-      v$itempool = try(LoadItemPool(input$itempool_file$datapath))
+  observeEvent(input$itempool.file, {
+    if (!is.null(input$itempool.file)){
+      v$itempool = try(LoadItemPool(input$itempool.file$datapath))
       if (class(v$itempool) == "item.pool"){
-        v$itempool.exists = TRUE
-        v$text = "Step 1. Item parameter file: OK"
+        v$itempool.exists = T; v$text = "Step 1. Item parameter file: OK"
+        v$ipar = v$itempool@ipar
       } else {
-        v$itempool.exists = FALSE
-        v$text = "Step 1 Error: Item parameters are not in the correct format."
+        v$itempool.exists = F; v$text = "Step 1 Error: Item parameters are not in the correct format."
       }
     }
   })
 
-  observeEvent(input$itemattrib_file, {
-    if (!is.null(input$itemattrib_file) & v$itempool.exists){
-      v$itemattrib = try(LoadItemAttrib(input$itemattrib_file$datapath, v$itempool))
+  observeEvent(input$itemse.file, {
+    if (!is.null(input$itemse.file) & v$itempool.exists){
+      v$itempool = try(LoadItemPool(input$itempool.file$datapath, se.file.csv = input$itemse.file$datapath))
+      if (class(v$itempool) == "item.pool"){
+        v$itemse.exists = T; v$text = "Optional Step. Item standard error file: OK"
+      } else {
+        v$itemse.exists = F; v$text = "Optional Step Error: Item standard errors are not in the correct format."
+      }
+    }
+  })
+
+  observeEvent(input$itemattrib.file, {
+    if (!is.null(input$itemattrib.file) & v$itempool.exists){
+      v$itemattrib = try(LoadItemAttrib(input$itemattrib.file$datapath, v$itempool))
       if (class(v$itemattrib) == "data.frame"){
-        v$itemattrib.exists = TRUE
-        v$text = "Step 2. Item attributes: OK"
+        v$itemattrib.exists = T; v$text = "Step 2. Item attributes: OK"
       } else {
-        v$itemattrib.exists = FALSE
-        v$text = "Step 2 Error: Item attributes are not in the correct format."
+        v$itemattrib.exists = F; v$text = "Step 2 Error: Item attributes are not in the correct format."
       }
     }
   })
 
-  observeEvent(input$stimattrib_file, {
-    if (!is.null(input$stimattrib_file) & v$itemattrib.exists){
-      v$stimattrib = try(LoadStAttrib(input$stimattrib_file$datapath, v$itemattrib))
+  observeEvent(input$stimattrib.file, {
+    if (!is.null(input$stimattrib.file) & v$itemattrib.exists){
+      v$stimattrib = try(LoadStAttrib(input$stimattrib.file$datapath, v$itemattrib))
       if (class(v$stimattrib) == "data.frame"){
-        v$stimattrib.exists = TRUE
-        v$text = "Optional Step. Stimulus attributes: OK"
+        v$stimattrib.exists = T; v$text = "Optional Step. Stimulus attributes: OK"
       } else {
-        v$stimattrib.exists = FALSE
-        v$text = "Optional Step Error: Stimulus attributes are not in the correct format."
+        v$stimattrib.exists = F; v$text = "Optional Step Error: Stimulus attributes are not in the correct format."
       }
     }
   })
 
-  observeEvent(input$const_file, {
-    if (!is.null(input$itempool_file) & v$itemattrib.exists){
-      if ( v$stimattrib.exists) v$const = try(LoadConstraints(input$const_file$datapath, v$itempool, v$itemattrib, v$stimattrib))
-      if (!v$stimattrib.exists) v$const = try(LoadConstraints(input$const_file$datapath, v$itempool, v$itemattrib))
+  observeEvent(input$const.file, {
+    if (!is.null(input$itempool.file) & v$itemattrib.exists){
+      if ( v$stimattrib.exists) v$const = try(LoadConstraints(input$const.file$datapath, v$itempool, v$itemattrib, v$stimattrib))
+      if (!v$stimattrib.exists) v$const = try(LoadConstraints(input$const.file$datapath, v$itempool, v$itemattrib))
       if (class(v$const) == "list"){
-        v$const.exists = TRUE
-        v$text = "Step 3. Constraints: OK. Press button to run solver."
-        shinyjs::enable("runsolver")
+        v$const.exists = T; v$text = "Step 3. Constraints: OK. Press button to run solver."
+        v$constraints = v$const$Constraints
       } else {
-        v$const.exists = FALSE
-        v$text = "Step 3 Error: Constraints are not in the correct format."
-        shinyjs::disable("runsolver")
+        v$const.exists = F; v$text = "Step 3 Error: Constraints are not in the correct format."
       }
+      shinyjs::toggleState("runsolver", v$const.exists)
     }
   })
 
-  observeEvent(input$content_file, {
-    v$content = try(read.csv(input$content_file$datapath))
+  observeEvent(input$content.file, {
+    v$content = try(read.csv(input$content.file$datapath))
     if (class(v$content) == "data.frame"){
-      v$content.exists = TRUE
-      v$text = "Optional Step. Item contents: OK."
+      v$content.exists = T; v$text = "Optional Step. Item contents: OK."
     } else {
-      v$content.exists = FALSE
-      v$text = "Optional Step Error: Item contents are not in the correct format."
+      v$content.exists = F; v$text = "Optional Step Error: Item contents are not in the correct format."
     }
   })
 
   observeEvent(input$problemtype, {
+    shinyjs::toggle("objtype"                , condition = input$problemtype == 1)
+    shinyjs::toggle("thetas"                 , condition = input$problemtype == 1)
+    shinyjs::toggle("targets"                , condition = input$problemtype == 1)
+    shinyjs::toggle("maxinfo.button"         , condition = input$problemtype == 1)
+    shinyjs::toggle("exposure.dropdown"      , condition = input$problemtype == 2)
+    shinyjs::toggle("theta.settings"         , condition = input$problemtype == 2)
+    shinyjs::toggle("itemselection.method"   , condition = input$problemtype == 2)
+    shinyjs::toggle("contentbalancing.method", condition = input$problemtype == 2)
+    shinyjs::toggle("refreshpolicy.dropdown" , condition = input$problemtype == 2)
+    shinyjs::toggle("simulation.dropdown"    , condition = input$problemtype == 2)
     if (input$problemtype == 2){
-      shinyjs::hide("objtype")
-      shinyjs::hide("thetas")
-      shinyjs::hide("targets")
-      shinyjs::hide("maxinfo_button")
-      shinyjs::show("exposure_dropdown")
-      shinyjs::show("theta_settings")
-      shinyjs::show("itemselection_method")
-      shinyjs::show("contentbalancing_method")
-      shinyjs::show("refreshpolicy_dropdown")
-      shinyjs::show("simulation_dropdown")
       showTab("tabs", target = "2")
       hideTab("tabs", target = "3")
     } else {
-      shinyjs::show("objtype")
-      shinyjs::show("thetas")
-      shinyjs::show("targets")
-      shinyjs::show("maxinfo_button")
-      shinyjs::hide("exposure_dropdown")
-      shinyjs::hide("theta_settings")
-      shinyjs::hide("itemselection_method")
-      shinyjs::hide("contentbalancing_method")
-      shinyjs::hide("refreshpolicy_dropdown")
-      shinyjs::hide("simulation_dropdown")
       hideTab("tabs", target = "2")
       showTab("tabs", target = "3")
     }
   })
 
-  observeEvent(input$objtype, {
-    if (input$objtype == 3){
-      shinyjs::disable("targets")
-    } else {
-      shinyjs::enable("targets")
-    }
-  })
+  observeEvent(input$objtype, { shinyjs::toggleState("targets", input$objtype != "MAXINFO") })
 
-  observeEvent(input$simulee_id, {
+  observeEvent(input$simulee.id, {
     if (v$problemtype == 2){
       if (!is.null(v$fit)){
-        if (is_text_parsable(input$simulee_id)){
-          eval(parse(text = paste0("simulee_id = c(", input$simulee_id, ")[1]")))
-          if (simulee_id <= v$n_simulees)
-            v$simulee_id = simulee_id
+        if (is.text.parsable(input$simulee.id)){
+          eval(parse(text = paste0("simulee.id = c(", input$simulee.id, ")[1]")))
+          v$simulee.id = min(simulee.id, v$n.simulees)
         } else {
-          v$text = "Number of simulees should be an integer."
-          break
+          v$text = "Number of simulees should be an integer."; break
         }
-        v$plotoutput = plotCAT(v$fit$output[[v$simulee_id]])
-        v$shadowplot = plotShadow(v$fit$output[[v$simulee_id]], v$const)
+        v$plotoutput = plotCAT(v$fit$output[[v$simulee.id]])
+        v$shadowplot = plotShadow(v$fit$output[[v$simulee.id]], v$const)
       }
     }
   })
 
-  observeEvent(input$maxinfo_button, {
+  observeEvent(input$maxinfo.button, {
     if (v$itempool.exists & v$const.exists){
-      v$plotoutput = maxinfo_plot(v$itempool, v$const)
+      v$plotoutput = maxinfoplot(v$itempool, v$const)
     }
     updateCheckboxGroupButtons(
       session = session,
-      inputId = "maxinfo_button",
+      inputId = "maxinfo.button",
       selected = character(0)
     )
   })
@@ -403,21 +303,18 @@ server <- function(input, output, session) {
 
         conf = new("ATA.config")
 
-        conf@itemSelection$method = input$objtype
         conf@MIP$solver = input$solvertype
 
-        if (is_text_parsable(input$thetas)){
+        if (is.text.parsable(input$thetas)){
           eval(parse(text = paste0("conf@itemSelection$targetLocation = c(", input$thetas, ")")))
         } else {
-          v$text = "Theta values should be comma-separated numbers."
-          break
+          v$text = "Theta values should be comma-separated numbers."; break
         }
 
-        if (is_text_parsable(input$targets)){
+        if (is.text.parsable(input$targets)){
           eval(parse(text = paste0("conf@itemSelection$targetValue = c(", input$targets, ")")))
         } else {
-          v$text = "Target values should be comma-separated numbers."
-          break
+          v$text = "Target values should be comma-separated numbers."; break
         }
 
         conf@itemSelection$targetWeight = rep(1, length(conf@itemSelection$targetLocation))
@@ -447,41 +344,37 @@ server <- function(input, output, session) {
 
         v$problemtype = 2
 
-        if (input$exposure_method == "BIGM-BAYESIAN"){
-          if (!input$interim_method %in% c("EB", "FB")){
-            exposure_method_legit = F
-            v$text = "BIGM-BAYESIAN requires interim methods EB or FB."
-            break
-        }}
+        if (input$exposure.method == "BIGM-BAYESIAN"){
+          if (!input$interim.method %in% c("EB", "FB")){
+            v$text = "BIGM-BAYESIAN requires interim methods EB or FB."; break
+          }
+        }
 
-        if (is_text_parsable(input$n_simulees)){
-          eval(parse(text = paste0("v$n_simulees = c(", input$n_simulees, ")[1]")))
-          v$n_simulees = min(100, v$n_simulees)
-          updateProgressBar(session = session, id = "pb", value = 0, total = v$n_simulees)
+        if (is.text.parsable(input$n.simulees)){
+          eval(parse(text = paste0("v$n.simulees = c(", input$n.simulees, ")[1]")))
+          v$n.simulees = min(100, v$n.simulees)
+          updateProgressBar(session = session, id = "pb", value = 0, total = v$n.simulees)
         } else {
-          v$text = "Number of simulees should be an integer."
-          break
+          v$text = "Number of simulees should be an integer."; break
         }
 
-        if (is_text_parsable(input$simulee_id)){
-          eval(parse(text = paste0("v$simulee_id = c(", input$simulee_id, ")[1]")))
+        if (is.text.parsable(input$simulee.id)){
+          eval(parse(text = paste0("v$simulee.id = c(", input$simulee.id, ")[1]")))
         } else {
-          v$text = "Number of simulees should be an integer."
-          break
+          v$text = "Number of simulees should be an integer."; break
         }
 
-        if (is_text_parsable(input$simulee_theta_params)){
-          eval(parse(text = paste0("v$simulee_theta_params = c(", input$simulee_theta_params, ")[1:2]")))
+        if (is.text.parsable(input$simulee.theta.params)){
+          eval(parse(text = paste0("v$simulee.theta.params = c(", input$simulee.theta.params, ")[1:2]")))
         } else {
-          v$text = "Theta distribution parameters should be two numbers."
-          break
+          v$text = "Theta distribution parameters should be two numbers."; break
         }
 
-        if(input$simulee_theta_distribution == "NORMAL"){
-          trueTheta = rnorm(v$n_simulees, v$simulee_theta_params[1], v$simulee_theta_params[2])
+        if(input$simulee.theta.distribution == "NORMAL"){
+          trueTheta = rnorm(v$n.simulees, v$simulee.theta.params[1], v$simulee.theta.params[2])
         }
-        if(input$simulee_theta_distribution == "UNIF"){
-          trueTheta = runif(v$n_simulees, min = v$simulee_theta_params[1], max = v$simulee_theta_params[2])
+        if(input$simulee.theta.distribution == "UNIF"){
+          trueTheta = runif(v$n.simulees, min = v$simulee.theta.params[1], max = v$simulee.theta.params[2])
         }
 
         thetaGrid = seq(-3, 3, 1)
@@ -492,61 +385,65 @@ server <- function(input, output, session) {
 
         # parse exposure control settings
 
-        conf@exposureControl$fadingFactor = input$exposure_ff
+        conf@exposureControl$fadingFactor = input$exposure.ff
 
-        if (is_text_parsable(input$exposure_af)){
-          eval(parse(text = paste0("conf@exposureControl$accelerationFactor = c(", input$targets, ")[1]")))
+        if (is.text.parsable(input$exposure.af)){
+          eval(parse(text = paste0("conf@exposureControl$accelerationFactor = c(", input$exposure.af, ")[1]")))
           if (conf@exposureControl$accelerationFactor < 1){
-            v$text = "Acceleration factor should be at least 1."
-            break
+            v$text = "Acceleration factor should be a number at least 1."; break
           }
         } else {
-          v$text = "Acceleration factor should be a number."
-          break
+          v$text = "Acceleration factor should be a number at least 1."; break
         }
 
-        conf@exposureControl$method = input$exposure_method
+        conf@exposureControl$method = input$exposure.method
         conf@exposureControl$diagnosticStats = TRUE
 
-        conf@itemSelection$method = input$itemselection_method
+        conf@interimTheta$method    = input$interim.method
+        conf@interimTheta$priorDist = input$interim.prior
+        conf@finalTheta$method      = input$final.method
+        conf@finalTheta$priorDist   = input$final.prior
+        conf@itemSelection$method   = input$itemselection.method
 
-        conf@interimTheta$method    = input$interim_method
-        conf@interimTheta$priorDist = input$interim_prior
-        if (is_text_parsable(input$interim_priorpar)){
-          eval(parse(text = paste0("conf@interimTheta$priorPar = c(", input$interim_priorpar, ")")))
+        if (conf@interimTheta$method == "FB" & v$itemse.exists == F) {
+          v$text = "FB interim method requires the standard errors associated with the item parameters."; break
+        }
+        if (is.text.parsable(input$interim.priorpar)){
+          eval(parse(text = paste0("conf@interimTheta$priorPar = c(", input$interim.priorpar, ")")))
           if (length(conf@interimTheta$priorPar) != 2){
-            v$text = "Interim prior parameters should be two values."
-            break
+            v$text = "Interim prior parameters should be two numeric values."; break
           }
         } else {
-          v$text = "Interim prior parameters should be two values."
-          break
+          v$text = "Interim prior parameters should be two values."; break
+        }
+        if (is.text.parsable(input$final.priorpar)){
+          eval(parse(text = paste0("conf@finalTheta$priorPar = c(", input$final.priorpar, ")")))
+          if (length(conf@finalTheta$priorPar) != 2){
+            v$text = "Final prior parameters should be two values."; break
+          }
+        } else {
+          v$text = "Final prior parameters should be two values."; break
         }
 
-        conf@finalTheta$method      = input$final_method
-        conf@finalTheta$priorDist   = input$final_prior
-        if (is_text_parsable(input$final_priorpar)){
-          eval(parse(text = paste0("conf@finalTheta$priorPar = c(", input$final_priorpar, ")")))
-          if (length(conf@finalTheta$priorPar) != 2){
-            v$text = "Final prior parameters should be two values."
-            break
+
+        if (conf@itemSelection$method == "FB"){
+          if (conf@interimTheta$method != "FB"){
+            v$text = "FB item selection method requires FB interim method."; break
           }
-        } else {
-          v$text = "Final prior parameters should be two values."
-          break
         }
+
 
         conf@refreshPolicy$method = input$refreshpolicy
         conf@MIP$solver = input$solvertype
 
         v$text = "Simulating.."
         v$time = Sys.time()
-        v$fit <- Shadow(v$itempool, conf, trueTheta, Constraints = v$const, prior = NULL, priorPar = c(0, 1), Data = respData, session = session)
+        v$fit  = Shadow(v$itempool, conf, trueTheta, Constraints = v$const, prior = NULL, priorPar = c(0, 1), Data = respData, session = session)
 
-        if (v$simulee_id > v$n_simulees) v$simulee_id = 1
+        if (v$simulee.id > v$n.simulees) v$simulee.id = 1
 
-        v$plotoutput = plotCAT(v$fit$output[[v$simulee_id]])
-        v$shadowplot = plotShadow(v$fit$output[[v$simulee_id]], v$const)
+        v$plotoutput = plotCAT(v$fit$output[[v$simulee.id]])
+        v$shadowplot = plotShadow(v$fit$output[[v$simulee.id]], v$const)
 
         v$time = Sys.time() - v$time
 
@@ -562,61 +459,42 @@ server <- function(input, output, session) {
     shinyjs::enable("runsolver")
   })
 
-  output$table_itempool <- renderDT({
-    if (is.null(v$itempool)) return()
-    v$itempool@ipar},
-    options = list(pageLength = 100)
-  )
-  output$table_itemattrib <- renderDT(
-    return_object_or_null(v$itemattrib),
-    options = list(pageLength = 100)
-  )
-  output$table_stimattrib <- renderDT(
-    return_object_or_null(v$stimattrib),
-    options = list(pageLength = 100)
-  )
-  output$table_constraints <- renderDT({
-    if (is.null(v$const)) return()
-    v$const$Constraints},
-    options = list(pageLength = 100)
-  )
-  output$results <- renderDT(
-    return_object_or_null(v$results),
-    options = list(pageLength = 100)
-  )
+  output$table.itempool    = renderDT(return.object.or.null(v$ipar)       , options = list(pageLength = 100))
+  output$table.itemattrib  = renderDT(return.object.or.null(v$itemattrib) , options = list(pageLength = 100))
+  output$table.stimattrib  = renderDT(return.object.or.null(v$stimattrib) , options = list(pageLength = 100))
+  output$table.constraints = renderDT(return.object.or.null(v$constraints), options = list(pageLength = 100))
+  output$results           = renderDT(return.object.or.null(v$results), options = list(pageLength = 100))
+  output$textoutput        = renderText(return.object.or.null(v$text))
+  output$plotoutput        = renderPlot(return.object.or.null(v$plotoutput))
+  output$shadowplot        = renderPlot(return.object.or.null(v$shadowplot))
 
-  output$textoutput <- renderText(return_object_or_null(v$text))
-  output$plotoutput <- renderPlot(return_object_or_null(v$plotoutput))
-  output$shadowplot <- renderPlot(return_object_or_null(v$shadowplot))
-
-  output$export_data <- downloadHandler(
+  output$export.data = downloadHandler(
     filename = function() {
       paste("data-", Sys.Date(), ".zip", sep="")
     },
     content = function(fname) {
-      fs <- c()
-      tmpdir <- tempdir()
+      fs = c()
       setwd(tempdir())
 
-      if (!is.null(v$itempool)){
-        path = "raw_data_item_params.csv"
+      if (!is.null(v$ipar)){
+        path = "raw.data.item.params.csv"
         fs = c(fs, path)
-        write.csv(v$itempool@ipar, path)
+        write.csv(v$ipar, path)
       }
       if (!is.null(v$itemattrib)){
-        path = "raw_data_item_attribs.csv"
+        path = "raw.data.item.attribs.csv"
         fs = c(fs, path)
         write.csv(v$itemattrib, path)
       }
       if (!is.null(v$stimattrib)){
-        path = "raw_data_stim_attribs.csv"
+        path = "raw.data.stim.attribs.csv"
         fs = c(fs, path)
         write.csv(v$stimattrib, path)
       }
-      if (!is.null(v$const)){
-        path = "raw_data_constraints.csv"
+      if (!is.null(v$constraints)){
+        path = "raw.data.constraints.csv"
         fs = c(fs, path)
-        write.csv(v$const$Constraints, path)
+        write.csv(v$constraints, path)
       }
 
       if (v$problemtype == 1){
@@ -630,14 +508,14 @@ server <- function(input, output, session) {
         }
         if (v$content.exists){
           if (!is.null(v$idx.from.content)){
-            path = "selected_item_contents.csv"
+            path = "selected.item.contents.csv"
             fs = c(fs, path)
             write.csv(v$content[v$idx.from.content,], path)
           }
         }
         if (!is.null(v$itemattrib)){
           if (!is.null(v$selected.idx)){
-            path = "selected_item_attribs.csv"
+            path = "selected.item.attribs.csv"
             fs = c(fs, path)
             write.csv(v$itemattrib[v$selected.idx,], path)
           }
@@ -646,18 +524,18 @@ server <- function(input, output, session) {
 
       if (v$problemtype == 2){
         if (!is.null(v$fit)){
-          path = paste0("theta_plot_", v$simulee_id, ".pdf")
-          fs <- c(fs, path)
+          path = paste0("theta.plot.", v$simulee.id, ".pdf")
+          fs = c(fs, path)
           pdf(path)
-          p = plotCAT(v$fit$output[[v$simulee_id]])
+          p = plotCAT(v$fit$output[[v$simulee.id]])
           print(p)
           dev.off()
         }
         if (!is.null(v$fit)){
-          path = paste0("shadowtest_chart_", v$simulee_id, ".pdf")
-          fs <- c(fs, path)
+          path = paste0("shadowtest.chart.", v$simulee.id, ".pdf")
+          fs = c(fs, path)
           pdf(path)
-          p = plotShadow(v$fit$output[[v$simulee_id]], v$const)
+          p = plotShadow(v$fit$output[[v$simulee.id]], v$const)
           print(p)
           dev.off()
         }
@@ -668,5 +546,4 @@ server <- function(input, output, session) {
   )
 }
 
-# Run the application
 shinyApp(ui = ui, server = server)
