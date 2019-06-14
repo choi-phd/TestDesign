@@ -650,7 +650,7 @@ setMethod(
 #' Create a subset of an \code{\linkS4class{item.pool}} object
 #'
 #' @param pool An \code{\linkS4class{item.pool}} object
-#' @param select A vector of item indexes to subset
+#' @param select A vector of indices identifying the items to subset
 #'
 #' @export
 subsetPool = function(pool, select = NULL) {
@@ -672,7 +672,7 @@ subsetPool = function(pool, select = NULL) {
     sub.pool@ipar = pool@ipar[select, ]
     sub.pool@SEs = pool@SEs[select, ]
   } else {
-    stop("select contains invalid values")
+    stop("select contains invalid item indices")
   }
   return(sub.pool)
 }
@@ -682,7 +682,7 @@ subsetPool = function(pool, select = NULL) {
 #' Create a subset of a test object
 #'
 #' @param test An \code{\linkS4class{test}} object
-#' @param select A vector of item indexes to subset
+#' @param select A vector of item indices to subset
 #'
 #' @export
 subsetTest = function(test, select = NULL) {
@@ -799,16 +799,15 @@ setMethod(f = "MakeTestCluster",
 #'
 #' @param object A \code{\linkS4class{test}} object
 #' @param startTheta An optional vector of start theta values
-#' @param rangeTheta Lower and upper limit of theta values
 #' @param maxIter Maximum number of iterations
 #' @param crit Convergence criterion
-#' @param select A vector of item indexes to subset
+#' @param select A vector of indices identifying the items to subset
 #'
 #' @docType methods
 #' @rdname MLE-methods
 # TODO: define methods to score test data using MLE
 setGeneric(name = "MLE",
-           def = function(object, startTheta = NULL, rangeTheta = c(-4, 4), maxIter = 100, crit = 0.001, select = NULL) {
+           def = function(object, startTheta = NULL, maxIter = 100, crit = 0.001, select = NULL) {
              standardGeneric("MLE")
            }
 )
@@ -821,7 +820,7 @@ setGeneric(name = "MLE",
 #' @rdname MLE-methods
 setMethod(f = "MLE",
           signature = "test",
-          definition = function(object, startTheta = NULL, rangeTheta = c(-4, 4), maxIter = 100, crit = 0.001, select = NULL) {
+          definition = function(object, startTheta = NULL, maxIter = 100, crit = 0.001, select = NULL) {
             ni = ncol(object@Data)
             nj = nrow(object@Data)
             nq = length(object@theta)
@@ -830,30 +829,56 @@ setMethod(f = "MLE",
               Resp = object@Data
             } else {
               if (!all(select %in% 1:object@pool@ni)) {
-                stop("select contains invalid values")
+                stop("select contains invalid item indices")
               }
               Resp = object@Data[, unique(select)]
             }
+            minTheta = min(object@theta)
+            maxTheta = max(object@theta)
+            if (is.null(startTheta)) {
+              prior = rep(1 / length(object@theta), length(object@theta))
+              startTheta = EAP(object, prior, select = select)$TH
+            }
+            TH = numeric(nj)
+            SE = numeric(nj)
             for (j in 1:nj) {
-              theta_0 = 0
+              theta_1 = startTheta[j]
               converged = FALSE
               iteration = 0
               while (!converged) {
                 iteration = iteration + 1
-
+                theta_0 = theta_1
+                deriv1 = 0
+                deriv2 = 0
+                for (i in unique(select)) {
+                  resp = object@Data[j, i]
+                  deriv1 = deriv1 + calcJacobian(object@pool@parms[[i]], theta_0, resp)
+                  deriv2 = deriv2 + calcHessian(object@pool@parms[[i]], theta_0, resp)
+                }
+                theta_1 = theta_0 - deriv1 / deriv2
+                if (abs(theta_0 - theta_1) < crit || iteration >= maxIter) {
+                  converged = TRUE
+                }
               }
+              TH[j] = theta_1
+              SE[j] = 1 / sqrt(abs(deriv2))
             }
-
+          if (is.null(object@trueTheta)) {
+              RMSE = NULL
+            } else {
+              RMSE = sqrt(mean((TH - object@trueTheta)^2))
+            }
+            return(list(TH = TH, SE = SE, RMSE = RMSE))
         }
 )
 
 #' eap
 #'
-#' @param object A nice parameter
-#' @param theta A nice parameter
-#' @param prior A nice parameter
-#' @param resp A nice parameter
-#' @param select A nice parameter
+#' @param object An S4 object of class \code{\linkS4class{item.pool}}, \code{\linkS4class{test}}, or \code{\linkS4class{test.cluster}}
+#' @param theta A theta grid
+#' @param prior A prior distribution, a numeric vector for a common prior or a matrix for individualized priors
+#' @param resp A numeric matrix of item responses, one row per examinee
+#' @param select A vector of indices identifying the items to subset
 #'
 #' @docType methods
 #' @rdname eap-methods
@@ -896,12 +921,12 @@ setMethod(f = "eap",
                 stop("resp and select must be equal in length when select is not NULL")
               }
               if (anyDuplicated(select) > 0) {
-                warning("select contains duplicated entries")
+                warning("select contains duplicated indices")
                 select = select[-duplicated(select)]
                 response = response[-duplicated(select)]
               }
               if (!all(select %in% 1:ni)) {
-                stop("select contains invalid entries")
+                stop("select contains invalid indices")
               }
               items = select
             } else {
@@ -933,10 +958,10 @@ setMethod(f = "eap",
 
 #' EAP
 #'
-#' @param object A nice parameter
-#' @param prior A nice parameter
-#' @param select A nice parameter
-#' @param resetPrior A nice parameter
+#' @param object An S4 object of class \code{\linkS4class{item.pool}}, \code{\linkS4class{test}}, or \code{\linkS4class{test.cluster}}
+#' @param prior A prior distribution, a numeric vector for a common prior or a matrix for individualized priors
+#' @param select A vector of indices identifying the items to subset
+#' @param resetPrior TRUE to reset the prior distribution for each test when object is of class \code{\linkS4class{test.cluster}}
 #'
 #' @docType methods
 #' @rdname eaparray-methods
@@ -969,7 +994,7 @@ setMethod(f = "EAP",
               select = 1:object@pool@ni
             } else {
               if (!all(select %in% 1:object@pool@ni)) {
-                stop("select contains invalid values")
+                stop("select contains invalid item indices")
               }
             }
             for (i in unique(select)) {
@@ -1020,7 +1045,7 @@ setMethod(f = "EAP",
 #' Create a subset of an item pool
 #'
 #' @param pool An \code{\linkS4class{item.pool}} object
-#' @param select A vector of item indexes to subset
+#' @param select A vector of indices identifying the items to subset
 #'
 #' @export
 subsetItemPool = function(pool, select = NULL) {
@@ -1045,7 +1070,7 @@ subsetItemPool = function(pool, select = NULL) {
     }
     return(sub.pool)
   } else {
-    stop("select contains invalid values")
+    stop("select contains invalid item indices")
   }
 }
 
@@ -1053,8 +1078,8 @@ subsetItemPool = function(pool, select = NULL) {
 #'
 #' Create a \code{\linkS4class{pool.cluster}} object
 #'
-#' @param pools A nice parameter
-#' @param names A nice parameter
+#' @param pools A list of \code{\linkS4class{pool}} objects
+#' @param names An optional vector of \code{\linkS4class{pool}} names
 MakeItemPoolCluster = function(pools, names = NULL) {
   np = length(pools)
   if (np == 0) {
@@ -2097,7 +2122,7 @@ addTrans = function(color, trans)
 #' @param file A file name of an object containing eligibility statistics generated by \code{\link{Shadow}}
 #' @param fileNoFading A file name of an object containing eligibility statistics generated without fading
 #' @param segment A theta segment index
-#' @param items A vector of item indexes to generate the plots
+#' @param items A vector of item indices to generate the plots
 #' @param PDF If supplied a filename, save as a PDF file
 #' @param maxRate A target item exposure rate
 #' @param discardFirst A integer identifying the first x simulees to discard as burn-in
@@ -2398,7 +2423,7 @@ plotExposureRateBySegment = function(object, config, maxRate = 0.25, PDF = NULL,
 #' @param height Height of the graphics object
 #' @param mfrow Number of multiple figures defined as c(nrow, ncol)
 #' @param burnIn An integer identifying the first x simulees to discard as burn-in
-#' @param retain An optional vector of indexes identifying the simulees to retain
+#' @param retain An optional vector of indices identifying the simulees to retain
 plotExposureRateFinal = function(object, config = NULL, maxRate = 0.25, theta = "Estimated", segmentCut = NULL, color = "red", PDF = NULL, width = 7, height = 6, mfrow = c(2, 4), burnIn = 0, retain = NULL) {
   trueTheta = object$trueTheta
   estTheta = object$finalThetaEst
@@ -2569,7 +2594,7 @@ plotExposureRateFinalFlag = function(object, pool, theta = seq(-3, 3, .1), flagC
 #' @param object An object of class \code{\linkS4class{item.pool}}
 #' @param theta A theta grid
 #' @param infoType Type of information
-#' @param select A vector of item indexes to subset
+#' @param select A vector of indices identifying the items to subset
 #' @param PDF If supplied a filename, save as a PDF file
 #' @param color Plotting color
 #' @param width Width of graphics device
@@ -2606,7 +2631,7 @@ plotInfo = function(object, theta, infoType = "FISHER", select = NULL, PDF = NUL
 #' @param object An object of class \code{\linkS4class{item.pool}}
 #' @param theta A theta grid
 #' @param infoType Type of information
-#' @param select A vector of item indexes to subset
+#' @param select A vector of indices identifying the items to subset
 #' @param PDF If supplied a filename, save as a PDF file
 #' @param color Plotting color
 #' @param width Width of the graphics device
@@ -2730,28 +2755,28 @@ iparPosteriorSample = function(pool, nSample = 500) {
 
 #' maxinfoplot
 #'
-#' maxinfoplot
+#' Draw a plot of maximum attainable information given the constraints imposed
 #'
 #' @param pool An \code{\linkS4class{item.pool}} object
-#' @param const A nice parameter
+#' @param constraints A list constraints generated by \code{\link{LoadConstraints}}
+#' @param theta A theta grid
 #'
 #' @export
-maxinfoplot = function(pool, const){
-  idx.nitems = which(toupper(const$Constraints[['WHAT']]) == "ITEM" &
-                     toupper(const$Constraints[['CONDITION']]) == "")
-  n.items = const$Constraints[idx.nitems,]['LB'][1, 1]
-  continuum = seq(-3, 3, .5)
-  max.info = min.info = continuum * 0
-  for(i in 1:length(continuum)){
-    max.info[i] = sum(sort(calcFisher(pool, continuum[i]), T)[1:n.items])
-    min.info[i] = sum(sort(calcFisher(pool, continuum[i]), F)[1:n.items])
+maxinfo_plot = function(pool, constraints, theta = seq(-3, 3, .5)){
+  idx.nitems = which(toupper(constraints$Constraints[['WHAT']]) == "ITEM" &
+                     toupper(constraints$Constraints[['CONDITION']]) == "")
+  n.items = constraints$Constraints[idx.nitems,]['LB'][1, 1]
+  max.info = min.info = theta * 0
+  for(i in 1:length(theta)){
+    max.info[i] = sum(sort(calcFisher(pool, theta[i]), T)[1:n.items])
+    min.info[i] = sum(sort(calcFisher(pool, theta[i]), F)[1:n.items])
   }
   pdf(NULL, bg = 'white')
   dev.control(displaylist = "enable")
   plot(0, 0, type = 'n', xlim = c(-3, 3), ylim = c(0, max(max.info)),
        xlab = 'theta', ylab = 'Information')
-  lines(continuum, max.info, lty = 2, lwd = 2)
-  lines(continuum, min.info, lty = 2, lwd = 2)
+  lines(theta, max.info, lty = 2, lwd = 2)
+  lines(theta, min.info, lty = 2, lwd = 2)
   grid()
   p = recordPlot()
   plot.new()
