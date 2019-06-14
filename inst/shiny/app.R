@@ -388,7 +388,7 @@ server = function(input, output, session) {
         conf@exposureControl$fadingFactor = input$exposure.ff
 
         if (is.text.parsable(input$exposure.af)){
-          eval(parse(text = paste0("conf@exposureControl$accelerationFactor = c(", input$targets, ")[1]")))
+          eval(parse(text = paste0("conf@exposureControl$accelerationFactor = c(", input$exposure.af, ")[1]")))
           if (conf@exposureControl$accelerationFactor < 1){
             v$text = "Acceleration factor should be a number at least 1."; break
           }
