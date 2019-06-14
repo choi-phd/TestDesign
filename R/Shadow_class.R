@@ -1,6 +1,3 @@
-# Documentation progress
-# Phase 1: Create a skeleton structure    -- complete
-
 #' constraint
 #'
 #' Represents a set of constriants.
@@ -35,16 +32,17 @@ setClassUnion("matrixOrNULL", c("matrix", "NULL"))
 
 #' test
 #'
-#' @slot pool An item.pool object.
-#' @slot theta Numeric.
-#' @slot Prob A list.
-#' @slot Info A matrix.
-#' @slot trueTheta Numeric or Null.
-#' @slot Data A matrix or Null.
+#' Create a \code{\linkS4class{test}} object.
+#'
+#' @slot pool An \code{\linkS4class{item.pool}} object.
+#' @slot theta A theta grid.
+#' @slot Prob A list of item response probabilities.
+#' @slot Info A matrix of item information values.
+#' @slot trueTheta An optional vector of true theta values.
+#' @slot Data An optional matrix of item responses.
 #'
 #' @export
 
-#define class for test - should I call this something else?
 setClass("test",
          slots = c(pool = "item.pool",
                    theta = "numeric",
@@ -73,9 +71,11 @@ setClass("test",
 
 #' test.cluster
 #'
-#' @slot nt Numeric.
-#' @slot tests A list.
-#' @slot names Character.
+#' Create a \code{\linkS4class{test.cluster}} object from a list of \code{\linkS4class{test}} objects.
+#'
+#' @slot nt Numeric. A scalar to indicate the number of \code{\linkS4class{test}} objects to be clustered.
+#' @slot tests A list \code{\linkS4class{test}} objects.
+#' @slot names Character. A vector of names correspondign to the \code{\linkS4class{test}} objects.
 #'
 #' @export
 
@@ -265,7 +265,6 @@ config.Shadow = function(itemSelection = NULL, contentBalancing = NULL, MIP = NU
                 "refreshPolicy", "exposureControl", "stoppingCriterion",
                 "interimTheta", "finalTheta")
   obj.names = c()
-
   for (arg in arg.names){
     if (!is.null(eval(parse(text = arg)))){
       eval(parse(text = paste0("obj.names = names(conf@", arg, ")")))
@@ -279,10 +278,8 @@ config.Shadow = function(itemSelection = NULL, contentBalancing = NULL, MIP = NU
       }
     }
   }
-
   if (!is.null(thetaGrid))  conf@thetaGrid  = thetaGrid
   if (!is.null(auditTrail)) conf@auditTrail = auditTrail
-
   v = validObject(conf)
   if (v) return(conf)
 }
@@ -292,59 +289,58 @@ config.Shadow = function(itemSelection = NULL, contentBalancing = NULL, MIP = NU
 #' @export
 setMethod("show", "Shadow.config", function(object) {
   cat("Shadow Configuration Settings \n\n")
-  cat("  Item selection criterion \n")
-  cat("    Method         :", object@itemSelection$method, "\n")
-  cat("    Info type      :", object@itemSelection$infoType, "\n")
-  cat("    Initial theta  :", object@itemSelection$initialTheta, "\n\n")
-  cat("  Content balancing \n")
-  cat("    Method         :", object@contentBalancing$method, "\n\n")
+  cat("  itemSelection \n")
+  cat("    method         :", object@itemSelection$method, "\n")
+  cat("    infoType       :", object@itemSelection$infoType, "\n")
+  cat("    initialTheta   :", object@itemSelection$initialTheta, "\n")
+  cat("    fixedTheta     :", object@itemSelection$fixedTheta, "\n\n")
+  cat("  contentBalancing \n")
+  cat("    method         :", object@contentBalancing$method, "\n\n")
   cat("  MIP \n")
-  cat("    Solver         :", object@MIP$solver, "\n")
-  cat("    Verbosity      :", object@MIP$verbosity, "\n")
-  cat("    Time limit     :", object@MIP$timeLimit, "\n")
-  cat("    Gap limit      :", object@MIP$gapLimit, "\n\n")
+  cat("    solver         :", object@MIP$solver, "\n")
+  cat("    verbosity      :", object@MIP$verbosity, "\n")
+  cat("    timeLimit      :", object@MIP$timeLimit, "\n")
+  cat("    gapLimit       :", object@MIP$gapLimit, "\n\n")
   cat("  MCMC \n")
-  cat("    Burn in        :", object@MCMC$burnIn, "\n")
-  cat("    Post burn in   :", object@MCMC$postBurnIn, "\n")
-  cat("    Thin           :", object@MCMC$thin, "\n")
-  cat("    Jump factor    :", object@MCMC$jumpFactor, "\n\n")
-  cat("  Refresh policy \n")
-  cat("    Method         :", object@refreshPolicy$method, "\n")
-  cat("    Interval       :", object@refreshPolicy$interval, "\n")
-  cat("    Threshold      :", object@refreshPolicy$threshold, "\n")
-  cat("    Position       :", object@refreshPolicy$position, "\n\n")
-  cat("  Exposure control \n")
-  cat("    Method         :", object@exposureControl$method, "\n")
-  cat("    Big M          :", object@exposureControl$M, "\n")
-  cat("    Max Exposure   :", object@exposureControl$maxExposureRate, "\n")
-  cat("    N Segment      :", object@exposureControl$nSegment, "\n")
-  cat("    Segment cut    :", object@exposureControl$segmentCut, "\n")
-  cat("    Fading factor  :", object@exposureControl$fadingFactor, "\n")
-  cat("    Acceleration   :", object@exposureControl$accelerationFactor, "\n")
-  cat("    Diagnostics    :", object@exposureControl$diagnosticStats, "\n\n")
-  cat("  Stopping criterion \n")
-  cat("    Method         :", object@stoppingCriterion$method, "\n")
-  if (toupper(object@stoppingCriterion$method) == "FIXED") {
-    cat("    Test Length    :", object@stoppingCriterion$testLength, "\n")
-  } else {
-    cat("    Min # of items :", object@stoppingCriterion$minNI, "\n")
-    cat("    Max # of items :", object@stoppingCriterion$maxNI, "\n")
-    cat("    SE threshold   :", object@stoppingCriterion$SeThreshold, "\n")
-  }
-  cat("    Min # of items :", object@stoppingCriterion$minNI, "\n")
-  cat("    Max # of items :", object@stoppingCriterion$maxNI, "\n")
-  cat("    SE threshold   :", ifelse(toupper(object@stoppingCriterion$method) == "VARIABLE", object@stoppingCriterion$SeThreshold, NA), "\n\n")
-  cat("  Interim theta estimator \n")
-  cat("    Method         :", object@interimTheta$method, "\n")
-  cat("    Prior dist     :", ifelse(toupper(object@interimTheta$method == "EAP"), object@interimTheta$priorDist, NA), "\n")
-  cat("    Prior parm     :", ifelse(toupper(object@interimTheta$method == "EAP"), sprintf(ifelse(toupper(object@interimTheta$priorDist) == "NORMAL", "Mean = %5.3f, SD = %5.3f", "Min = %5.3f, Max = %5.3f"), object@interimTheta$priorPar[1], object@interimTheta$priorPar[2]), NA), "\n\n")
-  cat("  Final theta estimator \n")
-  cat("    Method         :", object@finalTheta$method, "\n")
-  cat("    Prior dist     :", ifelse(toupper(object@finalTheta$method == "EAP"), object@finalTheta$priorDist, NA), "\n")
-  cat("    Prior parm     :", ifelse(toupper(object@finalTheta$method == "EAP"), sprintf(ifelse(toupper(object@finalTheta$priorDist) == "NORMAL", "Mean = %5.3f, SD = %5.3f", "Min = %5.3f, Max = %5.3f"), object@finalTheta$priorPar[1], object@finalTheta$priorPar[2]), NA), "\n\n")
-  cat("  Theta Grid \n")
+  cat("    burnIn         :", object@MCMC$burnIn, "\n")
+  cat("    postBurnIn     :", object@MCMC$postBurnIn, "\n")
+  cat("    thin           :", object@MCMC$thin, "\n")
+  cat("    jumpFactor     :", object@MCMC$jumpFactor, "\n\n")
+  cat("  refreshPolicy \n")
+  cat("    method         :", object@refreshPolicy$method, "\n")
+  cat("    interval       :", object@refreshPolicy$interval, "\n")
+  cat("    threshold      :", object@refreshPolicy$threshold, "\n")
+  cat("    position       :", object@refreshPolicy$position, "\n\n")
+  cat("  exposureControl \n")
+  cat("    method                  :", object@exposureControl$method, "\n")
+  cat("    M                       :", object@exposureControl$M, "\n")
+  cat("    maxExposureRate         :", object@exposureControl$maxExposureRate, "\n")
+  cat("    accelerationFactor      :", object@exposureControl$accelerationFactor, "\n")
+  cat("    nSegment                :", object@exposureControl$nSegment, "\n")
+  cat("    firstSegment            :", object@exposureControl$firstSegment, "\n")
+  cat("    segmentCut              :", object@exposureControl$segmentCut, "\n")
+  cat("    initialEligibilityStats :", !is.null(object@exposureControl$initialEligibilityStats), "\n")
+  cat("    fadingFactor            :", object@exposureControl$fadingFactor, "\n")
+  cat("    diagnosticsStats        :", object@exposureControl$diagnosticStats, "\n\n")
+  cat("  stoppingCriterion \n")
+  cat("    method         :", object@stoppingCriterion$method, "\n")
+  cat("    testLength     :", object@stoppingCriterion$testLength, "\n")
+  cat("    minNI          :", object@stoppingCriterion$minNI, "\n")
+  cat("    maxNI          :", object@stoppingCriterion$maxNI, "\n")
+  cat("    SeThreshold    :", ifelse(toupper(object@stoppingCriterion$method) == "VARIABLE", object@stoppingCriterion$SeThreshold, NA), "\n\n")
+  cat("  interimTheta \n")
+  cat("    method              :", object@interimTheta$method, "\n")
+  cat("    shrinkageCorrection :", object@interimTheta$shrinkageCorrection, "\n")
+  cat("    priorDist           :", ifelse(toupper(object@interimTheta$method == "EAP"), object@interimTheta$priorDist, NA), "\n")
+  cat("    priorPar            :", ifelse(toupper(object@interimTheta$method == "EAP"), sprintf(ifelse(toupper(object@interimTheta$priorDist) == "NORMAL", "Mean = %5.3f, SD = %5.3f", "Min = %5.3f, Max = %5.3f"), object@interimTheta$priorPar[1], object@interimTheta$priorPar[2]), NA), "\n\n")
+  cat("  finalTheta \n")
+  cat("    method              :", object@finalTheta$method, "\n")
+  cat("    shrinkageCorrection :", object@finalTheta$shrinkageCorrection, "\n")
+  cat("    priorDist           :", ifelse(toupper(object@finalTheta$method == "EAP"), object@finalTheta$priorDist, NA), "\n")
+  cat("    priorPar            :", ifelse(toupper(object@finalTheta$method == "EAP"), sprintf(ifelse(toupper(object@finalTheta$priorDist) == "NORMAL", "Mean = %5.3f, SD = %5.3f", "Min = %5.3f, Max = %5.3f"), object@finalTheta$priorPar[1], object@finalTheta$priorPar[2]), NA), "\n\n")
+  cat("  thetaGrid \n")
   print(object@thetaGrid)
-  cat("\n  Plot Audit Trail: ", object@auditTrail, "\n")
+  cat("\n  auditTrail: ", object@auditTrail, "\n")
 })
 
 #' Shadow.output
@@ -372,7 +368,6 @@ setMethod("show", "Shadow.config", function(object) {
 #'
 #' @export
 
-#define class for Shadow.output per examinee
 setClass("Shadow.output",
          slots = c(simuleeIndex = "numeric",
                    trueTheta = "numericOrNULL",
@@ -388,7 +383,6 @@ setClass("Shadow.output",
                    interimThetaEst = "numeric",
                    interimSeEst = "numeric",
                    thetaSegmentIndex = "numeric",
-                   #thetaGrid = "numeric",
                    prior = "numeric",
                    priorPar = "numeric",
                    posterior = "numeric",
@@ -409,7 +403,6 @@ setClass("Shadow.output",
                           interimThetaEst = numeric(0),
                           interimSeEst = numeric(0),
                           thetaSegmentIndex = numeric(0),
-                          #thetaGrid = numeric(0),
                           prior = numeric(0),
                           priorPar = numeric(0),
                           posterior = numeric(0),
