@@ -582,7 +582,6 @@ setMethod(f = "simResp",
 #' @export
 "==.item.pool" = function(pool1, pool2) {
   if(class(pool1) != "item.pool" || class(pool2) != "item.pool") stop("operarands must be of class \"item.pool\" ")
-  
   return(identical(pool1, pool2))
 }
 
@@ -596,7 +595,6 @@ setMethod(f = "simResp",
 #' @export
 "==.pool.cluster" = function(pool.cluster1, pool.cluster2) {
   if(class(pool.cluster1) != "pool.cluster" || class(pool.cluster2) != "pool.cluster") stop("operarands must be of class \"pool.cluster\" ")
-  
   return(identical(pool.cluster1, pool.cluster2))
 }
 
@@ -795,19 +793,151 @@ setMethod(f = "MakeTestCluster",
           }
 )
 
-#' An S4 Generic
+#' mle
+#' 
+#' @param object A \code{\linkS4class{test}} object
+#' @param resp A vector (or matrix) of item responses
+#' @param startTheta An optional vector of start theta values
+#' @param maxIter Maximum number of iterations
+#' @param crit Convergence criterion
+#' @param select A vector of indices identifying the items to subset
+#' @param thetaRange A range of theta values
+#' @param truncate TRUE to bound MLE to thetaRange, c(minTheta, maxTheta)
+#' @param maxChange Maximum change between iterations
+#' @param FisherScoring TRUE to use Fisher's method of scoring
+#' 
+#' @docType methods
+#' @rdname mle-methods
+setGeneric(name = "mle",
+           def = function(object, resp, startTheta = NULL, maxIter = 100, crit = 0.001, select = NULL, thetaRange = c(-4, 4), truncate = FALSE, maxChange = 1.0, FisherScoring = TRUE) {
+             standardGeneric("mle")
+           }
+)
+
+#' mle
+#'
+#' Generate maximum likelihood estimates of theta
+#'
+#' @docType methods
+#' @rdname mle-methods
+#' @export
+setMethod(f = "mle",
+          signature = "item.pool",
+          definition = function(object, resp, startTheta = NULL, maxIter = 50, crit = 0.005, select = NULL, thetaRange = c(-4, 4), truncate = FALSE, maxChange = 1.0, FisherScoring = TRUE) {
+            ni = object@ni
+            theta = seq(min(thetaRange), max(thetaRange), .1)
+            nq = length(theta)
+            if (is.vector(resp)) {
+              nj = 1
+              resp = matrix(resp, 1)
+            } else if (is.matrix(resp)) {
+              nj = nrow(resp)
+            } else if (is.data.frame(resp)) {
+              nj = nrow(resp)
+              resp = as.matrix(resp)
+            } else {
+              stop("resp must be of class vector, matrix, or data.frame")
+            }
+            if (!is.null(select)) {
+              if (length(resp) != length(select)) {
+                stop("resp and select must be equal in length when select is not NULL")
+              }
+              if (anyDuplicated(select) > 0) {
+                warning("select contains duplicated indices")
+                select = select[-duplicated(select)]
+              }
+              if (!all(select %in% 1:ni)) {
+                stop("select contains invalid indices")
+              }
+              items = select
+            } else {
+              items = 1:ni
+            } 
+            if (ncol(resp) != length(items)) {
+              stop("resp must be of length ni or match the length of select")
+            }
+            if (is.null(startTheta)) {
+              startTheta = eap(object, theta, rep(1 / nq, nq), resp, select = select)$TH
+            } else if (length(startTheta) == 1) {
+              startTheta = rep(startTheta, nj)
+            } else if (length(startTheta) != nj) {
+              stop("startTheta must be of length 1 or the number of examinees")
+            }
+            TH = numeric(nj)
+            SE = numeric(nj)
+            Conv = Trunc = logical(nj)
+            for (j in 1:nj) {
+              theta_1 = startTheta[j]
+              maxRawScore = sum(object@NCAT[items[!is.na(resp[j, ])]] - 1)
+              rawScore = sum(resp[j, ], na.rm = TRUE)
+              if (rawScore > 0 && rawScore < maxRawScore) {
+                converged = FALSE
+                done = FALSE
+                iteration = 0
+                while (!converged && !done && iteration <= maxIter) {
+                  iteration = iteration + 1
+                  theta_0 = theta_1
+                  deriv1 = 0
+                  deriv2 = 0
+                  for (i in 1:length(items)) {
+                    if (!is.na(resp[j, i])) {
+                      deriv1 = deriv1 + calcJacobian(object@parms[[items[i]]], theta_0, resp[j, i])
+                      if (FisherScoring) {
+                        deriv2 = deriv2 + calcFisher(object@parms[[items[i]]], theta_0)
+                      } else {
+                        deriv2 = deriv2 - calcHessian(object@parms[[items[i]]], theta_0, resp[j, i])
+                      }
+                    }
+                  }
+                  change = deriv1 / deriv2
+                  if (is.nan(change)) {
+                    done = TRUE
+                  } else {
+                    if (abs(change) > maxChange) {
+                      change = sign(change) * maxChange
+                    } else if (abs(change) < crit) {
+                      converged = Conv[j] = TRUE
+                    }
+                    theta_1 = theta_0 + change
+                  }
+                }
+              }
+              if (Conv[j]) {
+                TH[j] = theta_1
+                SE[j] = 1 / sqrt(abs(deriv2))
+              } else {
+                TH[j] = startTheta[j]
+                sumFisher = 0
+                for (i in 1:length(items)) {
+                  sumFisher = sumFisher + calcFisher(object@parms[[items[i]]], TH[j])
+                }
+                SE[j] = 1 / sqrt(sumFisher)
+              }
+            }
+            if (truncate) {
+              minTheta = min(thetaRange)
+              maxTheta = max(thetaRange)
+              TH[TH > maxTheta] = maxTheta
+              TH[TH < minTheta] = minTheta
+            }
+            return(list(TH = TH, SE = SE, Conv = Conv, Trunc = Trunc))
+          }
+)
+
+#' MLE
 #' 
 #' @param object A \code{\linkS4class{test}} object
 #' @param startTheta An optional vector of start theta values
 #' @param maxIter Maximum number of iterations
 #' @param crit Convergence criterion
 #' @param select A vector of indices identifying the items to subset
+#' @param thetaRange A range of theta values, c(minTheta, maxTheta)
+#' @param truncate TRUE to bound MLE to thetaRange
 #' 
 #' @docType methods
-#' @rdname MLE-methods
-# TODO: define methods to score test data using MLE
+#' @rdname mlearray-methods
 setGeneric(name = "MLE",
-           def = function(object, startTheta = NULL, maxIter = 100, crit = 0.001, select = NULL) {
+           def = function(object, startTheta = NULL, maxIter = 100, crit = 0.001, select = NULL, thetaRange = c(-4, 4), truncate = FALSE, maxChange = 1.0, FisherScoring = TRUE) {
              standardGeneric("MLE")
            }
 )
@@ -817,10 +947,10 @@ setGeneric(name = "MLE",
 #' Generate maximum likelihood estimates of theta
 #' 
 #' @docType methods
-#' @rdname MLE-methods
+#' @rdname mlearray-methods
 setMethod(f = "MLE",
           signature = "test",
-          definition = function(object, startTheta = NULL, maxIter = 100, crit = 0.001, select = NULL) {
+          definition = function(object, startTheta = NULL, maxIter = 100, crit = 0.001, select = NULL, thetaRange = c(-4, 4), truncate = FALSE, maxChange = 1.0, FisherScoring = TRUE) {
             ni = ncol(object@Data)
             nj = nrow(object@Data)
             nq = length(object@theta)            
@@ -832,49 +962,111 @@ setMethod(f = "MLE",
                 stop("select contains invalid item indices")
               }
               Resp = object@Data[, unique(select)]
-            } 
-            minTheta = min(object@theta)
-            maxTheta = max(object@theta)
+            }
+            if (!is.null(select)) {
+              if (anyDuplicated(select) > 0) {
+                warning("select contains duplicated indices")
+                select = select[-duplicated(select)]
+              }
+              if (!all(select %in% 1:ni)) {
+                stop("select contains invalid indices")
+              }
+              items = select
+            } else {
+              items = 1:ni
+            }
             if (is.null(startTheta)) {
-              prior = rep(1 / length(object@theta), length(object@theta))
+              prior = rep(1 / nq, nq) 
               startTheta = EAP(object, prior, select = select)$TH
+            } else if (length(startTheta) == 1) {
+              startTheta = rep(startTheta, nj)
+            } else if (length(startTheta) != nj) {
+              stop("startTheta must be of length 1 or the number of examinees")
             }
             TH = numeric(nj)
             SE = numeric(nj)
+            Conv = Trunc = logical(nj)
             for (j in 1:nj) {
               theta_1 = startTheta[j]
-              converged = FALSE
-              iteration = 0
-              while (!converged) {
-                iteration = iteration + 1
-                theta_0 = theta_1
-                deriv1 = 0
-                deriv2 = 0
-                for (i in unique(select)) {
-                  resp = object@Data[j, i]
-                  deriv1 = deriv1 + calcJacobian(object@pool@parms[[i]], theta_0, resp)
-                  deriv2 = deriv2 + calcHessian(object@pool@parms[[i]], theta_0, resp)
-                }
-                theta_1 = theta_0 - deriv1 / deriv2
-                if (abs(theta_0 - theta_1) < crit || iteration >= maxIter) {
-                  converged = TRUE
+              maxRawScore = sum(object@pool@NCAT[items[!is.na(object@Data[j,items])]] - 1)
+              rawScore = sum(object@Data[j,items], na.rm = TRUE)
+              if (rawScore > 0 && rawScore < maxRawScore) {
+                converged = FALSE
+                done = FALSE
+                iteration = 0
+                while (!converged && !done && iteration <= maxIter) {
+                  iteration = iteration + 1
+                  theta_0 = theta_1
+                  deriv1 = 0
+                  deriv2 = 0
+                  for (i in items) {
+                    resp = object@Data[j, i]
+                    deriv1 = deriv1 + calcJacobian(object@pool@parms[[i]], theta_0, resp)
+                    if (FisherScoring) {
+                      deriv2 = deriv2 + calcFisher(object@pool@parms[[i]], theta_0)
+                    } else {
+                      deriv2 = deriv2 - calcHessian(object@pool@parms[[i]], theta_0, resp)
+                    }
+                  }
+                  change = deriv1 / deriv2
+                  if (is.nan(change)) {
+                    done = TRUE
+                  } else {
+                    if (abs(change) > maxChange) {
+                      change = sign(change) * maxChange
+                    } else if (abs(change) < crit) {
+                      converged = Conv[j] = TRUE
+                    }
+                    theta_1 = theta_0 + change
+                  }
                 }
               }
-              TH[j] = theta_1
-              SE[j] = 1 / sqrt(abs(deriv2))
+              if (Conv[j]) {
+                TH[j] = theta_1
+                SE[j] = 1 / sqrt(abs(deriv2))
+              } else {
+                TH[j] = startTheta[j]
+                sumFisher = 0
+                for (i in 1:length(items)) {
+                  sumFisher = sumFisher + calcFisher(object@parms[[items[i]]], TH[j])
+                }
+                SE[j] = 1 / sqrt(sumFisher)
+              }
             }
-          if (is.null(object@trueTheta)) {
-              RMSE = NULL
-            } else {
+            if (truncate) {
+              minTheta = min(thetaRange)
+              maxTheta = max(thetaRange)
+              TH[TH > maxTheta] = maxTheta
+              TH[TH < maxTheta] = minTheta
+            }
+            RMSE = NULL
+            if (!is.null(object@trueTheta)) {
               RMSE = sqrt(mean((TH - object@trueTheta)^2))
             }
-            return(list(TH = TH, SE = SE, RMSE = RMSE))
-        }   
+            return(list(TH = TH, SE = SE, Conv = Conv, Trunc = Trunc, RMSE = RMSE))
+          }   
+)
+
+#' MLE
+#' 
+#' Genereate maximum likelihood estimates of theta
+#' 
+#' @docType methods
+#' @rdname mlearray-methods
+setMethod(f = "MLE",
+          signature = "test.cluster",
+          definition = function(object, startTheta = NULL, maxIter = 100, crit = 0.001, select = NULL) {
+            MLE.cluster = vector(mode = "list", length = object@nt)
+            for (t in 1:object@nt) {
+              MLE.cluster[[t]] = MLE(object@tests[[t]], startTheta = startTheta, maxIter = maxIter, crit = crit, select = NULL)
+            }
+            return(MLE.cluster)
+          }
 )
 
 #' eap
 #' 
-#' @param object An S4 object of class \code{\linkS4class{item.pool}}, \code{\linkS4class{test}}, or \code{\linkS4class{test.cluster}}
+#' @param object An S4 object of class \code{\linkS4class{item.pool}}
 #' @param theta A theta grid
 #' @param prior A prior distribution, a numeric vector for a common prior or a matrix for individualized priors
 #' @param resp A numeric matrix of item responses, one row per examinee
@@ -958,14 +1150,13 @@ setMethod(f = "eap",
 
 #' EAP
 #' 
-#' @param object An S4 object of class \code{\linkS4class{item.pool}}, \code{\linkS4class{test}}, or \code{\linkS4class{test.cluster}}
+#' @param object An S4 object of \code{\linkS4class{test}} or \code{\linkS4class{test.cluster}}
 #' @param prior A prior distribution, a numeric vector for a common prior or a matrix for individualized priors
 #' @param select A vector of indices identifying the items to subset
 #' @param resetPrior TRUE to reset the prior distribution for each test when object is of class \code{\linkS4class{test.cluster}}
 #' 
 #' @docType methods
 #' @rdname eaparray-methods
-# define methods to score test data using EAP
 setGeneric(name = "EAP",
            def = function(object, prior, select = NULL, resetPrior = FALSE) {
              standardGeneric("EAP")
@@ -1142,7 +1333,6 @@ setMethod(f = "Shadow",
             } else {
               ni = object@ni
             }
-                        
             model = object@model
             model[which(model == "item.1pl")] = 1
             model[which(model == "item.2pl")] = 2
@@ -1152,13 +1342,13 @@ setMethod(f = "Shadow",
             model[which(model == "item.gr")]  = 6
             model = as.numeric(model)          
             if (!is.null(trueTheta)) {
-              nj = length(trueTheta)       # number of simulees
+              nj = length(trueTheta) 
             } else if (!is.null(Data)) {
               nj = nrow(Data)
             } else {
               stop("either trueTheta or Data should be provided at a minimum")
             }            
-            nq = length(config@thetaGrid)  # number of theta quadrature points           
+            nq = length(config@thetaGrid)           
             minTheta = min(config@thetaGrid)
             maxTheta = max(config@thetaGrid)            
             exposureControl = toupper(config@exposureControl$method)
@@ -1203,12 +1393,17 @@ setMethod(f = "Shadow",
             }             
             if (!is.null(Data)) {
               Test = MakeTest(object, config@thetaGrid, infoType = "FISHER", trueTheta = NULL)
-              Test@Data = as.matrix(Data)
+              Data = as.matrix(Data)
+              for (i in 1:ni) {
+                invalidResp = !(Data[, i] %in% 0:(object@NCAT[i] - 1))
+                Data[invalidResp, i] = NA
+              }
+              Test@Data = Data
             } else if (!is.null(trueTheta)) {
               Test = MakeTest(object, config@thetaGrid, infoType = "FISHER", trueTheta)
             } else {
               stop("both Data and trueTheta cannot be NULL")
-            }            
+            }          
             maxInfo = max(Test@Info)            
             if (is.null(prior)) {
               if (!is.null(priorPar)) {
@@ -1464,7 +1659,7 @@ setMethod(f = "Shadow",
               output@interimSeEst = numeric(maxNI)
               output@administeredStimulusIndex = NaN
               output@shadowTest = vector(mode = "list", length = maxNI)              
-              if (config@interimTheta$method %in% c("EAP")) {
+              if (config@interimTheta$method %in% c("EAP", "MLE")) {
                 currentTheta = initialTheta[j]
               } else if (toupper(config@interimTheta$method) %in% c("EB", "FB")) {
                 if (is.vector(priorPar) && length(priorPar) == 2) {
@@ -1701,6 +1896,17 @@ setMethod(f = "Shadow",
                 if (toupper(config@interimTheta$method) == "EAP") {
                   output@interimThetaEst[position] = sum(posterior[j, ] * Test@theta) / sum(posterior[j, ])
                   output@interimSeEst[position] = sqrt(sum(posterior[j, ] * (Test@theta - output@interimThetaEst[position])^2) / sum(posterior[j, ]))
+                  if (toupper(config@interimTheta$priorDist) == "NORMAL" && config@interimTheta$shrinkageCorrection) {
+                    output@interimThetaEst[position] = output@interimThetaEst[position] * (1 + output@interimSeEst[position]^2)
+                    if (output@interimSeEst[position] < config@interimTheta$priorPar[2]) {
+                      output@interimSeEst[position] = 1 / sqrt(1 / output@interimSeEst[position]^2 - 1 / config@interimTheta$priorPar[2]^2)
+                    }
+                  }
+                } else if (toupper(config@interimTheta$method) == "MLE") {
+                  interimEAP = sum(posterior[j, ] * Test@theta) / sum(posterior[j, ])
+                  interimMLE = mle(object, output@administeredItemResp[1:position], startTheta = interimEAP, thetaRange = config@interimTheta$boundML, maxIter = config@interimTheta$maxIter, crit = config@interimTheta$crit, select = output@administeredItemIndex[1:position])
+                  output@interimThetaEst[position] = interimMLE$TH
+                  output@interimSeEst[position] = interimMLE$SE
                 } else if (toupper(config@interimTheta$method) %in% c("EB", "FB")) {
                   currentItem = output@administeredItemIndex[position]
                   if (toupper(config@interimTheta$method == "EB")) {
@@ -1734,7 +1940,7 @@ setMethod(f = "Shadow",
                   output@posterior = posterior[j, ]
                 }
               } 
-              if (all.equal(config@finalTheta, config@interimTheta) == TRUE) {
+              if (all.equal(config@finalTheta, config@interimTheta)[1] == TRUE) {
                 output@finalThetaEst = output@interimThetaEst[position]
                 output@finalSeEst = output@interimSeEst[position]
               } else if (toupper(config@finalTheta$method == "EAP")) {
@@ -1746,6 +1952,16 @@ setMethod(f = "Shadow",
                 output@posterior = output@likelihood * finalPrior
                 output@finalThetaEst = sum(output@posterior * config@thetaGrid) / sum(output@posterior)
                 output@finalSeEst = sqrt(sum(output@posterior * (config@thetaGrid - output@finalThetaEst)^2)/sum(output@posterior))
+                if (toupper(config@finalTheta$priorDist) == "NORMAL" && config@finalTheta$shrinkageCorrection) {
+                  output@finalThetaEst = output@finalThetaEst * (1 + output@finalSeEst^2)
+                  if (output@finalSeEst < config@finalTheta$priorPar[2]) {
+                    output@finalSeEst = 1 / sqrt(1 / output@finalSeEst^2 - 1 / config@finalTheta$priorPar[2]^2)
+                  }
+                }
+              } else if (toupper(config@finalTheta$method) == "MLE") {
+                finalMLE = mle(object, output@administeredItemResp[1:maxNI], startTheta = output@interimThetaEst[maxNI], thetaRange = config@finalTheta$boundML, maxIter = config@finalTheta$maxIter, crit = config@finalTheta$crit, select = output@administeredItemIndex[1:maxNI], truncate = TRUE)
+                output@finalThetaEst = finalMLE$TH
+                output@finalSeEst = finalMLE$SE
               }
               usageMatrix[j, output@administeredItemIndex] = TRUE
               if (setBased) {
@@ -2784,5 +3000,4 @@ maxinfo_plot = function(pool, constraints, theta = seq(-3, 3, .5)){
   dev.off()
   return(p)
 }
-
 

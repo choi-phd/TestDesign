@@ -15,13 +15,13 @@ EAP(object, prior, select = NULL, resetPrior = FALSE)
   resetPrior = FALSE)
 }
 \arguments{
-\item{object}{A nice parameter}
+\item{object}{An S4 object of \code{\linkS4class{test}} or \code{\linkS4class{test.cluster}}}
 
-\item{prior}{A nice parameter}
+\item{prior}{A prior distribution, a numeric vector for a common prior or a matrix for individualized priors}
 
-\item{select}{A nice parameter}
+\item{select}{A vector of indices identifying the items to subset}
 
-\item{resetPrior}{A nice parameter}
+\item{resetPrior}{TRUE to reset the prior distribution for each test when object is of class \code{\linkS4class{test.cluster}}}
 }
 \description{
 Generate expected a posteriori estimates of theta
