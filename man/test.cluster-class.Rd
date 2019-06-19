@@ -5,15 +5,15 @@
 \alias{test.cluster-class}
 \title{test.cluster}
 \description{
-test.cluster
+Create a \code{\linkS4class{test.cluster}} object from a list of \code{\linkS4class{test}} objects.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{nt}}{Numeric.}
+\item{\code{nt}}{Numeric. A scalar to indicate the number of \code{\linkS4class{test}} objects to be clustered.}
 
-\item{\code{tests}}{A list.}
+\item{\code{tests}}{A list \code{\linkS4class{test}} objects.}
 
-\item{\code{names}}{Character.}
+\item{\code{names}}{Character. A vector of names correspondign to the \code{\linkS4class{test}} objects.}
 }}
 
