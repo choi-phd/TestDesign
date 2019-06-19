@@ -5,21 +5,21 @@
 \alias{test-class}
 \title{test}
 \description{
-test
+Create a \code{\linkS4class{test}} object.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{pool}}{An item.pool object.}
+\item{\code{pool}}{An \code{\linkS4class{item.pool}} object.}
 
-\item{\code{theta}}{Numeric.}
+\item{\code{theta}}{A theta grid.}
 
-\item{\code{Prob}}{A list.}
+\item{\code{Prob}}{A list of item response probabilities.}
 
-\item{\code{Info}}{A matrix.}
+\item{\code{Info}}{A matrix of item information values.}
 
-\item{\code{trueTheta}}{Numeric or Null.}
+\item{\code{trueTheta}}{An optional vector of true theta values.}
 
-\item{\code{Data}}{A matrix or Null.}
+\item{\code{Data}}{An optional matrix of item responses.}
 }}
 

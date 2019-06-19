@@ -32,7 +32,7 @@ plotExposureRateFinal(object, config = NULL, maxRate = 0.25,
 
 \item{burnIn}{An integer identifying the first x simulees to discard as burn-in}
 
-\item{retain}{An optional vector of indexes identifying the simulees to retain}
+\item{retain}{An optional vector of indices identifying the simulees to retain}
 }
 \description{
 Draw exposure rate plots by final theta segment

@@ -7,9 +7,9 @@
 MakeItemPoolCluster(pools, names = NULL)
 }
 \arguments{
-\item{pools}{A nice parameter}
+\item{pools}{A list of \code{\linkS4class{pool}} objects}
 
-\item{names}{A nice parameter}
+\item{names}{An optional vector of \code{\linkS4class{pool}} names}
 }
 \description{
 Create a \code{\linkS4class{pool.cluster}} object
