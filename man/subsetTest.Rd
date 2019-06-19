@@ -9,7 +9,7 @@ subsetTest(test, select = NULL)
 \arguments{
 \item{test}{An \code{\linkS4class{test}} object}
 
-\item{select}{A vector of item indexes to subset}
+\item{select}{A vector of item indices to subset}
 }
 \description{
 Create a subset of a test object
