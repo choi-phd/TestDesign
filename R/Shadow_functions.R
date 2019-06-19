@@ -3000,4 +3000,3 @@ maxinfo_plot = function(pool, constraints, theta = seq(-3, 3, .5)){
   dev.off()
   return(p)
 }
-
