@@ -1269,8 +1269,8 @@ subsetItemPool = function(pool, select = NULL) {
 #' 
 #' Create a \code{\linkS4class{pool.cluster}} object
 #' 
-#' @param pools A list of \code{\linkS4class{pool}} objects
-#' @param names An optional vector of \code{\linkS4class{pool}} names
+#' @param pools A list of \code{\linkS4class{item.pool}} objects
+#' @param names An optional vector of \code{\linkS4class{item.pool}} names
 MakeItemPoolCluster = function(pools, names = NULL) {
   np = length(pools)
   if (np == 0) {
