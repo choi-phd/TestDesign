@@ -933,6 +933,8 @@ setMethod(f = "mle",
 #' @param select A vector of indices identifying the items to subset
 #' @param thetaRange A range of theta values, c(minTheta, maxTheta)
 #' @param truncate TRUE to bound MLE to thetaRange
+#' @param maxChange Maximum change between iterations
+#' @param FisherScoring TRUE to use Fisher's method of scoring
 #' 
 #' @docType methods
 #' @rdname mlearray-methods
@@ -1269,8 +1271,8 @@ subsetItemPool = function(pool, select = NULL) {
 #' 
 #' Create a \code{\linkS4class{pool.cluster}} object
 #' 
-#' @param pools A list of \code{\linkS4class{pool}} objects
-#' @param names An optional vector of \code{\linkS4class{pool}} names
+#' @param pools A list of \code{\linkS4class{item.pool}} objects
+#' @param names An optional vector of \code{\linkS4class{item.pool}} names
 MakeItemPoolCluster = function(pools, names = NULL) {
   np = length(pools)
   if (np == 0) {
