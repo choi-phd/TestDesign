@@ -848,9 +848,9 @@ setMethod(f = "calcDerivative2",
           definition = function(object, theta) {
             prob = calcProb(object, theta)
             ES = as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
-            derivative = numeric(length(theta))
+            derivative2 = numeric(length(theta))
             for (k in 1:object@ncat) {
-              derivative = derivative + prob[, k] * (k - ES) * k
+              derivative2 = derivative2 + prob[, k] * (k - ES) * k
             }
             return(derivative2)
           }
@@ -869,9 +869,9 @@ setMethod(f = "calcDerivative2",
           definition = function(object, theta) {
             prob = calcProb(object, theta)
             ES = as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
-            derivative = numeric(length(theta))
+            derivative2 = numeric(length(theta))
             for (k in 1:object@ncat) {
-              derivative = derivative + object@slope * prob[, k] * (k - ES) * k
+              derivative2 = derivative2 + object@slope * prob[, k] * (k - ES) * k
             }
             return(derivative2)
           }
@@ -889,7 +889,7 @@ setMethod(f = "calcDerivative2",
           signature = c("item.gr", "numeric"),
           definition = function(object, theta) {
             prob = calcProb(object, theta)
-            derivative = numeric(length(theta))
+            derivative2 = numeric(length(theta))
             ps = matrix(NA, length(theta), object@ncat + 1)
             ps[, 1] = 1
             ps[, object@ncat + 1] = 0
@@ -897,7 +897,7 @@ setMethod(f = "calcDerivative2",
               ps[, k] = ps[, k - 1] - prob[, k - 1]
             }
             for (k in 1:object@ncat) {
-              derivative = derivative + object@slope * (ps[, k] * (1 - ps[, k]) - ps[, k + 1] * (1 - ps[, k + 1]))
+              derivative2 = derivative2 + object@slope * (ps[, k] * (1 - ps[, k]) - ps[, k + 1] * (1 - ps[, k + 1]))
             }
             return(derivative2)
           }
@@ -914,9 +914,9 @@ setMethod(f = "calcDerivative2",
           signature = c("item.pool", "numeric"),
           definition = function(object, theta) {
             if (length(theta) > 0 && all(!is.na(theta))) {
-              derivative = matrix(NA, length(theta), object@ni)
+              derivative2 = matrix(NA, length(theta), object@ni)
               for (i in 1:object@ni) {
-                derivative[, i] = calcDerivative(object@parms[[i]], theta)
+                derivative2[, i] = calcDerivative(object@parms[[i]], theta)
               }
             } else {
               stop("theta is of length 0 or contains missing values")
@@ -931,9 +931,9 @@ setMethod(f = "calcDerivative2",
           signature = c("pool.cluster", "numeric"),
           definition = function(object, theta) {
             if (length(theta) > 0 && all(!is.na(theta))) {
-              derivativeL = vector(mode = "list", length = object@np)
+              derivative2L = vector(mode = "list", length = object@np)
               for (i in 1:object@np) {
-                derivativeL[[i]] = calcFisher(object@pools[[i]], theta)
+                derivative2L[[i]] = calcFisher(object@pools[[i]], theta)
               }
             } else {
               stop("theta is of length 0 or contains missing values")
