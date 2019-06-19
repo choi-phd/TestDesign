@@ -933,6 +933,8 @@ setMethod(f = "mle",
 #' @param select A vector of indices identifying the items to subset
 #' @param thetaRange A range of theta values, c(minTheta, maxTheta)
 #' @param truncate TRUE to bound MLE to thetaRange
+#' @param maxChange Maximum change between iterations
+#' @param FisherScoring TRUE to use Fisher's method of scoring
 #' 
 #' @docType methods
 #' @rdname mlearray-methods
