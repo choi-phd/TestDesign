@@ -2979,7 +2979,7 @@ iparPosteriorSample = function(pool, nSample = 500) {
 #' @param theta A theta grid
 #' 
 #' @export
-maxinfo_plot = function(pool, constraints, theta = seq(-3, 3, .5)){
+maxinfoplot = function(pool, constraints, theta = seq(-3, 3, .5)){
   idx.nitems = which(toupper(constraints$Constraints[['WHAT']]) == "ITEM" &
                      toupper(constraints$Constraints[['CONDITION']]) == "")
   n.items = constraints$Constraints[idx.nitems,]['LB'][1, 1]
@@ -3000,4 +3000,3 @@ maxinfo_plot = function(pool, constraints, theta = seq(-3, 3, .5)){
   dev.off()
   return(p)
 }
-
