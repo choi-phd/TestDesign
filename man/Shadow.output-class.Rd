@@ -38,15 +38,15 @@ Shadow.output
 
 \item{\code{thetaSegmentIndex}}{Numeric. A vector containing which segments the estimated thetas were in at each position.}
 
-\item{\code{prior}}{Numeric.}
+\item{\code{prior}}{Numeric. A prior distribution.}
 
-\item{\code{priorPar}}{Numeric.}
+\item{\code{priorPar}}{Numeric. The hyper parameters for the prior distribution.}
 
-\item{\code{posterior}}{Numeric.}
+\item{\code{posterior}}{Numeric. A posterior distribution.}
 
-\item{\code{posteriorSample}}{Numeric.}
+\item{\code{posteriorSample}}{Numeric. A vector containing MCMC samples.}
 
-\item{\code{likelihood}}{Numeric.}
+\item{\code{likelihood}}{Numeric. A likelihood distribution.}
 
 \item{\code{shadowTest}}{A list of vectors containing item indices of the shadow test at each position.}
 }}
