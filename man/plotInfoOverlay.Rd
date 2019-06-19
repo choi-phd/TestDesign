@@ -14,7 +14,7 @@ plotInfoOverlay(object, theta, infoType = "FISHER", select = NULL,
 
 \item{infoType}{Type of information}
 
-\item{select}{A vector of item indexes to subset}
+\item{select}{A vector of indices identifying the items to subset}
 
 \item{PDF}{If supplied a filename, save as a PDF file}
 

@@ -21,7 +21,7 @@ plotEligibilityStats(config, object = NULL, objectNoFading = NULL,
 
 \item{segment}{A theta segment index}
 
-\item{items}{A vector of item indexes to generate the plots}
+\item{items}{A vector of item indices to generate the plots}
 
 \item{PDF}{If supplied a filename, save as a PDF file}
 

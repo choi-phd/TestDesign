@@ -11,15 +11,15 @@ eap(object, theta, prior, resp, select = NULL)
 \S4method{eap}{item.pool}(object, theta, prior, resp, select = NULL)
 }
 \arguments{
-\item{object}{A nice parameter}
+\item{object}{An S4 object of class \code{\linkS4class{item.pool}}}
 
-\item{theta}{A nice parameter}
+\item{theta}{A theta grid}
 
-\item{prior}{A nice parameter}
+\item{prior}{A prior distribution, a numeric vector for a common prior or a matrix for individualized priors}
 
-\item{resp}{A nice parameter}
+\item{resp}{A numeric matrix of item responses, one row per examinee}
 
-\item{select}{A nice parameter}
+\item{select}{A vector of indices identifying the items to subset}
 }
 \description{
 Generate expected a posteriori estimates of theta

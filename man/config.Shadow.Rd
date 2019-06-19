@@ -17,8 +17,8 @@ config.Shadow(itemSelection = NULL, contentBalancing = NULL,
 \itemize{
   \item{\code{method}} The type of criteria. Accepts one of \code{MFI, MPWI, FB, EB}.
   \item{\code{infoType}} The type of information. Accepts \code{FISHER}.
-  \item{\code{initialTheta}} 
-  \item{\code{fixedTheta}} 
+  \item{\code{initialTheta}} Initial theta value(s) for the first item selection. 
+  \item{\code{fixedTheta}} Fixed theta value(s) to optimize for all items to select.
 }}
 
 \item{contentBalancing}{A list containing content balancing options.
@@ -38,8 +38,8 @@ config.Shadow(itemSelection = NULL, contentBalancing = NULL,
 \itemize{
   \item{\code{burnIn}} Numeric. The number of chains from the start to discard.
   \item{\code{postBurnIn}}  Numeric. The number of chains to use after discarding the first \code{burnIn} chains.
-  \item{\code{thin}} Thin.
-  \item{\code{jumpfactor}} JumpFactor.
+  \item{\code{thin}} Numeric. Thinning interval.
+  \item{\code{jumpfactor}} Numeric. Jump factor.
 }}
 
 \item{refreshPolicy}{A list containing refresh policy for obtaining a new shadow test.
@@ -47,57 +47,61 @@ config.Shadow(itemSelection = NULL, contentBalancing = NULL,
   \item{\code{method}} The type of policy. Accepts one of \code{ALWAYS, POSITION, INTERVAL, THRESHOLD, INTERVAL-THRESHOLD, STIMULUS, SET, PASSAGE}.
   \item{\code{interval}} Integer. Set to 1 to refresh at each position, 2 to refresh at every two positions, and so on.
   \item{\code{threshold}} Numeric. The shadow test is refreshed when the absolute change in theta estimate is greater than this value.
-  \item{\code{position}}
+  \item{\code{position}} Numeric. Position(s) at which refresh to occur.
 }}
 
 \item{exposureControl}{A list containing exposure control settings.
 \itemize{
   \item{\code{method}} Accepts one of \code{"NONE", "ELIGIBILITY", "BIGM", "BIGM-BAYESIAN"}.
-  \item{\code{M}} 
-  \item{\code{maxExposureRate}} 
-  \item{\code{accelerationFactor}}
-  \item{\code{nSegment}}
-  \item{\code{firstSegment}}
-  \item{\code{segmentCut}}
-  \item{\code{initialEligibilityStats}}
-  \item{\code{fadingFactor}}
-  \item{\code{diagnosticStats}}
+  \item{\code{M}} Big M constant.
+  \item{\code{maxExposureRate}} Maximum target exposure rate.
+  \item{\code{accelerationFactor}} Acceleration factor.
+  \item{\code{nSegment}} Number of theta segments.
+  \item{\code{firstSegment}} Theta segment assumed at the begining of test.
+  \item{\code{segmentCut}} A numeric vector of segment cuts.
+  \item{\code{initialEligibilityStats}} A list of eligibility statistics from a previous run.
+  \item{\code{fadingFactor}} Fading factor.
+  \item{\code{diagnosticStats}} TRUE to generate diagnostic statistics.
 }}
 
 \item{stoppingCriterion}{A list containing stopping criterion.
 \itemize{
   \item{\code{method}} Accepts one of \code{"FIXED"}.
-  \item{\code{testLength}} 
-  \item{\code{minNI}}
-  \item{\code{maxNI}}
-  \item{\code{SeThreshold}}
+  \item{\code{testLength}} Test length.
+  \item{\code{minNI}} Maximum number of items to administer.
+  \item{\code{maxNI}} Minumum number of items to administer.
+  \item{\code{SeThreshold}} Standard error threshold for stopping.
 }}
 
 \item{interimTheta}{A list containing interim theta estimation options.
 \itemize{
   \item{\code{method}} The type of estimation. Accepts one of \code{EAP, EB, FB}.
-  \item{\code{shrinkageCorrection}}
+  \item{\code{shrinkageCorrection}} TRUE to correct for shrinkage in EAP
   \item{\code{priorDist}} The type of prior distribution. Accepts one of \code{NORMAL, UNIF}.
   \item{\code{priorPar}} Distributional parameters for the prior.
-  \item{\code{boundML}}
-  \item{\code{maxIter}}
-  \item{\code{crit}}
+  \item{\code{boundML}} Theta bound for MLE.
+  \item{\code{maxIter}} Maximum number of Newton-Raphson iterations.
+  \item{\code{crit}} Convergence criterion.
+  \item{\code{maxChange}} Maximum change in ML estimates between iterations. 
+  \item{\code{FisherScoring}} TRUE to use Fisher's method of scoring.
 }}
 
 \item{finalTheta}{A list containing final theta estimation options.
 \itemize{
   \item{\code{method}} The type of estimation. Accepts one of \code{EAP, EB, FB}.
-  \item{\code{shrinkageCorrection}}
+  \item{\code{shrinkageCorrection}} TRUE to correct for shrinkage in EAP
   \item{\code{priorDist}} The type of prior distribution. Accepts one of \code{NORMAL, UNIF}.
   \item{\code{priorPar}} Distributional parameters for the prior.
-  \item{\code{boundML}}
-  \item{\code{maxIter}}
-  \item{\code{crit}}
+  \item{\code{boundML}} Theta bound for MLE.
+  \item{\code{maxIter}} Maximum number of Newton-Raphson iterations.
+  \item{\code{crit}} Convergence criterion.
+  \item{\code{maxChange}} Maximum change in ML estimates between iterations.
+  \item{\code{FisherScoring}} TRUE to use Fisher's method of scoring.
 }}
 
 \item{thetaGrid}{A numeric vector. Theta values to represent the continuum.}
 
-\item{auditTrail}{Logical.}
+\item{auditTrail}{TRUE to generate audit trails.}
 }
 \description{
 Create a \code{\linkS4class{Shadow.config}} object for Shadow Test Assembly (STA).
