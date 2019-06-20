@@ -89,10 +89,6 @@ if(FALSE){
   
   
   # Example 3
-  
-  
-  
-  
   write.csv(par_fatigue, "par_ft.csv", row.names = F)
   write.csv(item_attrib_fatigue, "item_attrib_ft.csv", row.names = F)
   write.csv(constraints_fatigue, "constraints_ft.csv", row.names = F)
