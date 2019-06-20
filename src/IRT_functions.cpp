@@ -1227,6 +1227,8 @@ NumericMatrix theta_EAP_matrix(NumericVector theta_grid,
 //' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
 //' @param prior prior distribution (1: normal, 2: uniform)
 //' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+//'
+//' @export
 // [[Rcpp::export]]
 NumericVector theta_EB(const int& nx,
                        const double& theta_init,
@@ -1270,6 +1272,8 @@ NumericVector theta_EB(const int& nx,
 //' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
 //' @param prior prior distribution (1: normal, 2: uniform)
 //' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+//'
+//' @export
 // [[Rcpp::export]]
 NumericVector theta_EB_single(const int& nx,
                               const double& theta_init,
@@ -1314,6 +1318,8 @@ NumericVector theta_EB_single(const int& nx,
 //' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
 //' @param prior prior distribution (1: normal, 2: uniform)
 //' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+//'
+//' @export
 // [[Rcpp::export]]
 NumericVector theta_FB(const int& nx,
                        const double& theta_init,
@@ -1386,6 +1392,8 @@ NumericVector theta_FB(const int& nx,
 //' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
 //' @param prior prior distribution (1: normal, 2: uniform)
 //' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu,sigma) or c(ll,ul)
+//'
+//' @export
 // [[Rcpp::export]]
 NumericVector theta_FB_single(const int& nx,
                               const double& theta_init,
