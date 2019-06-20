@@ -1,6 +1,36 @@
 if(FALSE){
   library(Shadow)
   
+  # Debug
+  
+  itempool = LoadItemPool("par_Pool_300.csv", se.file.csv = "se_Pool_300.csv")
+  itemattr = LoadItemAttrib("attrib_Pool_300.csv", itempool)
+  constrnt = LoadConstraints("constraints_1.csv", itempool, itemattr)
+  
+  config = config.Shadow(interimTheta = list(method = "FB"),
+                         finalTheta = list(method = "FB"))
+  
+  set.seed(1)
+  
+  thetaGrid = seq(-3, 3, 1)
+  trueTheta = runif(1, min = -3.5, max = 3.5)
+  testData = MakeTest(itempool, thetaGrid, infoType = "FISHER", trueTheta = trueTheta)
+  respData = testData@Data
+  
+  object = itempool
+  Constraints = constrnt
+  prior = NULL
+  priorPar = c(0, 1)
+  Data = NULL
+  
+  fit = Shadow(itempool, config,
+               trueTheta, constrnt, Data = respData)
+  
+  
+  # now run Shadow line by line.
+  # Error in theta_FB_single(nSample, currentTheta, currentSE, iparList[[currentItem]],  : 
+  # could not find function "theta_FB_single"
+  
   # Example 1
   
   write.csv(par_science, "par_sc.csv", row.names = F)
@@ -89,10 +119,6 @@ if(FALSE){
   
   
   # Example 3
-  
-  
-  
-  
   write.csv(par_fatigue, "par_ft.csv", row.names = F)
   write.csv(item_attrib_fatigue, "item_attrib_ft.csv", row.names = F)
   write.csv(constraints_fatigue, "constraints_ft.csv", row.names = F)

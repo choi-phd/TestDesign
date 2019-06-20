@@ -147,7 +147,7 @@ label, .form-group, .progress { margin-bottom: 0px; }
       hr(),
       tabsetPanel(id = "tabs",
         tabPanel("Main",                value = 1, plotOutput("plotoutput", width = "100%", height = "65vh")),
-        tabPanel("Output",              value = 2, plotOutput("shadowplot", width = "100%", height = "65vh")),
+        tabPanel("Output",              value = 2, plotOutput("shadowchart", width = "100%", height = "65vh")),
         tabPanel("Output",              value = 3, DTOutput("results")          , style = css.y),
         tabPanel("Item parameters",     value = 4, DTOutput("table.itempool")   , style = css.y),
         tabPanel("Item attributes",     value = 5, DTOutput("table.itemattrib") , style = css.y),
@@ -168,8 +168,22 @@ return.object.or.null = function(arg.object){
   return(arg.object)
 }
 
+assign.object.first = TRUE
+
+assign.object = function(objname, obj, desc){
+  if (assign.object.first){
+    assign.object.first <<- FALSE
+    message("\nRefresh the environment tab to see the objects in the list.")
+  }
+  assign(objname, obj, envir = .GlobalEnv)
+  pad = paste0(rep(" ", 48 - nchar(desc)), collapse = "")
+  tmp = paste0(desc, pad, "assigned to : ", objname)
+  message(tmp)
+}
+
 server = function(input, output, session) {
   v = reactiveValues(itempool.exists = F,
+    itemse.exists = F,
     const.exists = F,
     content.exists = F,
     stimattrib.exists = F,
@@ -181,6 +195,8 @@ server = function(input, output, session) {
       if (class(v$itempool) == "item.pool"){
         v$itempool.exists = T; v$text = "Step 1. Item parameter file: OK"
         v$ipar = v$itempool@ipar
+        assign.object("shiny.itempool"     , v$itempool, "Item parameters (full object)")
+        assign.object("shiny.itempool.ipar", v$ipar    , "Item parameters (matrix)")
       } else {
         v$itempool.exists = F; v$text = "Step 1 Error: Item parameters are not in the correct format."
       }
@@ -192,6 +208,7 @@ server = function(input, output, session) {
       v$itempool = try(LoadItemPool(input$itempool.file$datapath, se.file.csv = input$itemse.file$datapath))
       if (class(v$itempool) == "item.pool"){
         v$itemse.exists = T; v$text = "Optional Step. Item standard error file: OK"
+        assign.object("shiny.itempool"     , v$itempool, "Item parameters (full object)")
       } else {
         v$itemse.exists = F; v$text = "Optional Step Error: Item standard errors are not in the correct format."
       }
@@ -203,6 +220,7 @@ server = function(input, output, session) {
       v$itemattrib = try(LoadItemAttrib(input$itemattrib.file$datapath, v$itempool))
       if (class(v$itemattrib) == "data.frame"){
         v$itemattrib.exists = T; v$text = "Step 2. Item attributes: OK"
+        assign.object("shiny.itemattrib", v$itemattrib, "Item attributes")
       } else {
         v$itemattrib.exists = F; v$text = "Step 2 Error: Item attributes are not in the correct format."
       }
@@ -210,10 +228,11 @@ server = function(input, output, session) {
   })
 
   observeEvent(input$stimattrib.file, {
-    if (!is.null(input$stimattrib.file) & v$itemattrib.exists){
+    if (!is.null(input$stimattrib.file) & v$itempool.exists & v$itemattrib.exists){
       v$stimattrib = try(LoadStAttrib(input$stimattrib.file$datapath, v$itemattrib))
       if (class(v$stimattrib) == "data.frame"){
         v$stimattrib.exists = T; v$text = "Optional Step. Stimulus attributes: OK"
+        assign.object("shiny.stimattrib", v$stimattrib, "Stimulus attributes")
       } else {
         v$stimattrib.exists = F; v$text = "Optional Step Error: Stimulus attributes are not in the correct format."
       }
@@ -221,12 +240,14 @@ server = function(input, output, session) {
   })
 
   observeEvent(input$const.file, {
-    if (!is.null(input$itempool.file) & v$itemattrib.exists){
+    if (!is.null(input$const.file) & v$itempool.exists & v$itemattrib.exists){
       if ( v$stimattrib.exists) v$const = try(LoadConstraints(input$const.file$datapath, v$itempool, v$itemattrib, v$stimattrib))
       if (!v$stimattrib.exists) v$const = try(LoadConstraints(input$const.file$datapath, v$itempool, v$itemattrib))
       if (class(v$const) == "list"){
         v$const.exists = T; v$text = "Step 3. Constraints: OK. Press button to run solver."
         v$constraints = v$const$Constraints
+        assign.object("shiny.const"      , v$const      , "Constraints (full object)")
+        assign.object("shiny.constraints", v$constraints, "Constraints (data.frame)")
       } else {
         v$const.exists = F; v$text = "Step 3 Error: Constraints are not in the correct format."
       }
@@ -235,11 +256,14 @@ server = function(input, output, session) {
   })
 
   observeEvent(input$content.file, {
-    v$content = try(read.csv(input$content.file$datapath))
-    if (class(v$content) == "data.frame"){
-      v$content.exists = T; v$text = "Optional Step. Item contents: OK."
-    } else {
-      v$content.exists = F; v$text = "Optional Step Error: Item contents are not in the correct format."
+    if (!is.null(input$content.file)){
+      v$content = try(read.csv(input$content.file$datapath))
+      if (class(v$content) == "data.frame"){
+        v$content.exists = T; v$text = "Optional Step. Item contents: OK."
+        assign.object("shiny.content", v$content, "Item contents")
+      } else {
+        v$content.exists = F; v$text = "Optional Step Error: Item contents are not in the correct format."
+      }
     }
   })
 
@@ -275,14 +299,18 @@ server = function(input, output, session) {
           v$text = "Number of simulees should be an integer."; break
         }
         v$plotoutput = plotCAT(v$fit$output[[v$simulee.id]])
-        v$shadowplot = plotShadow(v$fit$output[[v$simulee.id]], v$const)
+        assign.object(paste0("shiny.thetaplot.", v$simulee.id), v$plotoutput, paste0("Theta plot for simulee ", v$simulee.id))
+        v$shadowchart = plotShadow(v$fit$output[[v$simulee.id]], v$const)
+        assign.object(paste0("shiny.shadowchart.", v$simulee.id), v$shadowchart, paste0("Shadow test chart for simulee ", v$simulee.id))
       }
     }
   })
 
   observeEvent(input$maxinfo.button, {
     if (v$itempool.exists & v$const.exists){
-      v$plotoutput = maxinfoplot(v$itempool, v$const)
+      v$inforangeplot = maxinfoplot(v$itempool, v$const)
+      v$plotoutput = v$inforangeplot
+      assign.object("shiny.inforangeplot", v$inforangeplot, "Obtainable info range plot")
     }
     updateCheckboxGroupButtons(
       session = session,
@@ -319,9 +347,12 @@ server = function(input, output, session) {
 
         conf@itemSelection$targetWeight = rep(1, length(conf@itemSelection$targetLocation))
 
+        assign.object("shiny.ATA.config", conf, "ATA.config object")
+        
         v$text = "Solving.."
 
         v$fit = ATA(conf, v$const, T)
+        assign.object("shiny.ATA", v$fit, "ATA solution object")
 
         if (is.null(v$fit$MIP)){
           v$text = "Solver did not find a solution. Try relaxing the target values."
@@ -331,11 +362,15 @@ server = function(input, output, session) {
           v$text = paste0(conf@MIP$solver, ": solved in ", sprintf("%3.3f", v$fit$solve.time[3]), "s")
           v$selected.idx = which(v$fit$MIP$solution == 1)
           v$selected.item.names = v$itemattrib[v$selected.idx,][['ID']]
+          v$selected.item.attribs = v$itemattrib[v$selected.idx,]
+          assign.object("shiny.selected.item.attribs", v$selected.item.attribs, "Selected item attributes")
           if (v$content.exists){
             v$idx.from.content = v$content$ID %in% v$selected.item.names
-            v$results = v$content[v$idx.from.content,]
+            v$selected.item.contents = v$content[v$idx.from.content,]
+            assign.object("shiny.selected.item.contents", v$selected.item.contents, "Selected item contents")
+            v$results = v$selected.item.contents
           } else {
-            v$results = v$itemattrib[v$selected.idx,]
+            v$results = v$selected.item.attribs
           }
         }
       }
@@ -345,8 +380,13 @@ server = function(input, output, session) {
         v$problemtype = 2
 
         if (input$exposure.method == "BIGM-BAYESIAN"){
-          if (!input$interim.method %in% c("EB", "FB")){
-            v$text = "BIGM-BAYESIAN requires interim methods EB or FB."; break
+          if (!input$interim.method %in% c("FB", "EB")){
+            v$text = "BIGM-BAYESIAN requires interim methods FB or EB."; break
+          }
+        }
+        if (input$exposure.method == "BIGM-BAYESIAN"){
+          if (!input$itemselection.method %in% c("FB", "EB")){
+            v$text = "BIGM-BAYESIAN requires item selection method FB or EB."; break
           }
         }
         
@@ -370,16 +410,18 @@ server = function(input, output, session) {
           v$text = "Theta distribution parameters should be two numbers."; break
         }
 
-        if(input$simulee.theta.distribution == "NORMAL"){
+        if (input$simulee.theta.distribution == "NORMAL"){
           trueTheta = rnorm(v$n.simulees, v$simulee.theta.params[1], v$simulee.theta.params[2])
         }
-        if(input$simulee.theta.distribution == "UNIF"){
+        if (input$simulee.theta.distribution == "UNIF"){
           trueTheta = runif(v$n.simulees, min = v$simulee.theta.params[1], max = v$simulee.theta.params[2])
         }
+        assign.object("shiny.truetheta", trueTheta, "Simulation: true theta values")
 
         thetaGrid = seq(-3, 3, 1)
         testData = MakeTest(v$itempool, thetaGrid, infoType = "FISHER", trueTheta = trueTheta)
         respData = testData@Data
+        assign.object("shiny.respdata", respData, "Simulation: response data")
 
         conf = new("Shadow.config")
 
@@ -432,21 +474,26 @@ server = function(input, output, session) {
           }
         }
         
-        
         conf@refreshPolicy$method = input$refreshpolicy
         conf@MIP$solver = input$solvertype
 
+        assign.object("shiny.Shadow.config", conf, "Shadow.config object")
+        
         v$text = "Simulating.."
         v$time = Sys.time()
         v$fit  = Shadow(v$itempool, conf, trueTheta, Constraints = v$const, prior = NULL, priorPar = c(0, 1), Data = respData, session = session)
-
+        message("\n")
+        assign.object("shiny.Shadow", v$fit, "Simulation result")
+        
         if (v$simulee.id > v$n.simulees) v$simulee.id = 1
 
         v$plotoutput = plotCAT(v$fit$output[[v$simulee.id]])
-        v$shadowplot = plotShadow(v$fit$output[[v$simulee.id]], v$const)
-
+        assign.object(paste0("shiny.thetaplot.", v$simulee.id), v$plotoutput, paste0("Theta plot for simulee ", v$simulee.id))
+        v$shadowchart = plotShadow(v$fit$output[[v$simulee.id]], v$const)
+        assign.object(paste0("shiny.shadowchart.", v$simulee.id), v$shadowchart, paste0("Shadow test chart for simulee ", v$simulee.id))
+        
         v$time = Sys.time() - v$time
-
+        
         v$text = paste0(conf@MIP$solver, ": simulation complete in ", sprintf("%3.3f", v$time), "s")
       }
     }
@@ -466,7 +513,7 @@ server = function(input, output, session) {
   output$results           = renderDT(return.object.or.null(v$results), options = list(pageLength = 100))
   output$textoutput        = renderText(return.object.or.null(v$text))
   output$plotoutput        = renderPlot(return.object.or.null(v$plotoutput))
-  output$shadowplot        = renderPlot(return.object.or.null(v$shadowplot))
+  output$shadowchart       = renderPlot(return.object.or.null(v$shadowchart))
 
   output$export.data = downloadHandler(
     filename = function() {
@@ -479,45 +526,49 @@ server = function(input, output, session) {
       if (!is.null(v$ipar)){
         path = "raw.data.item.params.csv"
         fs = c(fs, path)
-        write.csv(v$ipar, path)
+        write.csv(v$ipar, path, row.names = F)
       }
       if (!is.null(v$itemattrib)){
         path = "raw.data.item.attribs.csv"
         fs = c(fs, path)
-        write.csv(v$itemattrib, path)
+        write.csv(v$itemattrib, path, row.names = F)
       }
       if (!is.null(v$stimattrib)){
         path = "raw.data.stim.attribs.csv"
         fs = c(fs, path)
-        write.csv(v$stimattrib, path)
+        write.csv(v$stimattrib, path, row.names = F)
       }
       if (!is.null(v$constraints)){
         path = "raw.data.constraints.csv"
         fs = c(fs, path)
-        write.csv(v$constraints, path)
+        write.csv(v$constraints, path, row.names = F)
       }
-
+      if (!is.null(v$content)){
+        path = "raw.data.content.csv"
+        fs = c(fs, path)
+        write.csv(v$content, path, row.names = F)
+      }
+      
       if (v$problemtype == 1){
         if (!is.null(v$plotoutput)){
           path = "plot.pdf"
           fs = c(fs, path)
           pdf(path)
-          p = v$plotoutput
-          print(p)
+          print(v$plotoutput)
           dev.off()
         }
         if (v$content.exists){
-          if (!is.null(v$idx.from.content)){
+          if (!is.null(v$selected.item.contents)){
             path = "selected.item.contents.csv"
             fs = c(fs, path)
-            write.csv(v$content[v$idx.from.content,], path)
+            write.csv(v$selected.item.contents, path, row.names = F)
           }
         }
-        if (!is.null(v$itemattrib)){
+        if (!is.null(v$selected.item.attribs)){
           if (!is.null(v$selected.idx)){
             path = "selected.item.attribs.csv"
             fs = c(fs, path)
-            write.csv(v$itemattrib[v$selected.idx,], path)
+            write.csv(v$selected.item.attribs, path, row.names = F)
           }
         }
       }
@@ -527,16 +578,12 @@ server = function(input, output, session) {
           path = paste0("theta.plot.", v$simulee.id, ".pdf")
           fs = c(fs, path)
           pdf(path)
-          p = plotCAT(v$fit$output[[v$simulee.id]])
-          print(p)
+          print(v$plotoutput)
           dev.off()
-        }
-        if (!is.null(v$fit)){
-          path = paste0("shadowtest.chart.", v$simulee.id, ".pdf")
+          path = paste0("shadowchart.", v$simulee.id, ".pdf")
           fs = c(fs, path)
           pdf(path)
-          p = plotShadow(v$fit$output[[v$simulee.id]], v$const)
-          print(p)
+          print(v$shadowchart)
           dev.off()
         }
       }
