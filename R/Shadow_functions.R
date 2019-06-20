@@ -808,6 +808,7 @@ setMethod(f = "MakeTestCluster",
 #' 
 #' @docType methods
 #' @rdname mle-methods
+#' @export
 setGeneric(name = "mle",
            def = function(object, resp, startTheta = NULL, maxIter = 100, crit = 0.001, select = NULL, thetaRange = c(-4, 4), truncate = FALSE, maxChange = 1.0, FisherScoring = TRUE) {
              standardGeneric("mle")
