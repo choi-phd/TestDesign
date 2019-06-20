@@ -2,7 +2,7 @@
 % Please edit documentation in R/Shadow_functions.R
 \name{maxinfo_plot}
 \alias{maxinfo_plot}
-\title{maxinfo_plot}
+\title{maxinfoplot}
 \usage{
 maxinfo_plot(pool, constraints, theta = seq(-3, 3, 0.5))
 }
