@@ -808,6 +808,7 @@ setMethod(f = "MakeTestCluster",
 #' 
 #' @docType methods
 #' @rdname mle-methods
+#' @export
 setGeneric(name = "mle",
            def = function(object, resp, startTheta = NULL, maxIter = 100, crit = 0.001, select = NULL, thetaRange = c(-4, 4), truncate = FALSE, maxChange = 1.0, FisherScoring = TRUE) {
              standardGeneric("mle")
@@ -933,6 +934,8 @@ setMethod(f = "mle",
 #' @param select A vector of indices identifying the items to subset
 #' @param thetaRange A range of theta values, c(minTheta, maxTheta)
 #' @param truncate TRUE to bound MLE to thetaRange
+#' @param maxChange Maximum change between iterations
+#' @param FisherScoring TRUE to use Fisher's method of scoring
 #' 
 #' @docType methods
 #' @rdname mlearray-methods
