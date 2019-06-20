@@ -380,8 +380,13 @@ server = function(input, output, session) {
         v$problemtype = 2
 
         if (input$exposure.method == "BIGM-BAYESIAN"){
-          if (!input$interim.method %in% c("EB", "FB")){
-            v$text = "BIGM-BAYESIAN requires interim methods EB or FB."; break
+          if (!input$interim.method %in% c("FB", "EB")){
+            v$text = "BIGM-BAYESIAN requires interim methods FB or EB."; break
+          }
+        }
+        if (input$exposure.method == "BIGM-BAYESIAN"){
+          if (!input$itemselection.method %in% c("FB", "EB")){
+            v$text = "BIGM-BAYESIAN requires item selection method FB or EB."; break
           }
         }
 
@@ -477,6 +482,7 @@ server = function(input, output, session) {
         v$text = "Simulating.."
         v$time = Sys.time()
         v$fit  = Shadow(v$itempool, conf, trueTheta, Constraints = v$const, prior = NULL, priorPar = c(0, 1), Data = respData, session = session)
+        message("\n")
         assign.object("shiny.Shadow", v$fit, "Simulation result")
 
         if (v$simulee.id > v$n.simulees) v$simulee.id = 1
