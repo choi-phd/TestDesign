@@ -456,6 +456,8 @@ theta_EAP_matrix <- function(theta_grid, item_parm, Resp, ncat, model, prior, pr
 #' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
 #' @param prior prior distribution (1: normal, 2: uniform)
 #' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+#' 
+#' @export
 theta_EB <- function(nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_Shadow_theta_EB', PACKAGE = 'Shadow', nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm)
 }
@@ -471,6 +473,8 @@ theta_EB <- function(nx, theta_init, theta_prop, item_parm, resp, ncat, model, p
 #' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
 #' @param prior prior distribution (1: normal, 2: uniform)
 #' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+#' 
+#' @export
 theta_EB_single <- function(nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_Shadow_theta_EB_single', PACKAGE = 'Shadow', nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm)
 }
@@ -487,6 +491,8 @@ theta_EB_single <- function(nx, theta_init, theta_prop, item_parm, resp, ncat, m
 #' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
 #' @param prior prior distribution (1: normal, 2: uniform)
 #' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+#' 
+#' @export
 theta_FB <- function(nx, theta_init, theta_prop, items_list, item_init, resp, ncat, model, prior, prior_parm) {
     .Call('_Shadow_theta_FB', PACKAGE = 'Shadow', nx, theta_init, theta_prop, items_list, item_init, resp, ncat, model, prior, prior_parm)
 }
@@ -503,6 +509,8 @@ theta_FB <- function(nx, theta_init, theta_prop, items_list, item_init, resp, nc
 #' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
 #' @param prior prior distribution (1: normal, 2: uniform)
 #' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu,sigma) or c(ll,ul)
+#' 
+#' @export
 theta_FB_single <- function(nx, theta_init, theta_prop, item_mcmc, item_init, resp, ncat, model, prior, prior_parm) {
     .Call('_Shadow_theta_FB_single', PACKAGE = 'Shadow', nx, theta_init, theta_prop, item_mcmc, item_init, resp, ncat, model, prior, prior_parm)
 }
