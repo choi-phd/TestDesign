@@ -141,8 +141,9 @@ setClass("Shadow.config",
                                               priorDist = "NORMAL",
                                               priorPar = c(0, 1),
                                               boundML = c(-4, 4),
+                                              truncateML = FALSE,
                                               maxIter = 50,
-                                              crit = 0.005,
+                                              crit = 0.001,
                                               maxChange = 1.0,
                                               FisherScoring = TRUE),
                           finalTheta = list(method = "EAP",
@@ -150,10 +151,11 @@ setClass("Shadow.config",
                                             priorDist = "NORMAL",
                                             priorPar = c(0, 1),
                                             boundML = c(-4, 4),
-                                            maxIter = 100,
+                                            truncateML = FALSE,
+                                            maxIter = 50,
                                             crit = 0.001,
                                             maxChange = 1.0,
-                                            FisherScoring = FALSE),
+                                            FisherScoring = TRUE),
                           thetaGrid = seq(-4, 4, .1),
                           auditTrail = FALSE),
          validity = function(object) {
@@ -237,6 +239,7 @@ setClass("Shadow.config",
 #'   \item{\code{priorDist}} The type of prior distribution. Accepts one of \code{NORMAL, UNIF}.
 #'   \item{\code{priorPar}} Distributional parameters for the prior.
 #'   \item{\code{boundML}} Theta bound for MLE.
+#'   \item{\code{truncateML}} TRUE to truncate MLE within \code{boundML}
 #'   \item{\code{maxIter}} Maximum number of Newton-Raphson iterations.
 #'   \item{\code{crit}} Convergence criterion.
 #'   \item{\code{maxChange}} Maximum change in ML estimates between iterations. 
@@ -249,6 +252,7 @@ setClass("Shadow.config",
 #'   \item{\code{priorDist}} The type of prior distribution. Accepts one of \code{NORMAL, UNIF}.
 #'   \item{\code{priorPar}} Distributional parameters for the prior.
 #'   \item{\code{boundML}} Theta bound for MLE.
+#'   \item{\code{truncateML}} TRUE to truncate MLE within \code{boundML}
 #'   \item{\code{maxIter}} Maximum number of Newton-Raphson iterations.
 #'   \item{\code{crit}} Convergence criterion.
 #'   \item{\code{maxChange}} Maximum change in ML estimates between iterations.
@@ -337,6 +341,7 @@ setMethod("show", "Shadow.config", function(object) {
   cat("    priorDist           :", ifelse(toupper(object@interimTheta$method == "EAP"), object@interimTheta$priorDist, NA), "\n")
   cat("    priorPar            :", ifelse(toupper(object@interimTheta$method == "EAP"), sprintf(ifelse(toupper(object@interimTheta$priorDist) == "NORMAL", "Mean = %5.3f, SD = %5.3f", "Min = %5.3f, Max = %5.3f"), object@interimTheta$priorPar[1], object@interimTheta$priorPar[2]), NA), "\n")
   cat("    boundML             :", object@interimTheta$boundML, "\n")
+  cat("    truncateML          :", object@interimTheta$truncateML, "\n")
   cat("    maxIter             :", object@interimTheta$maxIter, "\n")
   cat("    crit                :", object@interimTheta$crit, "\n")
   cat("    maxChange           :", object@interimTheta$maxChange, "\n")
@@ -346,11 +351,12 @@ setMethod("show", "Shadow.config", function(object) {
   cat("    shrinkageCorrection :", object@finalTheta$shrinkageCorrection, "\n")
   cat("    priorDist           :", ifelse(toupper(object@finalTheta$method == "EAP"), object@finalTheta$priorDist, NA), "\n")
   cat("    priorPar            :", ifelse(toupper(object@finalTheta$method == "EAP"), sprintf(ifelse(toupper(object@finalTheta$priorDist) == "NORMAL", "Mean = %5.3f, SD = %5.3f", "Min = %5.3f, Max = %5.3f"), object@finalTheta$priorPar[1], object@finalTheta$priorPar[2]), NA), "\n")
-  cat("    boundML             :", object@interimTheta$boundML, "\n")
-  cat("    maxIter             :", object@interimTheta$maxIter, "\n")
-  cat("    crit                :", object@interimTheta$crit, "\n")
-  cat("    maxChange           :", object@interimTheta$maxChange, "\n")
-  cat("    FisherScoring       :", object@interimTheta$FisherScoring, "\n\n")
+  cat("    boundML             :", object@finalTheta$boundML, "\n")
+  cat("    truncateML          :", object@finalTheta$truncateML, "\n")
+  cat("    maxIter             :", object@finalTheta$maxIter, "\n")
+  cat("    crit                :", object@finalTheta$crit, "\n")
+  cat("    maxChange           :", object@finalTheta$maxChange, "\n")
+  cat("    FisherScoring       :", object@finalTheta$FisherScoring, "\n\n")
   cat("  thetaGrid \n")
   print(object@thetaGrid)
   cat("\n  auditTrail: ", object@auditTrail, "\n")
