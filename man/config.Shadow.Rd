@@ -80,6 +80,7 @@ config.Shadow(itemSelection = NULL, contentBalancing = NULL,
   \item{\code{priorDist}} The type of prior distribution. Accepts one of \code{NORMAL, UNIF}.
   \item{\code{priorPar}} Distributional parameters for the prior.
   \item{\code{boundML}} Theta bound for MLE.
+  \item{\code{truncateML}} TRUE to truncate MLE within \code{boundML}
   \item{\code{maxIter}} Maximum number of Newton-Raphson iterations.
   \item{\code{crit}} Convergence criterion.
   \item{\code{maxChange}} Maximum change in ML estimates between iterations. 
@@ -93,6 +94,7 @@ config.Shadow(itemSelection = NULL, contentBalancing = NULL,
   \item{\code{priorDist}} The type of prior distribution. Accepts one of \code{NORMAL, UNIF}.
   \item{\code{priorPar}} Distributional parameters for the prior.
   \item{\code{boundML}} Theta bound for MLE.
+  \item{\code{truncateML}} TRUE to truncate MLE within \code{boundML}
   \item{\code{maxIter}} Maximum number of Newton-Raphson iterations.
   \item{\code{crit}} Convergence criterion.
   \item{\code{maxChange}} Maximum change in ML estimates between iterations.

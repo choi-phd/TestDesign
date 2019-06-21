@@ -1943,7 +1943,7 @@ setMethod(f = "Shadow",
                   output@posterior = posterior[j, ]
                 }
               } 
-              if (all.equal(config@finalTheta, config@interimTheta)[1] == TRUE) {
+              if (identical(config@finalTheta, config@interimTheta) || toupper(config@finalTheta$method) %in% c("EB", "FB")) {
                 output@finalThetaEst = output@interimThetaEst[position]
                 output@finalSeEst = output@interimSeEst[position]
               } else if (toupper(config@finalTheta$method == "EAP")) {
@@ -1962,10 +1962,10 @@ setMethod(f = "Shadow",
                   }
                 }
               } else if (toupper(config@finalTheta$method) == "MLE") {
-                finalMLE = mle(object, output@administeredItemResp[1:maxNI], startTheta = output@interimThetaEst[maxNI], thetaRange = config@finalTheta$boundML, maxIter = config@finalTheta$maxIter, crit = config@finalTheta$crit, select = output@administeredItemIndex[1:maxNI], truncate = TRUE)
+                finalMLE = mle(object, output@administeredItemResp[1:maxNI], startTheta = output@interimThetaEst[maxNI], thetaRange = config@finalTheta$boundML, maxIter = config@finalTheta$maxIter, crit = config@finalTheta$crit, select = output@administeredItemIndex[1:maxNI], truncate = config@finalTheta$truncateML)
                 output@finalThetaEst = finalMLE$TH
                 output@finalSeEst = finalMLE$SE
-              }
+              } 
               usageMatrix[j, output@administeredItemIndex] = TRUE
               if (setBased) {
                 usageMatrix[j, ni + unique(output@administeredStimulusIndex)] = TRUE
