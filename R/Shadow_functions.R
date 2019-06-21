@@ -1942,8 +1942,8 @@ setMethod(f = "Shadow",
                   output@likelihood = likelihood
                   output@posterior = posterior[j, ]
                 }
-              } 
-              if (all.equal(config@finalTheta, config@interimTheta)[1] == TRUE) {
+              }
+              if (config@finalTheta$method == config@interimTheta$method) {
                 output@finalThetaEst = output@interimThetaEst[position]
                 output@finalSeEst = output@interimSeEst[position]
               } else if (toupper(config@finalTheta$method == "EAP")) {
@@ -2905,15 +2905,22 @@ lnHyperPars = function(mean, sd) {
 #' 
 #' @export
 logitHyperPars = function(mean, sd) {
-  logitSamples = numeric(10000)
-  counter = 0
-  while(counter < 10000) {
-    normSample = rnorm(1, mean, sd) 
-    if(normSample >= 0 && normSample <= 1) {
-      counter = counter + 1
-      logitSamples[counter] = logit(normSample)
+  
+  n.max = 10000
+  n     = 0
+  logitSamples = numeric(n.max)
+  
+  while (n.max - n > 0){
+    normSample = rnorm(n.max - n, mean, sd)
+    idx = (normSample >= 0) & (normSample <= 1)
+    normSample = normSample[idx]
+    n.new = n + length(normSample)
+    if (length(normSample) > 0){
+      logitSamples[(n+1):n.new] = logitnorm::logit(normSample)
     }
+    n = n.new
   }
+  
   return(c(mean(logitSamples), sd(logitSamples)))
 }
 
