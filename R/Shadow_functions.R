@@ -1434,7 +1434,7 @@ setMethod(f = "Shadow",
             }
             if (toupper(config@interimTheta$method) %in% c("EB", "FB")) {
               nSample = config@MCMC$burnIn + config@MCMC$postBurnIn
-              if (toupper(config@interimTheta$method) == "FB") {
+              if (toupper(config@interimTheta$method) == "FB" || toupper(config@finalTheta$method) == "FB") {
                 iparList = iparPosteriorSample(object, nSample = nSample)
               }
             }
@@ -1943,7 +1943,7 @@ setMethod(f = "Shadow",
                   output@posterior = posterior[j, ]
                 }
               }
-              if (identical(config@finalTheta, config@interimTheta) || toupper(config@finalTheta$method) %in% c("EB", "FB")) {
+              if (identical(config@finalTheta, config@interimTheta)) {
                 output@finalThetaEst = output@interimThetaEst[position]
                 output@finalSeEst = output@interimSeEst[position]
               } else if (toupper(config@finalTheta$method == "EAP")) {
@@ -1965,6 +1965,30 @@ setMethod(f = "Shadow",
                 finalMLE = mle(object, output@administeredItemResp[1:maxNI], startTheta = output@interimThetaEst[maxNI], thetaRange = config@finalTheta$boundML, maxIter = config@finalTheta$maxIter, crit = config@finalTheta$crit, select = output@administeredItemIndex[1:maxNI], truncate = config@finalTheta$truncateML)
                 output@finalThetaEst = finalMLE$TH
                 output@finalSeEst = finalMLE$SE
+              } else if (toupper(config@finalTheta$method) %in% c("EB", "FB")) {
+                if (toupper(config@interimTheta$method) == toupper(config@finalTheta$method) && identical(config@interimTheta$priorPar, config@finalTheta$priorPar)) {
+                  output@finalThetaEst = output@interimThetaEst[position]
+                  output@finalSeEst = output@interimSeEst[position]
+                } else {
+                  output@posteriorSample = rnorm(nSample, mean = output@priorPar[1], sd = output@priorPar[2])
+                  output@posteriorSample = output@posteriorSample[seq(from = config@MCMC$burnIn + 1, to = nSample, by = config@MCMC$thin)]
+                  currentTheta = mean(output@posteriorSample)
+                  currentSE = sd(output@posteriorSample) * config@MCMC$jumpFactor
+                  if (toupper(config@finalTheta$method == "EB")) {
+                    output@posteriorSample = theta_EB(nSample, currentTheta, currentSE,
+                                                             object@ipar[output@administeredItemIndex[1:position], ],
+                                                             output@administeredItemResp[1:position], object@NCAT[output@administeredItemIndex[1:position]],
+                                                             model[output@administeredItemIndex[1:position]], 1, c(currentTheta, currentSE))
+                  } else {
+                    output@posteriorSample = theta_FB(nSample, currentTheta, currentSE, iparList[output@administeredItemIndex[1:position]],
+                                                             object@ipar[output@administeredItemIndex[1:position], ],
+                                                             output@administeredItemResp[1:position], object@NCAT[output@administeredItemIndex[1:position]],
+                                                             model[output@administeredItemIndex[1:position]], 1, c(currentTheta, currentSE))
+                  }
+                  output@posteriorSample = output@posteriorSample[seq(from = config@MCMC$burnIn + 1, to = nSample, by = config@MCMC$thin)]
+                  output@finalThetaEst = mean(output@posteriorSample)
+                  output@finalSeEst = sd(output@posteriorSample)
+                }
               }
               usageMatrix[j, output@administeredItemIndex] = TRUE
               if (setBased) {
