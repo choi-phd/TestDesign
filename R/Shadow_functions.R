@@ -2905,15 +2905,20 @@ lnHyperPars = function(mean, sd) {
 #' 
 #' @export
 logitHyperPars = function(mean, sd) {
-  logitSamples = numeric(10000)
-  counter = 0
-  while(counter < 10000) {
-    normSample = rnorm(1, mean, sd) 
-    if(normSample >= 0 && normSample <= 1) {
-      counter = counter + 1
-      logitSamples[counter] = logit(normSample)
-    }
+  
+  n.max = 10000
+  n     = 0
+  logitSamples = numeric(n.max)
+  
+  while (n < n.max){
+    normSample = rnorm(n.max - n, mean, sd)
+    idx = (normSample >= 0) & (normSample <= 1)
+    normSample = normSample[idx]
+    n.new = n + length(normSample)
+    logitSamples[(n+1):n.new] = logit(normSample)
+    n = n.new
   }
+  
   return(c(mean(logitSamples), sd(logitSamples)))
 }
 
