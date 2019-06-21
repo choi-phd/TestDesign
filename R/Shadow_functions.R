@@ -1943,7 +1943,7 @@ setMethod(f = "Shadow",
                   output@posterior = posterior[j, ]
                 }
               }
-              if (all.equal(config@finalTheta, config@interimTheta)[1] == TRUE) {
+              if (config@finalTheta$method == config@interimTheta$method) {
                 output@finalThetaEst = output@interimThetaEst[position]
                 output@finalSeEst = output@interimSeEst[position]
               } else if (toupper(config@finalTheta$method == "EAP")) {
