@@ -616,8 +616,8 @@ setMethod(
 #' 
 #' Create a subset of an \code{\linkS4class{item.pool}} object.
 #' 
-#' @param pool An \code{\linkS4class{item.pool}} object
-#' @param select A vector of indices identifying the items to subset
+#' @param pool An \code{\linkS4class{item.pool}} object.
+#' @param select A vector of indices identifying the items to subset.
 #' 
 #' @export
 subsetPool = function(pool, select = NULL) {
@@ -2280,7 +2280,7 @@ setMethod(f = "Shadow",
 #' 
 #' Add transparancy to a color.
 #' 
-#' @param color A vector of colors
+#' @param color A vector of colors.
 #' @param trans A vector of integers between 0 and 255 where 0 is fully transparaent and 255 is fully visible.
 #' 
 #' @export

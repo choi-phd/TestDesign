@@ -7,9 +7,9 @@
 subsetPool(pool, select = NULL)
 }
 \arguments{
-\item{pool}{An \code{\linkS4class{item.pool}} object}
+\item{pool}{An \code{\linkS4class{item.pool}} object.}
 
-\item{select}{A vector of indices identifying the items to subset}
+\item{select}{A vector of indices identifying the items to subset.}
 }
 \description{
 Create a subset of an \code{\linkS4class{item.pool}} object.
