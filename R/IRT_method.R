@@ -128,7 +128,7 @@ setMethod(f = "calcProb",
           }
 )
 
-#' Calculated expected scores
+#' Calculate expected scores
 #' 
 #' An S4 generic and its methods to calculate expected scores given a vector of thetas for different item classes.
 #' 
