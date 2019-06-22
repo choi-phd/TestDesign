@@ -7,9 +7,9 @@
 logitHyperPars(mean, sd)
 }
 \arguments{
-\item{mean}{Mean of the distribution}
+\item{mean}{Mean of the distribution.}
 
-\item{sd}{Standard deviation of the distribution}
+\item{sd}{Standard deviation of the distribution.}
 }
 \description{
 Calculate hyperparameters for logit-normal distribution.

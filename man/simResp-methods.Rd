@@ -37,12 +37,12 @@ simResp(object, theta)
 \S4method{simResp}{pool.cluster,list}(object, theta)
 }
 \arguments{
-\item{object}{An instance of an item class}
+\item{object}{An instance of an item class.}
 
-\item{theta}{A vector of theta values}
+\item{theta}{A vector of theta values.}
 }
 \value{
-Simulated responses
+Simulated responses.
 }
 \description{
 An S4 generic and its methods to simulate responses

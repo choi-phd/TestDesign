@@ -7,9 +7,9 @@
 RE(RMSE.foc, RMSE.ref)
 }
 \arguments{
-\item{RMSE.foc}{A vector of RMSE values for a focal group}
+\item{RMSE.foc}{A vector of RMSE values for the focal group.}
 
-\item{RMSE.ref}{A vector of RMSE values for a reference group}
+\item{RMSE.ref}{A vector of RMSE values for the reference group.}
 }
 \description{
 Calculate Relative Errors.

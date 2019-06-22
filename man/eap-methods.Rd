@@ -11,7 +11,7 @@ eap(object, theta, prior, resp, select = NULL)
 \S4method{eap}{item.pool}(object, theta, prior, resp, select = NULL)
 }
 \arguments{
-\item{object}{An S4 object of class \code{\linkS4class{item.pool}}.}
+\item{object}{An \code{\linkS4class{item.pool}} object.}
 
 \item{theta}{A theta grid.}
 

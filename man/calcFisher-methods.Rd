@@ -46,12 +46,12 @@ calcFisher(object, theta)
 \S4method{calcFisher}{pool.cluster,numeric}(object, theta)
 }
 \arguments{
-\item{object}{An instance of an item class}
+\item{object}{An instance of an item class.}
 
-\item{theta}{A vector of theta values}
+\item{theta}{A vector of theta values.}
 }
 \value{
-A vector of Fisher information values over theta (nq values) for a single item or a matrix of dimension (nq, ni) for an "item.pool"
+A vector of Fisher information values over theta (nq values) for a single item or a matrix of dimension (nq, ni) for an "item.pool".
 }
 \description{
 An S4 generic and its methods to calculate Fisher information given a vector of thetas for different item classes

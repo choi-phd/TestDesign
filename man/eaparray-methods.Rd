@@ -15,7 +15,7 @@ EAP(object, prior, select = NULL, resetPrior = FALSE)
   resetPrior = FALSE)
 }
 \arguments{
-\item{object}{An S4 object of \code{\linkS4class{test}} or \code{\linkS4class{test.cluster}}.}
+\item{object}{A \code{\linkS4class{test}} or a \code{\linkS4class{test.cluster}} object.}
 
 \item{prior}{A prior distribution, a numeric vector for a common prior or a matrix for individualized priors.}
 
