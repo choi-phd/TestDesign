@@ -25,7 +25,7 @@
 \alias{calcFisher,item.gr,numeric-method}
 \alias{calcFisher,item.pool,numeric-method}
 \alias{calcFisher,pool.cluster,numeric-method}
-\title{An S4 generic and its methods to calculate Fisher information given a vector of thetas for different item classes}
+\title{Calculate Fisher information}
 \usage{
 calcFisher(object, theta)
 
@@ -46,15 +46,15 @@ calcFisher(object, theta)
 \S4method{calcFisher}{pool.cluster,numeric}(object, theta)
 }
 \arguments{
-\item{object}{An instance of an item class}
+\item{object}{An instance of an item class.}
 
-\item{theta}{A vector of theta values}
+\item{theta}{A vector of theta values.}
 }
 \value{
-A vector of Fisher information values over theta (nq values) for a single item or a matrix of dimension (nq, ni) for an "item.pool"
+A vector of Fisher information values over theta (nq values) for a single item or a matrix of dimension (nq, ni) for an "item.pool".
 }
 \description{
-An S4 generic and its methods to calculate Fisher information given a vector of thetas for different item classes
+An S4 generic and its methods to calculate Fisher information given a vector of thetas for different item classes.
 }
 \examples{
 item.1 = new("item.1pl", difficulty = 0.5)

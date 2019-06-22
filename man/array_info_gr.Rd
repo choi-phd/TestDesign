@@ -7,11 +7,11 @@
 array_info_gr(x, a, b)
 }
 \arguments{
-\item{x}{a numeric vector of theta values}
+\item{x}{Numeric. A vector of theta values.}
 
-\item{a}{a length-one numeric vector for the slope parameter}
+\item{a}{Numeric. A slope parameter value.}
 
-\item{b}{a numeric vector for the category boundary parameters}
+\item{b}{Numeric. A vector of category boundary parameter values.}
 }
 \description{
 Calculate the Fisher information for a vector of theta values according to the graded response model

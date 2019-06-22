@@ -11,7 +11,7 @@
 \alias{calcDerivative,item.gr,numeric-method}
 \alias{calcDerivative,item.pool,numeric-method}
 \alias{calcDerivative,pool.cluster,numeric-method}
-\title{An S4 generic and its methods to calculate the first derivative of the probability function}
+\title{Calculate first derivative}
 \usage{
 calcDerivative(object, theta)
 
@@ -32,15 +32,15 @@ calcDerivative(object, theta)
 \S4method{calcDerivative}{pool.cluster,numeric}(object, theta)
 }
 \arguments{
-\item{object}{An instance of an item class}
+\item{object}{An instance of an item class.}
 
-\item{theta}{A vector of theta values}
+\item{theta}{A vector of theta values.}
 }
 \value{
-First derivative values
+First derivative values.
 }
 \description{
-An S4 generic and its methods to calculate the first derivative of the probability function
+An S4 generic and its methods to calculate the first derivative of the probability function.
 }
 \examples{
 \dontrun{

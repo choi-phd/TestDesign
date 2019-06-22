@@ -7,20 +7,20 @@
 calc_posterior_single(x, item_parm, resp, ncat, model, prior, prior_parm)
 }
 \arguments{
-\item{x}{a length-one numeric vector for a theta value}
+\item{x}{A length-one numeric vector for a theta value.}
 
-\item{item_parm}{a numeric vector of item parameters (for one item)}
+\item{item_parm}{A numeric vector of item parameters (for one item).}
 
-\item{resp}{a length-one numeric vector of item responses}
+\item{resp}{A length-one numeric vector of item responses.}
 
-\item{ncat}{a length-one numeric vector of the number of response categories by item}
+\item{ncat}{A length-one numeric vector of the number of response categories by item.}
 
-\item{model}{a length-one numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)}
+\item{model}{A length-one numeric vector of the IRT model by item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).}
 
-\item{prior}{prior distribution (1: normal, 2: uniform)}
+\item{prior}{The type of prior distribution (1: normal, 2: uniform).}
 
-\item{prior_parm}{a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)}
+\item{prior_parm}{A numeric vector of hyperparameters for the prior distribution, c(mu, sigma) or c(ll, ul).}
 }
 \description{
-Calculate a posterior value of theta for a single item
+Calculate a posterior value of theta for a single item.
 }

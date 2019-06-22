@@ -4,23 +4,23 @@
 \name{eap}
 \alias{eap}
 \alias{eap,item.pool-method}
-\title{eap}
+\title{Generate expected a posteriori estimates of theta}
 \usage{
 eap(object, theta, prior, resp, select = NULL)
 
 \S4method{eap}{item.pool}(object, theta, prior, resp, select = NULL)
 }
 \arguments{
-\item{object}{An S4 object of class \code{\linkS4class{item.pool}}}
+\item{object}{An \code{\linkS4class{item.pool}} object.}
 
-\item{theta}{A theta grid}
+\item{theta}{A theta grid.}
 
-\item{prior}{A prior distribution, a numeric vector for a common prior or a matrix for individualized priors}
+\item{prior}{A prior distribution, a numeric vector for a common prior or a matrix for individualized priors.}
 
-\item{resp}{A numeric matrix of item responses, one row per examinee}
+\item{resp}{A numeric matrix of item responses, one row per examinee.}
 
-\item{select}{A vector of indices identifying the items to subset}
+\item{select}{A vector of indices identifying the items to subset.}
 }
 \description{
-Generate expected a posteriori estimates of theta
+Generate expected a posteriori estimates of theta.
 }

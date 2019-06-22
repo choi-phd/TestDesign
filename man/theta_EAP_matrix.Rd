@@ -2,26 +2,26 @@
 % Please edit documentation in R/RcppExports.R
 \name{theta_EAP_matrix}
 \alias{theta_EAP_matrix}
-\title{Calculate expected a posteriori mestimates of theta for a group of examinees}
+\title{Calculate EAP estimates of theta for a group of examinees}
 \usage{
 theta_EAP_matrix(theta_grid, item_parm, Resp, ncat, model, prior,
   prior_parm)
 }
 \arguments{
-\item{theta_grid}{an equi-spaced theta grid}
+\item{theta_grid}{An equi-spaced theta grid.}
 
-\item{item_parm}{a numeric matrix of item parameters}
+\item{item_parm}{A numeric matrix of item parameters.}
 
-\item{Resp}{a numeric matrix of item responses}
+\item{Resp}{A numeric matrix of item responses.}
 
-\item{ncat}{a numeric vector of the number of response categories by item}
+\item{ncat}{A numeric vector of the number of response categories by item.}
 
-\item{model}{a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)}
+\item{model}{A numeric vector of the IRT model by item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).}
 
-\item{prior}{prior distribution (1: normal, 2: uniform)}
+\item{prior}{The type of prior distribution (1: normal, 2: uniform).}
 
-\item{prior_parm}{a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)}
+\item{prior_parm}{A numeric vector of hyperparameters for the prior distribution, c(mu, sigma) or c(ll, ul).}
 }
 \description{
-Calculate expected a posteriori mestimates of theta for a group of examinees
+Calculate expected a posteriori estimates of theta for a group of examinees.
 }
