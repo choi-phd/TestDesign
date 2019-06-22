@@ -40,10 +40,10 @@ calcLocation(object)
 \S4method{calcLocation}{pool.cluster}(object)
 }
 \arguments{
-\item{object}{An instance of an item class}
+\item{object}{An instance of an item class.}
 }
 \value{
-Item location values
+Item location values.
 }
 \description{
 An S4 generic and its methods to calculate item location

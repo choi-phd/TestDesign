@@ -8,19 +8,19 @@ plotRMSE(..., title = NULL, legendTitle = NULL, legendLabels = NULL,
   ltySet = NULL, colSet = NULL, theta = seq(-2, 2, 1))
 }
 \arguments{
-\item{...}{A series of RMSE values}
+\item{...}{A series of RMSE values.}
 
-\item{title}{A plot title}
+\item{title}{A plot title.}
 
-\item{legendTitle}{A legend title}
+\item{legendTitle}{A legend title.}
 
-\item{legendLabels}{A vector of labels for the series}
+\item{legendLabels}{A vector of labels for the series.}
 
-\item{ltySet}{A vector of line types for the series}
+\item{ltySet}{A vector of line types for the series.}
 
-\item{colSet}{A vector of colors for the series}
+\item{colSet}{A vector of colors for the series.}
 
-\item{theta}{A theta grid}
+\item{theta}{A theta grid.}
 }
 \description{
 Draw RMSE plots.

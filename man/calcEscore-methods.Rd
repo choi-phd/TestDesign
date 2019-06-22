@@ -32,12 +32,12 @@ calcEscore(object, theta)
 \S4method{calcEscore}{pool.cluster,numeric}(object, theta)
 }
 \arguments{
-\item{object}{An instance of an item class}
+\item{object}{An instance of an item class.}
 
-\item{theta}{A vector of theta values}
+\item{theta}{A vector of theta values.}
 }
 \value{
-A vector of expected scores of length nq (the number of values on theta grid)
+A vector of expected scores of length nq (the number of values on theta grid).
 }
 \description{
 An S4 generic and its methods to calculate expected scores given a vector of thetas for different item classes

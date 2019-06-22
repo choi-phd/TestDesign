@@ -40,14 +40,14 @@ calcJacobian(object, theta, resp)
 \S4method{calcJacobian}{pool.cluster,numeric,list}(object, theta, resp)
 }
 \arguments{
-\item{object}{An instance of an item class}
+\item{object}{An instance of an item class.}
 
-\item{theta}{A vector of theta values}
+\item{theta}{A vector of theta values.}
 
-\item{resp}{Response data}
+\item{resp}{Response data.}
 }
 \value{
-First derivative values of log-likelihoods
+First derivative values of log-likelihoods.
 }
 \description{
 An S4 generic and its methods to calculate the first derivative of the log-likelihood function

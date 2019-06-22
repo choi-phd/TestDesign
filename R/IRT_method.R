@@ -3,10 +3,10 @@ NULL
 
 #' An S4 generic and its methods to calculate item response probabilities for different item classes
 #' 
-#' @param object An instance of an item class
-#' @param theta A vector of theta values
+#' @param object An instance of an item class.
+#' @param theta A vector of theta values.
 #' 
-#' @return A matrix of probability values with a dimension (nq, ncat) for a single item or a list of matrices for an instance of "item.pool" 
+#' @return A matrix of probability values with a dimension (nq, ncat) for a single item or a list of matrices for an instance of "item.pool".
 #' 
 #' @export
 #' @docType methods
@@ -130,10 +130,10 @@ setMethod(f = "calcProb",
 
 #' An S4 generic and its methods to calculate expected scores given a vector of thetas for different item classes
 #' 
-#' @param object An instance of an item class
-#' @param theta A vector of theta values
+#' @param object An instance of an item class.
+#' @param theta A vector of theta values.
 #' 
-#' @return A vector of expected scores of length nq (the number of values on theta grid)
+#' @return A vector of expected scores of length nq (the number of values on theta grid).
 #' 
 #' @export
 #' @docType methods
@@ -250,10 +250,10 @@ setMethod(f = "calcEscore",
 
 #' An S4 generic and its methods to calculate Fisher information given a vector of thetas for different item classes
 #' 
-#' @param object An instance of an item class
-#' @param theta A vector of theta values
+#' @param object An instance of an item class.
+#' @param theta A vector of theta values.
 #' 
-#' @return A vector of Fisher information values over theta (nq values) for a single item or a matrix of dimension (nq, ni) for an "item.pool"
+#' @return A vector of Fisher information values over theta (nq values) for a single item or a matrix of dimension (nq, ni) for an "item.pool".
 #' 
 #' @export
 #' @docType methods
@@ -457,9 +457,9 @@ setMethod(f = "calcFisher",
 
 #' An S4 generic and its methods to calculate item location
 #' 
-#' @param object An instance of an item class
+#' @param object An instance of an item class.
 #' 
-#' @return Item location values
+#' @return Item location values.
 #' 
 #' @docType methods
 #' 
@@ -944,10 +944,10 @@ setMethod(f = "calcDerivative2",
 
 #' An S4 generic and its methods to calculate the first derivative of the log-likelihood function
 #' 
-#' @param object An instance of an item class
-#' @param theta A vector of theta values
-#' @param resp Response data
-#' @return First derivative values of log-likelihoods
+#' @param object An instance of an item class.
+#' @param theta A vector of theta values.
+#' @param resp Response data.
+#' @return First derivative values of log-likelihoods.
 #' 
 #' @docType methods
 #' 
@@ -1104,10 +1104,10 @@ setMethod(f = "calcJacobian",
 
 #' An S4 generic and its methods to calculate the second derivative of the log-likelihood function
 #' 
-#' @param object An instance of an item class
-#' @param theta A vector of theta values
-#' @param resp Response data
-#' @return Second derivative values of log-likelihoods
+#' @param object An instance of an item class.
+#' @param theta A vector of theta values.
+#' @param resp Response data.
+#' @return Second derivative values of log-likelihoods.
 #' 
 #' @docType methods
 #' 
@@ -1268,10 +1268,10 @@ setMethod(f = "calcHessian",
 
 #' An S4 generic and its methods to simulate responses
 #' 
-#' @param object An instance of an item class
-#' @param theta A vector of theta values
+#' @param object An instance of an item class.
+#' @param theta A vector of theta values.
 #' 
-#' @return Simulated responses
+#' @return Simulated responses.
 #' 
 #' @export
 #' @docType methods
