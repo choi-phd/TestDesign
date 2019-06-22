@@ -2910,12 +2910,14 @@ logitHyperPars = function(mean, sd) {
   n     = 0
   logitSamples = numeric(n.max)
   
-  while (n < n.max){
+  while (n.max - n > 0){
     normSample = rnorm(n.max - n, mean, sd)
     idx = (normSample >= 0) & (normSample <= 1)
     normSample = normSample[idx]
     n.new = n + length(normSample)
-    logitSamples[(n+1):n.new] = logit(normSample)
+    if (length(normSample) > 0){
+      logitSamples[(n+1):n.new] = logitnorm::logit(normSample)
+    }
     n = n.new
   }
   
