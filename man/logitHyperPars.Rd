@@ -2,14 +2,14 @@
 % Please edit documentation in R/Shadow_functions.R
 \name{logitHyperPars}
 \alias{logitHyperPars}
-\title{logitHyperPars}
+\title{Calculate hyperparameters for logit-normal distribution}
 \usage{
 logitHyperPars(mean, sd)
 }
 \arguments{
-\item{mean}{Mean of the distribution.}
+\item{mean}{Mean of the distribution}
 
-\item{sd}{Standard deviation of the distribution.}
+\item{sd}{Standard deviation of the distribution}
 }
 \description{
 Calculate hyperparameters for logit-normal distribution.

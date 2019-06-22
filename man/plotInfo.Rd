@@ -2,7 +2,7 @@
 % Please edit documentation in R/Shadow_functions.R
 \name{plotInfo}
 \alias{plotInfo}
-\title{plotInfo}
+\title{Draw item information plots}
 \usage{
 plotInfo(object, theta, infoType = "FISHER", select = NULL,
   PDF = NULL, color = "blue", width = 7, height = 6, mfrow = c(2,
@@ -28,5 +28,5 @@ plotInfo(object, theta, infoType = "FISHER", select = NULL,
 \item{mfrow}{Number of multiple figures defined as c(nrow, ncol)}
 }
 \description{
-Draw item information plots
+Draw item information plots.
 }

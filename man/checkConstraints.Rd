@@ -2,7 +2,7 @@
 % Please edit documentation in R/Shadow_functions.R
 \name{checkConstraints}
 \alias{checkConstraints}
-\title{checkConstraints}
+\title{Check the consistency of constraints and item usage}
 \usage{
 checkConstraints(constraints, usageMatrix, trueTheta = NULL)
 }
@@ -14,5 +14,5 @@ checkConstraints(constraints, usageMatrix, trueTheta = NULL)
 \item{trueTheta}{A vector of true theta values}
 }
 \description{
-Check the consistency of constraints and item usage
+Check the consistency of constraints and item usage.
 }

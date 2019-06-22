@@ -2,7 +2,7 @@
 % Please edit documentation in R/Shadow_functions.R
 \name{plotExposureRateFinal}
 \alias{plotExposureRateFinal}
-\title{plotExposureRateFinal}
+\title{Draw exposure rate plots by final theta segment}
 \usage{
 plotExposureRateFinal(object, config = NULL, maxRate = 0.25,
   theta = "Estimated", segmentCut = NULL, color = "red",
@@ -35,5 +35,5 @@ plotExposureRateFinal(object, config = NULL, maxRate = 0.25,
 \item{retain}{An optional vector of indices identifying the simulees to retain}
 }
 \description{
-Draw exposure rate plots by final theta segment
+Draw exposure rate plots by final theta segment.
 }

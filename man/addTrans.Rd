@@ -2,7 +2,7 @@
 % Please edit documentation in R/Shadow_functions.R
 \name{addTrans}
 \alias{addTrans}
-\title{addTrans}
+\title{Add transparancy to a color}
 \usage{
 addTrans(color, trans)
 }
@@ -12,5 +12,5 @@ addTrans(color, trans)
 \item{trans}{A vector of integers between 0 and 255 where 0 is fully transparaent and 255 is fully visible.}
 }
 \description{
-Add transparency to a color
+Add transparancy to a color.
 }

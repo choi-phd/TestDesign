@@ -4,7 +4,7 @@
 \name{MakeTest}
 \alias{MakeTest}
 \alias{MakeTest,item.pool-method}
-\title{An S4 Generic}
+\title{Generate a test object}
 \usage{
 MakeTest(object, theta, infoType = "FISHER", trueTheta = NULL)
 
@@ -12,14 +12,14 @@ MakeTest(object, theta, infoType = "FISHER", trueTheta = NULL)
   trueTheta = NULL)
 }
 \arguments{
-\item{object}{An \code{\linkS4class{item.pool}} object}
+\item{object}{An \code{\linkS4class{item.pool}} object.}
 
-\item{theta}{A grid of theta values}
+\item{theta}{A grid of theta values.}
 
-\item{infoType}{An information type}
+\item{infoType}{An information type.}
 
-\item{trueTheta}{An optional vector of true theta values to simulate response data}
+\item{trueTheta}{An optional vector of true theta values to simulate response data.}
 }
 \description{
-Generate an \code{\linkS4class{test}} object
+Generate a \code{\linkS4class{test}} object
 }

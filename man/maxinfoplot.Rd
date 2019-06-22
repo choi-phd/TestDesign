@@ -2,7 +2,7 @@
 % Please edit documentation in R/Shadow_functions.R
 \name{maxinfoplot}
 \alias{maxinfoplot}
-\title{maxinfoplot}
+\title{Draw a plot of maximum attainable information given the constraints imposed}
 \usage{
 maxinfoplot(pool, constraints, theta = seq(-3, 3, 0.5))
 }
@@ -14,5 +14,5 @@ maxinfoplot(pool, constraints, theta = seq(-3, 3, 0.5))
 \item{theta}{A theta grid}
 }
 \description{
-Draw a plot of maximum attainable information given the constraints imposed
+Draw a plot of maximum attainable information given the constraints imposed.
 }

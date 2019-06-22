@@ -2,7 +2,7 @@
 % Please edit documentation in R/Shadow_functions.R
 \name{plotExposureRateBySegment}
 \alias{plotExposureRateBySegment}
-\title{plotExposureRateBySegment}
+\title{Draw exposure rate plots by theta segment}
 \usage{
 plotExposureRateBySegment(object, config, maxRate = 0.25, PDF = NULL,
   width = 7, height = 6, mfrow = c(2, 4))
@@ -23,5 +23,5 @@ plotExposureRateBySegment(object, config, maxRate = 0.25, PDF = NULL,
 \item{mfrow}{Number of multiple figures defined as c(nrow, ncol)}
 }
 \description{
-Draw exposure rate plots by theta segment
+Draw exposure rate plots by theta segment.
 }

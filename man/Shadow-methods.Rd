@@ -4,7 +4,7 @@
 \name{Shadow}
 \alias{Shadow}
 \alias{Shadow,item.pool-method}
-\title{Shadow}
+\title{Run computerized adaptive testing with generalized shadow-test approach}
 \usage{
 Shadow(object, config, trueTheta = NULL, Constraints = NULL,
   prior = NULL, priorPar = NULL, Data = NULL, session = NULL)
@@ -31,5 +31,5 @@ Shadow(object, config, trueTheta = NULL, Constraints = NULL,
 \item{session}{Used to communicate with a Shiny session.}
 }
 \description{
-Run generalized shadow-test approach to CAT
+Run computerized adaptive testing with generalized shadow-test approach.
 }
