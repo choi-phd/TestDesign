@@ -19,7 +19,7 @@
 \alias{calcJacobian,item.pool,numeric-method}
 \alias{calcJacobian,pool.cluster,numeric,list-method}
 \alias{calcJacobian,pool.cluster,numeric-method}
-\title{An S4 generic and its methods to calculate the first derivative of the log-likelihood function}
+\title{Calculate first derivative of log-likelihood}
 \usage{
 calcJacobian(object, theta, resp)
 
@@ -50,7 +50,7 @@ calcJacobian(object, theta, resp)
 First derivative values of log-likelihoods.
 }
 \description{
-An S4 generic and its methods to calculate the first derivative of the log-likelihood function
+An S4 generic and its methods to calculate the first derivative of the log-likelihood function.
 }
 \examples{
 \dontrun{ 

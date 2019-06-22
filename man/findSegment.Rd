@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{findSegment}
 \alias{findSegment}
-\title{Find the segment to which each theta value belongs.}
+\title{Find the segment to which each theta value belongs}
 \usage{
 findSegment(segment, x)
 }
