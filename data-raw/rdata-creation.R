@@ -1,5 +1,3 @@
-usethis::use_data_raw()
-
 par_science              = read.csv("data-raw/par_Science_1000.csv", header = T)
 item_attrib_science      = read.csv("data-raw/item_attrib_Science_1000.csv", header = T)
 constraints_science      = read.csv("data-raw/constraints_Science_1000.csv", header = T)
@@ -14,7 +12,6 @@ item_attrib_fatigue      = read.csv("data-raw/item_attrib_fatigue_95.csv", heade
 item_content_fatigue     = read.csv("data-raw/item_content_fatigue_95.csv", header = T)
 constraints_fatigue      = read.csv("data-raw/constraints_fatigue_95.csv", header = T)
 raw_fatigue              = read.csv("data-raw/dat_fatigue_95.csv", header = F)
-
 
 usethis::use_data(par_science            , overwrite = T)
 usethis::use_data(item_attrib_science    , overwrite = T)
@@ -39,7 +36,6 @@ write.csv(item_attrib_science, "item_attrib_science.csv", row.names = F)
 itemattrib.science = LoadItemAttrib("item_attrib_science.csv", itempool.science)
 write.csv(constraints_science, "constraints_science.csv", row.names = F)
 constraints.science = LoadConstraints("constraints_science.csv", itempool.science, itemattrib.science)
-
 
 write.csv(par_reading, "par_reading.csv", row.names = F)
 itempool.reading = LoadItemPool("par_reading.csv")

@@ -5,7 +5,7 @@
 \alias{plotShadow}
 \alias{plotShadow,Shadow.output-method}
 \alias{plotShadow,list-method}
-\title{An S4 generic}
+\title{Draw a shadow test chart}
 \usage{
 plotShadow(object, Constraints, sortByDifficulty = FALSE, PDF = NULL)
 

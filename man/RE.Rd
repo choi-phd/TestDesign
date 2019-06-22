@@ -2,15 +2,15 @@
 % Please edit documentation in R/Shadow_functions.R
 \name{RE}
 \alias{RE}
-\title{RE}
+\title{Calculate Relative Errors}
 \usage{
 RE(RMSE.foc, RMSE.ref)
 }
 \arguments{
-\item{RMSE.foc}{A vector of RMSE values for a focal group}
+\item{RMSE.foc}{A vector of RMSE values for the focal group.}
 
-\item{RMSE.ref}{A vector of RMSE values for a reference group}
+\item{RMSE.ref}{A vector of RMSE values for the reference group.}
 }
 \description{
-Calculate Relative Errors
+Calculate Relative Errors.
 }

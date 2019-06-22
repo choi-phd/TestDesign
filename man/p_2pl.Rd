@@ -2,19 +2,19 @@
 % Please edit documentation in R/RcppExports.R
 \name{p_2pl}
 \alias{p_2pl}
-\title{Calculate the probability of a correct response according to the 2pl model}
+\title{Calculate the probability of a correct response according to the 2PL model}
 \usage{
 p_2pl(x, a, b)
 }
 \arguments{
-\item{x}{a length-one numeric vector for a theta value}
+\item{x}{Numeric. A single theta value.}
 
-\item{a}{a length-one numeric vector for the slope parameter}
+\item{a}{Numeric. A slope parameter value.}
 
-\item{b}{a length-one numeric vector for the difficulty parameter}
+\item{b}{Numeric. A difficulty parameter value.}
 }
 \description{
-Calculate the probability of a correct response according to the 2pl model
+Calculate the probability of a correct response according to the 2PL model.
 }
 \references{
 {

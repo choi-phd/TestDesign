@@ -2,15 +2,15 @@
 % Please edit documentation in R/Shadow_functions.R
 \name{MakeItemPoolCluster}
 \alias{MakeItemPoolCluster}
-\title{MakeItemPoolCluster}
+\title{Create an item pool cluster object}
 \usage{
 MakeItemPoolCluster(pools, names = NULL)
 }
 \arguments{
-\item{pools}{A list of \code{\linkS4class{item.pool}} objects}
+\item{pools}{A list of \code{\linkS4class{item.pool}} objects.}
 
-\item{names}{An optional vector of \code{\linkS4class{item.pool}} names}
+\item{names}{An optional vector of \code{\linkS4class{item.pool}} names.}
 }
 \description{
-Create a \code{\linkS4class{pool.cluster}} object
+Create a \code{\linkS4class{pool.cluster}} object.
 }

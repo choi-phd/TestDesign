@@ -2,28 +2,28 @@
 % Please edit documentation in R/Shadow_functions.R
 \name{plotInfoOverlay}
 \alias{plotInfoOverlay}
-\title{plotInfoOverlay}
+\title{Overlay item information plots}
 \usage{
 plotInfoOverlay(object, theta, infoType = "FISHER", select = NULL,
   PDF = NULL, color = "red", width = 7, height = 6)
 }
 \arguments{
-\item{object}{An object of class \code{\linkS4class{item.pool}}}
+\item{object}{An \code{\linkS4class{item.pool}} object.}
 
-\item{theta}{A theta grid}
+\item{theta}{A theta grid.}
 
-\item{infoType}{Type of information}
+\item{infoType}{Type of information.}
 
-\item{select}{A vector of indices identifying the items to subset}
+\item{select}{A vector of indices identifying the items to subset.}
 
-\item{PDF}{If supplied a filename, save as a PDF file}
+\item{PDF}{If supplied a filename, save as a PDF file.}
 
-\item{color}{Plotting color}
+\item{color}{Plotting color.}
 
-\item{width}{Width of the graphics device}
+\item{width}{Width of the graphics device.}
 
-\item{height}{Height of the graphics device}
+\item{height}{Height of the graphics device.}
 }
 \description{
-Overlay item information plots
+Overlay item information plots.
 }

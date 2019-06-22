@@ -7,12 +7,12 @@
 p_pc(x, b)
 }
 \arguments{
-\item{x}{a length-one numeric vector for a theta value}
+\item{x}{Numeric. A single theta value.}
 
-\item{b}{a numeric vector for the threshold parameters}
+\item{b}{Numeric. A vector of threshold parameter values.}
 }
 \description{
-Calculate the response probabilities according to the partial credit model
+Calculate the response probabilities according to the partial credit model.
 }
 \references{
 {

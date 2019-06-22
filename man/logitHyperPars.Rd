@@ -2,7 +2,7 @@
 % Please edit documentation in R/Shadow_functions.R
 \name{logitHyperPars}
 \alias{logitHyperPars}
-\title{logitHyperPars}
+\title{Calculate hyperparameters for logit-normal distribution}
 \usage{
 logitHyperPars(mean, sd)
 }

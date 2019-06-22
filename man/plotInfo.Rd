@@ -2,31 +2,31 @@
 % Please edit documentation in R/Shadow_functions.R
 \name{plotInfo}
 \alias{plotInfo}
-\title{plotInfo}
+\title{Draw item information plots}
 \usage{
 plotInfo(object, theta, infoType = "FISHER", select = NULL,
   PDF = NULL, color = "blue", width = 7, height = 6, mfrow = c(2,
   4))
 }
 \arguments{
-\item{object}{An object of class \code{\linkS4class{item.pool}}}
+\item{object}{An \code{\linkS4class{item.pool}} object.}
 
-\item{theta}{A theta grid}
+\item{theta}{A theta grid.}
 
-\item{infoType}{Type of information}
+\item{infoType}{Type of information.}
 
-\item{select}{A vector of indices identifying the items to subset}
+\item{select}{A vector of indices identifying the items to subset.}
 
-\item{PDF}{If supplied a filename, save as a PDF file}
+\item{PDF}{If supplied a filename, save as a PDF file.}
 
-\item{color}{Plotting color}
+\item{color}{Plotting color.}
 
-\item{width}{Width of graphics device}
+\item{width}{Width of graphics device.}
 
-\item{height}{Width of graphics device}
+\item{height}{Width of graphics device.}
 
-\item{mfrow}{Number of multiple figures defined as c(nrow, ncol)}
+\item{mfrow}{Number of multiple figures defined as c(nrow, ncol).}
 }
 \description{
-Draw item information plots
+Draw item information plots.
 }

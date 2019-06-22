@@ -2,15 +2,15 @@
 % Please edit documentation in R/Shadow_functions.R
 \name{subsetTest}
 \alias{subsetTest}
-\title{subsetTest}
+\title{Create a subset of a test object}
 \usage{
 subsetTest(test, select = NULL)
 }
 \arguments{
-\item{test}{An \code{\linkS4class{test}} object}
+\item{test}{An \code{\linkS4class{test}} object.}
 
-\item{select}{A vector of item indices to subset}
+\item{select}{A vector of item indices to subset.}
 }
 \description{
-Create a subset of a test object
+Create a subset of a test object.
 }

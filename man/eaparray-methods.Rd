@@ -5,7 +5,7 @@
 \alias{EAP}
 \alias{EAP,test-method}
 \alias{EAP,test.cluster-method}
-\title{EAP}
+\title{Generate expected a posteriori estimates of theta}
 \usage{
 EAP(object, prior, select = NULL, resetPrior = FALSE)
 
@@ -15,16 +15,14 @@ EAP(object, prior, select = NULL, resetPrior = FALSE)
   resetPrior = FALSE)
 }
 \arguments{
-\item{object}{An S4 object of \code{\linkS4class{test}} or \code{\linkS4class{test.cluster}}}
+\item{object}{A \code{\linkS4class{test}} or a \code{\linkS4class{test.cluster}} object.}
 
-\item{prior}{A prior distribution, a numeric vector for a common prior or a matrix for individualized priors}
+\item{prior}{A prior distribution, a numeric vector for a common prior or a matrix for individualized priors.}
 
-\item{select}{A vector of indices identifying the items to subset}
+\item{select}{A vector of indices identifying the items to subset.}
 
-\item{resetPrior}{TRUE to reset the prior distribution for each test when object is of class \code{\linkS4class{test.cluster}}}
+\item{resetPrior}{TRUE to reset the prior distribution for each test when object is of class \code{\linkS4class{test.cluster}}.}
 }
 \description{
-Generate expected a posteriori estimates of theta
-
-Genereate expected a posteriori estimates of theta
+Generate expected a posteriori estimates of theta.
 }

@@ -5,7 +5,7 @@
 \alias{MLE}
 \alias{MLE,test-method}
 \alias{MLE,test.cluster-method}
-\title{MLE}
+\title{Generate maximum likelihood estimates of theta}
 \usage{
 MLE(object, startTheta = NULL, maxIter = 100, crit = 0.001,
   select = NULL, thetaRange = c(-4, 4), truncate = FALSE,
@@ -19,26 +19,24 @@ MLE(object, startTheta = NULL, maxIter = 100, crit = 0.001,
   crit = 0.001, select = NULL)
 }
 \arguments{
-\item{object}{A \code{\linkS4class{test}} object}
+\item{object}{A \code{\linkS4class{test}} object.}
 
-\item{startTheta}{An optional vector of start theta values}
+\item{startTheta}{An optional vector of start theta values.}
 
-\item{maxIter}{Maximum number of iterations}
+\item{maxIter}{Maximum number of iterations.}
 
-\item{crit}{Convergence criterion}
+\item{crit}{Convergence criterion.}
 
-\item{select}{A vector of indices identifying the items to subset}
+\item{select}{A vector of indices identifying the items to subset.}
 
-\item{thetaRange}{A range of theta values, c(minTheta, maxTheta)}
+\item{thetaRange}{A range of theta values, c(minTheta, maxTheta).}
 
-\item{truncate}{TRUE to bound MLE to thetaRange}
+\item{truncate}{TRUE to bound MLE to thetaRange.}
 
-\item{maxChange}{Maximum change between iterations}
+\item{maxChange}{Maximum change between iterations.}
 
-\item{FisherScoring}{TRUE to use Fisher's method of scoring}
+\item{FisherScoring}{TRUE to use Fisher's method of scoring.}
 }
 \description{
-Generate maximum likelihood estimates of theta
-
-Genereate maximum likelihood estimates of theta
+Generate maximum likelihood estimates of theta.
 }

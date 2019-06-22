@@ -5,7 +5,7 @@
 \alias{MakeTestCluster}
 \alias{MakeTestCluster,pool.cluster,numeric,numeric-method}
 \alias{MakeTestCluster,pool.cluster,numeric,list-method}
-\title{An S4 Generic}
+\title{Generate a test cluster object}
 \usage{
 MakeTestCluster(object, theta, trueTheta)
 
@@ -23,7 +23,5 @@ MakeTestCluster(object, theta, trueTheta)
 \item{trueTheta}{An optional vector of true theta values to simulate response data}
 }
 \description{
-Generate an \code{\linkS4class{test.cluster}} object
-
 Generate a \code{\linkS4class{test.cluster}} object
 }
