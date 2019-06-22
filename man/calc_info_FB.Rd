@@ -7,15 +7,15 @@
 calc_info_FB(x, items_list, ncat, model, useEAP = FALSE)
 }
 \arguments{
-\item{x}{a numeric vector of MCMC sampled theta values}
+\item{x}{A numeric vector of MCMC sampled theta values.}
 
-\item{items_list}{a list of item_parm matrices}
+\item{items_list}{A list of item parameter matrices.}
 
-\item{ncat}{a numeric vector of the number of response categories by item}
+\item{ncat}{A numeric vector of the number of response categories by item.}
 
-\item{model}{a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)}
+\item{model}{A numeric vector indicating the IRT models of each item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).}
 
-\item{useEAP}{true to use the mean of MCMC theta draws}
+\item{useEAP}{\code{TRUE} to use the mean of MCMC theta draws.}
 }
 \description{
 Calculate the Fisher information using fully Bayesian

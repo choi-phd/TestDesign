@@ -12,7 +12,7 @@
 \alias{simResp,item.pool,numeric-method}
 \alias{simResp,pool.cluster,numeric-method}
 \alias{simResp,pool.cluster,list-method}
-\title{An S4 generic and its methods to simulate responses}
+\title{Simulate item responses}
 \usage{
 simResp(object, theta)
 
@@ -45,7 +45,7 @@ simResp(object, theta)
 Simulated responses.
 }
 \description{
-An S4 generic and its methods to simulate responses
+An S4 generic and its methods to simulate responses.
 }
 \examples{
 item.1 = new("item.1pl", difficulty = 0.5)

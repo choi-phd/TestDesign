@@ -7,15 +7,15 @@
 calc_likelihood(x, item_parm, resp, ncat, model)
 }
 \arguments{
-\item{x}{a length-one numeric vector for a theta value}
+\item{x}{Numeric. A single theta value.}
 
-\item{item_parm}{a numeric matrix of item parameters}
+\item{item_parm}{A numeric matrix of item parameters.}
 
-\item{resp}{a numeric rector of item responses}
+\item{resp}{A numeric vector of item responses.}
 
-\item{ncat}{a numeric vector of the number of response categories by item}
+\item{ncat}{A numeric vector of the number of response categories by item.}
 
-\item{model}{a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)}
+\item{model}{A numeric vector indicating the IRT models of each item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).}
 }
 \description{
 Calculate a likelihood value of theta

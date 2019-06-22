@@ -19,7 +19,7 @@
 \alias{calcHessian,item.pool,numeric-method}
 \alias{calcHessian,pool.cluster,numeric,list-method}
 \alias{calcHessian,pool.cluster,numeric-method}
-\title{An S4 generic and its methods to calculate the second derivative of the log-likelihood function}
+\title{Calculate second derivative of log-likelihood}
 \usage{
 calcHessian(object, theta, resp)
 
@@ -50,7 +50,7 @@ calcHessian(object, theta, resp)
 Second derivative values of log-likelihoods.
 }
 \description{
-An S4 generic and its methods to calculate the second derivative of the log-likelihood function
+An S4 generic and its methods to calculate the second derivative of the log-likelihood function.
 }
 \examples{
 \dontrun{ 

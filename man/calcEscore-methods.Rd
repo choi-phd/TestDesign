@@ -11,7 +11,7 @@
 \alias{calcEscore,item.gr,numeric-method}
 \alias{calcEscore,item.pool,numeric-method}
 \alias{calcEscore,pool.cluster,numeric-method}
-\title{An S4 generic and its methods to calculate expected scores given a vector of thetas for different item classes}
+\title{Calculated expected scores}
 \usage{
 calcEscore(object, theta)
 
@@ -40,7 +40,7 @@ calcEscore(object, theta)
 A vector of expected scores of length nq (the number of values on theta grid).
 }
 \description{
-An S4 generic and its methods to calculate expected scores given a vector of thetas for different item classes
+An S4 generic and its methods to calculate expected scores given a vector of thetas for different item classes.
 }
 \examples{
 item.1 = new("item.1pl", difficulty = 0.5)

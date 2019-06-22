@@ -11,9 +11,9 @@ calc_info(x, item_parm, ncat, model)
 
 \item{item_parm}{a matrix of item parameters}
 
-\item{ncat}{a numeric vector of the number of response categories by item}
+\item{ncat}{A numeric vector of the number of response categories by item.}
 
-\item{model}{a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)}
+\item{model}{A numeric vector indicating the IRT models of each item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).}
 }
 \description{
 Calculate the Fisher information matrix for a single theta value and a set of items, potentially with a mixture of different models

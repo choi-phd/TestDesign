@@ -414,10 +414,9 @@ NumericVector array_info_gr(NumericVector x, const double& a, NumericVector b){
 
 //' Calculate the Fisher information matrix for a single theta value and a set of items, potentially with a mixture of different models
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param item_parm a matrix of item parameters
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
+//' @param x Numeric. A single theta value.
+//' @param item_parm A matrix of item parameters.
+//' @template calc-params-mini
 //' @export
 // [[Rcpp::export]]
 NumericVector calc_info(const double& x,
@@ -460,10 +459,9 @@ NumericVector calc_info(const double& x,
 
 //' Calculate the Fisher information matrix for a vector of theta values and a set of items, potentially with a mixture of different models
 //' 
-//' @param x a numeric vector of theta values
-//' @param item_parm a matrix of item parameters
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
+//' @param x Numeric. A vector of theta values.
+//' @param item_parm A matrix of item parameters.
+//' @template calc-params-mini
 //' @export
 // [[Rcpp::export]]
 NumericMatrix calc_info_matrix(NumericVector x,
@@ -518,11 +516,12 @@ NumericMatrix calc_info_matrix(NumericVector x,
 }
 
 //' Calculate the Fisher information using empirical Bayes
+//'
+//' Calculate the Fisher information using empirical Bayes.
 //' 
-//' @param x a numeric vector of MCMC sampled theta values
-//' @param item_parm a numeric matrix of item parameters
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
+//' @param x A numeric vector of MCMC sampled theta values.
+//' @param item_parm A numeric matrix of item parameters.
+//' @template calc-params-mini
 // [[Rcpp::export]]
 NumericVector calc_info_EB(NumericVector x,
                            NumericMatrix item_parm,
@@ -542,11 +541,10 @@ NumericVector calc_info_EB(NumericVector x,
 
 //' Calculate the Fisher information using fully Bayesian
 //' 
-//' @param x a numeric vector of MCMC sampled theta values
-//' @param items_list a list of item_parm matrices
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-//' @param useEAP true to use the mean of MCMC theta draws
+//' @param x A numeric vector of MCMC sampled theta values.
+//' @param items_list A list of item parameter matrices.
+//' @template calc-params-mini
+//' @param useEAP \code{TRUE} to use the mean of MCMC theta draws.
 // [[Rcpp::export]]
 NumericVector calc_info_FB(NumericVector x,
                            List items_list,
@@ -626,10 +624,9 @@ NumericVector calc_info_FB(NumericVector x,
 
 //' Calculate the mutual information using fully Bayesian
 //' 
-//' @param x a numeric vector of MCMC sampled theta values
-//' @param items_list a list of item_parm matrices
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
+//' @param x A numeric vector of MCMC sampled theta values.
+//' @param items_list A list of item parameter matrices.
+//' @template calc-params-mini
 // [[Rcpp::export]]
 NumericVector calc_MI_FB(NumericVector x,
                          List items_list,
@@ -720,12 +717,12 @@ NumericVector calc_MI_FB(NumericVector x,
 
 //' Calculate a likelihood value of theta
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param item_parm a numeric matrix of item parameters
-//' @param resp a numeric rector of item responses
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
+//' Calculate a likelihood value of theta.
 //' 
+//' @param x Numeric. A single theta value.
+//' @param item_parm A numeric matrix of item parameters.
+//' @param resp A numeric vector of item responses.
+//' @template calc-params-mini
 //' @export
 // [[Rcpp::export]]
 double calc_likelihood(const double& x,
@@ -788,11 +785,12 @@ double calc_likelihood(const double& x,
 
 //' Calculate a likelihood function of theta
 //' 
-//' @param theta_grid an equi-spaced grid of theta values
-//' @param item_parm a numeric matrix of item parameters
-//' @param resp a numeric vector of item responses
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
+//' Calculate a likelihood function of theta.
+//' 
+//' @param theta_grid An equi-spaced grid of theta values.
+//' @param item_parm A numeric matrix of item parameters.
+//' @param resp A numeric vector of item responses.
+//' @template calc-params-mini
 //' 
 //' @export
 // [[Rcpp::export]]
@@ -854,14 +852,11 @@ NumericVector calc_likelihood_function(NumericVector theta_grid,
 
 //' Calculate a log-likelihood value of theta
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param item_parm a numeric matrix of item parameters
-//' @param resp a numeric vector of item responses
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-//' @param prior prior distribution (1: normal, 2: uniform)
-//' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+//' Calculate a log-likelihood value of theta.
 //' 
+//' @param x A length-one numeric vector for a theta value.
+//' @param item_parm A numeric matrix of item parameters.
+//' @template calc-params
 //' @export
 // [[Rcpp::export]]
 double calc_log_likelihood(const double& x,
@@ -926,14 +921,11 @@ double calc_log_likelihood(const double& x,
 
 //' Calculate a log-likelihood function of theta
 //' 
-//' @param theta_grid an equi-spaced grid of theta values
-//' @param item_parm a numeric matrix of item parameters
-//' @param resp a numeric vector of item responses
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-//' @param prior prior distribution (1: normal, 2: uniform)
-//' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+//' Calculate a log-likelihood function of theta.
 //' 
+//' @param theta_grid An equi-spaced grid of theta values.
+//' @param item_parm A numeric matrix of item parameters.
+//' @template calc-params 
 //' @export
 // [[Rcpp::export]]
 NumericVector calc_log_likelihood_function(NumericVector theta_grid,
@@ -998,14 +990,11 @@ NumericVector calc_log_likelihood_function(NumericVector theta_grid,
 
 //' Calculate a posterior value of theta
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param item_parm a numeric matrix of item parameters
-//' @param resp a numeric vector of item responses
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-//' @param prior prior distribution (1: normal, 2: uniform)
-//' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+//' Calculate a posterior value of theta.
 //' 
+//' @param x A length-one numeric vector for a theta value.
+//' @param item_parm A numeric matrix of item parameters.
+//' @template calc-params
 //' @export
 // [[Rcpp::export]]
 double calc_posterior(const double& x,
@@ -1029,14 +1018,11 @@ double calc_posterior(const double& x,
 
 //' Calculate a posterior distribution of theta
 //' 
-//' @param theta_grid an equi-spaced grid of theta values
-//' @param item_parm a numeric matrix of item parameters
-//' @param resp a numeric vector of item responses
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-//' @param prior prior distribution (1: normal, 2: uniform)
-//' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+//' Calculate a posterior distribution of theta.
 //' 
+//' @param theta_grid An equi-spaced grid of theta values.
+//' @param item_parm A numeric matrix of item parameters.
+//' @template calc-params
 //' @export
 // [[Rcpp::export]]
 NumericVector calc_posterior_function(NumericVector theta_grid,
@@ -1064,13 +1050,15 @@ NumericVector calc_posterior_function(NumericVector theta_grid,
 
 //' Calculate a posterior value of theta for a single item
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param item_parm a numeric vector of item parameters (for one item)
-//' @param resp a length-one numeric vector of item responses
-//' @param ncat a length-one numeric vector of the number of response categories by item
-//' @param model a length-one numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-//' @param prior prior distribution (1: normal, 2: uniform)
-//' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+//' Calculate a posterior value of theta for a single item.
+//' 
+//' @param x A length-one numeric vector for a theta value.
+//' @param item_parm A numeric vector of item parameters (for one item).
+//' @param resp A length-one numeric vector of item responses.
+//' @param ncat A length-one numeric vector of the number of response categories by item.
+//' @param model A length-one numeric vector of the IRT model by item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).
+//' @param prior The type of prior distribution (1: normal, 2: uniform).
+//' @param prior_parm A numeric vector of hyperparameters for the prior distribution, c(mu, sigma) or c(ll, ul).
 //' 
 //' @export
 // [[Rcpp::export]]
@@ -1138,16 +1126,13 @@ double calc_posterior_single(const double& x,
   return pos;
 }
 
-//' Calculate an expected a posterior estimate of theta for one examinee
+//' Calculate an EAP estimate of theta for one examinee
 //' 
-//' @param theta_grid an equi-spaced theta grid
-//' @param item_parm a numeric matrix of item parameters
-//' @param resp a numeric vector of item responses
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-//' @param prior prior distribution (1: normal, 2: uniform)
-//' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+//' Calculate an expected a posterior estimate of theta for one examinee.
 //' 
+//' @param theta_grid An equi-spaced theta grid.
+//' @param item_parm A numeric matrix of item parameters.
+//' @template calc-params
 //' @export
 // [[Rcpp::export]]
 NumericVector theta_EAP(NumericVector theta_grid,
@@ -1172,15 +1157,17 @@ NumericVector theta_EAP(NumericVector theta_grid,
   return out;
 }
 
-//' Calculate expected a posteriori mestimates of theta for a group of examinees
+//' Calculate EAP estimates of theta for a group of examinees
 //' 
-//' @param theta_grid an equi-spaced theta grid
-//' @param item_parm a numeric matrix of item parameters
-//' @param Resp a numeric matrix of item responses
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-//' @param prior prior distribution (1: normal, 2: uniform)
-//' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+//' Calculate expected a posteriori estimates of theta for a group of examinees.
+//' 
+//' @param theta_grid An equi-spaced theta grid.
+//' @param item_parm A numeric matrix of item parameters.
+//' @param Resp A numeric matrix of item responses.
+//' @param ncat A numeric vector of the number of response categories by item.
+//' @param model A numeric vector of the IRT model by item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).
+//' @param prior The type of prior distribution (1: normal, 2: uniform).
+//' @param prior_parm A numeric vector of hyperparameters for the prior distribution, c(mu, sigma) or c(ll, ul).
 //' 
 //' @export
 // [[Rcpp::export]]
@@ -1214,16 +1201,13 @@ NumericMatrix theta_EAP_matrix(NumericVector theta_grid,
 
 //' Calculate an empirical Bayes estimate of theta for one examinee
 //' 
-//' @param nx a number of MCMC draws
-//' @param theta_init an initial theta estimate
-//' @param theta_prop SD of the proposal distribution
-//' @param item_parm a numeric matrix of item parameters
-//' @param resp a numeric vector of item responses
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-//' @param prior prior distribution (1: normal, 2: uniform)
-//' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+//' Calculate an empirical Bayes estimate of theta for one examinee.
 //' 
+//' @param nx The number of MCMC draws.
+//' @param theta_init A value for initial estimate of theta.
+//' @param theta_prop SD of the proposal distribution.
+//' @param item_parm A numeric matrix of item parameters.
+//' @template calc-params
 //' @export
 // [[Rcpp::export]]
 NumericVector theta_EB(const int& nx,
@@ -1259,16 +1243,13 @@ NumericVector theta_EB(const int& nx,
 
 //' Calculate an empirical Bayes estimate of theta for a single item
 //' 
-//' @param nx a number of MCMC draws
-//' @param theta_init an initial theta estimate
-//' @param theta_prop SD of the proposal distribution
-//' @param item_parm a numeric matrix of item parameters
-//' @param resp a numeric vector item responses
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-//' @param prior prior distribution (1: normal, 2: uniform)
-//' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+//' Calculate an empirical Bayes estimate of theta for a single item.
 //' 
+//' @param nx The number of MCMC draws.
+//' @param theta_init A value for initial estimate of theta.
+//' @param theta_prop SD of the proposal distribution.
+//' @param item_parm A numeric matrix of item parameters.
+//' @template calc-params
 //' @export
 // [[Rcpp::export]]
 NumericVector theta_EB_single(const int& nx,
@@ -1303,18 +1284,15 @@ NumericVector theta_EB_single(const int& nx,
 }
 
 //' Calculate a fully Bayesian estimate of theta for an examinee
+//'
+//' Calculate a fully Bayesian estimate of theta for an examinee.
 //' 
-//' @param nx a number of MCMC draws
-//' @param theta_init an initial theta estimate
-//' @param theta_prop SD of the proposal distribution
-//' @param items_list a list of item_parm matrices
-//' @param item_init a matrix of item parameter estimates (one row per item)
-//' @param resp a numeric vector of item responses
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-//' @param prior prior distribution (1: normal, 2: uniform)
-//' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
-//' 
+//' @param nx The number of MCMC draws.
+//' @param theta_init A value for initial estimate of theta.
+//' @param theta_prop SD of the proposal distribution.
+//' @param items_list A list of item_parm matrices.
+//' @param item_init A matrix of item parameter estimates (one row per item).
+//' @template calc-params
 //' @export
 // [[Rcpp::export]]
 NumericVector theta_FB(const int& nx,
@@ -1378,17 +1356,14 @@ NumericVector theta_FB(const int& nx,
 
 //' Calculate a fully Bayesian estimate of theta for a single item
 //' 
-//' @param nx a number of MCMC draws
-//' @param theta_init an initial theta estimate
-//' @param theta_prop SD of the proposal distribution
-//' @param item_mcmc a matrix of sampled item parameters for one item
-//' @param item_init a matrix of item parameter estimates (one row per item)
-//' @param resp a numeric vector of item responses
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-//' @param prior prior distribution (1: normal, 2: uniform)
-//' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu,sigma) or c(ll,ul)
+//' Calculate a fully Bayesian estimate of theta for a single item.
 //' 
+//' @param nx The number of MCMC draws.
+//' @param theta_init A value for initial estimate of theta.
+//' @param theta_prop SD of the proposal distribution.
+//' @param item_mcmc A matrix of sampled item parameters for a single item.
+//' @param item_init A matrix of item parameter estimates (one row per item).
+//' @template calc-params
 //' @export
 // [[Rcpp::export]]
 NumericVector theta_FB_single(const int& nx,
@@ -1443,6 +1418,8 @@ NumericVector theta_FB_single(const int& nx,
   return out;
 }
 
+//' Find the segment to which each theta value belongs
+//' 
 //' Find the segment to which each theta value belongs.
 //' 
 //' @param segment A numeric vector of segment cuts.

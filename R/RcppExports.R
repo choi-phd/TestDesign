@@ -261,8 +261,7 @@ array_info_gr <- function(x, a, b) {
 #' 
 #' @param x a length-one numeric vector for a theta value
 #' @param item_parm a matrix of item parameters
-#' @param ncat a numeric vector of the number of response categories by item
-#' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
+#' @template calc-params-mini
 #' @export
 calc_info <- function(x, item_parm, ncat, model) {
     .Call('_Shadow_calc_info', PACKAGE = 'Shadow', x, item_parm, ncat, model)
@@ -272,8 +271,7 @@ calc_info <- function(x, item_parm, ncat, model) {
 #' 
 #' @param x a numeric vector of theta values
 #' @param item_parm a matrix of item parameters
-#' @param ncat a numeric vector of the number of response categories by item
-#' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
+#' @template calc-params-mini
 #' @export
 calc_info_matrix <- function(x, item_parm, ncat, model) {
     .Call('_Shadow_calc_info_matrix', PACKAGE = 'Shadow', x, item_parm, ncat, model)
@@ -283,41 +281,36 @@ calc_info_matrix <- function(x, item_parm, ncat, model) {
 #' 
 #' @param x a numeric vector of MCMC sampled theta values
 #' @param item_parm a numeric matrix of item parameters
-#' @param ncat a numeric vector of the number of response categories by item
-#' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
+#' @template calc-params-mini
 calc_info_EB <- function(x, item_parm, ncat, model) {
     .Call('_Shadow_calc_info_EB', PACKAGE = 'Shadow', x, item_parm, ncat, model)
 }
 
 #' Calculate the Fisher information using fully Bayesian
 #' 
-#' @param x a numeric vector of MCMC sampled theta values
-#' @param items_list a list of item_parm matrices
-#' @param ncat a numeric vector of the number of response categories by item
-#' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-#' @param useEAP true to use the mean of MCMC theta draws
+#' @param x A numeric vector of MCMC sampled theta values.
+#' @param items_list A list of item parameter matrices.
+#' @template calc-params-mini
+#' @param useEAP \code{TRUE} to use the mean of MCMC theta draws.
 calc_info_FB <- function(x, items_list, ncat, model, useEAP = FALSE) {
     .Call('_Shadow_calc_info_FB', PACKAGE = 'Shadow', x, items_list, ncat, model, useEAP)
 }
 
 #' Calculate the mutual information using fully Bayesian
 #' 
-#' @param x a numeric vector of MCMC sampled theta values
-#' @param items_list a list of item_parm matrices
-#' @param ncat a numeric vector of the number of response categories by item
-#' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
+#' @param x A numeric vector of MCMC sampled theta values.
+#' @param items_list A list of item parameter matrices.
+#' @template calc-params-mini
 calc_MI_FB <- function(x, items_list, ncat, model) {
     .Call('_Shadow_calc_MI_FB', PACKAGE = 'Shadow', x, items_list, ncat, model)
 }
 
 #' Calculate a likelihood value of theta
 #' 
-#' @param x a length-one numeric vector for a theta value
-#' @param item_parm a numeric matrix of item parameters
-#' @param resp a numeric rector of item responses
-#' @param ncat a numeric vector of the number of response categories by item
-#' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-#' 
+#' @param x Numeric. A single theta value.
+#' @param item_parm A numeric matrix of item parameters.
+#' @param resp A numeric vector of item responses.
+#' @template calc-params-mini
 #' @export
 calc_likelihood <- function(x, item_parm, resp, ncat, model) {
     .Call('_Shadow_calc_likelihood', PACKAGE = 'Shadow', x, item_parm, resp, ncat, model)
@@ -325,11 +318,10 @@ calc_likelihood <- function(x, item_parm, resp, ncat, model) {
 
 #' Calculate a likelihood function of theta
 #' 
-#' @param theta_grid an equi-spaced grid of theta values
-#' @param item_parm a numeric matrix of item parameters
-#' @param resp a numeric vector of item responses
-#' @param ncat a numeric vector of the number of response categories by item
-#' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
+#' @param theta_grid An equi-spaced grid of theta values.
+#' @param item_parm A numeric matrix of item parameters.
+#' @param resp A numeric vector of item responses.
+#' @template calc-params-mini
 #' 
 #' @export
 calc_likelihood_function <- function(theta_grid, item_parm, resp, ncat, model) {
@@ -338,14 +330,9 @@ calc_likelihood_function <- function(theta_grid, item_parm, resp, ncat, model) {
 
 #' Calculate a log-likelihood value of theta
 #' 
-#' @param x a length-one numeric vector for a theta value
-#' @param item_parm a numeric matrix of item parameters
-#' @param resp a numeric vector of item responses
-#' @param ncat a numeric vector of the number of response categories by item
-#' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-#' @param prior prior distribution (1: normal, 2: uniform)
-#' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
-#' 
+#' @param x A length-one numeric vector for a theta value.
+#' @param item_parm A numeric matrix of item parameters.
+#' @template calc-params
 #' @export
 calc_log_likelihood <- function(x, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_Shadow_calc_log_likelihood', PACKAGE = 'Shadow', x, item_parm, resp, ncat, model, prior, prior_parm)
@@ -353,14 +340,9 @@ calc_log_likelihood <- function(x, item_parm, resp, ncat, model, prior, prior_pa
 
 #' Calculate a log-likelihood function of theta
 #' 
-#' @param theta_grid an equi-spaced grid of theta values
-#' @param item_parm a numeric matrix of item parameters
-#' @param resp a numeric vector of item responses
-#' @param ncat a numeric vector of the number of response categories by item
-#' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-#' @param prior prior distribution (1: normal, 2: uniform)
-#' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
-#' 
+#' @param theta_grid An equi-spaced grid of theta values.
+#' @param item_parm A numeric matrix of item parameters.
+#' @template calc-params 
 #' @export
 calc_log_likelihood_function <- function(theta_grid, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_Shadow_calc_log_likelihood_function', PACKAGE = 'Shadow', theta_grid, item_parm, resp, ncat, model, prior, prior_parm)
@@ -368,14 +350,9 @@ calc_log_likelihood_function <- function(theta_grid, item_parm, resp, ncat, mode
 
 #' Calculate a posterior value of theta
 #' 
-#' @param x a length-one numeric vector for a theta value
-#' @param item_parm a numeric matrix of item parameters
-#' @param resp a numeric vector of item responses
-#' @param ncat a numeric vector of the number of response categories by item
-#' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-#' @param prior prior distribution (1: normal, 2: uniform)
-#' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
-#' 
+#' @param x A length-one numeric vector for a theta value.
+#' @param item_parm A numeric matrix of item parameters.
+#' @template calc-params
 #' @export
 calc_posterior <- function(x, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_Shadow_calc_posterior', PACKAGE = 'Shadow', x, item_parm, resp, ncat, model, prior, prior_parm)
@@ -383,14 +360,11 @@ calc_posterior <- function(x, item_parm, resp, ncat, model, prior, prior_parm) {
 
 #' Calculate a posterior distribution of theta
 #' 
-#' @param theta_grid an equi-spaced grid of theta values
-#' @param item_parm a numeric matrix of item parameters
-#' @param resp a numeric vector of item responses
-#' @param ncat a numeric vector of the number of response categories by item
-#' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-#' @param prior prior distribution (1: normal, 2: uniform)
-#' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+#' Calculate a posterior distribution of theta.
 #' 
+#' @param theta_grid An equi-spaced grid of theta values.
+#' @param item_parm A numeric matrix of item parameters.
+#' @template calc-params
 #' @export
 calc_posterior_function <- function(theta_grid, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_Shadow_calc_posterior_function', PACKAGE = 'Shadow', theta_grid, item_parm, resp, ncat, model, prior, prior_parm)
@@ -398,43 +372,44 @@ calc_posterior_function <- function(theta_grid, item_parm, resp, ncat, model, pr
 
 #' Calculate a posterior value of theta for a single item
 #' 
-#' @param x a length-one numeric vector for a theta value
-#' @param item_parm a numeric vector of item parameters (for one item)
-#' @param resp a length-one numeric vector of item responses
-#' @param ncat a length-one numeric vector of the number of response categories by item
-#' @param model a length-one numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-#' @param prior prior distribution (1: normal, 2: uniform)
-#' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+#' Calculate a posterior value of theta for a single item.
+#' 
+#' @param x A length-one numeric vector for a theta value.
+#' @param item_parm A numeric vector of item parameters (for one item).
+#' @param resp A length-one numeric vector of item responses.
+#' @param ncat A length-one numeric vector of the number of response categories by item.
+#' @param model A length-one numeric vector of the IRT model by item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).
+#' @param prior The type of prior distribution (1: normal, 2: uniform).
+#' @param prior_parm A numeric vector of hyperparameters for the prior distribution, c(mu, sigma) or c(ll, ul).
 #' 
 #' @export
 calc_posterior_single <- function(x, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_Shadow_calc_posterior_single', PACKAGE = 'Shadow', x, item_parm, resp, ncat, model, prior, prior_parm)
 }
 
-#' Calculate an expected a posterior estimate of theta for one examinee
+#' Calculate an EAP estimate of theta for one examinee
 #' 
-#' @param theta_grid an equi-spaced theta grid
-#' @param item_parm a numeric matrix of item parameters
-#' @param resp a numeric vector of item responses
-#' @param ncat a numeric vector of the number of response categories by item
-#' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-#' @param prior prior distribution (1: normal, 2: uniform)
-#' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+#' Calculate an expected a posterior estimate of theta for one examinee.
 #' 
+#' @param theta_grid An equi-spaced theta grid.
+#' @param item_parm A numeric matrix of item parameters.
+#' @template calc-params
 #' @export
 theta_EAP <- function(theta_grid, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_Shadow_theta_EAP', PACKAGE = 'Shadow', theta_grid, item_parm, resp, ncat, model, prior, prior_parm)
 }
 
-#' Calculate expected a posteriori mestimates of theta for a group of examinees
+#' Calculate EAP estimates of theta for a group of examinees
 #' 
-#' @param theta_grid an equi-spaced theta grid
-#' @param item_parm a numeric matrix of item parameters
-#' @param Resp a numeric matrix of item responses
-#' @param ncat a numeric vector of the number of response categories by item
-#' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-#' @param prior prior distribution (1: normal, 2: uniform)
-#' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+#' Calculate expected a posteriori estimates of theta for a group of examinees.
+#' 
+#' @param theta_grid An equi-spaced theta grid.
+#' @param item_parm A numeric matrix of item parameters.
+#' @param Resp A numeric matrix of item responses.
+#' @param ncat A numeric vector of the number of response categories by item.
+#' @param model A numeric vector of the IRT model by item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).
+#' @param prior The type of prior distribution (1: normal, 2: uniform).
+#' @param prior_parm A numeric vector of hyperparameters for the prior distribution, c(mu, sigma) or c(ll, ul).
 #' 
 #' @export
 theta_EAP_matrix <- function(theta_grid, item_parm, Resp, ncat, model, prior, prior_parm) {
@@ -443,16 +418,13 @@ theta_EAP_matrix <- function(theta_grid, item_parm, Resp, ncat, model, prior, pr
 
 #' Calculate an empirical Bayes estimate of theta for one examinee
 #' 
-#' @param nx a number of MCMC draws
-#' @param theta_init an initial theta estimate
-#' @param theta_prop SD of the proposal distribution
-#' @param item_parm a numeric matrix of item parameters
-#' @param resp a numeric vector of item responses
-#' @param ncat a numeric vector of the number of response categories by item
-#' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-#' @param prior prior distribution (1: normal, 2: uniform)
-#' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+#' Calculate an empirical Bayes estimate of theta for one examinee.
 #' 
+#' @param nx The number of MCMC draws.
+#' @param theta_init A value for initial estimate of theta.
+#' @param theta_prop SD of the proposal distribution.
+#' @param item_parm a numeric matrix of item parameters.
+#' @template calc-params
 #' @export
 theta_EB <- function(nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_Shadow_theta_EB', PACKAGE = 'Shadow', nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm)
@@ -460,34 +432,28 @@ theta_EB <- function(nx, theta_init, theta_prop, item_parm, resp, ncat, model, p
 
 #' Calculate an empirical Bayes estimate of theta for a single item
 #' 
-#' @param nx a number of MCMC draws
-#' @param theta_init an initial theta estimate
-#' @param theta_prop SD of the proposal distribution
-#' @param item_parm a numeric matrix of item parameters
-#' @param resp a numeric vector item responses
-#' @param ncat a numeric vector of the number of response categories by item
-#' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-#' @param prior prior distribution (1: normal, 2: uniform)
-#' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+#' Calculate an empirical Bayes estimate of theta for a single item.
 #' 
+#' @param nx The number of MCMC draws.
+#' @param theta_init A value for initial estimate of theta.
+#' @param theta_prop SD of the proposal distribution.
+#' @param item_parm A numeric matrix of item parameters.
+#' @template calc-params
 #' @export
 theta_EB_single <- function(nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_Shadow_theta_EB_single', PACKAGE = 'Shadow', nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm)
 }
 
 #' Calculate a fully Bayesian estimate of theta for an examinee
+#'
+#' Calculate a fully Bayesian estimate of theta for an examinee.
 #' 
-#' @param nx a number of MCMC draws
-#' @param theta_init an initial theta estimate
-#' @param theta_prop SD of the proposal distribution
-#' @param items_list a list of item_parm matrices
-#' @param item_init a matrix of item parameter estimates (one row per item)
-#' @param resp a numeric vector of item responses
-#' @param ncat a numeric vector of the number of response categories by item
-#' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-#' @param prior prior distribution (1: normal, 2: uniform)
-#' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
-#' 
+#' @param nx The number of MCMC draws.
+#' @param theta_init A value for initial estimate of theta.
+#' @param theta_prop SD of the proposal distribution.
+#' @param items_list A list of item_parm matrices.
+#' @param item_init A matrix of item parameter estimates (one row per item).
+#' @template calc-params
 #' @export
 theta_FB <- function(nx, theta_init, theta_prop, items_list, item_init, resp, ncat, model, prior, prior_parm) {
     .Call('_Shadow_theta_FB', PACKAGE = 'Shadow', nx, theta_init, theta_prop, items_list, item_init, resp, ncat, model, prior, prior_parm)
@@ -495,22 +461,21 @@ theta_FB <- function(nx, theta_init, theta_prop, items_list, item_init, resp, nc
 
 #' Calculate a fully Bayesian estimate of theta for a single item
 #' 
-#' @param nx a number of MCMC draws
-#' @param theta_init an initial theta estimate
-#' @param theta_prop SD of the proposal distribution
-#' @param item_mcmc a matrix of sampled item parameters for one item
-#' @param item_init a matrix of item parameter estimates (one row per item)
-#' @param resp a numeric vector of item responses
-#' @param ncat a numeric vector of the number of response categories by item
-#' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-#' @param prior prior distribution (1: normal, 2: uniform)
-#' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu,sigma) or c(ll,ul)
+#' Calculate a fully Bayesian estimate of theta for a single item.
 #' 
+#' @param nx The number of MCMC draws.
+#' @param theta_init A value for initial estimate of theta.
+#' @param theta_prop SD of the proposal distribution.
+#' @param item_mcmc A matrix of sampled item parameters for a single item.
+#' @param item_init A matrix of item parameter estimates (one row per item).
+#' @template calc-params
 #' @export
 theta_FB_single <- function(nx, theta_init, theta_prop, item_mcmc, item_init, resp, ncat, model, prior, prior_parm) {
     .Call('_Shadow_theta_FB_single', PACKAGE = 'Shadow', nx, theta_init, theta_prop, item_mcmc, item_init, resp, ncat, model, prior, prior_parm)
 }
 
+#' Find the segment to which each theta value belongs
+#' 
 #' Find the segment to which each theta value belongs.
 #' 
 #' @param segment A numeric vector of segment cuts.
