@@ -1,10 +1,12 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-//' Calculate the probability of a correct response according to the 1pl model 
+//' Calculate the probability of a correct response according to 1PL model
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param b a length-one numeric vector for the difficulty parameter
+//' Calculate the probability of a correct response according to 1PL model.
+//' 
+//' @template x-single
+//' @template 1pl-params
 //' @template 1pl-ref
 //' @export
 // [[Rcpp::export]]
@@ -12,10 +14,12 @@ double p_1pl(const double& x, const double& b){
   return 1/(1+exp(b-x));
 }
 
-//' Calculate the probability of a correct response for a vector of theta values according to the 1pl model 
+//' Calculate the probability of a correct response according to 1PL model
 //' 
-//' @param x a numeric vector of theta values
-//' @param b a length-one numeric vector for the difficulty parameter
+//' Calculate the probability of a correct response according to 1PL model.
+//' 
+//' @template x-vector
+//' @template 1pl-params
 //' @template 1pl-ref
 //' @export
 // [[Rcpp::export]]
@@ -28,11 +32,12 @@ NumericVector array_p_1pl(NumericVector x, const double& b){
   return p_array;
 }
 
-//' Calculate the probability of a correct response according to the 2pl model 
+//' Calculate the probability of a correct response according to the 2PL model 
+//'
+//' Calculate the probability of a correct response according to the 2PL model.
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a length-one numeric vector for the difficulty parameter
+//' @template x-single
+//' @template 2pl-params
 //' @template 2pl-ref
 //' @export
 // [[Rcpp::export]]
@@ -40,11 +45,12 @@ double p_2pl(const double& x, const double& a, const double& b){
   return 1/(1+exp(-a*(x-b)));
 }
 
-//' Calculate the probability of a correct response for a vector of theta values according to the 2pl model 
-//' 
-//' @param x a numeric vector of theta values
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a length-one numeric vector for the difficulty parameter
+//' Calculate the probability of a correct response according to the 2PL model
+//'
+//' Calculate the probability of a correct response according to the 2PL model.
+//'  
+//' @template x-vector
+//' @template 2pl-params
 //' @template 2pl-ref
 //' @export
 // [[Rcpp::export]]
@@ -57,12 +63,12 @@ NumericVector array_p_2pl(NumericVector x, const double& a, const double& b){
   return p_array;
 }
 
-//' Calculate the probability of a correct response according to the 3pl model 
+//' Calculate the probability of a correct response according to the 3PL model
+//'
+//' Calculate the probability of a correct response according to the 3PL model. 
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a length-one numeric vector for the difficulty parameter
-//' @param c a length-one numeric vector for the guessing parameter
+//' @template x-single
+//' @template 3pl-params
 //' @template 3pl-ref
 //' @export
 // [[Rcpp::export]]
@@ -70,12 +76,12 @@ double p_3pl(const double& x, const double& a, const double& b, const double& c)
   return c+(1-c)/(1+exp(-a*(x-b)));
 }
 
-//' Calculate the probability of a correct response for a vector of theta values according to the 3pl model 
+//' Calculate the probability of a correct response according to the 3PL model
+//'
+//' Calculate the probability of a correct response according to the 3PL model.
 //' 
-//' @param x a numeric vector of theta values
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a length-one numeric vector for the difficulty parameter
-//' @param c a length-one numeric vector for the guessing parameter
+//' @template x-vector
+//' @template 3pl-params
 //' @template 3pl-ref
 //' @export
 // [[Rcpp::export]]
@@ -90,8 +96,10 @@ NumericVector array_p_3pl(NumericVector x, const double& a, const double& b, con
 
 //' Calculate the response probabilities according to the partial credit model
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param b a numeric vector for the threshold parameters
+//' Calculate the response probabilities according to the partial credit model.
+//' 
+//' @template x-single
+//' @template pc-params
 //' @template pc-ref
 //' @export
 // [[Rcpp::export]]
@@ -108,10 +116,12 @@ NumericVector p_pc(const double& x, NumericVector b){
   return pp/psum;
 }
 
-//' Calculate the response probabilities for a vector of theta values according to the partial credit model
+//' Calculate the response probabilities according to the partial credit model
 //' 
-//' @param x a numeric vector of theta values
-//' @param b a numeric vector for the threshold parameters
+//' Calculate the response probabilities according to the partial credit model.
+//' 
+//' @template x-vector
+//' @template pc-params
 //' @template pc-ref
 //' @export
 // [[Rcpp::export]]
@@ -131,9 +141,8 @@ NumericMatrix array_p_pc(NumericVector x, NumericVector b){
 
 //' Calculate the response probabilities according to the generalizaed partial credit model
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a numeric vector for the threshold parameters
+//' @template x-single
+//' @template gpc-params
 //' @template gpc-ref
 //' @export
 // [[Rcpp::export]]
@@ -152,9 +161,8 @@ NumericVector p_gpc(const double& x, const double& a, NumericVector b){
 
 //' Calculate the response probabilities for a vector of theta values according to the generalized partial credit model
 //' 
-//' @param x a numeric vector of theta values
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a numeric vector for the threshold parameters
+//' @template x-vector
+//' @template gpc-params
 //' @template gpc-ref
 //' @export
 // [[Rcpp::export]]
@@ -174,9 +182,8 @@ NumericMatrix array_p_gpc(NumericVector x, const double& a, NumericVector b){
 
 //' Calculate the response probabilities according to the graded response model
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a numeric vector for the category boundary parameters
+//' @template x-single
+//' @template gr-params
 //' @template gr-ref
 //' @export
 // [[Rcpp::export]]
@@ -196,9 +203,8 @@ NumericVector p_gr(const double& x, const double& a, NumericVector b){
 
 //' Calculate the response probabilities for a vector of theta values according to the graded response model
 //' 
-//' @param x a numeric vector of theta values
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a numeric vector for the category boundary parameters
+//' @template x-vector
+//' @template gr-params
 //' @template gr-ref
 //' @export
 // [[Rcpp::export]]
@@ -218,8 +224,8 @@ NumericMatrix array_p_gr(NumericVector x, const double& a, NumericVector b){
 
 //' Calculate the Fisher information according to the 1pl model
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param b a numeric vector for the threshold parameters
+//' @template x-single
+//' @template 1pl-params
 //' @template 1pl-ref
 //' @export
 // [[Rcpp::export]]
@@ -230,8 +236,8 @@ double info_1pl(const double& x, const double& b){
 
 //' Calculate the Fisher information for a vector of theta values according to the 1pl model
 //' 
-//' @param x a vector of theta values
-//' @param b a length-one numeric vector for the difficulty parameter
+//' @template x-vector
+//' @template 1pl-params
 //' @template 1pl-ref
 //' @export
 // [[Rcpp::export]]
@@ -246,9 +252,8 @@ NumericVector array_info_1pl(NumericVector x, const double& b){
 
 //' Calculate the Fisher information according to the 2pl model
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a length-one numeric vector for the difficulty parameter
+//' @template x-single
+//' @template 2pl-params
 //' @template 2pl-ref
 //' @export
 // [[Rcpp::export]]
@@ -259,9 +264,8 @@ double info_2pl(const double& x, const double& a, const double& b){
 
 //' Calculate the Fisher information for a vector of theta values according to the 2pl model
 //' 
-//' @param x a vector of theta values
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a length-one numeric vector for the difficulty parameter
+//' @template x-vector
+//' @template 2pl-params
 //' @template 2pl-ref
 //' @export
 // [[Rcpp::export]]
@@ -276,10 +280,8 @@ NumericVector array_info_2pl(NumericVector x, const double& a, const double& b){
 
 //' Calculate the Fisher information according to the 3pl model
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a length-one numeric vector for the difficulty parameter
-//' @param c a length-one numeric vector for the guessing parameter
+//' @template x-single
+//' @template 3pl-params
 //' @template 3pl-ref
 //' @export
 // [[Rcpp::export]]
@@ -290,10 +292,8 @@ double info_3pl(const double& x, const double& a, const double& b, const double&
 
 //' Calculate the Fisher information for a vector of theta values according to the 3pl model
 //' 
-//' @param x a vector of theta values
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a length-one numeric vector for the difficulty parameter
-//' @param c a length-one numeric vector for the guessing parameter
+//' @template x-vector
+//' @template 3pl-params
 //' @template 3pl-ref
 //' @export
 // [[Rcpp::export]]
@@ -308,8 +308,8 @@ NumericVector array_info_3pl(NumericVector x, const double& a, const double& b, 
 
 //' Calculate the Fisher information according to the partial credit model
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param b a numeric vector for the threshold parameters
+//' @template x-single
+//' @template pc-params
 //' @template pc-ref
 //' @export
 // [[Rcpp::export]]
@@ -326,8 +326,8 @@ double info_pc(const double& x, NumericVector b){
 
 //' Calculate the Fisher information for a vector of theta values according to the partial credit model
 //' 
-//' @param x a numeric vector of theta values
-//' @param b a numeric vector for the threshold parameters
+//' @template x-vector
+//' @template pc-params
 //' @template pc-ref
 //' @export
 // [[Rcpp::export]]
@@ -342,9 +342,8 @@ NumericVector array_info_pc(NumericVector x, NumericVector b){
 
 //' Calculate the Fisher information according to the generalized partial credit model
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a numeric vector for the threshold parameters
+//' @template x-single
+//' @template gpc-params
 //' @template gpc-ref
 //' @export
 // [[Rcpp::export]]
@@ -361,9 +360,8 @@ double info_gpc(const double& x, const double& a, NumericVector b){
 
 //' Calculate the Fisher information for a vector of theta values according to the generalized partial credit model
 //' 
-//' @param x a numeric vector of theta values
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a numeric vector for the threshold parameters
+//' @template x-vector
+//' @template gpc-params
 //' @template gpc-ref
 //' @export
 // [[Rcpp::export]]
@@ -378,9 +376,8 @@ NumericVector array_info_gpc(NumericVector x, const double& a, NumericVector b){
 
 //' Calculate the Fisher information according to the graded response model
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a numeric vector for the category boundary parameters
+//' @template x-single
+//' @template gr-params
 //' @template gr-ref
 //' @export
 // [[Rcpp::export]]
@@ -401,9 +398,8 @@ double info_gr(const double& x, const double& a, NumericVector b){
 
 //' Calculate the Fisher information for a vector of theta values according to the graded response model
 //' 
-//' @param x a numeric vector of theta values
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a numeric vector for the category boundary parameters
+//' @template x-vector
+//' @template gr-params
 //' @template gr-ref
 //' @export
 // [[Rcpp::export]]
@@ -1447,10 +1443,10 @@ NumericVector theta_FB_single(const int& nx,
   return out;
 }
 
-//' Find the segment to which each theta value belongs
+//' Find the segment to which each theta value belongs.
 //' 
-//' @param segment a numeric vector of segment cuts
-//' @param x a numeric vector of theta values
+//' @param segment A numeric vector of segment cuts.
+//' @param x A numeric vector of theta values.
 //' 
 //' @export
 // [[Rcpp::export]]

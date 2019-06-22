@@ -7,7 +7,7 @@
 addTrans(color, trans)
 }
 \arguments{
-\item{color}{A vector of colors}
+\item{color}{A vector of colors.}
 
 \item{trans}{A vector of integers between 0 and 255 where 0 is fully transparaent and 255 is fully visible.}
 }
