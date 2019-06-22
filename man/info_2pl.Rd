@@ -7,11 +7,11 @@
 info_2pl(x, a, b)
 }
 \arguments{
-\item{x}{a length-one numeric vector for a theta value}
+\item{x}{Numeric. A single theta value.}
 
-\item{a}{a length-one numeric vector for the slope parameter}
+\item{a}{Numeric. A slope parameter value.}
 
-\item{b}{a length-one numeric vector for the difficulty parameter}
+\item{b}{Numeric. A difficulty parameter value.}
 }
 \description{
 Calculate the Fisher information according to the 2pl model

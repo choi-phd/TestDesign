@@ -32,12 +32,12 @@ calcProb(object, theta)
 \S4method{calcProb}{pool.cluster,numeric}(object, theta)
 }
 \arguments{
-\item{object}{An instance of an item class}
+\item{object}{An instance of an item class.}
 
-\item{theta}{A vector of theta values}
+\item{theta}{A vector of theta values.}
 }
 \value{
-A matrix of probability values with a dimension (nq, ncat) for a single item or a list of matrices for an instance of "item.pool"
+A matrix of probability values with a dimension (nq, ncat) for a single item or a list of matrices for an instance of "item.pool".
 }
 \description{
 An S4 generic and its methods to calculate item response probabilities for different item classes

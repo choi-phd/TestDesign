@@ -8,26 +8,26 @@ theta_FB(nx, theta_init, theta_prop, items_list, item_init, resp, ncat,
   model, prior, prior_parm)
 }
 \arguments{
-\item{nx}{a number of MCMC draws}
+\item{nx}{The number of MCMC draws.}
 
-\item{theta_init}{an initial theta estimate}
+\item{theta_init}{A value for initial estimate of theta.}
 
-\item{theta_prop}{SD of the proposal distribution}
+\item{theta_prop}{SD of the proposal distribution.}
 
-\item{items_list}{a list of item_parm matrices}
+\item{items_list}{A list of item_parm matrices.}
 
-\item{item_init}{a matrix of item parameter estimates (one row per item)}
+\item{item_init}{A matrix of item parameter estimates (one row per item).}
 
-\item{resp}{a numeric vector of item responses}
+\item{resp}{A numeric vector of item responses.}
 
-\item{ncat}{a numeric vector of the number of response categories by item}
+\item{ncat}{A numeric vector of the number of response categories by item.}
 
-\item{model}{a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)}
+\item{model}{A numeric vector indicating the IRT models of each item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).}
 
-\item{prior}{prior distribution (1: normal, 2: uniform)}
+\item{prior}{The type of prior distribution (1: normal, 2: uniform).}
 
-\item{prior_parm}{a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)}
+\item{prior_parm}{A numeric vector of hyperparameters for the prior distribution, c(mu, sigma) or c(ll, ul).}
 }
 \description{
-Calculate a fully Bayesian estimate of theta for an examinee
+Calculate a fully Bayesian estimate of theta for an examinee.
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/Shadow_functions.R
 \name{lnHyperPars}
 \alias{lnHyperPars}
-\title{lnHyperPars}
+\title{Calculate hyperparameters for log-normal distribution}
 \usage{
 lnHyperPars(mean, sd)
 }

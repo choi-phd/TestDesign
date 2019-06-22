@@ -19,7 +19,7 @@
 \alias{calcLocation,item.pool,numeric-method}
 \alias{calcLocation,pool.cluster-method}
 \alias{calcLocation,pool.cluster,numeric-method}
-\title{An S4 generic and its methods to calculate item location}
+\title{Calculate item location}
 \usage{
 calcLocation(object)
 
@@ -40,13 +40,13 @@ calcLocation(object)
 \S4method{calcLocation}{pool.cluster}(object)
 }
 \arguments{
-\item{object}{An instance of an item class}
+\item{object}{An instance of an item class.}
 }
 \value{
-Item location values
+Item location values.
 }
 \description{
-An S4 generic and its methods to calculate item location
+An S4 generic and its methods to calculate item location.
 }
 \examples{
 \dontrun{

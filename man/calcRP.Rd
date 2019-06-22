@@ -8,16 +8,16 @@ calcRP(object, rp = 0.5, maxIter = 100, conv = 1e-04,
   startTheta = 0)
 }
 \arguments{
-\item{object}{An \code{\linkS4class{item.pool}} object}
+\item{object}{An \code{\linkS4class{item.pool}} object.}
 
-\item{rp}{A response probability value}
+\item{rp}{A response probability value.}
 
-\item{maxIter}{A maximum number of iterations}
+\item{maxIter}{A maximum number of iterations.}
 
-\item{conv}{A convergence criterion}
+\item{conv}{A convergence criterion.}
 
-\item{startTheta}{A starting theta value}
+\item{startTheta}{A starting theta value.}
 }
 \description{
-Find theta corresponding to a response probability value for each item
+Find theta corresponding to a response probability value for each item.
 }
