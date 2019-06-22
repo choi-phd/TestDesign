@@ -2,7 +2,7 @@
 % Please edit documentation in R/Shadow_functions.R
 \name{saveOutput}
 \alias{saveOutput}
-\title{saveOutput}
+\title{Save or print audit trails}
 \usage{
 saveOutput(objectList, file = NULL)
 }

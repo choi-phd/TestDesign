@@ -2,7 +2,7 @@
 % Please edit documentation in R/Shadow_functions.R
 \name{iparPosteriorSample}
 \alias{iparPosteriorSample}
-\title{iparPosteriorSample}
+\title{Sample item parameter estimates from their posterior distributions}
 \usage{
 iparPosteriorSample(pool, nSample = 500)
 }
@@ -12,5 +12,5 @@ iparPosteriorSample(pool, nSample = 500)
 \item{nSample}{An integer as the number of sampled parameters}
 }
 \description{
-Sample item parameter estimates from their posterior distributions
+Sample item parameter estimates from their posterior distributions.
 }

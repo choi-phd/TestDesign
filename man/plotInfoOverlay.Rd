@@ -2,7 +2,7 @@
 % Please edit documentation in R/Shadow_functions.R
 \name{plotInfoOverlay}
 \alias{plotInfoOverlay}
-\title{plotInfoOverlay}
+\title{Overlay item information plots}
 \usage{
 plotInfoOverlay(object, theta, infoType = "FISHER", select = NULL,
   PDF = NULL, color = "red", width = 7, height = 6)
@@ -25,5 +25,5 @@ plotInfoOverlay(object, theta, infoType = "FISHER", select = NULL,
 \item{height}{Height of the graphics device}
 }
 \description{
-Overlay item information plots
+Overlay item information plots.
 }

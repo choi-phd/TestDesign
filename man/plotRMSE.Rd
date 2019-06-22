@@ -2,7 +2,7 @@
 % Please edit documentation in R/Shadow_functions.R
 \name{plotRMSE}
 \alias{plotRMSE}
-\title{plotRMSE}
+\title{Draw RMSE plots}
 \usage{
 plotRMSE(..., title = NULL, legendTitle = NULL, legendLabels = NULL,
   ltySet = NULL, colSet = NULL, theta = seq(-2, 2, 1))
@@ -23,5 +23,5 @@ plotRMSE(..., title = NULL, legendTitle = NULL, legendLabels = NULL,
 \item{theta}{A theta grid}
 }
 \description{
-Draw RMSE plots
+Draw RMSE plots.
 }

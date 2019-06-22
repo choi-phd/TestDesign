@@ -2,7 +2,7 @@
 % Please edit documentation in R/Shadow_functions.R
 \name{plotEligibilityStats}
 \alias{plotEligibilityStats}
-\title{plotEligibilityStats}
+\title{Draw item eligibility statistics plots}
 \usage{
 plotEligibilityStats(config, object = NULL, objectNoFading = NULL,
   file = NULL, fileNoFading = NULL, segment = 1, items = c(1),
@@ -30,5 +30,5 @@ plotEligibilityStats(config, object = NULL, objectNoFading = NULL,
 \item{discardFirst}{A integer identifying the first x simulees to discard as burn-in}
 }
 \description{
-Draw item eligibility statistics plots
+Draw item eligibility statistics plots.
 }

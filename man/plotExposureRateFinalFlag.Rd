@@ -2,7 +2,7 @@
 % Please edit documentation in R/Shadow_functions.R
 \name{plotExposureRateFinalFlag}
 \alias{plotExposureRateFinalFlag}
-\title{plotExposureRateFinalFlag}
+\title{Draw item information plots for flagged items by segment}
 \usage{
 plotExposureRateFinalFlag(object, pool, theta = seq(-3, 3, 0.1),
   flagCriterior = 0.4, PDF = NULL, width = 7, height = 6,
@@ -28,5 +28,5 @@ plotExposureRateFinalFlag(object, pool, theta = seq(-3, 3, 0.1),
 \item{mfrow}{Number of multiple figures defined as c(nrow, ncol)}
 }
 \description{
-Draw item information plots for flagged items by segment
+Draw item information plots for flagged items by segment.
 }
