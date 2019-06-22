@@ -2,7 +2,7 @@
 % Please edit documentation in R/Shadow_functions.R
 \name{RMSE}
 \alias{RMSE}
-\title{RMSE}
+\title{Calculate Root Mean Squared Error}
 \usage{
 RMSE(x, y, conditional = TRUE)
 }
@@ -14,5 +14,5 @@ RMSE(x, y, conditional = TRUE)
 \item{conditional}{If \code{TRUE}, calculate RMSE conditional on x.}
 }
 \description{
-Calculate Root Mean Squared Error
+Calculate Root Mean Squared Error.
 }

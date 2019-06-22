@@ -2,21 +2,21 @@
 % Please edit documentation in R/RcppExports.R
 \name{array_p_3pl}
 \alias{array_p_3pl}
-\title{Calculate the probability of a correct response for a vector of theta values according to the 3pl model}
+\title{Calculate the probability of a correct response according to the 3PL model}
 \usage{
 array_p_3pl(x, a, b, c)
 }
 \arguments{
-\item{x}{a numeric vector of theta values}
+\item{x}{Numeric. A vector of theta values.}
 
-\item{a}{a length-one numeric vector for the slope parameter}
+\item{a}{Numeric. A slope parameter value.}
 
-\item{b}{a length-one numeric vector for the difficulty parameter}
+\item{b}{Numeric. A difficulty parameter value.}
 
-\item{c}{a length-one numeric vector for the guessing parameter}
+\item{c}{Numeric. A guessing parameter value.}
 }
 \description{
-Calculate the probability of a correct response for a vector of theta values according to the 3pl model
+Calculate the probability of a correct response according to the 3PL model.
 }
 \references{
 {

@@ -1,10 +1,12 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-//' Calculate the probability of a correct response according to the 1pl model 
+//' Calculate the probability of a correct response according to 1PL model
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param b a length-one numeric vector for the difficulty parameter
+//' Calculate the probability of a correct response according to 1PL model.
+//' 
+//' @template x-single
+//' @template 1pl-params
 //' @template 1pl-ref
 //' @export
 // [[Rcpp::export]]
@@ -12,10 +14,12 @@ double p_1pl(const double& x, const double& b){
   return 1/(1+exp(b-x));
 }
 
-//' Calculate the probability of a correct response for a vector of theta values according to the 1pl model 
+//' Calculate the probability of a correct response according to 1PL model
 //' 
-//' @param x a numeric vector of theta values
-//' @param b a length-one numeric vector for the difficulty parameter
+//' Calculate the probability of a correct response according to 1PL model.
+//' 
+//' @template x-vector
+//' @template 1pl-params
 //' @template 1pl-ref
 //' @export
 // [[Rcpp::export]]
@@ -28,11 +32,12 @@ NumericVector array_p_1pl(NumericVector x, const double& b){
   return p_array;
 }
 
-//' Calculate the probability of a correct response according to the 2pl model 
+//' Calculate the probability of a correct response according to the 2PL model 
+//'
+//' Calculate the probability of a correct response according to the 2PL model.
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a length-one numeric vector for the difficulty parameter
+//' @template x-single
+//' @template 2pl-params
 //' @template 2pl-ref
 //' @export
 // [[Rcpp::export]]
@@ -40,11 +45,12 @@ double p_2pl(const double& x, const double& a, const double& b){
   return 1/(1+exp(-a*(x-b)));
 }
 
-//' Calculate the probability of a correct response for a vector of theta values according to the 2pl model 
-//' 
-//' @param x a numeric vector of theta values
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a length-one numeric vector for the difficulty parameter
+//' Calculate the probability of a correct response according to the 2PL model
+//'
+//' Calculate the probability of a correct response according to the 2PL model.
+//'  
+//' @template x-vector
+//' @template 2pl-params
 //' @template 2pl-ref
 //' @export
 // [[Rcpp::export]]
@@ -57,12 +63,12 @@ NumericVector array_p_2pl(NumericVector x, const double& a, const double& b){
   return p_array;
 }
 
-//' Calculate the probability of a correct response according to the 3pl model 
+//' Calculate the probability of a correct response according to the 3PL model
+//'
+//' Calculate the probability of a correct response according to the 3PL model. 
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a length-one numeric vector for the difficulty parameter
-//' @param c a length-one numeric vector for the guessing parameter
+//' @template x-single
+//' @template 3pl-params
 //' @template 3pl-ref
 //' @export
 // [[Rcpp::export]]
@@ -70,12 +76,12 @@ double p_3pl(const double& x, const double& a, const double& b, const double& c)
   return c+(1-c)/(1+exp(-a*(x-b)));
 }
 
-//' Calculate the probability of a correct response for a vector of theta values according to the 3pl model 
+//' Calculate the probability of a correct response according to the 3PL model
+//'
+//' Calculate the probability of a correct response according to the 3PL model.
 //' 
-//' @param x a numeric vector of theta values
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a length-one numeric vector for the difficulty parameter
-//' @param c a length-one numeric vector for the guessing parameter
+//' @template x-vector
+//' @template 3pl-params
 //' @template 3pl-ref
 //' @export
 // [[Rcpp::export]]
@@ -90,8 +96,10 @@ NumericVector array_p_3pl(NumericVector x, const double& a, const double& b, con
 
 //' Calculate the response probabilities according to the partial credit model
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param b a numeric vector for the threshold parameters
+//' Calculate the response probabilities according to the partial credit model.
+//' 
+//' @template x-single
+//' @template pc-params
 //' @template pc-ref
 //' @export
 // [[Rcpp::export]]
@@ -108,10 +116,12 @@ NumericVector p_pc(const double& x, NumericVector b){
   return pp/psum;
 }
 
-//' Calculate the response probabilities for a vector of theta values according to the partial credit model
+//' Calculate the response probabilities according to the partial credit model
 //' 
-//' @param x a numeric vector of theta values
-//' @param b a numeric vector for the threshold parameters
+//' Calculate the response probabilities according to the partial credit model.
+//' 
+//' @template x-vector
+//' @template pc-params
 //' @template pc-ref
 //' @export
 // [[Rcpp::export]]
@@ -131,9 +141,8 @@ NumericMatrix array_p_pc(NumericVector x, NumericVector b){
 
 //' Calculate the response probabilities according to the generalizaed partial credit model
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a numeric vector for the threshold parameters
+//' @template x-single
+//' @template gpc-params
 //' @template gpc-ref
 //' @export
 // [[Rcpp::export]]
@@ -152,9 +161,8 @@ NumericVector p_gpc(const double& x, const double& a, NumericVector b){
 
 //' Calculate the response probabilities for a vector of theta values according to the generalized partial credit model
 //' 
-//' @param x a numeric vector of theta values
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a numeric vector for the threshold parameters
+//' @template x-vector
+//' @template gpc-params
 //' @template gpc-ref
 //' @export
 // [[Rcpp::export]]
@@ -174,9 +182,8 @@ NumericMatrix array_p_gpc(NumericVector x, const double& a, NumericVector b){
 
 //' Calculate the response probabilities according to the graded response model
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a numeric vector for the category boundary parameters
+//' @template x-single
+//' @template gr-params
 //' @template gr-ref
 //' @export
 // [[Rcpp::export]]
@@ -196,9 +203,8 @@ NumericVector p_gr(const double& x, const double& a, NumericVector b){
 
 //' Calculate the response probabilities for a vector of theta values according to the graded response model
 //' 
-//' @param x a numeric vector of theta values
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a numeric vector for the category boundary parameters
+//' @template x-vector
+//' @template gr-params
 //' @template gr-ref
 //' @export
 // [[Rcpp::export]]
@@ -218,8 +224,8 @@ NumericMatrix array_p_gr(NumericVector x, const double& a, NumericVector b){
 
 //' Calculate the Fisher information according to the 1pl model
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param b a numeric vector for the threshold parameters
+//' @template x-single
+//' @template 1pl-params
 //' @template 1pl-ref
 //' @export
 // [[Rcpp::export]]
@@ -230,8 +236,8 @@ double info_1pl(const double& x, const double& b){
 
 //' Calculate the Fisher information for a vector of theta values according to the 1pl model
 //' 
-//' @param x a vector of theta values
-//' @param b a length-one numeric vector for the difficulty parameter
+//' @template x-vector
+//' @template 1pl-params
 //' @template 1pl-ref
 //' @export
 // [[Rcpp::export]]
@@ -246,9 +252,8 @@ NumericVector array_info_1pl(NumericVector x, const double& b){
 
 //' Calculate the Fisher information according to the 2pl model
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a length-one numeric vector for the difficulty parameter
+//' @template x-single
+//' @template 2pl-params
 //' @template 2pl-ref
 //' @export
 // [[Rcpp::export]]
@@ -259,9 +264,8 @@ double info_2pl(const double& x, const double& a, const double& b){
 
 //' Calculate the Fisher information for a vector of theta values according to the 2pl model
 //' 
-//' @param x a vector of theta values
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a length-one numeric vector for the difficulty parameter
+//' @template x-vector
+//' @template 2pl-params
 //' @template 2pl-ref
 //' @export
 // [[Rcpp::export]]
@@ -276,10 +280,8 @@ NumericVector array_info_2pl(NumericVector x, const double& a, const double& b){
 
 //' Calculate the Fisher information according to the 3pl model
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a length-one numeric vector for the difficulty parameter
-//' @param c a length-one numeric vector for the guessing parameter
+//' @template x-single
+//' @template 3pl-params
 //' @template 3pl-ref
 //' @export
 // [[Rcpp::export]]
@@ -290,10 +292,8 @@ double info_3pl(const double& x, const double& a, const double& b, const double&
 
 //' Calculate the Fisher information for a vector of theta values according to the 3pl model
 //' 
-//' @param x a vector of theta values
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a length-one numeric vector for the difficulty parameter
-//' @param c a length-one numeric vector for the guessing parameter
+//' @template x-vector
+//' @template 3pl-params
 //' @template 3pl-ref
 //' @export
 // [[Rcpp::export]]
@@ -308,8 +308,8 @@ NumericVector array_info_3pl(NumericVector x, const double& a, const double& b, 
 
 //' Calculate the Fisher information according to the partial credit model
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param b a numeric vector for the threshold parameters
+//' @template x-single
+//' @template pc-params
 //' @template pc-ref
 //' @export
 // [[Rcpp::export]]
@@ -326,8 +326,8 @@ double info_pc(const double& x, NumericVector b){
 
 //' Calculate the Fisher information for a vector of theta values according to the partial credit model
 //' 
-//' @param x a numeric vector of theta values
-//' @param b a numeric vector for the threshold parameters
+//' @template x-vector
+//' @template pc-params
 //' @template pc-ref
 //' @export
 // [[Rcpp::export]]
@@ -342,9 +342,8 @@ NumericVector array_info_pc(NumericVector x, NumericVector b){
 
 //' Calculate the Fisher information according to the generalized partial credit model
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a numeric vector for the threshold parameters
+//' @template x-single
+//' @template gpc-params
 //' @template gpc-ref
 //' @export
 // [[Rcpp::export]]
@@ -361,9 +360,8 @@ double info_gpc(const double& x, const double& a, NumericVector b){
 
 //' Calculate the Fisher information for a vector of theta values according to the generalized partial credit model
 //' 
-//' @param x a numeric vector of theta values
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a numeric vector for the threshold parameters
+//' @template x-vector
+//' @template gpc-params
 //' @template gpc-ref
 //' @export
 // [[Rcpp::export]]
@@ -378,9 +376,8 @@ NumericVector array_info_gpc(NumericVector x, const double& a, NumericVector b){
 
 //' Calculate the Fisher information according to the graded response model
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a numeric vector for the category boundary parameters
+//' @template x-single
+//' @template gr-params
 //' @template gr-ref
 //' @export
 // [[Rcpp::export]]
@@ -401,9 +398,8 @@ double info_gr(const double& x, const double& a, NumericVector b){
 
 //' Calculate the Fisher information for a vector of theta values according to the graded response model
 //' 
-//' @param x a numeric vector of theta values
-//' @param a a length-one numeric vector for the slope parameter
-//' @param b a numeric vector for the category boundary parameters
+//' @template x-vector
+//' @template gr-params
 //' @template gr-ref
 //' @export
 // [[Rcpp::export]]
@@ -418,10 +414,9 @@ NumericVector array_info_gr(NumericVector x, const double& a, NumericVector b){
 
 //' Calculate the Fisher information matrix for a single theta value and a set of items, potentially with a mixture of different models
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param item_parm a matrix of item parameters
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
+//' @param x Numeric. A single theta value.
+//' @param item_parm A matrix of item parameters.
+//' @template calc-params-mini
 //' @export
 // [[Rcpp::export]]
 NumericVector calc_info(const double& x,
@@ -464,10 +459,9 @@ NumericVector calc_info(const double& x,
 
 //' Calculate the Fisher information matrix for a vector of theta values and a set of items, potentially with a mixture of different models
 //' 
-//' @param x a numeric vector of theta values
-//' @param item_parm a matrix of item parameters
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
+//' @param x Numeric. A vector of theta values.
+//' @param item_parm A matrix of item parameters.
+//' @template calc-params-mini
 //' @export
 // [[Rcpp::export]]
 NumericMatrix calc_info_matrix(NumericVector x,
@@ -522,11 +516,12 @@ NumericMatrix calc_info_matrix(NumericVector x,
 }
 
 //' Calculate the Fisher information using empirical Bayes
+//'
+//' Calculate the Fisher information using empirical Bayes.
 //' 
-//' @param x a numeric vector of MCMC sampled theta values
-//' @param item_parm a numeric matrix of item parameters
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
+//' @param x A numeric vector of MCMC sampled theta values.
+//' @param item_parm A numeric matrix of item parameters.
+//' @template calc-params-mini
 // [[Rcpp::export]]
 NumericVector calc_info_EB(NumericVector x,
                            NumericMatrix item_parm,
@@ -546,11 +541,10 @@ NumericVector calc_info_EB(NumericVector x,
 
 //' Calculate the Fisher information using fully Bayesian
 //' 
-//' @param x a numeric vector of MCMC sampled theta values
-//' @param items_list a list of item_parm matrices
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-//' @param useEAP true to use the mean of MCMC theta draws
+//' @param x A numeric vector of MCMC sampled theta values.
+//' @param items_list A list of item parameter matrices.
+//' @template calc-params-mini
+//' @param useEAP \code{TRUE} to use the mean of MCMC theta draws.
 // [[Rcpp::export]]
 NumericVector calc_info_FB(NumericVector x,
                            List items_list,
@@ -630,10 +624,9 @@ NumericVector calc_info_FB(NumericVector x,
 
 //' Calculate the mutual information using fully Bayesian
 //' 
-//' @param x a numeric vector of MCMC sampled theta values
-//' @param items_list a list of item_parm matrices
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
+//' @param x A numeric vector of MCMC sampled theta values.
+//' @param items_list A list of item parameter matrices.
+//' @template calc-params-mini
 // [[Rcpp::export]]
 NumericVector calc_MI_FB(NumericVector x,
                          List items_list,
@@ -724,12 +717,12 @@ NumericVector calc_MI_FB(NumericVector x,
 
 //' Calculate a likelihood value of theta
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param item_parm a numeric matrix of item parameters
-//' @param resp a numeric rector of item responses
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
+//' Calculate a likelihood value of theta.
 //' 
+//' @param x Numeric. A single theta value.
+//' @param item_parm A numeric matrix of item parameters.
+//' @param resp A numeric vector of item responses.
+//' @template calc-params-mini
 //' @export
 // [[Rcpp::export]]
 double calc_likelihood(const double& x,
@@ -792,11 +785,12 @@ double calc_likelihood(const double& x,
 
 //' Calculate a likelihood function of theta
 //' 
-//' @param theta_grid an equi-spaced grid of theta values
-//' @param item_parm a numeric matrix of item parameters
-//' @param resp a numeric vector of item responses
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
+//' Calculate a likelihood function of theta.
+//' 
+//' @param theta_grid An equi-spaced grid of theta values.
+//' @param item_parm A numeric matrix of item parameters.
+//' @param resp A numeric vector of item responses.
+//' @template calc-params-mini
 //' 
 //' @export
 // [[Rcpp::export]]
@@ -858,14 +852,11 @@ NumericVector calc_likelihood_function(NumericVector theta_grid,
 
 //' Calculate a log-likelihood value of theta
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param item_parm a numeric matrix of item parameters
-//' @param resp a numeric vector of item responses
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-//' @param prior prior distribution (1: normal, 2: uniform)
-//' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+//' Calculate a log-likelihood value of theta.
 //' 
+//' @param x A length-one numeric vector for a theta value.
+//' @param item_parm A numeric matrix of item parameters.
+//' @template calc-params
 //' @export
 // [[Rcpp::export]]
 double calc_log_likelihood(const double& x,
@@ -930,14 +921,11 @@ double calc_log_likelihood(const double& x,
 
 //' Calculate a log-likelihood function of theta
 //' 
-//' @param theta_grid an equi-spaced grid of theta values
-//' @param item_parm a numeric matrix of item parameters
-//' @param resp a numeric vector of item responses
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-//' @param prior prior distribution (1: normal, 2: uniform)
-//' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+//' Calculate a log-likelihood function of theta.
 //' 
+//' @param theta_grid An equi-spaced grid of theta values.
+//' @param item_parm A numeric matrix of item parameters.
+//' @template calc-params 
 //' @export
 // [[Rcpp::export]]
 NumericVector calc_log_likelihood_function(NumericVector theta_grid,
@@ -1002,14 +990,11 @@ NumericVector calc_log_likelihood_function(NumericVector theta_grid,
 
 //' Calculate a posterior value of theta
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param item_parm a numeric matrix of item parameters
-//' @param resp a numeric vector of item responses
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-//' @param prior prior distribution (1: normal, 2: uniform)
-//' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+//' Calculate a posterior value of theta.
 //' 
+//' @param x A length-one numeric vector for a theta value.
+//' @param item_parm A numeric matrix of item parameters.
+//' @template calc-params
 //' @export
 // [[Rcpp::export]]
 double calc_posterior(const double& x,
@@ -1033,14 +1018,11 @@ double calc_posterior(const double& x,
 
 //' Calculate a posterior distribution of theta
 //' 
-//' @param theta_grid an equi-spaced grid of theta values
-//' @param item_parm a numeric matrix of item parameters
-//' @param resp a numeric vector of item responses
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-//' @param prior prior distribution (1: normal, 2: uniform)
-//' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+//' Calculate a posterior distribution of theta.
 //' 
+//' @param theta_grid An equi-spaced grid of theta values.
+//' @param item_parm A numeric matrix of item parameters.
+//' @template calc-params
 //' @export
 // [[Rcpp::export]]
 NumericVector calc_posterior_function(NumericVector theta_grid,
@@ -1068,13 +1050,15 @@ NumericVector calc_posterior_function(NumericVector theta_grid,
 
 //' Calculate a posterior value of theta for a single item
 //' 
-//' @param x a length-one numeric vector for a theta value
-//' @param item_parm a numeric vector of item parameters (for one item)
-//' @param resp a length-one numeric vector of item responses
-//' @param ncat a length-one numeric vector of the number of response categories by item
-//' @param model a length-one numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-//' @param prior prior distribution (1: normal, 2: uniform)
-//' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+//' Calculate a posterior value of theta for a single item.
+//' 
+//' @param x A length-one numeric vector for a theta value.
+//' @param item_parm A numeric vector of item parameters (for one item).
+//' @param resp A length-one numeric vector of item responses.
+//' @param ncat A length-one numeric vector of the number of response categories by item.
+//' @param model A length-one numeric vector of the IRT model by item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).
+//' @param prior The type of prior distribution (1: normal, 2: uniform).
+//' @param prior_parm A numeric vector of hyperparameters for the prior distribution, c(mu, sigma) or c(ll, ul).
 //' 
 //' @export
 // [[Rcpp::export]]
@@ -1142,16 +1126,13 @@ double calc_posterior_single(const double& x,
   return pos;
 }
 
-//' Calculate an expected a posterior estimate of theta for one examinee
+//' Calculate an EAP estimate of theta for one examinee
 //' 
-//' @param theta_grid an equi-spaced theta grid
-//' @param item_parm a numeric matrix of item parameters
-//' @param resp a numeric vector of item responses
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-//' @param prior prior distribution (1: normal, 2: uniform)
-//' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+//' Calculate an expected a posterior estimate of theta for one examinee.
 //' 
+//' @param theta_grid An equi-spaced theta grid.
+//' @param item_parm A numeric matrix of item parameters.
+//' @template calc-params
 //' @export
 // [[Rcpp::export]]
 NumericVector theta_EAP(NumericVector theta_grid,
@@ -1176,15 +1157,17 @@ NumericVector theta_EAP(NumericVector theta_grid,
   return out;
 }
 
-//' Calculate expected a posteriori mestimates of theta for a group of examinees
+//' Calculate EAP estimates of theta for a group of examinees
 //' 
-//' @param theta_grid an equi-spaced theta grid
-//' @param item_parm a numeric matrix of item parameters
-//' @param Resp a numeric matrix of item responses
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-//' @param prior prior distribution (1: normal, 2: uniform)
-//' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+//' Calculate expected a posteriori estimates of theta for a group of examinees.
+//' 
+//' @param theta_grid An equi-spaced theta grid.
+//' @param item_parm A numeric matrix of item parameters.
+//' @param Resp A numeric matrix of item responses.
+//' @param ncat A numeric vector of the number of response categories by item.
+//' @param model A numeric vector of the IRT model by item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).
+//' @param prior The type of prior distribution (1: normal, 2: uniform).
+//' @param prior_parm A numeric vector of hyperparameters for the prior distribution, c(mu, sigma) or c(ll, ul).
 //' 
 //' @export
 // [[Rcpp::export]]
@@ -1218,16 +1201,13 @@ NumericMatrix theta_EAP_matrix(NumericVector theta_grid,
 
 //' Calculate an empirical Bayes estimate of theta for one examinee
 //' 
-//' @param nx a number of MCMC draws
-//' @param theta_init an initial theta estimate
-//' @param theta_prop SD of the proposal distribution
-//' @param item_parm a numeric matrix of item parameters
-//' @param resp a numeric vector of item responses
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-//' @param prior prior distribution (1: normal, 2: uniform)
-//' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+//' Calculate an empirical Bayes estimate of theta for one examinee.
 //' 
+//' @param nx The number of MCMC draws.
+//' @param theta_init A value for initial estimate of theta.
+//' @param theta_prop SD of the proposal distribution.
+//' @param item_parm A numeric matrix of item parameters.
+//' @template calc-params
 //' @export
 // [[Rcpp::export]]
 NumericVector theta_EB(const int& nx,
@@ -1263,16 +1243,13 @@ NumericVector theta_EB(const int& nx,
 
 //' Calculate an empirical Bayes estimate of theta for a single item
 //' 
-//' @param nx a number of MCMC draws
-//' @param theta_init an initial theta estimate
-//' @param theta_prop SD of the proposal distribution
-//' @param item_parm a numeric matrix of item parameters
-//' @param resp a numeric vector item responses
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-//' @param prior prior distribution (1: normal, 2: uniform)
-//' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
+//' Calculate an empirical Bayes estimate of theta for a single item.
 //' 
+//' @param nx The number of MCMC draws.
+//' @param theta_init A value for initial estimate of theta.
+//' @param theta_prop SD of the proposal distribution.
+//' @param item_parm A numeric matrix of item parameters.
+//' @template calc-params
 //' @export
 // [[Rcpp::export]]
 NumericVector theta_EB_single(const int& nx,
@@ -1307,18 +1284,15 @@ NumericVector theta_EB_single(const int& nx,
 }
 
 //' Calculate a fully Bayesian estimate of theta for an examinee
+//'
+//' Calculate a fully Bayesian estimate of theta for an examinee.
 //' 
-//' @param nx a number of MCMC draws
-//' @param theta_init an initial theta estimate
-//' @param theta_prop SD of the proposal distribution
-//' @param items_list a list of item_parm matrices
-//' @param item_init a matrix of item parameter estimates (one row per item)
-//' @param resp a numeric vector of item responses
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-//' @param prior prior distribution (1: normal, 2: uniform)
-//' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu, sigma) or c(ll, ul)
-//' 
+//' @param nx The number of MCMC draws.
+//' @param theta_init A value for initial estimate of theta.
+//' @param theta_prop SD of the proposal distribution.
+//' @param items_list A list of item_parm matrices.
+//' @param item_init A matrix of item parameter estimates (one row per item).
+//' @template calc-params
 //' @export
 // [[Rcpp::export]]
 NumericVector theta_FB(const int& nx,
@@ -1382,17 +1356,14 @@ NumericVector theta_FB(const int& nx,
 
 //' Calculate a fully Bayesian estimate of theta for a single item
 //' 
-//' @param nx a number of MCMC draws
-//' @param theta_init an initial theta estimate
-//' @param theta_prop SD of the proposal distribution
-//' @param item_mcmc a matrix of sampled item parameters for one item
-//' @param item_init a matrix of item parameter estimates (one row per item)
-//' @param resp a numeric vector of item responses
-//' @param ncat a numeric vector of the number of response categories by item
-//' @param model a numeric vector of the IRT model by item (1: 1pl, 2: 2pl, 3: 3pl, 4: pc, 5: gpc, 6: gr)
-//' @param prior prior distribution (1: normal, 2: uniform)
-//' @param prior_parm a numeric vector of hyper parameters for the prior distribution, c(mu,sigma) or c(ll,ul)
+//' Calculate a fully Bayesian estimate of theta for a single item.
 //' 
+//' @param nx The number of MCMC draws.
+//' @param theta_init A value for initial estimate of theta.
+//' @param theta_prop SD of the proposal distribution.
+//' @param item_mcmc A matrix of sampled item parameters for a single item.
+//' @param item_init A matrix of item parameter estimates (one row per item).
+//' @template calc-params
 //' @export
 // [[Rcpp::export]]
 NumericVector theta_FB_single(const int& nx,
@@ -1449,8 +1420,10 @@ NumericVector theta_FB_single(const int& nx,
 
 //' Find the segment to which each theta value belongs
 //' 
-//' @param segment a numeric vector of segment cuts
-//' @param x a numeric vector of theta values
+//' Find the segment to which each theta value belongs.
+//' 
+//' @param segment A numeric vector of segment cuts.
+//' @param x A numeric vector of theta values.
 //' 
 //' @export
 // [[Rcpp::export]]

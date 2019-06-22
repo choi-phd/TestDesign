@@ -7,13 +7,13 @@
 info_3pl(x, a, b, c)
 }
 \arguments{
-\item{x}{a length-one numeric vector for a theta value}
+\item{x}{Numeric. A single theta value.}
 
-\item{a}{a length-one numeric vector for the slope parameter}
+\item{a}{Numeric. A slope parameter value.}
 
-\item{b}{a length-one numeric vector for the difficulty parameter}
+\item{b}{Numeric. A difficulty parameter value.}
 
-\item{c}{a length-one numeric vector for the guessing parameter}
+\item{c}{Numeric. A guessing parameter value.}
 }
 \description{
 Calculate the Fisher information according to the 3pl model
