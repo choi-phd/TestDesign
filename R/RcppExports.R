@@ -259,8 +259,8 @@ array_info_gr <- function(x, a, b) {
 
 #' Calculate the Fisher information matrix for a single theta value and a set of items, potentially with a mixture of different models
 #' 
-#' @param x a length-one numeric vector for a theta value
-#' @param item_parm a matrix of item parameters
+#' @param x Numeric. A single theta value.
+#' @param item_parm A matrix of item parameters.
 #' @template calc-params-mini
 #' @export
 calc_info <- function(x, item_parm, ncat, model) {
@@ -269,8 +269,8 @@ calc_info <- function(x, item_parm, ncat, model) {
 
 #' Calculate the Fisher information matrix for a vector of theta values and a set of items, potentially with a mixture of different models
 #' 
-#' @param x a numeric vector of theta values
-#' @param item_parm a matrix of item parameters
+#' @param x Numeric. A vector of theta values.
+#' @param item_parm A matrix of item parameters.
 #' @template calc-params-mini
 #' @export
 calc_info_matrix <- function(x, item_parm, ncat, model) {
@@ -278,9 +278,11 @@ calc_info_matrix <- function(x, item_parm, ncat, model) {
 }
 
 #' Calculate the Fisher information using empirical Bayes
+#'
+#' Calculate the Fisher information using empirical Bayes.
 #' 
-#' @param x a numeric vector of MCMC sampled theta values
-#' @param item_parm a numeric matrix of item parameters
+#' @param x A numeric vector of MCMC sampled theta values.
+#' @param item_parm A numeric matrix of item parameters.
 #' @template calc-params-mini
 calc_info_EB <- function(x, item_parm, ncat, model) {
     .Call('_Shadow_calc_info_EB', PACKAGE = 'Shadow', x, item_parm, ncat, model)
@@ -307,6 +309,8 @@ calc_MI_FB <- function(x, items_list, ncat, model) {
 
 #' Calculate a likelihood value of theta
 #' 
+#' Calculate a likelihood value of theta.
+#' 
 #' @param x Numeric. A single theta value.
 #' @param item_parm A numeric matrix of item parameters.
 #' @param resp A numeric vector of item responses.
@@ -317,6 +321,8 @@ calc_likelihood <- function(x, item_parm, resp, ncat, model) {
 }
 
 #' Calculate a likelihood function of theta
+#' 
+#' Calculate a likelihood function of theta.
 #' 
 #' @param theta_grid An equi-spaced grid of theta values.
 #' @param item_parm A numeric matrix of item parameters.
@@ -330,6 +336,8 @@ calc_likelihood_function <- function(theta_grid, item_parm, resp, ncat, model) {
 
 #' Calculate a log-likelihood value of theta
 #' 
+#' Calculate a log-likelihood value of theta.
+#' 
 #' @param x A length-one numeric vector for a theta value.
 #' @param item_parm A numeric matrix of item parameters.
 #' @template calc-params
@@ -340,6 +348,8 @@ calc_log_likelihood <- function(x, item_parm, resp, ncat, model, prior, prior_pa
 
 #' Calculate a log-likelihood function of theta
 #' 
+#' Calculate a log-likelihood function of theta.
+#' 
 #' @param theta_grid An equi-spaced grid of theta values.
 #' @param item_parm A numeric matrix of item parameters.
 #' @template calc-params 
@@ -349,6 +359,8 @@ calc_log_likelihood_function <- function(theta_grid, item_parm, resp, ncat, mode
 }
 
 #' Calculate a posterior value of theta
+#' 
+#' Calculate a posterior value of theta.
 #' 
 #' @param x A length-one numeric vector for a theta value.
 #' @param item_parm A numeric matrix of item parameters.
@@ -423,7 +435,7 @@ theta_EAP_matrix <- function(theta_grid, item_parm, Resp, ncat, model, prior, pr
 #' @param nx The number of MCMC draws.
 #' @param theta_init A value for initial estimate of theta.
 #' @param theta_prop SD of the proposal distribution.
-#' @param item_parm a numeric matrix of item parameters.
+#' @param item_parm A numeric matrix of item parameters.
 #' @template calc-params
 #' @export
 theta_EB <- function(nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm) {
