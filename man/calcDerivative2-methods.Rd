@@ -11,7 +11,7 @@
 \alias{calcDerivative2,item.gr,numeric-method}
 \alias{calcDerivative2,item.pool,numeric-method}
 \alias{calcDerivative2,pool.cluster,numeric-method}
-\title{An S4 generic and its methods to calculate the second derivative of the probability function}
+\title{Calculate second derivative}
 \usage{
 calcDerivative2(object, theta)
 
@@ -32,15 +32,15 @@ calcDerivative2(object, theta)
 \S4method{calcDerivative2}{pool.cluster,numeric}(object, theta)
 }
 \arguments{
-\item{object}{An instance of an item class}
+\item{object}{An instance of an item class.}
 
-\item{theta}{A vector of theta values}
+\item{theta}{A vector of theta values.}
 }
 \value{
-Second derivative values
+Second derivative values.
 }
 \description{
-An S4 generic and its methods to calculate the second derivative of the probability function
+An S4 generic and its methods to calculate the second derivative of the probability function.
 }
 \examples{
 \dontrun{

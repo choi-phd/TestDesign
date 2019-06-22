@@ -3,10 +3,10 @@ NULL
 
 #' An S4 generic and its methods to calculate item response probabilities for different item classes
 #'
-#' @param object An instance of an item class
-#' @param theta A vector of theta values
+#' @param object An instance of an item class.
+#' @param theta A vector of theta values.
 #'
-#' @return A matrix of probability values with a dimension (nq, ncat) for a single item or a list of matrices for an instance of "item.pool"
+#' @return A matrix of probability values with a dimension (nq, ncat) for a single item or a list of matrices for an instance of "item.pool".
 #'
 #' @export
 #' @docType methods
@@ -128,16 +128,17 @@ setMethod(f = "calcProb",
           }
 )
 
-#' An S4 generic and its methods to calculate expected scores given a vector of thetas for different item classes
+#' Calculated expected scores
 #'
-#' @param object An instance of an item class
-#' @param theta A vector of theta values
+#' An S4 generic and its methods to calculate expected scores given a vector of thetas for different item classes.
 #'
-#' @return A vector of expected scores of length nq (the number of values on theta grid)
+#' @param object An instance of an item class.
+#' @param theta A vector of theta values.
+#'
+#' @return A vector of expected scores of length nq (the number of values on theta grid).
 #'
 #' @export
 #' @docType methods
-#'
 #' @rdname calcEscore-methods
 setGeneric(name = "calcEscore",
            def = function(object, theta) {
@@ -248,18 +249,18 @@ setMethod(f = "calcEscore",
           }
 )
 
-#' An S4 generic and its methods to calculate Fisher information given a vector of thetas for different item classes
+#' Calculate Fisher information
 #'
-#' @param object An instance of an item class
-#' @param theta A vector of theta values
+#' An S4 generic and its methods to calculate Fisher information given a vector of thetas for different item classes.
 #'
-#' @return A vector of Fisher information values over theta (nq values) for a single item or a matrix of dimension (nq, ni) for an "item.pool"
+#' @param object An instance of an item class.
+#' @param theta A vector of theta values.
+#'
+#' @return A vector of Fisher information values over theta (nq values) for a single item or a matrix of dimension (nq, ni) for an "item.pool".
 #'
 #' @export
 #' @docType methods
-#'
 #' @rdname calcFisher-methods
-#'
 setGeneric(name = "calcFisher",
            def = function(object, theta) {
              standardGeneric("calcFisher")
@@ -455,18 +456,16 @@ setMethod(f = "calcFisher",
           }
 )
 
-#' An S4 generic and its methods to calculate item location
+#' Calculate item location
 #'
-#' @param object An instance of an item class
+#' An S4 generic and its methods to calculate item location.
 #'
-#' @return Item location values
+#' @param object An instance of an item class.
+#'
+#' @return Item location values.
 #'
 #' @docType methods
-#'
 #' @rdname calcLocation-methods
-#'
-
-#define methods to calculate item "location"
 setGeneric(name = "calcLocation",
            def = function(object) {
              standardGeneric("calcLocation")
@@ -590,19 +589,17 @@ setMethod(f = "calcLocation",
           }
 )
 
-#' An S4 generic and its methods to calculate the first derivative of the probability function
+#' Calculate first derivative
 #'
-#' @param object An instance of an item class
-#' @param theta A vector of theta values
+#' An S4 generic and its methods to calculate the first derivative of the probability function.
 #'
-#' @return First derivative values
+#' @param object An instance of an item class.
+#' @param theta A vector of theta values.
+#'
+#' @return First derivative values.
 #'
 #' @docType methods
-#'
 #' @rdname calcDerivative-methods
-#'
-
-#define methods to calculate the first derivative of the probability function
 setGeneric(name = "calcDerivative",
            def = function(object, theta) {
              standardGeneric("calcDerivative")
@@ -767,17 +764,17 @@ setMethod(f = "calcDerivative",
           }
 )
 
-#' An S4 generic and its methods to calculate the second derivative of the probability function
+#' Calculate second derivative
 #'
-#' @param object An instance of an item class
-#' @param theta A vector of theta values
+#' An S4 generic and its methods to calculate the second derivative of the probability function.
 #'
-#' @return Second derivative values
+#' @param object An instance of an item class.
+#' @param theta A vector of theta values.
+#'
+#' @return Second derivative values.
 #'
 #' @docType methods
-#'
 #' @rdname calcDerivative2-methods
-#'
 setGeneric(name = "calcDerivative2",
            def = function(object, theta) {
              standardGeneric("calcDerivative2")
@@ -942,15 +939,16 @@ setMethod(f = "calcDerivative2",
           }
 )
 
-#' An S4 generic and its methods to calculate the first derivative of the log-likelihood function
+#' Calculate first derivative of log-likelihood
 #'
-#' @param object An instance of an item class
-#' @param theta A vector of theta values
-#' @param resp Response data
-#' @return First derivative values of log-likelihoods
+#' An S4 generic and its methods to calculate the first derivative of the log-likelihood function.
+#'
+#' @param object An instance of an item class.
+#' @param theta A vector of theta values.
+#' @param resp Response data.
+#' @return First derivative values of log-likelihoods.
 #'
 #' @docType methods
-#'
 #' @rdname calcJacobian-methods
 setGeneric(name = "calcJacobian",
            def = function(object, theta, resp) {
@@ -1102,17 +1100,17 @@ setMethod(f = "calcJacobian",
           }
 )
 
-#' An S4 generic and its methods to calculate the second derivative of the log-likelihood function
+#' Calculate second derivative of log-likelihood
 #'
-#' @param object An instance of an item class
-#' @param theta A vector of theta values
-#' @param resp Response data
-#' @return Second derivative values of log-likelihoods
+#' An S4 generic and its methods to calculate the second derivative of the log-likelihood function.
+#'
+#' @param object An instance of an item class.
+#' @param theta A vector of theta values.
+#' @param resp Response data.
+#' @return Second derivative values of log-likelihoods.
 #'
 #' @docType methods
-#'
 #' @rdname calcHessian-methods
-#'
 setGeneric(name = "calcHessian",
            def = function(object, theta, resp) {
              standardGeneric("calcHessian")
@@ -1266,18 +1264,18 @@ setMethod(f = "calcHessian",
           }
 )
 
-#' An S4 generic and its methods to simulate responses
+#' Simulate item responses
 #'
-#' @param object An instance of an item class
-#' @param theta A vector of theta values
+#' An S4 generic and its methods to simulate responses.
 #'
-#' @return Simulated responses
+#' @param object An instance of an item class.
+#' @param theta A vector of theta values.
+#'
+#' @return Simulated responses.
 #'
 #' @export
 #' @docType methods
-#'
 #' @rdname simResp-methods
-#'
 setGeneric(name = "simResp",
            def = function(object, theta) {
              standardGeneric("simResp")
