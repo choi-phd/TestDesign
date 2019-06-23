@@ -997,7 +997,7 @@ setMethod(f = "MLE",
               minTheta = min(thetaRange)
               maxTheta = max(thetaRange)
               TH[TH > maxTheta] = maxTheta
-              TH[TH < mixTheta] = minTheta
+              TH[TH < minTheta] = minTheta
             }
             RMSE = NULL
             if (!is.null(object@trueTheta)) {
