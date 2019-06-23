@@ -3,16 +3,16 @@
 \docType{class}
 \name{item.pc-class}
 \alias{item.pc-class}
-\title{An S4 class to represent an item of the partial credit (pc) model}
+\title{An S4 class to represent a partial credit item}
 \description{
-An S4 class to represent an item of the partial credit (pc) model
+An S4 class to represent a partial credit item.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{threshold}}{A numeric vector to contain the threshold parameters of a pc item}
+\item{\code{threshold}}{Numeric. A vector of threshold parameter values.}
 
-\item{\code{ncat}}{A numeric vector of length one to indicate the number of response categories for a pc item}
+\item{\code{ncat}}{Numeric. The number of response categories.}
 }}
 
 \examples{
