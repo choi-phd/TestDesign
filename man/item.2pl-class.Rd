@@ -3,16 +3,16 @@
 \docType{class}
 \name{item.2pl-class}
 \alias{item.2pl-class}
-\title{An S4 class to represent an item of the 2pl model}
+\title{An S4 class to represent a 2PL item}
 \description{
-An S4 class to represent an item of the 2pl model
+An S4 class to represent a 2PL item.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{slope}}{A numeric vector of length one to contain the slope parameter of a 2pl item}
+\item{\code{slope}}{Numeric. A slope parameter value.}
 
-\item{\code{difficulty}}{A numeric vector of length one to contain the difficulty parameter of a 2pl item}
+\item{\code{difficulty}}{Numeric. A difficulty parameter value.}
 }}
 
 \examples{

@@ -5,26 +5,26 @@
 \alias{item.pool-class}
 \title{An S4 class to represent an item pool}
 \description{
-An S4 class to represent an item pool
+An S4 class to represent an item pool.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{ni}}{a numeric vector of length one to denote the number of items in the item pool}
+\item{\code{ni}}{Numeric. The number of items in the item pool.}
 
-\item{\code{maxCat}}{a numeric vector of length one to denote the maximum number of response categories across all items in the pool}
+\item{\code{maxCat}}{Numeric. The maximum number of response categories across all items.}
 
-\item{\code{index}}{a numeric vector of item sequence numbers}
+\item{\code{index}}{Numeric. A vector of item indices.}
 
-\item{\code{ID}}{a character vector of item IDs}
+\item{\code{ID}}{Character. A vector of item IDs.}
 
-\item{\code{model}}{a numeric vector of IRT models by item (1: item.1pl, 2: item.2pl, 3: item.3pl, 4: item.pc, 5: item.gpc, 6: item.gr)}
+\item{\code{model}}{Numeric. A vector of item model codes (1: item.1pl, 2: item.2pl, 3: item.3pl, 4: item.pc, 5: item.gpc, 6: item.gr).}
 
-\item{\code{NCAT}}{a numeric vector of the number of response categories by item}
+\item{\code{NCAT}}{Numeric. A vector of the number of response categories for each item.}
 
-\item{\code{parms}}{a list of item parameters in the pool}
+\item{\code{parms}}{A list of item parameters in the pool.}
 
-\item{\code{ipar}}{a matrix of item parameters in the pool}
+\item{\code{ipar}}{A matrix of item parameters in the pool.}
 }}
 
 \examples{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{info_3pl}
 \alias{info_3pl}
-\title{Calculate the Fisher information according to the 3pl model}
+\title{Calculate Fisher information at a single theta (3PL)}
 \usage{
 info_3pl(x, a, b, c)
 }
@@ -16,7 +16,7 @@ info_3pl(x, a, b, c)
 \item{c}{Numeric. A guessing parameter value.}
 }
 \description{
-Calculate the Fisher information according to the 3pl model
+Calculate the Fisher information at a theta value according to the 3PL model.
 }
 \references{
 {

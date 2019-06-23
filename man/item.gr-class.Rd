@@ -3,18 +3,18 @@
 \docType{class}
 \name{item.gr-class}
 \alias{item.gr-class}
-\title{An S4 class to represent an item of the graded response (gr) model}
+\title{An S4 class to represent a graded response item}
 \description{
-An S4 class to represent an item of the graded response (gr) model
+An S4 class to represent a graded response item.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{slope}}{A numeric vector of length one to contain the slope parameter of a gr item}
+\item{\code{slope}}{Numeric. A slope parameter value.}
 
-\item{\code{category}}{A numeric vector to contain the threshold parameters of a gr item}
+\item{\code{category}}{Numeric. A vector of category boundary values.}
 
-\item{\code{ncat}}{A numeric vector of length one to indicate the number of response categories for a gr item}
+\item{\code{ncat}}{Numeric. The number of response categories.}
 }}
 
 \examples{

@@ -3,18 +3,18 @@
 \docType{class}
 \name{item.3pl-class}
 \alias{item.3pl-class}
-\title{An S4 class to represent an item of the 3pl model}
+\title{An S4 class to represent a 3PL item}
 \description{
-An S4 class to represent an item of the 3pl model
+An S4 class to represent a 3PL item.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{slope}}{A numeric vector of length one to contain the slope parameter of a 3pl item}
+\item{\code{slope}}{Numeric. A slope parameter value.}
 
-\item{\code{difficulty}}{A numeric vector of length one to contain the difficulty parameter of a 3pl item}
+\item{\code{difficulty}}{Numeric. A difficulty parameter value.}
 
-\item{\code{guessing}}{A numeric vector of length one to contain the guessing parameter of a 3pl item}
+\item{\code{guessing}}{Numeric. A guessing parameter value.}
 }}
 
 \examples{

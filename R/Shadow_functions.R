@@ -430,7 +430,7 @@ setMethod(f = "plotCAT",
           }
 )
 
-#' calcRP
+#' Find matching theta to supplied probability
 #' 
 #' Find theta corresponding to a response probability value for each item.
 #' 
@@ -567,7 +567,7 @@ setMethod(f = "simResp",
   return(identical(pool.cluster1, pool.cluster2))
 }
 
-#' Left bracket
+#' Extract
 #' 
 #' @param x x
 #' @param i i
@@ -575,7 +575,7 @@ setMethod(f = "simResp",
 #' @param ... ...
 #' @param drop drop
 #' 
-#' @name [-method
+#' @name extract-methods
 #' @aliases [,test,ANY,ANY,ANY-method
 #' @docType methods
 setMethod(
@@ -591,9 +591,7 @@ setMethod(
   }
 )
 
-#' Left bracket
-#' 
-#' @name [-method
+#' @name extract-methods
 #' @aliases [,item.pool,ANY,ANY,ANY-method
 #' @docType methods
 setMethod(
@@ -997,7 +995,7 @@ setMethod(f = "MLE",
               minTheta = min(thetaRange)
               maxTheta = max(thetaRange)
               TH[TH > maxTheta] = maxTheta
-              TH[TH < mixTheta] = minTheta
+              TH[TH < minTheta] = minTheta
             }
             RMSE = NULL
             if (!is.null(object@trueTheta)) {
@@ -2276,25 +2274,25 @@ setMethod(f = "Shadow",
             }
 )
 
-#' Add transparancy to a color
+#' Add transparancy to color
 #' 
-#' Add transparancy to a color.
+#' Add transparancy to color.
 #' 
-#' @param color A vector of colors.
-#' @param trans A vector of integers between 0 and 255 where 0 is fully transparaent and 255 is fully visible.
+#' @param color A vector of color names or RGB color codes.
+#' @param alpha A vector of integers between 0 and 255 (0 = fully transparent, 255 = fully visible).
 #' 
 #' @export
-addTrans = function(color, trans)
+addTrans = function(color, alpha)
 {
-  if (length(color) != length(trans) & !any(c(length(color), length(trans)) == 1)) stop("Vector lengths not correct")
-  if (length(color) == 1 & length(trans) > 1) color = rep(color, length(trans))
-  if (length(trans) == 1 & length(color) > 1) trans = rep(trans, length(color)) 
+  if (length(color) != length(alpha) & !any(c(length(color), length(alpha)) == 1)) stop("Vector lengths not correct")
+  if (length(color) == 1 & length(alpha) > 1) color = rep(color, length(alpha))
+  if (length(alpha) == 1 & length(color) > 1) alpha = rep(alpha, length(color)) 
   num2hex = function(x)
   {
     hex = unlist(strsplit("0123456789ABCDEF", split = ""))
     return(paste(hex[(x-x%%16)/16+1], hex[x%%16+1], sep = ""))
   }
-  rgb = rbind(col2rgb(color), trans)
+  rgb = rbind(col2rgb(color), alpha)
   res = paste("#", apply(apply(rgb, 2, num2hex), 2, paste, collapse = ""), sep = "")
   return(res)
 }

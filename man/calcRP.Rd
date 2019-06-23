@@ -2,7 +2,7 @@
 % Please edit documentation in R/Shadow_functions.R
 \name{calcRP}
 \alias{calcRP}
-\title{calcRP}
+\title{Find matching theta to supplied probability}
 \usage{
 calcRP(object, rp = 0.5, maxIter = 100, conv = 1e-04,
   startTheta = 0)

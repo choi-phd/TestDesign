@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{info_pc}
 \alias{info_pc}
-\title{Calculate the Fisher information according to the partial credit model}
+\title{Calculate Fisher information at a single theta (PC)}
 \usage{
 info_pc(x, b)
 }
@@ -12,7 +12,7 @@ info_pc(x, b)
 \item{b}{Numeric. A vector of threshold parameter values.}
 }
 \description{
-Calculate the Fisher information according to the partial credit model
+Calculate the Fisher information at a theta value according to the partial credit model.
 }
 \references{
 {

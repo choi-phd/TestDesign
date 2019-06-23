@@ -1,6 +1,8 @@
 #' @importFrom Rdpack reprompt
 NULL
 
+#' Calculate item response probabilities
+#' 
 #' An S4 generic and its methods to calculate item response probabilities for different item classes
 #' 
 #' @param object An instance of an item class.
@@ -371,22 +373,6 @@ setMethod(f = "calcFisher",
             return(Fisher)
           }
 )
-
-#' @docType methods
-#' @rdname show-methods
-#' @export
-setMethod("show", "pool.cluster", function(object) {
-  if(length(object@np) > 0) {
-    cat("@np    :", object@np, "\n")
-    cat("@names :", paste0(object@names, collapse = ", "), "\n\n")
-    for (i in 1:object@np) {
-      cat("pool   :", object@names[i], "\n")
-      show(object@pools[[i]])
-    }
-  } else {
-    cat("item pool cluster is empty")
-  }
-})
 
 #' @rdname calcProb-methods
 #' @aliases calcProb,pool.cluster,numeric-method

@@ -106,15 +106,10 @@ config.ATA = function(itemSelection = NULL, MIP = NULL){
   if (v) return(conf)
 }
 
-#' @inherit methods::show
-#' 
-#' @name show
-#' 
+#' @name show-method
 #' @aliases show,ATA.config-method
-#' 
 #' @docType methods
-#' @rdname show-methods
-#' @export
+#' @noRd
 setMethod("show", "ATA.config", function(object) {
   cat("ATA Configuration Settings \n\n")
   cat("  Item selection criterion \n")

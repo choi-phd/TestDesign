@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{array_p_pc}
 \alias{array_p_pc}
-\title{Calculate the response probabilities according to the partial credit model}
+\title{Calculate probability at multiple thetas (PC)}
 \usage{
 array_p_pc(x, b)
 }
@@ -12,7 +12,7 @@ array_p_pc(x, b)
 \item{b}{Numeric. A vector of threshold parameter values.}
 }
 \description{
-Calculate the response probabilities according to the partial credit model.
+Calculate the probability of correct response at theta values, under the partial credit model.
 }
 \references{
 {

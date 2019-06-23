@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{array_p_gpc}
 \alias{array_p_gpc}
-\title{Calculate the response probabilities for a vector of theta values according to the generalized partial credit model}
+\title{Calculate probability at multiple thetas (GPC)}
 \usage{
 array_p_gpc(x, a, b)
 }
@@ -14,7 +14,7 @@ array_p_gpc(x, a, b)
 \item{b}{Numeric. A vector of threshold parameter values.}
 }
 \description{
-Calculate the response probabilities for a vector of theta values according to the generalized partial credit model
+Calculate the probability of correct response at theta values, under the generalized partial credit model.
 }
 \references{
 {

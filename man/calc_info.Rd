@@ -7,9 +7,9 @@
 calc_info(x, item_parm, ncat, model)
 }
 \arguments{
-\item{x}{a length-one numeric vector for a theta value}
+\item{x}{Numeric. A single theta value.}
 
-\item{item_parm}{a matrix of item parameters}
+\item{item_parm}{A matrix of item parameters.}
 
 \item{ncat}{A numeric vector of the number of response categories by item.}
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{p_3pl}
 \alias{p_3pl}
-\title{Calculate the probability of a correct response according to the 3PL model}
+\title{Calculate probability at a single theta (3PL)}
 \usage{
 p_3pl(x, a, b, c)
 }
@@ -16,7 +16,7 @@ p_3pl(x, a, b, c)
 \item{c}{Numeric. A guessing parameter value.}
 }
 \description{
-Calculate the probability of a correct response according to the 3PL model.
+Calculate the probability of correct response at a theta value, under the 3PL model.
 }
 \references{
 {

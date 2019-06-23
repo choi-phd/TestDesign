@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{p_gpc}
 \alias{p_gpc}
-\title{Calculate the response probabilities according to the generalizaed partial credit model}
+\title{Calculate probability at a single theta (GPC)}
 \usage{
 p_gpc(x, a, b)
 }
@@ -14,7 +14,7 @@ p_gpc(x, a, b)
 \item{b}{Numeric. A vector of threshold parameter values.}
 }
 \description{
-Calculate the response probabilities according to the generalizaed partial credit model
+Calculate the probability of correct response at a theta value, under the generalized partial credit model.
 }
 \references{
 {
