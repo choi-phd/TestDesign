@@ -3,18 +3,18 @@
 \docType{class}
 \name{item.gpc-class}
 \alias{item.gpc-class}
-\title{An S4 class to represent an item of the generalized partial credit (gpc) model}
+\title{An S4 class to represent a generalized partial credit item}
 \description{
-An S4 class to represent an item of the generalized partial credit (gpc) model
+An S4 class to represent a generalized partial credit item.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{slope}}{A numeric vector of length one to contain the slope parameter of a gpc item}
+\item{\code{slope}}{Numeric. A slope parameter value.}
 
-\item{\code{threshold}}{A numeric vector to contain the threshold parameters of a gpc item}
+\item{\code{threshold}}{Numeric. A vector of threshold parameter values.}
 
-\item{\code{ncat}}{A numeric vector of length one to indicate the number of response categories for a gpc item}
+\item{\code{ncat}}{Numeric. The number of response categories.}
 }}
 
 \examples{

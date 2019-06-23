@@ -52,9 +52,19 @@ validity_order = function(object){
   if(is.unsorted(object@category)) return("The category values are not in an ascending order.")
 }
 
-#' An S4 class to represent an item of the 1pl model
+#' Show
 #' 
-#' @slot difficulty A numeric vector of length one to contain the difficulty parameter of a 1pl item
+#' @name show-method
+#' @rdname show-methods
+#' @docType methods
+#' @noRd
+NULL
+
+#' An S4 class to represent a 1PL item
+#' 
+#' An S4 class to represent a 1PL item.
+#' 
+#' @slot difficulty Numeric. A difficulty parameter value.
 #' 
 #' @examples 
 #' item.1 = new("item.1pl", difficulty = 0.5)
@@ -64,24 +74,21 @@ setClass("item.1pl",
          prototype = list(difficulty = numeric(0))
 )
 
-#' @inherit methods::show
-#' 
-#' @name show
-#' 
+#' @name show-method
 #' @aliases show,item.1pl-method
-#' 
 #' @docType methods
-#' @rdname show-methods
-#' @export
+#' @noRd
 setMethod("show", "item.1pl", function(object) {
   cat("One-parameter logistic or Rasch model (item.1pl)\n")
   cat("  Difficulty     :", object@difficulty, "\n")
 })
 
-#' An S4 class to represent an item of the 2pl model
-#' 
-#' @slot slope A numeric vector of length one to contain the slope parameter of a 2pl item
-#' @slot difficulty A numeric vector of length one to contain the difficulty parameter of a 2pl item
+#' An S4 class to represent a 2PL item
+#'
+#' An S4 class to represent a 2PL item.
+#'  
+#' @slot slope Numeric. A slope parameter value.
+#' @slot difficulty Numeric. A difficulty parameter value.
 #' 
 #' @examples 
 #' item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
@@ -98,20 +105,23 @@ setClass("item.2pl",
          }
 )
 
+#' @name show-method
+#' @aliases show,item.2pl-method
 #' @docType methods
-#' @rdname show-methods
-#' @export
+#' @noRd
 setMethod("show", "item.2pl", function(object) {
   cat("Two-parameter logistic model (item.2pl) \n")
   cat("  Slope          :", object@slope, "\n")
   cat("  Difficulty     :", object@difficulty, "\n")
 })
 
-#' An S4 class to represent an item of the 3pl model
+#' An S4 class to represent a 3PL item
 #' 
-#' @slot slope A numeric vector of length one to contain the slope parameter of a 3pl item
-#' @slot difficulty A numeric vector of length one to contain the difficulty parameter of a 3pl item
-#' @slot guessing A numeric vector of length one to contain the guessing parameter of a 3pl item
+#' An S4 class to represent a 3PL item.
+#' 
+#' @slot slope Numeric. A slope parameter value.
+#' @slot difficulty Numeric. A difficulty parameter value.
+#' @slot guessing Numeric. A guessing parameter value.
 #' 
 #' @examples 
 #' item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
@@ -131,9 +141,10 @@ setClass("item.3pl",
          }
 )
 
+#' @name show-method
+#' @aliases show,item.3pl-method
 #' @docType methods
-#' @rdname show-methods
-#' @export
+#' @noRd
 setMethod("show", "item.3pl", function(object) {
   cat("Three-parameter logistic model (item.3pl)\n")
   cat("  Slope          :", object@slope, "\n")
@@ -141,10 +152,12 @@ setMethod("show", "item.3pl", function(object) {
   cat("  Guessing       :", object@guessing, "\n")
 })
 
-#' An S4 class to represent an item of the partial credit (pc) model
+#' An S4 class to represent a partial credit item
 #' 
-#' @slot threshold A numeric vector to contain the threshold parameters of a pc item
-#' @slot ncat A numeric vector of length one to indicate the number of response categories for a pc item
+#' An S4 class to represent a partial credit item.
+#' 
+#' @slot threshold Numeric. A vector of threshold parameter values.
+#' @slot ncat Numeric. The number of response categories.
 #' 
 #' @examples 
 #' item.4 = new("item.pc", threshold = c(-0.5, 0.5), ncat = 3)
@@ -162,20 +175,23 @@ setClass("item.pc",
          }
 )
 
+#' @name show-method
+#' @aliases show,item.pc-method
 #' @docType methods
-#' @rdname show-methods
-#' @export
+#' @noRd
 setMethod("show", "item.pc", function(object) {
   cat("Partial credit model (item.pc)\n")
   cat("  Threshold     :", object@threshold, "\n")
   cat("  N categories  :", object@ncat, "\n")
 })
 
-#' An S4 class to represent an item of the generalized partial credit (gpc) model
+#' An S4 class to represent a generalized partial credit item
 #' 
-#' @slot slope A numeric vector of length one to contain the slope parameter of a gpc item
-#' @slot threshold A numeric vector to contain the threshold parameters of a gpc item
-#' @slot ncat A numeric vector of length one to indicate the number of response categories for a gpc item
+#' An S4 class to represent a generalized partial credit item.
+#' 
+#' @slot slope Numeric. A slope parameter value.
+#' @slot threshold Numeric. A vector of threshold parameter values.
+#' @slot ncat Numeric. The number of response categories.
 #' 
 #' @examples 
 #' item.5 = new("item.gpc", slope = 1.0, threshold = c(-0.5, 0.0, 0.5), ncat = 4)
@@ -195,9 +211,10 @@ setClass("item.gpc",
          }
 )
 
+#' @name show-method
+#' @aliases show,item.gpc-method
 #' @docType methods
-#' @rdname show-methods
-#' @export
+#' @noRd
 setMethod("show", "item.gpc", function(object) {
   cat("Generalized partial credit model (item.gpc)\n")
   cat("  Slope         :", object@slope, "\n")
@@ -205,11 +222,13 @@ setMethod("show", "item.gpc", function(object) {
   cat("  N categories  :", object@ncat, "\n")
 })
 
-#' An S4 class to represent an item of the graded response (gr) model
+#' An S4 class to represent a graded response item
 #' 
-#' @slot slope A numeric vector of length one to contain the slope parameter of a gr item
-#' @slot category A numeric vector to contain the threshold parameters of a gr item
-#' @slot ncat A numeric vector of length one to indicate the number of response categories for a gr item
+#' An S4 class to represent a graded response item.
+#' 
+#' @slot slope Numeric. A slope parameter value.
+#' @slot category Numeric. A vector of category boundary values.
+#' @slot ncat Numeric. The number of response categories.
 #' 
 #' @examples 
 #' item.6 = new("item.gr", slope = 1.0, category = c(-2.0, -1.0, 0, 1.0, 2.0), ncat = 6)
@@ -231,9 +250,10 @@ setClass("item.gr",
          }
 )
 
+#' @name show-method
+#' @aliases show,item.gr-method
 #' @docType methods
-#' @rdname show-methods
-#' @export
+#' @noRd
 setMethod("show", "item.gr", function(object) {
   cat("Graded response model (item.gr)\n")
   cat("  Slope         :", object@slope, "\n")
@@ -243,20 +263,21 @@ setMethod("show", "item.gr", function(object) {
 
 #' An S4 class to represent an item pool
 #' 
-#' @slot ni a numeric vector of length one to denote the number of items in the item pool
-#' @slot maxCat a numeric vector of length one to denote the maximum number of response categories across all items in the pool
-#' @slot index a numeric vector of item sequence numbers
-#' @slot ID a character vector of item IDs
-#' @slot model a numeric vector of IRT models by item (1: item.1pl, 2: item.2pl, 3: item.3pl, 4: item.pc, 5: item.gpc, 6: item.gr)
-#' @slot NCAT a numeric vector of the number of response categories by item
-#' @slot parms a list of item parameters in the pool
-#' @slot ipar a matrix of item parameters in the pool
+#' An S4 class to represent an item pool.
+#' 
+#' @slot ni Numeric. The number of items in the item pool.
+#' @slot maxCat Numeric. The maximum number of response categories across all items.
+#' @slot index Numeric. A vector of item indices.
+#' @slot ID Character. A vector of item IDs.
+#' @slot model Numeric. A vector of item model codes (1: item.1pl, 2: item.2pl, 3: item.3pl, 4: item.pc, 5: item.gpc, 6: item.gr).
+#' @slot NCAT Numeric. A vector of the number of response categories for each item.
+#' @slot parms A list of item parameters in the pool.
+#' @slot ipar A matrix of item parameters in the pool.
 #' 
 #' @examples 
 #' \dontrun{
 #' itemPool.1 = LoadItemPool("C:/itemPool.csv")
 #' }
-
 setClass("item.pool",
          slots = c(ni = "numeric",
                    maxCat = "numeric",
@@ -282,9 +303,10 @@ setClass("item.pool",
          }
 )
 
+#' @name show-method
+#' @aliases show,item.pool-method
 #' @docType methods
-#' @rdname show-methods
-#' @export
+#' @noRd
 setMethod("show", "item.pool", function(object) {
   if(length(object@ni) > 0) {
     cat("@ni    :", object@ni, "\n")
@@ -301,6 +323,8 @@ setMethod("show", "item.pool", function(object) {
 })
 
 #' An S4 class to represent a cluster of item pools
+#' 
+#' An S4 class to represent a cluster of item pools.
 #' 
 #' @slot np A scalar to indicate the number of item pools in the cluster.
 #' @slot pools A list of \code{item.pool} objects.
@@ -319,3 +343,19 @@ setClass("pool.cluster",
          }
 )
 
+#' @name show-method
+#' @aliases show,pool.cluster-method
+#' @docType methods
+#' @noRd
+setMethod("show", "pool.cluster", function(object) {
+  if(length(object@np) > 0) {
+    cat("@np    :", object@np, "\n")
+    cat("@names :", paste0(object@names, collapse = ", "), "\n\n")
+    for (i in 1:object@np) {
+      cat("pool   :", object@names[i], "\n")
+      show(object@pools[[i]])
+    }
+  } else {
+    cat("item pool cluster is empty")
+  }
+})

@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{array_info_gr}
 \alias{array_info_gr}
-\title{Calculate the Fisher information for a vector of theta values according to the graded response model}
+\title{Calculate Fisher information at multiple thetas (GR)}
 \usage{
 array_info_gr(x, a, b)
 }
@@ -14,7 +14,7 @@ array_info_gr(x, a, b)
 \item{b}{Numeric. A vector of category boundary parameter values.}
 }
 \description{
-Calculate the Fisher information for a vector of theta values according to the graded response model
+Calculate the Fisher information at theta values according to the graded response model.
 }
 \references{
 {

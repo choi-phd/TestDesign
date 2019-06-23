@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{array_info_1pl}
 \alias{array_info_1pl}
-\title{Calculate the Fisher information for a vector of theta values according to the 1pl model}
+\title{Calculate Fisher information at multiple thetas (1PL)}
 \usage{
 array_info_1pl(x, b)
 }
@@ -12,7 +12,7 @@ array_info_1pl(x, b)
 \item{b}{Numeric. A difficulty parameter value.}
 }
 \description{
-Calculate the Fisher information for a vector of theta values according to the 1pl model
+Calculate the Fisher information at theta values according to the 1PL model.
 }
 \references{
 {

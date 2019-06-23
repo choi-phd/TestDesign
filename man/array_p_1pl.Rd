@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{array_p_1pl}
 \alias{array_p_1pl}
-\title{Calculate the probability of a correct response according to 1PL model}
+\title{Calculate probability at multiple thetas (1PL)}
 \usage{
 array_p_1pl(x, b)
 }
@@ -12,7 +12,7 @@ array_p_1pl(x, b)
 \item{b}{Numeric. A difficulty parameter value.}
 }
 \description{
-Calculate the probability of a correct response according to 1PL model.
+Calculate the probability of correct response at theta values, under the 1PL model.
 }
 \references{
 {

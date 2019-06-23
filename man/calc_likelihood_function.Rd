@@ -18,5 +18,5 @@ calc_likelihood_function(theta_grid, item_parm, resp, ncat, model)
 \item{model}{A numeric vector indicating the IRT models of each item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).}
 }
 \description{
-Calculate a likelihood function of theta
+Calculate a likelihood function of theta.
 }

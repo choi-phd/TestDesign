@@ -22,5 +22,5 @@ calc_posterior(x, item_parm, resp, ncat, model, prior, prior_parm)
 \item{prior_parm}{A numeric vector of hyperparameters for the prior distribution, c(mu, sigma) or c(ll, ul).}
 }
 \description{
-Calculate a posterior value of theta
+Calculate a posterior value of theta.
 }

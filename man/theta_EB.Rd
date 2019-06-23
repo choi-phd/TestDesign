@@ -14,7 +14,7 @@ theta_EB(nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior,
 
 \item{theta_prop}{SD of the proposal distribution.}
 
-\item{item_parm}{a numeric matrix of item parameters.}
+\item{item_parm}{A numeric matrix of item parameters.}
 
 \item{resp}{A numeric vector of item responses.}
 
