@@ -9,7 +9,6 @@
 #' @slot nc Numeric. The number of constraints represented in this object.
 #' 
 #' @export
-
 setClass("constraint",
          slots = c(CONSTRAINT = "character",
                    mat = "matrix",
@@ -42,7 +41,6 @@ setClassUnion("matrixOrNULL", c("matrix", "NULL"))
 #' @slot Data An optional matrix of item responses.
 #' 
 #' @export
-
 setClass("test",
          slots = c(pool = "item.pool",
                    theta = "numeric",
@@ -73,7 +71,6 @@ setClass("test",
 #' @slot names Character. A vector of names correspondign to the \code{\linkS4class{test}} objects.
 #' 
 #' @export
-
 setClass("test.cluster",
          slots = c(nt = "numeric",
                    tests = "list",
@@ -91,7 +88,6 @@ setClass("test.cluster",
 #' config.Shadow
 #' 
 #' @rdname config.Shadow
-
 setClass("Shadow.config",
          slots = c(itemSelection = "list",
                    contentBalancing = "list",
@@ -291,9 +287,10 @@ config.Shadow = function(itemSelection = NULL, contentBalancing = NULL, MIP = NU
   if (v) return(conf)
 }
 
+#' @name show-method
+#' @aliases show,Shadow.config-method
 #' @docType methods
-#' @rdname show-methods
-#' @export
+#' @noRd
 setMethod("show", "Shadow.config", function(object) {
   cat("Shadow Configuration Settings \n\n")
   cat("  itemSelection \n")
@@ -386,7 +383,6 @@ setMethod("show", "Shadow.config", function(object) {
 #' @slot shadowTest A list of vectors containing item indices of the shadow test at each position.
 #' 
 #' @export
-
 setClass("Shadow.output",
          slots = c(simuleeIndex = "numeric",
                    trueTheta = "numericOrNULL",
@@ -433,9 +429,10 @@ setClass("Shadow.output",
          }
 )
 
+#' @name show-method
+#' @aliases show,Shadow.output-method
 #' @docType methods
-#' @rdname show-methods
-#' @export
+#' @noRd
 setMethod("show", "Shadow.output", function(object) {
   if (length(object@administeredItemIndex) > 0) {
     cat("Simulee Index          :", object@simuleeIndex, "\n")

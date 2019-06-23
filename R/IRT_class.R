@@ -52,6 +52,14 @@ validity_order = function(object){
   if(is.unsorted(object@category)) return("The category values are not in an ascending order.")
 }
 
+#' Show
+#' 
+#' @name show-method
+#' @rdname show-methods
+#' @docType methods
+#' @noRd
+NULL
+
 #' An S4 class to represent a 1PL item
 #' 
 #' An S4 class to represent a 1PL item.
@@ -66,15 +74,10 @@ setClass("item.1pl",
          prototype = list(difficulty = numeric(0))
 )
 
-#' @inherit methods::show
-#' 
-#' @name show
-#' 
+#' @name show-method
 #' @aliases show,item.1pl-method
-#' 
 #' @docType methods
-#' @rdname show-methods
-#' @export
+#' @noRd
 setMethod("show", "item.1pl", function(object) {
   cat("One-parameter logistic or Rasch model (item.1pl)\n")
   cat("  Difficulty     :", object@difficulty, "\n")
@@ -102,9 +105,10 @@ setClass("item.2pl",
          }
 )
 
+#' @name show-method
+#' @aliases show,item.2pl-method
 #' @docType methods
-#' @rdname show-methods
-#' @export
+#' @noRd
 setMethod("show", "item.2pl", function(object) {
   cat("Two-parameter logistic model (item.2pl) \n")
   cat("  Slope          :", object@slope, "\n")
@@ -137,9 +141,10 @@ setClass("item.3pl",
          }
 )
 
+#' @name show-method
+#' @aliases show,item.3pl-method
 #' @docType methods
-#' @rdname show-methods
-#' @export
+#' @noRd
 setMethod("show", "item.3pl", function(object) {
   cat("Three-parameter logistic model (item.3pl)\n")
   cat("  Slope          :", object@slope, "\n")
@@ -170,9 +175,10 @@ setClass("item.pc",
          }
 )
 
+#' @name show-method
+#' @aliases show,item.pc-method
 #' @docType methods
-#' @rdname show-methods
-#' @export
+#' @noRd
 setMethod("show", "item.pc", function(object) {
   cat("Partial credit model (item.pc)\n")
   cat("  Threshold     :", object@threshold, "\n")
@@ -205,9 +211,10 @@ setClass("item.gpc",
          }
 )
 
+#' @name show-method
+#' @aliases show,item.gpc-method
 #' @docType methods
-#' @rdname show-methods
-#' @export
+#' @noRd
 setMethod("show", "item.gpc", function(object) {
   cat("Generalized partial credit model (item.gpc)\n")
   cat("  Slope         :", object@slope, "\n")
@@ -243,9 +250,10 @@ setClass("item.gr",
          }
 )
 
+#' @name show-method
+#' @aliases show,item.gr-method
 #' @docType methods
-#' @rdname show-methods
-#' @export
+#' @noRd
 setMethod("show", "item.gr", function(object) {
   cat("Graded response model (item.gr)\n")
   cat("  Slope         :", object@slope, "\n")
@@ -270,7 +278,6 @@ setMethod("show", "item.gr", function(object) {
 #' \dontrun{
 #' itemPool.1 = LoadItemPool("C:/itemPool.csv")
 #' }
-
 setClass("item.pool",
          slots = c(ni = "numeric",
                    maxCat = "numeric",
@@ -296,9 +303,10 @@ setClass("item.pool",
          }
 )
 
+#' @name show-method
+#' @aliases show,item.pool-method
 #' @docType methods
-#' @rdname show-methods
-#' @export
+#' @noRd
 setMethod("show", "item.pool", function(object) {
   if(length(object@ni) > 0) {
     cat("@ni    :", object@ni, "\n")
@@ -334,3 +342,20 @@ setClass("pool.cluster",
            return(TRUE)
          }
 )
+
+#' @name show-method
+#' @aliases show,pool.cluster-method
+#' @docType methods
+#' @noRd
+setMethod("show", "pool.cluster", function(object) {
+  if(length(object@np) > 0) {
+    cat("@np    :", object@np, "\n")
+    cat("@names :", paste0(object@names, collapse = ", "), "\n\n")
+    for (i in 1:object@np) {
+      cat("pool   :", object@names[i], "\n")
+      show(object@pools[[i]])
+    }
+  } else {
+    cat("item pool cluster is empty")
+  }
+})
