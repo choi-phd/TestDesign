@@ -1,635 +1,200 @@
-#' @import Rsymphony
-#' @import Rglpk
-#' @import Matrix
-#' @import lpSolve
-#' @importFrom methods new show validObject
-#' @importFrom stats runif
-#' @importFrom utils capture.output read.csv
-#' @importFrom graphics plot abline lines
-NULL
-
-#' Load item attributes
+#' Run Automated Test Assembly
 #'
-#' Read item attributes from specified file.
+#' Perform Automated Test Assembly with specified configurations.
 #'
-#' @param file.csv Character. The name of the file containing item attributes.
-#' @param pool An \code{item.pool} object. Use \code{\link{LoadItemPool}} for this.
+#' @param config An \code{\linkS4class{ATA.config}} object containing configuration options. Use \code{\link{config.ATA}} for this.
+#' @param Constraints A list representing optimization constraints. Use \code{\link{LoadConstraints}} for this.
+#' @param plot Logical. Draws Fisher information plot from the selected items.
+#' @param plotrange Numeric. A vector of length 2 containing the lower and upper bounds of plot range. Default is \code{c(-3, 3)}.
 #'
-#' @return A \code{data.frame} containing parsed dataset.
-#'
+#' @docType methods
+#' @rdname ATA-methods
 #' @export
 
-LoadItemAttrib = function(file.csv, pool) {
-  if (is.null(pool) || class(pool) != "item.pool") stop("pool is missing or not of class \"item.pool\"")
-  ItemAttrib = read.csv(file.csv, header = TRUE, as.is = TRUE)
-  names(ItemAttrib) = toupper(names(ItemAttrib))
-  if (pool@ni != nrow(ItemAttrib)) stop("nrow of item attrib file not equal to pool@ni")
-  if (!("ID" %in% names(ItemAttrib))) stop("no column name \"ID\" found in ItemAttrib")
-  if(is.numeric(ItemAttrib$ID)) ItemAttrib$ID = as.character(ItemAttrib$ID)
-  if (any(ItemAttrib$ID %in% c("", " ", "NA", "N/A"))) stop("invalid ID entries were found in ItemAttrib")
-  if (length(unique(ItemAttrib$ID)) != nrow(ItemAttrib)) {
-    stop("duplicate ID entries were found in item attrib")
-  } else if (!all(sort(pool@ID) == sort(ItemAttrib$ID))) {
-    stop("ID entries in item attrib do not match pool@ID")
-  } else if (!all(pool@ID == ItemAttrib$ID)) {
-    ItemAttrib = merge(data.frame(ID = pool@ID), ItemAttrib, by = "ID")[, names(ItemAttrib)] #re-ordering cols in attrib
-  }
-  ItemAttrib = data.frame(cbind(INDEX = 1:nrow(ItemAttrib), ItemAttrib))
-  if ("STID" %in% names(ItemAttrib)) {
-    if (any(ItemAttrib$STID %in% c("", " ", "N/A"))) {
-      ItemAttrib$STID[ItemAttrib$STID %in% c("", " ", "N/A")] = NA
-    }
-  }
-  return(ItemAttrib)
-}
+setGeneric(name = "ATA",
+           def = function(config, Constraints, plot = FALSE, plotrange = c(-3, 3)) {
+             standardGeneric("ATA")
+           }
+)
 
-#' Load set/stimulus/passage attributes
+#' @return A list containing the following entries:
+#' \itemize{
+#'   \item{\code{MIP}} MIP model.
+#'   \item{\code{Selected}} Solution returned.
+#'   \item{\code{solver}} MIP solver.
+#'   \item{\code{obj.value}} Objective value returned.
+#'   \item{\code{solve.time}} Solver elapsed time.
+#' }
 #'
-#' Read set attributes from specified file.
-#'
-#' @param file.csv Character. The name of the file containing item attributes.
-#' @param ItemAttrib A \code{data.frame} containing item attributes. Use \code{\link{LoadItemAttrib}} for this.
-#'
-#' @return A \code{data.frame} containing stimulus attributes.
-#'
+#' @docType methods
+#' @rdname ATA-methods
 #' @export
 
-LoadStAttrib = function(file.csv, ItemAttrib) {
-  StAttrib = read.csv(file.csv, header = TRUE, as.is = TRUE)
-  names(StAttrib) = toupper(names(StAttrib))
-  if (!("STID" %in% names(StAttrib))) stop("no column name \"STID\" found in set/stimulus/passage attrib")
-  if(is.numeric(StAttrib$STID)) StAttrib$STID = as.character(StAttrib$STID)
-  if (!("STIDNTEX" %in% names(StAttrib))) {
-    StAttrib = data.frame(cbind(STINDEX = 1:nrow(StAttrib), StAttrib))
-  }
-  if (!("STID" %in% names(ItemAttrib))) stop("no column name \"STID\" found in ItemAttrib")
-  if (any(StAttrib$STID %in% c("", " ", NA))) stop("invalid STID found in StAttrib")
-  if (length(unique(StAttrib$STID)) != nrow(StAttrib)) {
-    stop("duplicate ID entries were found in set/stimulus attrib")
-  } else if (!(all(StAttrib$STID %in% unique(ItemAttrib$STID)))) {
-    stop("not all STID found in ItemAttrib")
-  } else if (any(ItemAttrib$STID %in% c("", " ", "NA", "N/A"))) {
-    #if items with no valid STID present (e.g., discrete items)
-    if (!all(sort(unique(ItemAttrib$STID[!(ItemAttrib$STID %in% c(NA, "", " ", "N/A"))])) == sort(StAttrib$STID))) stop("StAttrib must include all STID in ItemAttrib")
-  }
-  return(StAttrib)
-}
-
-#' Load constraints
-#'
-#' Read constraints from specified file.
-#'
-#' @param file.csv Character. The name of the file containing specifications for constraints.
-#' @param pool An \code{item.pool} object.
-#' @param ItemAttrib A \code{data.frame} containing item attributes. Use \code{\link{LoadItemAttrib}} for this.
-#' @param StAttrib (Optional) A \code{data.frame} containing stimulus attributes. Use \code{\link{LoadStAttrib}} for this.
-#'
-#' @return A list containing the parsed constraints, to be used in \code{\link{ATA}} and \code{\link{Shadow}}.
-#'
-#' @export
-
-LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
-  if (class(pool) != "item.pool")
-    stop("pool must be of class \"item.pool\"")
-  # Read file ------------------------------------------------------------
-  Constraints = read.csv(file.csv, header = TRUE)
-  if ("ONOFF" %in% toupper(names(Constraints))) {
-    ONOFF = TRUE
-    Constraints = read.csv(file.csv, header = TRUE, as.is = TRUE, colClasses=c("character","character","character","character",
-                                                                               "numeric","numeric", "character"), stringsAsFactors = FALSE)
-    Constraints$ONOFF = toupper(Constraints$ONOFF)
-  } else {
-    ONOFF = FALSE
-    Constraints = read.csv(file.csv, header = TRUE, as.is = TRUE, colClasses=c("character","character","character","character",
-                                                                               "numeric","numeric"), stringsAsFactors = FALSE)
-  }
-  # Validation -----------------------------------------------------------
-  # Validation: Column names
-  names(Constraints) = toupper(names(Constraints))
-  if (!all(names(Constraints) %in% c("CONSTRAINT", "TYPE", "WHAT", "CONDITION", "LB", "UB", "ONOFF"))) {
-    stop("Column names must be CONSTRAINT, TYPE, WHAT, CONDITION, LB, UB, and ONOFF")
-  }
-  # Validation: Bounds
-  if (!any(is.na(Constraints$LB) | is.na(Constraints$UB))) {
-    if (any(Constraints$LB > Constraints$UB)) {
-      stop("invalid LB/UB specified for one or more constraints (LB > UB)")
-    }
-  } else if (any(is.na(Constraints$LB) + is.na(Constraints$UB) == 1)) {
-    stop("LB and UB should be both specified at the same time, or both omitted")
-  }
-  # Validation: Constraint types
-  Constraints$TYPE = toupper(Constraints$TYPE)
-  Constraints$WHAT = toupper(Constraints$WHAT)
-  if (!all(Constraints$TYPE %in% c("NUMBER", "COUNT", "ALLORNONE", "ALL OR NONE", "IIF", "MUTUALLYEXCLUSIVE", "MUTUALLY EXCLUSIVE", "XOR", "ENEMY", "SUM", "AVERAGE", "MEAN", "INCLUDE", "EXCLUDE", "NOT", "ORDER"))) {
-    stop("invalid TYPE specified")
-  }
-  # Validation: Pool
-  ni = pool@ni
-  ns = 0
-  x = numeric(ni)
-  nc = nrow(Constraints)
-  if (nrow(ItemAttrib) != ni)
-    stop("nrow of ItemAttrib not equal to pool@ni")
-  if (!all(pool@ID == ItemAttrib$ID))
-    stop("item IDs in pool and ItemAttrib not matching")
-  ListConstraints = vector(mode = "list", length = nc)
-  if (ONOFF) {
-    ItemConstraints = which(Constraints$WHAT == "ITEM" & Constraints$ONOFF != "OFF")
-    StimulusConstraints = which(Constraints$WHAT %in% c("STIMULUS", "PASSAGE", "SET", "TESTLET") & Constraints$ONOFF != "OFF")
-  } else {
-    ItemConstraints = which(Constraints$WHAT == "ITEM")
-    StimulusConstraints = which(Constraints$WHAT %in% c("STIMULUS", "PASSAGE", "SET", "TESTLET"))
-  }
-  ItemOrder     = ItemOrderBy     = NULL
-  StimulusOrder = StimulusOrderBy = NULL
-  if (length(StimulusConstraints) > 0) {
-    if (is.null(StAttrib))
-      stop("for stimulus-based, StAttrib must not be NULL")
-    if (!("STID" %in% names(ItemAttrib)))
-      stop("for stimulus-based, ItemAttrib must include \"STID\" ")
-    setBased = TRUE
-    ID = c(ItemAttrib$ID, StAttrib$STID)
-    ns = nrow(StAttrib)
-    nv = ni + ns
-    item.id.by.stimulus = split(ItemAttrib$ID, as.factor(ItemAttrib$STID))
-    item.index.by.stimulus = lapply(item.id.by.stimulus, function(x) which(ItemAttrib$ID %in% x))
-    item.index.by.stimulus = lapply(StAttrib$STID, function(x) item.index.by.stimulus[[x]])
-    if (any(ItemAttrib$STID %in% c("", " ", "N/A", "n/a"))) {
-      ItemAttrib$STID[ItemAttrib$STID %in% c("", " ", "N/A", "n/a")] = NA
-    }
-    stimulus.id.by.item = ItemAttrib$STID
-    stimulus.index.by.item = sapply(stimulus.id.by.item, function(x) which(StAttrib$STID == x))
-    if (any(toupper(Constraints$CONDITION) %in% c("PER STIMULUS", "PER PASSAGE", "PER SET", "PER TESTLET"))) {
-      common.stimulus.length = TRUE
-    } else if (all(c("LB", "UB") %in% names(StAttrib))) {
-      common.stimulus.length = FALSE
-      stimulus.length.LB = StAttrib$LB
-      stimulus.length.UB = StAttrib$UB
-      if (any(is.na(c(stimulus.length.LB, stimulus.length.UB))) || any(stimulus.length.LB > stimulus.length.UB) || any(c(stimulus.length.LB, stimulus.length.UB) < 0)) {
-        stop("LB/UB in StAttrib contains NA or improper values")
-      }
-    } else {
-      stop("StAttrib should contain columns LB and UB; otherwise, CONDITION should include \"PER STIMULUS\" ")
-    }
-  } else if (length(ItemConstraints) > 0) {
-    setBased = FALSE
-    nv = ni
-    ID = ItemAttrib$ID
-    item.index.by.stimulus = NULL
-    stimulus.index.by.item = NULL
-  } else {
-    stop("Constraints must include at least one \"ITEM\" under WHAT; for stimulus-based, LB/UB should be specified for each stimulus")
-  }
-  for (index in ItemConstraints) {
-    ListConstraints[[index]] = new("constraint")
-    ListConstraints[[index]]@CONSTRAINT = Constraints$CONSTRAINT[index]
-    ConstraintTypeIsValid = FALSE
-    if (Constraints$TYPE[index] %in% c("NUMBER", "COUNT")) {
-      ConstraintTypeIsValid = TRUE
-      if (toupper(Constraints$CONDITION[index]) %in% c("", " ", "PER TEST", "TEST")) {
-        test.length.LB = round(Constraints$LB[index])
-        test.length.UB = round(Constraints$UB[index])
-        if (any(c(test.length.LB, test.length.UB) < 0) || test.length.LB > test.length.UB) {
-          stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
-        } else if (test.length.LB == test.length.UB) {
-          testLength = test.length.UB
-          ListConstraints[[index]]@mat = matrix(0, nrow = 1, ncol = nv)
-          ListConstraints[[index]]@mat[1, 1:ni] = 1
-          ListConstraints[[index]]@dir = "=="
-          ListConstraints[[index]]@rhs = test.length.UB
-        } else {
-          stop("LB and UB for ITEM NUMBER must be set equal")
-        }
-        if (setBased && !common.stimulus.length) {
-          n.LB.eq.UB = sum(stimulus.length.LB == stimulus.length.UB)
-          n.LB.ne.UB = sum(stimulus.length.LB != stimulus.length.UB)
-          tmp.mat = matrix(0, nrow = ns + n.LB.ne.UB, ncol = nv)
-          tmp.dir = character(ns + n.LB.ne.UB)
-          tmp.rhs = rep(0, ns + n.LB.ne.UB)
-          tmp.index = 1
-          for (s in 1:ns) {
-            if (stimulus.length.LB[s] == stimulus.length.UB[s]) {
-              tmp.mat[tmp.index, item.index.by.stimulus[[s]]] = 1
-              tmp.mat[tmp.index, ni + s] = -stimulus.length.UB[s]
-              tmp.dir[tmp.index] = "=="
-              tmp.index = tmp.index + 1
-            } else if (stimulus.length.LB[s] < stimulus.length.UB[s]) {
-              tmp.mat[c(tmp.index, tmp.index + 1), item.index.by.stimulus[[s]]] = 1
-              tmp.mat[tmp.index, ni + s] = -stimulus.length.LB[s]
-              tmp.mat[tmp.index + 1, ni + s] = -stimulus.length.UB[s]
-              tmp.dir[tmp.index] = ">="
-              tmp.dir[tmp.index + 1] = "<="
-              tmp.index = tmp.index + 2
-            } else {
-              stop(sprintf("stimulus %s contains improper LB/UB (LB > UB)", s))
+setMethod(f = "ATA",
+          signature = c("ATA.config"),
+          definition = function(config, Constraints, plot = FALSE, plotrange = c(-3, 3)) {
+            if (!validObject(config)) {
+              stop("invalid configuration options specified")
             }
-          }
-          ListConstraints[[index]]@mat = rbind(ListConstraints[[index]]@mat, tmp.mat)
-          ListConstraints[[index]]@dir = c(ListConstraints[[index]]@dir, tmp.dir)
-          ListConstraints[[index]]@rhs = c(ListConstraints[[index]]@rhs, tmp.rhs)
-        }
-      } else if (toupper(Constraints$CONDITION[index]) %in% c("PER STIMULUS", "PER PASSAGE", "PER SET", "PER TESTLET")) {
-        if (!setBased) {
-          stop(sprintf("Constraints must include at least one \"STIMULUS\" under WHAT for CONDITION: %s", toupper(Constraints$CONDITION[index])))
-        }
-        stimulus.length.LB = round(Constraints$LB[index])
-        stimulus.length.UB = round(Constraints$UB[index])
-        if (any(c(stimulus.length.LB, stimulus.length.UB) < 0) || stimulus.length.LB > stimulus.length.UB) {
-          stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
-        } else if (stimulus.length.LB == stimulus.length.UB) {
-          ListConstraints[[index]]@mat = matrix(0, nrow = ns, ncol = nv)
-          ListConstraints[[index]]@dir = rep("==", ns)
-          ListConstraints[[index]]@rhs = rep(0, ns)
-          for (s in 1:ns) {
-            ListConstraints[[index]]@mat[s, item.index.by.stimulus[[s]]] = 1
-            ListConstraints[[index]]@mat[s, ni + s] = -stimulus.length.UB
-          }
-        } else {
-          ListConstraints[[index]]@mat = matrix(0, nrow = ns * 2, ncol = nv)
-          ListConstraints[[index]]@dir = rep(c(">=", "<="), ns)
-          ListConstraints[[index]]@rhs = rep(0, ns * 2)
-          for (s in 1:ns) {
-            ListConstraints[[index]]@mat[c(s * 2 - 1, s * 2), item.index.by.stimulus[[s]]] = 1
-            ListConstraints[[index]]@mat[c(s * 2 - 1), ni + s] = -stimulus.length.LB
-            ListConstraints[[index]]@mat[c(s * 2), ni + s] = -stimulus.length.UB
-          }
-        }
-      } else if (Constraints$CONDITION[index] %in% names(ItemAttrib)) {
-        condition = unique(ItemAttrib[Constraints$CONDITION[index]])
-        condition = condition[!is.na(condition)]
-        if (length(condition) == 0) {
-          stop(sprintf("CONSTRAINT %s returned 0 items meeting CONDITION: %s", index, Constraints$CONDITION[index]))
-        }
-        if (any(c(Constraints$LB[index], Constraints$UB[index]) < 0) || Constraints$LB[index] > Constraints$UB[index]) {
-          stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
-        } else if (Constraints$LB[index] == Constraints$UB[index]) {
-          ListConstraints[[index]]@mat = matrix(0, nrow = length(condition), ncol = nv)
-          ListConstraints[[index]]@dir = rep("==", length(condition))
-          ListConstraints[[index]]@rhs = rep(Constraints$UB[index], length(condition))
-          for (m in 1:length(condition)) {
-            condition.met = which(ItemAttrib[Constraints$CONDITION[index]] == condition[m])
-            ListConstraints[[index]]@mat[m, condition.met] = 1
-          }
-        } else if (Constraints$LB[index] <= Constraints$UB[index]) {
-          ListConstraints[[index]]@mat = matrix(0, nrow = 2 * length(condition), ncol = nv)
-          ListConstraints[[index]]@dir = rep(c(">=", "<="), length(condition))
-          ListConstraints[[index]]@rhs = rep(c(Constraints$LB[index], Constraints$UB[index]), length(condition))
-          for (m in 1:length(condition)) {
-            condition.met = which(ItemAttrib[Constraints$CONDITION[index]] == condition[m])
-            ListConstraints[[index]]@mat[c(m * 2 - 1, m * 2), condition.met] = 1
-          }
-        }
-      } else {
-        condition.met = which(with(ItemAttrib, eval(parse(text = Constraints$CONDITION[index]))))
-        if (length(condition.met) == 0) {
-          stop(sprintf("CONSTRAINT %s returned 0 items meeting CONDITION: %s", index, Constraints$CONDITION[index]))
-        }
-        if (any(c(Constraints$LB[index], Constraints$UB[index]) < 0) || Constraints$LB[index] > Constraints$UB[index]) {
-          stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
-        } else if (Constraints$LB[index] == Constraints$UB[index]) {
-          ListConstraints[[index]]@mat = matrix(0, nrow = 1, ncol = nv)
-          ListConstraints[[index]]@mat[1, condition.met] = 1
-          ListConstraints[[index]]@dir = "=="
-          ListConstraints[[index]]@rhs = Constraints$UB[index]
-        } else {
-          ListConstraints[[index]]@mat = matrix(0, nrow = 2, ncol = nv)
-          ListConstraints[[index]]@mat[, condition.met] = 1
-          ListConstraints[[index]]@dir = c(">=", "<=")
-          ListConstraints[[index]]@rhs = c(Constraints$LB[index], Constraints$UB[index])
-        }
-      }
-    }
-    if (Constraints$TYPE[index] %in% c("SUM", "AVERAGE", "MEAN")) {
-      ConstraintTypeIsValid = TRUE
-      if (!(Constraints$CONDITION[index] %in% names(ItemAttrib))) {
-        stop(sprintf("CONSTRAINT %s: %s not found in ItemAttrib:", index, Constraints$CONDITION[index]))
-      } else {
-        if (any(is.na(ItemAttrib[[Constraints$CONDITION[index]]]))) {
-          stop(sprintf("CONSTRAINT %s: %s must not have a missing value", index, Constraints$CONDITION[index]))
-        }
-        if (any(c(Constraints$LB[index], Constraints$UB[index]) < 0) || Constraints$LB[index] > Constraints$UB[index]) {
-          stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
-        } else if (Constraints$LB[index] == Constraints$UB[index]) {
-          ListConstraints[[index]]@mat = matrix(0, nrow = 1, ncol = nv)
-          ListConstraints[[index]]@dir = "<="
-          ListConstraints[[index]]@rhs = Constraints$UB[index]
-          if (Constraints$TYPE[index] == "SUM") {
-            ListConstraints[[index]]@mat[1, 1:ni] = ItemAttrib[[Constraints$CONDITION[index]]]
-          } else if (Constraints$TYPE[index] %in% c("AVERAGE", "MEAN")) {
-            ListConstraints[[index]]@mat[1, 1:ni] = ItemAttrib[[Constraints$CONDITION[index]]] / test.length.UB
-          }
-        } else {
-          ListConstraints[[index]]@mat = matrix(0, nrow = 2, ncol = nv)
-          ListConstraints[[index]]@dir = c(">=", "<=")
-          ListConstraints[[index]]@rhs = c(Constraints$LB[index], Constraints$UB[index])
-          if (Constraints$TYPE[index] == "SUM") {
-            ListConstraints[[index]]@mat[, 1:ni] = ItemAttrib[[Constraints$CONDITION[index]]]
-          } else if (Constraints$TYPE[index] %in% c("AVERAGE", "MEAN")) {
-            ListConstraints[[index]]@mat[1, 1:ni] = ItemAttrib[[Constraints$CONDITION[index]]] / test.length.UB
-            ListConstraints[[index]]@mat[2, 1:ni] = ItemAttrib[[Constraints$CONDITION[index]]] / test.length.LB
-          }
-        }
-      }
-    }
-    if (Constraints$TYPE[index] == "INCLUDE") {
-      ConstraintTypeIsValid = TRUE
-      condition.met = which(with(ItemAttrib, eval(parse(text = Constraints$CONDITION[index]))))
-      if (length(condition.met) == 0) {
-        stop(sprintf("CONSTRAINT %s is invalid: %s returned 0 items", index, Constraints$CONDITION[index]))
-      } else {
-        ListConstraints[[index]]@mat = matrix(0, nrow = 1, ncol = nv)
-        ListConstraints[[index]]@mat[1, condition.met] = 1
-        ListConstraints[[index]]@dir = "=="
-        if (setBased) {
-          stimulus.to.include = unique(stimulus.index.by.item[condition.met])
-          stimulus.to.include = stimulus.to.include[!is.na(stimulus.to.include)]
-          ListConstraints[[index]]@mat[1, ni + stimulus.to.include] = 1
-          ListConstraints[[index]]@rhs = length(condition.met) + length(stimulus.to.include)
-        } else {
-          ListConstraints[[index]]@rhs = length(condition.met)
-        }
-      }
-    }
-    if (Constraints$TYPE[index] %in% c("EXCLUDE", "NOT", "NOT INCLUDE")) {
-      ConstraintTypeIsValid = TRUE
-      condition.met = which(with(ItemAttrib, eval(parse(text = Constraints$CONDITION[index]))))
-      if (length(condition.met) == 0) {
-        stop(sprintf("CONSTRAINT %s returned 0 items meeting CONDITION: %s", index, Constraints$CONDITION[index]))
-      } else {
-        ListConstraints[[index]]@mat = matrix(0, nrow = 1, ncol = nv)
-        ListConstraints[[index]]@mat[1, condition.met] = 1
-        ListConstraints[[index]]@dir = "=="
-        ListConstraints[[index]]@rhs = 0
-      }
-    }
-    if (Constraints$TYPE[index] %in% c("ALLORNONE", "ALL OR NONE", "IIF")) {
-      ConstraintTypeIsValid = TRUE
-      condition.met = which(with(ItemAttrib, eval(parse(text = Constraints$CONDITION[index]))))
-      n.met = length(condition.met)
-      if (n.met < 2) {
-        stop(sprintf("CONSTRAINT %s is invalid: %s returned < 2 items", index, Constraints$CONDITION[index]))
-      } else {
-        ListConstraints[[index]]@mat = matrix(0, nrow = (n.met * (n.met - 1)) / 2, ncol = nv)
-        ListConstraints[[index]]@dir = rep("==", (n.met * (n.met - 1)) / 2)
-        ListConstraints[[index]]@rhs = rep(0, (n.met * (n.met - 1)) / 2)
-        tmp.index = 0
-        for (i in condition.met) {
-          for (j in condition.met) {
-            if (i < j) {
-              tmp.index = tmp.index + 1
-              ListConstraints[[index]]@mat[tmp.index, c(i, j)] = c(1, -1)
-            }
-          }
-        }
-      }
-    }
-    if (Constraints$TYPE[index] %in% c("MUTUALLYEXCLUSIVE", "MUTUALLY EXCLUSIVE", "XOR", "ENEMY")) {
-      ConstraintTypeIsValid = TRUE
-      condition.met = which(with(ItemAttrib, eval(parse(text = Constraints$CONDITION[index]))))
-      if (length(condition.met) < 2) {
-        stop(sprintf("CONSTRAINT %s is invalid: %s returned < 2 items", index, Constraints$CONDITION[index]))
-      } else {
-        ListConstraints[[index]]@mat = matrix(0, nrow = 1, ncol = nv)
-        ListConstraints[[index]]@mat[1, condition.met] = 1
-        ListConstraints[[index]]@dir = "<="
-        ListConstraints[[index]]@rhs = 1
-      }
-    }
-    if (Constraints$TYPE[index] == "ORDER") {
-      ConstraintTypeIsValid = TRUE
-      if (Constraints$CONDITION[index] %in% names(ItemAttrib)) {
-        if (any(is.na(ItemAttrib[[Constraints$CONDITION[index]]]))) {
-          stop(sprintf("CONSTRAINT %s: %s must not have a missing value", index, Constraints$CONDITION[index]))
-        }
-        ItemOrder = ItemAttrib[[Constraints$CONDITION[index]]]
-        ItemOrderBy = Constraints$CONDITION[index]
-      } else {
-        stop(sprintf("CONSTRAINT %s is invalid: %s not found in ItemAttrib", index, Constraints$CONDITION[index]))
-      }
-    }
-    if (!ConstraintTypeIsValid){
-      stop(sprintf("CONSTRAINT %s, %s is not a valid constraint type", index, Constraints$TYPE[index]))
-    }
-    ListConstraints[[index]]@nc = nrow(ListConstraints[[index]]@mat)
-  }
-  if (setBased) {
-    for (index in StimulusConstraints) {
-      ListConstraints[[index]] = new("constraint")
-      ListConstraints[[index]]@CONSTRAINT = Constraints$CONSTRAINT[index]
-      ConstraintTypeIsValid = FALSE
-      if (Constraints$TYPE[index] %in% c("NUMBER", "COUNT")) {
-        ConstraintTypeIsValid = TRUE
-        if (toupper(Constraints$CONDITION[index]) %in% c("", " ", "PER TEST")) {
-          number.stimulus.LB = round(Constraints$LB[index])
-          number.stimulus.UB = round(Constraints$UB[index])
-          if (number.stimulus.LB == number.stimulus.UB) {
-            ListConstraints[[index]]@mat = matrix(0, nrow = 1, ncol = nv)
-            ListConstraints[[index]]@mat[1, (ni + 1):nv] = 1
-            ListConstraints[[index]]@dir = "=="
-            ListConstraints[[index]]@rhs = number.stimulus.UB
-          } else if (number.stimulus.LB < number.stimulus.UB) {
-            ListConstraints[[index]]@mat = matrix(0, nrow = 2, ncol = nv)
-            ListConstraints[[index]]@mat[, (ni + 1):nv] = 1
-            ListConstraints[[index]]@dir = c(">=", "<=")
-            ListConstraints[[index]]@rhs = c(number.stimulus.LB, number.stimulus.UB)
-          } else {
-            stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
-          }
-        } else if (Constraints$CONDITION[index] %in% names(StAttrib)) {
-          condition = unique(StAttrib[Constraints$CONDITION[index]])
-          condition = condition[!is.na(condition)]
-          if (length(condition) == 0) {
-            stop(sprintf("CONSTRAINT %s returned 0 items meeting CONDITION: %s", index, Constraints$CONDITION[index]))
-          }
-          if (any(c(Constraints$LB[index], Constraints$UB[index]) < 0) || Constraints$LB[index] > Constraints$UB[index]) {
-            stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
-          } else if (Constraints$LB[index] == Constraints$UB[index]) {
-            ListConstraints[[index]]@mat = matrix(0, nrow = length(condition), ncol = nv)
-            ListConstraints[[index]]@dir = rep("==", length(condition))
-            ListConstraints[[index]]@rhs = rep(Constraints$UB[index], length(condition))
-            for (m in 1:length(condition)) {
-              condition.met = which(StAttrib[Constraints$CONDITION[index]] == condition[m])
-              ListConstraints[[index]]@mat[m, ni + condition.met] = 1
-            }
-          } else if (Constraints$LB[index] <= Constraints$UB[index]) {
-            ListConstraints[[index]]@mat = matrix(0, nrow = 2 * length(condition), ncol = nv)
-            ListConstraints[[index]]@dir = rep(c(">=", "<="), length(condition))
-            ListConstraints[[index]]@rhs = rep(c(Constraints$LB[index], Constraints$UB[index]), length(condition))
-            for (m in 1:length(condition)) {
-              condition.met = which(ItemAttrib[Constraints$CONDITION[index]] == condition[m])
-              ListConstraints[[index]]@mat[c(m * 2 - 1, m * 2), ni + condition.met] = 1
-            }
-          }
-        } else {
-          condition.met = which(with(StAttrib, eval(parse(text = Constraints$CONDITION[index]))))
-          if (length(condition.met) == 0) {
-            stop(sprintf("CONSTRAINT %s returned 0 items meeting CONDITION: %s", index, Constraints$CONDITION[index]))
-          }
-          if (any(c(Constraints$LB[index], Constraints$UB[index]) < 0) || Constraints$LB[index] > Constraints$UB[index]) {
-            stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
-          } else if (Constraints$LB[index] == Constraints$UB[index]) {
-            ListConstraints[[index]]@mat = matrix(0, nrow = 1, ncol = nv)
-            ListConstraints[[index]]@mat[1, ni + condition.met] = 1
-            ListConstraints[[index]]@dir = "=="
-            ListConstraints[[index]]@rhs = Constraints$UB[index]
-          } else {
-            ListConstraints[[index]]@mat = matrix(0, nrow = 2, ncol = nv)
-            ListConstraints[[index]]@mat[, ni + condition.met] = 1
-            ListConstraints[[index]]@dir = c(">=", "<=")
-            ListConstraints[[index]]@rhs = c(Constraints$LB[index], Constraints$UB[index])
-          }
-        }
-      }
-      if (Constraints$TYPE[index] %in% c("SUM", "AVERAGE", "MEAN")) {
-        ConstraintTypeIsValid = TRUE
-        if (!(Constraints$CONDITION[index] %in% names(StAttrib))) {
-          stop(sprintf("CONSTRAINT %s has invalid: %s not found in ItemAttrib:", index, Constraints$CONDITION[index]))
-        } else {
-          if (any(is.na(StAttrib[[Constraints$CONDITION[index]]]))) {
-            stop(sprintf("CONSTRAINT %s: %s must not have a missing value", index, Constraints$CONDITION[index]))
-          }
-          if (any(c(Constraints$LB[index], Constraints$UB[index]) < 0) || Constraints$LB[index] > Constraints$UB[index]) {
-            stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
-          } else if (Constraints$LB[index] == Constraints$UB[index]) {
-            ListConstraints[[index]]@mat = matrix(0, nrow = 1, ncol = nv)
-            ListConstraints[[index]]@dir = "<="
-            ListConstraints[[index]]@rhs = Constraints$UB[index]
-            if (Constraints$TYPE[index] == "SUM") {
-              ListConstraints[[index]]@mat[1, (ni + 1):nv] = StAttrib[[Constraints$CONDITION[index]]]
-            } else if (Constraints$TYPE[index] %in% c("AVERAGE", "MEAN")) {
-              ListConstraints[[index]]@mat[1, (ni + 1):nv] = StAttrib[[Constraints$CONDITION[index]]] / number.stimulus.UB
-            }
-          } else {
-            ListConstraints[[index]]@mat = matrix(0, nrow = 2, ncol = nv)
-            ListConstraints[[index]]@dir = c(">=", "<=")
-            ListConstraints[[index]]@rhs = c(Constraints$LB[index], Constraints$UB[index])
-            if (Constraints$TYPE[index] == "SUM") {
-              ListConstraints[[index]]@mat[, (ni + 1):nv] = StAttrib[[Constraints$CONDITION[index]]]
-            } else if (Constraints$TYPE[index] %in% c("AVERAGE", "MEAN")) {
-              ListConstraints[[index]]@mat[1, (ni + 1):nv] = StAttrib[[Constraints$CONDITION[index]]] / number.stimulus.UB
-              ListConstraints[[index]]@mat[2, (ni + 1):nv] = StAttrib[[Constraints$CONDITION[index]]] / number.stimulus.LB
-            }
-          }
-        }
-      }
-      if (Constraints$TYPE[index] == "INCLUDE") {
-        ConstraintTypeIsValid = TRUE
-        condition.met = which(with(StAttrib, eval(parse(text = Constraints$CONDITION[index]))))
-        if (length(condition.met) == 0) {
-          stop(sprintf("CONSTRAINT %s is invalid: %s returned 0 items", index, Constraints$CONDITION[index]))
-        } else {
-          ListConstraints[[index]]@mat = matrix(0, nrow = 1, ncol = nv)
-          ListConstraints[[index]]@mat[1, ni + condition.met] = 1
-          ListConstraints[[index]]@dir = "=="
-          ListConstraints[[index]]@rhs = length(condition.met)
-        }
-      }
-      if (Constraints$TYPE[index] %in% c("EXCLUDE", "NOT", "NOT INCLUDE")) {
-        ConstraintTypeIsValid = TRUE
-        condition.met = which(with(StAttrib, eval(parse(text = Constraints$CONDITION[index]))))
-        if (length(condition.met) == 0) {
-          stop(sprintf("CONSTRAINT %s returned 0 items meeting CONDITION: %s", index, Constraints$CONDITION[index]))
-        } else {
-          ListConstraints[[index]]@mat = matrix(0, nrow = 1, ncol = nv)
-          ListConstraints[[index]]@mat[1, ni + condition.met] = 1
-          ListConstraints[[index]]@dir = "=="
-          ListConstraints[[index]]@rhs = 0
-          for (s in condition.met) {
-            ListConstraints[[index]]@mat[1, item.index.by.stimulus[[s]]] = 1
-          }
-        }
-      }
-      if (Constraints$TYPE[index] %in% c("ALLORNONE", "ALL OR NONE", "IIF")) {
-        ConstraintTypeIsValid = TRUE
-        condition.met = which(with(StAttrib, eval(parse(text = Constraints$CONDITION[index]))))
-        n.met = length(condition.met)
-        if (n.met < 2) {
-          stop(sprintf("CONSTRAINT %s is invalid: %s returned < 2 stimuli", index, Constraints$CONDITION[index]))
-        } else {
-          ListConstraints[[index]]@mat = matrix(0, nrow = (n.met * (n.met - 1)) / 2, ncol = nv)
-          ListConstraints[[index]]@dir = rep("==", (n.met * (n.met - 1)) / 2)
-          ListConstraints[[index]]@rhs = rep(0, (n.met * (n.met - 1)) / 2)
-          tmp.index = 0
-          for (i in condition.met) {
-            for (j in condition.met) {
-              if (i < j) {
-                tmp.index = tmp.index + 1
-                ListConstraints[[index]]@mat[tmp.index, ni + c(i, j)] = c(1, -1)
+            nt = length(config@itemSelection$targetLocation)
+            mat = Constraints$MAT
+            dir = Constraints$DIR
+            rhs = Constraints$RHS
+            nv = Constraints$nv
+            ni = Constraints$ni
+            types = rep("B", nv)
+            obj = numeric(nv)
+            if (toupper(config@itemSelection$method) == "MAXINFO") {
+              if (length(config@itemSelection$targetWeight) == length(config@itemSelection$targetLocation)) {
+                objective = as.vector(config@itemSelection$targetWeight %*% calcFisher(Constraints$pool, config@itemSelection$targetLocation))
+              } else {
+                warning("config@itemSelection$targetWeight and config@itemSelection$targetLocation are of different lengths: not weighting...")
+                objective = calcFisher(Constraints$pool, config@itemSelection$targetLocation)
+                if (is.matrix(objective)) {
+                  objective = colSums(objective)
+                }
               }
+              obj[1:ni] = objective
+              maximize = TRUE
+            } else {
+              maximize = FALSE
+              mat = cbind(mat, numeric(nrow(mat)))
+              types = c(types, "C")
+              obj = c(rep(0, nv), 1)
+              if (toupper(config@itemSelection$method) == "TIF") {
+                objective = calcFisher(Constraints$pool, config@itemSelection$targetLocation)
+              } else if (toupper(config@itemSelection$method) == "TCC") {
+                objective = sapply(Constraints$pool@parms, calcEscore, config@itemSelection$targetLocation)
+                if(nt == 1) objective = t(as.matrix(objective))
+              }
+              for (k in 1:nt) {
+                add.mat = matrix(0, nrow = 2, ncol = nv + 1)
+                add.mat[1, 1:ni] = objective[k, ]
+                add.mat[2, 1:ni] = objective[k, ]
+                add.mat[1, nv + 1] = -1
+                add.mat[2, nv + 1] = 1
+                mat = rbind(mat, add.mat)
+                dir = c(dir, c("<=", ">="))
+                rhs = c(rhs, rep(config@itemSelection$targetValue[k], 2))
+              }
+              add.mat = c(rep(0, nv), 1)
+              mat = rbind(mat, add.mat)
+              dir = c(dir, ">=")
+              rhs = c(rhs, 0)
             }
+            solve.time = proc.time()
+            if (toupper(config@MIP$solver) == "SYMPHONY") {
+              if (!maximize){
+                len_rhs = length(rhs)
+                rhs[len_rhs] = config@MIP$gapLimit
+              }
+              MIP = Rsymphony_solve_LP(obj, mat, dir, rhs, max = maximize, types = types,
+                                       verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit)
+              status = MIP$status
+              if (!names(status) %in% c("TM_OPTIMAL_SOLUTION_FOUND", "PREP_OPTIMAL_SOLUTION_FOUND")) {
+                warning(sprintf("MIP solver returned non-zero status: %s", names(MIP$status)))
+                return(list(status = status, MIP = NULL, Selected = NULL))
+              }
+            } else if (toupper(config@MIP$solver) == "GUROBI") {
+              if (!maximize){
+                len_rhs = length(rhs)
+                rhs[len_rhs] = config@MIP$gapLimit
+              }
+              constraints.dir = dir
+              constraints.dir[constraints.dir == "=="] = "="
+              invisible(capture.output(MIP <- gurobi::gurobi(list(obj = obj, modelsense = ifelse(maximize, "max", "min"), rhs = rhs, sense = constraints.dir, vtype = types, A = mat), params = list(TimeLimit = config@MIP$timeLimit), env = NULL)))
+              status = MIP$status
+              if (MIP$status != "OPTIMAL") {
+                warning(sprintf("MIP solver returned non-zero status: %s", MIP$status))
+                return(list(status = status, MIP = NULL, Selected = NULL))
+              }
+              MIP[["solution"]] = MIP$x
+            } else if (toupper(config@MIP$solver) == "GLPK") {
+              len_rhs = length(rhs)
+              rhs[len_rhs] = config@MIP$gapLimit
+              MIP = Rglpk_solve_LP(obj, mat, dir, rhs, max = maximize, types = types, control = list(verbose = ifelse(config@MIP$verbosity != -2, TRUE, FALSE), presolve = FALSE, tm_limit = config@MIP$timeLimit * 1000))
+              status = MIP$status
+              if (MIP$status != 0) {
+                warning(sprintf("MIP solver returned non-zero status: %s", MIP$status))
+                return(list(status = status, MIP = NULL, Selected = NULL))
+              }
+            } else if (toupper(config@MIP$solver) == "LPSOLVE") {
+              if (!maximize){
+                len_rhs = length(rhs)
+                rhs[len_rhs] = config@MIP$gapLimit
+              }
+              MIP = lpSolve::lp(direction = ifelse(maximize, "max", "min"), obj, mat, dir, rhs, binary.vec = 1:nv, presolve = TRUE)
+              status = MIP$status
+              if (MIP$status != 0) {
+                warning(sprintf("MIP solver returned non-zero status: %s", MIP$status))
+                return(list(status = status, MIP = NULL, Selected = NULL))
+              }
+            } else {
+              stop("solver must be Symphony, Gurobi, glpk, or lpSolve")
+            }
+            solve.time = proc.time() - solve.time
+            if (!is.null(Constraints$StimulusOrder)) {
+              Constraints$ItemAttrib = merge(Constraints$ItemAttrib, Constraints$StAttrib[c("STINDEX", "STID", Constraints$StimulusOrderBy)], by = "STID", all.x = TRUE, sort = FALSE)
+            } else if (!is.null(Constraints$StAttrib)) {
+              Constraints$ItemAttrib = merge(Constraints$ItemAttrib, Constraints$StAttrib[c("STINDEX", "STID")], by = "STID", all.x = TRUE, sort = FALSE)
+            }
+            Selected = Constraints$ItemAttrib[which(MIP$solution[1:Constraints$ni] == 1), ]
+            obj.value = sum(obj[which(MIP$solution[1:Constraints$ni] == 1)])
+            if (!is.null(Constraints$ItemOrderBy) && !is.null(Constraints$StimulusOrderBy)) {
+              Selected = Selected[order(Selected[[Constraints$StimulusOrderBy]], Selected[["STID"]], Selected[[Constraints$ItemOrderBy]]), ]
+            } else if (!is.null(Constraints$ItemOrderBy)) {
+              if (Constraints$setBased) {
+                Selected = Selected[order(Selected[["STID"]], Selected[[Constraints$ItemOrderBy]]), ]
+              } else {
+                Selected = Selected[order(Selected[[Constraints$ItemOrderBy]]), ]
+              }
+            } else if (!is.null(Constraints$StimulusOrderBy)) {
+              Selected = Selected[order(Selected[[Constraints$StimulusOrderBy]], Selected[["STID"]]), ]
+            }
+            row.names(Selected) = 1:nrow(Selected)
+            if (plot){
+              continuum = seq(plotrange[1], plotrange[2], .1)
+              continuum = sort(c(continuum, config@itemSelection$targetLocation))
+              idx = which(MIP$solution[1:ni] == 1)
+              if (toupper(config@itemSelection$method) == "TIF"){
+                mat.sub = calcFisher(Constraints$pool, continuum)[,idx]
+                vec.sub = apply(mat.sub, 1, sum)
+                ylab = "Information"
+                title = "Test Information Function based on the selected items"
+              }
+              if (toupper(config@itemSelection$method) == "TCC"){
+                l = calcProb(Constraints$pool, continuum)[idx]
+                for(i in 1:length(l)){
+                  prob.mat = l[[i]]
+                  max.score = dim(prob.mat)[2] - 1
+                  prob.mat = prob.mat * matrix(c(0:max.score), dim(prob.mat)[1], dim(prob.mat)[2], byrow = T)
+                  l[[i]] = apply(prob.mat, 1, sum)
+                }
+                vec.sub = Reduce('+', l)
+                ylab = "Expected Score"
+                title = "Test Characteristic Function based on the selected items"
+              }
+              if (toupper(config@itemSelection$method) == "MAXINFO"){
+                mat.sub = calcFisher(Constraints$pool, continuum)[,idx]
+                vec.sub = apply(mat.sub, 1, sum)
+                ylab = "Information"
+                title = "Test Information Function based on the selected items"
+              }
+              ymax = max(vec.sub, config@itemSelection$targetValue)
+              pdf(NULL, bg = 'white')
+              dev.control(displaylist="enable")
+              plot(continuum, vec.sub, xlim = c(min(continuum), max(continuum)), ylim = c(0, ymax),
+                   main = title, xlab = "Theta", ylab = ylab, type = 'n')
+              lines(continuum, vec.sub, lty = 1, lwd = 3)
+              if (!maximize) abline(h = config@itemSelection$targetValue, lty = 3, lwd = 2)
+              abline(v = config@itemSelection$targetLocation, lty = 3, lwd = 2)
+              p = recordPlot()
+              plot.new()
+              dev.off()
+            } else {
+              p = NULL
+            }
+            return(list(MIP = MIP, Selected = Selected, solver = config@MIP$solver, obj.value = obj.value, solve.time = solve.time, plot = p))
           }
-        }
-      }
-      if (Constraints$TYPE[index] %in% c("MUTUALLYEXCLUSIVE", "MUTUALLY EXCLUSIVE", "XOR", "ENEMY")) {
-        ConstraintTypeIsValid = TRUE
-        condition.met = which(with(StAttrib, eval(parse(text = Constraints$CONDITION[index]))))
-        if (length(condition.met) < 2) {
-          stop(sprintf("CONSTRAINT %s is invalid: %s returned < 2 stimuli", index, Constraints$CONDITION[index]))
-        } else {
-          ListConstraints[[index]]@mat = matrix(0, nrow = 1, ncol = nv)
-          ListConstraints[[index]]@mat[1, ni + condition.met] = 1
-          ListConstraints[[index]]@dir = "<="
-          ListConstraints[[index]]@rhs = 1
-        }
-      }
-      if (Constraints$TYPE[index] == "ORDER") {
-        ConstraintTypeIsValid = TRUE
-        if (Constraints$CONDITION[index] %in% names(StAttrib)) {
-          if (any(is.na(StAttrib[[Constraints$CONDITION[index]]]))) {
-            stop(sprintf("CONSTRAINT %s: %s must not have a missing value", index, Constraints$CONDITION[index]))
-          }
-          StimulusOrder = StAttrib[[Constraints$CONDITION[index]]]
-          StimulusOrderBy = Constraints$CONDITION[index]
-        } else {
-          stop(sprintf("CONSTRAINT %s is invalid: %s not found in StAttrib", index, Constraints$CONDITION[index]))
-        }
-      }
-      if (!ConstraintTypeIsValid){
-        stop(sprintf("CONSTRAINT %s, %s is not a valid constraint type", index, Constraints$TYPE[index]))
-      }
-      ListConstraints[[index]]@nc = nrow(ListConstraints[[index]]@mat)
-    }
-  }
-  INDEX = NULL
-  MAT = NULL
-  DIR = NULL
-  RHS = NULL
-  for (index in 1:nc) {
-    if (Constraints$TYPE[index] != "ORDER" && ifelse(ONOFF, Constraints$ONOFF[index] != "OFF", TRUE)) {
-      ListConstraints[[index]]@nc = nrow(ListConstraints[[index]]@mat)
-      MAT = rbind(MAT, ListConstraints[[index]]@mat)
-      DIR = c(DIR, ListConstraints[[index]]@dir)
-      RHS = c(RHS, ListConstraints[[index]]@rhs)
-      INDEX = c(INDEX, rep(Constraints$CONSTRAINT[index], ListConstraints[[index]]@nc))
-    }
-  }
-  out = list(Constraints = Constraints, ListConstraints = ListConstraints, pool = pool, ItemAttrib = ItemAttrib, StAttrib = StAttrib,
-             testLength = testLength, nv = nv, ni = ni, ns = ns, ID = ID, INDEX = INDEX, MAT = MAT, DIR = DIR, RHS = RHS, setBased = setBased,
-             ItemOrder = ItemOrder, ItemOrderBy = ItemOrderBy, StimulusOrder = StimulusOrder, StimulusOrderBy = StimulusOrderBy,
-             ItemIndexByStimulus = item.index.by.stimulus, StimulusIndexByItem = stimulus.index.by.item)
-  return(out)
-}
+)
 
-#' Build constraints
-#'
-#' Read constraints from specified files.
-#'
-#' @param pool An \code{item.pool} object. Use \code{\link{LoadItemPool}} for this.
-#' @param file.Constraints Character. The name of the file containing constraint specifications.
-#' @param file.ItemAttrib Character. The name of the file containing item attributes.
-#' @param file.StAttrib (Optional) Character. The name of the file containing set attributes.
-#'
-#' @return A list containing the parsed constraints, to be used in \code{\link{ATA}} and \code{\link{Shadow}}.
-#'
-#' @export
-
-BuildConstraints = function(pool, file.Constraints, file.ItemAttrib, file.StAttrib = NULL) {
-  ItemAttrib = LoadItemAttrib(file.ItemAttrib, pool)
-  if (!is.null(file.StAttrib)) {
-    StAttrib = LoadStAttrib(file.StAttrib, ItemAttrib)
-  } else {
-    StAttrib = NULL
-  }
-  Constraints = LoadConstraints(file.Constraints, pool, ItemAttrib, StAttrib)
-  return(Constraints)
-}
