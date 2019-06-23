@@ -11,7 +11,7 @@
 \alias{calcEscore,item.gr,numeric-method}
 \alias{calcEscore,item.pool,numeric-method}
 \alias{calcEscore,pool.cluster,numeric-method}
-\title{Calculated expected scores}
+\title{Calculate expected scores}
 \usage{
 calcEscore(object, theta)
 
