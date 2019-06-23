@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{calc_info_FB}
 \alias{calc_info_FB}
-\title{Calculate the Fisher information using fully Bayesian}
+\title{Calculate the Fisher information using full Bayesian}
 \usage{
 calc_info_FB(x, items_list, ncat, model, useEAP = FALSE)
 }
@@ -18,5 +18,5 @@ calc_info_FB(x, items_list, ncat, model, useEAP = FALSE)
 \item{useEAP}{\code{TRUE} to use the mean of MCMC theta draws.}
 }
 \description{
-Calculate the Fisher information using fully Bayesian
+Calculate the Fisher information using full Bayesian.
 }

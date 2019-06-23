@@ -5,7 +5,7 @@
 \alias{pool.cluster-class}
 \title{An S4 class to represent a cluster of item pools}
 \description{
-An S4 class to represent a cluster of item pools
+An S4 class to represent a cluster of item pools.
 }
 \section{Slots}{
 
