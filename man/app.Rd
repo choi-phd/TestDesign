@@ -2,10 +2,10 @@
 % Please edit documentation in R/runshiny.R
 \name{app}
 \alias{app}
-\title{app}
+\title{Launch Shiny app}
 \usage{
 app()
 }
 \description{
-Launches a Shiny app locally.
+Launch Shiny app locally.
 }

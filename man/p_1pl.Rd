@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{p_1pl}
 \alias{p_1pl}
-\title{Calculate the probability of a correct response according to 1PL model}
+\title{Calculate probability at a single theta (1PL)}
 \usage{
 p_1pl(x, b)
 }
@@ -12,7 +12,7 @@ p_1pl(x, b)
 \item{b}{Numeric. A difficulty parameter value.}
 }
 \description{
-Calculate the probability of a correct response according to 1PL model.
+Calculate the probability of correct response at a theta value, under the 1PL model.
 }
 \references{
 {

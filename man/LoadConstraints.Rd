@@ -2,7 +2,7 @@
 % Please edit documentation in R/ATA_functions.R
 \name{LoadConstraints}
 \alias{LoadConstraints}
-\title{LoadConstraints}
+\title{Load constraints}
 \usage{
 LoadConstraints(file.csv, pool, ItemAttrib, StAttrib = NULL)
 }
@@ -13,33 +13,10 @@ LoadConstraints(file.csv, pool, ItemAttrib, StAttrib = NULL)
 
 \item{ItemAttrib}{A \code{data.frame} containing item attributes. Use \code{\link{LoadItemAttrib}} for this.}
 
-\item{StAttrib}{(Optional) Use \code{\link{LoadStAttrib}} for this.}
+\item{StAttrib}{(Optional) A \code{data.frame} containing stimulus attributes. Use \code{\link{LoadStAttrib}} for this.}
 }
 \value{
-A list containing the following entries:
-\itemize{
-  \item{\code{Constraints}} A \code{data.frame} containing constraint specifications.
-  \item{\code{ListConstraints}} A list of \code{constraint} objects.
-  \item{\code{pool}} An \code{item.pool} object.
-  \item{\code{ItemAttrib}} A \code{data.frame} containing item attributes.
-  \item{\code{StAttrib}} Foo.
-  \item{\code{testLength}} Numeric. The specified length of test.
-  \item{\code{nv}} Number of variables.
-  \item{\code{ni}} Number of items.
-  \item{\code{ns}} Number of sets.
-  \item{\code{ID}} Item indices.
-  \item{\code{INDEX}} Foo.
-  \item{\code{MAT}} Foo.
-  \item{\code{DIR}} Foo.
-  \item{\code{RHS}} Foo.
-  \item{\code{setBased}} Logical. \code{TRUE} if the constraint is stimulus-based.
-  \item{\code{ItemOrder}} Foo.
-  \item{\code{ItemOrderBy}} Foo.
-  \item{\code{StimulusOrder}} Foo.
-  \item{\code{StimulusOrderBy}} Foo.
-  \item{\code{ItemIndexByStimulus}} Foo.
-  \item{\code{StimulusIndexByItem}} Foo.
-}
+A list containing the parsed constraints, to be used in \code{\link{ATA}} and \code{\link{Shadow}}.
 }
 \description{
 Read constraints from specified file.

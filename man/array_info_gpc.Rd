@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{array_info_gpc}
 \alias{array_info_gpc}
-\title{Calculate the Fisher information for a vector of theta values according to the generalized partial credit model}
+\title{Calculate Fisher information at multiple thetas (GPC)}
 \usage{
 array_info_gpc(x, a, b)
 }
@@ -14,7 +14,7 @@ array_info_gpc(x, a, b)
 \item{b}{Numeric. A vector of threshold parameter values.}
 }
 \description{
-Calculate the Fisher information for a vector of theta values according to the generalized partial credit model
+Calculate the Fisher information at theta values according to the generalized partial credit model.
 }
 \references{
 {

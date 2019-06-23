@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{p_gr}
 \alias{p_gr}
-\title{Calculate the response probabilities according to the graded response model}
+\title{Calculate probability at a single theta (GR)}
 \usage{
 p_gr(x, a, b)
 }
@@ -14,7 +14,7 @@ p_gr(x, a, b)
 \item{b}{Numeric. A vector of category boundary parameter values.}
 }
 \description{
-Calculate the response probabilities according to the graded response model
+Calculate the probability of correct response at a theta value, under the graded response model.
 }
 \references{
 {

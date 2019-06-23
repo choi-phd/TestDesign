@@ -8,12 +8,12 @@
 #' @importFrom graphics plot abline lines
 NULL
 
-#' Load Item Attributes
+#' Load item attributes
 #'
 #' Read item attributes from specified file.
 #'
 #' @param file.csv Character. The name of the file containing item attributes.
-#' @param pool An \code{item.pool} object.
+#' @param pool An \code{item.pool} object. Use \code{\link{LoadItemPool}} for this.
 #' 
 #' @return A \code{data.frame} containing parsed dataset.
 #'
@@ -43,7 +43,7 @@ LoadItemAttrib = function(file.csv, pool) {
   return(ItemAttrib)
 }
 
-#' Load Set/Stimulus/Passage Attributes
+#' Load set/stimulus/passage attributes
 #'
 #' Read set attributes from specified file.
 #'
@@ -75,40 +75,17 @@ LoadStAttrib = function(file.csv, ItemAttrib) {
   return(StAttrib)
 }
 
-#' LoadConstraints
+#' Load constraints
 #'
 #' Read constraints from specified file.
 #'
 #' @param file.csv Character. The name of the file containing specifications for constraints.
 #' @param pool An \code{item.pool} object.
 #' @param ItemAttrib A \code{data.frame} containing item attributes. Use \code{\link{LoadItemAttrib}} for this.
-#' @param StAttrib (Optional) Use \code{\link{LoadStAttrib}} for this.
+#' @param StAttrib (Optional) A \code{data.frame} containing stimulus attributes. Use \code{\link{LoadStAttrib}} for this.
 #' 
-#' @return A list containing the following entries:
-#' \itemize{
-#'   \item{\code{Constraints}} A \code{data.frame} containing constraint specifications.
-#'   \item{\code{ListConstraints}} A list of \code{constraint} objects.
-#'   \item{\code{pool}} An \code{item.pool} object.
-#'   \item{\code{ItemAttrib}} A \code{data.frame} containing item attributes.
-#'   \item{\code{StAttrib}} Foo.
-#'   \item{\code{testLength}} Numeric. The specified length of test.
-#'   \item{\code{nv}} Number of variables.
-#'   \item{\code{ni}} Number of items.
-#'   \item{\code{ns}} Number of sets.
-#'   \item{\code{ID}} Item indices.
-#'   \item{\code{INDEX}} Foo.
-#'   \item{\code{MAT}} Foo.
-#'   \item{\code{DIR}} Foo.
-#'   \item{\code{RHS}} Foo.
-#'   \item{\code{setBased}} Logical. \code{TRUE} if the constraint is stimulus-based.
-#'   \item{\code{ItemOrder}} Foo.
-#'   \item{\code{ItemOrderBy}} Foo.
-#'   \item{\code{StimulusOrder}} Foo.
-#'   \item{\code{StimulusOrderBy}} Foo.
-#'   \item{\code{ItemIndexByStimulus}} Foo.
-#'   \item{\code{StimulusIndexByItem}} Foo.
-#' }
-#'
+#' @return A list containing the parsed constraints, to be used in \code{\link{ATA}} and \code{\link{Shadow}}.
+#' 
 #' @export
 
 LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
@@ -633,15 +610,16 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
   return(out)
 }
 
-#' BuildConstraints
+#' Build constraints
 #'
 #' Read constraints from specified files.
 #'
-#' @param pool An \code{item.pool} object.
-#' @param file.Constraints Character. The name of the file containing specifications for constraints.
+#' @param pool An \code{item.pool} object. Use \code{\link{LoadItemPool}} for this.
+#' @param file.Constraints Character. The name of the file containing constraint specifications.
 #' @param file.ItemAttrib Character. The name of the file containing item attributes.
-#' @param file.StAttrib Character. The name of the file containing set attributes.
-#' @return A list containing the parsed constraints. See th output section of \link{LoadConstraints} for details.
+#' @param file.StAttrib (Optional) Character. The name of the file containing set attributes.
+#' 
+#' @return A list containing the parsed constraints, to be used in \code{\link{ATA}} and \code{\link{Shadow}}.
 #' 
 #' @export
 

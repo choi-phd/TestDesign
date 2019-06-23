@@ -2,7 +2,7 @@
 % Please edit documentation in R/ATA_functions.R
 \name{LoadStAttrib}
 \alias{LoadStAttrib}
-\title{Load Set/Stimulus/Passage Attributes}
+\title{Load set/stimulus/passage attributes}
 \usage{
 LoadStAttrib(file.csv, ItemAttrib)
 }

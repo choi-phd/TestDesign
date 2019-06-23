@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{p_pc}
 \alias{p_pc}
-\title{Calculate the response probabilities according to the partial credit model}
+\title{Calculate probability at a single theta (PC)}
 \usage{
 p_pc(x, b)
 }
@@ -12,7 +12,7 @@ p_pc(x, b)
 \item{b}{Numeric. A vector of threshold parameter values.}
 }
 \description{
-Calculate the response probabilities according to the partial credit model.
+Calculate the probability of correct response at a theta value, under the partial credit model.
 }
 \references{
 {
