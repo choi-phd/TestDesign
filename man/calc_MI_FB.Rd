@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{calc_MI_FB}
 \alias{calc_MI_FB}
-\title{Calculate the mutual information using fully Bayesian}
+\title{Calculate the mutual information using full Bayesian}
 \usage{
 calc_MI_FB(x, items_list, ncat, model)
 }
@@ -16,5 +16,5 @@ calc_MI_FB(x, items_list, ncat, model)
 \item{model}{A numeric vector indicating the IRT models of each item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).}
 }
 \description{
-Calculate the mutual information using fully Bayesian
+Calculate the mutual information using full Bayesian.
 }

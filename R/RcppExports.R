@@ -320,7 +320,9 @@ calc_info_EB <- function(x, item_parm, ncat, model) {
     .Call('_Shadow_calc_info_EB', PACKAGE = 'Shadow', x, item_parm, ncat, model)
 }
 
-#' Calculate the Fisher information using fully Bayesian
+#' Calculate the Fisher information using full Bayesian
+#'
+#' Calculate the Fisher information using full Bayesian.
 #'
 #' @param x A numeric vector of MCMC sampled theta values.
 #' @param items_list A list of item parameter matrices.
@@ -330,7 +332,9 @@ calc_info_FB <- function(x, items_list, ncat, model, useEAP = FALSE) {
     .Call('_Shadow_calc_info_FB', PACKAGE = 'Shadow', x, items_list, ncat, model, useEAP)
 }
 
-#' Calculate the mutual information using fully Bayesian
+#' Calculate the mutual information using full Bayesian
+#'
+#' Calculate the mutual information using full Bayesian.
 #'
 #' @param x A numeric vector of MCMC sampled theta values.
 #' @param items_list A list of item parameter matrices.
