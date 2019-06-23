@@ -430,7 +430,7 @@ setMethod(f = "plotCAT",
           }
 )
 
-#' calcRP
+#' Find matching theta to supplied probability
 #' 
 #' Find theta corresponding to a response probability value for each item.
 #' 
