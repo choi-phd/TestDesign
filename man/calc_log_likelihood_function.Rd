@@ -23,5 +23,5 @@ calc_log_likelihood_function(theta_grid, item_parm, resp, ncat, model,
 \item{prior_parm}{A numeric vector of hyperparameters for the prior distribution, c(mu, sigma) or c(ll, ul).}
 }
 \description{
-Calculate a log-likelihood function of theta
+Calculate a log-likelihood function of theta.
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{array_info_3pl}
 \alias{array_info_3pl}
-\title{Calculate the Fisher information for a vector of theta values according to the 3pl model}
+\title{Calculate Fisher information at multiple thetas (3PL)}
 \usage{
 array_info_3pl(x, a, b, c)
 }
@@ -16,7 +16,7 @@ array_info_3pl(x, a, b, c)
 \item{c}{Numeric. A guessing parameter value.}
 }
 \description{
-Calculate the Fisher information for a vector of theta values according to the 3pl model
+Calculate the Fisher information at theta values according to the 3PL model.
 }
 \references{
 {
