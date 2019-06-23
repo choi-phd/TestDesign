@@ -567,7 +567,7 @@ setMethod(f = "simResp",
   return(identical(pool.cluster1, pool.cluster2))
 }
 
-#' Left bracket
+#' Extract
 #' 
 #' @param x x
 #' @param i i
@@ -575,7 +575,7 @@ setMethod(f = "simResp",
 #' @param ... ...
 #' @param drop drop
 #' 
-#' @name [-method
+#' @name extract-methods
 #' @aliases [,test,ANY,ANY,ANY-method
 #' @docType methods
 setMethod(
@@ -591,9 +591,7 @@ setMethod(
   }
 )
 
-#' Left bracket
-#' 
-#' @name [-method
+#' @name extract-methods
 #' @aliases [,item.pool,ANY,ANY,ANY-method
 #' @docType methods
 setMethod(
