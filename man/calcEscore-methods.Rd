@@ -55,15 +55,7 @@ item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 ICC.item.5 = calcEscore(item.5, seq(-3, 3, 1))
 item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
 ICC.item.6 = calcEscore(item.6, seq(-3, 3, 1))
-\dontrun{
-itemPool.1 = LoadItemPool("C:/item_par.csv")
-TCC.itemPool.1 = calcEscore(itemPool.1, seq(-3, 3, 1))
-}
-\dontrun{
-itemPool.1 = LoadItemPool("C:/item_par.csv")
-#this needs to be updated for pool.cluster
-TCC.itemPool.1 = calcEscore(itemPools, seq(-3, 3, 1))
-}
+TCC.itempool = calcEscore(itempool.science, seq(-3, 3, 1))
 }
 \references{
 {
