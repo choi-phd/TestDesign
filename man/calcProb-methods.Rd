@@ -11,7 +11,7 @@
 \alias{calcProb,item.gr,numeric-method}
 \alias{calcProb,item.pool,numeric-method}
 \alias{calcProb,pool.cluster,numeric-method}
-\title{An S4 generic and its methods to calculate item response probabilities for different item classes}
+\title{Calculate item response probabilities}
 \usage{
 calcProb(object, theta)
 
