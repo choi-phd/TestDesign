@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{info_gr}
 \alias{info_gr}
-\title{Calculate the Fisher information according to the graded response model}
+\title{Calculate Fisher information at a single theta (GR).}
 \usage{
 info_gr(x, a, b)
 }
@@ -14,7 +14,7 @@ info_gr(x, a, b)
 \item{b}{Numeric. A vector of category boundary parameter values.}
 }
 \description{
-Calculate the Fisher information according to the graded response model
+Calculate the Fisher information at a theta value according to the graded resposne model.
 }
 \references{
 {

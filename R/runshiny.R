@@ -1,6 +1,6 @@
-#' app
+#' Launch Shiny app
 #'
-#' Launches a Shiny app locally.
+#' Launch Shiny app locally.
 #'
 #' @export
 app <- function() {

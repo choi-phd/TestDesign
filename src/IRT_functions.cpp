@@ -1,9 +1,9 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-//' Calculate the probability of a correct response according to 1PL model
+//' Calculate probability at a single theta (1PL)
 //'
-//' Calculate the probability of a correct response according to 1PL model.
+//' Calculate the probability of correct response at a theta value, under the 1PL model.
 //'
 //' @template x-single
 //' @template 1pl-params
@@ -14,9 +14,9 @@ double p_1pl(const double& x, const double& b){
   return 1/(1+exp(b-x));
 }
 
-//' Calculate the probability of a correct response according to 1PL model
+//' Calculate probability at multiple thetas (1PL)
 //'
-//' Calculate the probability of a correct response according to 1PL model.
+//' Calculate the probability of correct response at theta values, under the 1PL model.
 //'
 //' @template x-vector
 //' @template 1pl-params
@@ -32,9 +32,9 @@ NumericVector array_p_1pl(NumericVector x, const double& b){
   return p_array;
 }
 
-//' Calculate the probability of a correct response according to the 2PL model
+//' Calculate probability at a single theta (2PL)
 //'
-//' Calculate the probability of a correct response according to the 2PL model.
+//' Calculate the probability of correct response at a theta value, under the 2PL model.
 //'
 //' @template x-single
 //' @template 2pl-params
@@ -45,9 +45,9 @@ double p_2pl(const double& x, const double& a, const double& b){
   return 1/(1+exp(-a*(x-b)));
 }
 
-//' Calculate the probability of a correct response according to the 2PL model
+//' Calculate probability at multiple thetas (2PL)
 //'
-//' Calculate the probability of a correct response according to the 2PL model.
+//' Calculate the probability of correct response at theta values, under the 2PL model.
 //'
 //' @template x-vector
 //' @template 2pl-params
@@ -63,9 +63,9 @@ NumericVector array_p_2pl(NumericVector x, const double& a, const double& b){
   return p_array;
 }
 
-//' Calculate the probability of a correct response according to the 3PL model
+//' Calculate probability at a single theta (3PL)
 //'
-//' Calculate the probability of a correct response according to the 3PL model.
+//' Calculate the probability of correct response at a theta value, under the 3PL model.
 //'
 //' @template x-single
 //' @template 3pl-params
@@ -76,9 +76,9 @@ double p_3pl(const double& x, const double& a, const double& b, const double& c)
   return c+(1-c)/(1+exp(-a*(x-b)));
 }
 
-//' Calculate the probability of a correct response according to the 3PL model
+//' Calculate probability at multiple thetas (3PL)
 //'
-//' Calculate the probability of a correct response according to the 3PL model.
+//' Calculate the probability of correct response at theta values, under the 3PL model.
 //'
 //' @template x-vector
 //' @template 3pl-params
@@ -94,9 +94,9 @@ NumericVector array_p_3pl(NumericVector x, const double& a, const double& b, con
   return p_array;
 }
 
-//' Calculate the response probabilities according to the partial credit model
+//' Calculate probability at a single theta (PC)
 //'
-//' Calculate the response probabilities according to the partial credit model.
+//' Calculate the probability of correct response at a theta value, under the partial credit model.
 //'
 //' @template x-single
 //' @template pc-params
@@ -116,9 +116,9 @@ NumericVector p_pc(const double& x, NumericVector b){
   return pp/psum;
 }
 
-//' Calculate the response probabilities according to the partial credit model
+//' Calculate probability at multiple thetas (PC)
 //'
-//' Calculate the response probabilities according to the partial credit model.
+//' Calculate the probability of correct response at theta values, under the partial credit model.
 //'
 //' @template x-vector
 //' @template pc-params
@@ -139,7 +139,9 @@ NumericMatrix array_p_pc(NumericVector x, NumericVector b){
   return p_array;
 }
 
-//' Calculate the response probabilities according to the generalizaed partial credit model
+//' Calculate probability at a single theta (GPC)
+//'
+//' Calculate the probability of correct response at a theta value, under the generalized partial credit model.
 //'
 //' @template x-single
 //' @template gpc-params
@@ -159,7 +161,9 @@ NumericVector p_gpc(const double& x, const double& a, NumericVector b){
   return pp/psum;
 }
 
-//' Calculate the response probabilities for a vector of theta values according to the generalized partial credit model
+//' Calculate probability at multiple thetas (GPC)
+//'
+//' Calculate the probability of correct response at theta values, under the generalized partial credit model.
 //'
 //' @template x-vector
 //' @template gpc-params
@@ -180,7 +184,9 @@ NumericMatrix array_p_gpc(NumericVector x, const double& a, NumericVector b){
   return p_array;
 }
 
-//' Calculate the response probabilities according to the graded response model
+//' Calculate probability at a single theta (GR)
+//'
+//' Calculate the probability of correct response at a theta value, under the graded response model.
 //'
 //' @template x-single
 //' @template gr-params
@@ -201,7 +207,9 @@ NumericVector p_gr(const double& x, const double& a, NumericVector b){
   return p;
 }
 
-//' Calculate the response probabilities for a vector of theta values according to the graded response model
+//' Calculate probability at multiple thetas (GR)
+//'
+//' Calculate the probability of correct response at theta values, under the graded response model.
 //'
 //' @template x-vector
 //' @template gr-params
@@ -222,7 +230,9 @@ NumericMatrix array_p_gr(NumericVector x, const double& a, NumericVector b){
   return p_array;
 }
 
-//' Calculate the Fisher information according to the 1pl model
+//' Calculate Fisher information at a single theta (1PL)
+//'
+//' Calculate the Fisher information at a theta value according to the 1PL model.
 //'
 //' @template x-single
 //' @template 1pl-params
@@ -234,7 +244,9 @@ double info_1pl(const double& x, const double& b){
   return p*(1-p);
 }
 
-//' Calculate the Fisher information for a vector of theta values according to the 1pl model
+//' Calculate Fisher information at multiple thetas (1PL)
+//'
+//' Calculate the Fisher information at theta values according to the 1PL model.
 //'
 //' @template x-vector
 //' @template 1pl-params
@@ -250,7 +262,9 @@ NumericVector array_info_1pl(NumericVector x, const double& b){
   return info_array;
 }
 
-//' Calculate the Fisher information according to the 2pl model
+//' Calculate Fisher information at a single theta (2PL)
+//'
+//' Calculate the Fisher information at a theta value according to the 2PL model.
 //'
 //' @template x-single
 //' @template 2pl-params
@@ -262,7 +276,9 @@ double info_2pl(const double& x, const double& a, const double& b){
   return pow(a,2)*p*(1-p);
 }
 
-//' Calculate the Fisher information for a vector of theta values according to the 2pl model
+//' Calculate Fisher information at multiple thetas (2PL)
+//'
+//' Calculate the Fisher information at theta values according to the 2PL model.
 //'
 //' @template x-vector
 //' @template 2pl-params
@@ -278,7 +294,9 @@ NumericVector array_info_2pl(NumericVector x, const double& a, const double& b){
   return info_array;
 }
 
-//' Calculate the Fisher information according to the 3pl model
+//' Calculate Fisher information at a single theta (3PL)
+//'
+//' Calculate the Fisher information at a theta value according to the 3PL model.
 //'
 //' @template x-single
 //' @template 3pl-params
@@ -290,7 +308,9 @@ double info_3pl(const double& x, const double& a, const double& b, const double&
   return pow(a,2)*(1-p)/p*pow((p-c)/(1-c),2);
 }
 
-//' Calculate the Fisher information for a vector of theta values according to the 3pl model
+//' Calculate Fisher information at multiple thetas (3PL)
+//'
+//' Calculate the Fisher information at theta values according to the 3PL model.
 //'
 //' @template x-vector
 //' @template 3pl-params
@@ -306,7 +326,9 @@ NumericVector array_info_3pl(NumericVector x, const double& a, const double& b, 
   return info_array;
 }
 
-//' Calculate the Fisher information according to the partial credit model
+//' Calculate Fisher information at a single theta (PC)
+//'
+//' Calculate the Fisher information at a theta value according to the partial credit model.
 //'
 //' @template x-single
 //' @template pc-params
@@ -324,7 +346,9 @@ double info_pc(const double& x, NumericVector b){
   return const_2-pow(const_1,2);
 }
 
-//' Calculate the Fisher information for a vector of theta values according to the partial credit model
+//' Calculate Fisher information at multiple thetas (PC)
+//'
+//' Calculate the Fisher information at theta values according to the partial credit model.
 //'
 //' @template x-vector
 //' @template pc-params
@@ -340,7 +364,9 @@ NumericVector array_info_pc(NumericVector x, NumericVector b){
   return info_array;
 }
 
-//' Calculate the Fisher information according to the generalized partial credit model
+//' Calculate Fisher information at a single theta (GPC).
+//'
+//' Calculate the Fisher information at a theta value according to the generalizied partial credit model.
 //'
 //' @template x-single
 //' @template gpc-params
@@ -358,7 +384,9 @@ double info_gpc(const double& x, const double& a, NumericVector b){
   return pow(a,2)*(const_2-pow(const_1,2));
 }
 
-//' Calculate the Fisher information for a vector of theta values according to the generalized partial credit model
+//' Calculate Fisher information at multiple thetas (GPC)
+//'
+//' Calculate the Fisher information at theta values according to the generalized partial credit model.
 //'
 //' @template x-vector
 //' @template gpc-params
@@ -374,7 +402,9 @@ NumericVector array_info_gpc(NumericVector x, const double& a, NumericVector b){
   return info_array;
 }
 
-//' Calculate the Fisher information according to the graded response model
+//' Calculate Fisher information at a single theta (GR).
+//'
+//' Calculate the Fisher information at a theta value according to the graded resposne model.
 //'
 //' @template x-single
 //' @template gr-params
@@ -396,7 +426,9 @@ double info_gr(const double& x, const double& a, NumericVector b){
   return out *= pow(a,2);
 }
 
-//' Calculate the Fisher information for a vector of theta values according to the graded response model
+//' Calculate Fisher information at multiple thetas (GR)
+//'
+//' Calculate the Fisher information at theta values according to the graded response model.
 //'
 //' @template x-vector
 //' @template gr-params
