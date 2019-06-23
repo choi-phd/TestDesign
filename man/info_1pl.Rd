@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{info_1pl}
 \alias{info_1pl}
-\title{Calculate the Fisher information according to the 1pl model}
+\title{Calculate Fisher information at a single theta (1PL)}
 \usage{
 info_1pl(x, b)
 }
@@ -12,7 +12,7 @@ info_1pl(x, b)
 \item{b}{Numeric. A difficulty parameter value.}
 }
 \description{
-Calculate the Fisher information according to the 1pl model
+Calculate the Fisher information at a theta value according to the 1PL model.
 }
 \references{
 {

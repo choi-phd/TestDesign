@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{array_p_gr}
 \alias{array_p_gr}
-\title{Calculate the response probabilities for a vector of theta values according to the graded response model}
+\title{Calculate probability at multiple thetas (GR)}
 \usage{
 array_p_gr(x, a, b)
 }
@@ -14,7 +14,7 @@ array_p_gr(x, a, b)
 \item{b}{Numeric. A vector of category boundary parameter values.}
 }
 \description{
-Calculate the response probabilities for a vector of theta values according to the graded response model
+Calculate the probability of correct response at theta values, under the graded response model.
 }
 \references{
 {

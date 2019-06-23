@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{info_gpc}
 \alias{info_gpc}
-\title{Calculate the Fisher information according to the generalized partial credit model}
+\title{Calculate Fisher information at a single theta (GPC).}
 \usage{
 info_gpc(x, a, b)
 }
@@ -14,7 +14,7 @@ info_gpc(x, a, b)
 \item{b}{Numeric. A vector of threshold parameter values.}
 }
 \description{
-Calculate the Fisher information according to the generalized partial credit model
+Calculate the Fisher information at a theta value according to the generalizied partial credit model.
 }
 \references{
 {

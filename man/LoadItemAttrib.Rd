@@ -2,14 +2,14 @@
 % Please edit documentation in R/ATA_functions.R
 \name{LoadItemAttrib}
 \alias{LoadItemAttrib}
-\title{Load Item Attributes}
+\title{Load item attributes}
 \usage{
 LoadItemAttrib(file.csv, pool)
 }
 \arguments{
 \item{file.csv}{Character. The name of the file containing item attributes.}
 
-\item{pool}{An \code{item.pool} object.}
+\item{pool}{An \code{item.pool} object. Use \code{\link{LoadItemPool}} for this.}
 }
 \value{
 A \code{data.frame} containing parsed dataset.
