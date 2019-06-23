@@ -571,7 +571,9 @@ NumericVector calc_info_EB(NumericVector x,
   return info_array / (double)nx;
 }
 
-//' Calculate the Fisher information using fully Bayesian
+//' Calculate the Fisher information using full Bayesian
+//' 
+//' Calculate the Fisher information using full Bayesian.
 //' 
 //' @param x A numeric vector of MCMC sampled theta values.
 //' @param items_list A list of item parameter matrices.
@@ -654,7 +656,9 @@ NumericVector calc_info_FB(NumericVector x,
   return info_array / (double)nx; 
 }
 
-//' Calculate the mutual information using fully Bayesian
+//' Calculate the mutual information using full Bayesian
+//' 
+//' Calculate the mutual information using full Bayesian.
 //' 
 //' @param x A numeric vector of MCMC sampled theta values.
 //' @param items_list A list of item parameter matrices.
