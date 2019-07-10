@@ -31,7 +31,7 @@ config.Shadow(itemSelection = NULL, contentBalancing = NULL,
   \item{\code{solver}} The type of solver. Accepts one of \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.
   \item{\code{verbosity}} Verbosity level.
   \item{\code{timeLimit}} Time limit to be passed onto solver. Used in solvers \code{SYMPHONY, GUROBI, GLPK}.
-  \item{\code{gapLimit}} Gap limit to be passed onto solver. Used in solvers  \code{SYMPHONY, GUROBI}.
+  \item{\code{gapLimit}} Gap limit to be passed onto solver. Used in solvers \code{SYMPHONY, GUROBI}.
 }}
 
 \item{MCMC}{A list containing Markov-chain Monte Carlo configurations.

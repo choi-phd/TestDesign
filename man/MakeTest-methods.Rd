@@ -23,3 +23,6 @@ MakeTest(object, theta, infoType = "FISHER", trueTheta = NULL)
 \description{
 Generate a \code{\linkS4class{test}} object
 }
+\examples{
+test = MakeTest(itempool.science, seq(-3, 3, 1))
+}
