@@ -145,7 +145,7 @@ LoadItemPool = function(file.csv, ipar = NULL, se.file.csv = NULL) {
 #' Read item attributes from specified file.
 #'
 #' @param file.csv Character. The name of the file containing item attributes.
-#' @param pool An \code{item.pool} object. Use \code{\link{LoadItemPool}} for this.
+#' @param pool An \code{\linkS4class{item.pool}} object. Use \code{\link{LoadItemPool}} for this.
 #' 
 #' @return A \code{data.frame} containing parsed dataset.
 #'

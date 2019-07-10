@@ -49,34 +49,19 @@ Item location values.
 An S4 generic and its methods to calculate item location.
 }
 \examples{
-\dontrun{
 item.1 = new("item.1pl", difficulty = 0.5)
 theta.item.1 = calcLocation(item.1)
-}
-\dontrun{
 item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
 theta.item.2 = calcLocation(item.2)
-}
-\dontrun{ 
 item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 theta.item.3 = calcLocation(item.3)
-}
-\dontrun{ 
 item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
 theta.item.4 = calcLocation(item.4)
-}
-\dontrun{ 
 item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 theta.item.5 = calcLocation(item.5)
-}
-\dontrun{ 
 item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
 theta.item.6 = calcLocation(item.6)
-}
-\dontrun{
-itemPool.1 = LoadItemPool("C:/item_par.csv")
-theta.itemPool.1 = calcLocation(itemPool.1)
-}
+theta.itempool = calcLocation(itempool.science)
 }
 \references{
 {
