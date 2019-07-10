@@ -3,9 +3,9 @@
 \docType{class}
 \name{test.cluster-class}
 \alias{test.cluster-class}
-\title{test.cluster}
+\title{An S4 class to represent a test cluster}
 \description{
-Create a \code{\linkS4class{test.cluster}} object from a list of \code{\linkS4class{test}} objects.
+An S4 class to represent a test cluster from a list of \code{\linkS4class{test}} objects.
 }
 \section{Slots}{
 
@@ -14,6 +14,6 @@ Create a \code{\linkS4class{test.cluster}} object from a list of \code{\linkS4cl
 
 \item{\code{tests}}{A list \code{\linkS4class{test}} objects.}
 
-\item{\code{names}}{Character. A vector of names correspondign to the \code{\linkS4class{test}} objects.}
+\item{\code{names}}{Character. A vector of names corresponding to the \code{\linkS4class{test}} objects.}
 }}
 

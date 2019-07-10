@@ -1,32 +1,14 @@
-#' @import Rsymphony
-#' @import Rglpk
-#' @import Matrix
-#' @import lpSolve
-#' @import Rcpp methods
-#' @importFrom Rcpp evalCpp
-#' @importFrom Rdpack reprompt
-#' @importFrom methods new show validObject
-#' @importFrom stats runif
-#' @importFrom utils capture.output read.csv
-#' @importFrom graphics plot abline lines
-NULL
-
 #' Load item paramaters
 #' 
-#' Read item parameters from a .csv file or a data.frame and create an item.pool class
+#' Read item parameters from a .csv file or a data.frame and create an \linkS4class{item.pool} class.
 #' 
 #' @param file.csv File path of a .csv file containing item parameters. The file content should not have column names.
 #' @param ipar A data.frame created from a .csv file.
 #' @param se.file.csv File path of a .csv file containing standard errors.
 #' @return An \linkS4class{item.pool} object.
-#' @examples  
-#' \dontrun{
-#' itemPool.1 = LoadItemPool("C:/sample.csv")
-#' ipar.1 = read.csv("C:/sample.csv")
-#' itemPool.1 = LoadItemPool(ipar = ipar.1)
-#' }
+#' 
+#' @seealso \link{dataset.science} for example usage.
 #' @export
-
 LoadItemPool = function(file.csv, ipar = NULL, se.file.csv = NULL) {
   if (is.null(ipar)) {
     ipar = read.csv(file.csv, header = TRUE, as.is = TRUE)
@@ -132,6 +114,8 @@ LoadItemPool = function(file.csv, ipar = NULL, se.file.csv = NULL) {
   
   if (loadSE) {
     pool@SEs = SEs
+  } else {
+    pool@SEs = pool@parms*0
   }
 
   if (max(rowSums(!is.na(pool@ipar))) != max(nfields) - 2) {
@@ -148,7 +132,8 @@ LoadItemPool = function(file.csv, ipar = NULL, se.file.csv = NULL) {
 #' @param pool An \code{\linkS4class{item.pool}} object. Use \code{\link{LoadItemPool}} for this.
 #' 
 #' @return A \code{data.frame} containing parsed dataset.
-#'
+#' 
+#' @seealso \link{dataset.science} for example usage.
 #' @export
 
 LoadItemAttrib = function(file.csv, pool) {
@@ -177,13 +162,15 @@ LoadItemAttrib = function(file.csv, pool) {
 
 #' Load set/stimulus/passage attributes
 #'
-#' Read set attributes from specified file.
+#' Read set, stimulus, or passage attributes from specified file.
 #'
 #' @param file.csv Character. The name of the file containing item attributes.
 #' @param ItemAttrib A \code{data.frame} containing item attributes. Use \code{\link{LoadItemAttrib}} for this.
 #' 
 #' @return A \code{data.frame} containing stimulus attributes.
-#'
+#' 
+#' @seealso \link{dataset.reading} for example usage.
+#' 
 #' @export
 
 LoadStAttrib = function(file.csv, ItemAttrib) {
@@ -217,6 +204,8 @@ LoadStAttrib = function(file.csv, ItemAttrib) {
 #' @param StAttrib (Optional) A \code{data.frame} containing stimulus attributes. Use \code{\link{LoadStAttrib}} for this.
 #' 
 #' @return A list containing the parsed constraints, to be used in \code{\link{ATA}} and \code{\link{Shadow}}.
+#' 
+#' @seealso \link{dataset.science} for example usage.
 #' 
 #' @export
 
