@@ -2,7 +2,7 @@
 % Please edit documentation in R/Shadow_functions.R
 \name{STA}
 \alias{STA}
-\title{STA}
+\title{Perform shadow test assembly}
 \usage{
 STA(Constraints, objective, solver = "Symphony", xmat = NULL,
   xdir = NULL, xrhs = NULL, maximize = TRUE, mps = FALSE,
@@ -39,5 +39,5 @@ STA(Constraints, objective, solver = "Symphony", xmat = NULL,
 A list containing the optimal solution and pertinent diagnostics.
 }
 \description{
-Shadow Test Approach to CAT.
+Perform Shadow Test Assembly (STA) for computerized adaptive testing.
 }

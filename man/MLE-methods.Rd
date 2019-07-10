@@ -29,11 +29,11 @@ mle(object, resp, startTheta = NULL, maxIter = 100, crit = 0.001,
 
 \item{thetaRange}{A range of theta values.}
 
-\item{truncate}{TRUE to bound MLE to thetaRange, c(minTheta, maxTheta).}
+\item{truncate}{Set \code{TRUE} to bound MLE to thetaRange: c(minTheta, maxTheta).}
 
 \item{maxChange}{Maximum change between iterations.}
 
-\item{FisherScoring}{TRUE to use Fisher's method of scoring.}
+\item{FisherScoring}{\code{TRUE} to use Fisher's method of scoring.}
 }
 \description{
 Generate maximum likelihood estimates of theta.
