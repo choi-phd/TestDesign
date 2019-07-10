@@ -4,8 +4,22 @@
 #' 
 #' @param config An \code{\linkS4class{ATA.config}} object containing configuration options. Use \code{\link{config.ATA}} for this.
 #' @param Constraints A list representing optimization constraints. Use \code{\link{LoadConstraints}} for this.
-#' @param plot Logical. Draws Fisher information plot from the selected items.
-#' @param plotrange Numeric. A vector of length 2 containing the lower and upper bounds of plot range. Default is \code{c(-3, 3)}.
+#' @param plot Logical. If \code{TRUE}, draw Fisher information plot from the selected items.
+#' @param plotrange Numeric. A vector of length 2 containing the lower and upper bounds of plot range. The default is \code{c(-3, 3)}.
+#' 
+#' @return A list containing the following entries:
+#' \itemize{
+#'   \item{\code{MIP}} A list containing the result from MIP solver.
+#'   \itemize{
+#'     \item{\code{solution}} Solution vector. Each value represents an item. A value of 1 indicates the item was selected.
+#'     \item{\code{objval}} Objective value of the solution.
+#'     \item{\code{status}} Status value indicating whether an optimal solution was found.
+#'   }
+#'   \item{\code{Selected}} The attributes of the selected items.
+#'   \item{\code{solver}} The name of the MIP solver used in the assembly.
+#'   \item{\code{obj.value}} Objective value of the solution. Identical to the one above.
+#'   \item{\code{solve.time}} The elapsed time in running the solver.
+#' }
 #' 
 #' @docType methods
 #' @rdname ATA-methods
@@ -17,15 +31,6 @@ setGeneric(name = "ATA",
            }
 )
 
-#' @return A list containing the following entries:
-#' \itemize{
-#'   \item{\code{MIP}} MIP model.
-#'   \item{\code{Selected}} Solution returned.
-#'   \item{\code{solver}} MIP solver.
-#'   \item{\code{obj.value}} Objective value returned.
-#'   \item{\code{solve.time}} Solver elapsed time.
-#' }
-#' 
 #' @docType methods
 #' @rdname ATA-methods
 #' @export

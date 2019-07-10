@@ -1,37 +1,7 @@
 if(FALSE){
   library(Shadow)
   
-  # Debug
-  
-  itempool = LoadItemPool("par_Pool_300.csv", se.file.csv = "se_Pool_300.csv")
-  itemattr = LoadItemAttrib("attrib_Pool_300.csv", itempool)
-  constrnt = LoadConstraints("constraints_1.csv", itempool, itemattr)
-  
-  config = config.Shadow(interimTheta = list(method = "FB"),
-                         finalTheta = list(method = "FB"))
-  
-  set.seed(1)
-  
-  thetaGrid = seq(-3, 3, 1)
-  trueTheta = runif(1, min = -3.5, max = 3.5)
-  testData = MakeTest(itempool, thetaGrid, infoType = "FISHER", trueTheta = trueTheta)
-  respData = testData@Data
-  
-  object = itempool
-  Constraints = constrnt
-  prior = NULL
-  priorPar = c(0, 1)
-  Data = NULL
-  
-  fit = Shadow(itempool, config,
-               trueTheta, constrnt, Data = respData)
-  
-  
-  # now run Shadow line by line.
-  # Error in theta_FB_single(nSample, currentTheta, currentSE, iparList[[currentItem]],  : 
-  # could not find function "theta_FB_single"
-  
-  # Example 1
+  # Manuscript example 1
   
   write.csv(par_science, "par_sc.csv", row.names = F)
   write.csv(item_attrib_science, "item_attrib_sc.csv", row.names = F)
@@ -43,7 +13,7 @@ if(FALSE){
   
   conf_sc = config.ATA(itemSelection = list(method = "MAXINFO",targetLocation = c(-1, 0, 1)))
   
-  fit = ATA(conf, constrnt_sc, plot = T)
+  fit = ATA(conf_sc, constrnt_sc, plot = T)
   
   fit$Selected
   

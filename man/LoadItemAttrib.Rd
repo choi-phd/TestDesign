@@ -9,11 +9,14 @@ LoadItemAttrib(file.csv, pool)
 \arguments{
 \item{file.csv}{Character. The name of the file containing item attributes.}
 
-\item{pool}{An \code{item.pool} object. Use \code{\link{LoadItemPool}} for this.}
+\item{pool}{An \code{\linkS4class{item.pool}} object. Use \code{\link{LoadItemPool}} for this.}
 }
 \value{
 A \code{data.frame} containing parsed dataset.
 }
 \description{
 Read item attributes from specified file.
+}
+\seealso{
+\link{dataset.science} for example usage.
 }

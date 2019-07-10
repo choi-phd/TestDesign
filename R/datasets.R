@@ -1,169 +1,120 @@
-#' par_science
+#' Science dataset
 #'
 #' Item-based example item pool (1000 items).
 #' 
 #' This pool is associated with the following objects:
 #' \itemize{
-#'   \item \code{par_science} Item parameters.
-#'   \item \code{item_attrib_science} Item attributes.
-#'   \item \code{constraints_science} A constraint set (36 constraints).
+#'   \item \code{itempool.science} An \code{\linkS4class{item.pool}} object.
+#'   \item \code{itemattrib.science} A data frame containing item attributes.
+#'   \item \code{constraints.science} A list containing 36 constraints.
+#' }
+#' 
+#' Also, the following datasets are intended for illustrating expected data structures. See examples below.
+#' \itemize{
+#'   \item \code{item.params.science.raw} Item parameters.
+#'   \item \code{item.attrib.science.raw} Item attributes.
+#'   \item \code{constraints.science.raw} Constraints.
 #' }
 #'
 #' @docType data
 #' @keywords datasets
-#' @rdname dataset_science
-#' @name par_science
+#' @rdname dataset.science
+#' @name dataset.science
+#' @aliases item.params.science.raw item.attrib.science.raw constraints.science.raw itempool.science itemattrib.science constraints.science
 #' @examples
 #' \dontrun{
-#' write.csv(par_science, "par_science.csv", row.names = F)
-#' itempool.science = LoadItemPool("par_science.csv")
+#' write.csv(item.params.science.raw, "item.params.science.raw.csv", row.names = F)
+#' itempool.science = LoadItemPool("item.params.science.raw.csv")
 #' 
-#' write.csv(item_attrib_science, "item_attrib_science.csv", row.names = F)
-#' itemattrib.science = LoadItemAttrib("item_attrib_science.csv", itempool.science)
+#' write.csv(item.attrib.science.raw, "item.attrib.science.raw.csv", row.names = F)
+#' itemattrib.science = LoadItemAttrib("item.attrib.science.raw.csv", itempool.science)
 #' 
-#' write.csv(constraints_science, "constraints_science.csv", row.names = F)
-#' constraints.science = LoadConstraints("constraints_science.csv",
-#'           itempool.science, itemattrib.science)
+#' write.csv(constraints.science.raw, "constraints.science.raw.csv", row.names = F)
+#' constraints.science = LoadConstraints("constraints.science.raw.csv",
+#'     itempool.science, itemattrib.science)
 #' }
 NULL
 
-#' item_attrib_science
+#' Reading dataset
 #'
-#' @docType data
-#' @keywords datasets
-#' @rdname dataset_science
-#' @name item_attrib_science
-NULL
-
-#' constraints_science
-#'
-#' @docType data
-#' @keywords datasets
-#' @rdname dataset_science
-#' @name constraints_science
-NULL
-
-
-
-#' par_reading
-#'
-#' Stimulus-based example item pool.
+#' Stimulus-based example item pool (303 items).
 #' 
 #' This pool is associated with the following objects:
 #' \itemize{
-#'   \item \code{par_reading} Item parameters.
-#'   \item \code{item_attrib_reading} Item attributes.
-#'   \item \code{stimulus_attrib_reading} Stimulus attributes.
-#'   \item \code{constraints_reading} A constraint set (18 constraints).
+#'   \item \code{itempool.reading} An \code{\linkS4class{item.pool}} object.
+#'   \item \code{itemattrib.reading} A data frame containing item attributes.
+#'   \item \code{stimattrib.reading} A data frame containing stimulus attributes.
+#'   \item \code{constraints.reading} A list containing 18 constraints.
+#' }
+#'
+#' Also, the following datasets are intended for illustrating expected data structures. See examples below.
+#' \itemize{
+#'   \item \code{item.params.reading.raw} Item parameters.
+#'   \item \code{item.attrib.reading.raw} Item attributes.
+#'   \item \code{stim.attrib.reading.raw} Item attributes.
+#'   \item \code{constraints.reading.raw} Constraints.
 #' }
 #'
 #' @docType data
 #' @keywords datasets
-#' @rdname dataset_reading
-#' @name par_reading
+#' @rdname dataset.reading
+#' @name dataset.reading
+#' @aliases item.params.reading.raw item.attrib.reading.raw stim.attrib.reading.raw constraints.reading.raw itempool.reading itemattrib.reading stimattrib.reading constraints.reading 
 #' @examples
 #' \dontrun{
-#' write.csv(par_reading, "par_reading.csv", row.names = F)
-#' itempool.reading = LoadItemPool("par_reading.csv")
+#' write.csv(item.params.reading.raw, "item.params.reading.raw.csv", row.names = F)
+#' itempool.reading = LoadItemPool("item.params.reading.raw.csv")
 #' 
-#' write.csv(item_attrib_reading, "item_attrib_reading.csv", row.names = F)
-#' itemattrib.reading = LoadItemAttrib("item_attrib_reading.csv", itempool.reading)
+#' write.csv(item.attrib.reading.raw, "item.attrib.reading.raw.csv", row.names = F)
+#' itemattrib.reading = LoadItemAttrib("item.attrib.reading.raw.csv", itempool.reading)
 #' 
-#' write.csv(stimulus_attrib_reading, "stimulus_attrib_reading.csv", row.names = F)
-#' stimattrib.reading = LoadStAttrib("stimulus_attrib_reading.csv", itemattrib.reading)
+#' write.csv(stim.attrib.reading.raw, "stim.attrib.reading.raw.csv", row.names = F)
+#' stimattrib.reading = LoadStAttrib("stim.attrib.reading.raw.csv", itemattrib.reading)
 #' 
-#' write.csv(constraints_reading, "constraints_reading.csv", row.names = F)
-#' constraints.reading = LoadConstraints("constraints_reading.csv",
-#'           itempool.reading, itemattrib.reading, stimattrib.reading)
+#' write.csv(constraints.reading.raw, "constraints.reading.raw.csv", row.names = F)
+#' constraints.reading = LoadConstraints("constraints.reading.raw.csv",
+#'     itempool.reading, itemattrib.reading, stimattrib.reading)
 #' }
 NULL
 
-#' item_attrib_reading
+#' Fatigue dataset
 #'
-#' @docType data
-#' @keywords datasets
-#' @rdname dataset_reading
-#' @name item_attrib_reading
-NULL
-
-#' stimulus_attrib_reading
-#'
-#' @docType data
-#' @keywords datasets
-#' @rdname dataset_reading
-#' @name stimulus_attrib_reading
-NULL
-
-#' constraints_reading
-#'
-#' @docType data
-#' @keywords datasets
-#' @rdname dataset_reading
-#' @name constraints_reading
-NULL
-
-
-
-
-#' par_fatigue
-#'
-#' An item-based example pool with item contents.
+#' Item-based example pool with item contents (95 items).
 #' 
 #' This pool is associated with the following objects:
 #' \itemize{
-#'   \item \code{par_fatigue} Item parameters.
-#'   \item \code{item_attrib_fatigue} Item attributes.
-#'   \item \code{item_content_fatigue} Item contents.
-#'   \item \code{constraints_fatigue} A constraint set (111 constraints).
-#'   \item \code{raw_fatigue} Raw response data.
+#'   \item \code{itempool.fatigue} An \code{\linkS4class{item.pool}} object.
+#'   \item \code{itemattrib.fatigue} A data frame containing item attributes.
+#'   \item \code{constraints.fatigue} A list containing 111 constraints.
+#' }
+#'
+#' Also, the following datasets are intended for illustrating expected data structures. See examples below.
+#' \itemize{
+#'   \item \code{item.params.fatigue.raw} Item parameters.
+#'   \item \code{item.attrib.fatigue.raw} Item attributes.
+#'   \item \code{constraints.fatigue.raw} Constraints.
+#'   \item \code{item.content.fatigue.raw} Item contents.
+#'   \item \code{resp.fatigue.raw} Raw response data.
 #' }
 #'
 #' @docType data
 #' @keywords datasets
-#' @rdname dataset_fatigue
-#' @name par_fatigue
+#' @rdname dataset.fatigue
+#' @name dataset.fatigue
+#' @aliases item.params.fatigue.raw item.attrib.fatigue.raw item.content.fatigue.raw constraints.fatigue.raw resp.fatigue.raw itempool.fatigue itemattrib.fatigue constraints.fatigue
 #' @examples 
 #' \dontrun{
-#' write.csv(par_fatigue, "par_fatigue.csv", row.names = F)
-#' itempool.fatigue = LoadItemPool("par_fatigue.csv")
+#' write.csv(item.params.fatigue.raw, "item.params.fatigue.raw.csv", row.names = F)
+#' itempool.fatigue = LoadItemPool("item.params.fatigue.raw.csv")
 #' 
-#' write.csv(item_attrib_fatigue, "item_attrib_fatigue.csv", row.names = F)
-#' itemattrib.fatigue = LoadItemAttrib("item_attrib_fatigue.csv", itempool.fatigue)
+#' write.csv(item.attrib.fatigue, "item.attrib.fatigue.raw", row.names = F)
+#' itemattrib.fatigue = LoadItemAttrib("item.attrib.fatigue.raw", itempool.fatigue)
 #' 
-#' write.csv(constraints_fatigue, "constraints_fatigue.csv", row.names = F)
-#' constraints.fatigue = LoadConstraints("constraints_fatigue.csv",
+#' write.csv(constraints.fatigue.raw, "constraints.fatigue.raw.csv", row.names = F)
+#' constraints.fatigue = LoadConstraints("constraints.fatigue.raw.csv",
 #'           itempool.fatigue, itemattrib.fatigue)
+#' 
+#' write.csv(item.content.fatigue.raw, "item.content.fatigue.raw.csv", row.names = F)
+#' write.table(resp.fatigue.raw, "resp.fatigue.raw.csv", row.names = F, col.names = F, sep = ",")
 #' }
-NULL
-
-#' item_attrib_fatigue
-#'
-#' @docType data
-#' @keywords datasets
-#' @rdname dataset_fatigue
-#' @name item_attrib_fatigue
-NULL
-
-#' item_content_fatigue
-#'
-#' @docType data
-#' @keywords datasets
-#' @rdname dataset_fatigue
-#' @name item_content_fatigue
-NULL
-
-#' constraints_fatigue
-#'
-#' @docType data
-#' @keywords datasets
-#' @rdname dataset_fatigue
-#' @name constraints_fatigue
-NULL
-
-#' raw_fatigue
-#'
-#' @docType data
-#' @keywords datasets
-#' @rdname dataset_fatigue
-#' @name raw_fatigue
 NULL
