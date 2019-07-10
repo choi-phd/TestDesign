@@ -2,7 +2,7 @@ Package: Shadow
 Type: Package
 Title: Optimal Test Design Approach to Fixed and Adaptive Test Construction
 Version: 0.2
-Date: 2019-04-29
+Date: 2019-07-10
 Author: Seung W. Choi and Sangdon Lim
 Maintainer: Seung W. Choi <schoi@austin.utexas.edu>
 Description: Use the optimal test design approach by Birnbaum and van der Linden to constructing fixed and adaptive tests.
