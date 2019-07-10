@@ -2,10 +2,13 @@
 % Please edit documentation in R/runshiny.R
 \name{guiShadow}
 \alias{guiShadow}
-\title{guiShadow}
+\alias{app}
+\title{Launch Shiny app}
 \usage{
 guiShadow()
+
+app()
 }
 \description{
-Launches a Shiny app locally.
+Launch Shiny app locally.
 }

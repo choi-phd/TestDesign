@@ -1,6 +1,3 @@
-#' @importFrom Rdpack reprompt
-NULL
-
 #' Calculate item response probabilities
 #' 
 #' An S4 generic and its methods to calculate item response probabilities for different item classes
@@ -12,9 +9,7 @@ NULL
 #' 
 #' @export
 #' @docType methods
-#' 
 #' @rdname calcProb-methods
-#' 
 setGeneric(name = "calcProb",
            def = function(object, theta) {
              standardGeneric("calcProb")
@@ -113,11 +108,8 @@ setMethod(f = "calcProb",
 
 #' @rdname calcProb-methods
 #' @aliases calcProb,item.pool,numeric-method
-#' @examples 
-#' \dontrun{
-#' itemPool.1 = LoadItemPool("C:/item_par.csv")
-#' prob.itemPool.1 = calcProb(itemPool.1, seq(-3, 3, 1))
-#' }
+#' @examples
+#' prob.itempool = calcProb(itempool.science, seq(-3, 3, 1))
 setMethod(f = "calcProb",
           signature = c("item.pool", "numeric"),
           definition = function(object, theta) {
@@ -235,10 +227,7 @@ setMethod(f = "calcEscore",
 #' @rdname calcEscore-methods
 #' @aliases calcEscore,item.pool,numeric-method
 #' @examples 
-#' \dontrun{
-#' itemPool.1 = LoadItemPool("C:/item_par.csv")
-#' TCC.itemPool.1 = calcEscore(itemPool.1, seq(-3, 3, 1))
-#' }
+#' TCC.itempool = calcEscore(itempool.science, seq(-3, 3, 1))
 setMethod(f = "calcEscore",
           signature = c("item.pool", "numeric"),
           definition = function(object, theta) {
@@ -355,10 +344,7 @@ setMethod(f = "calcFisher",
 #' @rdname calcFisher-methods
 #' @aliases calcFisher,item.pool,numeric-method
 #' @examples 
-#' \dontrun{
-#' itemPool.1 = LoadItemPool("C:/item_par.csv")
-#' info.itemPool.1 = calcFisher(itemPool.1, seq(-3, 3, 1))
-#' }
+#' info.itempool = calcFisher(itempool.science, seq(-3, 3, 1))
 setMethod(f = "calcFisher",
           signature = c("item.pool", "numeric"),
           definition = function(object, theta) {
@@ -376,16 +362,6 @@ setMethod(f = "calcFisher",
 
 #' @rdname calcProb-methods
 #' @aliases calcProb,pool.cluster,numeric-method
-#' @examples 
-#' \dontrun{
-#' itemPool.1 = LoadItemPool("C:/item_par_1.csv")
-#' itemPool.2 = LoadItemPool("C:/item_par_2.csv")
-#' itemPools = vector(mode = "list", 2)
-#' itemPools@pools[[1]] = itemPool.1
-#' itemPools@pools[[2]] = itemPool.2
-#' prob.itemPools = calcProb(itemPools, seq(-3, 3, 1))
-#' }
-
 setMethod(f = "calcProb",
           signature = c("pool.cluster", "numeric"),
           definition = function(object, theta) {
@@ -400,12 +376,6 @@ setMethod(f = "calcProb",
 
 #' @rdname calcEscore-methods
 #' @aliases calcEscore,pool.cluster,numeric-method
-#' @examples 
-#' \dontrun{
-#' itemPool.1 = LoadItemPool("C:/item_par.csv")
-#' #this needs to be updated for pool.cluster
-#' TCC.itemPool.1 = calcEscore(itemPools, seq(-3, 3, 1))
-#' }
 setMethod(f = "calcEscore",
           signature = c("pool.cluster", "numeric"),
           definition = function(object, theta) {
@@ -420,12 +390,6 @@ setMethod(f = "calcEscore",
 
 #' @rdname calcFisher-methods
 #' @aliases calcFisher,pool.cluster,numeric-method
-#' @examples 
-#' \dontrun{
-#' itemPool.1 = LoadItemPool("C:/item_par.csv")
-#' #this needs to be updated for item.pool
-#' info.itemPool.1 = calcFisher(itemPools, seq(-3, 3, 1))
-#' }
 #' @export
 setMethod(f = "calcFisher",
           signature = c("pool.cluster", "numeric"),
@@ -452,6 +416,7 @@ setMethod(f = "calcFisher",
 #' 
 #' @docType methods
 #' @rdname calcLocation-methods
+#' @export
 setGeneric(name = "calcLocation",
            def = function(object) {
              standardGeneric("calcLocation")
@@ -461,10 +426,8 @@ setGeneric(name = "calcLocation",
 #' @rdname calcLocation-methods
 #' @aliases calcLocation,item.1pl,numeric-method
 #' @examples 
-#' \dontrun{
 #' item.1 = new("item.1pl", difficulty = 0.5)
 #' theta.item.1 = calcLocation(item.1)
-#' }
 #' @template 1pl-ref
 setMethod(f = "calcLocation",
           signature = c("item.1pl"),
@@ -476,10 +439,8 @@ setMethod(f = "calcLocation",
 #' @rdname calcLocation-methods
 #' @aliases calcLocation,item.2pl,numeric-method
 #' @examples 
-#' \dontrun{
 #' item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
 #' theta.item.2 = calcLocation(item.2)
-#' }
 #' @template 2pl-ref
 setMethod(f = "calcLocation",
           signature = c("item.2pl"),
@@ -491,10 +452,8 @@ setMethod(f = "calcLocation",
 #' @rdname calcLocation-methods
 #' @aliases calcLocation,item.3pl,numeric-method
 #' @examples
-#' \dontrun{ 
 #' item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 #' theta.item.3 = calcLocation(item.3)
-#' }
 #' @template 3pl-ref
 setMethod(f = "calcLocation",
           signature = c("item.3pl"),
@@ -507,10 +466,8 @@ setMethod(f = "calcLocation",
 #' @rdname calcLocation-methods
 #' @aliases calcLocation,item.pc,numeric-method
 #' @examples
-#' \dontrun{ 
 #' item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
 #' theta.item.4 = calcLocation(item.4)
-#' }
 #' @template pc-ref
 setMethod(f = "calcLocation",
           signature = c("item.pc"),
@@ -523,10 +480,8 @@ setMethod(f = "calcLocation",
 #' @rdname calcLocation-methods
 #' @aliases calcLocation,item.gpc,numeric-method
 #' @examples
-#' \dontrun{ 
 #' item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 #' theta.item.5 = calcLocation(item.5)
-#' }
 #' @template gpc-ref
 setMethod(f = "calcLocation",
           signature = c("item.gpc"),
@@ -538,10 +493,8 @@ setMethod(f = "calcLocation",
 #' @rdname calcLocation-methods
 #' @aliases calcLocation,item.gr,numeric-method
 #' @examples
-#' \dontrun{ 
 #' item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
 #' theta.item.6 = calcLocation(item.6)
-#' }
 #' @template gr-ref
 setMethod(f = "calcLocation",
           signature = c("item.gr"),
@@ -553,10 +506,7 @@ setMethod(f = "calcLocation",
 #' @rdname calcLocation-methods
 #' @aliases calcLocation,item.pool,numeric-method
 #' @examples 
-#' \dontrun{
-#' itemPool.1 = LoadItemPool("C:/item_par.csv")
-#' theta.itemPool.1 = calcLocation(itemPool.1)
-#' }
+#' theta.itempool = calcLocation(itempool.science)
 setMethod(f = "calcLocation",
           signature = c("item.pool"),
           definition = function(object) {
@@ -586,6 +536,7 @@ setMethod(f = "calcLocation",
 #' 
 #' @docType methods
 #' @rdname calcDerivative-methods
+#' @export
 setGeneric(name = "calcDerivative",
            def = function(object, theta) {
              standardGeneric("calcDerivative")
@@ -595,10 +546,8 @@ setGeneric(name = "calcDerivative",
 #' @rdname calcDerivative-methods
 #' @aliases calcDerivative,item.1pl,numeric-method
 #' @examples
-#' \dontrun{ 
 #' item.1 = new("item.1pl", difficulty = 0.5)
 #' d.item.1 = calcDerivative(item.1, seq(-3, 3, 1))
-#' }
 #' @template 1pl-ref
 setMethod(f = "calcDerivative",
           signature = c("item.1pl", "numeric"),
@@ -612,10 +561,8 @@ setMethod(f = "calcDerivative",
 #' @rdname calcDerivative-methods
 #' @aliases calcDerivative,item.2pl,numeric-method
 #' @examples
-#' \dontrun{ 
 #' item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
 #' d.item.2 = calcDerivative(item.2, seq(-3, 3, 1))
-#' }
 #' @template 2pl-ref
 setMethod(f = "calcDerivative",
           signature = c("item.2pl", "numeric"),
@@ -629,10 +576,8 @@ setMethod(f = "calcDerivative",
 #' @rdname calcDerivative-methods
 #' @aliases calcDerivative,item.3pl,numeric-method
 #' @examples
-#' \dontrun{ 
 #' item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 #' d.item.3 = calcDerivative(item.3, seq(-3, 3, 1))
-#' }
 #' @template 3pl-ref
 setMethod(f = "calcDerivative",
           signature = c("item.3pl", "numeric"),
@@ -646,10 +591,8 @@ setMethod(f = "calcDerivative",
 #' @rdname calcDerivative-methods
 #' @aliases calcDerivative,item.pc,numeric-method
 #' @examples
-#' \dontrun{ 
 #' item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
 #' d.item.4 = calcDerivative(item.4, seq(-3, 3, 1))
-#' }
 #' @template pc-ref
 setMethod(f = "calcDerivative",
           signature = c("item.pc", "numeric"),
@@ -667,10 +610,8 @@ setMethod(f = "calcDerivative",
 #' @rdname calcDerivative-methods
 #' @aliases calcDerivative,item.gpc,numeric-method
 #' @examples
-#' \dontrun{ 
 #' item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 #' d.item.5 = calcDerivative(item.5, seq(-3, 3, 1))
-#' }
 #' @template gpc-ref
 setMethod(f = "calcDerivative",
           signature = c("item.gpc", "numeric"),
@@ -688,10 +629,8 @@ setMethod(f = "calcDerivative",
 #' @rdname calcDerivative-methods
 #' @aliases calcDerivative,item.gr,numeric-method
 #' @examples
-#' \dontrun{ 
 #' item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
 #' d.item.6 = calcDerivative(item.6, seq(-3, 3, 1))
-#' }
 #' @template gr-ref
 setMethod(f = "calcDerivative",
           signature = c("item.gr", "numeric"),
@@ -714,10 +653,7 @@ setMethod(f = "calcDerivative",
 #' @rdname calcDerivative-methods
 #' @aliases calcDerivative,item.pool,numeric-method
 #' @examples 
-#' \dontrun{
-#' itemPool.1 = LoadItemPool("C:/item_par.csv")
-#' d.itemPool.1 = calcDerivative(itemPool.1, seq(-3, 3, 1))
-#' }
+#' d.itempool = calcDerivative(itempool.science, seq(-3, 3, 1))
 setMethod(f = "calcDerivative",
           signature = c("item.pool", "numeric"),
           definition = function(object, theta) {
@@ -761,6 +697,7 @@ setMethod(f = "calcDerivative",
 #' 
 #' @docType methods
 #' @rdname calcDerivative2-methods
+#' @export
 setGeneric(name = "calcDerivative2",
            def = function(object, theta) {
              standardGeneric("calcDerivative2")
@@ -770,10 +707,8 @@ setGeneric(name = "calcDerivative2",
 #' @rdname calcDerivative2-methods
 #' @aliases calcDerivative2,item.1pl,numeric-method
 #' @examples 
-#' \dontrun{
 #' item.1 = new("item.1pl", difficulty = 0.5)
 #' dd.item.1 = calcDerivative2(item.1, seq(-3, 3, 1))
-#' }
 #' @template 1pl-ref
 setMethod(f = "calcDerivative2",
           signature = c("item.1pl", "numeric"),
@@ -787,10 +722,8 @@ setMethod(f = "calcDerivative2",
 #' @rdname calcDerivative2-methods
 #' @aliases calcDerivative2,item.2pl,numeric-method
 #' @examples 
-#' \dontrun{
 #' item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
 #' dd.item.2 = calcDerivative2(item.2, seq(-3, 3, 1))
-#' }
 #' @template 2pl-ref
 setMethod(f = "calcDerivative2",
           signature = c("item.2pl", "numeric"),
@@ -804,10 +737,8 @@ setMethod(f = "calcDerivative2",
 #' @rdname calcDerivative2-methods
 #' @aliases calcDerivative2,item.3pl,numeric-method
 #' @examples 
-#' \dontrun{
 #' item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 #' dd.item.3 = calcDerivative2(item.3, seq(-3, 3, 1))
-#' }
 #' @template 3pl-ref
 setMethod(f = "calcDerivative2",
           signature = c("item.3pl", "numeric"),
@@ -821,10 +752,8 @@ setMethod(f = "calcDerivative2",
 #' @rdname calcDerivative2-methods
 #' @aliases calcDerivative2,item.pc,numeric-method
 #' @examples 
-#' \dontrun{
 #' item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
 #' dd.item.4 = calcDerivative2(item.4, seq(-3, 3, 1))
-#' }
 #' @template pc-ref
 setMethod(f = "calcDerivative2",
           signature = c("item.pc", "numeric"),
@@ -842,10 +771,8 @@ setMethod(f = "calcDerivative2",
 #' @rdname calcDerivative2-methods
 #' @aliases calcDerivative2,item.gpc,numeric-method
 #' @examples 
-#' \dontrun{
 #' item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 #' dd.item.5 = calcDerivative2(item.5, seq(-3, 3, 1))
-#' }
 #' @template gpc-ref
 setMethod(f = "calcDerivative2",
           signature = c("item.gpc", "numeric"),
@@ -863,10 +790,8 @@ setMethod(f = "calcDerivative2",
 #' @rdname calcDerivative2-methods
 #' @aliases calcDerivative2,item.gr,numeric-method
 #' @examples 
-#' \dontrun{
 #' item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
 #' dd.item.6 = calcDerivative2(item.6, seq(-3, 3, 1))
-#' }
 #' @template gr-ref
 setMethod(f = "calcDerivative2",
           signature = c("item.gr", "numeric"),
@@ -889,10 +814,7 @@ setMethod(f = "calcDerivative2",
 #' @rdname calcDerivative2-methods
 #' @aliases calcDerivative2,item.pool,numeric-method
 #' @examples 
-#' \dontrun{
-#' itemPool.1 = LoadItemPool("C:/item_par.csv")
-#' dd.itemPool.1 = calcDerivative2(itemPool.1, seq(-3, 3, 1))
-#' }
+#' dd.itempool = calcDerivative2(itempool.science, seq(-3, 3, 1))
 setMethod(f = "calcDerivative2",
           signature = c("item.pool", "numeric"),
           definition = function(object, theta) {
@@ -936,6 +858,7 @@ setMethod(f = "calcDerivative2",
 #' 
 #' @docType methods
 #' @rdname calcJacobian-methods
+#' @export
 setGeneric(name = "calcJacobian",
            def = function(object, theta, resp) {
              standardGeneric("calcJacobian")
@@ -945,10 +868,8 @@ setGeneric(name = "calcJacobian",
 #' @rdname calcJacobian-methods
 #' @aliases calcJacobian,item.1pl,numeric-method
 #' @examples
-#' \dontrun{ 
 #' item.1 = new("item.1pl", difficulty = 0.5)
 #' j.item.1 = calcJacobian(item.1, seq(-3, 3, 1), 0)
-#' }
 #' @template 1pl-ref
 setMethod(f = "calcJacobian",
           signature = c("item.1pl", "numeric", "numeric"),
@@ -961,10 +882,8 @@ setMethod(f = "calcJacobian",
 #' @rdname calcJacobian-methods
 #' @aliases calcJacobian,item.2pl,numeric-method
 #' @examples
-#' \dontrun{ 
 #' item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
 #' j.item.2 = calcJacobian(item.2, seq(-3, 3, 1), 0)
-#' }
 #' @template 2pl-ref
 setMethod(f = "calcJacobian",
           signature = c("item.2pl", "numeric", "numeric"),
@@ -977,10 +896,8 @@ setMethod(f = "calcJacobian",
 #' @rdname calcJacobian-methods
 #' @aliases calcJacobian,item.3pl,numeric-method
 #' @examples
-#' \dontrun{ 
 #' item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 #' j.item.3 = calcJacobian(item.3, seq(-3, 3, 1), 0)
-#' }
 #' @template 3pl-ref
 setMethod(f = "calcJacobian",
           signature = c("item.3pl", "numeric", "numeric"),
@@ -994,10 +911,8 @@ setMethod(f = "calcJacobian",
 #' @rdname calcJacobian-methods
 #' @aliases calcJacobian,item.pc,numeric-method
 #' @examples
-#' \dontrun{ 
 #' item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
 #' j.item.4 = calcJacobian(item.4, seq(-3, 3, 1), 0)
-#' }
 #' @template pc-ref
 setMethod(f = "calcJacobian",
           signature = c("item.pc", "numeric", "numeric"),
@@ -1010,10 +925,8 @@ setMethod(f = "calcJacobian",
 #' @rdname calcJacobian-methods
 #' @aliases calcJacobian,item.gpc,numeric-method
 #' @examples
-#' \dontrun{ 
 #' item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 #' j.item.5 = calcJacobian(item.5, seq(-3, 3, 1), 0)
-#' }
 #' @template gpc-ref
 setMethod(f = "calcJacobian",
           signature = c("item.gpc", "numeric", "numeric"),
@@ -1026,10 +939,8 @@ setMethod(f = "calcJacobian",
 #' @rdname calcJacobian-methods
 #' @aliases calcJacobian,item.gr,numeric-method
 #' @examples
-#' \dontrun{ 
 #' item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
 #' j.item.6 = calcJacobian(item.6, seq(-3, 3, 1), 0)
-#' }
 #' @template gr-ref
 setMethod(f = "calcJacobian",
           signature = c("item.gr", "numeric", "numeric"),
@@ -1050,10 +961,7 @@ setMethod(f = "calcJacobian",
 #' @rdname calcJacobian-methods
 #' @aliases calcJacobian,item.pool,numeric-method
 #' @examples 
-#' \dontrun{
-#' itemPool.1 = LoadItemPool("C:/item_par.csv")
-#' j.itemPool.1 = calcJacobian(itemPool.1, seq(-3, 3, 1), 0)
-#' }
+#' j.itempool = calcJacobian(itempool.science, seq(-3, 3, 1), 0)
 setMethod(f = "calcJacobian",
           signature = c("item.pool", "numeric", "numeric"),
           definition = function(object, theta, resp) {
@@ -1097,6 +1005,7 @@ setMethod(f = "calcJacobian",
 #' 
 #' @docType methods
 #' @rdname calcHessian-methods
+#' @export
 setGeneric(name = "calcHessian",
            def = function(object, theta, resp) {
              standardGeneric("calcHessian")
@@ -1106,10 +1015,8 @@ setGeneric(name = "calcHessian",
 #' @rdname calcHessian-methods
 #' @aliases calcHessian,item.1pl,numeric-method
 #' @examples
-#' \dontrun{ 
 #' item.1 = new("item.1pl", difficulty = 0.5)
 #' h.item.1 = calcHessian(item.1, seq(-3, 3, 1), 0)
-#' }
 #' @template 1pl-ref
 setMethod(f = "calcHessian",
           signature = c("item.1pl", "numeric", "numeric"),
@@ -1122,10 +1029,8 @@ setMethod(f = "calcHessian",
 #' @rdname calcHessian-methods
 #' @aliases calcHessian,item.2pl,numeric-method
 #' @examples
-#' \dontrun{ 
 #' item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
 #' h.item.2 = calcHessian(item.2, seq(-3, 3, 1), 0)
-#' }
 #' @template 2pl-ref
 setMethod(f = "calcHessian",
           signature = c("item.2pl", "numeric", "numeric"),
@@ -1138,10 +1043,8 @@ setMethod(f = "calcHessian",
 #' @rdname calcHessian-methods
 #' @aliases calcHessian,item.3pl,numeric-method
 #' @examples
-#' \dontrun{ 
 #' item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 #' h.item.3 = calcHessian(item.3, seq(-3, 3, 1), 0)
-#' }
 #' @template 3pl-ref
 setMethod(f = "calcHessian",
           signature = c("item.3pl", "numeric", "numeric"),
@@ -1155,10 +1058,8 @@ setMethod(f = "calcHessian",
 #' @rdname calcHessian-methods
 #' @aliases calcHessian,item.pc,numeric-method
 #' @examples
-#' \dontrun{ 
 #' item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
 #' h.item.4 = calcHessian(item.4, seq(-3, 3, 1), 0)
-#' }
 #' @template pc-ref
 setMethod(f = "calcHessian",
           signature = c("item.pc", "numeric", "numeric"),
@@ -1171,10 +1072,8 @@ setMethod(f = "calcHessian",
 #' @rdname calcHessian-methods
 #' @aliases calcHessian,item.gpc,numeric-method
 #' @examples
-#' \dontrun{ 
 #' item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 #' h.item.5 = calcHessian(item.5, seq(-3, 3, 1), 0)
-#' }
 #' @template gpc-ref
 setMethod(f = "calcHessian",
           signature = c("item.gpc", "numeric", "numeric"),
@@ -1187,10 +1086,8 @@ setMethod(f = "calcHessian",
 #' @rdname calcHessian-methods
 #' @aliases calcHessian,item.gr,numeric-method
 #' @examples
-#' \dontrun{ 
 #' item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
 #' h.item.6 = calcHessian(item.6, seq(-3, 3, 1), 0)
-#' }
 #' @template gr-ref
 setMethod(f = "calcHessian",
           signature = c("item.gr", "numeric", "numeric"),
@@ -1213,10 +1110,7 @@ setMethod(f = "calcHessian",
 #' @rdname calcHessian-methods
 #' @aliases calcHessian,item.pool,numeric-method
 #' @examples 
-#' \dontrun{
-#' itemPool.1 = LoadItemPool("C:/item_par.csv")
-#' h.itemPool.1 = calcHessian(itemPool.1, seq(-3, 3, 1), 0)
-#' }
+#' h.itempool = calcHessian(itempool.science, seq(-3, 3, 1), 0)
 setMethod(f = "calcHessian",
           signature = c("item.pool", "numeric", "numeric"),
           definition = function(object, theta, resp) {
@@ -1385,10 +1279,7 @@ setMethod(f = "simResp",
 #' @rdname simResp-methods
 #' @aliases simResp,item.pool,numeric-method
 #' @examples 
-#' \dontrun{
-#' itemPool.1 = LoadItemPool("C:/item_par.csv")
-#' sim.itemPool.1 = simResp(itemPool.1, seq(-3, 3, 1))
-#' }
+#' sim.itempool = simResp(itempool.science, seq(-3, 3, 1))
 setMethod(f = "simResp",
           signature = c("item.pool", "numeric"),
           definition = function(object, theta) {

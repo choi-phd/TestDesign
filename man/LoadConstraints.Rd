@@ -21,3 +21,6 @@ A list containing the parsed constraints, to be used in \code{\link{ATA}} and \c
 \description{
 Read constraints from specified file.
 }
+\seealso{
+\link{dataset.science} for example usage.
+}

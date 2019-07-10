@@ -3,8 +3,10 @@
 #' Launch Shiny app locally.
 #' 
 #' @export
-app <- function() {
-  appDir <- system.file("shiny", package = "Shadow")
+#' @aliases app
+#' @rdname guiShadow
+guiShadow = function() {
+  appDir = system.file("shiny", package = "Shadow")
   if (appDir == "") {
     stop("Could not find application directory. Try re-installing `Shadow`.", call. = FALSE)
   }
@@ -28,12 +30,9 @@ app <- function() {
   }
 }
 
-#' guiShadow
-#' 
-#' Launches a Shiny app locally.
-#' 
 #' @export
+#' @rdname guiShadow
 
-guiShadow <- function() {
-  app()
+app = function() {
+  guiShadow()
 }

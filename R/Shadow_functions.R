@@ -1,21 +1,10 @@
-#Program: Shadow classes
-#Author: Seung Choi
-#Version: 0.1
-#Assumptions: D = 1.0; the minimum score is 0 for all items
+# Program: Shadow
+# Author: Seung Choi
+# Assumptions: D = 1.0; the minimum score is 0 for all items
 
-#' @import foreach
-#' @importFrom logitnorm logit rlogitnorm
-#' @importFrom grDevices col2rgb dev.control dev.new dev.off pdf recordPlot
-#' @importFrom stats dnorm rlnorm rnorm sd
-#' @importFrom utils setTxtProgressBar txtProgressBar write.table
-#' @importFrom graphics axis grid layout legend mtext par plot.new points rect text
-#' @importFrom lattice xyplot
-#' @useDynLib Shadow
-NULL
-
-#' STA
+#' Perform shadow test assembly
 #'
-#' Shadow Test Approach to CAT.
+#' Perform Shadow Test Assembly (STA) for computerized adaptive testing.
 #'
 #' @param Constraints A list representing optimization constraints. Use \code{\link{LoadConstraints}} for this.
 #' @param objective A vector of objective values.
@@ -617,29 +606,31 @@ setMethod(
 #' @param pool An \code{\linkS4class{item.pool}} object.
 #' @param select A vector of indices identifying the items to subset.
 #' 
+#' @examples
+#' sub.itempool = subsetItemPool(itempool.science, 1:100)
 #' @export
-subsetPool = function(pool, select = NULL) {
+subsetItemPool = function(pool, select = NULL) {
   if (class(pool) != "item.pool") {
-    stop("test must be of class \"item.pool\"")
+    stop("pool must be of class \"item.pool\"")
   }
   if (is.null(select)) {
     return(pool)
-  } else if (all(select %in% 1:pool@ni) && anyDuplicated(select) == 0) {
+  } else if (all(select %in% 1:pool@ni)) {
+    select = unique(select)
     n.select = length(select)
     sub.pool = new("item.pool")
     sub.pool@ni = n.select
-    sub.pool@maxCat = max(pool@NCAT[select])
     sub.pool@index = 1:n.select
     sub.pool@ID = pool@ID[select]
     sub.pool@model = pool@model[select]
     sub.pool@NCAT = pool@NCAT[select]
     sub.pool@parms = pool@parms[select]
-    sub.pool@ipar = pool@ipar[select, ]
-    sub.pool@SEs = pool@SEs[select, ]
+    sub.pool@maxCat = max(sub.pool@NCAT)
+    sub.pool@SEs = pool@SEs[select,]
+    return(sub.pool)
   } else {
     stop("select contains invalid item indices")
   }
-  return(sub.pool)
 }
 
 #' Create a subset of a test object
@@ -649,6 +640,9 @@ subsetPool = function(pool, select = NULL) {
 #' @param test An \code{\linkS4class{test}} object.
 #' @param select A vector of item indices to subset.
 #' 
+#' @examples
+#' test = MakeTest(itempool.science, seq(-3, 3, 1))
+#' sub.test = subsetTest(test, 1:100)
 #' @export
 subsetTest = function(test, select = NULL) {
   if (class(test) != "test") {
@@ -682,6 +676,9 @@ subsetTest = function(test, select = NULL) {
 #' 
 #' @docType methods
 #' @rdname MakeTest-methods
+#' 
+#' @examples
+#' test = MakeTest(itempool.science, seq(-3, 3, 1))
 #' @export
 setGeneric(name = "MakeTest",
            def = function(object, theta, infoType = "FISHER", trueTheta = NULL) {
@@ -763,9 +760,9 @@ setMethod(f = "MakeTestCluster",
 #' @param crit Convergence criterion.
 #' @param select A vector of indices identifying the items to subset.
 #' @param thetaRange A range of theta values.
-#' @param truncate TRUE to bound MLE to thetaRange, c(minTheta, maxTheta).
+#' @param truncate Set \code{TRUE} to bound MLE to thetaRange: c(minTheta, maxTheta).
 #' @param maxChange Maximum change between iterations.
-#' @param FisherScoring TRUE to use Fisher's method of scoring.
+#' @param FisherScoring \code{TRUE} to use Fisher's method of scoring.
 #' 
 #' @docType methods
 #' @rdname mle-methods
@@ -891,10 +888,10 @@ setMethod(f = "mle",
 #' @param maxIter Maximum number of iterations.
 #' @param crit Convergence criterion.
 #' @param select A vector of indices identifying the items to subset.
-#' @param thetaRange A range of theta values, c(minTheta, maxTheta).
-#' @param truncate TRUE to bound MLE to thetaRange.
+#' @param thetaRange A range of theta values: c(minTheta, maxTheta).
+#' @param truncate Set \code{TRUE} to bound MLE to thetaRange.
 #' @param maxChange Maximum change between iterations.
-#' @param FisherScoring TRUE to use Fisher's method of scoring.
+#' @param FisherScoring Set \code{TRUE} to use Fisher's method of scoring.
 #' 
 #' @docType methods
 #' @rdname mlearray-methods
@@ -1107,7 +1104,7 @@ setMethod(f = "eap",
 #' @param object A \code{\linkS4class{test}} or a \code{\linkS4class{test.cluster}} object.
 #' @param prior A prior distribution, a numeric vector for a common prior or a matrix for individualized priors.
 #' @param select A vector of indices identifying the items to subset.
-#' @param resetPrior TRUE to reset the prior distribution for each test when object is of class \code{\linkS4class{test.cluster}}.
+#' @param resetPrior Set \code{TRUE} to reset the prior distribution for each test when object is of class \code{\linkS4class{test.cluster}}.
 #' 
 #' @docType methods
 #' @rdname eaparray-methods
@@ -1177,40 +1174,6 @@ setMethod(f = "EAP",
           }
 )
 
-#' Create a subset of an item pool
-#' 
-#' Create a subset of an item pool.
-#' 
-#' @param pool An \code{\linkS4class{item.pool}} object.
-#' @param select A vector of indices identifying the items to subset.
-#' 
-#' @export
-subsetItemPool = function(pool, select = NULL) {
-  if (class(pool) != "item.pool") {
-    stop("pool must be of class \"item.pool\"")
-  }
-  if (is.null(select)) {
-    return(pool)
-  } else if (all(select %in% 1:pool@ni)) {
-    select = unique(select)
-    n.select = length(select)
-    sub.pool = new("item.pool")
-    sub.pool@ni = n.select
-    sub.pool@index = 1:n.select
-    sub.pool@ID = pool@ID[select]
-    sub.pool@model = pool@model[select]
-    sub.pool@NCAT = pool@NCAT[select]
-    sub.pool@parms = pool@parms[select]
-    sub.pool@maxCat = max(sub.pool@NCAT)
-    if (pool@SEs != 0) {
-      sub.pool@SEs = pool@SEs[select]
-    }
-    return(sub.pool)
-  } else {
-    stop("select contains invalid item indices")
-  }
-}
-
 #' Create an item pool cluster object
 #' 
 #' Create a \code{\linkS4class{pool.cluster}} object.
@@ -1255,6 +1218,13 @@ MakeItemPoolCluster = function(pools, names = NULL) {
 #' @param session Used to communicate with a Shiny session.
 #' 
 #' @rdname Shadow-methods
+#' 
+#' @examples 
+#' object    = itempool.science
+#' config    = config.Shadow()
+#' trueTheta = rnorm(1)
+#' solution  = Shadow(itempool.science, config, trueTheta, constraints.science)
+#' solution$output
 #' @export
 setGeneric(name = "Shadow",
            def = function(object, config, trueTheta = NULL, Constraints = NULL, prior = NULL, priorPar = NULL, Data = NULL, session = NULL) {
@@ -2945,14 +2915,16 @@ iparPosteriorSample = function(pool, nSample = 500) {
   return(iparList)
 }
 
-#' Draw a plot of maximum attainable information given the constraints imposed
+#' Draw a plot of maximum attainable information given the imposed constraints
 #'
-#' Draw a plot of maximum attainable information given the constraints imposed.
+#' Draw a plot of maximum attainable information given the imposed constraints.
 #' 
 #' @param pool An \code{\linkS4class{item.pool}} object.
 #' @param constraints A list constraints generated by \code{\link{LoadConstraints}}.
 #' @param theta A theta grid.
 #' 
+#' @examples 
+#' p = maxinfoplot(itempool.science, constraints.science)
 #' @export
 maxinfoplot = function(pool, constraints, theta = seq(-3, 3, .5)){
   idx.nitems = which(toupper(constraints$Constraints[['WHAT']]) == "ITEM" &

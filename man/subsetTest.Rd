@@ -14,3 +14,7 @@ subsetTest(test, select = NULL)
 \description{
 Create a subset of a test object.
 }
+\examples{
+test = MakeTest(itempool.science, seq(-3, 3, 1))
+sub.test = subsetTest(test, 1:100)
+}

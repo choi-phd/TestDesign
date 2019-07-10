@@ -27,8 +27,3 @@ An S4 class to represent an item pool.
 \item{\code{ipar}}{A matrix of item parameters in the pool.}
 }}
 
-\examples{
-\dontrun{
-itemPool.1 = LoadItemPool("C:/itemPool.csv")
-}
-}

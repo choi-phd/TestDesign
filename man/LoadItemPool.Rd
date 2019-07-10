@@ -17,13 +17,8 @@ LoadItemPool(file.csv, ipar = NULL, se.file.csv = NULL)
 An \linkS4class{item.pool} object.
 }
 \description{
-Read item parameters from a .csv file or a data.frame and create an item.pool class
+Read item parameters from a .csv file or a data.frame and create an \linkS4class{item.pool} class.
 }
-\examples{
- 
-\dontrun{
-itemPool.1 = LoadItemPool("C:/sample.csv")
-ipar.1 = read.csv("C:/sample.csv")
-itemPool.1 = LoadItemPool(ipar = ipar.1)
-}
+\seealso{
+\link{dataset.science} for example usage.
 }

@@ -21,7 +21,7 @@ EAP(object, prior, select = NULL, resetPrior = FALSE)
 
 \item{select}{A vector of indices identifying the items to subset.}
 
-\item{resetPrior}{TRUE to reset the prior distribution for each test when object is of class \code{\linkS4class{test.cluster}}.}
+\item{resetPrior}{Set \code{TRUE} to reset the prior distribution for each test when object is of class \code{\linkS4class{test.cluster}}.}
 }
 \description{
 Generate expected a posteriori estimates of theta.

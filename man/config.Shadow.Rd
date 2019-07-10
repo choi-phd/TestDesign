@@ -31,7 +31,7 @@ config.Shadow(itemSelection = NULL, contentBalancing = NULL,
   \item{\code{solver}} The type of solver. Accepts one of \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.
   \item{\code{verbosity}} Verbosity level.
   \item{\code{timeLimit}} Time limit to be passed onto solver. Used in solvers \code{SYMPHONY, GUROBI, GLPK}.
-  \item{\code{gapLimit}} Gap limit to be passed onto solver. Used in solvers  \code{SYMPHONY, GUROBI}.
+  \item{\code{gapLimit}} Gap limit to be passed onto solver. Used in solvers \code{SYMPHONY, GUROBI}.
 }}
 
 \item{MCMC}{A list containing Markov-chain Monte Carlo configurations.
@@ -61,7 +61,7 @@ config.Shadow(itemSelection = NULL, contentBalancing = NULL,
   \item{\code{segmentCut}} A numeric vector of segment cuts.
   \item{\code{initialEligibilityStats}} A list of eligibility statistics from a previous run.
   \item{\code{fadingFactor}} Fading factor.
-  \item{\code{diagnosticStats}} TRUE to generate diagnostic statistics.
+  \item{\code{diagnosticStats}} \code{TRUE} to generate diagnostic statistics.
 }}
 
 \item{stoppingCriterion}{A list containing stopping criterion.
@@ -76,34 +76,34 @@ config.Shadow(itemSelection = NULL, contentBalancing = NULL,
 \item{interimTheta}{A list containing interim theta estimation options.
 \itemize{
   \item{\code{method}} The type of estimation. Accepts one of \code{EAP, EB, FB}.
-  \item{\code{shrinkageCorrection}} TRUE to correct for shrinkage in EAP
+  \item{\code{shrinkageCorrection}} Set \code{TRUE} to correct for shrinkage in EAP
   \item{\code{priorDist}} The type of prior distribution. Accepts one of \code{NORMAL, UNIF}.
   \item{\code{priorPar}} Distributional parameters for the prior.
   \item{\code{boundML}} Theta bound for MLE.
-  \item{\code{truncateML}} TRUE to truncate MLE within \code{boundML}
+  \item{\code{truncateML}} Set \code{TRUE} to truncate MLE within \code{boundML}
   \item{\code{maxIter}} Maximum number of Newton-Raphson iterations.
   \item{\code{crit}} Convergence criterion.
   \item{\code{maxChange}} Maximum change in ML estimates between iterations. 
-  \item{\code{FisherScoring}} TRUE to use Fisher's method of scoring.
+  \item{\code{FisherScoring}} Set \code{TRUE} to use Fisher's method of scoring.
 }}
 
 \item{finalTheta}{A list containing final theta estimation options.
 \itemize{
   \item{\code{method}} The type of estimation. Accepts one of \code{EAP, EB, FB}.
-  \item{\code{shrinkageCorrection}} TRUE to correct for shrinkage in EAP
+  \item{\code{shrinkageCorrection}} Set \code{TRUE} to correct for shrinkage in EAP.
   \item{\code{priorDist}} The type of prior distribution. Accepts one of \code{NORMAL, UNIF}.
   \item{\code{priorPar}} Distributional parameters for the prior.
   \item{\code{boundML}} Theta bound for MLE.
-  \item{\code{truncateML}} TRUE to truncate MLE within \code{boundML}
+  \item{\code{truncateML}} Set \code{TRUE} to truncate MLE within \code{boundML}
   \item{\code{maxIter}} Maximum number of Newton-Raphson iterations.
   \item{\code{crit}} Convergence criterion.
   \item{\code{maxChange}} Maximum change in ML estimates between iterations.
-  \item{\code{FisherScoring}} TRUE to use Fisher's method of scoring.
+  \item{\code{FisherScoring}} Set \code{TRUE} to use Fisher's method of scoring.
 }}
 
 \item{thetaGrid}{A numeric vector. Theta values to represent the continuum.}
 
-\item{auditTrail}{TRUE to generate audit trails.}
+\item{auditTrail}{Set \code{TRUE} to generate audit trails.}
 }
 \description{
 Create a \code{\linkS4class{Shadow.config}} object for Shadow Test Assembly (STA).

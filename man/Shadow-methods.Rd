@@ -33,3 +33,10 @@ Shadow(object, config, trueTheta = NULL, Constraints = NULL,
 \description{
 Run computerized adaptive testing with generalized shadow-test approach.
 }
+\examples{
+object    = itempool.science
+config    = config.Shadow()
+trueTheta = rnorm(1)
+solution  = Shadow(itempool.science, config, trueTheta, constraints.science)
+solution$output
+}

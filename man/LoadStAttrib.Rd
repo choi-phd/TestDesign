@@ -15,5 +15,8 @@ LoadStAttrib(file.csv, ItemAttrib)
 A \code{data.frame} containing stimulus attributes.
 }
 \description{
-Read set attributes from specified file.
+Read set, stimulus, or passage attributes from specified file.
+}
+\seealso{
+\link{dataset.reading} for example usage.
 }

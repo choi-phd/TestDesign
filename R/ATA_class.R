@@ -44,7 +44,7 @@ setClass("ATA.config",
          }
 )
 
-#' config.ATA
+#' Create an ATA.config object
 #' 
 #' Create an \code{\linkS4class{ATA.config}} object for Automated Test Assembly (ATA).
 #' 
@@ -61,7 +61,7 @@ setClass("ATA.config",
 #'   \item{\code{solver}} The type of solver. Accepts \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.
 #'   \item{\code{verbosity}} Verbosity level of the solver. Defaults to -2.
 #'   \item{\code{timeLimit}} Time limit in seconds passed onto the solver. Defaults to 60. Used in solvers \code{SYMPHONY, GUROBI, GLPK}.
-#'   \item{\code{gapLimit}} Termination criteria in relative scale passed onto the solver. Defaults to .05. Used in solvers  \code{SYMPHONY, GUROBI}.
+#'   \item{\code{gapLimit}} Termination criteria in relative scale passed onto the solver. Defaults to .05. Used in solvers \code{SYMPHONY, GUROBI}.
 #'   \item{\code{gapLimitAbs}} Termination criteria in absolute scale passed onto the solver. Defaults to 1. Used in solver \code{GUROBI}.
 #' }
 #' 
@@ -116,8 +116,8 @@ setMethod("show", "ATA.config", function(object) {
   cat("    Method         :", object@itemSelection$method, "\n") #c("MAXINFO", "TIF", "TCC")
   cat("    Info type      :", object@itemSelection$infoType, "\n")
   cat("    Theta Location :", object@itemSelection$targetLocation, "\n")
-  cat("    Target Value  :", object@itemSelection$targetValue, "\n")
-  cat("    Target Weight   :", object@itemSelection$targetWeight, "\n\n")
+  cat("    Target Value   :", object@itemSelection$targetValue, "\n")
+  cat("    Target Weight  :", object@itemSelection$targetWeight, "\n\n")
   cat("  MIP \n")
   cat("    Solver         :", object@MIP$solver, "\n")
   cat("    Verbosity      :", object@MIP$verbosity, "\n")
