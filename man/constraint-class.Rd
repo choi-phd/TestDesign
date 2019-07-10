@@ -3,9 +3,9 @@
 \docType{class}
 \name{constraint-class}
 \alias{constraint-class}
-\title{constraint}
+\title{An S4 class to represent a set of constraints}
 \description{
-Represents a set of constriants.
+An S4 class to represent a set of constraints.
 }
 \section{Slots}{
 

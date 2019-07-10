@@ -53,34 +53,19 @@ Second derivative values of log-likelihoods.
 An S4 generic and its methods to calculate the second derivative of the log-likelihood function.
 }
 \examples{
-\dontrun{ 
 item.1 = new("item.1pl", difficulty = 0.5)
 h.item.1 = calcHessian(item.1, seq(-3, 3, 1), 0)
-}
-\dontrun{ 
 item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
 h.item.2 = calcHessian(item.2, seq(-3, 3, 1), 0)
-}
-\dontrun{ 
 item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 h.item.3 = calcHessian(item.3, seq(-3, 3, 1), 0)
-}
-\dontrun{ 
 item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
 h.item.4 = calcHessian(item.4, seq(-3, 3, 1), 0)
-}
-\dontrun{ 
 item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 h.item.5 = calcHessian(item.5, seq(-3, 3, 1), 0)
-}
-\dontrun{ 
 item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
 h.item.6 = calcHessian(item.6, seq(-3, 3, 1), 0)
-}
-\dontrun{
-itemPool.1 = LoadItemPool("C:/item_par.csv")
-h.itemPool.1 = calcHessian(itemPool.1, seq(-3, 3, 1), 0)
-}
+h.itempool = calcHessian(itempool.science, seq(-3, 3, 1), 0)
 }
 \references{
 {

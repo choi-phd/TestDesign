@@ -1,21 +1,10 @@
-#Program: Shadow classes
-#Author: Seung Choi
-#Version: 0.1
-#Assumptions: D = 1.0; the minimum score is 0 for all items
+# Program: Shadow
+# Author: Seung Choi
+# Assumptions: D = 1.0; the minimum score is 0 for all items
 
-#' @import foreach
-#' @importFrom logitnorm logit rlogitnorm
-#' @importFrom grDevices col2rgb dev.control dev.new dev.off pdf recordPlot
-#' @importFrom stats dnorm rlnorm rnorm sd
-#' @importFrom utils setTxtProgressBar txtProgressBar write.table
-#' @importFrom graphics axis grid layout legend mtext par plot.new points rect text
-#' @importFrom lattice xyplot
-#' @useDynLib Shadow
-NULL
-
-#' STA
+#' Perform shadow test assembly
 #'
-#' Shadow Test Approach to CAT.
+#' Perform Shadow Test Assembly (STA) for computerized adaptive testing.
 #'
 #' @param Constraints A list representing optimization constraints. Use \code{\link{LoadConstraints}} for this.
 #' @param objective A vector of objective values.
@@ -634,8 +623,8 @@ subsetPool = function(pool, select = NULL) {
     sub.pool@model = pool@model[select]
     sub.pool@NCAT = pool@NCAT[select]
     sub.pool@parms = pool@parms[select]
-    sub.pool@ipar = pool@ipar[select, ]
-    sub.pool@SEs = pool@SEs[select, ]
+    sub.pool@ipar = pool@ipar[select,]
+    sub.pool@SEs = pool@SEs[select,]
   } else {
     stop("select contains invalid item indices")
   }

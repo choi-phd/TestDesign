@@ -17,3 +17,6 @@ A \code{data.frame} containing parsed dataset.
 \description{
 Read item attributes from specified file.
 }
+\seealso{
+\link{dataset.science} for example usage.
+}
