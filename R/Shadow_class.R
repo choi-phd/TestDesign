@@ -1,6 +1,6 @@
-#' constraint
+#' An S4 class to represent a set of constraints
 #'
-#' Represents a set of constriants.
+#' An S4 class to represent a set of constraints.
 #'
 #' @slot CONSTRAINT Character. The index of the constraint set.
 #' @slot mat A matrix representing the left-hand side weights. Has nc rows.
@@ -29,9 +29,9 @@ setClass("constraint",
 setClassUnion("numericOrNULL", c("numeric", "NULL"))
 setClassUnion("matrixOrNULL", c("matrix", "NULL"))
 
-#' test
+#' An S4 class to represent a test
 #'
-#' Create a \code{\linkS4class{test}} object.
+#' An S4 class to represent a test.
 #'
 #' @slot pool An \code{\linkS4class{item.pool}} object.
 #' @slot theta A theta grid.
@@ -62,13 +62,13 @@ setClass("test",
          }
 )
 
-#' test.cluster
+#' An S4 class to represent a test cluster
 #'
-#' Create a \code{\linkS4class{test.cluster}} object from a list of \code{\linkS4class{test}} objects.
+#' An S4 class to represent a test cluster from a list of \code{\linkS4class{test}} objects.
 #'
 #' @slot nt Numeric. A scalar to indicate the number of \code{\linkS4class{test}} objects to be clustered.
 #' @slot tests A list \code{\linkS4class{test}} objects.
-#' @slot names Character. A vector of names correspondign to the \code{\linkS4class{test}} objects.
+#' @slot names Character. A vector of names corresponding to the \code{\linkS4class{test}} objects.
 #'
 #' @export
 setClass("test.cluster",
@@ -171,7 +171,7 @@ setClass("Shadow.config",
          }
 )
 
-#' config.Shadow
+#' Create a Shadow.config object
 #'
 #' Create a \code{\linkS4class{Shadow.config}} object for Shadow Test Assembly (STA).
 #'
@@ -191,7 +191,7 @@ setClass("Shadow.config",
 #'   \item{\code{solver}} The type of solver. Accepts one of \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.
 #'   \item{\code{verbosity}} Verbosity level.
 #'   \item{\code{timeLimit}} Time limit to be passed onto solver. Used in solvers \code{SYMPHONY, GUROBI, GLPK}.
-#'   \item{\code{gapLimit}} Gap limit to be passed onto solver. Used in solvers  \code{SYMPHONY, GUROBI}.
+#'   \item{\code{gapLimit}} Gap limit to be passed onto solver. Used in solvers \code{SYMPHONY, GUROBI}.
 #' }
 #' @param MCMC A list containing Markov-chain Monte Carlo configurations.
 #' \itemize{
@@ -218,7 +218,7 @@ setClass("Shadow.config",
 #'   \item{\code{segmentCut}} A numeric vector of segment cuts.
 #'   \item{\code{initialEligibilityStats}} A list of eligibility statistics from a previous run.
 #'   \item{\code{fadingFactor}} Fading factor.
-#'   \item{\code{diagnosticStats}} TRUE to generate diagnostic statistics.
+#'   \item{\code{diagnosticStats}} \code{TRUE} to generate diagnostic statistics.
 #' }
 #' @param stoppingCriterion A list containing stopping criterion.
 #' \itemize{
@@ -231,31 +231,31 @@ setClass("Shadow.config",
 #' @param interimTheta A list containing interim theta estimation options.
 #' \itemize{
 #'   \item{\code{method}} The type of estimation. Accepts one of \code{EAP, EB, FB}.
-#'   \item{\code{shrinkageCorrection}} TRUE to correct for shrinkage in EAP
+#'   \item{\code{shrinkageCorrection}} Set \code{TRUE} to correct for shrinkage in EAP
 #'   \item{\code{priorDist}} The type of prior distribution. Accepts one of \code{NORMAL, UNIF}.
 #'   \item{\code{priorPar}} Distributional parameters for the prior.
 #'   \item{\code{boundML}} Theta bound for MLE.
-#'   \item{\code{truncateML}} TRUE to truncate MLE within \code{boundML}
+#'   \item{\code{truncateML}} Set \code{TRUE} to truncate MLE within \code{boundML}
 #'   \item{\code{maxIter}} Maximum number of Newton-Raphson iterations.
 #'   \item{\code{crit}} Convergence criterion.
 #'   \item{\code{maxChange}} Maximum change in ML estimates between iterations.
-#'   \item{\code{FisherScoring}} TRUE to use Fisher's method of scoring.
+#'   \item{\code{FisherScoring}} Set \code{TRUE} to use Fisher's method of scoring.
 #' }
 #' @param finalTheta A list containing final theta estimation options.
 #' \itemize{
 #'   \item{\code{method}} The type of estimation. Accepts one of \code{EAP, EB, FB}.
-#'   \item{\code{shrinkageCorrection}} TRUE to correct for shrinkage in EAP
+#'   \item{\code{shrinkageCorrection}} Set \code{TRUE} to correct for shrinkage in EAP.
 #'   \item{\code{priorDist}} The type of prior distribution. Accepts one of \code{NORMAL, UNIF}.
 #'   \item{\code{priorPar}} Distributional parameters for the prior.
 #'   \item{\code{boundML}} Theta bound for MLE.
-#'   \item{\code{truncateML}} TRUE to truncate MLE within \code{boundML}
+#'   \item{\code{truncateML}} Set \code{TRUE} to truncate MLE within \code{boundML}
 #'   \item{\code{maxIter}} Maximum number of Newton-Raphson iterations.
 #'   \item{\code{crit}} Convergence criterion.
 #'   \item{\code{maxChange}} Maximum change in ML estimates between iterations.
-#'   \item{\code{FisherScoring}} TRUE to use Fisher's method of scoring.
+#'   \item{\code{FisherScoring}} Set \code{TRUE} to use Fisher's method of scoring.
 #' }
 #' @param thetaGrid A numeric vector. Theta values to represent the continuum.
-#' @param auditTrail TRUE to generate audit trails.
+#' @param auditTrail Set \code{TRUE} to generate audit trails.
 #'
 #' @rdname config.Shadow
 #' @export
