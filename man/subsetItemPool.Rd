@@ -2,7 +2,7 @@
 % Please edit documentation in R/Shadow_functions.R
 \name{subsetItemPool}
 \alias{subsetItemPool}
-\title{Create a subset of an item pool}
+\title{Create a subset of an item pool object}
 \usage{
 subsetItemPool(pool, select = NULL)
 }
@@ -12,5 +12,8 @@ subsetItemPool(pool, select = NULL)
 \item{select}{A vector of indices identifying the items to subset.}
 }
 \description{
-Create a subset of an item pool.
+Create a subset of an \code{\linkS4class{item.pool}} object.
+}
+\examples{
+sub.itempool = subsetItemPool(itempool.science, 1:100)
 }

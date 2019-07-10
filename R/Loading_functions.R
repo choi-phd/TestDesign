@@ -115,7 +115,7 @@ LoadItemPool = function(file.csv, ipar = NULL, se.file.csv = NULL) {
   if (loadSE) {
     pool@SEs = SEs
   } else {
-    pool@SEs = pool@parms*0
+    pool@SEs = pool@ipar * 0
   }
 
   if (max(rowSums(!is.na(pool@ipar))) != max(nfields) - 2) {
