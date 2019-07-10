@@ -1,52 +1,28 @@
-#' Validate the slope parameter
-#'
-#' @param object An S4 class object for an item.
-#'
 #' @noRd
 validity_slope = function(object){
   if(object@slope <= 0) return("A non-positive value for the slope parameter is not permissible.")
 }
 
-#' Validate the guessing parameter
-#'
-#' @param object An S4 class object for an item.
-#'
 #' @noRd
 validity_guessing = function(object){
   if(object@guessing < 0 || object@guessing >= 1.0) return("The supplied value for the guessing parameter is out of bounds.")
 }
 
-#' Validate the number of categories
-#'
-#' @param object An S4 class object for an item.
-#'
 #' @noRd
 validity_ncat = function(object){
   if(length(object@ncat) == 0) return("ncat cannot be missing.")
 }
 
-#' Validate the number of thresholds
-#'
-#' @param object An S4 class object for an item.
-#'
 #' @noRd
 validity_nthr = function(object){
   if(object@ncat != length(object@threshold) + 1) return("The number of thresholds needs to be ncat - 1.")
 }
 
-#' Validate the number of category boundaries
-#'
-#' @param object An S4 class object for an item.
-#'
 #' @noRd
 validity_category = function(object){
   if(object@ncat != length(object@category) + 1) return("The number of category values does not match ncat.")
 }
 
-#' Validate the order of category boundaries
-#'
-#' @param object An S4 class object for an item.
-#'
 #' @noRd
 validity_order = function(object){
   if(is.unsorted(object@category)) return("The category values are not in an ascending order.")
@@ -273,11 +249,6 @@ setMethod("show", "item.gr", function(object) {
 #' @slot NCAT Numeric. A vector of the number of response categories for each item.
 #' @slot parms A list of item parameters in the pool.
 #' @slot ipar A matrix of item parameters in the pool.
-#' 
-#' @examples 
-#' \dontrun{
-#' itemPool.1 = LoadItemPool("C:/itemPool.csv")
-#' }
 setClass("item.pool",
          slots = c(ni = "numeric",
                    maxCat = "numeric",

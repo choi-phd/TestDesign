@@ -23,7 +23,7 @@ config.ATA(itemSelection = NULL, MIP = NULL)
   \item{\code{solver}} The type of solver. Accepts \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.
   \item{\code{verbosity}} Verbosity level of the solver. Defaults to -2.
   \item{\code{timeLimit}} Time limit in seconds passed onto the solver. Defaults to 60. Used in solvers \code{SYMPHONY, GUROBI, GLPK}.
-  \item{\code{gapLimit}} Termination criteria in relative scale passed onto the solver. Defaults to .05. Used in solvers  \code{SYMPHONY, GUROBI}.
+  \item{\code{gapLimit}} Termination criteria in relative scale passed onto the solver. Defaults to .05. Used in solvers \code{SYMPHONY, GUROBI}.
   \item{\code{gapLimitAbs}} Termination criteria in absolute scale passed onto the solver. Defaults to 1. Used in solver \code{GUROBI}.
 }}
 }
