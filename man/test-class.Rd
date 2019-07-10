@@ -3,9 +3,9 @@
 \docType{class}
 \name{test-class}
 \alias{test-class}
-\title{test}
+\title{An S4 class to represent a test}
 \description{
-Create a \code{\linkS4class{test}} object.
+An S4 class to represent a test.
 }
 \section{Slots}{
 

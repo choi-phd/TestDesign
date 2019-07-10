@@ -60,10 +60,7 @@ item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 sim.item.5 = simResp(item.5, seq(-3, 3, 1))
 item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
 sim.item.6 = simResp(item.6, seq(-3, 3, 1))
-\dontrun{
-itemPool.1 = LoadItemPool("C:/item_par.csv")
-sim.itemPool.1 = simResp(itemPool.1, seq(-3, 3, 1))
-}
+sim.itempool = simResp(itempool.science, seq(-3, 3, 1))
 }
 \references{
 {
