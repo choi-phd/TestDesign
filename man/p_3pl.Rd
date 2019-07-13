@@ -20,6 +20,6 @@ Calculate the probability of correct response at a theta value, under the 3PL mo
 }
 \references{
 {
-  \insertRef{birnbaum_latent_1968}{Shadow}
+  \insertRef{birnbaum_latent_1968}{oat}
 }
 }
