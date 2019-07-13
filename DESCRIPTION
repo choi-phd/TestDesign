@@ -1,4 +1,4 @@
-Package: Shadow
+Package: oat
 Type: Package
 Title: Optimal Test Design Approach to Fixed and Adaptive Test Construction
 Version: 0.2
