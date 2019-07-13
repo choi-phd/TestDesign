@@ -22,6 +22,6 @@ item.6 = new("item.gr", slope = 1.0, category = c(-2.0, -1.0, 0, 1.0, 2.0), ncat
 }
 \references{
 {
-  \insertRef{samejima_estimation_1969}{Shadow}
+  \insertRef{samejima_estimation_1969}{oat}
 }
 }
