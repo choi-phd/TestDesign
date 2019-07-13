@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // p_1pl
 double p_1pl(const double& x, const double& b);
-RcppExport SEXP _Shadow_p_1pl(SEXP xSEXP, SEXP bSEXP) {
+RcppExport SEXP _oat_p_1pl(SEXP xSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -19,7 +19,7 @@ END_RCPP
 }
 // array_p_1pl
 NumericVector array_p_1pl(NumericVector x, const double& b);
-RcppExport SEXP _Shadow_array_p_1pl(SEXP xSEXP, SEXP bSEXP) {
+RcppExport SEXP _oat_array_p_1pl(SEXP xSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -31,7 +31,7 @@ END_RCPP
 }
 // p_2pl
 double p_2pl(const double& x, const double& a, const double& b);
-RcppExport SEXP _Shadow_p_2pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+RcppExport SEXP _oat_p_2pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -44,7 +44,7 @@ END_RCPP
 }
 // array_p_2pl
 NumericVector array_p_2pl(NumericVector x, const double& a, const double& b);
-RcppExport SEXP _Shadow_array_p_2pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+RcppExport SEXP _oat_array_p_2pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -57,7 +57,7 @@ END_RCPP
 }
 // p_3pl
 double p_3pl(const double& x, const double& a, const double& b, const double& c);
-RcppExport SEXP _Shadow_p_3pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP, SEXP cSEXP) {
+RcppExport SEXP _oat_p_3pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP, SEXP cSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -71,7 +71,7 @@ END_RCPP
 }
 // array_p_3pl
 NumericVector array_p_3pl(NumericVector x, const double& a, const double& b, const double& c);
-RcppExport SEXP _Shadow_array_p_3pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP, SEXP cSEXP) {
+RcppExport SEXP _oat_array_p_3pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP, SEXP cSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -85,7 +85,7 @@ END_RCPP
 }
 // p_pc
 NumericVector p_pc(const double& x, NumericVector b);
-RcppExport SEXP _Shadow_p_pc(SEXP xSEXP, SEXP bSEXP) {
+RcppExport SEXP _oat_p_pc(SEXP xSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -97,7 +97,7 @@ END_RCPP
 }
 // array_p_pc
 NumericMatrix array_p_pc(NumericVector x, NumericVector b);
-RcppExport SEXP _Shadow_array_p_pc(SEXP xSEXP, SEXP bSEXP) {
+RcppExport SEXP _oat_array_p_pc(SEXP xSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -109,7 +109,7 @@ END_RCPP
 }
 // p_gpc
 NumericVector p_gpc(const double& x, const double& a, NumericVector b);
-RcppExport SEXP _Shadow_p_gpc(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+RcppExport SEXP _oat_p_gpc(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -122,7 +122,7 @@ END_RCPP
 }
 // array_p_gpc
 NumericMatrix array_p_gpc(NumericVector x, const double& a, NumericVector b);
-RcppExport SEXP _Shadow_array_p_gpc(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+RcppExport SEXP _oat_array_p_gpc(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -135,7 +135,7 @@ END_RCPP
 }
 // p_gr
 NumericVector p_gr(const double& x, const double& a, NumericVector b);
-RcppExport SEXP _Shadow_p_gr(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+RcppExport SEXP _oat_p_gr(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -148,7 +148,7 @@ END_RCPP
 }
 // array_p_gr
 NumericMatrix array_p_gr(NumericVector x, const double& a, NumericVector b);
-RcppExport SEXP _Shadow_array_p_gr(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+RcppExport SEXP _oat_array_p_gr(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -161,7 +161,7 @@ END_RCPP
 }
 // info_1pl
 double info_1pl(const double& x, const double& b);
-RcppExport SEXP _Shadow_info_1pl(SEXP xSEXP, SEXP bSEXP) {
+RcppExport SEXP _oat_info_1pl(SEXP xSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -173,7 +173,7 @@ END_RCPP
 }
 // array_info_1pl
 NumericVector array_info_1pl(NumericVector x, const double& b);
-RcppExport SEXP _Shadow_array_info_1pl(SEXP xSEXP, SEXP bSEXP) {
+RcppExport SEXP _oat_array_info_1pl(SEXP xSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -185,7 +185,7 @@ END_RCPP
 }
 // info_2pl
 double info_2pl(const double& x, const double& a, const double& b);
-RcppExport SEXP _Shadow_info_2pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+RcppExport SEXP _oat_info_2pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -198,7 +198,7 @@ END_RCPP
 }
 // array_info_2pl
 NumericVector array_info_2pl(NumericVector x, const double& a, const double& b);
-RcppExport SEXP _Shadow_array_info_2pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+RcppExport SEXP _oat_array_info_2pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -211,7 +211,7 @@ END_RCPP
 }
 // info_3pl
 double info_3pl(const double& x, const double& a, const double& b, const double& c);
-RcppExport SEXP _Shadow_info_3pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP, SEXP cSEXP) {
+RcppExport SEXP _oat_info_3pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP, SEXP cSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -225,7 +225,7 @@ END_RCPP
 }
 // array_info_3pl
 NumericVector array_info_3pl(NumericVector x, const double& a, const double& b, const double& c);
-RcppExport SEXP _Shadow_array_info_3pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP, SEXP cSEXP) {
+RcppExport SEXP _oat_array_info_3pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP, SEXP cSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -239,7 +239,7 @@ END_RCPP
 }
 // info_pc
 double info_pc(const double& x, NumericVector b);
-RcppExport SEXP _Shadow_info_pc(SEXP xSEXP, SEXP bSEXP) {
+RcppExport SEXP _oat_info_pc(SEXP xSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -251,7 +251,7 @@ END_RCPP
 }
 // array_info_pc
 NumericVector array_info_pc(NumericVector x, NumericVector b);
-RcppExport SEXP _Shadow_array_info_pc(SEXP xSEXP, SEXP bSEXP) {
+RcppExport SEXP _oat_array_info_pc(SEXP xSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -263,7 +263,7 @@ END_RCPP
 }
 // info_gpc
 double info_gpc(const double& x, const double& a, NumericVector b);
-RcppExport SEXP _Shadow_info_gpc(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+RcppExport SEXP _oat_info_gpc(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -276,7 +276,7 @@ END_RCPP
 }
 // array_info_gpc
 NumericVector array_info_gpc(NumericVector x, const double& a, NumericVector b);
-RcppExport SEXP _Shadow_array_info_gpc(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+RcppExport SEXP _oat_array_info_gpc(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -289,7 +289,7 @@ END_RCPP
 }
 // info_gr
 double info_gr(const double& x, const double& a, NumericVector b);
-RcppExport SEXP _Shadow_info_gr(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+RcppExport SEXP _oat_info_gr(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -302,7 +302,7 @@ END_RCPP
 }
 // array_info_gr
 NumericVector array_info_gr(NumericVector x, const double& a, NumericVector b);
-RcppExport SEXP _Shadow_array_info_gr(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+RcppExport SEXP _oat_array_info_gr(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -315,7 +315,7 @@ END_RCPP
 }
 // calc_info
 NumericVector calc_info(const double& x, NumericMatrix item_parm, IntegerVector ncat, IntegerVector model);
-RcppExport SEXP _Shadow_calc_info(SEXP xSEXP, SEXP item_parmSEXP, SEXP ncatSEXP, SEXP modelSEXP) {
+RcppExport SEXP _oat_calc_info(SEXP xSEXP, SEXP item_parmSEXP, SEXP ncatSEXP, SEXP modelSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -329,7 +329,7 @@ END_RCPP
 }
 // calc_info_matrix
 NumericMatrix calc_info_matrix(NumericVector x, NumericMatrix item_parm, IntegerVector ncat, IntegerVector model);
-RcppExport SEXP _Shadow_calc_info_matrix(SEXP xSEXP, SEXP item_parmSEXP, SEXP ncatSEXP, SEXP modelSEXP) {
+RcppExport SEXP _oat_calc_info_matrix(SEXP xSEXP, SEXP item_parmSEXP, SEXP ncatSEXP, SEXP modelSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -343,7 +343,7 @@ END_RCPP
 }
 // calc_info_EB
 NumericVector calc_info_EB(NumericVector x, NumericMatrix item_parm, IntegerVector ncat, IntegerVector model);
-RcppExport SEXP _Shadow_calc_info_EB(SEXP xSEXP, SEXP item_parmSEXP, SEXP ncatSEXP, SEXP modelSEXP) {
+RcppExport SEXP _oat_calc_info_EB(SEXP xSEXP, SEXP item_parmSEXP, SEXP ncatSEXP, SEXP modelSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -357,7 +357,7 @@ END_RCPP
 }
 // calc_info_FB
 NumericVector calc_info_FB(NumericVector x, List items_list, IntegerVector ncat, IntegerVector model, bool useEAP);
-RcppExport SEXP _Shadow_calc_info_FB(SEXP xSEXP, SEXP items_listSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP useEAPSEXP) {
+RcppExport SEXP _oat_calc_info_FB(SEXP xSEXP, SEXP items_listSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP useEAPSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -372,7 +372,7 @@ END_RCPP
 }
 // calc_MI_FB
 NumericVector calc_MI_FB(NumericVector x, List items_list, IntegerVector ncat, IntegerVector model);
-RcppExport SEXP _Shadow_calc_MI_FB(SEXP xSEXP, SEXP items_listSEXP, SEXP ncatSEXP, SEXP modelSEXP) {
+RcppExport SEXP _oat_calc_MI_FB(SEXP xSEXP, SEXP items_listSEXP, SEXP ncatSEXP, SEXP modelSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -386,7 +386,7 @@ END_RCPP
 }
 // calc_likelihood
 double calc_likelihood(const double& x, NumericMatrix item_parm, IntegerVector resp, IntegerVector ncat, IntegerVector model);
-RcppExport SEXP _Shadow_calc_likelihood(SEXP xSEXP, SEXP item_parmSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP) {
+RcppExport SEXP _oat_calc_likelihood(SEXP xSEXP, SEXP item_parmSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -401,7 +401,7 @@ END_RCPP
 }
 // calc_likelihood_function
 NumericVector calc_likelihood_function(NumericVector theta_grid, NumericMatrix item_parm, IntegerVector resp, IntegerVector ncat, IntegerVector model);
-RcppExport SEXP _Shadow_calc_likelihood_function(SEXP theta_gridSEXP, SEXP item_parmSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP) {
+RcppExport SEXP _oat_calc_likelihood_function(SEXP theta_gridSEXP, SEXP item_parmSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -416,7 +416,7 @@ END_RCPP
 }
 // calc_log_likelihood
 double calc_log_likelihood(const double& x, NumericMatrix item_parm, IntegerVector resp, IntegerVector ncat, IntegerVector model, const int& prior, NumericVector prior_parm);
-RcppExport SEXP _Shadow_calc_log_likelihood(SEXP xSEXP, SEXP item_parmSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP priorSEXP, SEXP prior_parmSEXP) {
+RcppExport SEXP _oat_calc_log_likelihood(SEXP xSEXP, SEXP item_parmSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP priorSEXP, SEXP prior_parmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -433,7 +433,7 @@ END_RCPP
 }
 // calc_log_likelihood_function
 NumericVector calc_log_likelihood_function(NumericVector theta_grid, NumericMatrix item_parm, IntegerVector resp, IntegerVector ncat, IntegerVector model, const int& prior, NumericVector prior_parm);
-RcppExport SEXP _Shadow_calc_log_likelihood_function(SEXP theta_gridSEXP, SEXP item_parmSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP priorSEXP, SEXP prior_parmSEXP) {
+RcppExport SEXP _oat_calc_log_likelihood_function(SEXP theta_gridSEXP, SEXP item_parmSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP priorSEXP, SEXP prior_parmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -450,7 +450,7 @@ END_RCPP
 }
 // calc_posterior
 double calc_posterior(const double& x, NumericMatrix item_parm, IntegerVector resp, IntegerVector ncat, IntegerVector model, const int& prior, NumericVector prior_parm);
-RcppExport SEXP _Shadow_calc_posterior(SEXP xSEXP, SEXP item_parmSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP priorSEXP, SEXP prior_parmSEXP) {
+RcppExport SEXP _oat_calc_posterior(SEXP xSEXP, SEXP item_parmSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP priorSEXP, SEXP prior_parmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -467,7 +467,7 @@ END_RCPP
 }
 // calc_posterior_function
 NumericVector calc_posterior_function(NumericVector theta_grid, NumericMatrix item_parm, IntegerVector resp, IntegerVector ncat, IntegerVector model, const int& prior, NumericVector prior_parm);
-RcppExport SEXP _Shadow_calc_posterior_function(SEXP theta_gridSEXP, SEXP item_parmSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP priorSEXP, SEXP prior_parmSEXP) {
+RcppExport SEXP _oat_calc_posterior_function(SEXP theta_gridSEXP, SEXP item_parmSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP priorSEXP, SEXP prior_parmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -484,7 +484,7 @@ END_RCPP
 }
 // calc_posterior_single
 double calc_posterior_single(const double& x, NumericVector item_parm, const int& resp, const int& ncat, const int& model, const int& prior, NumericVector prior_parm);
-RcppExport SEXP _Shadow_calc_posterior_single(SEXP xSEXP, SEXP item_parmSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP priorSEXP, SEXP prior_parmSEXP) {
+RcppExport SEXP _oat_calc_posterior_single(SEXP xSEXP, SEXP item_parmSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP priorSEXP, SEXP prior_parmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -501,7 +501,7 @@ END_RCPP
 }
 // theta_EAP
 NumericVector theta_EAP(NumericVector theta_grid, NumericMatrix item_parm, IntegerVector resp, IntegerVector ncat, IntegerVector model, const int& prior, NumericVector prior_parm);
-RcppExport SEXP _Shadow_theta_EAP(SEXP theta_gridSEXP, SEXP item_parmSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP priorSEXP, SEXP prior_parmSEXP) {
+RcppExport SEXP _oat_theta_EAP(SEXP theta_gridSEXP, SEXP item_parmSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP priorSEXP, SEXP prior_parmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -518,7 +518,7 @@ END_RCPP
 }
 // theta_EAP_matrix
 NumericMatrix theta_EAP_matrix(NumericVector theta_grid, NumericMatrix item_parm, IntegerMatrix Resp, IntegerVector ncat, IntegerVector model, const int& prior, NumericVector prior_parm);
-RcppExport SEXP _Shadow_theta_EAP_matrix(SEXP theta_gridSEXP, SEXP item_parmSEXP, SEXP RespSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP priorSEXP, SEXP prior_parmSEXP) {
+RcppExport SEXP _oat_theta_EAP_matrix(SEXP theta_gridSEXP, SEXP item_parmSEXP, SEXP RespSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP priorSEXP, SEXP prior_parmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -535,7 +535,7 @@ END_RCPP
 }
 // theta_EB
 NumericVector theta_EB(const int& nx, const double& theta_init, const double& theta_prop, NumericMatrix item_parm, IntegerVector resp, IntegerVector ncat, IntegerVector model, const int& prior, NumericVector prior_parm);
-RcppExport SEXP _Shadow_theta_EB(SEXP nxSEXP, SEXP theta_initSEXP, SEXP theta_propSEXP, SEXP item_parmSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP priorSEXP, SEXP prior_parmSEXP) {
+RcppExport SEXP _oat_theta_EB(SEXP nxSEXP, SEXP theta_initSEXP, SEXP theta_propSEXP, SEXP item_parmSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP priorSEXP, SEXP prior_parmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -554,7 +554,7 @@ END_RCPP
 }
 // theta_EB_single
 NumericVector theta_EB_single(const int& nx, const double& theta_init, const double& theta_prop, NumericVector item_parm, const int& resp, const int& ncat, const int& model, const int& prior, NumericVector prior_parm);
-RcppExport SEXP _Shadow_theta_EB_single(SEXP nxSEXP, SEXP theta_initSEXP, SEXP theta_propSEXP, SEXP item_parmSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP priorSEXP, SEXP prior_parmSEXP) {
+RcppExport SEXP _oat_theta_EB_single(SEXP nxSEXP, SEXP theta_initSEXP, SEXP theta_propSEXP, SEXP item_parmSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP priorSEXP, SEXP prior_parmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -573,7 +573,7 @@ END_RCPP
 }
 // theta_FB
 NumericVector theta_FB(const int& nx, const double& theta_init, const double& theta_prop, List items_list, NumericMatrix item_init, IntegerVector resp, IntegerVector ncat, IntegerVector model, const int& prior, NumericVector prior_parm);
-RcppExport SEXP _Shadow_theta_FB(SEXP nxSEXP, SEXP theta_initSEXP, SEXP theta_propSEXP, SEXP items_listSEXP, SEXP item_initSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP priorSEXP, SEXP prior_parmSEXP) {
+RcppExport SEXP _oat_theta_FB(SEXP nxSEXP, SEXP theta_initSEXP, SEXP theta_propSEXP, SEXP items_listSEXP, SEXP item_initSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP priorSEXP, SEXP prior_parmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -593,7 +593,7 @@ END_RCPP
 }
 // theta_FB_single
 NumericVector theta_FB_single(const int& nx, const double& theta_init, const double& theta_prop, NumericMatrix item_mcmc, NumericVector item_init, const int& resp, const int& ncat, const int& model, const int& prior, NumericVector prior_parm);
-RcppExport SEXP _Shadow_theta_FB_single(SEXP nxSEXP, SEXP theta_initSEXP, SEXP theta_propSEXP, SEXP item_mcmcSEXP, SEXP item_initSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP priorSEXP, SEXP prior_parmSEXP) {
+RcppExport SEXP _oat_theta_FB_single(SEXP nxSEXP, SEXP theta_initSEXP, SEXP theta_propSEXP, SEXP item_mcmcSEXP, SEXP item_initSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP priorSEXP, SEXP prior_parmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -613,7 +613,7 @@ END_RCPP
 }
 // findSegment
 IntegerVector findSegment(NumericVector segment, NumericVector x);
-RcppExport SEXP _Shadow_findSegment(SEXP segmentSEXP, SEXP xSEXP) {
+RcppExport SEXP _oat_findSegment(SEXP segmentSEXP, SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -625,53 +625,53 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_Shadow_p_1pl", (DL_FUNC) &_Shadow_p_1pl, 2},
-    {"_Shadow_array_p_1pl", (DL_FUNC) &_Shadow_array_p_1pl, 2},
-    {"_Shadow_p_2pl", (DL_FUNC) &_Shadow_p_2pl, 3},
-    {"_Shadow_array_p_2pl", (DL_FUNC) &_Shadow_array_p_2pl, 3},
-    {"_Shadow_p_3pl", (DL_FUNC) &_Shadow_p_3pl, 4},
-    {"_Shadow_array_p_3pl", (DL_FUNC) &_Shadow_array_p_3pl, 4},
-    {"_Shadow_p_pc", (DL_FUNC) &_Shadow_p_pc, 2},
-    {"_Shadow_array_p_pc", (DL_FUNC) &_Shadow_array_p_pc, 2},
-    {"_Shadow_p_gpc", (DL_FUNC) &_Shadow_p_gpc, 3},
-    {"_Shadow_array_p_gpc", (DL_FUNC) &_Shadow_array_p_gpc, 3},
-    {"_Shadow_p_gr", (DL_FUNC) &_Shadow_p_gr, 3},
-    {"_Shadow_array_p_gr", (DL_FUNC) &_Shadow_array_p_gr, 3},
-    {"_Shadow_info_1pl", (DL_FUNC) &_Shadow_info_1pl, 2},
-    {"_Shadow_array_info_1pl", (DL_FUNC) &_Shadow_array_info_1pl, 2},
-    {"_Shadow_info_2pl", (DL_FUNC) &_Shadow_info_2pl, 3},
-    {"_Shadow_array_info_2pl", (DL_FUNC) &_Shadow_array_info_2pl, 3},
-    {"_Shadow_info_3pl", (DL_FUNC) &_Shadow_info_3pl, 4},
-    {"_Shadow_array_info_3pl", (DL_FUNC) &_Shadow_array_info_3pl, 4},
-    {"_Shadow_info_pc", (DL_FUNC) &_Shadow_info_pc, 2},
-    {"_Shadow_array_info_pc", (DL_FUNC) &_Shadow_array_info_pc, 2},
-    {"_Shadow_info_gpc", (DL_FUNC) &_Shadow_info_gpc, 3},
-    {"_Shadow_array_info_gpc", (DL_FUNC) &_Shadow_array_info_gpc, 3},
-    {"_Shadow_info_gr", (DL_FUNC) &_Shadow_info_gr, 3},
-    {"_Shadow_array_info_gr", (DL_FUNC) &_Shadow_array_info_gr, 3},
-    {"_Shadow_calc_info", (DL_FUNC) &_Shadow_calc_info, 4},
-    {"_Shadow_calc_info_matrix", (DL_FUNC) &_Shadow_calc_info_matrix, 4},
-    {"_Shadow_calc_info_EB", (DL_FUNC) &_Shadow_calc_info_EB, 4},
-    {"_Shadow_calc_info_FB", (DL_FUNC) &_Shadow_calc_info_FB, 5},
-    {"_Shadow_calc_MI_FB", (DL_FUNC) &_Shadow_calc_MI_FB, 4},
-    {"_Shadow_calc_likelihood", (DL_FUNC) &_Shadow_calc_likelihood, 5},
-    {"_Shadow_calc_likelihood_function", (DL_FUNC) &_Shadow_calc_likelihood_function, 5},
-    {"_Shadow_calc_log_likelihood", (DL_FUNC) &_Shadow_calc_log_likelihood, 7},
-    {"_Shadow_calc_log_likelihood_function", (DL_FUNC) &_Shadow_calc_log_likelihood_function, 7},
-    {"_Shadow_calc_posterior", (DL_FUNC) &_Shadow_calc_posterior, 7},
-    {"_Shadow_calc_posterior_function", (DL_FUNC) &_Shadow_calc_posterior_function, 7},
-    {"_Shadow_calc_posterior_single", (DL_FUNC) &_Shadow_calc_posterior_single, 7},
-    {"_Shadow_theta_EAP", (DL_FUNC) &_Shadow_theta_EAP, 7},
-    {"_Shadow_theta_EAP_matrix", (DL_FUNC) &_Shadow_theta_EAP_matrix, 7},
-    {"_Shadow_theta_EB", (DL_FUNC) &_Shadow_theta_EB, 9},
-    {"_Shadow_theta_EB_single", (DL_FUNC) &_Shadow_theta_EB_single, 9},
-    {"_Shadow_theta_FB", (DL_FUNC) &_Shadow_theta_FB, 10},
-    {"_Shadow_theta_FB_single", (DL_FUNC) &_Shadow_theta_FB_single, 10},
-    {"_Shadow_findSegment", (DL_FUNC) &_Shadow_findSegment, 2},
+    {"_oat_p_1pl", (DL_FUNC) &_oat_p_1pl, 2},
+    {"_oat_array_p_1pl", (DL_FUNC) &_oat_array_p_1pl, 2},
+    {"_oat_p_2pl", (DL_FUNC) &_oat_p_2pl, 3},
+    {"_oat_array_p_2pl", (DL_FUNC) &_oat_array_p_2pl, 3},
+    {"_oat_p_3pl", (DL_FUNC) &_oat_p_3pl, 4},
+    {"_oat_array_p_3pl", (DL_FUNC) &_oat_array_p_3pl, 4},
+    {"_oat_p_pc", (DL_FUNC) &_oat_p_pc, 2},
+    {"_oat_array_p_pc", (DL_FUNC) &_oat_array_p_pc, 2},
+    {"_oat_p_gpc", (DL_FUNC) &_oat_p_gpc, 3},
+    {"_oat_array_p_gpc", (DL_FUNC) &_oat_array_p_gpc, 3},
+    {"_oat_p_gr", (DL_FUNC) &_oat_p_gr, 3},
+    {"_oat_array_p_gr", (DL_FUNC) &_oat_array_p_gr, 3},
+    {"_oat_info_1pl", (DL_FUNC) &_oat_info_1pl, 2},
+    {"_oat_array_info_1pl", (DL_FUNC) &_oat_array_info_1pl, 2},
+    {"_oat_info_2pl", (DL_FUNC) &_oat_info_2pl, 3},
+    {"_oat_array_info_2pl", (DL_FUNC) &_oat_array_info_2pl, 3},
+    {"_oat_info_3pl", (DL_FUNC) &_oat_info_3pl, 4},
+    {"_oat_array_info_3pl", (DL_FUNC) &_oat_array_info_3pl, 4},
+    {"_oat_info_pc", (DL_FUNC) &_oat_info_pc, 2},
+    {"_oat_array_info_pc", (DL_FUNC) &_oat_array_info_pc, 2},
+    {"_oat_info_gpc", (DL_FUNC) &_oat_info_gpc, 3},
+    {"_oat_array_info_gpc", (DL_FUNC) &_oat_array_info_gpc, 3},
+    {"_oat_info_gr", (DL_FUNC) &_oat_info_gr, 3},
+    {"_oat_array_info_gr", (DL_FUNC) &_oat_array_info_gr, 3},
+    {"_oat_calc_info", (DL_FUNC) &_oat_calc_info, 4},
+    {"_oat_calc_info_matrix", (DL_FUNC) &_oat_calc_info_matrix, 4},
+    {"_oat_calc_info_EB", (DL_FUNC) &_oat_calc_info_EB, 4},
+    {"_oat_calc_info_FB", (DL_FUNC) &_oat_calc_info_FB, 5},
+    {"_oat_calc_MI_FB", (DL_FUNC) &_oat_calc_MI_FB, 4},
+    {"_oat_calc_likelihood", (DL_FUNC) &_oat_calc_likelihood, 5},
+    {"_oat_calc_likelihood_function", (DL_FUNC) &_oat_calc_likelihood_function, 5},
+    {"_oat_calc_log_likelihood", (DL_FUNC) &_oat_calc_log_likelihood, 7},
+    {"_oat_calc_log_likelihood_function", (DL_FUNC) &_oat_calc_log_likelihood_function, 7},
+    {"_oat_calc_posterior", (DL_FUNC) &_oat_calc_posterior, 7},
+    {"_oat_calc_posterior_function", (DL_FUNC) &_oat_calc_posterior_function, 7},
+    {"_oat_calc_posterior_single", (DL_FUNC) &_oat_calc_posterior_single, 7},
+    {"_oat_theta_EAP", (DL_FUNC) &_oat_theta_EAP, 7},
+    {"_oat_theta_EAP_matrix", (DL_FUNC) &_oat_theta_EAP_matrix, 7},
+    {"_oat_theta_EB", (DL_FUNC) &_oat_theta_EB, 9},
+    {"_oat_theta_EB_single", (DL_FUNC) &_oat_theta_EB_single, 9},
+    {"_oat_theta_FB", (DL_FUNC) &_oat_theta_FB, 10},
+    {"_oat_theta_FB_single", (DL_FUNC) &_oat_theta_FB_single, 10},
+    {"_oat_findSegment", (DL_FUNC) &_oat_findSegment, 2},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_Shadow(DllInfo *dll) {
+RcppExport void R_init_oat(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }

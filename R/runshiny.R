@@ -6,9 +6,9 @@
 #' @aliases app
 #' @rdname guiShadow
 guiShadow = function() {
-  appDir = system.file("shiny", package = "Shadow")
+  appDir = system.file("shiny", package = "oat")
   if (appDir == "") {
-    stop("Could not find application directory. Try re-installing `Shadow`.", call. = FALSE)
+    stop("Could not find application directory. Try re-installing `oat`.", call. = FALSE)
   }
 
   tmp = NULL

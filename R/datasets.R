@@ -23,14 +23,14 @@
 #' @aliases item.params.science.raw item.attrib.science.raw constraints.science.raw itempool.science itemattrib.science constraints.science
 #' @examples
 #' \dontrun{
-#' write.csv(item.params.science.raw, "item.params.science.raw.csv", row.names = F)
-#' itempool.science = LoadItemPool("item.params.science.raw.csv")
+#' write.csv(item.params.science.raw, "item.params.science.csv", row.names = F)
+#' itempool.science = LoadItemPool("item.params.science.csv")
 #'
-#' write.csv(item.attrib.science.raw, "item.attrib.science.raw.csv", row.names = F)
-#' itemattrib.science = LoadItemAttrib("item.attrib.science.raw.csv", itempool.science)
+#' write.csv(item.attrib.science.raw, "item.attrib.science.csv", row.names = F)
+#' itemattrib.science = LoadItemAttrib("item.attrib.science.csv", itempool.science)
 #'
-#' write.csv(constraints.science.raw, "constraints.science.raw.csv", row.names = F)
-#' constraints.science = LoadConstraints("constraints.science.raw.csv",
+#' write.csv(constraints.science.raw, "constraints.science.csv", row.names = F)
+#' constraints.science = LoadConstraints("constraints.science.csv",
 #'     itempool.science, itemattrib.science)
 #' }
 NULL
@@ -62,17 +62,17 @@ NULL
 #' @aliases item.params.reading.raw item.attrib.reading.raw stim.attrib.reading.raw constraints.reading.raw itempool.reading itemattrib.reading stimattrib.reading constraints.reading
 #' @examples
 #' \dontrun{
-#' write.csv(item.params.reading.raw, "item.params.reading.raw.csv", row.names = F)
-#' itempool.reading = LoadItemPool("item.params.reading.raw.csv")
+#' write.csv(item.params.reading.raw, "item.params.reading.csv", row.names = F)
+#' itempool.reading = LoadItemPool("item.params.reading.csv")
 #'
-#' write.csv(item.attrib.reading.raw, "item.attrib.reading.raw.csv", row.names = F)
-#' itemattrib.reading = LoadItemAttrib("item.attrib.reading.raw.csv", itempool.reading)
+#' write.csv(item.attrib.reading.raw, "item.attrib.reading.csv", row.names = F)
+#' itemattrib.reading = LoadItemAttrib("item.attrib.reading.csv", itempool.reading)
 #'
-#' write.csv(stim.attrib.reading.raw, "stim.attrib.reading.raw.csv", row.names = F)
-#' stimattrib.reading = LoadStAttrib("stim.attrib.reading.raw.csv", itemattrib.reading)
+#' write.csv(stim.attrib.reading.raw, "stim.attrib.reading.csv", row.names = F)
+#' stimattrib.reading = LoadStAttrib("stim.attrib.reading.csv", itemattrib.reading)
 #'
-#' write.csv(constraints.reading.raw, "constraints.reading.raw.csv", row.names = F)
-#' constraints.reading = LoadConstraints("constraints.reading.raw.csv",
+#' write.csv(constraints.reading.raw, "constraints.reading.csv", row.names = F)
+#' constraints.reading = LoadConstraints("constraints.reading.csv",
 #'     itempool.reading, itemattrib.reading, stimattrib.reading)
 #' }
 NULL
@@ -104,17 +104,17 @@ NULL
 #' @aliases item.params.fatigue.raw item.attrib.fatigue.raw item.content.fatigue.raw constraints.fatigue.raw resp.fatigue.raw itempool.fatigue itemattrib.fatigue constraints.fatigue
 #' @examples
 #' \dontrun{
-#' write.csv(item.params.fatigue.raw, "item.params.fatigue.raw.csv", row.names = F)
-#' itempool.fatigue = LoadItemPool("item.params.fatigue.raw.csv")
+#' write.csv(item.params.fatigue.raw, "item.params.fatigue.csv", row.names = F)
+#' itempool.fatigue = LoadItemPool("item.params.fatigue.csv")
 #'
-#' write.csv(item.attrib.fatigue, "item.attrib.fatigue.raw", row.names = F)
-#' itemattrib.fatigue = LoadItemAttrib("item.attrib.fatigue.raw", itempool.fatigue)
+#' write.csv(item.attrib.fatigue, "item.attrib.fatigue.csv", row.names = F)
+#' itemattrib.fatigue = LoadItemAttrib("item.attrib.fatigue.csv", itempool.fatigue)
 #'
-#' write.csv(constraints.fatigue.raw, "constraints.fatigue.raw.csv", row.names = F)
-#' constraints.fatigue = LoadConstraints("constraints.fatigue.raw.csv",
+#' write.csv(constraints.fatigue.raw, "constraints.fatigue.csv", row.names = F)
+#' constraints.fatigue = LoadConstraints("constraints.fatigue.csv",
 #'           itempool.fatigue, itemattrib.fatigue)
 #'
-#' write.csv(item.content.fatigue.raw, "item.content.fatigue.raw.csv", row.names = F)
-#' write.table(resp.fatigue.raw, "resp.fatigue.raw.csv", row.names = F, col.names = F, sep = ",")
+#' write.csv(item.content.fatigue.raw, "item.content.fatigue.csv", row.names = F)
+#' write.table(resp.fatigue.raw, "resp.fatigue.csv", row.names = F, col.names = F, sep = ",")
 #' }
 NULL
