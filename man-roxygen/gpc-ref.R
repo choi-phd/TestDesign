@@ -1,3 +1,3 @@
 #' @references{
-#'   \insertRef{muraki_generalized_1992}{Shadow}
+#'   \insertRef{muraki_generalized_1992}{oat}
 #' }

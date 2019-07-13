@@ -18,6 +18,6 @@ Calculate the Fisher information at theta values according to the graded respons
 }
 \references{
 {
-  \insertRef{samejima_estimation_1969}{Shadow}
+  \insertRef{samejima_estimation_1969}{oat}
 }
 }

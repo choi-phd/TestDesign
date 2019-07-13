@@ -18,6 +18,6 @@ Calculate the Fisher information at a theta value according to the generalizied 
 }
 \references{
 {
-  \insertRef{muraki_generalized_1992}{Shadow}
+  \insertRef{muraki_generalized_1992}{oat}
 }
 }

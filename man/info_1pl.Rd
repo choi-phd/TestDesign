@@ -16,6 +16,6 @@ Calculate the Fisher information at a theta value according to the 1PL model.
 }
 \references{
 {
-  \insertRef{rasch_probabilistic_1960}{Shadow}
+  \insertRef{rasch_probabilistic_1960}{oat}
 }
 }

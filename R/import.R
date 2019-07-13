@@ -13,5 +13,5 @@
 #' @importFrom utils capture.output read.csv setTxtProgressBar txtProgressBar write.table
 #' @importFrom graphics plot abline lines axis grid layout legend mtext par plot.new points rect text
 #' @importFrom lattice xyplot
-#' @useDynLib Shadow
+#' @useDynLib oat
 NULL

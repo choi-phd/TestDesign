@@ -20,12 +20,12 @@ item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
 }
 \references{
 {
-  \insertRef{lord_theory_1952}{Shadow}
-  
-  \insertRef{birnbaum_efficient_1957}{Shadow}
-  
-  \insertRef{birnbaum_estimation_1958}{Shadow}
-  
-  \insertRef{birnbaum_further_1958}{Shadow}
+  \insertRef{lord_theory_1952}{oat}
+
+  \insertRef{birnbaum_efficient_1957}{oat}
+
+  \insertRef{birnbaum_estimation_1958}{oat}
+
+  \insertRef{birnbaum_further_1958}{oat}
 }
 }
