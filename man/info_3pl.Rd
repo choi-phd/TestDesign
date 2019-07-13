@@ -20,6 +20,6 @@ Calculate the Fisher information at a theta value according to the 3PL model.
 }
 \references{
 {
-  \insertRef{birnbaum_latent_1968}{Shadow}
+  \insertRef{birnbaum_latent_1968}{oat}
 }
 }

@@ -20,8 +20,8 @@ item.4 = new("item.pc", threshold = c(-0.5, 0.5), ncat = 3)
 }
 \references{
 {
-  \insertRef{masters_rasch_1982}{Shadow}
-  
-  \insertRef{andrich_rating_1978}{Shadow}
+  \insertRef{masters_rasch_1982}{oat}
+
+  \insertRef{andrich_rating_1978}{oat}
 }
 }

@@ -16,6 +16,6 @@ Calculate the probability of correct response at theta values, under the 1PL mod
 }
 \references{
 {
-  \insertRef{rasch_probabilistic_1960}{Shadow}
+  \insertRef{rasch_probabilistic_1960}{oat}
 }
 }
