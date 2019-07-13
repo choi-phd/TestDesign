@@ -59,34 +59,34 @@ d.itempool = calcDerivative(itempool.science, seq(-3, 3, 1))
 }
 \references{
 {
-  \insertRef{rasch_probabilistic_1960}{Shadow}
+  \insertRef{rasch_probabilistic_1960}{oat}
 }
 
 {
-  \insertRef{lord_theory_1952}{Shadow}
-  
-  \insertRef{birnbaum_efficient_1957}{Shadow}
-  
-  \insertRef{birnbaum_estimation_1958}{Shadow}
-  
-  \insertRef{birnbaum_further_1958}{Shadow}
+  \insertRef{lord_theory_1952}{oat}
+
+  \insertRef{birnbaum_efficient_1957}{oat}
+
+  \insertRef{birnbaum_estimation_1958}{oat}
+
+  \insertRef{birnbaum_further_1958}{oat}
 }
 
 {
-  \insertRef{birnbaum_latent_1968}{Shadow}
+  \insertRef{birnbaum_latent_1968}{oat}
 }
 
 {
-  \insertRef{masters_rasch_1982}{Shadow}
-  
-  \insertRef{andrich_rating_1978}{Shadow}
+  \insertRef{masters_rasch_1982}{oat}
+
+  \insertRef{andrich_rating_1978}{oat}
 }
 
 {
-  \insertRef{muraki_generalized_1992}{Shadow}
+  \insertRef{muraki_generalized_1992}{oat}
 }
 
 {
-  \insertRef{samejima_estimation_1969}{Shadow}
+  \insertRef{samejima_estimation_1969}{oat}
 }
 }

@@ -30,14 +30,14 @@ Also, the following datasets are intended for illustrating expected data structu
 }
 \examples{
 \dontrun{
-write.csv(item.params.science.raw, "item.params.science.raw.csv", row.names = F)
-itempool.science = LoadItemPool("item.params.science.raw.csv")
+write.csv(item.params.science.raw, "item.params.science.csv", row.names = F)
+itempool.science = LoadItemPool("item.params.science.csv")
 
-write.csv(item.attrib.science.raw, "item.attrib.science.raw.csv", row.names = F)
-itemattrib.science = LoadItemAttrib("item.attrib.science.raw.csv", itempool.science)
+write.csv(item.attrib.science.raw, "item.attrib.science.csv", row.names = F)
+itemattrib.science = LoadItemAttrib("item.attrib.science.csv", itempool.science)
 
-write.csv(constraints.science.raw, "constraints.science.raw.csv", row.names = F)
-constraints.science = LoadConstraints("constraints.science.raw.csv",
+write.csv(constraints.science.raw, "constraints.science.csv", row.names = F)
+constraints.science = LoadConstraints("constraints.science.csv",
     itempool.science, itemattrib.science)
 }
 }

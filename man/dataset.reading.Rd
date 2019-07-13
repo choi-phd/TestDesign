@@ -34,17 +34,17 @@ Also, the following datasets are intended for illustrating expected data structu
 }
 \examples{
 \dontrun{
-write.csv(item.params.reading.raw, "item.params.reading.raw.csv", row.names = F)
-itempool.reading = LoadItemPool("item.params.reading.raw.csv")
+write.csv(item.params.reading.raw, "item.params.reading.csv", row.names = F)
+itempool.reading = LoadItemPool("item.params.reading.csv")
 
-write.csv(item.attrib.reading.raw, "item.attrib.reading.raw.csv", row.names = F)
-itemattrib.reading = LoadItemAttrib("item.attrib.reading.raw.csv", itempool.reading)
+write.csv(item.attrib.reading.raw, "item.attrib.reading.csv", row.names = F)
+itemattrib.reading = LoadItemAttrib("item.attrib.reading.csv", itempool.reading)
 
-write.csv(stim.attrib.reading.raw, "stim.attrib.reading.raw.csv", row.names = F)
-stimattrib.reading = LoadStAttrib("stim.attrib.reading.raw.csv", itemattrib.reading)
+write.csv(stim.attrib.reading.raw, "stim.attrib.reading.csv", row.names = F)
+stimattrib.reading = LoadStAttrib("stim.attrib.reading.csv", itemattrib.reading)
 
-write.csv(constraints.reading.raw, "constraints.reading.raw.csv", row.names = F)
-constraints.reading = LoadConstraints("constraints.reading.raw.csv",
+write.csv(constraints.reading.raw, "constraints.reading.csv", row.names = F)
+constraints.reading = LoadConstraints("constraints.reading.csv",
     itempool.reading, itemattrib.reading, stimattrib.reading)
 }
 }

@@ -34,18 +34,18 @@ Also, the following datasets are intended for illustrating expected data structu
 }
 \examples{
 \dontrun{
-write.csv(item.params.fatigue.raw, "item.params.fatigue.raw.csv", row.names = F)
-itempool.fatigue = LoadItemPool("item.params.fatigue.raw.csv")
+write.csv(item.params.fatigue.raw, "item.params.fatigue.csv", row.names = F)
+itempool.fatigue = LoadItemPool("item.params.fatigue.csv")
 
-write.csv(item.attrib.fatigue, "item.attrib.fatigue.raw", row.names = F)
-itemattrib.fatigue = LoadItemAttrib("item.attrib.fatigue.raw", itempool.fatigue)
+write.csv(item.attrib.fatigue, "item.attrib.fatigue.csv", row.names = F)
+itemattrib.fatigue = LoadItemAttrib("item.attrib.fatigue.csv", itempool.fatigue)
 
-write.csv(constraints.fatigue.raw, "constraints.fatigue.raw.csv", row.names = F)
-constraints.fatigue = LoadConstraints("constraints.fatigue.raw.csv",
+write.csv(constraints.fatigue.raw, "constraints.fatigue.csv", row.names = F)
+constraints.fatigue = LoadConstraints("constraints.fatigue.csv",
           itempool.fatigue, itemattrib.fatigue)
 
-write.csv(item.content.fatigue.raw, "item.content.fatigue.raw.csv", row.names = F)
-write.table(resp.fatigue.raw, "resp.fatigue.raw.csv", row.names = F, col.names = F, sep = ",")
+write.csv(item.content.fatigue.raw, "item.content.fatigue.csv", row.names = F)
+write.table(resp.fatigue.raw, "resp.fatigue.csv", row.names = F, col.names = F, sep = ",")
 }
 }
 \keyword{datasets}

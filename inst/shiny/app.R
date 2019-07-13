@@ -2,7 +2,7 @@ library(shiny)
 library(shinythemes)
 library(shinyWidgets)
 library(shinyjs)
-library(Shadow)
+library(oat)
 library(DT)
 
 acceptedfiles = c("text/csv", "text/comma-separated-values,text/plain", ".csv")
@@ -54,7 +54,7 @@ label, .form-group, .progress { margin-bottom: 0px; }
         inputId = "objtype", justified = T, label = h3("Objective type:"),
         choices = c("TCC", "TIF", "MAXINFO")
       ),
-      
+
       textInput("thetas", label = h3("Theta values (comma-separated)"), value = "0, 1"),
       textInput("targets", label = h3("Target values (comma-separated)"), value = "15, 20"),
 
@@ -277,7 +277,7 @@ server = function(input, output, session) {
     shinyjs::toggle("itemselection.method"   , condition = input$problemtype == 2)
     shinyjs::toggle("contentbalancing.method", condition = input$problemtype == 2)
     shinyjs::toggle("refreshpolicy.dropdown" , condition = input$problemtype == 2)
-    shinyjs::toggle("simulation.dropdown"    , condition = input$problemtype == 2)  
+    shinyjs::toggle("simulation.dropdown"    , condition = input$problemtype == 2)
     if (input$problemtype == 2){
       showTab("tabs", target = "2")
       hideTab("tabs", target = "3")
@@ -348,7 +348,7 @@ server = function(input, output, session) {
         conf@itemSelection$targetWeight = rep(1, length(conf@itemSelection$targetLocation))
 
         assign.object("shiny.ATA.config", conf, "ATA.config object")
-        
+
         v$text = "Solving.."
 
         v$fit = ATA(conf, v$const, T)
@@ -389,7 +389,7 @@ server = function(input, output, session) {
             v$text = "BIGM-BAYESIAN requires item selection method FB or EB."; break
           }
         }
-        
+
         if (is.text.parsable(input$n.simulees)){
           eval(parse(text = paste0("v$n.simulees = c(", input$n.simulees, ")[1]")))
           v$n.simulees = min(100, v$n.simulees)
@@ -446,7 +446,7 @@ server = function(input, output, session) {
         conf@finalTheta$method      = input$final.method
         conf@finalTheta$priorDist   = input$final.prior
         conf@itemSelection$method   = input$itemselection.method
-        
+
         if (conf@interimTheta$method == "FB" & v$itemse.exists == F) {
           v$text = "FB interim method requires the standard errors associated with the item parameters."; break
         }
@@ -467,33 +467,33 @@ server = function(input, output, session) {
           v$text = "Final prior parameters should be two values."; break
         }
 
-        
+
         if (conf@itemSelection$method == "FB"){
           if (conf@interimTheta$method != "FB"){
             v$text = "FB item selection method requires FB interim method."; break
           }
         }
-        
+
         conf@refreshPolicy$method = input$refreshpolicy
         conf@MIP$solver = input$solvertype
 
         assign.object("shiny.Shadow.config", conf, "Shadow.config object")
-        
+
         v$text = "Simulating.."
         v$time = Sys.time()
         v$fit  = Shadow(v$itempool, conf, trueTheta, Constraints = v$const, prior = NULL, priorPar = c(0, 1), Data = respData, session = session)
         message("\n")
         assign.object("shiny.Shadow", v$fit, "Simulation result")
-        
+
         if (v$simulee.id > v$n.simulees) v$simulee.id = 1
 
         v$plotoutput = plotCAT(v$fit$output[[v$simulee.id]])
         assign.object(paste0("shiny.thetaplot.", v$simulee.id), v$plotoutput, paste0("Theta plot for simulee ", v$simulee.id))
         v$shadowchart = plotShadow(v$fit$output[[v$simulee.id]], v$const)
         assign.object(paste0("shiny.shadowchart.", v$simulee.id), v$shadowchart, paste0("Shadow test chart for simulee ", v$simulee.id))
-        
+
         v$time = Sys.time() - v$time
-        
+
         v$text = paste0(conf@MIP$solver, ": simulation complete in ", sprintf("%3.3f", v$time), "s")
       }
     }
@@ -548,7 +548,7 @@ server = function(input, output, session) {
         fs = c(fs, path)
         write.csv(v$content, path, row.names = F)
       }
-      
+
       if (v$problemtype == 1){
         if (!is.null(v$plotoutput)){
           path = "plot.pdf"
