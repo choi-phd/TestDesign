@@ -299,8 +299,8 @@ server = function(input, output, session) {
           v$text = "Number of simulees should be an integer."; break
         }
         v$plotoutput = plotCAT(v$fit, v$simulee.id)
-        assign.object(paste0("shiny.thetaplot.", v$simulee.id), v$plotoutput, paste0("Theta plot for simulee ", v$simulee.id))
-        v$shadowchart = plotShadow(v$fit$output[[v$simulee.id]], v$const)
+        assign.object(paste0("shiny.audit.plot.", v$simulee.id), v$plotoutput, paste0("Audit trail plot for simulee ", v$simulee.id))
+        v$shadowchart = plotShadow(v$fit, v$const, v$simulee.id)
         assign.object(paste0("shiny.shadowchart.", v$simulee.id), v$shadowchart, paste0("Shadow test chart for simulee ", v$simulee.id))
       }
     }
@@ -489,7 +489,7 @@ server = function(input, output, session) {
 
         v$plotoutput = plotCAT(v$fit, v$simulee.id)
         assign.object(paste0("shiny.thetaplot.", v$simulee.id), v$plotoutput, paste0("Theta plot for simulee ", v$simulee.id))
-        v$shadowchart = plotShadow(v$fit$output[[v$simulee.id]], v$const)
+        v$shadowchart = plotShadow(v$fit, v$const, v$simulee.id)
         assign.object(paste0("shiny.shadowchart.", v$simulee.id), v$shadowchart, paste0("Shadow test chart for simulee ", v$simulee.id))
 
         v$time = Sys.time() - v$time
@@ -575,7 +575,7 @@ server = function(input, output, session) {
 
       if (v$problemtype == 2){
         if (!is.null(v$fit)){
-          path = paste0("theta.plot.", v$simulee.id, ".pdf")
+          path = paste0("audit.plot.", v$simulee.id, ".pdf")
           fs = c(fs, path)
           pdf(path)
           print(v$plotoutput)
