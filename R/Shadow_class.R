@@ -1,13 +1,13 @@
 #' An S4 class to represent a set of constraints
 #'
 #' An S4 class to represent a set of constraints.
-#' 
+#'
 #' @slot CONSTRAINT Character. The index of the constraint set.
 #' @slot mat A matrix representing the left-hand side weights. Has nc rows.
 #' @slot dir A vector of length nc. Each entry represents a logical operator relating the left-hand side to the right-hand side.
 #' @slot rhs A vector of length nc. Each entry represents the right-hand side of the constraint.
 #' @slot nc Numeric. The number of constraints represented in this object.
-#' 
+#'
 #' @export
 setClass("constraint",
          slots = c(CONSTRAINT = "character",
@@ -39,7 +39,7 @@ setClassUnion("matrixOrNULL", c("matrix", "NULL"))
 #' @slot Info A matrix of item information values.
 #' @slot trueTheta An optional vector of true theta values.
 #' @slot Data An optional matrix of item responses.
-#' 
+#'
 #' @export
 setClass("test",
          slots = c(pool = "item.pool",
@@ -69,7 +69,7 @@ setClass("test",
 #' @slot nt Numeric. A scalar to indicate the number of \code{\linkS4class{test}} objects to be clustered.
 #' @slot tests A list \code{\linkS4class{test}} objects.
 #' @slot names Character. A vector of names corresponding to the \code{\linkS4class{test}} objects.
-#' 
+#'
 #' @export
 setClass("test.cluster",
          slots = c(nt = "numeric",
@@ -86,7 +86,7 @@ setClass("test.cluster",
 )
 
 #' config.Shadow
-#' 
+#'
 #' @rdname config.Shadow
 setClass("Shadow.config",
          slots = c(itemSelection = "list",
@@ -172,14 +172,14 @@ setClass("Shadow.config",
 )
 
 #' Create a Shadow.config object
-#' 
+#'
 #' Create a \code{\linkS4class{Shadow.config}} object for Shadow Test Assembly (STA).
-#' 
+#'
 #' @param itemSelection A list containing item selection criteria.
 #' \itemize{
 #'   \item{\code{method}} The type of criteria. Accepts one of \code{MFI, MPWI, FB, EB}.
 #'   \item{\code{infoType}} The type of information. Accepts \code{FISHER}.
-#'   \item{\code{initialTheta}} Initial theta value(s) for the first item selection. 
+#'   \item{\code{initialTheta}} Initial theta value(s) for the first item selection.
 #'   \item{\code{fixedTheta}} Fixed theta value(s) to optimize for all items to select.
 #' }
 #' @param contentBalancing A list containing content balancing options.
@@ -238,7 +238,7 @@ setClass("Shadow.config",
 #'   \item{\code{truncateML}} Set \code{TRUE} to truncate MLE within \code{boundML}
 #'   \item{\code{maxIter}} Maximum number of Newton-Raphson iterations.
 #'   \item{\code{crit}} Convergence criterion.
-#'   \item{\code{maxChange}} Maximum change in ML estimates between iterations. 
+#'   \item{\code{maxChange}} Maximum change in ML estimates between iterations.
 #'   \item{\code{FisherScoring}} Set \code{TRUE} to use Fisher's method of scoring.
 #' }
 #' @param finalTheta A list containing final theta estimation options.
@@ -256,14 +256,14 @@ setClass("Shadow.config",
 #' }
 #' @param thetaGrid A numeric vector. Theta values to represent the continuum.
 #' @param auditTrail Set \code{TRUE} to generate audit trails.
-#' 
+#'
 #' @rdname config.Shadow
 #' @export
 config.Shadow = function(itemSelection = NULL, contentBalancing = NULL, MIP = NULL, MCMC = NULL,
                          refreshPolicy = NULL, exposureControl = NULL, stoppingCriterion = NULL,
                          interimTheta = NULL, finalTheta = NULL, thetaGrid = seq(-4, 4, .1), auditTrail = F){
   conf = new("Shadow.config")
-  
+
   arg.names = c("itemSelection", "contentBalancing", "MIP", "MCMC",
                 "refreshPolicy", "exposureControl", "stoppingCriterion",
                 "interimTheta", "finalTheta")
@@ -371,7 +371,7 @@ setMethod("show", "Shadow.config", function(object) {
 #' @slot administeredStimulusIndex Numeric. A vector of stimulus indices administered at each position.
 #' @slot shadowTestRefreshed Logical. A vector of logical values indicating whether the shadow test was refreshed before administering an item at each position.
 #' @slot shadowTestFeasible Logical. A vector of logical values indicating whether a feasible solution to the shadow test was available in each position.
-#' @slot solveTime Numeric. A vector of values indicating the time taken in obtaining a shadow test. 
+#' @slot solveTime Numeric. A vector of values indicating the time taken in obtaining a shadow test.
 #' @slot interimThetaEst Numeric. A vector containing estimated thetas at each position.
 #' @slot interimSeEst Numeric. A vector containing standard errors at each position.
 #' @slot thetaSegmentIndex Numeric. A vector containing which segments the estimated thetas were in at each position.
@@ -381,7 +381,7 @@ setMethod("show", "Shadow.config", function(object) {
 #' @slot posteriorSample Numeric. A vector containing MCMC samples.
 #' @slot likelihood Numeric. A likelihood distribution.
 #' @slot shadowTest A list of vectors containing item indices of the shadow test at each position.
-#' 
+#'
 #' @export
 setClass("Shadow.output",
          slots = c(simuleeIndex = "numeric",
@@ -441,7 +441,7 @@ setMethod("show", "Shadow.output", function(object) {
     cat("  Final SE Estimate    :", object@finalSeEst, "\n")
     output = data.frame(Stage = 1:length(object@administeredItemIndex),
                         StimulusIndex = ifelse(is.nan(object@administeredStimulusIndex), rep(NA, length(object@administeredItemIndex)), object@administeredStimulusIndex),
-                        ItemIndex = object@administeredItemIndex, 
+                        ItemIndex = object@administeredItemIndex,
                         ItemResp = object@administeredItemResp,
                         InterimTheta = object@interimThetaEst,
                         InterimSE = object@interimSeEst,
