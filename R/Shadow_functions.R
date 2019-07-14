@@ -19,7 +19,7 @@
 #' @param time_limit Time limit passed onto the solver.
 #' @param gap_limit Gap limit passed onto the solver.
 #' @param ... Only used when \code{solver} is \code{SYMPHONY}. Additional parameters to be passed onto the solver.
-#' 
+#'
 #' @return A list containing the optimal solution and pertinent diagnostics.
 #'
 #' @export
@@ -128,20 +128,20 @@ STA = function(Constraints, objective, solver = "Symphony", xmat = NULL, xdir = 
 #'
 #' @param objectList A list of output objects generated from \code{STA}.
 #' @param file An optional file name as a character string to save the output.
-#' 
+#'
 #' @return None
 #'
 #' @export
 saveOutput = function(objectList, file = NULL) {
   nj = length(objectList)
   for (j in 1:nj) {
-    object = objectList[[j]] 
+    object = objectList[[j]]
     output = data.frame(Simulee = object@simuleeIndex,
                         TrueTheta = object@trueTheta,
                         TrueThetaSegment = object@trueThetaSegment,
                         Stage = 1:length(object@administeredItemIndex),
                         StimulusIndex = ifelse(is.nan(object@administeredStimulusIndex), rep(NA, length(object@administeredItemIndex)), object@administeredStimulusIndex),
-                        ItemIndex = object@administeredItemIndex, 
+                        ItemIndex = object@administeredItemIndex,
                         ItemResp = object@administeredItemResp,
                         InterimTheta = object@interimThetaEst,
                         InterimSE = object@interimSeEst,
@@ -155,19 +155,20 @@ saveOutput = function(objectList, file = NULL) {
 }
 
 #' Draw a shadow test chart
-#' 
+#'
 #' Draw a chart of shadow tests constructed for each simulee. The index of a column represents the position of item administration process, and each column represents the item pool.
-#' 
+#'
 #' @param object An output from \code{\link{Shadow}} function.
 #' @param Constraints The constraint object used in obtaining the output.
-#' @param sortByDifficulty Sort the items by difficulty.
+#' @param examineeID Numeric ID of the examinee to draw the plot.
 #' @param PDF If supplied a filename, save as a PDF file.
-#' 
+#' @param sortByDifficulty Sort the items by difficulty.
+
 #' @docType methods
 #' @rdname plotShadow-methods
 #' @export
 setGeneric(name = "plotShadow",
-           def = function(object, Constraints, sortByDifficulty = FALSE, PDF = NULL) {
+           def = function(object, Constraints, examineeID = 1, PDF = NULL, sortByDifficulty = FALSE) {
              standardGeneric("plotShadow")
            }
 )
@@ -176,33 +177,48 @@ setGeneric(name = "plotShadow",
 #' @rdname plotShadow-methods
 #' @export
 setMethod(f = "plotShadow",
-          signature = "Shadow.output",
-          definition = function(object, Constraints, sortByDifficulty = FALSE, PDF = NULL) {
+          signature = "list",
+          definition = function(object, Constraints, examineeID = 1, PDF = NULL, sortByDifficulty = FALSE) {
             if (!is.null(PDF)) {
-              pdf(file = PDF)
-            } else {
-              pdf(NULL, bg = 'white')
-              dev.control(displaylist="enable")
+              pdf(file = PDF, bg = "white")
             }
-            
+            for (i in examineeID) {
+              plotShadow(object$output[[i]], Constraints, examineeID, PDF = NULL)
+            }
+            if (!is.null(PDF)) {
+              dev.off()
+            } else {
+              p = recordPlot()
+              return(p)
+            }
+          }
+)
+
+#' @docType methods
+#' @rdname plotShadow-methods
+#' @export
+setMethod(f = "plotShadow",
+          signature = "Shadow.output",
+          definition = function(object, Constraints, examineeID = 1, PDF = NULL, sortByDifficulty = FALSE) {
+
             maxNI = Constraints$testLength
-            ni = Constraints$ni            
-            par(mar = c(2, 3, 1, 1) + 0.1, mfrow = c(1, 1))           
+            ni = Constraints$ni
+            par(mar = c(2, 3, 1, 1) + 0.1, mfrow = c(1, 1))
             n.points = sum(!is.na(object@administeredItemResp)) #this should be equal to Constraints$testLength
             item.id = Constraints$ItemAttrib$ID[object@administeredItemIndex]
             item.sequence = object@administeredItemIndex
-            responses = object@administeredItemResp            
+            responses = object@administeredItemResp
             plot(c(0.5, maxNI + 0.5), c(0.5, ni + 0.5), type = "n", las = 1, xlim = c(0, maxNI), xaxt = "n", yaxt = "n", ylab = "")
             usr = par("usr")
-            text(maxNI / 2, usr[3] / 2, "Position", adj = c(0.5, 0), cex = 1.0)            
+            text(maxNI / 2, usr[3] / 2, "Position", adj = c(0.5, 0), cex = 1.0)
             if (sortByDifficulty) {
               axis(2, at = ni / 2, labels = "Easier <-  Items  -> Harder", cex.axis = 1.5, tick = FALSE, line = 0)
             } else {
               axis(2, at = ni / 2, labels = "Items", cex.axis = 1.5, tick = FALSE, line = 0)
-            }            
+            }
             text(maxNI / 2, mean(c(usr[4], ni)), paste0("Examinee ID: ", object@simuleeIndex), adj = c(0.5, 0.5), cex = 1)
-            axis(1, at = 0:maxNI, tick = TRUE, labels = 0:maxNI, cex.axis = 0.7)           
-            text(0, seq(10, ni, 10), seq(10, ni, 10), adj = c(0.5, 0.5), cex = 0.7)           
+            axis(1, at = 0:maxNI, tick = TRUE, labels = 0:maxNI, cex.axis = 0.7)
+            text(0, seq(10, ni, 10), seq(10, ni, 10), adj = c(0.5, 0.5), cex = 0.7)
             for (i in 1:n.points) {
               for (j in 1:ni) {
                 rect(i - 0.25, j - 0.25, i + 0.25, j + 0.25, border = "gray88", lwd = 0.3)
@@ -210,24 +226,24 @@ setMethod(f = "plotShadow",
               if (object@shadowTestRefreshed[i]) {
                 text(i, usr[3], "S", col = "red", cex = 0.7, adj = c(0.5, 0))
               }
-            }           
-            if (Constraints$setBased) {             
+            }
+            if (Constraints$setBased) {
               for (p in 1:Constraints$ns) {
                 for (i in 1:n.points) {
                   rect(i - 0.35, min(Constraints$ItemIndexByStimulus[[p]]) - 0.5, i + 0.35, max(Constraints$ItemIndexByStimulus[[p]]) + 0.5, border = "gray88", lwd = 0.5)
                 }
               }
-            }            
+            }
             shadow.tests = object@shadowTest
-            if (Constraints$setBased) {    
+            if (Constraints$setBased) {
               item.table = merge(Constraints$ItemAttrib, Constraints$StAttrib[c("STID", "STINDEX", "NITEM")], by = "STID", all.x = TRUE, sort = FALSE)
-              for (k in 1:n.points) {                
+              for (k in 1:n.points) {
                 items = shadow.tests[[k]]
                 current.item = object@administeredItemIndex[k]
                 passages = unique(item.table$STINDEX[items])
-                current.passage = item.table$STINDEX[current.item]                
+                current.passage = item.table$STINDEX[current.item]
                 for (p in 1:length(passages)) {
-                  sub.items = Constraints$ItemIndexByStimulus[[passages[p]]]                 
+                  sub.items = Constraints$ItemIndexByStimulus[[passages[p]]]
                   if (passages[p] == current.passage) {
                     rect(k - 0.35, min(sub.items) - 0.5, k + 0.35, max(sub.items) + 0.5, border = "blue", col = "khaki", lwd = 0.5)
                     for (i in 1:length(sub.items)) {
@@ -256,7 +272,7 @@ setMethod(f = "plotShadow",
                 }
               }
             } else { #discrete items only; need to handle a mixed-type case
-              for (k in 1:n.points) {                
+              for (k in 1:n.points) {
                 items = shadow.tests[[k]]
                 current.item = object@administeredItemIndex[k]
                 for (i in 1:length(items)) {
@@ -282,53 +298,27 @@ setMethod(f = "plotShadow",
                 }
               }
             }
-            if (!is.null(PDF)) {
-              dev.off()
-            } else {
-              p = recordPlot()
-              plot.new()
-              dev.off()
-              
-              return(p)
-            }
-          }
-)
-
-#' @docType methods
-#' @rdname plotShadow-methods
-#' @export
-setMethod(f = "plotShadow",
-          signature = "list",
-          definition = function(object, Constraints, sortByDifficulty = FALSE, PDF = NULL) {
-            if (!is.null(PDF)) {
-              pdf(file = PDF)
-            }
-            for (i in 1:length(object)) {
-              plotShadow(object[[i]], Constraints)
-            }
-            if (!is.null(PDF)) {
-              dev.off()
-            }
           }
 )
 
 #' Draw an audit trail plot
-#' 
+#'
 #' Draw an audit trail plot.
-#' 
+#'
 #' @param object An output object generated by \code{STA}.
+#' @param examineeID Numeric ID of the examinee to draw the plot.
 #' @param minTheta A lower bound of theta.
 #' @param maxTheta An upper bound of theta.
 #' @param minScore A minimum item score.
 #' @param maxScore A maximum item score.
 #' @param zCI A quantile of the normal distribution for confidence intervals.
 #' @param PDF If supplied a filename, save as a PDF file.
-#' 
+#'
 #' @docType methods
 #' @rdname plotCAT-methods
 #' @export
 setGeneric(name = "plotCAT",
-           def = function(object, minTheta = -5, maxTheta = 5, minScore = 0, maxScore = 1, zCI = 1.96, PDF = NULL) {
+           def = function(object, examineeID = 1, PDF = NULL, minTheta = -5, maxTheta = 5, minScore = 0, maxScore = 1, zCI = 1.96) {
              standardGeneric("plotCAT")
            }
 )
@@ -337,18 +327,34 @@ setGeneric(name = "plotCAT",
 #' @rdname plotCAT-methods
 #' @export
 setMethod(f = "plotCAT",
-          signature = "Shadow.output",
-          definition = function(object, minTheta = -5, maxTheta = 5, minScore = 0, maxScore = 1, zCI = 1.96, PDF = NULL) {
-            nItems = length(object@administeredItemIndex)  
+          signature = "list",
+          definition = function(object, examineeID = 1, PDF = NULL, minTheta = -5, maxTheta = 5, minScore = 0, maxScore = 1, zCI = 1.96) {
             if (!is.null(PDF)) {
-              pdf(file = PDF, bg = 'white')
+              pdf(file = PDF, bg = "white")
+            }
+            for (i in examineeID) {
+              plotCAT(object$output[[i]], examineeID, PDF = NULL, minTheta = minTheta, maxTheta = maxTheta, minScore = minScore, maxScore = maxScore, zCI = zCI)
+            }
+            if (!is.null(PDF)) {
+              dev.off()
             } else {
-              pdf(NULL, bg = 'white')
-              dev.control(displaylist="enable")
-            }            
+              p = recordPlot()
+              return(p)
+            }
+          }
+)
+
+#' @docType methods
+#' @rdname plotCAT-methods
+#' @export
+setMethod(f = "plotCAT",
+          signature = "Shadow.output",
+          definition = function(object, examineeID = 1, PDF = NULL, minTheta = -5, maxTheta = 5, minScore = 0, maxScore = 1, zCI = 1.96) {
+            message(object@simuleeIndex)
+            nItems = length(object@administeredItemIndex)
             if (nItems > 0) {
               par(mar = c(2, 3, 1, 1) + 0.1)
-              layout(rbind(c(1, 1), c(1, 1), c(1, 1), c(1, 1), c(2, 2)))              
+              layout(rbind(c(1, 1), c(1, 1), c(1, 1), c(1, 1), c(2, 2)))
               plot(1:nItems, seq(minTheta, maxTheta, length = nItems), ylab = "Theta", type = "n", las = 1, xlim = c(0, nItems), xaxt = "n", yaxt = "n")
               grid()
               text(nItems/2, maxTheta, paste0("Examinee ID: ", object@simuleeIndex), adj = c(0.5, 0.5), cex = 2)
@@ -362,17 +368,17 @@ setMethod(f = "plotCAT",
               }
               lines(1:nItems, object@interimThetaEst, lty = 3, col = "blue", lwd = 1.5)
               points(1:nItems, object@interimThetaEst, pch = 16, cex = 2.5, col = "blue")
-              points(1:nItems, object@interimThetaEst, pch = 1, cex = 2.5, col = "purple4")             
+              points(1:nItems, object@interimThetaEst, pch = 1, cex = 2.5, col = "purple4")
               if (!is.null(object@trueTheta)) {
                 abline(h = object@trueTheta, lty = 1, col = "red")
               } else {
                 abline(h = object@finalThetaEst, lty = 1, col = "red")
-              }             
+              }
               for (i in 1:nItems) {
                 if (object@shadowTestRefreshed[i]) {
                   text(i, minTheta, "S", col = "red", cex = 1.5)
                 }
-              }              
+              }
               plot(1:nItems, seq(minScore, maxScore, length.out = nItems), type = "n", xaxt = "n", ylim = c(minScore - 1, maxScore + 1), xlim = c(0, nItems), yaxt = "n", ylab = "")
               mtext("Position", side = 1, line = 1, outer = FALSE, cex = 1.5)
               axis(2, at = (minScore + maxScore)/2, labels = "Response", cex.axis = 2, tick = FALSE)
@@ -389,40 +395,14 @@ setMethod(f = "plotCAT",
               }
             } else {
               cat("Shadow.output is empty\n")
-            }            
-            if (!is.null(PDF)) {
-              dev.off()
-            } else {
-              p = recordPlot()
-              plot.new()
-              dev.off()              
-              return(p)
-            }
-          }
-)
-
-#' @docType methods
-#' @rdname plotCAT-methods
-#' @export
-setMethod(f = "plotCAT",
-          signature = "list",
-          definition = function(object, minTheta = -5, maxTheta = 5, minScore = 0, maxScore = 1, zCI = 1.96, PDF = NULL) {
-            if (!is.null(PDF)) {
-              pdf(file = PDF)
-            }
-            for (i in 1:length(object)) {
-              plotCAT(object[[i]], minTheta = minTheta, maxTheta = maxTheta, minScore = minScore, maxScore = maxScore, zCI = zCI)
-            }
-            if (!is.null(PDF)) {
-              dev.off()
             }
           }
 )
 
 #' Find matching theta to supplied probability
-#' 
+#'
 #' Find theta corresponding to a response probability value for each item.
-#' 
+#'
 #' @param object An \code{\linkS4class{item.pool}} object.
 #' @param rp A response probability value.
 #' @param maxIter A maximum number of iterations.
@@ -473,36 +453,36 @@ setMethod(f = "simResp",
 
 #' @name item.pool.operators
 #' @title Item pool and pool cluster operators
-#' 
+#'
 #' @description \code{pool1 + pool2} combines two \code{\linkS4class{item.pool}} objects.
-#' 
+#'
 #' @param pool1 An \code{\linkS4class{item.pool}} object.
 #' @param pool2 An \code{\linkS4class{item.pool}} object.
-#' 
+#'
 #' @export
 #' @rdname item.pool.operators
 "+.item.pool" = function(pool1, pool2) {
-  if(class(pool1) != "item.pool" || class(pool2) != "item.pool") stop("operarands must be of class \"item.pool\" ")  
+  if(class(pool1) != "item.pool" || class(pool2) != "item.pool") stop("operarands must be of class \"item.pool\" ")
   if (validObject(pool1) && validObject(pool2)) {
-    combined.pool = new("item.pool")    
+    combined.pool = new("item.pool")
     ID = c(pool1@ID, pool2@ID)
     model = c(pool1@model, pool2@model)
     NCAT = c(pool1@NCAT, pool2@NCAT)
     parms = c(pool1@parms, pool2@parms)
     ipar = cbind(pool1@ipar, pool2@ipar)
-    SEs = cbind(pool1@ipar, pool2@ipar)    
-    is.unique = which(!duplicated(ID))    
+    SEs = cbind(pool1@ipar, pool2@ipar)
+    is.unique = which(!duplicated(ID))
     combined.pool@ni = length(is.unique)
     combined.pool@maxCat = max(NCAT[is.unique])
     combined.pool@index = 1:combined.pool@ni
     combined.pool@ID = ID[is.unique]
     combined.pool@model = model[is.unique]
     combined.pool@NCAT = NCAT[is.unique]
-    combined.pool@parms = parms[is.unique]    
+    combined.pool@parms = parms[is.unique]
     if (sum(duplicated(ID)) > 0) {
       warning("duplicate items were found and removed")
       cat("duplicate ID:", ID[duplicated(ID)], "\n")
-    }    
+    }
     return(combined.pool)
   } else {
     stop("invlid pool(s) submitted")
@@ -510,12 +490,12 @@ setMethod(f = "simResp",
 }
 
 #' @description \code{pool1 - pool2} combines the second from the first. Thw two \code{\linkS4class{item.pool}} objects must overlap for this to be performed.
-#' 
+#'
 #' @export
 #' @rdname item.pool.operators
 "-.item.pool" = function(pool1, pool2) {
   if(class(pool1) != "item.pool" || class(pool2) != "item.pool") stop("operarands must be of class \"item.pool\" ")
-  
+
   if(any(pool2@ID %in% pool1@ID)) {
     left = which(!(pool1@ID %in% pool2@ID))
     if (length(left) > 0) {
@@ -524,19 +504,19 @@ setMethod(f = "simResp",
       pool1@index = 1:length(left)
       pool1@ID = pool1@ID[left]
       pool1@model = pool1@model[left]
-      pool1@NCAT = pool1@NCAT[left] 
+      pool1@NCAT = pool1@NCAT[left]
       pool1@parms = pool1@parms[left]
       pool1@ipar = pool1@ipar[left, ]
       pool1@SEs = pool1@SEs[left, ]
     } else {
       return("item pool is empty")
     }
-  } 
+  }
   return(pool1)
 }
 
 #' @description \code{pool1 == pool2} tests equality of the two item.pool objects.
-#' 
+#'
 #' @export
 #' @rdname item.pool.operators
 "==.item.pool" = function(pool1, pool2) {
@@ -545,10 +525,10 @@ setMethod(f = "simResp",
 }
 
 #' @description \code{pool.cluster1 == pool.cluster2} tests equality of the two pool.cluster objects.
-#' 
+#'
 #' @param pool.cluster1 A \code{\linkS4class{pool.cluster}} object.
 #' @param pool.cluster2 A \code{\linkS4class{pool.cluster}} object.
-#' 
+#'
 #' @export
 #' @rdname item.pool.operators
 "==.pool.cluster" = function(pool.cluster1, pool.cluster2) {
@@ -557,13 +537,13 @@ setMethod(f = "simResp",
 }
 
 #' Extract
-#' 
+#'
 #' @param x x
 #' @param i i
 #' @param j j
 #' @param ... ...
 #' @param drop drop
-#' 
+#'
 #' @name extract-methods
 #' @aliases [,test,ANY,ANY,ANY-method
 #' @docType methods
@@ -600,12 +580,12 @@ setMethod(
 )
 
 #' Create a subset of an item pool object
-#' 
+#'
 #' Create a subset of an \code{\linkS4class{item.pool}} object.
-#' 
+#'
 #' @param pool An \code{\linkS4class{item.pool}} object.
 #' @param select A vector of indices identifying the items to subset.
-#' 
+#'
 #' @examples
 #' sub.itempool = subsetItemPool(itempool.science, 1:100)
 #' @export
@@ -634,12 +614,12 @@ subsetItemPool = function(pool, select = NULL) {
 }
 
 #' Create a subset of a test object
-#' 
+#'
 #' Create a subset of a test object.
-#' 
+#'
 #' @param test An \code{\linkS4class{test}} object.
 #' @param select A vector of item indices to subset.
-#' 
+#'
 #' @examples
 #' test = MakeTest(itempool.science, seq(-3, 3, 1))
 #' sub.test = subsetTest(test, 1:100)
@@ -666,17 +646,17 @@ subsetTest = function(test, select = NULL) {
 }
 
 #' Generate a test object
-#' 
+#'
 #' Generate a \code{\linkS4class{test}} object
-#' 
+#'
 #' @param object An \code{\linkS4class{item.pool}} object.
 #' @param theta A grid of theta values.
 #' @param infoType An information type.
 #' @param trueTheta An optional vector of true theta values to simulate response data.
-#' 
+#'
 #' @docType methods
 #' @rdname MakeTest-methods
-#' 
+#'
 #' @examples
 #' test = MakeTest(itempool.science, seq(-3, 3, 1))
 #' @export
@@ -708,13 +688,13 @@ setMethod(f = "MakeTest",
 )
 
 #' Generate a test cluster object
-#' 
+#'
 #' Generate a \code{\linkS4class{test.cluster}} object
 #'
 #' @param object An \code{\linkS4class{pool.cluster}} object
 #' @param theta A grid of theta values
 #' @param trueTheta An optional vector of true theta values to simulate response data
-#' 
+#'
 #' @docType methods
 #' @rdname MakeTestCluster-methods
 setGeneric(name = "MakeTestCluster",
@@ -750,9 +730,9 @@ setMethod(f = "MakeTestCluster",
 )
 
 #' Generate maximum likelihood estimates of theta
-#' 
+#'
 #' Generate maximum likelihood estimates of theta.
-#' 
+#'
 #' @param object A \code{\linkS4class{test}} object.
 #' @param resp A vector (or matrix) of item responses.
 #' @param startTheta An optional vector of start theta values.
@@ -763,7 +743,7 @@ setMethod(f = "MakeTestCluster",
 #' @param truncate Set \code{TRUE} to bound MLE to thetaRange: c(minTheta, maxTheta).
 #' @param maxChange Maximum change between iterations.
 #' @param FisherScoring \code{TRUE} to use Fisher's method of scoring.
-#' 
+#'
 #' @docType methods
 #' @rdname mle-methods
 #' @export
@@ -807,7 +787,7 @@ setMethod(f = "mle",
               items = select
             } else {
               items = 1:ni
-            } 
+            }
             if (ncol(resp) != length(items)) {
               stop("resp must be of length ni or match the length of select")
             }
@@ -880,9 +860,9 @@ setMethod(f = "mle",
 )
 
 #' Generate maximum likelihood estimates of theta
-#' 
-#' Generate maximum likelihood estimates of theta. 
-#' 
+#'
+#' Generate maximum likelihood estimates of theta.
+#'
 #' @param object A \code{\linkS4class{test}} object.
 #' @param startTheta An optional vector of start theta values.
 #' @param maxIter Maximum number of iterations.
@@ -892,7 +872,7 @@ setMethod(f = "mle",
 #' @param truncate Set \code{TRUE} to bound MLE to thetaRange.
 #' @param maxChange Maximum change between iterations.
 #' @param FisherScoring Set \code{TRUE} to use Fisher's method of scoring.
-#' 
+#'
 #' @docType methods
 #' @rdname mlearray-methods
 setGeneric(name = "MLE",
@@ -908,7 +888,7 @@ setMethod(f = "MLE",
           definition = function(object, startTheta = NULL, maxIter = 100, crit = 0.001, select = NULL, thetaRange = c(-4, 4), truncate = FALSE, maxChange = 1.0, FisherScoring = TRUE) {
             ni = ncol(object@Data)
             nj = nrow(object@Data)
-            nq = length(object@theta)            
+            nq = length(object@theta)
             if (is.null(select)) {
               select = 1:object@pool@ni
               Resp = object@Data
@@ -931,7 +911,7 @@ setMethod(f = "MLE",
               items = 1:ni
             }
             if (is.null(startTheta)) {
-              prior = rep(1 / nq, nq) 
+              prior = rep(1 / nq, nq)
               startTheta = EAP(object, prior, select = select)$TH
             } else if (length(startTheta) == 1) {
               startTheta = rep(startTheta, nj)
@@ -999,7 +979,7 @@ setMethod(f = "MLE",
               RMSE = sqrt(mean((TH - object@trueTheta)^2))
             }
             return(list(TH = TH, SE = SE, Conv = Conv, Trunc = Trunc, RMSE = RMSE))
-          }   
+          }
 )
 
 #' @docType methods
@@ -1016,15 +996,15 @@ setMethod(f = "MLE",
 )
 
 #' Generate expected a posteriori estimates of theta
-#' 
+#'
 #' Generate expected a posteriori estimates of theta.
-#' 
+#'
 #' @param object An \code{\linkS4class{item.pool}} object.
 #' @param theta A theta grid.
 #' @param prior A prior distribution, a numeric vector for a common prior or a matrix for individualized priors.
 #' @param resp A numeric matrix of item responses, one row per examinee.
 #' @param select A vector of indices identifying the items to subset.
-#' 
+#'
 #' @docType methods
 #' @rdname eap-methods
 #' @export
@@ -1041,8 +1021,8 @@ setMethod(f = "eap",
           signature = "item.pool",
           definition = function(object, theta, prior, resp, select = NULL) {
             ni = object@ni
-            nq = length(theta)            
-            Prob = calcProb(object, theta)            
+            nq = length(theta)
+            Prob = calcProb(object, theta)
             if (is.vector(resp)) {
               nj = 1
             } else if (is.matrix(resp)) {
@@ -1052,11 +1032,11 @@ setMethod(f = "eap",
               resp = as.matrix(resp)
             } else {
               stop("resp must be of class either vector or matrix")
-            }            
-            posterior = matrix(rep(prior, nj), nj, nq, byrow = TRUE)            
+            }
+            posterior = matrix(rep(prior, nj), nj, nq, byrow = TRUE)
             if (length(prior) != nq) {
               stop("theta and prior must be equal in length")
-            }            
+            }
             if (!is.null(select)) {
               if (length(resp) != length(select)) {
                 stop("resp and select must be equal in length when select is not NULL")
@@ -1072,7 +1052,7 @@ setMethod(f = "eap",
               items = select
             } else {
               items = 1:ni
-            }          
+            }
             if (nj == 1) {
               for (i in 1:length(items)) {
                 if (resp[i] >= 0 && resp[i] < object@maxCat) {
@@ -1098,14 +1078,14 @@ setMethod(f = "eap",
 )
 
 #' Generate expected a posteriori estimates of theta
-#' 
+#'
 #' Generate expected a posteriori estimates of theta.
-#' 
+#'
 #' @param object A \code{\linkS4class{test}} or a \code{\linkS4class{test.cluster}} object.
 #' @param prior A prior distribution, a numeric vector for a common prior or a matrix for individualized priors.
 #' @param select A vector of indices identifying the items to subset.
 #' @param resetPrior Set \code{TRUE} to reset the prior distribution for each test when object is of class \code{\linkS4class{test.cluster}}.
-#' 
+#'
 #' @docType methods
 #' @rdname eaparray-methods
 setGeneric(name = "EAP",
@@ -1175,9 +1155,9 @@ setMethod(f = "EAP",
 )
 
 #' Create an item pool cluster object
-#' 
+#'
 #' Create a \code{\linkS4class{pool.cluster}} object.
-#' 
+#'
 #' @param pools A list of \code{\linkS4class{item.pool}} objects.
 #' @param names An optional vector of \code{\linkS4class{item.pool}} names.
 MakeItemPoolCluster = function(pools, names = NULL) {
@@ -1186,28 +1166,28 @@ MakeItemPoolCluster = function(pools, names = NULL) {
     stop("pools is empty")
   } else if (np == 1) {
     stop("only one pool found in pools - expecting 2 or more")
-  }  
+  }
   if (is.null(names)) {
     names = paste0("Pool_", 1:np)
   } else {
     if (length(names) != np) stop("pools and names are of different lengths")
-  }  
-  PoolCluster = new("pool.cluster")  
+  }
+  PoolCluster = new("pool.cluster")
   PoolCluster@np = np
   PoolCluster@pools = vector(mode = "list", length = np)
-  PoolCluster@names = names  
+  PoolCluster@names = names
   for (i in 1:np) {
     if (class(pools[[i]]) != "item.pool") stop(paste0("pool.list[[", i, "]] is not of class \"item.pool\""))
     PoolCluster@pools[[i]] = pools[[i]]
-  }  
+  }
   if (validObject(PoolCluster)) return(PoolCluster)
 }
 
 
 #' Run computerized adaptive testing with generalized shadow-test approach
-#' 
+#'
 #' Run computerized adaptive testing with generalized shadow-test approach.
-#' 
+#'
 #' @param object An \code{\linkS4class{item.pool}} object. Use \code{\link{LoadItemPool}} for this.
 #' @param config A \code{\linkS4class{Shadow.config}} object.
 #' @param trueTheta Numeric. A vector of true theta values to be used in simulation.
@@ -1216,10 +1196,10 @@ MakeItemPoolCluster = function(pools, names = NULL) {
 #' @param priorPar Numeric. A vector of parameters for prior distribution.
 #' @param Data Numeric. A matrix containing item response data.
 #' @param session Used to communicate with a Shiny session.
-#' 
+#'
 #' @rdname Shadow-methods
-#' 
-#' @examples 
+#'
+#' @examples
 #' object    = itempool.science
 #' config    = config.Shadow()
 #' trueTheta = rnorm(1)
@@ -1239,11 +1219,11 @@ setMethod(f = "Shadow",
           definition = function(object, config, trueTheta, Constraints, prior, priorPar, Data, session) {
             if (!validObject(config)) {
               stop("invalid configuration options specified")
-            }            
+            }
             if (!is.null(Constraints)) {
-              ni = Constraints$ni 
-              ns = Constraints$ns 
-              nv = Constraints$nv 
+              ni = Constraints$ni
+              ns = Constraints$ns
+              nv = Constraints$nv
             } else {
               ni = object@ni
             }
@@ -1254,19 +1234,19 @@ setMethod(f = "Shadow",
             model[which(model == "item.pc")]  = 4
             model[which(model == "item.gpc")] = 5
             model[which(model == "item.gr")]  = 6
-            model = as.numeric(model)          
+            model = as.numeric(model)
             if (!is.null(trueTheta)) {
-              nj = length(trueTheta) 
+              nj = length(trueTheta)
             } else if (!is.null(Data)) {
               nj = nrow(Data)
             } else {
               stop("either trueTheta or Data should be provided at a minimum")
-            }            
-            nq = length(config@thetaGrid)           
+            }
+            nq = length(config@thetaGrid)
             minTheta = min(config@thetaGrid)
-            maxTheta = max(config@thetaGrid)            
+            maxTheta = max(config@thetaGrid)
             exposureControl = toupper(config@exposureControl$method)
-            refreshPolicy = toupper(config@refreshPolicy$method)            
+            refreshPolicy = toupper(config@refreshPolicy$method)
             if (toupper(config@contentBalancing$method %in% c("STA", "SHADOW", "SHADOWTEST", "SHADOW TEST"))) {
               if (is.null(Constraints)) {
                 stop("Constraints must not be NULL for STA")
@@ -1275,8 +1255,8 @@ setMethod(f = "Shadow",
                 setBased = Constraints$setBased
                 testLength = Constraints$testLength
                 minNI = Constraints$testLength
-                maxNI = Constraints$testLength                
-                refreshShadow = rep(FALSE, testLength)                
+                maxNI = Constraints$testLength
+                refreshShadow = rep(FALSE, testLength)
                 if (refreshPolicy %in% c("ALWAYS", "THRESHOLD")) {
                   refreshShadow = rep(TRUE, testLength)
                 } else if (refreshPolicy == "POSITION") {
@@ -1294,7 +1274,7 @@ setMethod(f = "Shadow",
                 } else if (refreshPolicy %in% c("STIMULUS", "SET", "PASSAGE")) {
                   if (!setBased) {
                     stop("setBased must be TRUE when config@refreshPolicy$method equals \"STIMULUS\"")
-                  } 
+                  }
                 }
                 refreshShadow[1] = TRUE
               }
@@ -1304,7 +1284,7 @@ setMethod(f = "Shadow",
               minNI = config@stoppingCriterion$minNI
               maxNI = config@stoppingCriterion$maxNI
               maxSE = config@stoppingCriterion$SeThreshold
-            }             
+            }
             if (!is.null(Data)) {
               Test = MakeTest(object, config@thetaGrid, infoType = "FISHER", trueTheta = NULL)
               Data = as.matrix(Data)
@@ -1317,14 +1297,14 @@ setMethod(f = "Shadow",
               Test = MakeTest(object, config@thetaGrid, infoType = "FISHER", trueTheta)
             } else {
               stop("both Data and trueTheta cannot be NULL")
-            }          
-            maxInfo = max(Test@Info)            
+            }
+            maxInfo = max(Test@Info)
             if (is.null(prior)) {
               if (!is.null(priorPar)) {
                 if (is.vector(priorPar) && length(priorPar) == 2) {
                   posterior = matrix(dnorm(config@thetaGrid, mean = priorPar[1], sd = priorPar[2]), nj, nq, byrow = TRUE)
                 } else if (is.matrix(priorPar) && all(dim(priorPar) == c(nj, 2))) {
-                  posterior = matrix(NA, nj, nq) 
+                  posterior = matrix(NA, nj, nq)
                   for (j in 1:nj) {
                     posterior[j, ] = dnorm(config@thetaGrid, mean = priorPar[j, 1], sd = priorPar[j, 2])
                   }
@@ -1342,20 +1322,20 @@ setMethod(f = "Shadow",
               posterior = prior
             } else {
               stop("misspecification for prior or priorPar")
-            }            
+            }
             if (toupper(config@interimTheta$method) %in% c("EB", "FB")) {
               nSample = config@MCMC$burnIn + config@MCMC$postBurnIn
               if (toupper(config@interimTheta$method) == "FB" || toupper(config@finalTheta$method) == "FB") {
-                iparList = iparPosteriorSample(object, nSample = nSample) 
+                iparList = iparPosteriorSample(object, nSample = nSample)
               }
-            } 
+            }
             if (!is.null(config@itemSelection$initialTheta)) {
               initialTheta = rep(config@itemSelection$initialTheta, nj)
             } else {
               initialTheta = as.vector(posterior %*% matrix(config@thetaGrid, ncol = 1))
-            }            
+            }
             itemsAdministered = matrix(FALSE, nj, ni)
-            outputList = vector(mode = "list", length = nj)            
+            outputList = vector(mode = "list", length = nj)
             if (exposureControl %in% c("ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
               itemEligibilityControl = TRUE
               maxExposureRate = config@exposureControl$maxExposureRate
@@ -1368,51 +1348,51 @@ setMethod(f = "Shadow",
               trueSegmentFreq = numeric(nSegment)
               estSegmentFreq = numeric(nSegment)
               trueSegmentCount = numeric(nj)
-              estSegmentCount = numeric(nj)              
+              estSegmentCount = numeric(nj)
               segmentCut = config@exposureControl$segmentCut
               cutLower = segmentCut[1:nSegment]
-              cutUpper = segmentCut[2:(nSegment + 1)]              
-              pe_i = matrix(1, nSegment, ni)               
+              cutUpper = segmentCut[2:(nSegment + 1)]
+              pe_i = matrix(1, nSegment, ni)
               if (setBased) {
-                pe_s = matrix(1, nSegment, ns) 
+                pe_s = matrix(1, nSegment, ns)
               } else {
                 pe_s = NULL
                 alpha_sjk = NULL
                 rho_sjk = NULL
-              }              
+              }
               if (config@exposureControl$diagnosticStats) {
                 alpha_g_i = matrix(0, nrow = nj, ncol = nSegment * ni)
-                epsilon_g_i = matrix(0, nrow = nj, ncol = nSegment * ni)                
+                epsilon_g_i = matrix(0, nrow = nj, ncol = nSegment * ni)
                 if (setBased) {
                   alpha_g_s = matrix(0, nrow = nj, ncol = nSegment * ns)
                   epsilon_g_s = matrix(0, nrow = nj, ncol = nSegment * ns)
-                }                
+                }
                 if (fadingFactor != 1) {
                   noFading_alpha_g_i = matrix(0, nrow = nj, ncol = nSegment * ni)
-                  noFading_epsilon_g_i = matrix(0, nrow = nj, ncol = nSegment * ni)                  
+                  noFading_epsilon_g_i = matrix(0, nrow = nj, ncol = nSegment * ni)
                   if (setBased) {
                     noFading_alpha_g_s = matrix(0, nrow = nj, ncol = nSegment * ns)
                     noFading_epsilon_g_s = matrix(0, nrow = nj, ncol = nSegment * ns)
                   }
                 }
-              }              
+              }
               if (!is.null(config@exposureControl$initialEligibilityStats)) {
-                n_jk = config@exposureControl$initialEligibilityStats$n_jk 
-                alpha_ijk = config@exposureControl$initialEligibilityStats$alpha_ijk 
-                phi_jk = config@exposureControl$initialEligibilityStats$phi_jk 
-                rho_ijk = config@exposureControl$initialEligibilityStats$rho_ijk 
+                n_jk = config@exposureControl$initialEligibilityStats$n_jk
+                alpha_ijk = config@exposureControl$initialEligibilityStats$alpha_ijk
+                phi_jk = config@exposureControl$initialEligibilityStats$phi_jk
+                rho_ijk = config@exposureControl$initialEligibilityStats$rho_ijk
                 if (setBased) {
-                  alpha_sjk = config@exposureControl$initialEligibilityStats$alpha_sjk 
-                  rho_sjk = config@exposureControl$initialEligibilityStats$rho_sjk 
-                } 
+                  alpha_sjk = config@exposureControl$initialEligibilityStats$alpha_sjk
+                  rho_sjk = config@exposureControl$initialEligibilityStats$rho_sjk
+                }
               } else {
-                n_jk = numeric(nSegment) 
-                alpha_ijk = matrix(0, nSegment, ni) 
-                phi_jk = numeric(nSegment) 
-                rho_ijk = matrix(0, nSegment, ni) 
+                n_jk = numeric(nSegment)
+                alpha_ijk = matrix(0, nSegment, ni)
+                phi_jk = numeric(nSegment)
+                rho_ijk = matrix(0, nSegment, ni)
                 if (setBased) {
-                  alpha_sjk = matrix(0, nSegment, ns) 
-                  rho_sjk = matrix(0, nSegment, ns) 
+                  alpha_sjk = matrix(0, nSegment, ns)
+                  rho_sjk = matrix(0, nSegment, ns)
                 }
               }
               if (fadingFactor != 1) {
@@ -1428,7 +1408,7 @@ setMethod(f = "Shadow",
               itemEligibilityControl = FALSE
               trueSegmentCount = NULL
               estSegmentCount = NULL
-            }             
+            }
             if (!is.null(config@itemSelection$fixedTheta)) {
               if (length(config@itemSelection$fixedTheta) == 1) {
                 infoFixedTheta = vector(mode = "list", length = nj)
@@ -1443,21 +1423,21 @@ setMethod(f = "Shadow",
               }
             } else {
               selectAtFixedTheta = FALSE
-            }            
+            }
             if (setBased) {
               usageMatrix = matrix(FALSE, nrow = nj, ncol = nv)
             } else {
               usageMatrix = matrix(FALSE, nrow = nj, ncol = ni)
-            }            
+            }
             getInfo = function() {
               if (selectAtFixedTheta) {
-                info = infoFixedTheta[[j]] 
-              } else if (config@itemSelection$method == "MPWI") { 
+                info = infoFixedTheta[[j]]
+              } else if (config@itemSelection$method == "MPWI") {
                 info = as.vector(matrix(posterior[j, ], nrow = 1) %*% Test@Info)
               } else if (config@itemSelection$method == "MFI") {
                 info = calc_info(currentTheta, object@ipar, object@NCAT, model)
               } else if (config@itemSelection$method == "EB") {
-                info = calc_info_EB(output@posteriorSample, object@ipar, object@NCAT, model)  
+                info = calc_info_EB(output@posteriorSample, object@ipar, object@NCAT, model)
               } else if (config@itemSelection$method == "FB") {
                 if (config@itemSelection$infoType == "FISHER") {
                   info = calc_info_FB(output@posteriorSample, iparList, object@NCAT, model)
@@ -1466,24 +1446,24 @@ setMethod(f = "Shadow",
                 }
               } else {
                 stop("invalid option for config@itemSelection$method")
-              }              
+              }
               return(info)
-            }            
+            }
             selectItem = function() {
               if (position > 1) {
-                info[output@administeredItemIndex[1:(position - 1)]] = -1 
+                info[output@administeredItemIndex[1:(position - 1)]] = -1
               }
               infoIndex = order(info, decreasing = TRUE)
-              itemSelected = infoIndex[1]              
+              itemSelected = infoIndex[1]
               if (itemSelected %in% output@administeredItemIndex[1:(position - 1)]) {
                 stop(sprintf("the selected item %i has been already administered", itemSelected))
               }
               return(itemSelected)
-            }            
+            }
             selectItemShadowTest = function() {
               nRemaining = testLength - position
               newStimulusSelected = FALSE
-              lastStimulusIndex = 0              
+              lastStimulusIndex = 0
               if (!setBased) {
                 stimulusSelected = NA
                 stimulusFinished = FALSE
@@ -1499,8 +1479,8 @@ setMethod(f = "Shadow",
                     stimulusFinished = FALSE
                   }
                 }
-              } else {               
-                remaining = which(!optimal$shadowTest$INDEX %in% output@administeredItemIndex[1:(position - 1)])                
+              } else {
+                remaining = which(!optimal$shadowTest$INDEX %in% output@administeredItemIndex[1:(position - 1)])
                 if (!setBased) {
                   selected = remaining[1]
                 } else {
@@ -1510,11 +1490,11 @@ setMethod(f = "Shadow",
                     selected = remainingInStimulus[1]
                   } else {
                     selected = remaining[1]
-                  }                  
-                  stimulusSelected = optimal$shadowTest$STINDEX[selected]                  
+                  }
+                  stimulusSelected = optimal$shadowTest$STINDEX[selected]
                   if (lastStimulusIndex != stimulusSelected) {
                     newStimulusSelected = TRUE
-                  }                  
+                  }
                   if (nRemaining == 0) {
                     stimulusFinished = TRUE
                   } else {
@@ -1528,16 +1508,16 @@ setMethod(f = "Shadow",
               }
               itemSelected = optimal$shadowTest$INDEX[selected]
               return(list(itemSelected = itemSelected, stimulusSelected = stimulusSelected, stimulusFinished = stimulusFinished, lastStimulusIndex = lastStimulusIndex, newStimulusSelected = newStimulusSelected, nRemaining = nRemaining))
-            }            
+            }
             plotAuditTrail = function() {
-              par(mar = c(2, 3, 1, 1) + 0.1, mfrow = c(2, 1)) 
+              par(mar = c(2, 3, 1, 1) + 0.1, mfrow = c(2, 1))
               plot(1:maxNI, seq(minTheta, maxTheta, length = maxNI), main = paste0("Examinee ", j), xlab = "Items Administered", ylab = "Theta", type = "n", las = 1)
               points(1:maxNI, output@interimThetaEst, type="b", pch = 9, col = "blue")
               if (!is.null(trueTheta)) {
                 abline(h = output@trueTheta, lty = 2, col = "red")
               } else {
                 abline(h = output@finalThetaEst, lty = 2, col = "red")
-              }              
+              }
               item.string = paste(output@administeredItemIndex, collapse = ",")
               text(1, maxTheta, paste0("Items: ", item.string), cex = 0.7, adj = 0)
               text(1, minTheta + 0.3, paste("Theta: ", round(output@finalThetaEst, digits = 2)," SE: ", round(output@finalSeEst, digits = 2)), cex = 0.8, adj = 0)
@@ -1552,19 +1532,19 @@ setMethod(f = "Shadow",
               resp.string = paste(output@administeredItemResp, collapse = ",")
               plot(config@thetaGrid, output@posterior, main = "Final Posterior Distribution", xlab = "Theta", ylab = "Posterior", type = "l", col = "blue", yaxt = "n")
               text(minTheta, max(output@posterior), paste0("Responses: ", resp.string), cex = 0.7, adj = 0)
-            }            
+            }
             pb = txtProgressBar(0, nj, char = "|", style = 3)
             ###########################################################################################
             ############## FOR LOOP OVER SIMULEES #####################################################
-            ###########################################################################################            
+            ###########################################################################################
             for (j in 1:nj) {
               output = new("Shadow.output")
-              output@simuleeIndex = j              
+              output@simuleeIndex = j
               if (!is.null(trueTheta)) {
                 output@trueTheta = trueTheta[j]
               } else {
                 output@trueTheta = NULL
-              }              
+              }
               output@prior = posterior[j, ]
               output@administeredItemIndex = numeric(maxNI)
               output@administeredItemResp = numeric(maxNI)
@@ -1572,7 +1552,7 @@ setMethod(f = "Shadow",
               output@interimThetaEst = numeric(maxNI)
               output@interimSeEst = numeric(maxNI)
               output@administeredStimulusIndex = NaN
-              output@shadowTest = vector(mode = "list", length = maxNI)              
+              output@shadowTest = vector(mode = "list", length = maxNI)
               if (config@interimTheta$method %in% c("EAP", "MLE")) {
                 currentTheta = initialTheta[j]
               } else if (toupper(config@interimTheta$method) %in% c("EB", "FB")) {
@@ -1582,20 +1562,20 @@ setMethod(f = "Shadow",
                   output@priorPar = priorPar[j, ]
                 } else {
                   output@priorPar = config@interimTheta$priorPar
-                }                
+                }
                 output@posteriorSample = rnorm(nSample, mean = output@priorPar[1], sd = output@priorPar[2])
                 output@posteriorSample = output@posteriorSample[seq(from = config@MCMC$burnIn + 1, to = nSample, by = config@MCMC$thin)]
                 currentTheta = mean(output@posteriorSample)
                 currentSE = sd(output@posteriorSample) * config@MCMC$jumpFactor
-              }              
+              }
               if (setBased) {
                 output@administeredStimulusIndex = numeric(maxNI)
                 endSet = TRUE
                 finishedStimulusIndex = NULL
                 finishedStimulusItemCount = NULL
-              }              
+              }
               if (sta) {
-                output@shadowTestFeasible = logical(testLength) 
+                output@shadowTestFeasible = logical(testLength)
                 output@shadowTestRefreshed = logical(testLength)
                 imat = NULL
                 idir = NULL
@@ -1605,19 +1585,19 @@ setMethod(f = "Shadow",
                   sdir = NULL
                   srhs = NULL
                 }
-              }              
+              }
               likelihood = rep(1, nq)
               thetaChange = 10000
               done = FALSE
-              position = 0              
+              position = 0
               if (exposureControl %in% c("ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
-                ineligible_i = matrix(0, nSegment, ni) 
+                ineligible_i = matrix(0, nSegment, ni)
                 prob_random = matrix(runif(nSegment * ni), nSegment, ni)
-                ineligible_i[prob_random >= pe_i] = 1                 
+                ineligible_i[prob_random >= pe_i] = 1
                 if (setBased) {
                   ineligible_s = matrix(0, nSegment, ns)
                   prob_random = matrix(runif(nSegment * ns), nSegment, ns)
-                  ineligible_s[prob_random >= pe_s] = 1                   
+                  ineligible_s[prob_random >= pe_s] = 1
                   for (k in 1:nSegment) {
                     for (s in which(ineligible_s[k, ] == 1)) {
                       ineligible_i[k, Constraints$ItemIndexByStimulus[[s]]] = 1
@@ -1626,16 +1606,16 @@ setMethod(f = "Shadow",
                       ineligible_i[k, Constraints$ItemIndexByStimulus[[s]]] = 0
                     }
                   }
-                }                
+                }
                 if (exposureControl %in% c("ELIGIBILITY")) {
                   xmat = NULL
                   xdir = NULL
                   xrhs = NULL
                 }
-              }              
+              }
               while (!done) {
                 position = position + 1
-                info = getInfo()                
+                info = getInfo()
                 if (sta) {
                   if (exposureControl %in% c("ELIGIBILITY", "BIGM")) {
                     if (!is.null(config@exposureControl$firstSegment) && length(config@exposureControl$firstSegment) >= position && all(config@exposureControl$firstSegment >= 1) && all(config@exposureControl$firstSegment <= nSegment)) {
@@ -1645,26 +1625,26 @@ setMethod(f = "Shadow",
                     }
                   } else if (exposureControl %in% c("BIGM-BAYESIAN")) {
                     sampleSegment = findSegment(segmentCut, output@posteriorSample)
-                    segmentDistribution = table(sampleSegment) / length(sampleSegment) 
-                    segmentClassified = as.numeric(names(segmentDistribution)) 
-                    segmentProb = numeric(nSegment) 
+                    segmentDistribution = table(sampleSegment) / length(sampleSegment)
+                    segmentClassified = as.numeric(names(segmentDistribution))
+                    segmentProb = numeric(nSegment)
                     segmentProb[segmentClassified] = segmentDistribution
                     output@thetaSegmentIndex[position] = which.max(segmentProb)
-                  }                  
+                  }
                   if (position == 1 ||
                       (refreshPolicy == "ALWAYS") ||
-                      (refreshPolicy %in% c("POSITION", "INTERVAL") && refreshShadow[position]) || 
+                      (refreshPolicy %in% c("POSITION", "INTERVAL") && refreshShadow[position]) ||
                       (refreshPolicy == "THRESHOLD" && abs(thetaChange) > config@refreshPolicy$threshold) ||
-                      (refreshPolicy == "INTERVAL-THRESHOLD" && refreshShadow[position] && abs(thetaChange) > config@refreshPolicy$threshold) || 
-                      (refreshPolicy %in% c("STIMULUS", "SET", "PASSAGE") && setBased && endSet)) {                    
-                    output@shadowTestRefreshed[position] = TRUE                    
+                      (refreshPolicy == "INTERVAL-THRESHOLD" && refreshShadow[position] && abs(thetaChange) > config@refreshPolicy$threshold) ||
+                      (refreshPolicy %in% c("STIMULUS", "SET", "PASSAGE") && setBased && endSet)) {
+                    output@shadowTestRefreshed[position] = TRUE
                     if (position > 1) {
                       imat = matrix(0, nrow = position - 1, ncol = nv)
                       for (p in 1:(position - 1)) {
                         imat[p, output@administeredItemIndex[p]] = 1
                       }
                       idir = rep("==", position - 1)
-                      irhs = rep(1, position - 1)                      
+                      irhs = rep(1, position - 1)
                       if (setBased) {
                         if (sum(output@administeredStimulusIndex[1:(position - 1)] > 0) > 0) {
                           administeredStimulusIndex = unique(output@administeredStimulusIndex[1:(position - 1)])
@@ -1674,10 +1654,10 @@ setMethod(f = "Shadow",
                             smat[s, ni + administeredStimulusIndex[s]] = 1
                           }
                           sdir = rep("==", length(administeredStimulusIndex))
-                          srhs = rep(1, length(administeredStimulusIndex))                          
+                          srhs = rep(1, length(administeredStimulusIndex))
                           imat = rbind(imat, smat)
                           idir = c(idir, sdir)
-                          irhs = c(irhs, srhs)                          
+                          irhs = c(irhs, srhs)
                           if (refreshPolicy %in% c("STIMULUS", "SET", "PASSAGE") && setBased && endSet) {
                             nAdministeredStimulus = length(administeredStimulusIndex)
                             if (nAdministeredStimulus > 0) {
@@ -1699,7 +1679,7 @@ setMethod(f = "Shadow",
                               sdir = rep("==", nFinishedStimulus)
                               srhs = finishedStimulusItemCount
                               for (s in 1:nFinishedStimulus) {
-                                smat[s, Constraints$ItemIndexByStimulus[[finishedStimulusIndex[s]]]] = 1 
+                                smat[s, Constraints$ItemIndexByStimulus[[finishedStimulusIndex[s]]]] = 1
                               }
                               imat = rbind(imat, smat)
                               idir = c(idir, sdir)
@@ -1708,24 +1688,24 @@ setMethod(f = "Shadow",
                           }
                         }
                       }
-                    }                     
+                    }
                     if (itemEligibilityControl) {
-                      itemIneligible = ineligible_i[output@thetaSegmentIndex[position], ]                      
+                      itemIneligible = ineligible_i[output@thetaSegmentIndex[position], ]
                       if (setBased) {
                         stimulusIneligible = ineligible_s[output@thetaSegmentIndex[position], ]
-                      }                      
+                      }
                       if (position > 1) {
-                        itemIneligible[output@administeredItemIndex[1:(position - 1)]] = 0                        
+                        itemIneligible[output@administeredItemIndex[1:(position - 1)]] = 0
                         if (setBased) {
                           stimulusIneligible[unique(output@administeredStimulusIndex[1:(position - 1)])] = 0
                         }
-                      }                      
+                      }
                       if (exposureControl %in% c("ELIGIBILITY")) {
                         if (any(itemIneligible == 1)) {
                           xmat = numeric(nv)
                           xmat[1:ni] = itemIneligible
                           xdir = "=="
-                          xrhs = 0                          
+                          xrhs = 0
                           if (setBased) {
                             if (any(stimulusIneligible == 1)) {
                               xmat[(ni + 1):nv] = stimulusIneligible
@@ -1737,7 +1717,7 @@ setMethod(f = "Shadow",
                               }
                             }
                           }
-                        }                        
+                        }
                         optimal = STA(Constraints, info, xmat = rbind(xmat, imat), xdir = c(xdir, idir), xrhs = c(xrhs, irhs), maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit, solver = config@MIP$solver)
                         if (toupper(config@MIP$solver) == "SYMPHONY"){
                           is_optimal = names(optimal$status) %in% c("TM_OPTIMAL_SOLUTION_FOUND", "PREP_OPTIMAL_SOLUTION_FOUND")
@@ -1747,13 +1727,13 @@ setMethod(f = "Shadow",
                         }
                         if (toupper(config@MIP$solver) == "LPSOLVE"){
                           is_optimal = optimal$status == 0
-                        }                        
+                        }
                         if (!is_optimal){
-                          output@shadowTestFeasible[position] = FALSE 
+                          output@shadowTestFeasible[position] = FALSE
                           optimal = STA(Constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit, solver = config@MIP$solver)
                         } else {
                           output@shadowTestFeasible[position] = TRUE
-                        }                        
+                        }
                       } else if (exposureControl %in% c("BIGM", "BIGM-BAYESIAN")){
                         if (!is.null(config@exposureControl$M)) {
                           info[itemIneligible == 1] = info[itemIneligible == 1] - config@exposureControl$M
@@ -1762,10 +1742,10 @@ setMethod(f = "Shadow",
                         }
                         optimal = STA(Constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit, solver = config@MIP$solver)
                         output@shadowTestFeasible[position] = TRUE
-                      } 
+                      }
                     } else {
                       optimal = STA(Constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit, solver = config@MIP$solver)
-                      output@shadowTestFeasible[position] = TRUE 
+                      output@shadowTestFeasible[position] = TRUE
                     }
                     if (toupper(config@MIP$solver) == "SYMPHONY"){
                       is_optimal = names(optimal$status) %in% c("TM_OPTIMAL_SOLUTION_FOUND", "PREP_OPTIMAL_SOLUTION_FOUND")
@@ -1781,7 +1761,7 @@ setMethod(f = "Shadow",
                     }
                     output@solveTime[position] = optimal$solve.time
                   } else {
-                    output@shadowTestRefreshed[position] = FALSE 
+                    output@shadowTestRefreshed[position] = FALSE
                     output@shadowTestFeasible[position] = TRUE
                   }
                   selection = selectItemShadowTest()
@@ -1798,7 +1778,7 @@ setMethod(f = "Shadow",
                     endSet = FALSE
                   }
                   if (selection$newStimulusSelected && selection$lastStimulusIndex != 0) {
-                    finishedStimulusIndex = c(finishedStimulusIndex, selection$lastStimulusIndex) 
+                    finishedStimulusIndex = c(finishedStimulusIndex, selection$lastStimulusIndex)
                     finishedStimulusItemCount = c(finishedStimulusItemCount, sum(output@administeredStimulusIndex[1:(position - 1)] == selection$lastStimulusIndex))
                   }
                 }
@@ -1835,7 +1815,7 @@ setMethod(f = "Shadow",
                                                              model[currentItem], 1, c(currentTheta, currentSE))
                   }
                   output@posteriorSample = output@posteriorSample[seq(from = config@MCMC$burnIn + 1, to = nSample, by = config@MCMC$thin)]
-                  output@interimThetaEst[position] = mean(output@posteriorSample) 
+                  output@interimThetaEst[position] = mean(output@posteriorSample)
                   output@interimSeEst[position] = sd(output@posteriorSample)
                 } else {
                   stop("invalid interimTheta@method specified")
@@ -1853,7 +1833,7 @@ setMethod(f = "Shadow",
                   output@likelihood = likelihood
                   output@posterior = posterior[j, ]
                 }
-              } 
+              }
               if (identical(config@finalTheta, config@interimTheta)) {
                 output@finalThetaEst = output@interimThetaEst[position]
                 output@finalSeEst = output@interimSeEst[position]
@@ -1897,7 +1877,7 @@ setMethod(f = "Shadow",
                                                              model[output@administeredItemIndex[1:position]], 1, c(currentTheta, currentSE))
                   }
                   output@posteriorSample = output@posteriorSample[seq(from = config@MCMC$burnIn + 1, to = nSample, by = config@MCMC$thin)]
-                  output@finalThetaEst = mean(output@posteriorSample) 
+                  output@finalThetaEst = mean(output@posteriorSample)
                   output@finalSeEst = sd(output@posteriorSample)
                 }
               }
@@ -1941,7 +1921,7 @@ setMethod(f = "Shadow",
                   segmentFeasible = unique(output@thetaSegmentIndex[output@shadowTestFeasible == TRUE])
                   segmentInfeasible = unique(output@thetaSegmentIndex[output@shadowTestFeasible == FALSE])
                   phi_jk[segmentFinal] = fadingFactor * phi_jk[segmentFinal]
-                  rho_ijk[segmentFinal, ] = fadingFactor * rho_ijk[segmentFinal, ] 
+                  rho_ijk[segmentFinal, ] = fadingFactor * rho_ijk[segmentFinal, ]
                   if (segmentFinal %in% segmentFeasible) {
                     phi_jk[segmentFinal] = phi_jk[segmentFinal] + 1
                     rho_ijk[segmentFinal, eligibleInFinalSegment] = rho_ijk[segmentFinal, eligibleInFinalSegment] + 1
@@ -1956,11 +1936,11 @@ setMethod(f = "Shadow",
                   }
                   nf_ijk = matrix(n_jk / phi_jk, nSegment, ni)
                   if (accelerationFactor > 1) {
-                    p_alpha_ijk = alpha_ijk / matrix(n_jk, nSegment, ni) 
-                    p_rho_ijk = rho_ijk / matrix(n_jk, nSegment, ni) 
+                    p_alpha_ijk = alpha_ijk / matrix(n_jk, nSegment, ni)
+                    p_rho_ijk = rho_ijk / matrix(n_jk, nSegment, ni)
                     p_alpha_ijk[is.na(p_alpha_ijk)] = 0
                     p_rho_ijk[is.na(p_rho_ijk)] = 1
-                    flag_alpha_ijk = p_alpha_ijk > maxExposureRate 
+                    flag_alpha_ijk = p_alpha_ijk > maxExposureRate
                     if (length(maxExposureRate) == nSegment) {
                       for (k in 1:nSegment) {
                         pe_i[k, flag_alpha_ijk[k, ]] = 1 - nf_ijk[k, flag_alpha_ijk[k, ]] + (maxExposureRate[k] / p_alpha_ijk[k, flag_alpha_ijk[k, ]])^accelerationFactor * nf_ijk[k, flag_alpha_ijk[k, ]] * p_rho_ijk[k, flag_alpha_ijk[k, ]]
@@ -1996,7 +1976,7 @@ setMethod(f = "Shadow",
                     }
                     nf_sjk = matrix(n_jk / phi_jk, nSegment, ns)
                     if (accelerationFactor > 1) {
-                      p_alpha_sjk = alpha_sjk / matrix(n_jk, nSegment, ns) 
+                      p_alpha_sjk = alpha_sjk / matrix(n_jk, nSegment, ns)
                       p_rho_sjk = rho_sjk / matrix(n_jk, nSegment, ns)
                       p_alpha_sjk[is.na(p_alpha_sjk)] = 0
                       p_rho_sjk[is.na(p_rho_sjk)] = 1
@@ -2017,7 +1997,7 @@ setMethod(f = "Shadow",
                     pe_s[pe_s > 1] = 1
                   }
                 } else if (exposureControl %in% c("BIGM")) {
-                  n_jk[segmentFinal] = fadingFactor *  n_jk[segmentFinal] + 1 
+                  n_jk[segmentFinal] = fadingFactor *  n_jk[segmentFinal] + 1
                   alpha_ijk[segmentFinal, ] = fadingFactor * alpha_ijk[segmentFinal, ]
                   alpha_ijk[segmentFinal, output@administeredItemIndex] = alpha_ijk[segmentFinal, output@administeredItemIndex] + 1
                   if (length(segmentOther) > 0) {
@@ -2031,7 +2011,7 @@ setMethod(f = "Shadow",
                       }
                     }
                   }
-                  rho_ijk[segmentFinal, ] = fadingFactor * rho_ijk[segmentFinal, ] 
+                  rho_ijk[segmentFinal, ] = fadingFactor * rho_ijk[segmentFinal, ]
                   rho_ijk[segmentFinal, eligibleInFinalSegment] = rho_ijk[segmentFinal, eligibleInFinalSegment] + 1
                   if (fadingFactor != 1) {
                     noFading_n_jk[segmentFinal] = noFading_n_jk[segmentFinal] + 1
@@ -2090,10 +2070,10 @@ setMethod(f = "Shadow",
                     pe_s[pe_s > 1] = 1
                   }
                 } else if (exposureControl %in% c("BIGM-BAYESIAN")) {
-                  segmentVisited = sort(unique(output@thetaSegmentIndex)) 
+                  segmentVisited = sort(unique(output@thetaSegmentIndex))
                   sampleSegment = findSegment(segmentCut, output@posteriorSample)
                   segmentDistribution = table(sampleSegment) / length(sampleSegment)
-                  segmentClassified = as.numeric(names(segmentDistribution)) 
+                  segmentClassified = as.numeric(names(segmentDistribution))
                   segmentProb = numeric(nSegment)
                   segmentProb[segmentClassified] = segmentDistribution
                   n_jk = fadingFactor * n_jk + segmentProb
@@ -2177,7 +2157,7 @@ setMethod(f = "Shadow",
                     pe_s[is.na(pe_s) | alpha_sjk == 0] = 1
                     pe_s[pe_s > 1] = 1
                   }
-                }  
+                }
                 if (config@exposureControl$diagnosticStats) {
                   for (g in 1:nSegment) {
                     alpha_g_i[j, (g - 1) * ni + 1:ni] = alpha_ijk[g, ]
@@ -2198,7 +2178,7 @@ setMethod(f = "Shadow",
                     }
                   }
                 }
-              } 
+              }
               if (config@auditTrail) {
                 plotAuditTrail()
               }
@@ -2207,7 +2187,7 @@ setMethod(f = "Shadow",
               } else {
                 setTxtProgressBar(pb, j)
               }
-            } 
+            }
             finalThetaEst = unlist(lapply(1:nj, function(j) outputList[[j]]@finalThetaEst))
             finalSeEst = unlist(lapply(1:nj, function(j) outputList[[j]]@finalSeEst))
             exposureRate = colSums(usageMatrix) / nj
@@ -2217,7 +2197,7 @@ setMethod(f = "Shadow",
             if (itemEligibilityControl) {
               eligibilityStats = list(pe_i = pe_i, n_jk = n_jk, alpha_ijk = alpha_ijk, phi_jk = phi_jk, rho_ijk = rho_ijk, pe_s = pe_s, alpha_sjk = alpha_sjk, rho_sjk = rho_sjk)
               if (config@exposureControl$diagnosticStats) {
-                checkEligibilityStats = as.data.frame(cbind(1:nj, trueTheta, findSegment(segmentCut, trueTheta), trueSegmentCount, alpha_g_i, epsilon_g_i), row.names = NULL) 
+                checkEligibilityStats = as.data.frame(cbind(1:nj, trueTheta, findSegment(segmentCut, trueTheta), trueSegmentCount, alpha_g_i, epsilon_g_i), row.names = NULL)
                 names(checkEligibilityStats) = c("Examinee", "TrueTheta", "TrueSegment", "TrueSegmentCount", paste("a", "g", rep(1:nSegment, rep(ni, nSegment)), "i", rep(1:ni, nSegment), sep = "_"), paste("e", "g", rep(1:nSegment, rep(ni, nSegment)), "i", rep(1:ni, nSegment), sep = "_"))
                 if (setBased) {
                   checkEligibilityStats_stimulus = as.data.frame(cbind(alpha_g_s, epsilon_g_s), row.names = NULL)
@@ -2225,7 +2205,7 @@ setMethod(f = "Shadow",
                   checkEligibilityStats = cbind(checkEligibilityStats, checkEligibilityStats_stimulus)
                 }
                 if (fadingFactor != 1) {
-                  noFadingEligibilityStats = as.data.frame(cbind(1:nj, trueTheta, findSegment(segmentCut, trueTheta), trueSegmentCount, noFading_alpha_g_i, noFading_epsilon_g_i), row.names = NULL) 
+                  noFadingEligibilityStats = as.data.frame(cbind(1:nj, trueTheta, findSegment(segmentCut, trueTheta), trueSegmentCount, noFading_alpha_g_i, noFading_epsilon_g_i), row.names = NULL)
                   names(noFadingEligibilityStats) = c("Examinee", "TrueTheta", "TrueSegment", "TrueSegmentCount", paste("a", "g", rep(1:nSegment, rep(ni, nSegment)), "i", rep(1:ni, nSegment), sep = "_"), paste("e", "g", rep(1:nSegment, rep(ni, nSegment)), "i", rep(1:ni, nSegment), sep = "_"))
                   if (setBased) {
                     noFadingEligibilityStats_stimulus = as.data.frame(cbind(noFading_alpha_g_s, noFading_epsilon_g_s), row.names = NULL)
@@ -2245,18 +2225,18 @@ setMethod(f = "Shadow",
 )
 
 #' Add transparancy to color
-#' 
+#'
 #' Add transparancy to color.
-#' 
+#'
 #' @param color A vector of color names or RGB color codes.
 #' @param alpha A vector of integers between 0 and 255 (0 = fully transparent, 255 = fully visible).
-#' 
+#'
 #' @export
 addTrans = function(color, alpha)
 {
   if (length(color) != length(alpha) & !any(c(length(color), length(alpha)) == 1)) stop("Vector lengths not correct")
   if (length(color) == 1 & length(alpha) > 1) color = rep(color, length(alpha))
-  if (length(alpha) == 1 & length(color) > 1) alpha = rep(alpha, length(color)) 
+  if (length(alpha) == 1 & length(color) > 1) alpha = rep(alpha, length(color))
   num2hex = function(x)
   {
     hex = unlist(strsplit("0123456789ABCDEF", split = ""))
@@ -2268,10 +2248,10 @@ addTrans = function(color, alpha)
 }
 
 #' Draw item eligibility statistics plots
-#' 
+#'
 #' Draw item eligibility statistics plots.
-#' 
-#' @param config A \code{\linkS4class{Shadow.config}} object.       
+#'
+#' @param config A \code{\linkS4class{Shadow.config}} object.
 #' @param object An object containing eligibility statistics generated by \code{\link{Shadow}}.
 #' @param objectNoFading An object containing eligibility statistics generated without fading.
 #' @param file The filename of an object containing eligibility statistics generated by \code{\link{Shadow}}.
@@ -2352,9 +2332,9 @@ plotEligibilityStats = function(config, object = NULL, objectNoFading = NULL, fi
 }
 
 #' Calculate Root Mean Squared Error
-#' 
+#'
 #' Calculate Root Mean Squared Error.
-#' 
+#'
 #' @param x A vector of values.
 #' @param y A vector of values.
 #' @param conditional If \code{TRUE}, calculate RMSE conditional on x.
@@ -2371,23 +2351,23 @@ RMSE = function(x, y, conditional = TRUE) {
 }
 
 #' Calculate Relative Errors
-#' 
+#'
 #' Calculate Relative Errors.
-#' 
+#'
 #' @param RMSE.foc A vector of RMSE values for the focal group.
 #' @param RMSE.ref A vector of RMSE values for the reference group.
 RE = function(RMSE.foc, RMSE.ref) {
   if (length(RMSE.foc) != length(RMSE.ref)) {
     stop("length(x) and length(y) are not equal")
-  } 
+  }
   RE = RMSE.ref^2 / RMSE.foc^2
   return(RE)
 }
 
-#' Check the consistency of constraints and item usage 
-#' 
+#' Check the consistency of constraints and item usage
+#'
 #' Check the consistency of constraints and item usage.
-#' 
+#'
 #' @param constraints A list constraints generated by \code{\link{LoadConstraints}}.
 #' @param usageMatrix A matrix of item usage data from \code{\link{Shadow}}.
 #' @param trueTheta A vector of true theta values.
@@ -2425,7 +2405,7 @@ checkConstraints = function(constraints, usageMatrix, trueTheta = NULL) {
     groupMAX = NULL
     groupHIT = NULL
   }
-  nEnemy = sum(Constraints$TYPE == "ENEMY") 
+  nEnemy = sum(Constraints$TYPE == "ENEMY")
   if (nEnemy > 0) {
     enemyIndex = which(Constraints$TYPE == "ENEMY")
     Constraints$LB[enemyIndex] = 0
@@ -2462,9 +2442,9 @@ checkConstraints = function(constraints, usageMatrix, trueTheta = NULL) {
 }
 
 #' Draw RMSE plots
-#' 
+#'
 #' Draw RMSE plots.
-#' 
+#'
 #' @param ... A series of RMSE values.
 #' @param title A plot title.
 #' @param legendTitle A legend title.
@@ -2472,7 +2452,7 @@ checkConstraints = function(constraints, usageMatrix, trueTheta = NULL) {
 #' @param ltySet A vector of line types for the series.
 #' @param colSet A vector of colors for the series.
 #' @param theta A theta grid.
-#' 
+#'
 #' @export
 plotRMSE = function(..., title = NULL, legendTitle = NULL, legendLabels = NULL, ltySet = NULL, colSet = NULL, theta = seq(-2, 2, 1)) {
   outputList = list(...)
@@ -2506,9 +2486,9 @@ plotRMSE = function(..., title = NULL, legendTitle = NULL, legendLabels = NULL, 
 }
 
 #' Draw exposure rate plots by theta segment
-#' 
+#'
 #' Draw exposure rate plots by theta segment.
-#' 
+#'
 #' @param object An output object generated by \code{\link{Shadow}}.
 #' @param config A \code{\linkS4class{Shadow.config}} object.
 #' @param maxRate A target item exposure rate.
@@ -2564,9 +2544,9 @@ plotExposureRateBySegment = function(object, config, maxRate = 0.25, PDF = NULL,
 }
 
 #' Draw exposure rate plots by final theta segment
-#' 
+#'
 #' Draw exposure rate plots by final theta segment.
-#' 
+#'
 #' @param object An output object generated by \code{\link{Shadow}}.
 #' @param config A \code{\linkS4class{Shadow.config}} object.
 #' @param maxRate A target item exposure rate.
@@ -2589,7 +2569,7 @@ plotExposureRateFinal = function(object, config = NULL, maxRate = 0.25, theta = 
     } else {
       retained = object$estSegmentCount > burnIn
     }
-  } else if (!is.null(retain)) { 
+  } else if (!is.null(retain)) {
     retained = (1:nj) %in% retain
   } else {
     retained = rep(TRUE, nj)
@@ -2612,7 +2592,7 @@ plotExposureRateFinal = function(object, config = NULL, maxRate = 0.25, theta = 
   } else {
     thetaSegmentIndex = findSegment(segmentCut, estTheta[retained])
   }
-  segmentN = numeric(nSegment) 
+  segmentN = numeric(nSegment)
   segmentDist = table(thetaSegmentIndex)
   segmentN[as.numeric(names(segmentDist))] = segmentDist
   segmentIndexTable = matrix(NA, nRetained, object$Constraints$testLength)
@@ -2640,7 +2620,7 @@ plotExposureRateFinal = function(object, config = NULL, maxRate = 0.25, theta = 
       segmentFreq[s, as.numeric(names(segmentTable[[s]]))] = segmentFreq[s, as.numeric(names(segmentTable[[s]]))] + segmentTable[[s]]
     }
   }
-  segmentRate = segmentFreq / segmentN 
+  segmentRate = segmentFreq / segmentN
   segmentRateTable = data.frame(segmentClass = factor(rep(segmentLabel, rep(nSegment, nSegment)), levels = segmentLabel), segment = rep(1:nSegment, nSegment), avgVisit = matrix(t(segmentRate), nrow = nSegment^2, ncol = 1))
   exposureRate = colSums(usageMatrix) / nRetained
   exposureRateFinal = colSums(usageMatrixFinal) / nRetained
@@ -2693,9 +2673,9 @@ plotExposureRateFinal = function(object, config = NULL, maxRate = 0.25, theta = 
 }
 
 #' Draw item information plots for flagged items by segment
-#' 
+#'
 #' Draw item information plots for flagged items by segment.
-#' 
+#'
 #' @param object A list object generated by \code{\link{plotExposureRateFinal}}.
 #' @param pool An \code{\linkS4class{item.pool}} object.
 #' @param theta A theta grid.
@@ -2743,9 +2723,9 @@ plotExposureRateFinalFlag = function(object, pool, theta = seq(-3, 3, .1), flagC
 }
 
 #' Draw item information plots
-#' 
+#'
 #' Draw item information plots.
-#' 
+#'
 #' @param object An \code{\linkS4class{item.pool}} object.
 #' @param theta A theta grid.
 #' @param infoType Type of information.
@@ -2755,9 +2735,9 @@ plotExposureRateFinalFlag = function(object, pool, theta = seq(-3, 3, .1), flagC
 #' @param width Width of graphics device.
 #' @param height Width of graphics device.
 #' @param mfrow Number of multiple figures defined as c(nrow, ncol).
-#' 
+#'
 #' @export
-plotInfo = function(object, theta, infoType = "FISHER", select = NULL, PDF = NULL, color = "blue", width = 7, height = 6, mfrow = c(2, 4)) {  
+plotInfo = function(object, theta, infoType = "FISHER", select = NULL, PDF = NULL, color = "blue", width = 7, height = 6, mfrow = c(2, 4)) {
   if (toupper(infoType) == "FISHER") {
     Info = calcFisher(object, theta)
   } else {
@@ -2780,9 +2760,9 @@ plotInfo = function(object, theta, infoType = "FISHER", select = NULL, PDF = NUL
 }
 
 #' Overlay item information plots
-#' 
+#'
 #' Overlay item information plots.
-#' 
+#'
 #' @param object An \code{\linkS4class{item.pool}} object.
 #' @param theta A theta grid.
 #' @param infoType Type of information.
@@ -2818,12 +2798,12 @@ plotInfoOverlay = function(object, theta, infoType = "FISHER", select = NULL, PD
 }
 
 #' Calculate hyperparameters for log-normal distribution
-#' 
+#'
 #' Calculate hyperparameters for log-normal distribution.
-#' 
+#'
 #' @param mean Mean of the distribution.
 #' @param sd Standard deviation of the distribution.
-#' 
+#'
 #' @export
 lnHyperPars = function(mean, sd) {
   location = log(mean^2 / sqrt(sd^2 + mean^2))
@@ -2832,19 +2812,19 @@ lnHyperPars = function(mean, sd) {
 }
 
 #' Calculate hyperparameters for logit-normal distribution
-#' 
+#'
 #' Calculate hyperparameters for logit-normal distribution.
-#' 
+#'
 #' @param mean Mean of the distribution.
 #' @param sd Standard deviation of the distribution.
-#' 
+#'
 #' @export
 logitHyperPars = function(mean, sd) {
-  
+
   n.max = 10000
   n     = 0
   logitSamples = numeric(n.max)
-  
+
   while (n.max - n > 0){
     normSample = rnorm(n.max - n, mean, sd)
     idx = (normSample >= 0) & (normSample <= 1)
@@ -2855,17 +2835,17 @@ logitHyperPars = function(mean, sd) {
     }
     n = n.new
   }
-  
+
   return(c(mean(logitSamples), sd(logitSamples)))
 }
 
 #' Sample item parameter estimates from their posterior distributions
-#' 
+#'
 #' Sample item parameter estimates from their posterior distributions.
-#' 
+#'
 #' @param pool An \code{\linkS4class{item.pool}} object.
 #' @param nSample An integer as the number of sampled parameters.
-#' 
+#'
 #' @export
 iparPosteriorSample = function(pool, nSample = 500) {
   requireNamespace("logitnorm")
@@ -2918,12 +2898,12 @@ iparPosteriorSample = function(pool, nSample = 500) {
 #' Draw a plot of maximum attainable information given the imposed constraints
 #'
 #' Draw a plot of maximum attainable information given the imposed constraints.
-#' 
+#'
 #' @param pool An \code{\linkS4class{item.pool}} object.
 #' @param constraints A list constraints generated by \code{\link{LoadConstraints}}.
 #' @param theta A theta grid.
-#' 
-#' @examples 
+#'
+#' @examples
 #' p = maxinfoplot(itempool.science, constraints.science)
 #' @export
 maxinfoplot = function(pool, constraints, theta = seq(-3, 3, .5)){
