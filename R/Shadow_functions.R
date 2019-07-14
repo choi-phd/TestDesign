@@ -224,7 +224,7 @@ setMethod(f = "plotShadow",
                 rect(i - 0.25, j - 0.25, i + 0.25, j + 0.25, border = "gray88", lwd = 0.3)
               }
               if (object@shadowTestRefreshed[i]) {
-                text(i, usr[3], "S", col = "red", cex = 0.7, adj = c(0.5, 0))
+                text(i, usr[3] + strheight("S") / 3, "S", col = "red", cex = 0.7, adj = c(0.5, 0))
               }
             }
             if (Constraints$setBased) {
