@@ -298,7 +298,7 @@ server = function(input, output, session) {
         } else {
           v$text = "Number of simulees should be an integer."; break
         }
-        v$plotoutput = plotCAT(v$fit$output[[v$simulee.id]])
+        v$plotoutput = plotCAT(v$fit, v$simulee.id)
         assign.object(paste0("shiny.thetaplot.", v$simulee.id), v$plotoutput, paste0("Theta plot for simulee ", v$simulee.id))
         v$shadowchart = plotShadow(v$fit$output[[v$simulee.id]], v$const)
         assign.object(paste0("shiny.shadowchart.", v$simulee.id), v$shadowchart, paste0("Shadow test chart for simulee ", v$simulee.id))
@@ -487,7 +487,7 @@ server = function(input, output, session) {
 
         if (v$simulee.id > v$n.simulees) v$simulee.id = 1
 
-        v$plotoutput = plotCAT(v$fit$output[[v$simulee.id]])
+        v$plotoutput = plotCAT(v$fit, v$simulee.id)
         assign.object(paste0("shiny.thetaplot.", v$simulee.id), v$plotoutput, paste0("Theta plot for simulee ", v$simulee.id))
         v$shadowchart = plotShadow(v$fit$output[[v$simulee.id]], v$const)
         assign.object(paste0("shiny.shadowchart.", v$simulee.id), v$shadowchart, paste0("Shadow test chart for simulee ", v$simulee.id))
