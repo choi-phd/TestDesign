@@ -17,7 +17,7 @@ config.Shadow(itemSelection = NULL, contentBalancing = NULL,
 \itemize{
   \item{\code{method}} The type of criteria. Accepts one of \code{MFI, MPWI, FB, EB}.
   \item{\code{infoType}} The type of information. Accepts \code{FISHER}.
-  \item{\code{initialTheta}} Initial theta value(s) for the first item selection. 
+  \item{\code{initialTheta}} Initial theta value(s) for the first item selection.
   \item{\code{fixedTheta}} Fixed theta value(s) to optimize for all items to select.
 }}
 
@@ -83,7 +83,7 @@ config.Shadow(itemSelection = NULL, contentBalancing = NULL,
   \item{\code{truncateML}} Set \code{TRUE} to truncate MLE within \code{boundML}
   \item{\code{maxIter}} Maximum number of Newton-Raphson iterations.
   \item{\code{crit}} Convergence criterion.
-  \item{\code{maxChange}} Maximum change in ML estimates between iterations. 
+  \item{\code{maxChange}} Maximum change in ML estimates between iterations.
   \item{\code{FisherScoring}} Set \code{TRUE} to use Fisher's method of scoring.
 }}
 
