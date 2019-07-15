@@ -93,7 +93,7 @@ setMethod(f = "ATA",
                 len_rhs = length(rhs)
                 rhs[len_rhs] = config@MIP$gapLimit
               }
-              MIP = Rsymphony_solve_LP(obj, mat, dir, rhs, max = maximize, types = types,
+              MIP = Rsymphony::Rsymphony_solve_LP(obj, mat, dir, rhs, max = maximize, types = types,
                                        verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit)
               status = MIP$status
               if (!names(status) %in% c("TM_OPTIMAL_SOLUTION_FOUND", "PREP_OPTIMAL_SOLUTION_FOUND")) {
