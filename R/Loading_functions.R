@@ -198,6 +198,8 @@ LoadStAttrib = function(file.csv, ItemAttrib) {
 #'
 #' Read constraints from specified file.
 #'
+#' Use \code{vignette("constraints")} for instructions on how to create a constraint file.
+#'
 #' @param file.csv Character. The name of the file containing specifications for constraints.
 #' @param pool An \code{item.pool} object.
 #' @param ItemAttrib A \code{data.frame} containing item attributes. Use \code{\link{LoadItemAttrib}} for this.
