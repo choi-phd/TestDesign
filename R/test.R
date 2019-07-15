@@ -44,22 +44,18 @@ if(FALSE){
 
   setEPS()
   postscript("R/science.shadowplot.eps", width = 8, height = 10)
-  p = plotShadow(solution$output[[1]], constraints.science)
+  p = plotShadow(solution, constraints.science, examineeID = 1)
   p
   dev.off()
 
-  # Example 2
+  # Manuscript example: adaptive test assembly (reading)
 
-  write.csv(par_reading, "par_rd.csv", row.names = F)
-  write.csv(item_attrib_reading, "item_attrib_rd.csv", row.names = F)
-  write.csv(stimulus_attrib_reading, "stimulus_attrib_rd.csv", row.names = F)
-  write.csv(constraints_reading, "constraints_rd.csv", row.names = F)
+  set.seed(1)
 
-  itempool_rd = LoadItemPool("par_rd.csv")
-  itemattr_rd = LoadItemAttrib("item_attrib_rd.csv", itempool_rd)
-  stimattr_rd = LoadStAttrib("stimulus_attrib_rd.csv", itemattr_rd)
-  constrnt_rd = LoadConstraints("constraints_rd.csv",
-                                   itempool_rd, itemattr_rd, stimattr_rd)
+  thetaGrid = seq(-3, 3, 1)
+  trueTheta = runif(1, min = -3.5, max = 3.5)
+  testData = MakeTest(itempool.reading, thetaGrid, infoType = "FISHER", trueTheta = trueTheta)
+  respData = testData@Data
 
   conf_rd = config.ATA(itemSelection = list(method = "TCC",
                                          targetLocation = c(-1, 0, 1),
@@ -73,21 +69,26 @@ if(FALSE){
 
   thetaGrid = seq(-3, 3, 1)
   trueTheta = runif(1, min = -3.5, max = 3.5)
-  testData = MakeTest(itempool_rd, thetaGrid, infoType = "FISHER", trueTheta = trueTheta)
+  testData = MakeTest(itempool.reading, thetaGrid, infoType = "FISHER", trueTheta = trueTheta)
   respData = testData@Data
 
-  conf2_rd = config.Shadow()
+  config.reading = config.Shadow()
 
-  fit = Shadow(itempool_rd, conf2_rd,
-               trueTheta, constrnt_rd, Data = respData)
+  solution = Shadow(itempool.reading, config.reading, trueTheta, constraints.reading, Data = respData)
 
   setEPS()
   postscript("example-plotcat.eps", width = 8, height = 8)
-  p = plotCAT(fit$output[[1]])
+  p = plotCAT(solution, 1)
   p
   dev.off()
 
-  plotShadow(fit$output[[1]], constrnt_sc)
+  setEPS()
+  postscript("R/reading.shadowplot.eps", width = 8, height = 10)
+  p = plotShadow(solution, constraints.reading, 1)
+  p
+  dev.off()
+
+
 
 
   # Example 3

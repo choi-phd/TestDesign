@@ -1,12 +1,12 @@
 #' Run Automated Test Assembly
 #'
 #' Perform Automated Test Assembly with specified configurations.
-#' 
+#'
 #' @param config An \code{\linkS4class{ATA.config}} object containing configuration options. Use \code{\link{config.ATA}} for this.
 #' @param Constraints A list representing optimization constraints. Use \code{\link{LoadConstraints}} for this.
 #' @param plot Logical. If \code{TRUE}, draw Fisher information plot from the selected items.
 #' @param plotrange Numeric. A vector of length 2 containing the lower and upper bounds of plot range. The default is \code{c(-3, 3)}.
-#' 
+#'
 #' @return A list containing the following entries:
 #' \itemize{
 #'   \item{\code{MIP}} A list containing the result from MIP solver.
@@ -20,7 +20,7 @@
 #'   \item{\code{obj.value}} Objective value of the solution. Identical to the one above.
 #'   \item{\code{solve.time}} The elapsed time in running the solver.
 #' }
-#' 
+#'
 #' @docType methods
 #' @rdname ATA-methods
 #' @export
@@ -41,7 +41,7 @@ setMethod(f = "ATA",
             if (!validObject(config)) {
               stop("invalid configuration options specified")
             }
-            nt = length(config@itemSelection$targetLocation) 
+            nt = length(config@itemSelection$targetLocation)
             mat = Constraints$MAT
             dir = Constraints$DIR
             rhs = Constraints$RHS
@@ -63,13 +63,13 @@ setMethod(f = "ATA",
               maximize = TRUE
             } else {
               maximize = FALSE
-              mat = cbind(mat, numeric(nrow(mat)))  
+              mat = cbind(mat, numeric(nrow(mat)))
               types = c(types, "C")
               obj = c(rep(0, nv), 1)
               if (toupper(config@itemSelection$method) == "TIF") {
-                objective = calcFisher(Constraints$pool, config@itemSelection$targetLocation) 
+                objective = calcFisher(Constraints$pool, config@itemSelection$targetLocation)
               } else if (toupper(config@itemSelection$method) == "TCC") {
-                objective = sapply(Constraints$pool@parms, calcEscore, config@itemSelection$targetLocation) 
+                objective = sapply(Constraints$pool@parms, calcEscore, config@itemSelection$targetLocation)
                 if(nt == 1) objective = t(as.matrix(objective))
               }
               for (k in 1:nt) {
@@ -85,7 +85,7 @@ setMethod(f = "ATA",
               add.mat = c(rep(0, nv), 1)
               mat = rbind(mat, add.mat)
               dir = c(dir, ">=")
-              rhs = c(rhs, 0) 
+              rhs = c(rhs, 0)
             }
             solve.time = proc.time()
             if (toupper(config@MIP$solver) == "SYMPHONY") {
@@ -93,7 +93,7 @@ setMethod(f = "ATA",
                 len_rhs = length(rhs)
                 rhs[len_rhs] = config@MIP$gapLimit
               }
-              MIP = Rsymphony_solve_LP(obj, mat, dir, rhs, max = maximize, types = types,
+              MIP = Rsymphony::Rsymphony_solve_LP(obj, mat, dir, rhs, max = maximize, types = types,
                                        verbosity = config@MIP$verbosity, time_limit = config@MIP$timeLimit, gap_limit = config@MIP$gapLimit)
               status = MIP$status
               if (!names(status) %in% c("TM_OPTIMAL_SOLUTION_FOUND", "PREP_OPTIMAL_SOLUTION_FOUND")) {
@@ -183,7 +183,7 @@ setMethod(f = "ATA",
                 mat.sub = calcFisher(Constraints$pool, continuum)[,idx]
                 vec.sub = apply(mat.sub, 1, sum)
                 ylab = "Information"
-                title = "Test Information Function based on the selected items"           
+                title = "Test Information Function based on the selected items"
               }
               ymax = max(vec.sub, config@itemSelection$targetValue)
               pdf(NULL, bg = 'white')
