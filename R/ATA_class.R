@@ -1,5 +1,5 @@
 #' config.ATA
-#' 
+#'
 #' @rdname config.ATA
 
 setClass("ATA.config",
@@ -10,7 +10,7 @@ setClass("ATA.config",
                                                targetLocation = c(-1.2, 0, 1.2),
                                                targetValue = NULL,
                                                targetWeight = c(1, 1, 1)),
-                          MIP = list(solver = "SYMPHONY",
+                          MIP = list(solver = "LPSOLVE",
                                      verbosity = -2,
                                      timeLimit = 60,
                                      gapLimit = 0.05,
@@ -38,16 +38,16 @@ setClass("ATA.config",
              }
            }
            if (toupper(object@itemSelection$infoType) != "FISHER") stop("invalid option for itemSelection$infoType: accepts Fisher")
-           
+
            if (!toupper(object@MIP$solver) %in% c("SYMPHONY", "GUROBI", "GLPK", "LPSOLVE")) stop("invalid option for MIP$solver: accepts Symphony, Gurobi, GLPK, LpSolve")
            return(TRUE)
          }
 )
 
 #' Create an ATA.config object
-#' 
+#'
 #' Create an \code{\linkS4class{ATA.config}} object for Automated Test Assembly (ATA).
-#' 
+#'
 #' @param itemSelection A list containing item selection criteria. This should have the following entries:
 #' \itemize{
 #'   \item{\code{method}} The type of criteria. Accepts \code{MAXINFO, TIF, TCC}.
@@ -64,26 +64,26 @@ setClass("ATA.config",
 #'   \item{\code{gapLimit}} Termination criteria in relative scale passed onto the solver. Defaults to .05. Used in solvers \code{SYMPHONY, GUROBI}.
 #'   \item{\code{gapLimitAbs}} Termination criteria in absolute scale passed onto the solver. Defaults to 1. Used in solver \code{GUROBI}.
 #' }
-#' 
+#'
 #' @examples
 #' conf.1 = config.ATA(list(method = "MAXINFO",
 #'                          infoType = "FISHER",
 #'                          targetLocation = c(-1, 0, 1),
 #'                          targetWeight   = c( 1, 1, 1)))
-#'                          
+#'
 #' conf.2 = config.ATA(list(method = "TIF",
 #'                          infoType = "FISHER",
 #'                          targetLocation = c(-1, 0, 1),
 #'                          targetWeight   = c( 1, 1, 1),
 #'                          targetValue    = c( 8,10,12)))
-#'                          
+#'
 #' conf.3 = config.ATA(list(method = "TCC",
 #'                          infoType = "FISHER",
 #'                          targetLocation = c(-1, 0, 1),
 #'                          targetWeight   = c( 1, 1, 1),
 #'                          targetValue    = c(10,15,20)))
 #' @rdname config.ATA
-#' 
+#'
 #' @export
 config.ATA = function(itemSelection = NULL, MIP = NULL){
   conf = new("ATA.config")
