@@ -35,13 +35,13 @@ conf.1 = config.ATA(list(method = "MAXINFO",
                          infoType = "FISHER",
                          targetLocation = c(-1, 0, 1),
                          targetWeight   = c( 1, 1, 1)))
-                         
+
 conf.2 = config.ATA(list(method = "TIF",
                          infoType = "FISHER",
                          targetLocation = c(-1, 0, 1),
                          targetWeight   = c( 1, 1, 1),
                          targetValue    = c( 8,10,12)))
-                         
+
 conf.3 = config.ATA(list(method = "TCC",
                          infoType = "FISHER",
                          targetLocation = c(-1, 0, 1),

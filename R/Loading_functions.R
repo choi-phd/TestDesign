@@ -1,12 +1,12 @@
 #' Load item paramaters
-#' 
+#'
 #' Read item parameters from a .csv file or a data.frame and create an \linkS4class{item.pool} class.
-#' 
+#'
 #' @param file.csv File path of a .csv file containing item parameters. The file content should not have column names.
 #' @param ipar A data.frame created from a .csv file.
 #' @param se.file.csv File path of a .csv file containing standard errors.
 #' @return An \linkS4class{item.pool} object.
-#' 
+#'
 #' @seealso \link{dataset.science} for example usage.
 #' @export
 LoadItemPool = function(file.csv, ipar = NULL, se.file.csv = NULL) {
@@ -16,7 +16,7 @@ LoadItemPool = function(file.csv, ipar = NULL, se.file.csv = NULL) {
   pool = new("item.pool")
   ni = nrow(ipar)
   pool@index = 1:ni
-  pool@ID = as.character(ipar[[1]]) 
+  pool@ID = as.character(ipar[[1]])
   model = ipar[[2]]
   NCAT = numeric(ni)
   parms = vector(mode = "list", length = ni)
@@ -31,7 +31,7 @@ LoadItemPool = function(file.csv, ipar = NULL, se.file.csv = NULL) {
     loadSE = FALSE
   }
   for (i in 1:ni) {
-    if (model[i] == 1 | model[i] == "1PL") { 
+    if (model[i] == 1 | model[i] == "1PL") {
       NCAT[i] = 2
       b = ipar[[3]][i]
       pool@model[i] = "item.1pl"
@@ -41,7 +41,7 @@ LoadItemPool = function(file.csv, ipar = NULL, se.file.csv = NULL) {
       if (loadSE) {
         SEs[i, 1] = ipar.se[[3]][i]
       }
-    } else if (model[i] == 2 | model[i] == "2PL") { 
+    } else if (model[i] == 2 | model[i] == "2PL") {
       NCAT[i] = 2
       a = ipar[[3]][i]
       b = ipar[[4]][i]
@@ -94,7 +94,7 @@ LoadItemPool = function(file.csv, ipar = NULL, se.file.csv = NULL) {
     } else if (model[i] == 6 | model[i] == "GR") {
       NCAT[i] = nfields[i] - 2
       a = as.numeric(ipar[[3]][i])
-      b = as.numeric(ipar[i, 4:nfields[i]]) 
+      b = as.numeric(ipar[i, 4:nfields[i]])
       if (a > 0 && (!is.unsorted(b))) {
         pool@model[i] = "item.gr"
         parms[[i]] = new("item.gr", slope = a, category = b, ncat = NCAT[i])
@@ -111,7 +111,7 @@ LoadItemPool = function(file.csv, ipar = NULL, se.file.csv = NULL) {
   pool@maxCat = max(NCAT)
   pool@NCAT = NCAT
   pool@parms = parms
-  
+
   if (loadSE) {
     pool@SEs = SEs
   } else {
@@ -130,9 +130,9 @@ LoadItemPool = function(file.csv, ipar = NULL, se.file.csv = NULL) {
 #'
 #' @param file.csv Character. The name of the file containing item attributes.
 #' @param pool An \code{\linkS4class{item.pool}} object. Use \code{\link{LoadItemPool}} for this.
-#' 
+#'
 #' @return A \code{data.frame} containing parsed dataset.
-#' 
+#'
 #' @seealso \link{dataset.science} for example usage.
 #' @export
 
@@ -166,11 +166,11 @@ LoadItemAttrib = function(file.csv, pool) {
 #'
 #' @param file.csv Character. The name of the file containing item attributes.
 #' @param ItemAttrib A \code{data.frame} containing item attributes. Use \code{\link{LoadItemAttrib}} for this.
-#' 
+#'
 #' @return A \code{data.frame} containing stimulus attributes.
-#' 
+#'
 #' @seealso \link{dataset.reading} for example usage.
-#' 
+#'
 #' @export
 
 LoadStAttrib = function(file.csv, ItemAttrib) {
@@ -198,15 +198,17 @@ LoadStAttrib = function(file.csv, ItemAttrib) {
 #'
 #' Read constraints from specified file.
 #'
+#' Use \code{vignette("constraints")} for instructions on how to create a constraint file.
+#'
 #' @param file.csv Character. The name of the file containing specifications for constraints.
 #' @param pool An \code{item.pool} object.
 #' @param ItemAttrib A \code{data.frame} containing item attributes. Use \code{\link{LoadItemAttrib}} for this.
 #' @param StAttrib (Optional) A \code{data.frame} containing stimulus attributes. Use \code{\link{LoadStAttrib}} for this.
-#' 
+#'
 #' @return A list containing the parsed constraints, to be used in \code{\link{ATA}} and \code{\link{Shadow}}.
-#' 
+#'
 #' @seealso \link{dataset.science} for example usage.
-#' 
+#'
 #' @export
 
 LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
@@ -245,10 +247,10 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
     stop("invalid TYPE specified")
   }
   # Validation: Pool
-  ni = pool@ni 
-  ns = 0 
-  x = numeric(ni) 
-  nc = nrow(Constraints) 
+  ni = pool@ni
+  ns = 0
+  x = numeric(ni)
+  nc = nrow(Constraints)
   if (nrow(ItemAttrib) != ni)
     stop("nrow of ItemAttrib not equal to pool@ni")
   if (!all(pool@ID == ItemAttrib$ID))
@@ -261,8 +263,8 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
     ItemConstraints = which(Constraints$WHAT == "ITEM")
     StimulusConstraints = which(Constraints$WHAT %in% c("STIMULUS", "PASSAGE", "SET", "TESTLET"))
   }
-  ItemOrder     = ItemOrderBy     = NULL 
-  StimulusOrder = StimulusOrderBy = NULL 
+  ItemOrder     = ItemOrderBy     = NULL
+  StimulusOrder = StimulusOrderBy = NULL
   if (length(StimulusConstraints) > 0) {
     if (is.null(StAttrib))
       stop("for stimulus-based, StAttrib must not be NULL")
@@ -270,8 +272,8 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
       stop("for stimulus-based, ItemAttrib must include \"STID\" ")
     setBased = TRUE
     ID = c(ItemAttrib$ID, StAttrib$STID)
-    ns = nrow(StAttrib) 
-    nv = ni + ns 
+    ns = nrow(StAttrib)
+    nv = ni + ns
     item.id.by.stimulus = split(ItemAttrib$ID, as.factor(ItemAttrib$STID))
     item.index.by.stimulus = lapply(item.id.by.stimulus, function(x) which(ItemAttrib$ID %in% x))
     item.index.by.stimulus = lapply(StAttrib$STID, function(x) item.index.by.stimulus[[x]])
@@ -294,7 +296,7 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
     }
   } else if (length(ItemConstraints) > 0) {
     setBased = FALSE
-    nv = ni 
+    nv = ni
     ID = ItemAttrib$ID
     item.index.by.stimulus = NULL
     stimulus.index.by.item = NULL
@@ -308,8 +310,8 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
     if (Constraints$TYPE[index] %in% c("NUMBER", "COUNT")) {
       ConstraintTypeIsValid = TRUE
       if (toupper(Constraints$CONDITION[index]) %in% c("", " ", "PER TEST", "TEST")) {
-        test.length.LB = round(Constraints$LB[index]) 
-        test.length.UB = round(Constraints$UB[index]) 
+        test.length.LB = round(Constraints$LB[index])
+        test.length.UB = round(Constraints$UB[index])
         if (any(c(test.length.LB, test.length.UB) < 0) || test.length.LB > test.length.UB) {
           stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
         } else if (test.length.LB == test.length.UB) {
@@ -320,10 +322,10 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
           ListConstraints[[index]]@rhs = test.length.UB
         } else {
           stop("LB and UB for ITEM NUMBER must be set equal")
-        } 
+        }
         if (setBased && !common.stimulus.length) {
-          n.LB.eq.UB = sum(stimulus.length.LB == stimulus.length.UB) 
-          n.LB.ne.UB = sum(stimulus.length.LB != stimulus.length.UB) 
+          n.LB.eq.UB = sum(stimulus.length.LB == stimulus.length.UB)
+          n.LB.ne.UB = sum(stimulus.length.LB != stimulus.length.UB)
           tmp.mat = matrix(0, nrow = ns + n.LB.ne.UB, ncol = nv)
           tmp.dir = character(ns + n.LB.ne.UB)
           tmp.rhs = rep(0, ns + n.LB.ne.UB)
@@ -353,8 +355,8 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
         if (!setBased) {
           stop(sprintf("Constraints must include at least one \"STIMULUS\" under WHAT for CONDITION: %s", toupper(Constraints$CONDITION[index])))
         }
-        stimulus.length.LB = round(Constraints$LB[index]) 
-        stimulus.length.UB = round(Constraints$UB[index]) 
+        stimulus.length.LB = round(Constraints$LB[index])
+        stimulus.length.UB = round(Constraints$UB[index])
         if (any(c(stimulus.length.LB, stimulus.length.UB) < 0) || stimulus.length.LB > stimulus.length.UB) {
           stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
         } else if (stimulus.length.LB == stimulus.length.UB) {
@@ -417,7 +419,7 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
           ListConstraints[[index]]@mat[, condition.met] = 1
           ListConstraints[[index]]@dir = c(">=", "<=")
           ListConstraints[[index]]@rhs = c(Constraints$LB[index], Constraints$UB[index])
-        } 
+        }
       }
     }
     if (Constraints$TYPE[index] %in% c("SUM", "AVERAGE", "MEAN")) {
@@ -432,7 +434,7 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
           stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
         } else if (Constraints$LB[index] == Constraints$UB[index]) {
           ListConstraints[[index]]@mat = matrix(0, nrow = 1, ncol = nv)
-          ListConstraints[[index]]@dir = "<=" 
+          ListConstraints[[index]]@dir = "<="
           ListConstraints[[index]]@rhs = Constraints$UB[index]
           if (Constraints$TYPE[index] == "SUM") {
             ListConstraints[[index]]@mat[1, 1:ni] = ItemAttrib[[Constraints$CONDITION[index]]]
@@ -449,7 +451,7 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
             ListConstraints[[index]]@mat[1, 1:ni] = ItemAttrib[[Constraints$CONDITION[index]]] / test.length.UB
             ListConstraints[[index]]@mat[2, 1:ni] = ItemAttrib[[Constraints$CONDITION[index]]] / test.length.LB
           }
-        } 
+        }
       }
     }
     if (Constraints$TYPE[index] == "INCLUDE") {
@@ -515,7 +517,7 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
         ListConstraints[[index]]@dir = "<="
         ListConstraints[[index]]@rhs = 1
       }
-    } 
+    }
     if (Constraints$TYPE[index] == "ORDER") {
       ConstraintTypeIsValid = TRUE
       if (Constraints$CONDITION[index] %in% names(ItemAttrib)) {
@@ -598,7 +600,7 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
             ListConstraints[[index]]@mat[, ni + condition.met] = 1
             ListConstraints[[index]]@dir = c(">=", "<=")
             ListConstraints[[index]]@rhs = c(Constraints$LB[index], Constraints$UB[index])
-          } 
+          }
         }
       }
       if (Constraints$TYPE[index] %in% c("SUM", "AVERAGE", "MEAN")) {
@@ -613,10 +615,10 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
             stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
           } else if (Constraints$LB[index] == Constraints$UB[index]) {
             ListConstraints[[index]]@mat = matrix(0, nrow = 1, ncol = nv)
-            ListConstraints[[index]]@dir = "<=" 
+            ListConstraints[[index]]@dir = "<="
             ListConstraints[[index]]@rhs = Constraints$UB[index]
             if (Constraints$TYPE[index] == "SUM") {
-              ListConstraints[[index]]@mat[1, (ni + 1):nv] = StAttrib[[Constraints$CONDITION[index]]] 
+              ListConstraints[[index]]@mat[1, (ni + 1):nv] = StAttrib[[Constraints$CONDITION[index]]]
             } else if (Constraints$TYPE[index] %in% c("AVERAGE", "MEAN")) {
               ListConstraints[[index]]@mat[1, (ni + 1):nv] = StAttrib[[Constraints$CONDITION[index]]] / number.stimulus.UB
             }
@@ -630,7 +632,7 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
               ListConstraints[[index]]@mat[1, (ni + 1):nv] = StAttrib[[Constraints$CONDITION[index]]] / number.stimulus.UB
               ListConstraints[[index]]@mat[2, (ni + 1):nv] = StAttrib[[Constraints$CONDITION[index]]] / number.stimulus.LB
             }
-          } 
+          }
         }
       }
       if (Constraints$TYPE[index] == "INCLUDE") {
@@ -654,12 +656,12 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
           ListConstraints[[index]]@mat = matrix(0, nrow = 1, ncol = nv)
           ListConstraints[[index]]@mat[1, ni + condition.met] = 1
           ListConstraints[[index]]@dir = "=="
-          ListConstraints[[index]]@rhs = 0 
+          ListConstraints[[index]]@rhs = 0
           for (s in condition.met) {
             ListConstraints[[index]]@mat[1, item.index.by.stimulus[[s]]] = 1
           }
         }
-      } 
+      }
       if (Constraints$TYPE[index] %in% c("ALLORNONE", "ALL OR NONE", "IIF")) {
         ConstraintTypeIsValid = TRUE
         condition.met = which(with(StAttrib, eval(parse(text = Constraints$CONDITION[index]))))
@@ -692,7 +694,7 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
           ListConstraints[[index]]@dir = "<="
           ListConstraints[[index]]@rhs = 1
         }
-      } 
+      }
       if (Constraints$TYPE[index] == "ORDER") {
         ConstraintTypeIsValid = TRUE
         if (Constraints$CONDITION[index] %in% names(StAttrib)) {
@@ -704,7 +706,7 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
         } else {
           stop(sprintf("CONSTRAINT %s is invalid: %s not found in StAttrib", index, Constraints$CONDITION[index]))
         }
-      } 
+      }
       if (!ConstraintTypeIsValid){
         stop(sprintf("CONSTRAINT %s, %s is not a valid constraint type", index, Constraints$TYPE[index]))
       }
@@ -724,8 +726,8 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
       INDEX = c(INDEX, rep(Constraints$CONSTRAINT[index], ListConstraints[[index]]@nc))
     }
   }
-  out = list(Constraints = Constraints, ListConstraints = ListConstraints, pool = pool, ItemAttrib = ItemAttrib, StAttrib = StAttrib, 
-             testLength = testLength, nv = nv, ni = ni, ns = ns, ID = ID, INDEX = INDEX, MAT = MAT, DIR = DIR, RHS = RHS, setBased = setBased, 
+  out = list(Constraints = Constraints, ListConstraints = ListConstraints, pool = pool, ItemAttrib = ItemAttrib, StAttrib = StAttrib,
+             testLength = testLength, nv = nv, ni = ni, ns = ns, ID = ID, INDEX = INDEX, MAT = MAT, DIR = DIR, RHS = RHS, setBased = setBased,
              ItemOrder = ItemOrder, ItemOrderBy = ItemOrderBy, StimulusOrder = StimulusOrder, StimulusOrderBy = StimulusOrderBy,
              ItemIndexByStimulus = item.index.by.stimulus, StimulusIndexByItem = stimulus.index.by.item)
   return(out)
@@ -739,9 +741,9 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
 #' @param file.Constraints Character. The name of the file containing constraint specifications.
 #' @param file.ItemAttrib Character. The name of the file containing item attributes.
 #' @param file.StAttrib (Optional) Character. The name of the file containing set attributes.
-#' 
+#'
 #' @return A list containing the parsed constraints, to be used in \code{\link{ATA}} and \code{\link{Shadow}}.
-#' 
+#'
 #' @export
 
 BuildConstraints = function(pool, file.Constraints, file.ItemAttrib, file.StAttrib = NULL) {

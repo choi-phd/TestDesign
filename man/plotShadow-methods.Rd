@@ -3,26 +3,29 @@
 \docType{methods}
 \name{plotShadow}
 \alias{plotShadow}
-\alias{plotShadow,Shadow.output-method}
 \alias{plotShadow,list-method}
+\alias{plotShadow,Shadow.output-method}
 \title{Draw a shadow test chart}
 \usage{
-plotShadow(object, Constraints, sortByDifficulty = FALSE, PDF = NULL)
+plotShadow(object, Constraints, examineeID = 1, PDF = NULL,
+  sortByDifficulty = FALSE)
 
-\S4method{plotShadow}{Shadow.output}(object, Constraints,
-  sortByDifficulty = FALSE, PDF = NULL)
+\S4method{plotShadow}{list}(object, Constraints, examineeID = 1,
+  PDF = NULL, sortByDifficulty = FALSE)
 
-\S4method{plotShadow}{list}(object, Constraints,
-  sortByDifficulty = FALSE, PDF = NULL)
+\S4method{plotShadow}{Shadow.output}(object, Constraints, examineeID = 1,
+  PDF = NULL, sortByDifficulty = FALSE)
 }
 \arguments{
 \item{object}{An output from \code{\link{Shadow}} function.}
 
 \item{Constraints}{The constraint object used in obtaining the output.}
 
-\item{sortByDifficulty}{Sort the items by difficulty.}
+\item{examineeID}{Numeric ID of the examinee to draw the plot.}
 
 \item{PDF}{If supplied a filename, save as a PDF file.}
+
+\item{sortByDifficulty}{Sort the items by difficulty.}
 }
 \description{
 Draw a chart of shadow tests constructed for each simulee. The index of a column represents the position of item administration process, and each column represents the item pool.
