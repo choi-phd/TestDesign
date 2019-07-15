@@ -1,2 +1,0 @@
-
-## Installing Rsymphony on Mac

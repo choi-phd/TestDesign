@@ -43,7 +43,7 @@ STA = function(Constraints, objective, solver = "Symphony", xmat = NULL, xdir = 
   }
   solve.time = proc.time()
   if (toupper(solver) == "SYMPHONY") {
-    MIP = Rsymphony_solve_LP(obj, MAT, DIR, RHS, max = maximize, types = "B", write_mps = mps, write_lp = lp, verbosity = verbosity, time_limit = time_limit, gap_limit = gap_limit, ...)
+    MIP = Rsymphony::Rsymphony_solve_LP(obj, MAT, DIR, RHS, max = maximize, types = "B", write_mps = mps, write_lp = lp, verbosity = verbosity, time_limit = time_limit, gap_limit = gap_limit, ...)
     status = MIP$status
     if (!names(status) %in% c("TM_OPTIMAL_SOLUTION_FOUND", "PREP_OPTIMAL_SOLUTION_FOUND")) {
       warning(sprintf("MIP solver returned non-zero status: %s", names(MIP$status)))
