@@ -1,6 +1,24 @@
 if(FALSE){
   library(oat)
 
+
+  # IRT models
+
+  item.1 = new("item.1pl", difficulty = 0.5)
+  item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
+  item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = -0.2)
+  item.4 = new("item.pc", threshold = c(-0.5, 0.5), ncat = 3)
+  item.5 = new("item.gpc", slope = 1.0, threshold = c(-0.5, 0.0, 0.5), ncat = 4)
+  item.6 = new("item.gr", slope = 1.0, category = c(-1, 0, 1), ncat = 4)
+
+  calcProb(item.1, 0)
+  calcFisher(item.2, 0)
+  calcEscore(item.3, 0.5)
+  calcDerivative(item.4, 1)
+  calcDerivative2(item.5, 1)
+  calcJacobian(item.6, 0, resp = 1)
+  calcHessian(item.6, 0, resp = 1)
+
   # Manuscript figures
 
   config.science = config.ATA(itemSelection = list(method = "MAXINFO", targetLocation = c(-1, 0, 1)))
@@ -27,7 +45,7 @@ if(FALSE){
   set.seed(1)
 
   thetaGrid = seq(-3, 3, 1)
-  trueTheta = runif(10, min = -3.5, max = 3.5)
+  trueTheta = runif(1, min = -3.5, max = 3.5)
   testData = MakeTest(itempool.science, thetaGrid, infoType = "FISHER", trueTheta = trueTheta)
   respData = testData@Data
 
@@ -37,7 +55,7 @@ if(FALSE){
                trueTheta, constraints.science, Data = respData)
 
   setEPS()
-  postscript("example-plotcat.eps", width = 8, height = 8)
+  postscript("R/science.auditplot.eps", width = 8, height = 8)
   p = plotCAT(solution, examineeID = 1)
   print(p)
   dev.off()
@@ -50,20 +68,11 @@ if(FALSE){
 
   # Manuscript example: adaptive test assembly (reading)
 
-  set.seed(1)
+  config.reading = config.ATA(itemSelection = list(method = "MAXINFO", targetLocation = c(-1, 0, 1)))
 
-  thetaGrid = seq(-3, 3, 1)
-  trueTheta = runif(1, min = -3.5, max = 3.5)
-  testData = MakeTest(itempool.reading, thetaGrid, infoType = "FISHER", trueTheta = trueTheta)
-  respData = testData@Data
-
-  conf_rd = config.ATA(itemSelection = list(method = "TCC",
-                                         targetLocation = c(-1, 0, 1),
-                                         targetValue = c(15,20,25)))
-
-  fit = ATA(conf, constrnt_rd, plot = T)
-  fit$Selected
-  fit$plot
+  solution = ATA(config.reading, constraints.reading, plot = T)
+  solution$Selected
+  solution$plot
 
   set.seed(1)
 
@@ -77,7 +86,7 @@ if(FALSE){
   solution = Shadow(itempool.reading, config.reading, trueTheta, constraints.reading, Data = respData)
 
   setEPS()
-  postscript("example-plotcat.eps", width = 8, height = 8)
+  postscript("R/reading.auditplot.eps", width = 8, height = 8)
   p = plotCAT(solution, 1)
   p
   dev.off()
@@ -89,57 +98,47 @@ if(FALSE){
   dev.off()
 
 
+  # Fatigue
 
+  setEPS()
+  postscript("R/fatigue.infoplot.eps", width = 8, height = 5)
+  p = maxinfoplot(itempool.fatigue, constraints.fatigue)
+  print(p)
+  dev.off()
 
-  # Example 3
-  write.csv(par_fatigue, "par_ft.csv", row.names = F)
-  write.csv(item_attrib_fatigue, "item_attrib_ft.csv", row.names = F)
-  write.csv(constraints_fatigue, "constraints_ft.csv", row.names = F)
+  config.fatigue = config.ATA(itemSelection = list(method = "TIF", targetValue = c(40, 40, 40), targetLocation = c(0, 1, 2)))
 
-  itempool_ft = LoadItemPool("par_ft.csv")
-  itemattr_ft = LoadItemAttrib("item_attrib_ft.csv", itempool_ft)
-  constrnt_ft = LoadConstraints("constraints_ft.csv", itempool_ft, itemattr_ft)
+  solution = ATA(config.fatigue, constraints.fatigue, plot = T)
+  solution$Selected
 
+  setEPS()
+  postscript("R/fatigue.tif.eps", width = 8, height = 5)
+  solution$plot
+  dev.off()
 
-  thetas = c(0)
-  target = c(15)
+  set.seed(1)
 
-  conf@itemSelection$method = "TCC"
-  conf@itemSelection$targetLocation = thetas
-  conf@itemSelection$targetValue = target
-  conf@itemSelection$targetWeight = rep(1, length(thetas))
+  thetaGrid = seq(-3, 3, 1)
+  trueTheta = runif(1, min = -3.5, max = 3.5)
+  testData = MakeTest(itempool.reading, thetaGrid, infoType = "FISHER", trueTheta = trueTheta)
+  respData = testData@Data
 
-  config = conf
-  Constraints = constA
+  config.reading = config.Shadow()
 
+  solution = Shadow(itempool.reading, config.reading, trueTheta, constraints.reading, Data = respData)
 
-  fit = ATA(conf, constA, T)
-  fit$plot
-  fit$Selected
+  setEPS()
+  postscript("R/reading.auditplot.eps", width = 8, height = 8)
+  p = plotCAT(solution, 1)
+  p
+  dev.off()
 
+  setEPS()
+  postscript("R/reading.shadowplot.eps", width = 8, height = 10)
+  p = plotShadow(solution, constraints.reading, 1)
+  p
+  dev.off()
 
-  thetas = c(0,1)
-  target = c(10,15)
-
-  conf@itemSelection$method = "TCC"
-  conf@itemSelection$targetLocation = thetas
-  conf@itemSelection$targetValue = target
-  conf@itemSelection$targetWeight = rep(1, length(thetas))
-
-  fit = ATA(conf, constA, T)
-
-
-
-  thetas = c(0,1)
-  target = c(17,20)
-
-  conf@itemSelection$method = "TIF"
-  conf@itemSelection$targetLocation = thetas
-  conf@itemSelection$targetValue = target
-  conf@itemSelection$targetWeight = rep(1, length(thetas))
-
-  fit = ATA(conf, constA, T)
-  fit$plot
 
 
   # Paper Note: ATA with specifying a target amount of information
