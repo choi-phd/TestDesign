@@ -54,48 +54,11 @@
            >>
          ] setcolorspace } bind def
 /srgb { setcolor } bind def
-% begin encoding
-/WinAnsiEncoding [
- /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
- /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
- /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
- /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
- /space /exclam /quotedbl /numbersign /dollar /percent /ampersand /quoteright
- /parenleft /parenright /asterisk /plus /comma /minus /period /slash
- /zero /one /two /three /four /five /six /seven
- /eight /nine /colon /semicolon /less /equal /greater /question
- /at /A /B /C /D /E /F /G
- /H /I /J /K /L /M /N /O
- /P /Q /R /S /T /U /V /W
- /X /Y /Z /bracketleft /backslash /bracketright /asciicircum /underscore
- /grave /a /b /c /d /e /f /g
- /h /i /j /k /l /m /n /o
- /p /q /r /s /t /u /v /w
- /x /y /z /braceleft /bar /braceright /asciitilde /.notdef
- /Euro /.notdef /quotesinglbase /florin /quotedblbase /ellipsis /dagger /daggerdbl
- /circumflex /perthousand /Scaron /guilsinglleft /OE /.notdef /Zcaron /.notdef
- /.notdef /quoteleft /quoteright /quotedblleft /quotedblright /bullet /endash /emdash
- /tilde /trademark /scaron /guilsinglright /oe /.notdef /zcaron /Ydieresis
- /space /exclamdown /cent /sterling /currency /yen /brokenbar /section
- /dieresis /copyright /ordfeminine /guillemotleft /logicalnot /hyphen /registered /macron
- /degree /plusminus /twosuperior /threesuperior /acute /mu /paragraph /periodcentered
- /cedilla /onesuperior /ordmasculine /guillemotright /onequarter /onehalf /threequarters /questiondown
- /Agrave /Aacute /Acircumflex /Atilde /Adieresis /Aring /AE /Ccedilla
- /Egrave /Eacute /Ecircumflex /Edieresis /Igrave /Iacute /Icircumflex /Idieresis
- /Eth /Ntilde /Ograve /Oacute /Ocircumflex /Otilde /Odieresis /multiply
- /Oslash /Ugrave /Uacute /Ucircumflex /Udieresis /Yacute /Thorn /germandbls
- /agrave /aacute /acircumflex /atilde /adieresis /aring /ae /ccedilla
- /egrave /eacute /ecircumflex /edieresis /igrave /iacute /icircumflex /idieresis
- /eth /ntilde /ograve /oacute /ocircumflex /otilde /odieresis /divide
- /oslash /ugrave /uacute /ucircumflex /udieresis /yacute /thorn /ydieresis
-]
- def
-% end encoding
 %%IncludeResource: font Helvetica
 /Helvetica findfont
 dup length dict begin
   {1 index /FID ne {def} {pop pop} ifelse} forall
-  /Encoding WinAnsiEncoding def
+  /Encoding ISOLatin1Encoding def
   currentdict
   end
 /Font1 exch definefont pop
@@ -103,7 +66,7 @@ dup length dict begin
 /Helvetica-Bold findfont
 dup length dict begin
   {1 index /FID ne {def} {pop pop} ifelse} forall
-  /Encoding WinAnsiEncoding def
+  /Encoding ISOLatin1Encoding def
   currentdict
   end
 /Font2 exch definefont pop
@@ -111,7 +74,7 @@ dup length dict begin
 /Helvetica-Oblique findfont
 dup length dict begin
   {1 index /FID ne {def} {pop pop} ifelse} forall
-  /Encoding WinAnsiEncoding def
+  /Encoding ISOLatin1Encoding def
   currentdict
   end
 /Font3 exch definefont pop
@@ -119,7 +82,7 @@ dup length dict begin
 /Helvetica-BoldOblique findfont
 dup length dict begin
   {1 index /FID ne {def} {pop pop} ifelse} forall
-  /Encoding WinAnsiEncoding def
+  /Encoding ISOLatin1Encoding def
   currentdict
   end
 /Font4 exch definefont pop
@@ -133,8 +96,6 @@ dup length dict begin
 %%EndProlog
 %%Page: 1 1
 bp
-/bg { 1 1 1 srgb } def
-0.00 0.00 576.00 720.00 r p2
 0.00 0.00 576.00 720.00 cl
 0 0 0 srgb
 0.75 setlinewidth
@@ -1440,7 +1401,7 @@ o
 75.67 678.11 7.96 0.31 r p1
 75.67 678.73 7.96 0.31 r p1
 1 0 0 srgb
-79.64 30.24 (S) .5 0 t
+79.64 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 91.58 55.36 7.96 0.31 r p1
 91.58 55.98 7.96 0.31 r p1
@@ -2443,7 +2404,7 @@ o
 91.58 678.11 7.96 0.31 r p1
 91.58 678.73 7.96 0.31 r p1
 1 0 0 srgb
-95.56 30.24 (S) .5 0 t
+95.56 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 107.49 55.36 7.96 0.31 r p1
 107.49 55.98 7.96 0.31 r p1
@@ -3446,7 +3407,7 @@ o
 107.49 678.11 7.96 0.31 r p1
 107.49 678.73 7.96 0.31 r p1
 1 0 0 srgb
-111.47 30.24 (S) .5 0 t
+111.47 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 123.40 55.36 7.96 0.31 r p1
 123.40 55.98 7.96 0.31 r p1
@@ -4449,7 +4410,7 @@ o
 123.40 678.11 7.96 0.31 r p1
 123.40 678.73 7.96 0.31 r p1
 1 0 0 srgb
-127.38 30.24 (S) .5 0 t
+127.38 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 139.31 55.36 7.96 0.31 r p1
 139.31 55.98 7.96 0.31 r p1
@@ -5452,7 +5413,7 @@ o
 139.31 678.11 7.96 0.31 r p1
 139.31 678.73 7.96 0.31 r p1
 1 0 0 srgb
-143.29 30.24 (S) .5 0 t
+143.29 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 155.22 55.36 7.96 0.31 r p1
 155.22 55.98 7.96 0.31 r p1
@@ -6455,7 +6416,7 @@ o
 155.22 678.11 7.96 0.31 r p1
 155.22 678.73 7.96 0.31 r p1
 1 0 0 srgb
-159.20 30.24 (S) .5 0 t
+159.20 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 171.13 55.36 7.96 0.31 r p1
 171.13 55.98 7.96 0.31 r p1
@@ -7458,7 +7419,7 @@ o
 171.13 678.11 7.96 0.31 r p1
 171.13 678.73 7.96 0.31 r p1
 1 0 0 srgb
-175.11 30.24 (S) .5 0 t
+175.11 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 187.04 55.36 7.96 0.31 r p1
 187.04 55.98 7.96 0.31 r p1
@@ -8461,7 +8422,7 @@ o
 187.04 678.11 7.96 0.31 r p1
 187.04 678.73 7.96 0.31 r p1
 1 0 0 srgb
-191.02 30.24 (S) .5 0 t
+191.02 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 202.96 55.36 7.96 0.31 r p1
 202.96 55.98 7.96 0.31 r p1
@@ -9464,7 +9425,7 @@ o
 202.96 678.11 7.96 0.31 r p1
 202.96 678.73 7.96 0.31 r p1
 1 0 0 srgb
-206.93 30.24 (S) .5 0 t
+206.93 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 218.87 55.36 7.96 0.31 r p1
 218.87 55.98 7.96 0.31 r p1
@@ -10467,7 +10428,7 @@ o
 218.87 678.11 7.96 0.31 r p1
 218.87 678.73 7.96 0.31 r p1
 1 0 0 srgb
-222.84 30.24 (S) .5 0 t
+222.84 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 234.78 55.36 7.96 0.31 r p1
 234.78 55.98 7.96 0.31 r p1
@@ -11470,7 +11431,7 @@ o
 234.78 678.11 7.96 0.31 r p1
 234.78 678.73 7.96 0.31 r p1
 1 0 0 srgb
-238.76 30.24 (S) .5 0 t
+238.76 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 250.69 55.36 7.96 0.31 r p1
 250.69 55.98 7.96 0.31 r p1
@@ -12473,7 +12434,7 @@ o
 250.69 678.11 7.96 0.31 r p1
 250.69 678.73 7.96 0.31 r p1
 1 0 0 srgb
-254.67 30.24 (S) .5 0 t
+254.67 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 266.60 55.36 7.96 0.31 r p1
 266.60 55.98 7.96 0.31 r p1
@@ -13476,7 +13437,7 @@ o
 266.60 678.11 7.96 0.31 r p1
 266.60 678.73 7.96 0.31 r p1
 1 0 0 srgb
-270.58 30.24 (S) .5 0 t
+270.58 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 282.51 55.36 7.96 0.31 r p1
 282.51 55.98 7.96 0.31 r p1
@@ -14479,7 +14440,7 @@ o
 282.51 678.11 7.96 0.31 r p1
 282.51 678.73 7.96 0.31 r p1
 1 0 0 srgb
-286.49 30.24 (S) .5 0 t
+286.49 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 298.42 55.36 7.96 0.31 r p1
 298.42 55.98 7.96 0.31 r p1
@@ -15482,7 +15443,7 @@ o
 298.42 678.11 7.96 0.31 r p1
 298.42 678.73 7.96 0.31 r p1
 1 0 0 srgb
-302.40 30.24 (S) .5 0 t
+302.40 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 314.33 55.36 7.96 0.31 r p1
 314.33 55.98 7.96 0.31 r p1
@@ -16485,7 +16446,7 @@ o
 314.33 678.11 7.96 0.31 r p1
 314.33 678.73 7.96 0.31 r p1
 1 0 0 srgb
-318.31 30.24 (S) .5 0 t
+318.31 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 330.24 55.36 7.96 0.31 r p1
 330.24 55.98 7.96 0.31 r p1
@@ -17488,7 +17449,7 @@ o
 330.24 678.11 7.96 0.31 r p1
 330.24 678.73 7.96 0.31 r p1
 1 0 0 srgb
-334.22 30.24 (S) .5 0 t
+334.22 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 346.16 55.36 7.96 0.31 r p1
 346.16 55.98 7.96 0.31 r p1
@@ -18491,7 +18452,7 @@ o
 346.16 678.11 7.96 0.31 r p1
 346.16 678.73 7.96 0.31 r p1
 1 0 0 srgb
-350.13 30.24 (S) .5 0 t
+350.13 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 362.07 55.36 7.96 0.31 r p1
 362.07 55.98 7.96 0.31 r p1
@@ -19494,7 +19455,7 @@ o
 362.07 678.11 7.96 0.31 r p1
 362.07 678.73 7.96 0.31 r p1
 1 0 0 srgb
-366.04 30.24 (S) .5 0 t
+366.04 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 377.98 55.36 7.96 0.31 r p1
 377.98 55.98 7.96 0.31 r p1
@@ -20497,7 +20458,7 @@ o
 377.98 678.11 7.96 0.31 r p1
 377.98 678.73 7.96 0.31 r p1
 1 0 0 srgb
-381.96 30.24 (S) .5 0 t
+381.96 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 393.89 55.36 7.96 0.31 r p1
 393.89 55.98 7.96 0.31 r p1
@@ -21500,7 +21461,7 @@ o
 393.89 678.11 7.96 0.31 r p1
 393.89 678.73 7.96 0.31 r p1
 1 0 0 srgb
-397.87 30.24 (S) .5 0 t
+397.87 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 409.80 55.36 7.96 0.31 r p1
 409.80 55.98 7.96 0.31 r p1
@@ -22503,7 +22464,7 @@ o
 409.80 678.11 7.96 0.31 r p1
 409.80 678.73 7.96 0.31 r p1
 1 0 0 srgb
-413.78 30.24 (S) .5 0 t
+413.78 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 425.71 55.36 7.96 0.31 r p1
 425.71 55.98 7.96 0.31 r p1
@@ -23506,7 +23467,7 @@ o
 425.71 678.11 7.96 0.31 r p1
 425.71 678.73 7.96 0.31 r p1
 1 0 0 srgb
-429.69 30.24 (S) .5 0 t
+429.69 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 441.62 55.36 7.96 0.31 r p1
 441.62 55.98 7.96 0.31 r p1
@@ -24509,7 +24470,7 @@ o
 441.62 678.11 7.96 0.31 r p1
 441.62 678.73 7.96 0.31 r p1
 1 0 0 srgb
-445.60 30.24 (S) .5 0 t
+445.60 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 457.53 55.36 7.96 0.31 r p1
 457.53 55.98 7.96 0.31 r p1
@@ -25512,7 +25473,7 @@ o
 457.53 678.11 7.96 0.31 r p1
 457.53 678.73 7.96 0.31 r p1
 1 0 0 srgb
-461.51 30.24 (S) .5 0 t
+461.51 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 473.44 55.36 7.96 0.31 r p1
 473.44 55.98 7.96 0.31 r p1
@@ -26515,7 +26476,7 @@ o
 473.44 678.11 7.96 0.31 r p1
 473.44 678.73 7.96 0.31 r p1
 1 0 0 srgb
-477.42 30.24 (S) .5 0 t
+477.42 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 489.36 55.36 7.96 0.31 r p1
 489.36 55.98 7.96 0.31 r p1
@@ -27518,7 +27479,7 @@ o
 489.36 678.11 7.96 0.31 r p1
 489.36 678.73 7.96 0.31 r p1
 1 0 0 srgb
-493.33 30.24 (S) .5 0 t
+493.33 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 505.27 55.36 7.96 0.31 r p1
 505.27 55.98 7.96 0.31 r p1
@@ -28521,7 +28482,7 @@ o
 505.27 678.11 7.96 0.31 r p1
 505.27 678.73 7.96 0.31 r p1
 1 0 0 srgb
-509.24 30.24 (S) .5 0 t
+509.24 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 521.18 55.36 7.96 0.31 r p1
 521.18 55.98 7.96 0.31 r p1
@@ -29524,7 +29485,7 @@ o
 521.18 678.11 7.96 0.31 r p1
 521.18 678.73 7.96 0.31 r p1
 1 0 0 srgb
-525.16 30.24 (S) .5 0 t
+525.16 33.11 (S) .5 0 t
 0.8784 0.8784 0.8784 srgb
 537.09 55.36 7.96 0.31 r p1
 537.09 55.98 7.96 0.31 r p1
@@ -30527,7 +30488,7 @@ o
 537.09 678.11 7.96 0.31 r p1
 537.09 678.73 7.96 0.31 r p1
 1 0 0 srgb
-541.07 30.24 (S) .5 0 t
+541.07 33.11 (S) .5 0 t
 0 0 0 srgb
 75.67 625.07 7.96 0.31 r p1
 75.67 550.81 7.96 0.31 r p1
