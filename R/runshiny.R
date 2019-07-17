@@ -4,8 +4,8 @@
 #'
 #' @export
 #' @aliases app
-#' @rdname guiShadow
-guiShadow = function() {
+#' @rdname guiOAT
+guiOAT = function() {
   appDir = system.file("shiny", package = "oat")
   if (appDir == "") {
     stop("Could not find application directory. Try re-installing `oat`.", call. = FALSE)
@@ -31,8 +31,8 @@ guiShadow = function() {
 }
 
 #' @export
-#' @rdname guiShadow
+#' @rdname guiOAT
 
 app = function() {
-  guiShadow()
+  guiOAT()
 }

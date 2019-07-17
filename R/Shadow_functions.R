@@ -350,7 +350,6 @@ setMethod(f = "plotCAT",
 setMethod(f = "plotCAT",
           signature = "Shadow.output",
           definition = function(object, examineeID = 1, PDF = NULL, minTheta = -5, maxTheta = 5, minScore = 0, maxScore = 1, zCI = 1.96) {
-            message(object@simuleeIndex)
             nItems = length(object@administeredItemIndex)
             if (nItems > 0) {
               par(mar = c(2, 3, 1, 1) + 0.1)

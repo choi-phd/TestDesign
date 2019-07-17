@@ -116,28 +116,55 @@ if(FALSE){
   solution$plot
   dev.off()
 
+
+  # Fatigue - generalized shadow test
+
   set.seed(1)
 
-  thetaGrid = seq(-3, 3, 1)
+  thetaGrid = seq(-4, 4, 1)
   trueTheta = runif(1, min = -3.5, max = 3.5)
-  testData = MakeTest(itempool.reading, thetaGrid, infoType = "FISHER", trueTheta = trueTheta)
-  respData = testData@Data
+  respData = MakeTest(itempool.fatigue, thetaGrid, infoType = "FISHER", trueTheta = trueTheta)@Data
 
-  config.reading = config.Shadow()
+  config.fatigue = config.Shadow(refreshPolicy = list(
+    method = "POSITION",
+    position = c(1, 5, 9)
+  ))
 
-  solution = Shadow(itempool.reading, config.reading, trueTheta, constraints.reading, Data = respData)
+  solution = Shadow(itempool.fatigue, config.fatigue, trueTheta, constraints.fatigue, Data = respData)
 
   setEPS()
-  postscript("R/reading.auditplot.eps", width = 8, height = 8)
+  postscript("R/fatigue.auditplot.eps", width = 8, height = 8)
   p = plotCAT(solution, 1)
   p
   dev.off()
 
   setEPS()
-  postscript("R/reading.shadowplot.eps", width = 8, height = 10)
-  p = plotShadow(solution, constraints.reading, 1)
+  postscript("R/fatigue.shadowplot.eps", width = 8, height = 5)
+  p = plotShadow(solution, constraints.fatigue, 1)
   p
   dev.off()
+
+
+  # Debug
+
+  library(oat)
+  set.seed(1)
+
+  thetaGrid = seq(-4, 4, 1)
+  trueTheta = runif(1000, min = -3.5, max = 3.5)
+  resp.science = MakeTest(itempool.science, thetaGrid, infoType = "FISHER",trueTheta = trueTheta)@Data
+
+  config.science = config.Shadow(MIP = list(solver = "SYMPHONY"), exposureControl = list(method = "ELIGIBILITY"))
+  solution = Shadow(itempool.science, config.science, trueTheta, constraints2.science, Data = resp.science)
+
+  object = itempool.science
+  config = config.science
+  Constraints = constraints2.science
+  Data = resp.science
+  prior = NULL
+  priorPar = NULL
+  session = NULL
+
 
 
 
