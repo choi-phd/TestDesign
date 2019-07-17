@@ -8,16 +8,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
-
-```{r setup}
-```
-
 ## Introduction
 
 This document explains how to create a constraint file. In test assembly, practitioners often want to select the items that satify various types of constraints.
@@ -26,7 +16,7 @@ This document explains how to create a constraint file. In test assembly, practi
 
 As of *oat* version 0.2, constraints can be read in from a `.csv` file. The file is expected to be in the following structure:
 
-```{}
+```{r, eval = F}
 CONSTRAINT,TYPE,WHAT,CONDITION,LB,UB
 1,Number,Item,,30,30
 2,Number,Item,LEVEL == 3,10,10
@@ -51,37 +41,37 @@ This column specifies the type of constraint. The following values are expected:
 
 * `Number` specifies the constraint to be applied to the number of selected items (if `WHAT` column is `Item`), or to the number of selected item sets (if `WHAT` column is `Stimulus`). For example, the following row tells the solver to select a total of 30 items.
 
-```{}
+```{r, eval = F}
 1,Number,Item,,30,30
 ```
 
 * `Order` specifies the selection to be made in ascending order. The following row tells the solver to select the items in ascending `LEVEL`, based on the supplied item attributes.
 
-```{}
+```{r, eval = F}
 32,Order,Item,LEVEL,,
 ```
 
 * `Enemy` specifies the items (or item sets) matching the condition to be treated as enemy items. To tell the solver to select at most one of the two items:
 
-```{}
+```{r, eval = F}
 33,Enemy,Item,"ID %in% c(""SC00001"", ""SC00002"")",,
 ```
 
 * `Include` specifies the items matching the condition to be included in selection. For example, the following row tells the solver to include the two items `SC00003` and `SC00004`:
 
-```{}
+```{r, eval = F}
 34,Include,Item,"ID %in% c(""SC00003"", ""SC00004"")",,
 ```
 
 * `Exclude` specifies the items matching the condition to be excluded in selection. The following row tells the solver to exclude the items satisfying `PTBIS < 0.15`, based on the supplied item attributes.
 
-```{}
+```{r, eval = F}
 35,Exclude,Item,PTBIS < 0.15,,
 ```
 
 * `AllorNone` specifies the items matching the condition to be either all included or all excluded. To tell the solver to either select the items `SC00005` and `SC00006` at the same time or exclude them at the same time:
 
-```{}
+```{r, eval = F}
 36,AllOrNone,Item,"ID %in% c(""SC00005"", ""SC00006"")",,
 ```
 
@@ -102,7 +92,7 @@ Some examples are:
 
 Also, `Per Stimulus` can be used to specify the number of items to select in each stimulus. For example, the following row tells the solver to select 4 to 6 items per stimulus:
 
-```{}
+```{r, eval = F}
 3,Number,Item,Per Stimulus,4,6,
 ```
 
@@ -114,13 +104,13 @@ Some example rows are provided.
 
 * To select a total of 12 items:
 
-```{}
+```{r, eval = F}
 1,Number,Item,,12,12
 ```
 
 * To select 15 to 30 items satisfying `DOK >= 2`:
 
-```{}
+```{r, eval = F}
 17,Number,Item,DOK >= 2,15,30,
 ```
 
@@ -128,6 +118,6 @@ Some example rows are provided.
 
 This column can be used to turn off a constraint from being applied. The following row specifies the order condition to be not applied.
 
-```{}
+```{r, eval = F}
 18,Order,Passage,CONTENT,,,OFF
 ```
