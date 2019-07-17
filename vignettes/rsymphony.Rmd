@@ -1,0 +1,96 @@
+---
+title: "rsymphony"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{rsymphony}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+If you are a Mac user, there is a good chance of receving an error message when trying to install `Rsymphony`, one of the suggested solvers in this package.
+
+```
+* installing *source* package ‘Rsymphony’ ...
+** package ‘Rsymphony’ successfully unpacked and MD5 sums checked
+** using staged installation
+Cannot find SYMPHONY libraries and headers.
+See <https://projects.coin-or.org/SYMPHONY>.
+ERROR: configuration failed for package ‘Rsymphony’
+```
+
+A possible fix to this solution is as follows. An admin account is required throughout the steps. Switch to the account by running the following line, replacing `{username}` with your username (without brackets). Type in the account password.
+
+```
+su {username}
+```
+
+First, install the `homebrew` package manager (if you do not already have it) by following the instructions on \link{http://brew.sh/}.
+
+Next, install `SYMPHONY` with homebrew by running the following commands in Terminal.
+
+```
+brew tap coin-or-tools/coinor 
+brew install symphony
+```
+
+Now install `pkg-config`, a tool for querying installed libraries when compiling software source code by pasting the following command in your Terminal prompt.
+
+```
+brew install pkg-config
+```
+
+At this point, `Rsymphony` should now be able to locate the `SYMPHONY` libraries. Reinstall the package from R.
+
+If you still cannot install the package by running the command above, a workaround is available. Run the following commands in Terminal to download `Rsymphony` tarball.
+
+```
+brew install wget 
+sudo wget https://cran.revolutionanalytics.com/src/contrib/Rsymphony_0.1-28.tar.gz 
+sudo tar -xzvf Rsymphony_0.1-28.tar.gz
+```
+
+If you are attempting to reinstall the package, `wget` may return an error because the file already exists in your system. Run the following to remove the file, and retry the above step.
+
+```
+sudo rm Rsymphony_0.1-28.tar.gz
+```
+
+Now, open the `Rsymphony` folder with the below command. Leave the Terminal open as it will be used in later steps.
+
+```
+open ./Rsymphony
+```
+
+Open the file `configure` with a text editor software. Comment out the lines 51-55 by inserting `#`s in the beginning of each line as below. Save it as the same file.
+
+```
+#if test ${status} -ne 0; then 
+# echo “Cannot find SYMPHONY libraries and headers.” 
+# echo “See https://projects.coin-or.org/SYMPHONY.” 
+# exit 1 
+#fi
+```
+
+Open `R_symphony.cc` file in the `src` folder and change line 12:
+
+```
+#include <coin/symphony.h>
+```
+
+to
+
+```
+#include <symphony.h>
+```
+
+Finally, run the following command on your Terminal.
+
+```
+sudo R CMD install Rsymphony
+```
+
+For further reference, please refer to these following external links.
+
+* \link{https://stackoverflow.com/questions/32129191/osx-installing-rsymphony-linking-headers-and-libs/37599406#37599406}
+* \link{https://stackoverflow.com/questions/42215523/installing-rsymphony-using-rstudio-on-macos}
+

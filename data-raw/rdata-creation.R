@@ -6,6 +6,7 @@ constraints.science.raw  = read.csv("data-raw/constraints.science.1000.csv", hea
 itempool.science         = LoadItemPool("data-raw/item.params.science.1000.csv")
 itemattrib.science       = LoadItemAttrib("data-raw/item.attrib.science.1000.csv", itempool.science)
 constraints.science      = LoadConstraints("data-raw/constraints.science.1000.csv", itempool.science, itemattrib.science)
+constraints2.science     = LoadConstraints("data-raw/constraints2.science.1000.csv", itempool.science, itemattrib.science)
 
 usethis::use_data(item.params.science.raw, overwrite = T)
 usethis::use_data(item.attrib.science.raw, overwrite = T)
@@ -13,6 +14,7 @@ usethis::use_data(constraints.science.raw, overwrite = T)
 usethis::use_data(itempool.science       , overwrite = T)
 usethis::use_data(itemattrib.science     , overwrite = T)
 usethis::use_data(constraints.science    , overwrite = T)
+usethis::use_data(constraints2.science   , overwrite = T)
 
 # Reading dataset
 
