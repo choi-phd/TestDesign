@@ -161,14 +161,15 @@ saveOutput = function(objectList, file = NULL) {
 #' @param object An output from \code{\link{Shadow}} function.
 #' @param Constraints The constraint object used in obtaining the output.
 #' @param examineeID Numeric ID of the examinee to draw the plot.
-#' @param PDF If supplied a filename, save as a PDF file.
 #' @param sortByDifficulty Sort the items by difficulty.
-
+#' @param PDF If supplied a filename, save as a PDF file.
+#' @param ... Additional options to be passed on to \code{pdf()}.
+#'
 #' @docType methods
 #' @rdname plotShadow-methods
 #' @export
 setGeneric(name = "plotShadow",
-           def = function(object, Constraints, examineeID = 1, PDF = NULL, sortByDifficulty = FALSE) {
+           def = function(object, Constraints, examineeID = 1, sortByDifficulty = FALSE, PDF = NULL, ...) {
              standardGeneric("plotShadow")
            }
 )
@@ -178,12 +179,12 @@ setGeneric(name = "plotShadow",
 #' @export
 setMethod(f = "plotShadow",
           signature = "list",
-          definition = function(object, Constraints, examineeID = 1, PDF = NULL, sortByDifficulty = FALSE) {
+          definition = function(object, Constraints, examineeID = 1, sortByDifficulty = FALSE, PDF = NULL, ...) {
             if (!is.null(PDF)) {
               pdf(file = PDF, bg = "white")
             }
             for (i in examineeID) {
-              plotShadow(object$output[[i]], Constraints, examineeID, PDF = NULL)
+              plotShadow(object$output[[i]], Constraints, examineeID, PDF = NULL, ...)
             }
             if (!is.null(PDF)) {
               dev.off()
@@ -199,7 +200,7 @@ setMethod(f = "plotShadow",
 #' @export
 setMethod(f = "plotShadow",
           signature = "Shadow.output",
-          definition = function(object, Constraints, examineeID = 1, PDF = NULL, sortByDifficulty = FALSE) {
+          definition = function(object, Constraints, examineeID = 1, sortByDifficulty = FALSE, PDF = NULL, ...) {
             maxNI = Constraints$testLength
             ni = Constraints$ni
             par(mar = c(2, 3, 1, 1) + 0.1, mfrow = c(1, 1))
@@ -312,12 +313,13 @@ setMethod(f = "plotShadow",
 #' @param maxScore A maximum item score.
 #' @param zCI A quantile of the normal distribution for confidence intervals.
 #' @param PDF If supplied a filename, save as a PDF file.
+#' @param ... Additional options to be passed on to \code{pdf()}.
 #'
 #' @docType methods
 #' @rdname plotCAT-methods
 #' @export
 setGeneric(name = "plotCAT",
-           def = function(object, examineeID = 1, PDF = NULL, minTheta = -5, maxTheta = 5, minScore = 0, maxScore = 1, zCI = 1.96) {
+           def = function(object, examineeID = 1, minTheta = -5, maxTheta = 5, minScore = 0, maxScore = 1, zCI = 1.96, PDF = NULL, ...) {
              standardGeneric("plotCAT")
            }
 )
@@ -327,12 +329,12 @@ setGeneric(name = "plotCAT",
 #' @export
 setMethod(f = "plotCAT",
           signature = "list",
-          definition = function(object, examineeID = 1, PDF = NULL, minTheta = -5, maxTheta = 5, minScore = 0, maxScore = 1, zCI = 1.96) {
+          definition = function(object, examineeID = 1, minTheta = -5, maxTheta = 5, minScore = 0, maxScore = 1, zCI = 1.96, PDF = NULL, ...) {
             if (!is.null(PDF)) {
               pdf(file = PDF, bg = "white")
             }
             for (i in examineeID) {
-              plotCAT(object$output[[i]], examineeID, PDF = NULL, minTheta = minTheta, maxTheta = maxTheta, minScore = minScore, maxScore = maxScore, zCI = zCI)
+              plotCAT(object$output[[i]], examineeID, minTheta = minTheta, maxTheta = maxTheta, minScore = minScore, maxScore = maxScore, zCI = zCI, PDF = NULL, ...)
             }
             if (!is.null(PDF)) {
               dev.off()
@@ -348,7 +350,7 @@ setMethod(f = "plotCAT",
 #' @export
 setMethod(f = "plotCAT",
           signature = "Shadow.output",
-          definition = function(object, examineeID = 1, PDF = NULL, minTheta = -5, maxTheta = 5, minScore = 0, maxScore = 1, zCI = 1.96) {
+          definition = function(object, examineeID = 1, minTheta = -5, maxTheta = 5, minScore = 0, maxScore = 1, zCI = 1.96, PDF = NULL, ...) {
             message(object@simuleeIndex)
             nItems = length(object@administeredItemIndex)
             if (nItems > 0) {
@@ -608,7 +610,6 @@ setMethod(f = "simResp",
 #' @rdname item.pool.operators
 "-.item.pool" = function(pool1, pool2) {
   if(class(pool1) != "item.pool" || class(pool2) != "item.pool") stop("operarands must be of class \"item.pool\" ")
-
   if(any(pool2@ID %in% pool1@ID)) {
     left = which(!(pool1@ID %in% pool2@ID))
     if (length(left) > 0) {
@@ -2888,7 +2889,6 @@ plotInfoOverlay = function(object, theta, infoType = "FISHER", select = NULL, PD
   if (toupper(infoType) == "FISHER") {
     Info = calcFisher(object, theta)
   } else {
-    #TODO: other info
     stop("Invalid infoType specified")
   }
   if (!is.null(PDF)) {
@@ -2933,11 +2933,9 @@ lnHyperPars = function(mean, sd) {
 #'
 #' @export
 logitHyperPars = function(mean, sd) {
-
   n.max = 10000
   n     = 0
   logitSamples = numeric(n.max)
-
   while (n.max - n > 0){
     normSample = rnorm(n.max - n, mean, sd)
     idx = (normSample >= 0) & (normSample <= 1)
@@ -2948,7 +2946,6 @@ logitHyperPars = function(mean, sd) {
     }
     n = n.new
   }
-
   return(c(mean(logitSamples), sd(logitSamples)))
 }
 
