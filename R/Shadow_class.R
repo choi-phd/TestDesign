@@ -6,7 +6,8 @@
 #' @slot mat A matrix representing the left-hand side weights. Has nc rows.
 #' @slot dir A vector of length nc. Each entry represents a logical operator relating the left-hand side to the right-hand side.
 #' @slot rhs A vector of length nc. Each entry represents the right-hand side of the constraint.
-#' @slot nc Numeric. The number of constraints represented in this object.
+#' @slot nc Numeric. The number of constraints represented in the constraint set.
+#' @slot suspend \code{TRUE} if the constraint is to be turned off.
 #'
 #' @export
 setClass("constraint",
@@ -14,12 +15,14 @@ setClass("constraint",
                    mat = "matrix",
                    dir = "character",
                    rhs = "numeric",
-                   nc = "numeric"),
+                   nc = "numeric",
+                   suspend = "logical"),
          prototype = list(CONSTRAINT = character(0),
                           mat = matrix(NA, 0, 0),
                           dir = character(0),
                           rhs = numeric(0),
-                          nc = 0),
+                          nc = 0,
+                          suspend = FALSE),
          validity = function(object) {
            # add validity checks
            return(TRUE)
