@@ -1,7 +1,7 @@
 Package: oat
 Type: Package
 Title: Optimal Test Design Approach to Fixed and Adaptive Test Construction
-Version: 0.0.0.9000
+Version: 0.2
 Date: 2019-07-10
 Author: Seung W. Choi and Sangdon Lim
 Maintainer: Seung W. Choi <schoi@austin.utexas.edu>
