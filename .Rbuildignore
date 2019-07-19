@@ -11,3 +11,4 @@
 ^.*\.eps$
 ^cleanup\.cmd$
 ^cleanup\.sh$
+^readme.md$
