@@ -91,6 +91,6 @@ sudo R CMD install Rsymphony
 
 For further reference, please refer to these following external links.
 
-* \link{https://stackoverflow.com/questions/32129191/osx-installing-rsymphony-linking-headers-and-libs/37599406#37599406}
-* \link{https://stackoverflow.com/questions/42215523/installing-rsymphony-using-rstudio-on-macos}
+* https://stackoverflow.com/questions/32129191/osx-installing-rsymphony-linking-headers-and-libs/37599406
+* https://stackoverflow.com/questions/42215523/installing-rsymphony-using-rstudio-on-macos
 
