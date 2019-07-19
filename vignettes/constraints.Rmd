@@ -17,15 +17,15 @@ This document explains how to create a constraint file. In test assembly, practi
 As of *oat* version 0.2, constraints can be read in from a `.csv` file. The file is expected to be in the following structure:
 
 ```{r, eval = F}
-CONSTRAINT,TYPE,WHAT,CONDITION,LB,UB
-1,Number,Item,,30,30
-2,Number,Item,LEVEL == 3,10,10
-3,Number,Item,LEVEL == 4,10,10
-4,Number,Item,LEVEL == 5,10,10
-5,Number,Item,STANDARD == 1,17,20
+CONSTRAINT,TYPE,WHAT,CONDITION,LB,UB,ONOFF
+1,Number,Item,,30,30,
+2,Number,Item,LEVEL == 3,10,10,
+3,Number,Item,LEVEL == 4,10,10,
+4,Number,Item,LEVEL == 5,10,10,
+5,Number,Item,STANDARD == 1,17,20,
 ```
 
-The constraint file should have 6 columns, named as `CONSTRAINT`, `TYPE`, `WHAT`, `CONDITION`, `LB`, `UB` on the first row of the file. Optionally, an extra column `ONOFF` can be created. This column can be used to toggle each constraint row for test development purposes.
+The constraint file should have 7 columns, named as `CONSTRAINT`, `TYPE`, `WHAT`, `CONDITION`, `LB`, `UB`, `ONOFF` on the first row of the file.
 
 Beginning from the second row, each row should have the corresponding values for the 6 columns.
 
@@ -114,9 +114,9 @@ Some example rows are provided.
 17,Number,Item,DOK >= 2,15,30,
 ```
 
-### ONOFF (optional)
+### ONOFF
 
-This column can be used to turn off a constraint from being applied. The following row specifies the order condition to be not applied.
+This column can be used to turn off a constraint from being applied. The following row specifies the order constraint to be not applied.
 
 ```{r, eval = F}
 18,Order,Passage,CONTENT,,,OFF
