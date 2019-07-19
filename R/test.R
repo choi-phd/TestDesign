@@ -151,14 +151,20 @@ if(FALSE){
   set.seed(1)
 
   thetaGrid = seq(-4, 4, 1)
-  trueTheta = runif(1, min = -3.5, max = 3.5)
+  trueTheta = runif(1000, min = -3.5, max = 3.5)
   resp.science = MakeTest(itempool.science, thetaGrid, infoType = "FISHER",trueTheta = trueTheta)@Data
 
   config.science = config.Shadow(MIP = list(solver = "SYMPHONY"), exposureControl = list(method = "ELIGIBILITY"))
 
-  c1 = UpdateConstraints(constraints.science, off = 14)
+  c1 = UpdateConstraints(constraints.science, off = c(19, 34))
+  c1$Constraints
 
-  solution = Shadow(itempool.science, config.science, trueTheta, constraints.science, Data = resp.science)
+  message("\n")
+  message(k)
+  solution = Shadow(itempool.science, config.science, trueTheta, c1, Data = resp.science)
+
+  flush.console()
+
 
   object = itempool.science
   config = config.science
