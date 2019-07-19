@@ -14,3 +14,12 @@
 #' @importFrom lattice xyplot
 #' @useDynLib oat
 NULL
+
+#' @noRd
+.onAttach = function(libname, pkgname){
+  message("── oat 0.2 ─────────────────────────────")
+  message("   Optimal Assembly of Test             ")
+  message(" ")
+  message("   Default solver set to: lpSolve")
+  message("   See ?dataset.science for examples.")
+}
