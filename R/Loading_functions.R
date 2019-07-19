@@ -749,7 +749,7 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
 UpdateConstraints = function(object, on = NULL, off = NULL) {
   nc = nrow(object$Constraints)
   if (length(intersect(on, off)) > 0) {
-    stop("the on- and-off vectors cannot contain a common constraint index")
+    stop("the on- and off-vectors cannot contain a common constraint index")
   }
   if (!"ONOFF" %in% names(object$Constraints)) {
     object$Constraints$ONOFF = ""
