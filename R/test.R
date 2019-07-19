@@ -55,13 +55,13 @@ if(FALSE){
                trueTheta, constraints.science, Data = respData)
 
   setEPS()
-  postscript("R/science.auditplot.eps", width = 8, height = 8)
+  postscript("R/science.auditplot.eps", width = 8, height = 4.5)
   p = plotCAT(solution, examineeID = 1)
   print(p)
   dev.off()
 
   setEPS()
-  postscript("R/science.shadowplot.eps", width = 8, height = 10)
+  postscript("R/science.shadowplot.eps", width = 8, height = 9.8)
   p = plotShadow(solution, constraints.science, examineeID = 1)
   p
   dev.off()
@@ -92,7 +92,7 @@ if(FALSE){
   dev.off()
 
   setEPS()
-  postscript("R/reading.shadowplot.eps", width = 8, height = 10)
+  postscript("R/reading.shadowplot.eps", width = 8, height = 8.5)
   p = plotShadow(solution, constraints.reading, 1)
   p
   dev.off()
