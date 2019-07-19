@@ -198,7 +198,7 @@ LoadStAttrib = function(file.csv, ItemAttrib) {
 #'
 #' Read constraints from specified file.
 #'
-#' Use \code{vignette("constraints")} for instructions on how to create a constraint file.
+#' Use \code{vignette("constraints")} for instructions on how to create a constraint set object.
 #'
 #' @param file.csv Character. The name of the file containing specifications for constraints.
 #' @param pool An \code{item.pool} object.
@@ -256,13 +256,8 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
   if (!all(pool@ID == ItemAttrib$ID))
     stop("item IDs in pool and ItemAttrib not matching")
   ListConstraints = vector(mode = "list", length = nc)
-  if (ONOFF) {
-    ItemConstraints = which(Constraints$WHAT == "ITEM" & Constraints$ONOFF != "OFF")
-    StimulusConstraints = which(Constraints$WHAT %in% c("STIMULUS", "PASSAGE", "SET", "TESTLET") & Constraints$ONOFF != "OFF")
-  } else {
-    ItemConstraints = which(Constraints$WHAT == "ITEM")
-    StimulusConstraints = which(Constraints$WHAT %in% c("STIMULUS", "PASSAGE", "SET", "TESTLET"))
-  }
+  ItemConstraints = which(Constraints$WHAT == "ITEM")
+  StimulusConstraints = which(Constraints$WHAT %in% c("STIMULUS", "PASSAGE", "SET", "TESTLET"))
   ItemOrder     = ItemOrderBy     = NULL
   StimulusOrder = StimulusOrderBy = NULL
   if (length(StimulusConstraints) > 0) {
@@ -307,6 +302,7 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
     ListConstraints[[index]] = new("constraint")
     ListConstraints[[index]]@CONSTRAINT = Constraints$CONSTRAINT[index]
     ConstraintTypeIsValid = FALSE
+    ListConstraints[[index]]@suspend = Constraints$ONOFF[index] == "OFF"
     if (Constraints$TYPE[index] %in% c("NUMBER", "COUNT")) {
       ConstraintTypeIsValid = TRUE
       if (toupper(Constraints$CONDITION[index]) %in% c("", " ", "PER TEST", "TEST")) {
@@ -520,14 +516,16 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
     }
     if (Constraints$TYPE[index] == "ORDER") {
       ConstraintTypeIsValid = TRUE
-      if (Constraints$CONDITION[index] %in% names(ItemAttrib)) {
+      if (!ListConstraints[[index]]@suspend) {
+        if (Constraints$CONDITION[index] %in% names(ItemAttrib)) {
         if (any(is.na(ItemAttrib[[Constraints$CONDITION[index]]]))) {
           stop(sprintf("CONSTRAINT %s: %s must not have a missing value", index, Constraints$CONDITION[index]))
         }
         ItemOrder = ItemAttrib[[Constraints$CONDITION[index]]]
         ItemOrderBy = Constraints$CONDITION[index]
-      } else {
-        stop(sprintf("CONSTRAINT %s is invalid: %s not found in ItemAttrib", index, Constraints$CONDITION[index]))
+        } else {
+          stop(sprintf("CONSTRAINT %s is invalid: %s not found in ItemAttrib", index, Constraints$CONDITION[index]))
+        }
       }
     }
     if (!ConstraintTypeIsValid){
@@ -540,6 +538,7 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
       ListConstraints[[index]] = new("constraint")
       ListConstraints[[index]]@CONSTRAINT = Constraints$CONSTRAINT[index]
       ConstraintTypeIsValid = FALSE
+      ListConstraints[[index]]@suspend = Constraints$ONOFF[index] == "OFF"
       if (Constraints$TYPE[index] %in% c("NUMBER", "COUNT")) {
         ConstraintTypeIsValid = TRUE
         if (toupper(Constraints$CONDITION[index]) %in% c("", " ", "PER TEST")) {
@@ -697,14 +696,16 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
       }
       if (Constraints$TYPE[index] == "ORDER") {
         ConstraintTypeIsValid = TRUE
-        if (Constraints$CONDITION[index] %in% names(StAttrib)) {
+        if (!ListConstraints[[index]]@suspend) {
+          if (Constraints$CONDITION[index] %in% names(StAttrib)) {
           if (any(is.na(StAttrib[[Constraints$CONDITION[index]]]))) {
             stop(sprintf("CONSTRAINT %s: %s must not have a missing value", index, Constraints$CONDITION[index]))
           }
           StimulusOrder = StAttrib[[Constraints$CONDITION[index]]]
           StimulusOrderBy = Constraints$CONDITION[index]
-        } else {
-          stop(sprintf("CONSTRAINT %s is invalid: %s not found in StAttrib", index, Constraints$CONDITION[index]))
+          } else {
+            stop(sprintf("CONSTRAINT %s is invalid: %s not found in StAttrib", index, Constraints$CONDITION[index]))
+          }
         }
       }
       if (!ConstraintTypeIsValid){
@@ -718,7 +719,7 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
   DIR = NULL
   RHS = NULL
   for (index in 1:nc) {
-    if (Constraints$TYPE[index] != "ORDER" && ifelse(ONOFF, Constraints$ONOFF[index] != "OFF", TRUE)) {
+    if (Constraints$TYPE[index] != "ORDER" && !ListConstraints[[index]]@suspend) {
       ListConstraints[[index]]@nc = nrow(ListConstraints[[index]]@mat)
       MAT = rbind(MAT, ListConstraints[[index]]@mat)
       DIR = c(DIR, ListConstraints[[index]]@dir)
@@ -731,6 +732,64 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
              ItemOrder = ItemOrder, ItemOrderBy = ItemOrderBy, StimulusOrder = StimulusOrder, StimulusOrderBy = StimulusOrderBy,
              ItemIndexByStimulus = item.index.by.stimulus, StimulusIndexByItem = stimulus.index.by.item)
   return(out)
+}
+
+#' Update constraints
+#' 
+#' Update the onstraints list
+#' 
+#' @param object a list object returned from \code{\link{LoadConstraints}}
+#' @param on a vector of constraints index to turn on.
+#' @param off a vector of constraints index to turn off.
+#' 
+#' @return An updated list of constraints to be used in \code{\link{ATA}} and \code{\link{Shadow}}.
+#' 
+#' @export
+
+UpdateConstraints = function(object, on = NULL, off = NULL) {
+  nc = nrow(object$Constraints)
+  if (length(intersect(on, off)) > 0) {
+    stop("the on- and-off vectors cannot contain a common constraint index")
+  }
+  if (!"ONOFF" %in% names(object$Constraints)) {
+    object$Constraints$ONOFF = ""
+  }
+  if (!is.null(on)) {
+    if (any(!is.element(on, 1:nc))) {
+      stop("the on-vector contains an invalid constraint index")
+    }
+    for (index in on) {
+      object$ListConstraints[[index]]@suspend = FALSE
+      object$Constraints[index, "ONOFF"] = ""
+    }
+  }
+  if (!is.null(off)) {
+    if (any(!is.element(off, 1:nc))) {
+      stop("the off-vector contains an invalid constraint index")
+    }
+    for (index in off) {
+      object$ListConstraints[[index]]@suspend = TRUE
+      object$Constraints[index, "ONOFF"] = "OFF"
+    }
+  }
+  INDEX = NULL
+  MAT = NULL
+  DIR = NULL
+  RHS = NULL
+  for (index in 1:nc) {
+    if (object$Constraints$TYPE[index] != "ORDER" && !object$ListConstraints[[index]]@suspend) {
+      object$ListConstraints[[index]]@nc = nrow(object$ListConstraints[[index]]@mat)
+      MAT = rbind(MAT, object$ListConstraints[[index]]@mat)
+      DIR = c(DIR, object$ListConstraints[[index]]@dir)
+      RHS = c(RHS, object$ListConstraints[[index]]@rhs)
+      INDEX = c(INDEX, rep(object$Constraints$CONSTRAINT[index], object$ListConstraints[[index]]@nc))
+    }
+  }
+  object$INDEX = INDEX
+  object$MAT = MAT
+  object$DIR = DIR
+  object$RHS = RHS
+  return(object)
 }
 
 #' Build constraints
