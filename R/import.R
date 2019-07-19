@@ -3,13 +3,14 @@
 #' @import lpSolve
 #' @import Rcpp methods
 #' @import foreach
+#' @import crayon
 #' @importFrom Rcpp evalCpp
 #' @importFrom Rdpack reprompt
 #' @importFrom methods new show validObject
 #' @importFrom logitnorm logit rlogitnorm
 #' @importFrom grDevices col2rgb dev.control dev.new dev.off pdf recordPlot
 #' @importFrom stats runif dnorm rlnorm rnorm sd
-#' @importFrom utils capture.output read.csv setTxtProgressBar txtProgressBar write.table
+#' @importFrom utils capture.output read.csv setTxtProgressBar txtProgressBar write.table packageVersion
 #' @importFrom graphics plot abline lines axis grid layout legend mtext par plot.new points rect text strheight
 #' @importFrom lattice xyplot
 #' @useDynLib oat
@@ -17,11 +18,27 @@ NULL
 
 #' @noRd
 .onAttach = function(libname, pkgname){
-  message("── oat 0.2 ─────────────────────────────")
-  message("   Optimal Assembly of Test             ")
-  message(" ")
-  message("   Default solver set to: lpSolve")
-  message("   See ?dataset.science for examples.")
+
+  packageStartupMessage(white(bold("  Solver packages:")))
+  packageStartupMessage(" ")
+
+  solvernames = c("lpSolve", "Rsymphony", "gurobi", "Rglpk")
+
+  for (s in solvernames){
+    x = find.package(s, quiet = T)
+    if (length(x) > 0){
+      status = green("v")
+      v = packageVersion(s)
+
+    } else {
+      status = red("x")
+    }
+
+    packageStartupMessage(status, " ", s, paste0(rep(" ", 10 - nchar(s)), collapse = ""), white(v))
+  }
+
+  packageStartupMessage(" ")
+  packageStartupMessage("  See ?dataset.science for examples.")
 }
 
 
