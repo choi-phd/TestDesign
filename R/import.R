@@ -3,6 +3,7 @@
 #' @import lpSolve
 #' @import Rcpp methods
 #' @import foreach
+#' @import crayon
 #' @importFrom Rcpp evalCpp
 #' @importFrom Rdpack reprompt
 #' @importFrom methods new show validObject
@@ -17,9 +18,25 @@ NULL
 
 #' @noRd
 .onAttach = function(libname, pkgname){
-  message("── oat 0.2 ─────────────────────────────")
-  message("   Optimal Assembly of Test             ")
-  message(" ")
-  message("   Default solver set to: lpSolve")
-  message("   See ?dataset.science for examples.")
+
+  packageStartupMessage(white(bold("  Solver packages:")))
+  packageStartupMessage(" ")
+
+  solvernames = c("lpSolve", "Rsymphony", "gurobi", "Rglpk")
+
+  for (s in solvernames){
+    x = find.package(s, quiet = T)
+    if (length(x) > 0){
+      status = green("v")
+      v = packageVersion(s)
+
+    } else {
+      status = red("x")
+    }
+
+    packageStartupMessage(status, " ", s, paste0(rep(" ", 10 - nchar(s)), collapse = ""), white(v))
+  }
+
+  packageStartupMessage(" ")
+  packageStartupMessage("  See ?dataset.science for examples.")
 }
