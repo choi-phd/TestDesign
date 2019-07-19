@@ -17,7 +17,7 @@ i { display: inline-block; margin-right: 0.2em; }
 label, .form-group, .progress { margin-bottom: 0px; }
 .btn { width: 100%; }
 "))),
-  titlePanel("Shadow"),
+  titlePanel("OAT: Optimal Assembly of Test"),
 
   sidebarLayout(
     sidebarPanel(
