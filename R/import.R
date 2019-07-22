@@ -32,13 +32,11 @@ NULL
 
     } else {
       status = red("x")
+      v = ""
     }
 
     packageStartupMessage(status, " ", s, paste0(rep(" ", 10 - nchar(s)), collapse = ""), white(v))
   }
-
-  packageStartupMessage(" ")
-  packageStartupMessage("  See ?dataset.science for examples.")
 }
 
 
