@@ -3,8 +3,8 @@
 \docType{data}
 \name{dataset.science}
 \alias{dataset.science}
-\alias{item.params.science.raw}
-\alias{item.attrib.science.raw}
+\alias{itempool.science.raw}
+\alias{itemattrib.science.raw}
 \alias{constraints.science.raw}
 \alias{itempool.science}
 \alias{itemattrib.science}
@@ -23,18 +23,18 @@ This pool is associated with the following objects:
 
 Also, the following datasets are intended for illustrating expected data structures. See examples below.
 \itemize{
-  \item \code{item.params.science.raw} Item parameters.
-  \item \code{item.attrib.science.raw} Item attributes.
+  \item \code{itempool.science.raw} Item parameters.
+  \item \code{itemattrib.science.raw} Item attributes.
   \item \code{constraints.science.raw} Constraints.
 }
 }
 \examples{
 \dontrun{
-write.csv(item.params.science.raw, "item.params.science.csv", row.names = F)
-itempool.science = LoadItemPool("item.params.science.csv")
+write.csv(itempool.science.raw, "itempool.science.csv", row.names = F)
+itempool.science = LoadItemPool("itempool.science.csv")
 
-write.csv(item.attrib.science.raw, "item.attrib.science.csv", row.names = F)
-itemattrib.science = LoadItemAttrib("item.attrib.science.csv", itempool.science)
+write.csv(itemattrib.science.raw, "itemattrib.science.csv", row.names = F)
+itemattrib.science = LoadItemAttrib("itemattrib.science.csv", itempool.science)
 
 write.csv(constraints.science.raw, "constraints.science.csv", row.names = F)
 constraints.science = LoadConstraints("constraints.science.csv",
