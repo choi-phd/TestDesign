@@ -22,7 +22,7 @@ A list containing the parsed constraints, to be used in \code{\link{ATA}} and \c
 Read constraints from specified file.
 }
 \details{
-Use \code{vignette("constraints")} for instructions on how to create a constraint file.
+Use \code{vignette("constraints")} for instructions on how to create a constraint set object.
 }
 \seealso{
 \link{dataset.science} for example usage.
