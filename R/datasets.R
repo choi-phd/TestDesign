@@ -11,8 +11,8 @@
 #'
 #' Also, the following datasets are intended for illustrating expected data structures. See examples below.
 #' \itemize{
-#'   \item \code{item.params.science.raw} Item parameters.
-#'   \item \code{item.attrib.science.raw} Item attributes.
+#'   \item \code{itempool.science.raw} Item parameters.
+#'   \item \code{itemattrib.science.raw} Item attributes.
 #'   \item \code{constraints.science.raw} Constraints.
 #' }
 #'
@@ -20,14 +20,14 @@
 #' @keywords datasets
 #' @rdname dataset.science
 #' @name dataset.science
-#' @aliases item.params.science.raw item.attrib.science.raw constraints.science.raw itempool.science itemattrib.science constraints.science
+#' @aliases itempool.science.raw itemattrib.science.raw constraints.science.raw itempool.science itemattrib.science constraints.science
 #' @examples
 #' \dontrun{
-#' write.csv(item.params.science.raw, "item.params.science.csv", row.names = F)
-#' itempool.science = LoadItemPool("item.params.science.csv")
+#' write.csv(itempool.science.raw, "itempool.science.csv", row.names = F)
+#' itempool.science = LoadItemPool("itempool.science.csv")
 #'
-#' write.csv(item.attrib.science.raw, "item.attrib.science.csv", row.names = F)
-#' itemattrib.science = LoadItemAttrib("item.attrib.science.csv", itempool.science)
+#' write.csv(itemattrib.science.raw, "itemattrib.science.csv", row.names = F)
+#' itemattrib.science = LoadItemAttrib("itemattrib.science.csv", itempool.science)
 #'
 #' write.csv(constraints.science.raw, "constraints.science.csv", row.names = F)
 #' constraints.science = LoadConstraints("constraints.science.csv",
@@ -49,9 +49,9 @@ NULL
 #'
 #' Also, the following datasets are intended for illustrating expected data structures. See examples below.
 #' \itemize{
-#'   \item \code{item.params.reading.raw} Item parameters.
-#'   \item \code{item.attrib.reading.raw} Item attributes.
-#'   \item \code{stim.attrib.reading.raw} Item attributes.
+#'   \item \code{itempool.reading.raw} Item parameters.
+#'   \item \code{itemattrib.reading.raw} Item attributes.
+#'   \item \code{stimattrib.reading.raw} Item attributes.
 #'   \item \code{constraints.reading.raw} Constraints.
 #' }
 #'
@@ -59,17 +59,17 @@ NULL
 #' @keywords datasets
 #' @rdname dataset.reading
 #' @name dataset.reading
-#' @aliases item.params.reading.raw item.attrib.reading.raw stim.attrib.reading.raw constraints.reading.raw itempool.reading itemattrib.reading stimattrib.reading constraints.reading
+#' @aliases itempool.reading.raw itemattrib.reading.raw stimattrib.reading.raw constraints.reading.raw itempool.reading itemattrib.reading stimattrib.reading constraints.reading
 #' @examples
 #' \dontrun{
-#' write.csv(item.params.reading.raw, "item.params.reading.csv", row.names = F)
-#' itempool.reading = LoadItemPool("item.params.reading.csv")
+#' write.csv(itempool.reading.raw, "itempool.reading.csv", row.names = F)
+#' itempool.reading = LoadItemPool("itempool.reading.csv")
 #'
-#' write.csv(item.attrib.reading.raw, "item.attrib.reading.csv", row.names = F)
-#' itemattrib.reading = LoadItemAttrib("item.attrib.reading.csv", itempool.reading)
+#' write.csv(itemattrib.reading.raw, "itemattrib.reading.csv", row.names = F)
+#' itemattrib.reading = LoadItemAttrib("itemattrib.reading.csv", itempool.reading)
 #'
-#' write.csv(stim.attrib.reading.raw, "stim.attrib.reading.csv", row.names = F)
-#' stimattrib.reading = LoadStAttrib("stim.attrib.reading.csv", itemattrib.reading)
+#' write.csv(stimattrib.reading.raw, "stimattrib.reading.csv", row.names = F)
+#' stimattrib.reading = LoadStAttrib("stimattrib.reading.csv", itemattrib.reading)
 #'
 #' write.csv(constraints.reading.raw, "constraints.reading.csv", row.names = F)
 #' constraints.reading = LoadConstraints("constraints.reading.csv",
@@ -90,10 +90,10 @@ NULL
 #'
 #' Also, the following datasets are intended for illustrating expected data structures. See examples below.
 #' \itemize{
-#'   \item \code{item.params.fatigue.raw} Item parameters.
-#'   \item \code{item.attrib.fatigue.raw} Item attributes.
+#'   \item \code{itempool.fatigue.raw} Item parameters.
+#'   \item \code{itemattrib.fatigue.raw} Item attributes.
+#'   \item \code{itemcontent.fatigue.raw} Item contents.
 #'   \item \code{constraints.fatigue.raw} Constraints.
-#'   \item \code{item.content.fatigue.raw} Item contents.
 #'   \item \code{resp.fatigue.raw} Raw response data.
 #' }
 #'
@@ -101,20 +101,20 @@ NULL
 #' @keywords datasets
 #' @rdname dataset.fatigue
 #' @name dataset.fatigue
-#' @aliases item.params.fatigue.raw item.attrib.fatigue.raw item.content.fatigue.raw constraints.fatigue.raw resp.fatigue.raw itempool.fatigue itemattrib.fatigue constraints.fatigue
+#' @aliases itempool.fatigue.raw itemattrib.fatigue.raw itemcontent.fatigue.raw constraints.fatigue.raw resp.fatigue.raw itempool.fatigue itemattrib.fatigue constraints.fatigue
 #' @examples
 #' \dontrun{
-#' write.csv(item.params.fatigue.raw, "item.params.fatigue.csv", row.names = F)
-#' itempool.fatigue = LoadItemPool("item.params.fatigue.csv")
+#' write.csv(itempool.fatigue.raw, "itempool.fatigue.csv", row.names = F)
+#' itempool.fatigue = LoadItemPool("itempool.fatigue.csv")
 #'
-#' write.csv(item.attrib.fatigue, "item.attrib.fatigue.csv", row.names = F)
-#' itemattrib.fatigue = LoadItemAttrib("item.attrib.fatigue.csv", itempool.fatigue)
+#' write.csv(itemattrib.fatigue, "itemattrib.fatigue.csv", row.names = F)
+#' itemattrib.fatigue = LoadItemAttrib("itemattrib.fatigue.csv", itempool.fatigue)
 #'
 #' write.csv(constraints.fatigue.raw, "constraints.fatigue.csv", row.names = F)
 #' constraints.fatigue = LoadConstraints("constraints.fatigue.csv",
 #'           itempool.fatigue, itemattrib.fatigue)
 #'
-#' write.csv(item.content.fatigue.raw, "item.content.fatigue.csv", row.names = F)
+#' write.csv(itemcontent.fatigue.raw, "itemcontent.fatigue.csv", row.names = F)
 #' write.table(resp.fatigue.raw, "resp.fatigue.csv", row.names = F, col.names = F, sep = ",")
 #' }
 NULL

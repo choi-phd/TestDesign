@@ -40,6 +40,36 @@ if(FALSE){
   solution$plot
   dev.off()
 
+  # Exposure control plot
+
+  set.seed(1)
+
+  thetaGrid = seq(-4, 4, 1)
+  trueTheta = runif(7000, min = -3.5, max = 3.5)
+  resp.science = MakeTest(itempool.science, thetaGrid, infoType = "FISHER",trueTheta = trueTheta)@Data
+
+  config.science = config.Shadow(MIP = list(solver = "LPSOLVE"), exposureControl = list(method = "ELIGIBILITY"))
+
+  constraints.science2 = UpdateConstraints(constraints.science, off = c(14:20, 32:36))
+
+  Sys.time
+
+  solution = Shadow(itempool.science, config.science, trueTheta, constraints.science2, Data = resp.science)
+
+  tt = rep(NA, 7000)
+
+  for(i in 1:7000){
+    tt[i] = sum(solution$output[[i]]@solveTime)
+  }
+
+
+  setEPS()
+  postscript("R/science.exposure.eps", width = 8, height = 4.25)
+  par(mfrow = c(2,4))
+  plotExposure(solution)
+  dev.off()
+
+
   # Manuscript example: adaptive test assembly
 
   set.seed(1)
@@ -139,7 +169,7 @@ if(FALSE){
   dev.off()
 
   setEPS()
-  postscript("R/fatigue.shadowplot.eps", width = 8, height = 5)
+  postscript("R/fatigue.shadowplot.eps", width = 8, height = 7)
   p = plotShadow(solution, constraints.fatigue, 1)
   p
   dev.off()
@@ -151,19 +181,22 @@ if(FALSE){
   set.seed(1)
 
   thetaGrid = seq(-4, 4, 1)
-  trueTheta = runif(1000, min = -3.5, max = 3.5)
+  trueTheta = runif(100, min = -3.5, max = 3.5)
   resp.science = MakeTest(itempool.science, thetaGrid, infoType = "FISHER",trueTheta = trueTheta)@Data
 
   config.science = config.Shadow(MIP = list(solver = "SYMPHONY"), exposureControl = list(method = "ELIGIBILITY"))
 
-  c1 = UpdateConstraints(constraints.science, off = c(19, 34))
-  c1$Constraints
+  for(k in 2:36){
+    c1 = UpdateConstraints(constraints.science, off = c(19, 34, k))
+    c1$Constraints
 
-  message("\n")
-  message(k)
-  solution = Shadow(itempool.science, config.science, trueTheta, c1, Data = resp.science)
+    message("\n")
+    message(k)
+    solution = Shadow(itempool.science, config.science, trueTheta, c1, Data = resp.science)
 
-  flush.console()
+    flush.console()
+  }
+
 
 
   object = itempool.science
