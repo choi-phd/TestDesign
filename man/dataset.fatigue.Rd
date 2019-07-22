@@ -3,9 +3,9 @@
 \docType{data}
 \name{dataset.fatigue}
 \alias{dataset.fatigue}
-\alias{item.params.fatigue.raw}
-\alias{item.attrib.fatigue.raw}
-\alias{item.content.fatigue.raw}
+\alias{itempool.fatigue.raw}
+\alias{itemattrib.fatigue.raw}
+\alias{itemcontent.fatigue.raw}
 \alias{constraints.fatigue.raw}
 \alias{resp.fatigue.raw}
 \alias{itempool.fatigue}
@@ -25,26 +25,26 @@ This pool is associated with the following objects:
 
 Also, the following datasets are intended for illustrating expected data structures. See examples below.
 \itemize{
-  \item \code{item.params.fatigue.raw} Item parameters.
-  \item \code{item.attrib.fatigue.raw} Item attributes.
+  \item \code{itempool.fatigue.raw} Item parameters.
+  \item \code{itemattrib.fatigue.raw} Item attributes.
+  \item \code{itemcontent.fatigue.raw} Item contents.
   \item \code{constraints.fatigue.raw} Constraints.
-  \item \code{item.content.fatigue.raw} Item contents.
   \item \code{resp.fatigue.raw} Raw response data.
 }
 }
 \examples{
 \dontrun{
-write.csv(item.params.fatigue.raw, "item.params.fatigue.csv", row.names = F)
-itempool.fatigue = LoadItemPool("item.params.fatigue.csv")
+write.csv(itempool.fatigue.raw, "itempool.fatigue.csv", row.names = F)
+itempool.fatigue = LoadItemPool("itempool.fatigue.csv")
 
-write.csv(item.attrib.fatigue, "item.attrib.fatigue.csv", row.names = F)
-itemattrib.fatigue = LoadItemAttrib("item.attrib.fatigue.csv", itempool.fatigue)
+write.csv(itemattrib.fatigue, "itemattrib.fatigue.csv", row.names = F)
+itemattrib.fatigue = LoadItemAttrib("itemattrib.fatigue.csv", itempool.fatigue)
 
 write.csv(constraints.fatigue.raw, "constraints.fatigue.csv", row.names = F)
 constraints.fatigue = LoadConstraints("constraints.fatigue.csv",
           itempool.fatigue, itemattrib.fatigue)
 
-write.csv(item.content.fatigue.raw, "item.content.fatigue.csv", row.names = F)
+write.csv(itemcontent.fatigue.raw, "itemcontent.fatigue.csv", row.names = F)
 write.table(resp.fatigue.raw, "resp.fatigue.csv", row.names = F, col.names = F, sep = ",")
 }
 }

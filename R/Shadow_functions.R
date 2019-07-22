@@ -2673,6 +2673,7 @@ plotExposureRateBySegment = function(object, config, maxRate = 0.25, PDF = NULL,
 #' @param mfrow Number of multiple figures defined as c(nrow, ncol).
 #' @param burnIn An integer identifying the first x simulees to discard as burn-in.
 #' @param retain An optional vector of indices identifying the simulees to retain.
+#' @export
 plotExposureRateFinal = function(object, config = NULL, maxRate = 0.25, theta = "Estimated", segmentCut = NULL, color = "red", PDF = NULL, width = 7, height = 6, mfrow = c(2, 4), burnIn = 0, retain = NULL) {
   trueTheta = object$trueTheta
   estTheta = object$finalThetaEst

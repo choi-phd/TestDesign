@@ -3,9 +3,9 @@
 \docType{data}
 \name{dataset.reading}
 \alias{dataset.reading}
-\alias{item.params.reading.raw}
-\alias{item.attrib.reading.raw}
-\alias{stim.attrib.reading.raw}
+\alias{itempool.reading.raw}
+\alias{itemattrib.reading.raw}
+\alias{stimattrib.reading.raw}
 \alias{constraints.reading.raw}
 \alias{itempool.reading}
 \alias{itemattrib.reading}
@@ -26,22 +26,22 @@ This pool is associated with the following objects:
 
 Also, the following datasets are intended for illustrating expected data structures. See examples below.
 \itemize{
-  \item \code{item.params.reading.raw} Item parameters.
-  \item \code{item.attrib.reading.raw} Item attributes.
-  \item \code{stim.attrib.reading.raw} Item attributes.
+  \item \code{itempool.reading.raw} Item parameters.
+  \item \code{itemattrib.reading.raw} Item attributes.
+  \item \code{stimattrib.reading.raw} Item attributes.
   \item \code{constraints.reading.raw} Constraints.
 }
 }
 \examples{
 \dontrun{
-write.csv(item.params.reading.raw, "item.params.reading.csv", row.names = F)
-itempool.reading = LoadItemPool("item.params.reading.csv")
+write.csv(itempool.reading.raw, "itempool.reading.csv", row.names = F)
+itempool.reading = LoadItemPool("itempool.reading.csv")
 
-write.csv(item.attrib.reading.raw, "item.attrib.reading.csv", row.names = F)
-itemattrib.reading = LoadItemAttrib("item.attrib.reading.csv", itempool.reading)
+write.csv(itemattrib.reading.raw, "itemattrib.reading.csv", row.names = F)
+itemattrib.reading = LoadItemAttrib("itemattrib.reading.csv", itempool.reading)
 
-write.csv(stim.attrib.reading.raw, "stim.attrib.reading.csv", row.names = F)
-stimattrib.reading = LoadStAttrib("stim.attrib.reading.csv", itemattrib.reading)
+write.csv(stimattrib.reading.raw, "stimattrib.reading.csv", row.names = F)
+stimattrib.reading = LoadStAttrib("stimattrib.reading.csv", itemattrib.reading)
 
 write.csv(constraints.reading.raw, "constraints.reading.csv", row.names = F)
 constraints.reading = LoadConstraints("constraints.reading.csv",
