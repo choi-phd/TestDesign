@@ -495,7 +495,7 @@ setMethod(f = "plotExposure",
               exposureRateOrdered = exposureRate[ER.order]
               exposureRateFinalOrdered = exposureRateFinal[ER.order]
               plot(1:ni, exposureRateOrdered, type = "n", lwd = 2, ylim = c(0, 1), xlab = "", ylab = "", main = title)
-              points(1:ni, exposureRateOrdered, type = "h", lwd = 1, col = 'dark gray')
+              points(1:ni, exposureRateOrdered, type = "h", lwd = 1, col = 'black')
               abline(h = maxRate, col = "dark gray", lty = 2)
             }
             if (!is.null(PDF)) {
