@@ -7,6 +7,7 @@ itempool.science         = LoadItemPool("data-raw/item.params.science.1000.csv")
 itemattrib.science       = LoadItemAttrib("data-raw/item.attrib.science.1000.csv", itempool.science)
 constraints.science      = LoadConstraints("data-raw/constraints.science.1000.csv", itempool.science, itemattrib.science)
 
+
 usethis::use_data(item.params.science.raw, overwrite = T)
 usethis::use_data(item.attrib.science.raw, overwrite = T)
 usethis::use_data(constraints.science.raw, overwrite = T)

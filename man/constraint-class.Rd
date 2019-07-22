@@ -18,6 +18,8 @@ An S4 class to represent a set of constraints.
 
 \item{\code{rhs}}{A vector of length nc. Each entry represents the right-hand side of the constraint.}
 
-\item{\code{nc}}{Numeric. The number of constraints represented in this object.}
+\item{\code{nc}}{Numeric. The number of constraints represented in the constraint set.}
+
+\item{\code{suspend}}{\code{TRUE} if the constraint is to be turned off.}
 }}
 
