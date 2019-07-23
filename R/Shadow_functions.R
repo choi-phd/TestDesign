@@ -373,7 +373,7 @@ setMethod(f = "plotCAT",
               if (!is.null(object@trueTheta)) {
                 abline(h = object@trueTheta, lty = 1, col = "red")
               } else {
-                abline(h = object@finalThetaEst, lty = 1, col = "red")
+                abline(h = object@finalThetaEst, lty = 2, col = "red")
               }
               for (i in 1:nItems) {
                 if (object@shadowTestRefreshed[i]) {
@@ -775,7 +775,7 @@ subsetTest = function(test, select = NULL) {
 #' test = MakeTest(itempool.science, seq(-3, 3, 1))
 #' @export
 setGeneric(name = "MakeTest",
-           def = function(object, theta, infoType = "FISHER", trueTheta = NULL) {
+           def = function(object, theta = seq(-4, 4, .1), infoType = "FISHER", trueTheta = NULL) {
              standardGeneric("MakeTest")
            }
 )
@@ -785,7 +785,7 @@ setGeneric(name = "MakeTest",
 #' @export
 setMethod(f = "MakeTest",
           signature = "item.pool",
-          definition = function(object, theta, infoType = "FISHER", trueTheta = NULL) {
+          definition = function(object, theta = seq(-4, 4, .1), infoType = "FISHER", trueTheta = NULL) {
             Prob = calcProb(object, theta)
             if (toupper(infoType) == "FISHER") {
               Info = calcFisher(object, theta)
