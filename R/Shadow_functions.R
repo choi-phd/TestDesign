@@ -361,7 +361,7 @@ setMethod(f = "plotCAT",
               text(nItems/2, maxTheta, paste0("Examinee ID: ", object@simuleeIndex), adj = c(0.5, 0.5), cex = 2)
               axis(1, at = 0:nItems, tick = TRUE, labels = 0:nItems, cex.axis = 1.5)
               axis(2, at = minTheta:maxTheta, labels = minTheta:maxTheta, cex.axis = 1.5)
-              text(0.5, minTheta + 1.0, paste("Theta: ", round(object@finalThetaEst, digits = 2)," SE: ", round(object@finalSeEst, digits = 2)), cex = 1.5, adj = 0)
+              text(0.5, minTheta + 1.0, paste("Final Theta: ", round(object@finalThetaEst, digits = 2)," SE: ", round(object@finalSeEst, digits = 2)), cex = 1.5, adj = 0)
               for (i in 1:nItems) {
                 lines(rep(i ,2), c(object@interimThetaEst[i] - zCI * object@interimSeEst[i], object@interimThetaEst[i] + zCI * object@interimSeEst[i]), col = "purple4")
                 lines(c(i - 0.25, i + 0.25), c(object@interimThetaEst[i] - zCI * object@interimSeEst[i], object@interimThetaEst[i] - zCI * object@interimSeEst[i]), col = "purple4")
@@ -372,8 +372,6 @@ setMethod(f = "plotCAT",
               points(1:nItems, object@interimThetaEst, pch = 1, cex = 2.5, col = "purple4")
               if (!is.null(object@trueTheta)) {
                 abline(h = object@trueTheta, lty = 1, col = "red")
-              } else {
-                abline(h = object@finalThetaEst, lty = 1, col = "red")
               }
               for (i in 1:nItems) {
                 if (object@shadowTestRefreshed[i]) {
@@ -3029,7 +3027,7 @@ maxinfoplot = function(pool, constraints, theta = seq(-3, 3, .5)){
   pdf(NULL, bg = 'white')
   dev.control(displaylist = "enable")
   plot(0, 0, type = 'n', xlim = c(-3, 3), ylim = c(0, max(max.info)),
-       xlab = 'theta', ylab = 'Information')
+       xlab = 'Theta', ylab = 'Information', main = "Range of attainable information based on the number of items")
   lines(theta, max.info, lty = 2, lwd = 2)
   lines(theta, min.info, lty = 2, lwd = 2)
   grid()
