@@ -10,7 +10,7 @@
 #' @template 1pl-ref
 #' @export
 p_1pl <- function(x, b) {
-    .Call('_oat_p_1pl', PACKAGE = 'oat', x, b)
+    .Call('_TestDesign_p_1pl', PACKAGE = 'TestDesign', x, b)
 }
 
 #' Calculate probability at multiple thetas (1PL)
@@ -22,7 +22,7 @@ p_1pl <- function(x, b) {
 #' @template 1pl-ref
 #' @export
 array_p_1pl <- function(x, b) {
-    .Call('_oat_array_p_1pl', PACKAGE = 'oat', x, b)
+    .Call('_TestDesign_array_p_1pl', PACKAGE = 'TestDesign', x, b)
 }
 
 #' Calculate probability at a single theta (2PL)
@@ -34,7 +34,7 @@ array_p_1pl <- function(x, b) {
 #' @template 2pl-ref
 #' @export
 p_2pl <- function(x, a, b) {
-    .Call('_oat_p_2pl', PACKAGE = 'oat', x, a, b)
+    .Call('_TestDesign_p_2pl', PACKAGE = 'TestDesign', x, a, b)
 }
 
 #' Calculate probability at multiple thetas (2PL)
@@ -46,7 +46,7 @@ p_2pl <- function(x, a, b) {
 #' @template 2pl-ref
 #' @export
 array_p_2pl <- function(x, a, b) {
-    .Call('_oat_array_p_2pl', PACKAGE = 'oat', x, a, b)
+    .Call('_TestDesign_array_p_2pl', PACKAGE = 'TestDesign', x, a, b)
 }
 
 #' Calculate probability at a single theta (3PL)
@@ -58,7 +58,7 @@ array_p_2pl <- function(x, a, b) {
 #' @template 3pl-ref
 #' @export
 p_3pl <- function(x, a, b, c) {
-    .Call('_oat_p_3pl', PACKAGE = 'oat', x, a, b, c)
+    .Call('_TestDesign_p_3pl', PACKAGE = 'TestDesign', x, a, b, c)
 }
 
 #' Calculate probability at multiple thetas (3PL)
@@ -70,7 +70,7 @@ p_3pl <- function(x, a, b, c) {
 #' @template 3pl-ref
 #' @export
 array_p_3pl <- function(x, a, b, c) {
-    .Call('_oat_array_p_3pl', PACKAGE = 'oat', x, a, b, c)
+    .Call('_TestDesign_array_p_3pl', PACKAGE = 'TestDesign', x, a, b, c)
 }
 
 #' Calculate probability at a single theta (PC)
@@ -82,7 +82,7 @@ array_p_3pl <- function(x, a, b, c) {
 #' @template pc-ref
 #' @export
 p_pc <- function(x, b) {
-    .Call('_oat_p_pc', PACKAGE = 'oat', x, b)
+    .Call('_TestDesign_p_pc', PACKAGE = 'TestDesign', x, b)
 }
 
 #' Calculate probability at multiple thetas (PC)
@@ -94,7 +94,7 @@ p_pc <- function(x, b) {
 #' @template pc-ref
 #' @export
 array_p_pc <- function(x, b) {
-    .Call('_oat_array_p_pc', PACKAGE = 'oat', x, b)
+    .Call('_TestDesign_array_p_pc', PACKAGE = 'TestDesign', x, b)
 }
 
 #' Calculate probability at a single theta (GPC)
@@ -106,7 +106,7 @@ array_p_pc <- function(x, b) {
 #' @template gpc-ref
 #' @export
 p_gpc <- function(x, a, b) {
-    .Call('_oat_p_gpc', PACKAGE = 'oat', x, a, b)
+    .Call('_TestDesign_p_gpc', PACKAGE = 'TestDesign', x, a, b)
 }
 
 #' Calculate probability at multiple thetas (GPC)
@@ -118,7 +118,7 @@ p_gpc <- function(x, a, b) {
 #' @template gpc-ref
 #' @export
 array_p_gpc <- function(x, a, b) {
-    .Call('_oat_array_p_gpc', PACKAGE = 'oat', x, a, b)
+    .Call('_TestDesign_array_p_gpc', PACKAGE = 'TestDesign', x, a, b)
 }
 
 #' Calculate probability at a single theta (GR)
@@ -130,7 +130,7 @@ array_p_gpc <- function(x, a, b) {
 #' @template gr-ref
 #' @export
 p_gr <- function(x, a, b) {
-    .Call('_oat_p_gr', PACKAGE = 'oat', x, a, b)
+    .Call('_TestDesign_p_gr', PACKAGE = 'TestDesign', x, a, b)
 }
 
 #' Calculate probability at multiple thetas (GR)
@@ -142,7 +142,7 @@ p_gr <- function(x, a, b) {
 #' @template gr-ref
 #' @export
 array_p_gr <- function(x, a, b) {
-    .Call('_oat_array_p_gr', PACKAGE = 'oat', x, a, b)
+    .Call('_TestDesign_array_p_gr', PACKAGE = 'TestDesign', x, a, b)
 }
 
 #' Calculate Fisher information at a single theta (1PL)
@@ -154,7 +154,7 @@ array_p_gr <- function(x, a, b) {
 #' @template 1pl-ref
 #' @export
 info_1pl <- function(x, b) {
-    .Call('_oat_info_1pl', PACKAGE = 'oat', x, b)
+    .Call('_TestDesign_info_1pl', PACKAGE = 'TestDesign', x, b)
 }
 
 #' Calculate Fisher information at multiple thetas (1PL)
@@ -166,7 +166,7 @@ info_1pl <- function(x, b) {
 #' @template 1pl-ref
 #' @export
 array_info_1pl <- function(x, b) {
-    .Call('_oat_array_info_1pl', PACKAGE = 'oat', x, b)
+    .Call('_TestDesign_array_info_1pl', PACKAGE = 'TestDesign', x, b)
 }
 
 #' Calculate Fisher information at a single theta (2PL)
@@ -178,7 +178,7 @@ array_info_1pl <- function(x, b) {
 #' @template 2pl-ref
 #' @export
 info_2pl <- function(x, a, b) {
-    .Call('_oat_info_2pl', PACKAGE = 'oat', x, a, b)
+    .Call('_TestDesign_info_2pl', PACKAGE = 'TestDesign', x, a, b)
 }
 
 #' Calculate Fisher information at multiple thetas (2PL)
@@ -190,7 +190,7 @@ info_2pl <- function(x, a, b) {
 #' @template 2pl-ref
 #' @export
 array_info_2pl <- function(x, a, b) {
-    .Call('_oat_array_info_2pl', PACKAGE = 'oat', x, a, b)
+    .Call('_TestDesign_array_info_2pl', PACKAGE = 'TestDesign', x, a, b)
 }
 
 #' Calculate Fisher information at a single theta (3PL)
@@ -202,7 +202,7 @@ array_info_2pl <- function(x, a, b) {
 #' @template 3pl-ref
 #' @export
 info_3pl <- function(x, a, b, c) {
-    .Call('_oat_info_3pl', PACKAGE = 'oat', x, a, b, c)
+    .Call('_TestDesign_info_3pl', PACKAGE = 'TestDesign', x, a, b, c)
 }
 
 #' Calculate Fisher information at multiple thetas (3PL)
@@ -214,7 +214,7 @@ info_3pl <- function(x, a, b, c) {
 #' @template 3pl-ref
 #' @export
 array_info_3pl <- function(x, a, b, c) {
-    .Call('_oat_array_info_3pl', PACKAGE = 'oat', x, a, b, c)
+    .Call('_TestDesign_array_info_3pl', PACKAGE = 'TestDesign', x, a, b, c)
 }
 
 #' Calculate Fisher information at a single theta (PC)
@@ -226,7 +226,7 @@ array_info_3pl <- function(x, a, b, c) {
 #' @template pc-ref
 #' @export
 info_pc <- function(x, b) {
-    .Call('_oat_info_pc', PACKAGE = 'oat', x, b)
+    .Call('_TestDesign_info_pc', PACKAGE = 'TestDesign', x, b)
 }
 
 #' Calculate Fisher information at multiple thetas (PC)
@@ -238,7 +238,7 @@ info_pc <- function(x, b) {
 #' @template pc-ref
 #' @export
 array_info_pc <- function(x, b) {
-    .Call('_oat_array_info_pc', PACKAGE = 'oat', x, b)
+    .Call('_TestDesign_array_info_pc', PACKAGE = 'TestDesign', x, b)
 }
 
 #' Calculate Fisher information at a single theta (GPC).
@@ -250,7 +250,7 @@ array_info_pc <- function(x, b) {
 #' @template gpc-ref
 #' @export
 info_gpc <- function(x, a, b) {
-    .Call('_oat_info_gpc', PACKAGE = 'oat', x, a, b)
+    .Call('_TestDesign_info_gpc', PACKAGE = 'TestDesign', x, a, b)
 }
 
 #' Calculate Fisher information at multiple thetas (GPC)
@@ -262,7 +262,7 @@ info_gpc <- function(x, a, b) {
 #' @template gpc-ref
 #' @export
 array_info_gpc <- function(x, a, b) {
-    .Call('_oat_array_info_gpc', PACKAGE = 'oat', x, a, b)
+    .Call('_TestDesign_array_info_gpc', PACKAGE = 'TestDesign', x, a, b)
 }
 
 #' Calculate Fisher information at a single theta (GR).
@@ -274,7 +274,7 @@ array_info_gpc <- function(x, a, b) {
 #' @template gr-ref
 #' @export
 info_gr <- function(x, a, b) {
-    .Call('_oat_info_gr', PACKAGE = 'oat', x, a, b)
+    .Call('_TestDesign_info_gr', PACKAGE = 'TestDesign', x, a, b)
 }
 
 #' Calculate Fisher information at multiple thetas (GR)
@@ -286,7 +286,7 @@ info_gr <- function(x, a, b) {
 #' @template gr-ref
 #' @export
 array_info_gr <- function(x, a, b) {
-    .Call('_oat_array_info_gr', PACKAGE = 'oat', x, a, b)
+    .Call('_TestDesign_array_info_gr', PACKAGE = 'TestDesign', x, a, b)
 }
 
 #' Calculate the Fisher information matrix for a single theta value and a set of items, potentially with a mixture of different models
@@ -296,7 +296,7 @@ array_info_gr <- function(x, a, b) {
 #' @template calc-params-mini
 #' @export
 calc_info <- function(x, item_parm, ncat, model) {
-    .Call('_oat_calc_info', PACKAGE = 'oat', x, item_parm, ncat, model)
+    .Call('_TestDesign_calc_info', PACKAGE = 'TestDesign', x, item_parm, ncat, model)
 }
 
 #' Calculate the Fisher information matrix for a vector of theta values and a set of items, potentially with a mixture of different models
@@ -306,7 +306,7 @@ calc_info <- function(x, item_parm, ncat, model) {
 #' @template calc-params-mini
 #' @export
 calc_info_matrix <- function(x, item_parm, ncat, model) {
-    .Call('_oat_calc_info_matrix', PACKAGE = 'oat', x, item_parm, ncat, model)
+    .Call('_TestDesign_calc_info_matrix', PACKAGE = 'TestDesign', x, item_parm, ncat, model)
 }
 
 #' Calculate the Fisher information using empirical Bayes
@@ -317,7 +317,7 @@ calc_info_matrix <- function(x, item_parm, ncat, model) {
 #' @param item_parm A numeric matrix of item parameters.
 #' @template calc-params-mini
 calc_info_EB <- function(x, item_parm, ncat, model) {
-    .Call('_oat_calc_info_EB', PACKAGE = 'oat', x, item_parm, ncat, model)
+    .Call('_TestDesign_calc_info_EB', PACKAGE = 'TestDesign', x, item_parm, ncat, model)
 }
 
 #' Calculate the Fisher information using full Bayesian
@@ -329,7 +329,7 @@ calc_info_EB <- function(x, item_parm, ncat, model) {
 #' @template calc-params-mini
 #' @param useEAP \code{TRUE} to use the mean of MCMC theta draws.
 calc_info_FB <- function(x, items_list, ncat, model, useEAP = FALSE) {
-    .Call('_oat_calc_info_FB', PACKAGE = 'oat', x, items_list, ncat, model, useEAP)
+    .Call('_TestDesign_calc_info_FB', PACKAGE = 'TestDesign', x, items_list, ncat, model, useEAP)
 }
 
 #' Calculate the mutual information using full Bayesian
@@ -340,7 +340,7 @@ calc_info_FB <- function(x, items_list, ncat, model, useEAP = FALSE) {
 #' @param items_list A list of item parameter matrices.
 #' @template calc-params-mini
 calc_MI_FB <- function(x, items_list, ncat, model) {
-    .Call('_oat_calc_MI_FB', PACKAGE = 'oat', x, items_list, ncat, model)
+    .Call('_TestDesign_calc_MI_FB', PACKAGE = 'TestDesign', x, items_list, ncat, model)
 }
 
 #' Calculate a likelihood value of theta
@@ -353,7 +353,7 @@ calc_MI_FB <- function(x, items_list, ncat, model) {
 #' @template calc-params-mini
 #' @export
 calc_likelihood <- function(x, item_parm, resp, ncat, model) {
-    .Call('_oat_calc_likelihood', PACKAGE = 'oat', x, item_parm, resp, ncat, model)
+    .Call('_TestDesign_calc_likelihood', PACKAGE = 'TestDesign', x, item_parm, resp, ncat, model)
 }
 
 #' Calculate a likelihood function of theta
@@ -367,7 +367,7 @@ calc_likelihood <- function(x, item_parm, resp, ncat, model) {
 #'
 #' @export
 calc_likelihood_function <- function(theta_grid, item_parm, resp, ncat, model) {
-    .Call('_oat_calc_likelihood_function', PACKAGE = 'oat', theta_grid, item_parm, resp, ncat, model)
+    .Call('_TestDesign_calc_likelihood_function', PACKAGE = 'TestDesign', theta_grid, item_parm, resp, ncat, model)
 }
 
 #' Calculate a log-likelihood value of theta
@@ -379,7 +379,7 @@ calc_likelihood_function <- function(theta_grid, item_parm, resp, ncat, model) {
 #' @template calc-params
 #' @export
 calc_log_likelihood <- function(x, item_parm, resp, ncat, model, prior, prior_parm) {
-    .Call('_oat_calc_log_likelihood', PACKAGE = 'oat', x, item_parm, resp, ncat, model, prior, prior_parm)
+    .Call('_TestDesign_calc_log_likelihood', PACKAGE = 'TestDesign', x, item_parm, resp, ncat, model, prior, prior_parm)
 }
 
 #' Calculate a log-likelihood function of theta
@@ -391,7 +391,7 @@ calc_log_likelihood <- function(x, item_parm, resp, ncat, model, prior, prior_pa
 #' @template calc-params
 #' @export
 calc_log_likelihood_function <- function(theta_grid, item_parm, resp, ncat, model, prior, prior_parm) {
-    .Call('_oat_calc_log_likelihood_function', PACKAGE = 'oat', theta_grid, item_parm, resp, ncat, model, prior, prior_parm)
+    .Call('_TestDesign_calc_log_likelihood_function', PACKAGE = 'TestDesign', theta_grid, item_parm, resp, ncat, model, prior, prior_parm)
 }
 
 #' Calculate a posterior value of theta
@@ -403,7 +403,7 @@ calc_log_likelihood_function <- function(theta_grid, item_parm, resp, ncat, mode
 #' @template calc-params
 #' @export
 calc_posterior <- function(x, item_parm, resp, ncat, model, prior, prior_parm) {
-    .Call('_oat_calc_posterior', PACKAGE = 'oat', x, item_parm, resp, ncat, model, prior, prior_parm)
+    .Call('_TestDesign_calc_posterior', PACKAGE = 'TestDesign', x, item_parm, resp, ncat, model, prior, prior_parm)
 }
 
 #' Calculate a posterior distribution of theta
@@ -415,7 +415,7 @@ calc_posterior <- function(x, item_parm, resp, ncat, model, prior, prior_parm) {
 #' @template calc-params
 #' @export
 calc_posterior_function <- function(theta_grid, item_parm, resp, ncat, model, prior, prior_parm) {
-    .Call('_oat_calc_posterior_function', PACKAGE = 'oat', theta_grid, item_parm, resp, ncat, model, prior, prior_parm)
+    .Call('_TestDesign_calc_posterior_function', PACKAGE = 'TestDesign', theta_grid, item_parm, resp, ncat, model, prior, prior_parm)
 }
 
 #' Calculate a posterior value of theta for a single item
@@ -432,7 +432,7 @@ calc_posterior_function <- function(theta_grid, item_parm, resp, ncat, model, pr
 #'
 #' @export
 calc_posterior_single <- function(x, item_parm, resp, ncat, model, prior, prior_parm) {
-    .Call('_oat_calc_posterior_single', PACKAGE = 'oat', x, item_parm, resp, ncat, model, prior, prior_parm)
+    .Call('_TestDesign_calc_posterior_single', PACKAGE = 'TestDesign', x, item_parm, resp, ncat, model, prior, prior_parm)
 }
 
 #' Calculate an EAP estimate of theta for one examinee
@@ -444,7 +444,7 @@ calc_posterior_single <- function(x, item_parm, resp, ncat, model, prior, prior_
 #' @template calc-params
 #' @export
 theta_EAP <- function(theta_grid, item_parm, resp, ncat, model, prior, prior_parm) {
-    .Call('_oat_theta_EAP', PACKAGE = 'oat', theta_grid, item_parm, resp, ncat, model, prior, prior_parm)
+    .Call('_TestDesign_theta_EAP', PACKAGE = 'TestDesign', theta_grid, item_parm, resp, ncat, model, prior, prior_parm)
 }
 
 #' Calculate EAP estimates of theta for a group of examinees
@@ -461,7 +461,7 @@ theta_EAP <- function(theta_grid, item_parm, resp, ncat, model, prior, prior_par
 #'
 #' @export
 theta_EAP_matrix <- function(theta_grid, item_parm, Resp, ncat, model, prior, prior_parm) {
-    .Call('_oat_theta_EAP_matrix', PACKAGE = 'oat', theta_grid, item_parm, Resp, ncat, model, prior, prior_parm)
+    .Call('_TestDesign_theta_EAP_matrix', PACKAGE = 'TestDesign', theta_grid, item_parm, Resp, ncat, model, prior, prior_parm)
 }
 
 #' Calculate an empirical Bayes estimate of theta for one examinee
@@ -475,7 +475,7 @@ theta_EAP_matrix <- function(theta_grid, item_parm, Resp, ncat, model, prior, pr
 #' @template calc-params
 #' @export
 theta_EB <- function(nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm) {
-    .Call('_oat_theta_EB', PACKAGE = 'oat', nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm)
+    .Call('_TestDesign_theta_EB', PACKAGE = 'TestDesign', nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm)
 }
 
 #' Calculate an empirical Bayes estimate of theta for a single item
@@ -489,7 +489,7 @@ theta_EB <- function(nx, theta_init, theta_prop, item_parm, resp, ncat, model, p
 #' @template calc-params
 #' @export
 theta_EB_single <- function(nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm) {
-    .Call('_oat_theta_EB_single', PACKAGE = 'oat', nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm)
+    .Call('_TestDesign_theta_EB_single', PACKAGE = 'TestDesign', nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm)
 }
 
 #' Calculate a fully Bayesian estimate of theta for an examinee
@@ -504,7 +504,7 @@ theta_EB_single <- function(nx, theta_init, theta_prop, item_parm, resp, ncat, m
 #' @template calc-params
 #' @export
 theta_FB <- function(nx, theta_init, theta_prop, items_list, item_init, resp, ncat, model, prior, prior_parm) {
-    .Call('_oat_theta_FB', PACKAGE = 'oat', nx, theta_init, theta_prop, items_list, item_init, resp, ncat, model, prior, prior_parm)
+    .Call('_TestDesign_theta_FB', PACKAGE = 'TestDesign', nx, theta_init, theta_prop, items_list, item_init, resp, ncat, model, prior, prior_parm)
 }
 
 #' Calculate a fully Bayesian estimate of theta for a single item
@@ -519,7 +519,7 @@ theta_FB <- function(nx, theta_init, theta_prop, items_list, item_init, resp, nc
 #' @template calc-params
 #' @export
 theta_FB_single <- function(nx, theta_init, theta_prop, item_mcmc, item_init, resp, ncat, model, prior, prior_parm) {
-    .Call('_oat_theta_FB_single', PACKAGE = 'oat', nx, theta_init, theta_prop, item_mcmc, item_init, resp, ncat, model, prior, prior_parm)
+    .Call('_TestDesign_theta_FB_single', PACKAGE = 'TestDesign', nx, theta_init, theta_prop, item_mcmc, item_init, resp, ncat, model, prior, prior_parm)
 }
 
 #' Find the segment to which each theta value belongs
@@ -531,6 +531,6 @@ theta_FB_single <- function(nx, theta_init, theta_prop, item_mcmc, item_init, re
 #'
 #' @export
 findSegment <- function(segment, x) {
-    .Call('_oat_findSegment', PACKAGE = 'oat', segment, x)
+    .Call('_TestDesign_findSegment', PACKAGE = 'TestDesign', segment, x)
 }
 
