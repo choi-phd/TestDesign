@@ -18,12 +18,12 @@ Calculate the probability of correct response at a theta value, under the 2PL mo
 }
 \references{
 {
-  \insertRef{lord_theory_1952}{oat}
+  \insertRef{lord_theory_1952}{TestDesign}
 
-  \insertRef{birnbaum_efficient_1957}{oat}
+  \insertRef{birnbaum_efficient_1957}{TestDesign}
 
-  \insertRef{birnbaum_estimation_1958}{oat}
+  \insertRef{birnbaum_estimation_1958}{TestDesign}
 
-  \insertRef{birnbaum_further_1958}{oat}
+  \insertRef{birnbaum_further_1958}{TestDesign}
 }
 }

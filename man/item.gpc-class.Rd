@@ -22,6 +22,6 @@ item.5 = new("item.gpc", slope = 1.0, threshold = c(-0.5, 0.0, 0.5), ncat = 4)
 }
 \references{
 {
-  \insertRef{muraki_generalized_1992}{oat}
+  \insertRef{muraki_generalized_1992}{TestDesign}
 }
 }

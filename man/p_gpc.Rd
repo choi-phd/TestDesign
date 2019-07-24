@@ -18,6 +18,6 @@ Calculate the probability of correct response at a theta value, under the genera
 }
 \references{
 {
-  \insertRef{muraki_generalized_1992}{oat}
+  \insertRef{muraki_generalized_1992}{TestDesign}
 }
 }
