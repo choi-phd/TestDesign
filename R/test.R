@@ -26,7 +26,7 @@ if(FALSE){
   solution$Selected
 
   setEPS()
-  postscript("R/science.maxinfo.eps", width = 8, height = 5)
+  postscript("R/science.maxinfo.eps", width = 8, height = 3.25)
   solution$plot
   dev.off()
 
@@ -36,7 +36,7 @@ if(FALSE){
   solution$Selected
 
   setEPS()
-  postscript("R/science.tcc.eps", width = 8, height = 5)
+  postscript("R/science.tcc.eps", width = 8, height = 3.25)
   solution$plot
   dev.off()
 
@@ -50,8 +50,6 @@ if(FALSE){
   config.science = config.Shadow(MIP = list(solver = "LPSOLVE"), exposureControl = list(method = "ELIGIBILITY"))
 
   constraints.science2 = UpdateConstraints(constraints.science, off = c(14:20, 32:36))
-
-  Sys.time
 
   solution = Shadow(itempool.science, config.science, trueTheta, constraints.science2, Data = resp.science)
 
@@ -73,27 +71,27 @@ if(FALSE){
 
   set.seed(1)
 
-  thetaGrid = seq(-3, 3, 1)
   trueTheta = runif(1, min = -3.5, max = 3.5)
-  testData = MakeTest(itempool.science, thetaGrid, infoType = "FISHER", trueTheta = trueTheta)
-  respData = testData@Data
+  resp.science = MakeTest(itempool.science, trueTheta = trueTheta)@Data
 
   config.science = config.Shadow()
 
   solution = Shadow(itempool.science, config.science,
-               trueTheta, constraints.science, Data = respData)
+               trueTheta, constraints.science, Data = resp.science)
 
   setEPS()
-  postscript("R/science.auditplot.eps", width = 8, height = 4.5)
-  p = plotCAT(solution, examineeID = 1)
-  print(p)
-  dev.off()
-
-  setEPS()
-  postscript("R/science.shadowplot.eps", width = 8, height = 9.8)
+  postscript("R/science.shadowplot.eps", width = 8, height = 9.7)
   p = plotShadow(solution, constraints.science, examineeID = 1)
   p
   dev.off()
+
+  setEPS()
+  postscript("R/science.auditplot.eps", width = 8, height = 4.2)
+  p = plotCAT(solution, examineeID = 1, minTheta = -4, maxTheta = 1.5)
+  print(p)
+  dev.off()
+
+
 
   # Manuscript example: adaptive test assembly (reading)
 
@@ -105,23 +103,23 @@ if(FALSE){
 
   set.seed(1)
 
-  thetaGrid = seq(-3, 3, 1)
   trueTheta = runif(1, min = -3.5, max = 3.5)
-  testData = MakeTest(itempool.reading, thetaGrid, infoType = "FISHER", trueTheta = trueTheta)
-  respData = testData@Data
+  resp.reading = MakeTest(itempool.reading, trueTheta = trueTheta)@Data
 
-  config.reading = config.Shadow()
+  config.reading = config.Shadow(refreshPolicy = list(
+    method = "STIMULUS"
+  ))
 
-  solution = Shadow(itempool.reading, config.reading, trueTheta, constraints.reading, Data = respData)
+  solution = Shadow(itempool.reading, config.reading, NULL, constraints.reading, Data = resp.reading)
 
   setEPS()
-  postscript("R/reading.auditplot.eps", width = 8, height = 8)
-  p = plotCAT(solution, 1)
+  postscript("R/reading.auditplot.eps", width = 8, height = 4.2)
+  p = plotCAT(solution, 1, maxTheta = 3)
   p
   dev.off()
 
   setEPS()
-  postscript("R/reading.shadowplot.eps", width = 8, height = 8.5)
+  postscript("R/reading.shadowplot.eps", width = 8, height = 9)
   p = plotShadow(solution, constraints.reading, 1)
   p
   dev.off()
@@ -130,7 +128,7 @@ if(FALSE){
   # Fatigue
 
   setEPS()
-  postscript("R/fatigue.infoplot.eps", width = 8, height = 5)
+  postscript("R/fatigue.infoplot.eps", width = 8, height = 3.25)
   p = maxinfoplot(itempool.fatigue, constraints.fatigue)
   print(p)
   dev.off()
@@ -141,7 +139,7 @@ if(FALSE){
   solution$Selected
 
   setEPS()
-  postscript("R/fatigue.tif.eps", width = 8, height = 5)
+  postscript("R/fatigue.tif.eps", width = 8, height = 3.25)
   solution$plot
   dev.off()
 
@@ -172,42 +170,6 @@ if(FALSE){
   p = plotShadow(solution, constraints.fatigue, 1)
   p
   dev.off()
-
-
-  # Debug
-
-  library(oat)
-  set.seed(1)
-
-  thetaGrid = seq(-4, 4, 1)
-  trueTheta = runif(100, min = -3.5, max = 3.5)
-  resp.science = MakeTest(itempool.science, thetaGrid, infoType = "FISHER",trueTheta = trueTheta)@Data
-
-  config.science = config.Shadow(MIP = list(solver = "SYMPHONY"), exposureControl = list(method = "ELIGIBILITY"))
-
-  for(k in 2:36){
-    c1 = UpdateConstraints(constraints.science, off = c(19, 34, k))
-    c1$Constraints
-
-    message("\n")
-    message(k)
-    solution = Shadow(itempool.science, config.science, trueTheta, c1, Data = resp.science)
-
-    flush.console()
-  }
-
-
-
-  object = itempool.science
-  config = config.science
-  Constraints = constraints2.science
-  Data = resp.science
-  prior = NULL
-  priorPar = NULL
-  session = NULL
-
-
-
 
   # Paper Note: ATA with specifying a target amount of information
   # to prevent item exposure and information overuse
