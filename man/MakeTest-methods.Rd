@@ -6,10 +6,11 @@
 \alias{MakeTest,item.pool-method}
 \title{Generate a test object}
 \usage{
-MakeTest(object, theta, infoType = "FISHER", trueTheta = NULL)
-
-\S4method{MakeTest}{item.pool}(object, theta, infoType = "FISHER",
+MakeTest(object, theta = seq(-4, 4, 0.1), infoType = "FISHER",
   trueTheta = NULL)
+
+\S4method{MakeTest}{item.pool}(object, theta = seq(-4, 4, 0.1),
+  infoType = "FISHER", trueTheta = NULL)
 }
 \arguments{
 \item{object}{An \code{\linkS4class{item.pool}} object.}

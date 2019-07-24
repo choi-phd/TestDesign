@@ -1,9 +1,9 @@
 ---
-title: "Creating constraints file in oat package"
+title: "Creating constraints file in TestDesign package"
 author: Sangdon Lim
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Creating constraints file in oat package}
+  %\VignetteIndexEntry{Creating constraints file in TestDesign package}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
