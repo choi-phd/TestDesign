@@ -2,7 +2,7 @@ library(shiny)
 library(shinythemes)
 library(shinyWidgets)
 library(shinyjs)
-library(oat)
+library(TestDesign)
 library(DT)
 
 acceptedfiles = c("text/csv", "text/comma-separated-values,text/plain", ".csv")
@@ -17,7 +17,7 @@ i { display: inline-block; margin-right: 0.2em; }
 label, .form-group, .progress { margin-bottom: 0px; }
 .btn { width: 100%; }
 "))),
-  titlePanel("OAT: Optimal Assembly of Test"),
+  titlePanel("TestDesign: Optimal Test Assembly"),
 
   sidebarLayout(
     sidebarPanel(
@@ -26,7 +26,6 @@ label, .form-group, .progress { margin-bottom: 0px; }
         tags$style(type="text/css", ".span4 { min-width: 100%; max-width: 100%; }"),
         tags$style(type="text/css", ".well { min-width: 100%; max-width: 100%; }")
       ),
-      helpText("This is a demo of Optimal Test Assembly."),
 
       dropdownButton(
         h3(""),
