@@ -20,6 +20,6 @@ Calculate the probability of correct response at theta values, under the 3PL mod
 }
 \references{
 {
-  \insertRef{birnbaum_latent_1968}{oat}
+  \insertRef{birnbaum_latent_1968}{TestDesign}
 }
 }

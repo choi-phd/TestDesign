@@ -16,6 +16,6 @@ Calculate the probability of correct response at a theta value, under the 1PL mo
 }
 \references{
 {
-  \insertRef{rasch_probabilistic_1960}{oat}
+  \insertRef{rasch_probabilistic_1960}{TestDesign}
 }
 }

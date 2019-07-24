@@ -44,9 +44,8 @@ if(FALSE){
 
   set.seed(1)
 
-  thetaGrid = seq(-4, 4, 1)
   trueTheta = runif(7000, min = -3.5, max = 3.5)
-  resp.science = MakeTest(itempool.science, thetaGrid, infoType = "FISHER",trueTheta = trueTheta)@Data
+  resp.science = MakeTest(itempool.science, infoType = "FISHER",trueTheta = trueTheta)@Data
 
   config.science = config.Shadow(MIP = list(solver = "LPSOLVE"), exposureControl = list(method = "ELIGIBILITY"))
 

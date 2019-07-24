@@ -1,3 +1,3 @@
 #' @references{
-#'   \insertRef{rasch_probabilistic_1960}{oat}
+#'   \insertRef{rasch_probabilistic_1960}{TestDesign}
 #' }

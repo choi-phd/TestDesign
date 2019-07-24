@@ -16,8 +16,8 @@ Calculate the Fisher information at a theta value according to the partial credi
 }
 \references{
 {
-  \insertRef{masters_rasch_1982}{oat}
+  \insertRef{masters_rasch_1982}{TestDesign}
 
-  \insertRef{andrich_rating_1978}{oat}
+  \insertRef{andrich_rating_1978}{TestDesign}
 }
 }
