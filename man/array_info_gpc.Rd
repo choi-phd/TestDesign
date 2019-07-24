@@ -18,6 +18,6 @@ Calculate the Fisher information at theta values according to the generalized pa
 }
 \references{
 {
-  \insertRef{muraki_generalized_1992}{oat}
+  \insertRef{muraki_generalized_1992}{TestDesign}
 }
 }
