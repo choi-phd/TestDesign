@@ -148,9 +148,8 @@ if(FALSE){
 
   set.seed(1)
 
-  thetaGrid = seq(-4, 4, 1)
   trueTheta = runif(1, min = -3.5, max = 3.5)
-  respData = MakeTest(itempool.fatigue, thetaGrid, infoType = "FISHER", trueTheta = trueTheta)@Data
+  respData = MakeTest(itempool.fatigue, trueTheta = trueTheta)@Data
 
   config.fatigue = config.Shadow(refreshPolicy = list(
     method = "POSITION",
@@ -166,7 +165,7 @@ if(FALSE){
   dev.off()
 
   setEPS()
-  postscript("R/fatigue.shadowplot.eps", width = 8, height = 7)
+  postscript("R/fatigue.shadowplot.eps", width = 8, height = 6)
   p = plotShadow(solution, constraints.fatigue, 1)
   p
   dev.off()
