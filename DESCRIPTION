@@ -1,4 +1,4 @@
-Package: oat
+Package: TestDesign
 Type: Package
 Title: Optimal Test Design Approach to Fixed and Adaptive Test Construction
 Version: 0.2

@@ -22,6 +22,6 @@ item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 }
 \references{
 {
-  \insertRef{birnbaum_latent_1968}{oat}
+  \insertRef{birnbaum_latent_1968}{TestDesign}
 }
 }

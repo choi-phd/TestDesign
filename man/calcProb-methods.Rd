@@ -59,34 +59,34 @@ prob.itempool = calcProb(itempool.science, seq(-3, 3, 1))
 }
 \references{
 {
-  \insertRef{rasch_probabilistic_1960}{oat}
+  \insertRef{rasch_probabilistic_1960}{TestDesign}
 }
 
 {
-  \insertRef{lord_theory_1952}{oat}
+  \insertRef{lord_theory_1952}{TestDesign}
 
-  \insertRef{birnbaum_efficient_1957}{oat}
+  \insertRef{birnbaum_efficient_1957}{TestDesign}
 
-  \insertRef{birnbaum_estimation_1958}{oat}
+  \insertRef{birnbaum_estimation_1958}{TestDesign}
 
-  \insertRef{birnbaum_further_1958}{oat}
+  \insertRef{birnbaum_further_1958}{TestDesign}
 }
 
 {
-  \insertRef{birnbaum_latent_1968}{oat}
+  \insertRef{birnbaum_latent_1968}{TestDesign}
 }
 
 {
-  \insertRef{masters_rasch_1982}{oat}
+  \insertRef{masters_rasch_1982}{TestDesign}
 
-  \insertRef{andrich_rating_1978}{oat}
+  \insertRef{andrich_rating_1978}{TestDesign}
 }
 
 {
-  \insertRef{muraki_generalized_1992}{oat}
+  \insertRef{muraki_generalized_1992}{TestDesign}
 }
 
 {
-  \insertRef{samejima_estimation_1969}{oat}
+  \insertRef{samejima_estimation_1969}{TestDesign}
 }
 }

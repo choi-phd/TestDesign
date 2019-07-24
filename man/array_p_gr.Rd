@@ -18,6 +18,6 @@ Calculate the probability of correct response at theta values, under the graded 
 }
 \references{
 {
-  \insertRef{samejima_estimation_1969}{oat}
+  \insertRef{samejima_estimation_1969}{TestDesign}
 }
 }
