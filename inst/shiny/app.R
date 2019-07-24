@@ -26,7 +26,6 @@ label, .form-group, .progress { margin-bottom: 0px; }
         tags$style(type="text/css", ".span4 { min-width: 100%; max-width: 100%; }"),
         tags$style(type="text/css", ".well { min-width: 100%; max-width: 100%; }")
       ),
-      helpText("This is a demo of Optimal Test Assembly."),
 
       dropdownButton(
         h3(""),
