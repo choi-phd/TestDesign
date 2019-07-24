@@ -177,7 +177,7 @@ setMethod(f = "ATA",
                 }
                 vec.sub = Reduce('+', l)
                 ylab = "Expected Score"
-                title = "Test Characteristic Function based on the selected items"
+                title = "Test Characteristic Curve based on the selected items"
               }
               if (toupper(config@itemSelection$method) == "MAXINFO"){
                 mat.sub = calcFisher(Constraints$pool, continuum)[,idx]
