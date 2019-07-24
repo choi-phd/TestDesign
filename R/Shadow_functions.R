@@ -373,7 +373,7 @@ setMethod(f = "plotCAT",
               if (!is.null(object@trueTheta)) {
                 abline(h = object@trueTheta, lty = 1, col = "red")
               } else {
-                abline(h = object@finalThetaEst, lty = 1, col = "red")
+                abline(h = object@finalThetaEst, lty = 2, col = "red")
               }
               for (i in 1:nItems) {
                 if (object@shadowTestRefreshed[i]) {
