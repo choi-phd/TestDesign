@@ -12,17 +12,17 @@
 #' @export
 setClass("constraint",
          slots = c(CONSTRAINT = "character",
-                   mat = "matrix",
-                   dir = "character",
-                   rhs = "numeric",
-                   nc = "numeric",
-                   suspend = "logical"),
+                   mat        = "matrix",
+                   dir        = "character",
+                   rhs        = "numeric",
+                   nc         = "numeric",
+                   suspend    = "logical"),
          prototype = list(CONSTRAINT = character(0),
-                          mat = matrix(NA, 0, 0),
-                          dir = character(0),
-                          rhs = numeric(0),
-                          nc = 0,
-                          suspend = FALSE),
+                          mat        = matrix(NA, 0, 0),
+                          dir        = character(0),
+                          rhs        = numeric(0),
+                          nc         = 0,
+                          suspend    = FALSE),
          validity = function(object) {
            # add validity checks
            return(TRUE)
@@ -45,23 +45,34 @@ setClassUnion("matrixOrNULL", c("matrix", "NULL"))
 #'
 #' @export
 setClass("test",
-         slots = c(pool = "item.pool",
-                   theta = "numeric",
-                   Prob = "list",
-                   Info = "matrix",
+         slots = c(pool      = "item.pool",
+                   theta     = "numeric",
+                   Prob      = "list",
+                   Info      = "matrix",
                    trueTheta = "numericOrNULL",
-                   Data = "matrixOrNULL"),
-         prototype = list(pool = new("item.pool"),
-                          theta = numeric(0),
-                          Prob = list(0),
-                          Info = matrix(0),
+                   Data      = "matrixOrNULL"),
+         prototype = list(pool      = new("item.pool"),
+                          theta     = numeric(0),
+                          Prob      = list(0),
+                          Info      = matrix(0),
                           trueTheta = numeric(0),
-                          Data = matrix(NA, 0, 0)),
+                          Data      = matrix(NA, 0, 0)),
          validity = function(object) {
-           if (length(object@Prob) != object@pool@ni) stop("length(Prob) is not equal to pool@ni")
-           if (ncol(object@Info) != object@pool@ni) stop("ncol(Info) is not equal to pool@ni")
-           if (nrow(object@Info) != length(object@theta)) stop("nrow(Info) is not equal to length(theta)")
-           return(TRUE)
+           errors = NULL
+           if (length(object@Prob) != object@pool@ni) {
+             errors = c(errors, "length(Prob) is not equal to pool@ni")
+           }
+           if (ncol(object@Info) != object@pool@ni) {
+             errors = c(errors, "ncol(Info) is not equal to pool@ni")
+           }
+           if (nrow(object@Info) != length(object@theta)) {
+             errors = c(errors, "nrow(Info) is not equal to length(theta)")
+           }
+           if (length(errors) == 0) {
+             return(TRUE)
+           } else {
+             return(errors)
+           }
          }
 )
 
@@ -75,16 +86,25 @@ setClass("test",
 #'
 #' @export
 setClass("test.cluster",
-         slots = c(nt = "numeric",
+         slots = c(nt    = "numeric",
                    tests = "list",
                    names = "character"),
-         prototype = list(nt = numeric(0),
+         prototype = list(nt    = numeric(0),
                           tests = list(0),
                           names = character(0)),
          validity = function(object) {
-           if (length(object@tests) != object@nt) stop("length(tests) is not equal to nt")
-           if (length(object@names) != object@nt) stop("length(names) is not equal to nt")
-           return(TRUE)
+           errors = NULL
+           if (length(object@tests) != object@nt) {
+             errors = c(errors, "length(tests) is not equal to nt")
+           }
+           if (length(object@names) != object@nt) {
+             errors = c(errors, "length(names) is not equal to nt")
+           }
+           if (length(errors) == 0) {
+             return(TRUE)
+           } else {
+             return(errors)
+           }
          }
 )
 
@@ -92,85 +112,119 @@ setClass("test.cluster",
 #'
 #' @rdname config.Shadow
 setClass("Shadow.config",
-         slots = c(itemSelection = "list",
-                   contentBalancing = "list",
-                   MIP = "list",
-                   MCMC = "list",
-                   refreshPolicy = "list",
-                   exposureControl = "list",
+         slots = c(itemSelection     = "list",
+                   contentBalancing  = "list",
+                   MIP               = "list",
+                   MCMC              = "list",
+                   refreshPolicy     = "list",
+                   exposureControl   = "list",
                    stoppingCriterion = "list",
-                   interimTheta = "list",
-                   finalTheta = "list",
-                   thetaGrid = "numeric",
-                   auditTrail = "logical"),
-         prototype = list(itemSelection = list(method = "MFI",
-                                               infoType = "FISHER",
+                   interimTheta      = "list",
+                   finalTheta        = "list",
+                   thetaGrid         = "numeric",
+                   auditTrail        = "logical"),
+         prototype = list(itemSelection = list(method       = "MFI",
+                                               infoType     = "FISHER",
                                                initialTheta = NULL,
-                                               fixedTheta = NULL),
+                                               fixedTheta   = NULL),
                           contentBalancing = list(method = "STA"),
-                          MIP = list(solver = "LPSOLVE",
+                          MIP = list(solver    = "LPSOLVE",
                                      verbosity = -2,
                                      timeLimit = -1,
-                                     gapLimit = -1),
-                          MCMC = list(burnIn = 100,
+                                     gapLimit  = -1),
+                          MCMC = list(burnIn     = 100,
                                       postBurnIn = 500,
-                                      thin = 1,
+                                      thin       = 1,
                                       jumpFactor = 1),
-                          refreshPolicy = list(method = "ALWAYS",
-                                               interval = 1,
+                          refreshPolicy = list(method    = "ALWAYS",
+                                               interval  = 1,
                                                threshold = 0.1,
-                                               position = 1),
-                          exposureControl = list(method = "ELIGIBILITY",
-                                                 M = NULL,
-                                                 maxExposureRate = 0.25,
-                                                 accelerationFactor = 1.0,
-                                                 nSegment = 7,
-                                                 firstSegment = NULL,
-                                                 segmentCut = c(-Inf, -2.5, -1.5, -0.5, 0.5, 1.5, 2.5, Inf),
+                                               position  = 1),
+                          exposureControl = list(method                  = "ELIGIBILITY",
+                                                 M                       = NULL,
+                                                 maxExposureRate         = 0.25,
+                                                 accelerationFactor      = 1.0,
+                                                 nSegment                = 7,
+                                                 firstSegment            = NULL,
+                                                 segmentCut              = c(-Inf, -2.5, -1.5, -0.5, 0.5, 1.5, 2.5, Inf),
                                                  initialEligibilityStats = NULL,
-                                                 fadingFactor = 0.999,
-                                                 diagnosticStats = FALSE),
-                          stoppingCriterion = list(method = "FIXED",
-                                                   testLength = NULL,
-                                                   minNI = NULL,
-                                                   maxNI = NULL,
+                                                 fadingFactor            = 0.999,
+                                                 diagnosticStats         = FALSE),
+                          stoppingCriterion = list(method      = "FIXED",
+                                                   testLength  = NULL,
+                                                   minNI       = NULL,
+                                                   maxNI       = NULL,
                                                    SeThreshold = NULL),
-                          interimTheta = list(method = "EAP",
+                          interimTheta = list(method              = "EAP",
                                               shrinkageCorrection = FALSE,
-                                              priorDist = "NORMAL",
-                                              priorPar = c(0, 1),
-                                              boundML = c(-4, 4),
-                                              truncateML = FALSE,
-                                              maxIter = 50,
-                                              crit = 0.001,
-                                              maxChange = 1.0,
-                                              FisherScoring = TRUE),
-                          finalTheta = list(method = "EAP",
+                                              priorDist           = "NORMAL",
+                                              priorPar            = c(0, 1),
+                                              boundML             = c(-4, 4),
+                                              truncateML          = FALSE,
+                                              maxIter             = 50,
+                                              crit                = 0.001,
+                                              maxChange           = 1.0,
+                                              FisherScoring       = TRUE),
+                          finalTheta = list(method              = "EAP",
                                             shrinkageCorrection = FALSE,
-                                            priorDist = "NORMAL",
-                                            priorPar = c(0, 1),
-                                            boundML = c(-4, 4),
-                                            truncateML = FALSE,
-                                            maxIter = 50,
-                                            crit = 0.001,
-                                            maxChange = 1.0,
-                                            FisherScoring = TRUE),
+                                            priorDist           = "NORMAL",
+                                            priorPar            = c(0, 1),
+                                            boundML             = c(-4, 4),
+                                            truncateML          = FALSE,
+                                            maxIter             = 50,
+                                            crit                = 0.001,
+                                            maxChange           = 1.0,
+                                            FisherScoring       = TRUE),
                           thetaGrid = seq(-4, 4, .1),
                           auditTrail = FALSE),
          validity = function(object) {
-           if (!toupper(object@MIP$solver) %in% c("SYMPHONY", "GUROBI", "GLPK", "LPSOLVE")) stop("invalid option for MIP$solver")
-           if (toupper(object@MIP$solver) == "GUROBI" &
-               !requireNamespace("gurobi", quietly = TRUE)) stop("GUROBI was specified but is not installed")
-           if (!object@itemSelection$method %in% c("MFI", "MPWI", "EB", "FB")) stop("invalid option for selectionCriterion")
-           if (!object@contentBalancing$method %in% c("NONE", "STA")) stop("invalid option for contentBalancing")
-           if (!object@refreshPolicy$method %in% c("ALWAYS", "POSITION", "INTERVAL", "THRESHOLD", "INTERVAL-THRESHOLD", "STIMULUS", "SET", "PASSAGE")) stop("invalid option for refreshPolicy")
-           if (!object@exposureControl$method %in% c("NONE", "ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) stop("invalid option for exposureControl")
-           if (object@exposureControl$nSegment != length(object@exposureControl$segmentCut) - 1) stop("nSegment and segmentCut are incongruent")
-           if (!object@stoppingCriterion$method %in% c("FIXED")) stop("invalid option for stoppingCriterion")
-           if (!object@interimTheta$method %in% c("EAP", "MLE", "EB", "FB")) stop("invalid option for interimTheta")
-           if (!object@finalTheta$method %in% c("EAP", "MLE", "EB", "FB")) stop("invalid option for finalTheta")
-           if (object@exposureControl$method %in% c("BIGM-BAYESIAN") && !object@interimTheta$method %in% c("EB", "FB")) stop("for exposureControl BIGM-BAYESIAN you must use interimTheta of EB of FB")
-           return(TRUE)
+           errors <- NULL
+           if (!toupper(object@MIP$solver) %in% c("SYMPHONY", "GUROBI", "GLPK", "LPSOLVE")) {
+             errors <- c(errors, "invalid option for MIP$solver")
+           }
+           if (toupper(object@MIP$solver) == "GUROBI") {
+             if (!requireNamespace("gurobi", quietly = TRUE)) {
+               errors <- c(errors, "GUROBI was specified but is not installed.")
+             }
+           }
+           if (toupper(object@MIP$solver) == "SYMPHONY") {
+             if (!requireNamespace("Rsymphony", quietly = TRUE)) {
+               errors <- c(errors, "SYMPHONY was specified but is not installed.")
+             }
+           }
+           if (!object@itemSelection$method %in% c("MFI", "MPWI", "EB", "FB")) {
+             errors <- c(errors, "invalid option for selectionCriterion")
+           }
+           if (!object@contentBalancing$method %in% c("NONE", "STA")) {
+             errors <- c(errors, "invalid option for contentBalancing")
+           }
+           if (!object@refreshPolicy$method %in%
+               c("ALWAYS", "POSITION", "INTERVAL", "THRESHOLD", "INTERVAL-THRESHOLD", "STIMULUS", "SET", "PASSAGE")) {
+             errors <- c(errors, "invalid option for refreshPolicy.")
+           }
+           if (!object@exposureControl$method %in% c("NONE", "ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
+             errors <- c(errors, "invalid option for exposureControl.")
+           }
+           if (object@exposureControl$nSegment != length(object@exposureControl$segmentCut) - 1) {
+             errors <- c(errors, "nSegment and segmentCut are incongruent.")
+           }
+           if (!object@stoppingCriterion$method %in% c("FIXED")) {
+             errors <- c(errors, "invalid option for stoppingCriterion.")
+           }
+           if (!object@interimTheta$method %in% c("EAP", "MLE", "EB", "FB")) {
+             errors <- c(errors, "invalid option for interimTheta.")
+           }
+           if (!object@finalTheta$method %in% c("EAP", "MLE", "EB", "FB")) {
+             errors <- c(errors, "invalid option for finalTheta.")
+           }
+           if (object@exposureControl$method %in% c("BIGM-BAYESIAN") && !object@interimTheta$method %in% c("EB", "FB")) {
+             errors <- c(errors, "for exposureControl BIGM-BAYESIAN you must use interimTheta of EB of FB.")
+           }
+           if (length(errors) == 0) {
+             return(TRUE)
+           } else {
+             return(errors)
+           }
          }
 )
 
@@ -265,29 +319,35 @@ setClass("Shadow.config",
 config.Shadow = function(itemSelection = NULL, contentBalancing = NULL, MIP = NULL, MCMC = NULL,
                          refreshPolicy = NULL, exposureControl = NULL, stoppingCriterion = NULL,
                          interimTheta = NULL, finalTheta = NULL, thetaGrid = seq(-4, 4, .1), auditTrail = F){
-  conf = new("Shadow.config")
+  conf <- new("Shadow.config")
 
-  arg.names = c("itemSelection", "contentBalancing", "MIP", "MCMC",
+  arg.names <- c("itemSelection", "contentBalancing", "MIP", "MCMC",
                 "refreshPolicy", "exposureControl", "stoppingCriterion",
                 "interimTheta", "finalTheta")
-  obj.names = c()
-  for (arg in arg.names){
-    if (!is.null(eval(parse(text = arg)))){
-      eval(parse(text = paste0("obj.names = names(conf@", arg, ")")))
-      for (entry in obj.names){
-        entry.l = paste0("conf@", arg, "$", entry)
-        entry.r = paste0(arg, "$", entry)
-        tmp = eval(parse(text = entry.r))
-        if (!is.null(tmp)){
-          eval(parse(text = paste0(entry.l, " = ", entry.r)))
+  obj.names <- c()
+  for (arg in arg.names) {
+    if (!is.null(eval(parse(text = arg)))) {
+      eval(parse(text = paste0("obj.names <- names(conf@", arg, ")")))
+      for (entry in obj.names) {
+        entry.l <- paste0("conf@", arg, "$", entry)
+        entry.r <- paste0(arg, "$", entry)
+        tmp <- eval(parse(text = entry.r))
+        if (!is.null(tmp)) {
+          eval(parse(text = paste0(entry.l, " <- ", entry.r)))
         }
       }
     }
   }
-  if (!is.null(thetaGrid))  conf@thetaGrid  = thetaGrid
-  if (!is.null(auditTrail)) conf@auditTrail = auditTrail
-  v = validObject(conf)
-  if (v) return(conf)
+  if (!is.null(thetaGrid)) {
+    conf@thetaGrid  <- thetaGrid
+  }
+  if (!is.null(auditTrail)) {
+    conf@auditTrail <- auditTrail
+  }
+  v <- validObject(conf)
+  if (v) {
+    return(conf)
+  }
 }
 
 #' @name show-method
@@ -387,46 +447,46 @@ setMethod("show", "Shadow.config", function(object) {
 #'
 #' @export
 setClass("Shadow.output",
-         slots = c(simuleeIndex = "numeric",
-                   trueTheta = "numericOrNULL",
-                   trueThetaSegment = "numericOrNULL",
-                   finalThetaEst = "numeric",
-                   finalSeEst = "numeric",
-                   administeredItemIndex = "numeric",
-                   administeredItemResp = "numeric",
+         slots = c(simuleeIndex              = "numeric",
+                   trueTheta                 = "numericOrNULL",
+                   trueThetaSegment          = "numericOrNULL",
+                   finalThetaEst             = "numeric",
+                   finalSeEst                = "numeric",
+                   administeredItemIndex     = "numeric",
+                   administeredItemResp      = "numeric",
                    administeredStimulusIndex = "numeric",
-                   shadowTestRefreshed = "logical",
-                   shadowTestFeasible = "logical",
-                   solveTime = "numeric",
-                   interimThetaEst = "numeric",
-                   interimSeEst = "numeric",
-                   thetaSegmentIndex = "numeric",
-                   prior = "numeric",
-                   priorPar = "numeric",
-                   posterior = "numeric",
-                   posteriorSample = "numeric",
-                   likelihood = "numeric",
-                   shadowTest = "list"),
-         prototype = list(simuleeIndex = numeric(0),
-                          trueTheta = numeric(0),
-                          trueThetaSegment = numeric(0),
-                          finalThetaEst = numeric(0),
-                          finalSeEst = numeric(0),
-                          administeredItemIndex = numeric(0),
-                          administeredItemResp = numeric(0),
+                   shadowTestRefreshed       = "logical",
+                   shadowTestFeasible        = "logical",
+                   solveTime                 = "numeric",
+                   interimThetaEst           = "numeric",
+                   interimSeEst              = "numeric",
+                   thetaSegmentIndex         = "numeric",
+                   prior                     = "numeric",
+                   priorPar                  = "numeric",
+                   posterior                 = "numeric",
+                   posteriorSample           = "numeric",
+                   likelihood                = "numeric",
+                   shadowTest                = "list"),
+         prototype = list(simuleeIndex              = numeric(0),
+                          trueTheta                 = NULL,
+                          trueThetaSegment          = NULL,
+                          finalThetaEst             = numeric(0),
+                          finalSeEst                = numeric(0),
+                          administeredItemIndex     = numeric(0),
+                          administeredItemResp      = numeric(0),
                           administeredStimulusIndex = numeric(0),
-                          shadowTestRefreshed = logical(0),
-                          shadowTestFeasible = logical(0),
-                          solveTime = numeric(0),
-                          interimThetaEst = numeric(0),
-                          interimSeEst = numeric(0),
-                          thetaSegmentIndex = numeric(0),
-                          prior = numeric(0),
-                          priorPar = numeric(0),
-                          posterior = numeric(0),
-                          posteriorSample = numeric(0),
-                          likelihood = numeric(0),
-                          shadowTest = list(0)),
+                          shadowTestRefreshed       = logical(0),
+                          shadowTestFeasible        = logical(0),
+                          solveTime                 = numeric(0),
+                          interimThetaEst           = numeric(0),
+                          interimSeEst              = numeric(0),
+                          thetaSegmentIndex         = numeric(0),
+                          prior                     = numeric(0),
+                          priorPar                  = numeric(0),
+                          posterior                 = numeric(0),
+                          posteriorSample           = numeric(0),
+                          likelihood                = numeric(0),
+                          shadowTest                = list(0)),
          validity = function(object) {
            return(TRUE)
          }
