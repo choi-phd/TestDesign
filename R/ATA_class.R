@@ -16,19 +16,20 @@ setClass("ATA.config",
                                      gapLimit    = 0.05,
                                      gapLimitAbs = 1)),
          validity = function(object) {
+           errors <- NULL
            if (!toupper(object@itemSelection$method) %in% c("MAXINFO", "TIF", "TCC")) {
-             stop("invalid option for itemSelection$method: accepts MaxInfo, TIF, TCC")
+             errors = c(errors, "invalid option for itemSelection$method: accepts MaxInfo, TIF, or TCC.")
            }
            if (toupper(object@itemSelection$method) == "MAXINFO") {
              if (!is.null(object@itemSelection$targetValue)) {
-               warning("MaxInfo method was specified: ignoring targetValue")
+               errors = c(errors, "targetValue must be left blank when MaxInfo method is specified.")
              }
              target.lengths = unique(c(
                length(object@itemSelection$targetLocation),
                length(object@itemSelection$targetWeight)
              ))
              if (length(target.lengths) != 1) {
-               stop("itemSelection$targetLocation, itemSelection$targetWeight have different lengths. They must have the same length.")
+               errors = c(errors, "itemSelection$targetLocation, itemSelection$targetWeight have different lengths. They must have the same length.")
              }
            }
            if (toupper(object@itemSelection$method) != "MAXINFO") {
@@ -38,16 +39,21 @@ setClass("ATA.config",
                length(object@itemSelection$targetWeight)
              ))
              if (length(target.lengths) != 1) {
-               stop("itemSelection$targetLocation, itemSelection$targetValue, itemSelection$targetWeight have different lengths. They must have the same length.")
+               errors = c(errors, "itemSelection$targetLocation, itemSelection$targetValue, itemSelection$targetWeight have different lengths. They must have the same length.")
              }
            }
            if (toupper(object@itemSelection$infoType) != "FISHER") {
-             stop("invalid option ", object@itemSelection$infoType," for itemSelection$infoType: accepts Fisher.")
+             errors = c(errors, "invalid option ", object@itemSelection$infoType," for itemSelection$infoType: accepts Fisher.")
            }
            if (!toupper(object@MIP$solver) %in% c("SYMPHONY", "GUROBI", "GLPK", "LPSOLVE")) {
-             stop("invalid option ", object@MIP$solver, " for MIP$solver: accepts Symphony, Gurobi, GLPK, LpSolve.")
+             errors = c(errors, "invalid option ", object@MIP$solver, " for MIP$solver: accepts Symphony, Gurobi, GLPK, or LpSolve.")
            }
-           return(TRUE)
+
+           if (length(errors) == 0) {
+             return(TRUE)
+           } else {
+             return(errors)
+           }
          }
 )
 
@@ -92,7 +98,7 @@ setClass("ATA.config",
 #' @rdname config.ATA
 #'
 #' @export
-config.ATA = function(itemSelection = NULL, MIP = NULL) {
+config.ATA <- function(itemSelection = NULL, MIP = NULL) {
   conf <- new("ATA.config")
   arg.names <- c("itemSelection", "MIP")
   obj.names <- c()
