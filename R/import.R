@@ -17,26 +17,25 @@
 NULL
 
 #' @noRd
-.onAttach = function(libname, pkgname){
+.onAttach = function(libname, pkgname) {
 
   packageStartupMessage(white(bold("  Solver packages:")))
   packageStartupMessage(" ")
 
   solvernames = c("lpSolve", "Rsymphony", "gurobi", "Rglpk")
 
-  for (s in solvernames){
+  for (s in solvernames) {
     x = find.package(s, quiet = T)
-    if (length(x) > 0){
+    if (length(x) > 0) {
       status = green("v")
       v = packageVersion(s)
-
     } else {
       status = red("x")
       v = ""
     }
-
     packageStartupMessage(status, " ", s, paste0(rep(" ", 10 - nchar(s)), collapse = ""), white(v))
   }
+
 }
 
 
