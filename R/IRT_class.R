@@ -1,31 +1,43 @@
 #' @noRd
-validity_slope = function(object){
-  if(object@slope <= 0) return("A non-positive value for the slope parameter is not permissible.")
+validity_slope = function(object) {
+  if (object@slope <= 0) {
+    return("A non-positive value for the slope parameter is not permissible.")
+  }
 }
 
 #' @noRd
-validity_guessing = function(object){
-  if(object@guessing < 0 || object@guessing >= 1.0) return("The supplied value for the guessing parameter is out of bounds.")
+validity_guessing = function(object) {
+  if (object@guessing < 0 || object@guessing >= 1.0) {
+    return("The supplied value for the guessing parameter is out of bounds. The value needs to be in between 0.0 and 1.0.")
+  }
 }
 
 #' @noRd
-validity_ncat = function(object){
-  if(length(object@ncat) == 0) return("ncat cannot be missing.")
+validity_ncat = function(object) {
+  if (length(object@ncat) == 0) {
+    return("Number of categories is missing.")
+  }
 }
 
 #' @noRd
-validity_nthr = function(object){
-  if(object@ncat != length(object@threshold) + 1) return("The number of thresholds needs to be ncat - 1.")
+validity_nthr = function(object) {
+  if (object@ncat != length(object@threshold) + 1) {
+    return("The number of thresholds needs to be equal to ncat - 1.")
+  }
 }
 
 #' @noRd
-validity_category = function(object){
-  if(object@ncat != length(object@category) + 1) return("The number of category values does not match ncat.")
+validity_category = function(object) {
+  if (object@ncat != length(object@category) + 1) {
+    return("The number of category values does not match ncat.")
+  }
 }
 
 #' @noRd
-validity_order = function(object){
-  if(is.unsorted(object@category)) return("The category values are not in an ascending order.")
+validity_order = function(object) {
+  if (is.unsorted(object@category)) {
+    return("The category values are not in an ascending order.")
+  }
 }
 
 #' Show
@@ -75,9 +87,13 @@ setClass("item.2pl",
          prototype = list(slope = numeric(0),
                           difficulty = numeric(0)),
          validity = function(object){
-           errors = character()
-           errors = c(errors, validity_slope(object))
-           if (length(errors) == 0) return(TRUE) else return(errors)
+           errors <- character()
+           errors <- c(errors, validity_slope(object))
+           if (length(errors) == 0) {
+             return(TRUE)
+           } else {
+             return(errors)
+           }
          }
 )
 
@@ -109,11 +125,15 @@ setClass("item.3pl",
          prototype = list(slope = numeric(0),
                           difficulty = numeric(0),
                           guessing = numeric(0)),
-         validity = function(object){
-           errors = character()
-           errors = c(errors, validity_slope(object))
-           errors = c(errors, validity_guessing(object))
-           if (length(errors) == 0) return(TRUE) else return(errors)
+         validity = function(object) {
+           errors <- character()
+           errors <- c(errors, validity_slope(object))
+           errors <- c(errors, validity_guessing(object))
+           if (length(errors) == 0) {
+             return(TRUE)
+           } else {
+             return(errors)
+           }
          }
 )
 
@@ -143,11 +163,15 @@ setClass("item.pc",
                    ncat = "numeric"),
          prototype = list(threshold = numeric(0),
                           ncat = numeric(0)),
-         validity = function(object){
-           errors = character()
-           errors = c(errors, validity_ncat(object))
-           errors = c(errors, validity_nthr(object))
-           if (length(errors) == 0) return(TRUE) else return(errors)
+         validity = function(object) {
+           errors <- character()
+           errors <- c(errors, validity_ncat(object))
+           errors <- c(errors, validity_nthr(object))
+           if (length(errors) == 0) {
+             return(TRUE)
+           } else {
+             return(errors)
+           }
          }
 )
 
@@ -179,11 +203,15 @@ setClass("item.gpc",
          prototype = list(slope = numeric(0),
                           threshold = numeric(0),
                           ncat = numeric(0)),
-         validity = function(object){
-           errors = character()
-           errors = c(errors, validity_ncat(object))
-           errors = c(errors, validity_slope(object))
-           if (length(errors) == 0) return(TRUE) else return(errors)
+         validity = function(object) {
+           errors <- character()
+           errors <- c(errors, validity_ncat(object))
+           errors <- c(errors, validity_slope(object))
+           if (length(errors) == 0) {
+             return(TRUE)
+           } else {
+             return(errors)
+           }
          }
 )
 
@@ -216,13 +244,17 @@ setClass("item.gr",
          prototype = list(slope = numeric(0),
                           category = numeric(0),
                           ncat = numeric(0)),
-         validity = function(object){
-           errors = character()
-           errors = c(errors, validity_ncat(object))
-           errors = c(errors, validity_slope(object))
-           errors = c(errors, validity_category(object))
-           errors = c(errors, validity_order(object))
-           if (length(errors) == 0) return(TRUE) else return(errors)
+         validity = function(object) {
+           errors <- character()
+           errors <- c(errors, validity_ncat(object))
+           errors <- c(errors, validity_slope(object))
+           errors <- c(errors, validity_category(object))
+           errors <- c(errors, validity_order(object))
+           if (length(errors) == 0) {
+             return(TRUE)
+           } else {
+             return(errors)
+           }
          }
 )
 
@@ -269,8 +301,8 @@ setClass("item.pool",
                           ipar = matrix(0),
                           SEs = matrix(0)),
          validity = function(object) {
-           if (length(unique(object@ID)) != object@ni) stop("entries in @ID are not unique")
-           return(TRUE)
+           if (length(unique(object@ID)) != object@ni) stop("entries in @ID are not unique.")
+           return (TRUE)
          }
 )
 
@@ -279,7 +311,7 @@ setClass("item.pool",
 #' @docType methods
 #' @noRd
 setMethod("show", "item.pool", function(object) {
-  if(length(object@ni) > 0) {
+  if (length(object@ni) > 0) {
     cat("@ni    :", object@ni, "\n")
     cat("@maxCat :", object@maxCat, "\n\n")
     print(data.frame(index = object@index, ID = object@ID, model = object@model, NCAT = object@NCAT))
@@ -289,7 +321,7 @@ setMethod("show", "item.pool", function(object) {
     }
     cat("\n")
   } else {
-    cat("item pool is empty")
+    cat("item pool is empty.")
   }
 })
 
@@ -307,9 +339,9 @@ setClass("pool.cluster",
          prototype = list(np = numeric(0),
                           pools = list(0),
                           names = character(0)),
-         validity = function(object){
-           if (length(object@pools) != object@np) stop("length(pools) is not equal to np")
-           if (length(object@names) != object@np) stop("length(names) is not equal to np")
+         validity = function(object) {
+           if (length(object@pools) != object@np) stop("length(pools) is not equal to np.")
+           if (length(object@names) != object@np) stop("length(names) is not equal to np.")
            return(TRUE)
          }
 )
@@ -319,7 +351,7 @@ setClass("pool.cluster",
 #' @docType methods
 #' @noRd
 setMethod("show", "pool.cluster", function(object) {
-  if(length(object@np) > 0) {
+  if (length(object@np) > 0) {
     cat("@np    :", object@np, "\n")
     cat("@names :", paste0(object@names, collapse = ", "), "\n\n")
     for (i in 1:object@np) {
@@ -327,6 +359,6 @@ setMethod("show", "pool.cluster", function(object) {
       show(object@pools[[i]])
     }
   } else {
-    cat("item pool cluster is empty")
+    cat("item pool cluster is empty.")
   }
 })
