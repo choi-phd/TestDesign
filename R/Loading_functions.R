@@ -106,7 +106,10 @@ LoadItemPool = function(file.csv, ipar = NULL, se.file.csv = NULL) {
       }
     } else stop(paste("Item", i, ": unknown IRT model specified - valid models are 1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, or 6: GR"))
   }
-  if (sum(!valid) > 0) stop(paste("Check the parameters for the following item(s):", paste((1:ni)[!valid], collapse = ", "), "\n"))
+  if (sum(!valid) > 0) {
+    stop(paste("Check the parameters for the following item(s):", paste((1:ni)[!valid], collapse = ", "), "\n"))
+  }
+
   pool@ni = ni
   pool@maxCat = max(NCAT)
   pool@NCAT = NCAT
@@ -117,11 +120,13 @@ LoadItemPool = function(file.csv, ipar = NULL, se.file.csv = NULL) {
   } else {
     pool@SEs = pool@ipar * 0
   }
-
   if (max(rowSums(!is.na(pool@ipar))) != max(nfields) - 2) {
     pool@ipar = pool@ipar[, 1:max(rowSums(!is.na(pool@ipar)))]
   }
-  if (validObject(pool)) return(pool)
+
+  if (validObject(pool)) {
+    return(pool)
+  }
 }
 
 #' Load item attributes
@@ -137,13 +142,23 @@ LoadItemPool = function(file.csv, ipar = NULL, se.file.csv = NULL) {
 #' @export
 
 LoadItemAttrib = function(file.csv, pool) {
-  if (is.null(pool) || class(pool) != "item.pool") stop("pool is missing or not of class \"item.pool\"")
+  if (is.null(pool) || class(pool) != "item.pool") {
+    stop("pool is missing or not of class \"item.pool\"")
+  }
   ItemAttrib = read.csv(file.csv, header = TRUE, as.is = TRUE)
   names(ItemAttrib) = toupper(names(ItemAttrib))
-  if (pool@ni != nrow(ItemAttrib)) stop("nrow of item attrib file not equal to pool@ni")
-  if (!("ID" %in% names(ItemAttrib))) stop("no column name \"ID\" found in ItemAttrib")
-  if(is.numeric(ItemAttrib$ID)) ItemAttrib$ID = as.character(ItemAttrib$ID)
-  if (any(ItemAttrib$ID %in% c("", " ", "NA", "N/A"))) stop("invalid ID entries were found in ItemAttrib")
+  if (pool@ni != nrow(ItemAttrib)) {
+    stop("nrow of item attrib file not equal to pool@ni")
+  }
+  if (!("ID" %in% names(ItemAttrib))) {
+    stop("no column name \"ID\" found in ItemAttrib")
+  }
+  if (is.numeric(ItemAttrib$ID)) {
+    ItemAttrib$ID = as.character(ItemAttrib$ID)
+  }
+  if (any(ItemAttrib$ID %in% c("", " ", "NA", "N/A"))) {
+    stop("invalid ID entries were found in ItemAttrib")
+  }
   if (length(unique(ItemAttrib$ID)) != nrow(ItemAttrib)) {
     stop("duplicate ID entries were found in item attrib")
   } else if (!all(sort(pool@ID) == sort(ItemAttrib$ID))) {
@@ -176,20 +191,30 @@ LoadItemAttrib = function(file.csv, pool) {
 LoadStAttrib = function(file.csv, ItemAttrib) {
   StAttrib = read.csv(file.csv, header = TRUE, as.is = TRUE)
   names(StAttrib) = toupper(names(StAttrib))
-  if (!("STID" %in% names(StAttrib))) stop("no column name \"STID\" found in set/stimulus/passage attrib")
-  if(is.numeric(StAttrib$STID)) StAttrib$STID = as.character(StAttrib$STID)
+  if (!("STID" %in% names(StAttrib))) {
+    stop("no column name \"STID\" found in set/stimulus/passage attrib")
+  }
+  if (is.numeric(StAttrib$STID)) {
+    StAttrib$STID = as.character(StAttrib$STID)
+  }
   if (!("STIDNTEX" %in% names(StAttrib))) {
     StAttrib = data.frame(cbind(STINDEX = 1:nrow(StAttrib), StAttrib))
   }
-  if (!("STID" %in% names(ItemAttrib))) stop("no column name \"STID\" found in ItemAttrib")
-  if (any(StAttrib$STID %in% c("", " ", NA))) stop("invalid STID found in StAttrib")
+  if (!("STID" %in% names(ItemAttrib))) {
+    stop("no column name \"STID\" found in ItemAttrib")
+  }
+  if (any(StAttrib$STID %in% c("", " ", NA))) {
+    stop("invalid STID found in StAttrib")
+  }
   if (length(unique(StAttrib$STID)) != nrow(StAttrib)) {
     stop("duplicate ID entries were found in set/stimulus attrib")
   } else if (!(all(StAttrib$STID %in% unique(ItemAttrib$STID)))) {
     stop("not all STID found in ItemAttrib")
   } else if (any(ItemAttrib$STID %in% c("", " ", "NA", "N/A"))) {
     #if items with no valid STID present (e.g., discrete items)
-    if (!all(sort(unique(ItemAttrib$STID[!(ItemAttrib$STID %in% c(NA, "", " ", "N/A"))])) == sort(StAttrib$STID))) stop("StAttrib must include all STID in ItemAttrib")
+    if (!all(sort(unique(ItemAttrib$STID[!(ItemAttrib$STID %in% c(NA, "", " ", "N/A"))])) == sort(StAttrib$STID))) {
+      stop("StAttrib must include all STID in ItemAttrib")
+    }
   }
   return(StAttrib)
 }
@@ -212,19 +237,25 @@ LoadStAttrib = function(file.csv, ItemAttrib) {
 #' @export
 
 LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
-  if (class(pool) != "item.pool")
+  if (class(pool) != "item.pool") {
     stop("pool must be of class \"item.pool\"")
+  }
+    
   # Read file ------------------------------------------------------------
   Constraints = read.csv(file.csv, header = TRUE)
   if ("ONOFF" %in% toupper(names(Constraints))) {
     ONOFF = TRUE
-    Constraints = read.csv(file.csv, header = TRUE, as.is = TRUE, colClasses=c("character","character","character","character",
-                                                                               "numeric","numeric", "character"), stringsAsFactors = FALSE)
+    Constraints = read.csv(file.csv, header = TRUE,
+                           as.is = TRUE, colClasses = c("character","character","character","character",
+                                                        "numeric","numeric", "character"),
+                           stringsAsFactors = FALSE)
     Constraints$ONOFF = toupper(Constraints$ONOFF)
   } else {
     ONOFF = FALSE
-    Constraints = read.csv(file.csv, header = TRUE, as.is = TRUE, colClasses=c("character","character","character","character",
-                                                                               "numeric","numeric"), stringsAsFactors = FALSE)
+    Constraints = read.csv(file.csv, header = TRUE,
+                           as.is = TRUE, colClasses = c("character","character","character","character",
+                                                        "numeric","numeric"),
+                           stringsAsFactors = FALSE)
   }
   # Validation -----------------------------------------------------------
   # Validation: Column names
@@ -251,20 +282,24 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
   ns = 0
   x = numeric(ni)
   nc = nrow(Constraints)
-  if (nrow(ItemAttrib) != ni)
+  if (nrow(ItemAttrib) != ni) {
     stop("nrow of ItemAttrib not equal to pool@ni")
-  if (!all(pool@ID == ItemAttrib$ID))
+  }
+  if (!all(pool@ID == ItemAttrib$ID)) {
     stop("item IDs in pool and ItemAttrib not matching")
+  }    
   ListConstraints = vector(mode = "list", length = nc)
   ItemConstraints = which(Constraints$WHAT == "ITEM")
   StimulusConstraints = which(Constraints$WHAT %in% c("STIMULUS", "PASSAGE", "SET", "TESTLET"))
   ItemOrder     = ItemOrderBy     = NULL
   StimulusOrder = StimulusOrderBy = NULL
   if (length(StimulusConstraints) > 0) {
-    if (is.null(StAttrib))
+    if (is.null(StAttrib)) {
       stop("for stimulus-based, StAttrib must not be NULL")
-    if (!("STID" %in% names(ItemAttrib)))
+    }
+    if (!("STID" %in% names(ItemAttrib))) {
       stop("for stimulus-based, ItemAttrib must include \"STID\" ")
+    }      
     setBased = TRUE
     ID = c(ItemAttrib$ID, StAttrib$STID)
     ns = nrow(StAttrib)
@@ -296,7 +331,7 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
     item.index.by.stimulus = NULL
     stimulus.index.by.item = NULL
   } else {
-    stop("Constraints must include at least one \"ITEM\" under WHAT; for stimulus-based, LB/UB should be specified for each stimulus")
+    stop("Constraints must include at least one \"ITEM\" under WHAT; for stimulus-based, LB/UB should be specified for each stimulus.")
   }
   for (index in ItemConstraints) {
     ListConstraints[[index]] = new("constraint")
@@ -317,7 +352,7 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
           ListConstraints[[index]]@dir = "=="
           ListConstraints[[index]]@rhs = test.length.UB
         } else {
-          stop("LB and UB for ITEM NUMBER must be set equal")
+          stop("LB and UB for ITEM NUMBER must be set equal.")
         }
         if (setBased && !common.stimulus.length) {
           n.LB.eq.UB = sum(stimulus.length.LB == stimulus.length.UB)
@@ -518,17 +553,17 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
       ConstraintTypeIsValid = TRUE
       if (!ListConstraints[[index]]@suspend) {
         if (Constraints$CONDITION[index] %in% names(ItemAttrib)) {
-        if (any(is.na(ItemAttrib[[Constraints$CONDITION[index]]]))) {
-          stop(sprintf("CONSTRAINT %s: %s must not have a missing value", index, Constraints$CONDITION[index]))
-        }
-        ItemOrder = ItemAttrib[[Constraints$CONDITION[index]]]
-        ItemOrderBy = Constraints$CONDITION[index]
+          if (any(is.na(ItemAttrib[[Constraints$CONDITION[index]]]))) {
+            stop(sprintf("CONSTRAINT %s: %s must not have a missing value", index, Constraints$CONDITION[index]))
+          }
+          ItemOrder = ItemAttrib[[Constraints$CONDITION[index]]]
+          ItemOrderBy = Constraints$CONDITION[index]
         } else {
           stop(sprintf("CONSTRAINT %s is invalid: %s not found in ItemAttrib", index, Constraints$CONDITION[index]))
         }
       }
     }
-    if (!ConstraintTypeIsValid){
+    if (!ConstraintTypeIsValid) {
       stop(sprintf("CONSTRAINT %s, %s is not a valid constraint type", index, Constraints$TYPE[index]))
     }
     ListConstraints[[index]]@nc = nrow(ListConstraints[[index]]@mat)
@@ -698,17 +733,17 @@ LoadConstraints = function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
         ConstraintTypeIsValid = TRUE
         if (!ListConstraints[[index]]@suspend) {
           if (Constraints$CONDITION[index] %in% names(StAttrib)) {
-          if (any(is.na(StAttrib[[Constraints$CONDITION[index]]]))) {
-            stop(sprintf("CONSTRAINT %s: %s must not have a missing value", index, Constraints$CONDITION[index]))
-          }
-          StimulusOrder = StAttrib[[Constraints$CONDITION[index]]]
-          StimulusOrderBy = Constraints$CONDITION[index]
+            if (any(is.na(StAttrib[[Constraints$CONDITION[index]]]))) {
+              stop(sprintf("CONSTRAINT %s: %s must not have a missing value", index, Constraints$CONDITION[index]))
+            }
+            StimulusOrder = StAttrib[[Constraints$CONDITION[index]]]
+            StimulusOrderBy = Constraints$CONDITION[index]
           } else {
             stop(sprintf("CONSTRAINT %s is invalid: %s not found in StAttrib", index, Constraints$CONDITION[index]))
           }
         }
       }
-      if (!ConstraintTypeIsValid){
+      if (!ConstraintTypeIsValid) {
         stop(sprintf("CONSTRAINT %s, %s is not a valid constraint type", index, Constraints$TYPE[index]))
       }
       ListConstraints[[index]]@nc = nrow(ListConstraints[[index]]@mat)
