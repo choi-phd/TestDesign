@@ -25,5 +25,5 @@ MakeTest(object, theta = seq(-4, 4, 0.1), infoType = "FISHER",
 Generate a \code{\linkS4class{test}} object
 }
 \examples{
-test = MakeTest(itempool.science, seq(-3, 3, 1))
+test <- MakeTest(itempool.science, seq(-3, 3, 1))
 }
