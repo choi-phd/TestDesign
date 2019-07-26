@@ -34,18 +34,20 @@ Also, the following datasets are intended for illustrating expected data structu
 }
 \examples{
 \dontrun{
-write.csv(itempool.reading.raw, "itempool.reading.csv", row.names = F)
-itempool.reading = LoadItemPool("itempool.reading.csv")
+write.csv(itempool.reading.raw, "itempool.reading.csv", row.names = FALSE)
+itempool.reading <- LoadItemPool("itempool.reading.csv")
 
-write.csv(itemattrib.reading.raw, "itemattrib.reading.csv", row.names = F)
-itemattrib.reading = LoadItemAttrib("itemattrib.reading.csv", itempool.reading)
+write.csv(itemattrib.reading.raw, "itemattrib.reading.csv", row.names = FALSE)
+itemattrib.reading <- LoadItemAttrib("itemattrib.reading.csv", itempool.reading)
 
-write.csv(stimattrib.reading.raw, "stimattrib.reading.csv", row.names = F)
-stimattrib.reading = LoadStAttrib("stimattrib.reading.csv", itemattrib.reading)
+write.csv(stimattrib.reading.raw, "stimattrib.reading.csv", row.names = FALSE)
+stimattrib.reading <- LoadStAttrib("stimattrib.reading.csv", itemattrib.reading)
 
-write.csv(constraints.reading.raw, "constraints.reading.csv", row.names = F)
-constraints.reading = LoadConstraints("constraints.reading.csv",
-    itempool.reading, itemattrib.reading, stimattrib.reading)
+write.csv(constraints.reading.raw, "constraints.reading.csv", row.names = FALSE)
+constraints.reading <- LoadConstraints(
+  "constraints.reading.csv",
+  itempool.reading, itemattrib.reading, stimattrib.reading
+)
 }
 }
 \keyword{datasets}

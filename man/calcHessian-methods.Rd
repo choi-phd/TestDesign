@@ -63,9 +63,9 @@ item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
 h.item.4 = calcHessian(item.4, seq(-3, 3, 1), 0)
 item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 h.item.5 = calcHessian(item.5, seq(-3, 3, 1), 0)
-item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
+item.6 = new("item.gr", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
 h.item.6 = calcHessian(item.6, seq(-3, 3, 1), 0)
-h.itempool = calcHessian(itempool.science, seq(-3, 3, 1), 0)
+h.itempool <- calcHessian(itempool.science, seq(-3, 3, 1), 0)
 }
 \references{
 {

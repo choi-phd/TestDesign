@@ -53,9 +53,9 @@ item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
 prob.item.4 = calcProb(item.4, seq(-3, 3, 1))
 item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 prob.item.5 = calcProb(item.5, seq(-3, 3, 1))
-item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
+item.6 = new("item.gr", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
 prob.item.6 = calcProb(item.6, seq(-3, 3, 1))
-prob.itempool = calcProb(itempool.science, seq(-3, 3, 1))
+prob.itempool <- calcProb(itempool.science, seq(-3, 3, 1))
 }
 \references{
 {

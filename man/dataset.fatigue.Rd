@@ -34,18 +34,20 @@ Also, the following datasets are intended for illustrating expected data structu
 }
 \examples{
 \dontrun{
-write.csv(itempool.fatigue.raw, "itempool.fatigue.csv", row.names = F)
-itempool.fatigue = LoadItemPool("itempool.fatigue.csv")
+write.csv(itempool.fatigue.raw, "itempool.fatigue.csv", row.names = FALSE)
+itempool.fatigue <- LoadItemPool("itempool.fatigue.csv")
 
-write.csv(itemattrib.fatigue, "itemattrib.fatigue.csv", row.names = F)
-itemattrib.fatigue = LoadItemAttrib("itemattrib.fatigue.csv", itempool.fatigue)
+write.csv(itemattrib.fatigue, "itemattrib.fatigue.csv", row.names = FALSE)
+itemattrib.fatigue <- LoadItemAttrib("itemattrib.fatigue.csv", itempool.fatigue)
 
-write.csv(constraints.fatigue.raw, "constraints.fatigue.csv", row.names = F)
-constraints.fatigue = LoadConstraints("constraints.fatigue.csv",
-          itempool.fatigue, itemattrib.fatigue)
+write.csv(constraints.fatigue.raw, "constraints.fatigue.csv", row.names = FALSE)
+constraints.fatigue <- LoadConstraints(
+  "constraints.fatigue.csv",
+  itempool.fatigue, itemattrib.fatigue
+)
 
-write.csv(itemcontent.fatigue.raw, "itemcontent.fatigue.csv", row.names = F)
-write.table(resp.fatigue.raw, "resp.fatigue.csv", row.names = F, col.names = F, sep = ",")
+write.csv(itemcontent.fatigue.raw, "itemcontent.fatigue.csv", row.names = FALSE)
+write.table(resp.fatigue.raw, "resp.fatigue.csv", row.names = FALSE, col.names = FALSE, sep = ",")
 }
 }
 \keyword{datasets}

@@ -63,9 +63,9 @@ item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
 j.item.4 = calcJacobian(item.4, seq(-3, 3, 1), 0)
 item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 j.item.5 = calcJacobian(item.5, seq(-3, 3, 1), 0)
-item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
+item.6 = new("item.gr", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
 j.item.6 = calcJacobian(item.6, seq(-3, 3, 1), 0)
-j.itempool = calcJacobian(itempool.science, seq(-3, 3, 1), 0)
+j.itempool <- calcJacobian(itempool.science, seq(-3, 3, 1), 0)
 }
 \references{
 {

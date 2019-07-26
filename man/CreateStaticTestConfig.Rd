@@ -3,10 +3,10 @@
 \docType{class}
 \name{ATA.config-class}
 \alias{ATA.config-class}
-\alias{config.ATA}
-\title{config.ATA}
+\alias{CreateStaticTestConfig}
+\title{CreateStaticTestConfig}
 \usage{
-config.ATA(itemSelection = NULL, MIP = NULL)
+CreateStaticTestConfig(itemSelection = NULL, MIP = NULL)
 }
 \arguments{
 \item{itemSelection}{A list containing item selection criteria. This should have the following entries:
@@ -31,20 +31,32 @@ config.ATA(itemSelection = NULL, MIP = NULL)
 Create an \code{\linkS4class{ATA.config}} object for Automated Test Assembly (ATA).
 }
 \examples{
-conf.1 = config.ATA(list(method = "MAXINFO",
-                         infoType = "FISHER",
-                         targetLocation = c(-1, 0, 1),
-                         targetWeight   = c( 1, 1, 1)))
+conf.1 <- CreateStaticTestConfig(
+  list(
+    method = "MAXINFO",
+    infoType = "FISHER",
+    targetLocation = c(-1, 0, 1),
+    targetWeight = c(1, 1, 1)
+  )
+)
 
-conf.2 = config.ATA(list(method = "TIF",
-                         infoType = "FISHER",
-                         targetLocation = c(-1, 0, 1),
-                         targetWeight   = c( 1, 1, 1),
-                         targetValue    = c( 8,10,12)))
+conf.2 <- CreateStaticTestConfig(
+  list(
+    method = "TIF",
+    infoType = "FISHER",
+    targetLocation = c(-1, 0, 1),
+    targetWeight = c(1, 1, 1),
+    targetValue = c(8, 10, 12)
+  )
+)
 
-conf.3 = config.ATA(list(method = "TCC",
-                         infoType = "FISHER",
-                         targetLocation = c(-1, 0, 1),
-                         targetWeight   = c( 1, 1, 1),
-                         targetValue    = c(10,15,20)))
+conf.3 <- CreateStaticTestConfig(
+  list(
+    method = "TCC",
+    infoType = "FISHER",
+    targetLocation = c(-1, 0, 1),
+    targetWeight = c(1, 1, 1),
+    targetValue = c(10, 15, 20)
+  )
+)
 }
