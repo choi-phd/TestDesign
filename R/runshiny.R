@@ -28,7 +28,7 @@ OAT <- function() {
     tmp <- c(tmp, "'DT'")
   }
 
-  if (!is.null(tmp)){
+  if (!is.null(tmp)) {
     tmp <- paste(tmp, collapse = ", ")
     message("Shiny application requires additional packages.")
     message("Run the following code to install:")
@@ -43,6 +43,6 @@ OAT <- function() {
 #' @export
 #' @rdname OAT
 
-app = function() {
+app <- function() {
   OAT()
 }

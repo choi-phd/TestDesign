@@ -30,8 +30,10 @@
 #' itemattrib.science <- LoadItemAttrib("itemattrib.science.csv", itempool.science)
 #'
 #' write.csv(constraints.science.raw, "constraints.science.csv", row.names = FALSE)
-#' constraints.science <- LoadConstraints("constraints.science.csv",
-#'     itempool.science, itemattrib.science)
+#' constraints.science <- LoadConstraints(
+#'   "constraints.science.csv",
+#'   itempool.science, itemattrib.science
+#' )
 #' }
 NULL
 
@@ -72,8 +74,10 @@ NULL
 #' stimattrib.reading <- LoadStAttrib("stimattrib.reading.csv", itemattrib.reading)
 #'
 #' write.csv(constraints.reading.raw, "constraints.reading.csv", row.names = FALSE)
-#' constraints.reading <- LoadConstraints("constraints.reading.csv",
-#'     itempool.reading, itemattrib.reading, stimattrib.reading)
+#' constraints.reading <- LoadConstraints(
+#'   "constraints.reading.csv",
+#'   itempool.reading, itemattrib.reading, stimattrib.reading
+#' )
 #' }
 NULL
 
@@ -111,8 +115,10 @@ NULL
 #' itemattrib.fatigue <- LoadItemAttrib("itemattrib.fatigue.csv", itempool.fatigue)
 #'
 #' write.csv(constraints.fatigue.raw, "constraints.fatigue.csv", row.names = FALSE)
-#' constraints.fatigue <- LoadConstraints("constraints.fatigue.csv",
-#'           itempool.fatigue, itemattrib.fatigue)
+#' constraints.fatigue <- LoadConstraints(
+#'   "constraints.fatigue.csv",
+#'   itempool.fatigue, itemattrib.fatigue
+#' )
 #'
 #' write.csv(itemcontent.fatigue.raw, "itemcontent.fatigue.csv", row.names = FALSE)
 #' write.table(resp.fatigue.raw, "resp.fatigue.csv", row.names = FALSE, col.names = FALSE, sep = ",")

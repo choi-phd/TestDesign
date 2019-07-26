@@ -18,7 +18,7 @@ An S4 class to represent a graded response item.
 }}
 
 \examples{
-item.6 = new("item.gr", slope = 1.0, category = c(-2.0, -1.0, 0, 1.0, 2.0), ncat = 6)
+item.6 <- new("item.gr", slope = 1.0, category = c(-2.0, -1.0, 0, 1.0, 2.0), ncat = 6)
 }
 \references{
 {

@@ -18,7 +18,7 @@ An S4 class to represent a 3PL item.
 }}
 
 \examples{
-item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+item.3 <- new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 }
 \references{
 {
