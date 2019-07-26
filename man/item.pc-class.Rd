@@ -16,7 +16,7 @@ An S4 class to represent a partial credit item.
 }}
 
 \examples{
-item.4 = new("item.pc", threshold = c(-0.5, 0.5), ncat = 3)
+item.4 <- new("item.pc", threshold = c(-0.5, 0.5), ncat = 3)
 }
 \references{
 {

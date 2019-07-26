@@ -59,9 +59,9 @@ item.4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
 theta.item.4 = calcLocation(item.4)
 item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 theta.item.5 = calcLocation(item.5)
-item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
+item.6 = new("item.gr", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
 theta.item.6 = calcLocation(item.6)
-theta.itempool = calcLocation(itempool.science)
+theta.itempool <- calcLocation(itempool.science)
 }
 \references{
 {

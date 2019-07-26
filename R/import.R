@@ -17,24 +17,21 @@
 NULL
 
 #' @noRd
-.onAttach = function(libname, pkgname){
-
+.onAttach <- function(libname, pkgname) {
   packageStartupMessage(white(bold("  Solver packages:")))
   packageStartupMessage(" ")
 
-  solvernames = c("lpSolve", "Rsymphony", "gurobi", "Rglpk")
+  solvernames <- c("lpSolve", "Rsymphony", "gurobi", "Rglpk")
 
-  for (s in solvernames){
-    x = find.package(s, quiet = T)
-    if (length(x) > 0){
-      status = green("v")
-      v = packageVersion(s)
-
+  for (s in solvernames) {
+    x <- find.package(s, quiet = T)
+    if (length(x) > 0) {
+      status <- green("v")
+      v <- packageVersion(s)
     } else {
-      status = red("x")
-      v = ""
+      status <- red("x")
+      v <- ""
     }
-
     packageStartupMessage(status, " ", s, paste0(rep(" ", 10 - nchar(s)), collapse = ""), white(v))
   }
 }
