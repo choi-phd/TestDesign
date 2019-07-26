@@ -17,5 +17,5 @@ maxinfoplot(pool, constraints, theta = seq(-3, 3, 0.5))
 Draw a plot of maximum attainable information given the imposed constraints.
 }
 \examples{
-p = maxinfoplot(itempool.science, constraints.science)
+p <- maxinfoplot(itempool.science, constraints.science)
 }

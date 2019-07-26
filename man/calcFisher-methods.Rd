@@ -65,9 +65,9 @@ item.3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 info.item.3 = calcFisher(item.3, seq(-3, 3, 1))
 item.5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 info.item.5 = calcFisher(item.5, seq(-3, 3, 1))
-item.6 = new("item.gr", slope = 0.9, category = c(-1, 0 , 1), ncat = 4)
+item.6 = new("item.gr", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
 info.item.6 = calcFisher(item.6, seq(-3, 3, 1))
-info.itempool = calcFisher(itempool.science, seq(-3, 3, 1))
+info.itempool <- calcFisher(itempool.science, seq(-3, 3, 1))
 }
 \references{
 {

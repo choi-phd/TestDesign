@@ -14,7 +14,7 @@ An S4 class to represent a 1PL item.
 }}
 
 \examples{
-item.1 = new("item.1pl", difficulty = 0.5)
+item.1 <- new("item.1pl", difficulty = 0.5)
 }
 \references{
 {
