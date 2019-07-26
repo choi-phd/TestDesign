@@ -16,7 +16,7 @@ An S4 class to represent a 2PL item.
 }}
 
 \examples{
-item.2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
+item.2 <- new("item.2pl", slope = 1.0, difficulty = 0.5)
 }
 \references{
 {
