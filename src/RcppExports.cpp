@@ -611,15 +611,15 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// findSegment
-IntegerVector findSegment(NumericVector segment, NumericVector x);
-RcppExport SEXP _TestDesign_findSegment(SEXP segmentSEXP, SEXP xSEXP) {
+// find_segment
+IntegerVector find_segment(NumericVector segment, NumericVector x);
+RcppExport SEXP _TestDesign_find_segment(SEXP segmentSEXP, SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericVector >::type segment(segmentSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(findSegment(segment, x));
+    rcpp_result_gen = Rcpp::wrap(find_segment(segment, x));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -667,7 +667,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_TestDesign_theta_EB_single", (DL_FUNC) &_TestDesign_theta_EB_single, 9},
     {"_TestDesign_theta_FB", (DL_FUNC) &_TestDesign_theta_FB, 10},
     {"_TestDesign_theta_FB_single", (DL_FUNC) &_TestDesign_theta_FB_single, 10},
-    {"_TestDesign_findSegment", (DL_FUNC) &_TestDesign_findSegment, 2},
+    {"_TestDesign_find_segment", (DL_FUNC) &_TestDesign_find_segment, 2},
     {NULL, NULL, 0}
 };
 
