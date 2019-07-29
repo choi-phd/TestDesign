@@ -168,7 +168,7 @@ loadItemAttrib <- function(file, pool) {
   } else if (!all(pool@id == item_attrib$ID)) {
     item_attrib <- merge(data.frame(ID = pool@id), item_attrib, by = "ID")[, names(item_attrib)] # re-ordering cols in attrib
   }
-  item_attrib <- data.frame(cbind(index = 1:nrow(item_attrib), item_attrib))
+  item_attrib <- data.frame(cbind(INDEX = 1:nrow(item_attrib), item_attrib))
   if ("STID" %in% names(item_attrib)) {
     if (any(item_attrib$STID %in% c("", " ", "N/A"))) {
       item_attrib$STID[item_attrib$STID %in% c("", " ", "N/A")] <- NA
@@ -311,7 +311,7 @@ loadConstraints <- function(file, pool, item.attrib, st.attrib = NULL) {
       stop("for stimulus-based, item.attrib must include \"STID\" ")
     }
     set_based <- TRUE
-    ID <- c(item.attrib$ID, st.attrib$STID)
+    id <- c(item.attrib$ID, st.attrib$STID)
     ns <- nrow(st.attrib)
     nv <- ni + ns
     item_id_by_stimulus <- split(item.attrib$ID, as.factor(item.attrib$STID))
@@ -444,7 +444,7 @@ loadConstraints <- function(file, pool, item.attrib, st.attrib = NULL) {
           }
         }
       } else {
-        condition_met <- which(with(item.attrib, eval(parse(text = constraints$CONDITION[index]))))
+        condition_met <- which(with(item_attrib, eval(parse(text = constraints$CONDITION[index]))))
         if (length(condition_met) == 0) {
           stop(sprintf("constraint %s returned 0 items meeting CONDITION: %s", index, constraints$CONDITION[index]))
         }
