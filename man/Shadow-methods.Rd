@@ -7,10 +7,10 @@
 \title{Run computerized adaptive testing with generalized shadow-test approach}
 \usage{
 Shadow(object, config, true.theta = NULL, constraints = NULL,
-  prior = NULL, priorPar = NULL, data = NULL, session = NULL)
+  prior = NULL, prior.par = NULL, data = NULL, session = NULL)
 
 \S4method{Shadow}{item.pool}(object, config, true.theta = NULL,
-  constraints = NULL, prior = NULL, priorPar = NULL, data = NULL,
+  constraints = NULL, prior = NULL, prior.par = NULL, data = NULL,
   session = NULL)
 }
 \arguments{
@@ -24,7 +24,7 @@ Shadow(object, config, true.theta = NULL, constraints = NULL,
 
 \item{prior}{Numeric. A matrix or a vector containing priors.}
 
-\item{priorPar}{Numeric. A vector of parameters for prior distribution.}
+\item{prior.par}{Numeric. A vector of parameters for prior distribution.}
 
 \item{data}{Numeric. A matrix containing item response data.}
 

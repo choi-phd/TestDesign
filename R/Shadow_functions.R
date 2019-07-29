@@ -29,25 +29,25 @@ STA <- function(constraints, objective, solver = "Symphony", xmat = NULL, xdir =
     stop(sprintf("length of objective must be %s", constraints$nv))
   }
   if (!is.null(xmat) && !is.null(xdir) && !is.null(xrhs)) {
-    MAT <- rbind(constraints$MAT, xmat)
-    DIR <- c(constraints$DIR, xdir)
-    RHS <- c(constraints$RHS, xrhs)
+    mat <- rbind(constraints$mat, xmat)
+    dir <- c(constraints$dir, xdir)
+    rhs <- c(constraints$rhs, xrhs)
   } else {
-    MAT <- constraints$MAT
-    DIR <- constraints$DIR
-    RHS <- constraints$RHS
+    mat <- constraints$mat
+    dir <- constraints$dir
+    rhs <- constraints$rhs
   }
   solve_time <- proc.time()
   if (toupper(solver) == "SYMPHONY") {
-    MIP <- Rsymphony::Rsymphony_solve_LP(obj, MAT, DIR, RHS, max = maximize, types = "B", write_mps = mps, write_lp = lp, verbosity = verbosity, time_limit = time.limit, gap_limit = gap.limit, ...)
+    MIP <- Rsymphony::Rsymphony_solve_LP(obj, mat, dir, rhs, max = maximize, types = "B", write_mps = mps, write_lp = lp, verbosity = verbosity, time_limit = time.limit, gap_limit = gap.limit, ...)
     status <- MIP$status
     if (!names(status) %in% c("TM_OPTIMAL_SOLUTION_FOUND", "PREP_OPTIMAL_SOLUTION_FOUND")) {
       warning(sprintf("MIP solver returned non-zero status: %s", names(MIP$status)))
       return(list(status = status, MIP = NULL, selected = NULL))
     }
   } else if (toupper(solver) == "GUROBI") {
-    DIR[DIR == "=="] <- "="
-    invisible(capture.output(MIP <- gurobi::gurobi(list(obj = obj, modelsense = "max", rhs = RHS, sense = DIR, vtype = "B", A = MAT), params = NULL, env = NULL)))
+    dir[dir == "=="] <- "="
+    invisible(capture.output(MIP <- gurobi::gurobi(list(obj = obj, modelsense = "max", rhs = rhs, sense = dir, vtype = "B", A = mat), params = NULL, env = NULL)))
     status <- MIP$status
     if (MIP$status != "OPTIMAL") {
       warning(sprintf("MIP solver returned non-zero status: %s", MIP$status))
@@ -55,14 +55,14 @@ STA <- function(constraints, objective, solver = "Symphony", xmat = NULL, xdir =
     }
     MIP[["solution"]] <- MIP$x
   } else if (toupper(solver) == "GLPK") {
-    MIP <- Rglpk_solve_LP(obj, MAT, DIR, RHS, max = maximize, types = "B", control = list(verbose = ifelse(verbosity != -2, TRUE, FALSE), presolve = TRUE, tm_limit = time.limit))
+    MIP <- Rglpk_solve_LP(obj, mat, dir, rhs, max = maximize, types = "B", control = list(verbose = ifelse(verbosity != -2, TRUE, FALSE), presolve = TRUE, tm_limit = time.limit))
     status <- MIP$status
     if (MIP$status != 0) {
       warning(sprintf("MIP solver returned non-zero status: %s", MIP$status))
       return(list(status = status, MIP = NULL, selected = NULL))
     }
   } else if (toupper(solver) == "LPSOLVE") {
-    MIP <- lp(direction = ifelse(maximize, "max", "min"), obj, MAT, DIR, RHS, all.bin = TRUE, presolve = TRUE)
+    MIP <- lp(direction = ifelse(maximize, "max", "min"), obj, mat, dir, rhs, all.bin = TRUE, presolve = TRUE)
     status <- MIP$status
     if (MIP$status != 0) {
       warning(sprintf("MIP solver returned non-zero status: %s", MIP$status))
@@ -72,7 +72,7 @@ STA <- function(constraints, objective, solver = "Symphony", xmat = NULL, xdir =
     stop("solver must be Symphony, Gurobi, glpk, lpSolve")
   }
   solve_time <- (proc.time() - solve_time)["elapsed"]
-  if (!is.null(constraints$StimulusOrder)) {
+  if (!is.null(constraints$stimulusOrder)) {
     constraints$itemAttrib <- merge(constraints$itemAttrib, constraints$stAttrib[c("STINDEX", "STID", constraints$stimulusOrderBy)], by = "STID", all.x = TRUE, sort = FALSE)
   } else if (!is.null(constraints$stAttrib)) {
     constraints$itemAttrib <- merge(constraints$itemAttrib, constraints$stAttrib[c("STINDEX", "STID")], by = "STID", all.x = TRUE, sort = FALSE)
@@ -98,19 +98,19 @@ STA <- function(constraints, objective, solver = "Symphony", xmat = NULL, xdir =
       shadow_test <- merge(shadow_test, mean_info, by = "STID", all.x = TRUE, sort = FALSE)
     }
     if (!is.null(constraints$stimulusOrderBy) && !is.null(constraints$itemOrderBy)) {
-      shadow_test <- shadow_test[order(shadow_test[[constraints$stimulusOrderBy]], shadow_test[["meanInfo"]], shadow_test[["STID"]], shadow_test[[constraints$itemOrderBy]], shadow_test[["Info"]], decreasing = c(FALSE, TRUE, FALSE, FALSE, TRUE), method = "radix"), ]
+      shadow_test <- shadow_test[order(shadow_test[[constraints$stimulusOrderBy]], shadow_test[["meanInfo"]], shadow_test[["STID"]], shadow_test[[constraints$itemOrderBy]], shadow_test[["info"]], decreasing = c(FALSE, TRUE, FALSE, FALSE, TRUE), method = "radix"), ]
     } else if (!is.null(constraints$stimulusOrderBy)) {
-      shadow_test <- shadow_test[order(shadow_test[[constraints$stimulusOrderBy]], shadow_test[["meanInfo"]], shadow_test[["STID"]], shadow_test[["Info"]], decreasing = c(FALSE, TRUE, FALSE, TRUE), method = "radix"), ]
+      shadow_test <- shadow_test[order(shadow_test[[constraints$stimulusOrderBy]], shadow_test[["meanInfo"]], shadow_test[["STID"]], shadow_test[["info"]], decreasing = c(FALSE, TRUE, FALSE, TRUE), method = "radix"), ]
     } else if (!is.null(constraints$itemOrderBy)) {
-      shadow_test <- shadow_test[order(shadow_test[["meanInfo"]], shadow_test[["STID"]], shadow_test[[constraints$itemOrderBy]], shadow_test[["Info"]], decreasing = c(TRUE, FALSE, FALSE, TRUE), method = "radix"), ]
+      shadow_test <- shadow_test[order(shadow_test[["meanInfo"]], shadow_test[["STID"]], shadow_test[[constraints$itemOrderBy]], shadow_test[["info"]], decreasing = c(TRUE, FALSE, FALSE, TRUE), method = "radix"), ]
     } else {
-      shadow_test <- shadow_test[order(shadow_test[["meanInfo"]], shadow_test[["STID"]], shadow_test[["Info"]], decreasing = c(TRUE, FALSE, TRUE), method = "radix"), ]
+      shadow_test <- shadow_test[order(shadow_test[["meanInfo"]], shadow_test[["STID"]], shadow_test[["info"]], decreasing = c(TRUE, FALSE, TRUE), method = "radix"), ]
     }
   } else {
     if (!is.null(constraints$itemOrderBy)) {
-      shadow_test <- shadow_test[order(shadow_test[[constraints$itemOrderBy]], shadow_test[["Info"]], decreasing = c(FALSE, TRUE), method = "radix"), ]
+      shadow_test <- shadow_test[order(shadow_test[[constraints$itemOrderBy]], shadow_test[["info"]], decreasing = c(FALSE, TRUE), method = "radix"), ]
     } else {
-      shadow_test <- shadow_test[order(shadow_test[["Info"]], decreasing = TRUE), ]
+      shadow_test <- shadow_test[order(shadow_test[["info"]], decreasing = TRUE), ]
     }
   }
   obj_value <- sum(info)
@@ -205,9 +205,9 @@ setMethod(
     maxNI <- constraints$testLength
     ni <- constraints$ni
     par(mar = c(2, 3, 1, 1) + 0.1, mfrow = c(1, 1))
-    n.points <- sum(!is.na(object@administeredItemResp)) # this should be equal to constraints$testLength
-    item.id <- constraints$ItemAttrib$ID[object@administeredItemIndex]
-    item.sequence <- object@administeredItemIndex
+    n_points <- sum(!is.na(object@administeredItemResp)) # this should be equal to constraints$testLength
+    item_id <- constraints$ItemAttrib$ID[object@administeredItemIndex]
+    item_sequence <- object@administeredItemIndex
     responses <- object@administeredItemResp
     plot(c(0.5, maxNI + 0.5), c(0.5, ni + 0.5), type = "n", las = 1, xlim = c(0, maxNI), xaxt = "n", yaxt = "n", ylab = "")
     usr <- par("usr")
@@ -220,7 +220,7 @@ setMethod(
     text(maxNI / 2, mean(c(usr[4], ni)), paste0("Examinee ID: ", object@simuleeIndex), adj = c(0.5, 0.5), cex = 1)
     axis(1, at = 0:maxNI, tick = TRUE, labels = 0:maxNI, cex.axis = 0.7)
     text(0, seq(10, ni, 10), seq(10, ni, 10), adj = c(0.5, 0.5), cex = 0.7)
-    for (i in 1:n.points) {
+    for (i in 1:n_points) {
       for (j in 1:ni) {
         rect(i - 0.25, j - 0.25, i + 0.25, j + 0.25, border = "gray88", lwd = 0.3)
       }
@@ -230,64 +230,64 @@ setMethod(
     }
     if (constraints$setBased) {
       for (p in 1:constraints$ns) {
-        for (i in 1:n.points) {
+        for (i in 1:n_points) {
           rect(i - 0.35, min(constraints$itemIndexByStimulus[[p]]) - 0.5, i + 0.35, max(constraints$itemIndexByStimulus[[p]]) + 0.5, border = "gray88", lwd = 0.5)
         }
       }
     }
-    shadow.tests <- object@shadowTest
+    shadow_tests <- object@shadowTest
     if (constraints$setBased) {
-      item.table <- merge(constraints$ItemAttrib, constraints$StAttrib[c("STID", "STINDEX", "NITEM")], by = "STID", all.x = TRUE, sort = FALSE)
-      for (k in 1:n.points) {
-        items <- shadow.tests[[k]]
-        current.item <- object@administeredItemIndex[k]
-        passages <- unique(item.table$STINDEX[items])
-        current.passage <- item.table$STINDEX[current.item]
+      item_table <- merge(constraints$ItemAttrib, constraints$StAttrib[c("STID", "STINDEX", "NITEM")], by = "STID", all.x = TRUE, sort = FALSE)
+      for (k in 1:n_points) {
+        items <- shadow_tests[[k]]
+        current_item <- object@administeredItemIndex[k]
+        passages <- unique(item_table$STINDEX[items])
+        current_passage <- item_table$STINDEX[current_item]
         for (p in 1:length(passages)) {
-          sub.items <- constraints$itemIndexByStimulus[[passages[p]]]
-          if (passages[p] == current.passage) {
-            rect(k - 0.35, min(sub.items) - 0.5, k + 0.35, max(sub.items) + 0.5, border = "blue", col = "khaki", lwd = 0.5)
-            for (i in 1:length(sub.items)) {
-              if (sub.items[i] == current.item) {
+          sub_items <- constraints$itemIndexByStimulus[[passages[p]]]
+          if (passages[p] == current_passage) {
+            rect(k - 0.35, min(sub_items) - 0.5, k + 0.35, max(sub_items) + 0.5, border = "blue", col = "khaki", lwd = 0.5)
+            for (i in 1:length(sub_items)) {
+              if (sub_items[i] == current_item) {
                 if (responses[k] >= 1) {
-                  rect(k - 0.25, sub.items[i] - 0.25, k + 0.25, sub.items[i] + 0.25, border = "lime green", col = "lime green", lwd = 0.3)
+                  rect(k - 0.25, sub_items[i] - 0.25, k + 0.25, sub_items[i] + 0.25, border = "lime green", col = "lime green", lwd = 0.3)
                 } else if (responses[k] == 0) {
-                  rect(k - 0.25, sub.items[i] - 0.25, k + 0.25, sub.items[i] + 0.25, border = "red", col = "red", lwd = 0.3)
+                  rect(k - 0.25, sub_items[i] - 0.25, k + 0.25, sub_items[i] + 0.25, border = "red", col = "red", lwd = 0.3)
                 }
-              } else if (sub.items[i] %in% items) {
-                rect(k - 0.25, sub.items[i] - 0.25, k + 0.25, sub.items[i] + 0.25, border = "black", lwd = 0.3)
+              } else if (sub_items[i] %in% items) {
+                rect(k - 0.25, sub_items[i] - 0.25, k + 0.25, sub_items[i] + 0.25, border = "black", lwd = 0.3)
               } else {
-                rect(k - 0.25, sub.items[i] - 0.25, k + 0.25, sub.items[i] + 0.25, border = "white", lwd = 0.3)
+                rect(k - 0.25, sub_items[i] - 0.25, k + 0.25, sub_items[i] + 0.25, border = "white", lwd = 0.3)
               }
             }
           } else {
-            rect(k - 0.35, min(sub.items) - 0.5, k + 0.35, max(sub.items) + 0.5, border = "blue", col = "gray50", lwd = 0.5)
-            for (i in 1:length(sub.items)) {
-              if (sub.items[i] %in% items) {
-                rect(k - 0.25, sub.items[i] - 0.25, k + 0.25, sub.items[i] + 0.25, border = "black", lwd = 0.3)
+            rect(k - 0.35, min(sub_items) - 0.5, k + 0.35, max(sub_items) + 0.5, border = "blue", col = "gray50", lwd = 0.5)
+            for (i in 1:length(sub_items)) {
+              if (sub_items[i] %in% items) {
+                rect(k - 0.25, sub_items[i] - 0.25, k + 0.25, sub_items[i] + 0.25, border = "black", lwd = 0.3)
               } else {
-                rect(k - 0.25, sub.items[i] - 0.25, k + 0.25, sub.items[i] + 0.25, border = "gray88", lwd = 0.3)
+                rect(k - 0.25, sub_items[i] - 0.25, k + 0.25, sub_items[i] + 0.25, border = "gray88", lwd = 0.3)
               }
             }
           }
         }
       }
     } else {
-      for (k in 1:n.points) {
-        items <- shadow.tests[[k]]
-        current.item <- object@administeredItemIndex[k]
+      for (k in 1:n_points) {
+        items <- shadow_tests[[k]]
+        current_item <- object@administeredItemIndex[k]
         for (i in 1:length(items)) {
-          if (items[i] != current.item) {
+          if (items[i] != current_item) {
             rect(k - 0.25, items[i] - 0.25, k + 0.25, items[i] + 0.25, border = "black", lwd = 0.3)
           }
         }
       }
-      for (k in 1:n.points) {
-        items <- shadow.tests[[k]]
-        current.item <- object@administeredItemIndex[k]
+      for (k in 1:n_points) {
+        items <- shadow_tests[[k]]
+        current_item <- object@administeredItemIndex[k]
         for (i in 1:length(items)) {
-          if (items[i] == current.item) {
-            for (kk in k:n.points) {
+          if (items[i] == current_item) {
+            for (kk in k:n_points) {
               rect(kk - 0.25, items[i] - 0.25, kk + 0.25, items[i] + 0.25, border = "gray33", col = "gray33", lwd = 0.3)
             }
             if (responses[k] >= 1) {
@@ -1388,7 +1388,7 @@ makeItemPoolCluster <- function(pools, names = NULL) {
 #' @param true.theta Numeric. A vector of true theta values to be used in simulation.
 #' @param constraints A list representing optimization constraints. Use \code{\link{loadConstraints}} for this.
 #' @param prior Numeric. A matrix or a vector containing priors.
-#' @param priorPar Numeric. A vector of parameters for prior distribution.
+#' @param prior.par Numeric. A vector of parameters for prior distribution.
 #' @param data Numeric. A matrix containing item response data.
 #' @param session Used to communicate with a Shiny session.
 #'
@@ -1404,7 +1404,7 @@ makeItemPoolCluster <- function(pools, names = NULL) {
 
 setGeneric(
   name = "Shadow",
-  def = function(object, config, true.theta = NULL, constraints = NULL, prior = NULL, priorPar = NULL, data = NULL, session = NULL) {
+  def = function(object, config, true.theta = NULL, constraints = NULL, prior = NULL, prior.par = NULL, data = NULL, session = NULL) {
     standardGeneric("Shadow")
   }
 )
@@ -1415,7 +1415,7 @@ setGeneric(
 setMethod(
   f = "Shadow",
   signature = "item.pool",
-  definition = function(object, config, true.theta, constraints, prior, priorPar, data, session) {
+  definition = function(object, config, true.theta, constraints, prior, prior.par, data, session) {
     if (!validObject(config)) {
       stop("invalid configuration options specified")
     }
@@ -1485,33 +1485,33 @@ setMethod(
       maxSE <- config@stoppingCriterion$SeThreshold
     }
     if (!is.null(data)) {
-      Test <- makeTest(object, config@thetaGrid, info.type = "FISHER", true.theta = NULL)
+      test <- makeTest(object, config@thetaGrid, info.type = "FISHER", true.theta = NULL)
       data <- as.matrix(data)
       for (i in 1:ni) {
         invalidResp <- !(data[, i] %in% 0:(object@NCAT[i] - 1))
         data[invalidResp, i] <- NA
       }
-      Test@data <- data
+      test@data <- data
     } else if (!is.null(true.theta)) {
-      Test <- makeTest(object, config@thetaGrid, info.type = "FISHER", true.theta)
+      test <- makeTest(object, config@thetaGrid, info.type = "FISHER", true.theta)
     } else {
       stop("both data and true.theta cannot be NULL")
     }
-    maxInfo <- max(Test@Info)
+    maxInfo <- max(test@info)
     if (is.null(prior)) {
-      if (!is.null(priorPar)) {
-        if (is.vector(priorPar) && length(priorPar) == 2) {
-          posterior <- matrix(dnorm(config@thetaGrid, mean = priorPar[1], sd = priorPar[2]), nj, nq, byrow = TRUE)
-        } else if (is.matrix(priorPar) && all(dim(priorPar) == c(nj, 2))) {
+      if (!is.null(prior.par)) {
+        if (is.vector(prior.par) && length(prior.par) == 2) {
+          posterior <- matrix(dnorm(config@thetaGrid, mean = prior.par[1], sd = prior.par[2]), nj, nq, byrow = TRUE)
+        } else if (is.matrix(prior.par) && all(dim(prior.par) == c(nj, 2))) {
           posterior <- matrix(NA, nj, nq)
           for (j in 1:nj) {
-            posterior[j, ] <- dnorm(config@thetaGrid, mean = priorPar[j, 1], sd = priorPar[j, 2])
+            posterior[j, ] <- dnorm(config@thetaGrid, mean = prior.par[j, 1], sd = prior.par[j, 2])
           }
         } else {
-          stop("priorPar must be a vector of length 2, c(mean, sd), or a matrix of dim c(nj x 2)")
+          stop("prior.par must be a vector of length 2, c(mean, sd), or a matrix of dim c(nj x 2)")
         }
       } else if (toupper(config@interimTheta$priorDist) == "NORMAL") {
-        posterior <- matrix(dnorm(config@thetaGrid, mean = config@interimTheta$priorPar[1], sd = config@interimTheta$priorPar[2]), nj, nq, byrow = TRUE)
+        posterior <- matrix(dnorm(config@thetaGrid, mean = config@interimTheta$prior.par[1], sd = config@interimTheta$prior.par[2]), nj, nq, byrow = TRUE)
       } else if (toupper(config@interimTheta$priorDist) == "UNIFORM") {
         posterior <- matrix(1, nj, nq)
       } else {
@@ -1522,7 +1522,7 @@ setMethod(
     } else if (is.matrix(prior) && all(dim(prior) == c(nj, nq))) {
       posterior <- prior
     } else {
-      stop("misspecification for prior or priorPar")
+      stop("misspecification for prior or prior.par")
     }
     if (toupper(config@interimTheta$method) %in% c("EB", "FB")) {
       nSample <- config@MCMC$burnIn + config@MCMC$postBurnIn
@@ -1613,7 +1613,7 @@ setMethod(
     if (!is.null(config@itemSelection$fixedTheta)) {
       if (length(config@itemSelection$fixedTheta) == 1) {
         infoFixedTheta <- vector(mode = "list", length = nj)
-        infoFixedTheta[1:nj] <- Test@Info[which.min(abs(Test@theta - config@itemSelection$fixedTheta)), ]
+        infoFixedTheta[1:nj] <- test@info[which.min(abs(test@theta - config@itemSelection$fixedTheta)), ]
         config@itemSelection$fixedTheta <- rep(config@itemSelection$fixedTheta, nj)
         selectAtFixedTheta <- TRUE
       } else if (length(config@itemSelection$fixedTheta) == nj) {
@@ -1634,7 +1634,7 @@ setMethod(
       if (selectAtFixedTheta) {
         info <- infoFixedTheta[[j]]
       } else if (config@itemSelection$method == "MPWI") {
-        info <- as.vector(matrix(posterior[j, ], nrow = 1) %*% Test@Info)
+        info <- as.vector(matrix(posterior[j, ], nrow = 1) %*% test@info)
       } else if (config@itemSelection$method == "MFI") {
         info <- calc_info(currentTheta, object@ipar, object@NCAT, model)
       } else if (config@itemSelection$method == "EB") {
@@ -1757,14 +1757,14 @@ setMethod(
       if (config@interimTheta$method %in% c("EAP", "MLE")) {
         currentTheta <- initialTheta[j]
       } else if (toupper(config@interimTheta$method) %in% c("EB", "FB")) {
-        if (is.vector(priorPar) && length(priorPar) == 2) {
-          output@priorPar <- priorPar
-        } else if (is.matrix(priorPar) && all(dim(priorPar) == c(nj, 2))) {
-          output@priorPar <- priorPar[j, ]
+        if (is.vector(prior.par) && length(prior.par) == 2) {
+          output@prior.par <- prior.par
+        } else if (is.matrix(prior.par) && all(dim(prior.par) == c(nj, 2))) {
+          output@prior.par <- prior.par[j, ]
         } else {
-          output@priorPar <- config@interimTheta$priorPar
+          output@prior.par <- config@interimTheta$prior.par
         }
-        output@posteriorSample <- rnorm(nSample, mean = output@priorPar[1], sd = output@priorPar[2])
+        output@posteriorSample <- rnorm(nSample, mean = output@prior.par[1], sd = output@prior.par[2])
         output@posteriorSample <- output@posteriorSample[seq(from = config@MCMC$burnIn + 1, to = nSample, by = config@MCMC$thin)]
         currentTheta <- mean(output@posteriorSample)
         currentSE <- sd(output@posteriorSample) * config@MCMC$jumpFactor
@@ -1983,22 +1983,22 @@ setMethod(
             finishedStimulusItemCount <- c(finishedStimulusItemCount, sum(output@administeredStimulusIndex[1:(position - 1)] == selection$lastStimulusIndex))
           }
         }
-        output@administeredItemResp[position] <- Test@data[j, output@administeredItemIndex[position]]
+        output@administeredItemResp[position] <- test@data[j, output@administeredItemIndex[position]]
         itemsAdministered[j, output@administeredItemIndex[position]] <- TRUE
-        probResp <- Test@Prob[[output@administeredItemIndex[position]]][, output@administeredItemResp[position] + 1]
+        probResp <- test@Prob[[output@administeredItemIndex[position]]][, output@administeredItemResp[position] + 1]
         posterior[j, ] <- posterior[j, ] * probResp
         likelihood <- likelihood * probResp
         if (toupper(config@interimTheta$method) == "EAP") {
-          output@interimThetaEst[position] <- sum(posterior[j, ] * Test@theta) / sum(posterior[j, ])
-          output@interimSeEst[position] <- sqrt(sum(posterior[j, ] * (Test@theta - output@interimThetaEst[position])^2) / sum(posterior[j, ]))
+          output@interimThetaEst[position] <- sum(posterior[j, ] * test@theta) / sum(posterior[j, ])
+          output@interimSeEst[position] <- sqrt(sum(posterior[j, ] * (test@theta - output@interimThetaEst[position])^2) / sum(posterior[j, ]))
           if (toupper(config@interimTheta$priorDist) == "NORMAL" && config@interimTheta$shrinkageCorrection) {
             output@interimThetaEst[position] <- output@interimThetaEst[position] * (1 + output@interimSeEst[position]^2)
-            if (output@interimSeEst[position] < config@interimTheta$priorPar[2]) {
-              output@interimSeEst[position] <- 1 / sqrt(1 / output@interimSeEst[position]^2 - 1 / config@interimTheta$priorPar[2]^2)
+            if (output@interimSeEst[position] < config@interimTheta$prior.par[2]) {
+              output@interimSeEst[position] <- 1 / sqrt(1 / output@interimSeEst[position]^2 - 1 / config@interimTheta$prior.par[2]^2)
             }
           }
         } else if (toupper(config@interimTheta$method) == "MLE") {
-          interimEAP <- sum(posterior[j, ] * Test@theta) / sum(posterior[j, ])
+          interimEAP <- sum(posterior[j, ] * test@theta) / sum(posterior[j, ])
           interimMLE <- mle(object, output@administeredItemResp[1:position], start.theta = interimEAP, theta.range = config@interimTheta$boundML, max.iter = config@interimTheta$max.iter, crit = config@interimTheta$crit, select = output@administeredItemIndex[1:position])
           output@interimThetaEst[position] <- interimMLE$TH
           output@interimSeEst[position] <- interimMLE$SE
@@ -2044,7 +2044,7 @@ setMethod(
         output@finalSeEst <- output@interimSeEst[position]
       } else if (toupper(config@finalTheta$method == "EAP")) {
         if (toupper(config@finalTheta$priorDist) == "NORMAL") {
-          finalPrior <- dnorm(config@thetaGrid, mean = config@finalTheta$priorPar[1], sd = config@finalTheta$priorPar[2])
+          finalPrior <- dnorm(config@thetaGrid, mean = config@finalTheta$prior.par[1], sd = config@finalTheta$prior.par[2])
         } else if (toupper(config@finalTheta$priorDist) == "UNIFORM") {
           finalPrior <- rep(1, nq)
         } else {
@@ -2055,8 +2055,8 @@ setMethod(
         output@finalSeEst <- sqrt(sum(output@posterior * (config@thetaGrid - output@finalThetaEst)^2) / sum(output@posterior))
         if (toupper(config@finalTheta$priorDist) == "NORMAL" && config@finalTheta$shrinkageCorrection) {
           output@finalThetaEst <- output@finalThetaEst * (1 + output@finalSeEst^2)
-          if (output@finalSeEst < config@finalTheta$priorPar[2]) {
-            output@finalSeEst <- 1 / sqrt(1 / output@finalSeEst^2 - 1 / config@finalTheta$priorPar[2]^2)
+          if (output@finalSeEst < config@finalTheta$prior.par[2]) {
+            output@finalSeEst <- 1 / sqrt(1 / output@finalSeEst^2 - 1 / config@finalTheta$prior.par[2]^2)
           }
         }
       } else if (toupper(config@finalTheta$method) == "MLE") {
@@ -2064,11 +2064,11 @@ setMethod(
         output@finalThetaEst <- finalMLE$TH
         output@finalSeEst <- finalMLE$SE
       } else if (toupper(config@finalTheta$method) %in% c("EB", "FB")) {
-        if (toupper(config@interimTheta$method) == toupper(config@finalTheta$method) && identical(config@interimTheta$priorPar, config@finalTheta$priorPar)) {
+        if (toupper(config@interimTheta$method) == toupper(config@finalTheta$method) && identical(config@interimTheta$prior.par, config@finalTheta$prior.par)) {
           output@finalThetaEst <- output@interimThetaEst[position]
           output@finalSeEst <- output@interimSeEst[position]
         } else {
-          output@posteriorSample <- rnorm(nSample, mean = output@priorPar[1], sd = output@priorPar[2])
+          output@posteriorSample <- rnorm(nSample, mean = output@prior.par[1], sd = output@prior.par[2])
           output@posteriorSample <- output@posteriorSample[seq(from = config@MCMC$burnIn + 1, to = nSample, by = config@MCMC$thin)]
           currentTheta <- mean(output@posteriorSample)
           currentSE <- sd(output@posteriorSample) * config@MCMC$jumpFactor
@@ -2431,7 +2431,7 @@ setMethod(
     } else {
       freqInfeasible <- NULL
     }
-    return(list(output = outputList, pool = object, config = config, trueTheta = true.theta, constraints = constraints, prior = prior, priorPar = priorPar, data = Test@data, finalThetaEst = finalThetaEst, finalSeEst = finalSeEst, exposure_rate = exposure_rate, usageMatrix = usageMatrix, trueSegmentCount = trueSegmentCount, estSegmentCount = estSegmentCount, eligibilityStats = eligibilityStats, checkEligibilityStats = checkEligibilityStats, noFadingEligibilityStats = noFadingEligibilityStats, freqInfeasible = freqInfeasible))
+    return(list(output = outputList, pool = object, config = config, trueTheta = true.theta, constraints = constraints, prior = prior, prior.par = prior.par, data = test@data, finalThetaEst = finalThetaEst, finalSeEst = finalSeEst, exposure_rate = exposure_rate, usageMatrix = usageMatrix, trueSegmentCount = trueSegmentCount, estSegmentCount = estSegmentCount, eligibilityStats = eligibilityStats, checkEligibilityStats = checkEligibilityStats, noFadingEligibilityStats = noFadingEligibilityStats, freqInfeasible = freqInfeasible))
   }
 )
 
