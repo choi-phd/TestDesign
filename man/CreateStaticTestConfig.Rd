@@ -3,10 +3,10 @@
 \docType{class}
 \name{ATA.config-class}
 \alias{ATA.config-class}
-\alias{CreateStaticTestConfig}
-\title{CreateStaticTestConfig}
+\alias{createStaticTestConfig}
+\title{createStaticTestConfig}
 \usage{
-CreateStaticTestConfig(itemSelection = NULL, MIP = NULL)
+createStaticTestConfig(itemSelection = NULL, MIP = NULL)
 }
 \arguments{
 \item{itemSelection}{A list containing item selection criteria. This should have the following entries:
@@ -31,7 +31,7 @@ CreateStaticTestConfig(itemSelection = NULL, MIP = NULL)
 Create an \code{\linkS4class{ATA.config}} object for Automated Test Assembly (ATA).
 }
 \examples{
-conf.1 <- CreateStaticTestConfig(
+conf.1 <- createStaticTestConfig(
   list(
     method = "MAXINFO",
     infoType = "FISHER",
@@ -40,7 +40,7 @@ conf.1 <- CreateStaticTestConfig(
   )
 )
 
-conf.2 <- CreateStaticTestConfig(
+conf.2 <- createStaticTestConfig(
   list(
     method = "TIF",
     infoType = "FISHER",
@@ -50,7 +50,7 @@ conf.2 <- CreateStaticTestConfig(
   )
 )
 
-conf.3 <- CreateStaticTestConfig(
+conf.3 <- createStaticTestConfig(
   list(
     method = "TCC",
     infoType = "FISHER",

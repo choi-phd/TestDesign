@@ -21,9 +21,9 @@ NULL
   packageStartupMessage(white(bold("  Solver packages:")))
   packageStartupMessage(" ")
 
-  solvernames <- c("lpSolve", "Rsymphony", "gurobi", "Rglpk")
+  solver_names <- c("lpSolve", "Rsymphony", "gurobi", "Rglpk")
 
-  for (s in solvernames) {
+  for (s in solver_names) {
     x <- find.package(s, quiet = T)
     if (length(x) > 0) {
       status <- green("v")
@@ -35,3 +35,10 @@ NULL
     packageStartupMessage(status, " ", s, paste0(rep(" ", 10 - nchar(s)), collapse = ""), white(v))
   }
 }
+
+#' Naming conventions
+#' Use period.separators for arguments.
+#' Use lowerCamelCase for S3 and S4 function names.
+#' Use lowerCamelCase for variable names and slot names.
+#' Use period.separators for class names.
+#' Use underscore_separators inside functions, including returning objects.

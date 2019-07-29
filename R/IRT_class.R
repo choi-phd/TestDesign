@@ -1,40 +1,40 @@
 #' @noRd
-validity_slope <- function(object) {
+validateSlope <- function(object) {
   if (object@slope <= 0) {
     return("A non-positive value for the slope parameter is not permissible.")
   }
 }
 
 #' @noRd
-validity_guessing <- function(object) {
+validateGuessing <- function(object) {
   if (object@guessing < 0 || object@guessing >= 1.0) {
     return("The supplied value for the guessing parameter is out of bounds. The value needs to be in between 0.0 and 1.0.")
   }
 }
 
 #' @noRd
-validity_ncat <- function(object) {
+validateNcat <- function(object) {
   if (length(object@ncat) == 0) {
     return("Number of categories is missing.")
   }
 }
 
 #' @noRd
-validity_nthr <- function(object) {
+validateNthr <- function(object) {
   if (object@ncat != length(object@threshold) + 1) {
     return("The number of thresholds needs to be equal to ncat - 1.")
   }
 }
 
 #' @noRd
-validity_category <- function(object) {
+validateCategory <- function(object) {
   if (object@ncat != length(object@category) + 1) {
     return("The number of category values does not match ncat.")
   }
 }
 
 #' @noRd
-validity_order <- function(object) {
+validateOrder <- function(object) {
   if (is.unsorted(object@category)) {
     return("The category values are not in an ascending order.")
   }
@@ -92,7 +92,7 @@ setClass("item.2pl",
   ),
   validity = function(object) {
     errors <- character()
-    errors <- c(errors, validity_slope(object))
+    errors <- c(errors, validateSlope(object))
     if (length(errors) == 0) {
       return(TRUE)
     } else {
@@ -135,8 +135,8 @@ setClass("item.3pl",
   ),
   validity = function(object) {
     errors <- character()
-    errors <- c(errors, validity_slope(object))
-    errors <- c(errors, validity_guessing(object))
+    errors <- c(errors, validateSlope(object))
+    errors <- c(errors, validateGuessing(object))
     if (length(errors) == 0) {
       return(TRUE)
     } else {
@@ -177,8 +177,8 @@ setClass("item.pc",
   ),
   validity = function(object) {
     errors <- character()
-    errors <- c(errors, validity_ncat(object))
-    errors <- c(errors, validity_nthr(object))
+    errors <- c(errors, validateNcat(object))
+    errors <- c(errors, validateNthr(object))
     if (length(errors) == 0) {
       return(TRUE)
     } else {
@@ -221,8 +221,8 @@ setClass("item.gpc",
   ),
   validity = function(object) {
     errors <- character()
-    errors <- c(errors, validity_ncat(object))
-    errors <- c(errors, validity_slope(object))
+    errors <- c(errors, validateNcat(object))
+    errors <- c(errors, validateSlope(object))
     if (length(errors) == 0) {
       return(TRUE)
     } else {
@@ -266,10 +266,10 @@ setClass("item.gr",
   ),
   validity = function(object) {
     errors <- character()
-    errors <- c(errors, validity_ncat(object))
-    errors <- c(errors, validity_slope(object))
-    errors <- c(errors, validity_category(object))
-    errors <- c(errors, validity_order(object))
+    errors <- c(errors, validateNcat(object))
+    errors <- c(errors, validateSlope(object))
+    errors <- c(errors, validateCategory(object))
+    errors <- c(errors, validateOrder(object))
     if (length(errors) == 0) {
       return(TRUE)
     } else {
@@ -296,7 +296,7 @@ setMethod("show", "item.gr", function(object) {
 #' @slot ni Numeric. The number of items in the item pool.
 #' @slot maxCat Numeric. The maximum number of response categories across all items.
 #' @slot index Numeric. A vector of item indices.
-#' @slot ID Character. A vector of item IDs.
+#' @slot id Character. A vector of item ids.
 #' @slot model Numeric. A vector of item model codes (1: item.1pl, 2: item.2pl, 3: item.3pl, 4: item.pc, 5: item.gpc, 6: item.gr).
 #' @slot NCAT Numeric. A vector of the number of response categories for each item.
 #' @slot parms A list of item parameters in the pool.
@@ -306,7 +306,7 @@ setClass("item.pool",
     ni = "numeric",
     maxCat = "numeric",
     index = "numeric",
-    ID = "character",
+    id = "character",
     model = "character",
     NCAT = "numeric",
     parms = "list",
@@ -317,7 +317,7 @@ setClass("item.pool",
     ni = numeric(0),
     maxCat = numeric(0),
     index = numeric(0),
-    ID = character(0),
+    id = character(0),
     model = character(0),
     NCAT = numeric(0),
     parms = list(0),
@@ -325,7 +325,7 @@ setClass("item.pool",
     SEs = matrix(0)
   ),
   validity = function(object) {
-    if (length(unique(object@ID)) != object@ni) stop("entries in @ID are not unique.")
+    if (length(unique(object@id)) != object@ni) stop("entries in @id are not unique.")
     return(TRUE)
   }
 )
@@ -338,7 +338,7 @@ setMethod("show", "item.pool", function(object) {
   if (length(object@ni) > 0) {
     cat("@ni    :", object@ni, "\n")
     cat("@maxCat :", object@maxCat, "\n\n")
-    print(data.frame(index = object@index, ID = object@ID, model = object@model, NCAT = object@NCAT))
+    print(data.frame(index = object@index, id = object@id, model = object@model, NCAT = object@NCAT))
     for (i in 1:object@ni) {
       cat("\n", paste0(object@index[i], ". "))
       show(object@parms[[i]])

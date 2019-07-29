@@ -10,7 +10,7 @@ An S4 class to represent a set of constraints.
 \section{Slots}{
 
 \describe{
-\item{\code{CONSTRAINT}}{Character. The index of the constraint set.}
+\item{\code{constraint}}{Character. The index of the constraint set.}
 
 \item{\code{mat}}{A matrix representing the left-hand side weights. Has nc rows.}
 

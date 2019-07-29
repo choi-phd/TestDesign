@@ -15,6 +15,6 @@ subsetTest(test, select = NULL)
 Create a subset of a test object.
 }
 \examples{
-test <- MakeTest(itempool.science, seq(-3, 3, 1))
-sub.test <- subsetTest(test, 1:100)
+test <- makeTest(itempool.science, seq(-3, 3, 1))
+subtest <- subsetTest(test, 1:100)
 }

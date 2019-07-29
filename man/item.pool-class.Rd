@@ -16,7 +16,7 @@ An S4 class to represent an item pool.
 
 \item{\code{index}}{Numeric. A vector of item indices.}
 
-\item{\code{ID}}{Character. A vector of item IDs.}
+\item{\code{id}}{Character. A vector of item ids.}
 
 \item{\code{model}}{Numeric. A vector of item model codes (1: item.1pl, 2: item.2pl, 3: item.3pl, 4: item.pc, 5: item.gpc, 6: item.gr).}
 

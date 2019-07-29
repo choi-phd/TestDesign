@@ -6,8 +6,8 @@
 #' @aliases app
 #' @rdname OAT
 OAT <- function() {
-  appDir <- system.file("shiny", package = "TestDesign")
-  if (appDir == "") {
+  app_dir <- system.file("shiny", package = "TestDesign")
+  if (app_dir == "") {
     stop("Could not find the application directory. Try re-installing `TestDesign`.", call. = FALSE)
   }
 
@@ -36,7 +36,7 @@ OAT <- function() {
     tmp <- paste0("install.packages(", tmp, ")")
     message(tmp)
   } else {
-    shiny::runApp(appDir, display.mode = "normal")
+    shiny::runApp(app_dir, display.mode = "normal")
   }
 }
 

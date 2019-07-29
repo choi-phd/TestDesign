@@ -14,12 +14,12 @@ An S4 class to represent a test.
 
 \item{\code{theta}}{A theta grid.}
 
-\item{\code{Prob}}{A list of item response probabilities.}
+\item{\code{prob}}{A list of item response probabilities.}
 
-\item{\code{Info}}{A matrix of item information values.}
+\item{\code{info}}{A matrix of item information values.}
 
 \item{\code{trueTheta}}{An optional vector of true theta values.}
 
-\item{\code{Data}}{An optional matrix of item responses.}
+\item{\code{data}}{An optional matrix of item responses.}
 }}
 
