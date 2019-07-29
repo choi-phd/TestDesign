@@ -163,10 +163,10 @@ loadItemAttrib <- function(file, pool) {
   }
   if (length(unique(item_attrib$ID)) != nrow(item_attrib)) {
     stop("duplicate ID entries were found in item attrib")
-  } else if (!all(sort(pool@ID) == sort(item_attrib$ID))) {
-    stop("ID entries in item attrib do not match pool@ID")
-  } else if (!all(pool@ID == item_attrib$ID)) {
-    item_attrib <- merge(data.frame(ID = pool@ID), item_attrib, by = "ID")[, names(item_attrib)] # re-ordering cols in attrib
+  } else if (!all(sort(pool@id) == sort(item_attrib$ID))) {
+    stop("ID entries in item attrib do not match pool@id")
+  } else if (!all(pool@id == item_attrib$ID)) {
+    item_attrib <- merge(data.frame(ID = pool@id), item_attrib, by = "ID")[, names(item_attrib)] # re-ordering cols in attrib
   }
   item_attrib <- data.frame(cbind(index = 1:nrow(item_attrib), item_attrib))
   if ("STID" %in% names(item_attrib)) {
@@ -295,7 +295,7 @@ loadConstraints <- function(file, pool, item.attrib, st.attrib = NULL) {
   if (nrow(item.attrib) != ni) {
     stop("nrow of item.attrib not equal to pool@ni")
   }
-  if (!all(pool@ID == item.attrib$ID)) {
+  if (!all(pool@id == item.attrib$ID)) {
     stop("item IDs in pool and item.attrib not matching")
   }
   list_constraints <- vector(mode = "list", length = nc)
@@ -345,7 +345,7 @@ loadConstraints <- function(file, pool, item.attrib, st.attrib = NULL) {
   }
   for (index in item_constraints) {
     list_constraints[[index]] <- new("constraint")
-    list_constraints[[index]]@CONSTRAINT <- constraints$CONSTRAINT[index]
+    list_constraints[[index]]@constraint <- constraints$CONSTRAINT[index]
     constraint_type_is_valid <- FALSE
     list_constraints[[index]]@suspend <- constraints$ONOFF[index] == "OFF"
     if (constraints$TYPE[index] %in% c("NUMBER", "COUNT")) {
@@ -354,7 +354,7 @@ loadConstraints <- function(file, pool, item.attrib, st.attrib = NULL) {
         test_length_LB <- round(constraints$LB[index])
         test_length_UB <- round(constraints$UB[index])
         if (any(c(test_length_LB, test_length_UB) < 0) || test_length_LB > test_length_UB) {
-          stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
+          stop(sprintf("constraint %s has invalid LB/UB", index))
         } else if (test_length_LB == test_length_UB) {
           test_length <- test_length_UB
           list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
@@ -399,7 +399,7 @@ loadConstraints <- function(file, pool, item.attrib, st.attrib = NULL) {
         stimulus_length_LB <- round(constraints$LB[index])
         stimulus_length_UB <- round(constraints$UB[index])
         if (any(c(stimulus_length_LB, stimulus_length_UB) < 0) || stimulus_length_LB > stimulus_length_UB) {
-          stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
+          stop(sprintf("constraint %s has invalid LB/UB", index))
         } else if (stimulus_length_LB == stimulus_length_UB) {
           list_constraints[[index]]@mat <- matrix(0, nrow = ns, ncol = nv)
           list_constraints[[index]]@dir <- rep("==", ns)
@@ -422,10 +422,10 @@ loadConstraints <- function(file, pool, item.attrib, st.attrib = NULL) {
         condition <- unique(item.attrib[constraints$CONDITION[index]])
         condition <- condition[!is.na(condition)]
         if (length(condition) == 0) {
-          stop(sprintf("CONSTRAINT %s returned 0 items meeting CONDITION: %s", index, constraints$CONDITION[index]))
+          stop(sprintf("constraint %s returned 0 items meeting CONDITION: %s", index, constraints$CONDITION[index]))
         }
         if (any(c(constraints$LB[index], constraints$UB[index]) < 0) || constraints$LB[index] > constraints$UB[index]) {
-          stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
+          stop(sprintf("constraint %s has invalid LB/UB", index))
         } else if (constraints$LB[index] == constraints$UB[index]) {
           list_constraints[[index]]@mat <- matrix(0, nrow = length(condition), ncol = nv)
           list_constraints[[index]]@dir <- rep("==", length(condition))
@@ -446,10 +446,10 @@ loadConstraints <- function(file, pool, item.attrib, st.attrib = NULL) {
       } else {
         condition_met <- which(with(item.attrib, eval(parse(text = constraints$CONDITION[index]))))
         if (length(condition_met) == 0) {
-          stop(sprintf("CONSTRAINT %s returned 0 items meeting CONDITION: %s", index, constraints$CONDITION[index]))
+          stop(sprintf("constraint %s returned 0 items meeting CONDITION: %s", index, constraints$CONDITION[index]))
         }
         if (any(c(constraints$LB[index], constraints$UB[index]) < 0) || constraints$LB[index] > constraints$UB[index]) {
-          stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
+          stop(sprintf("constraint %s has invalid LB/UB", index))
         } else if (constraints$LB[index] == constraints$UB[index]) {
           list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
           list_constraints[[index]]@mat[1, condition_met] <- 1
@@ -466,13 +466,13 @@ loadConstraints <- function(file, pool, item.attrib, st.attrib = NULL) {
     if (constraints$TYPE[index] %in% c("SUM", "AVERAGE", "MEAN")) {
       constraint_type_is_valid <- TRUE
       if (!(constraints$CONDITION[index] %in% names(item.attrib))) {
-        stop(sprintf("CONSTRAINT %s: %s not found in item.attrib:", index, constraints$CONDITION[index]))
+        stop(sprintf("constraint %s: %s not found in item.attrib:", index, constraints$CONDITION[index]))
       } else {
         if (any(is.na(item.attrib[[constraints$CONDITION[index]]]))) {
-          stop(sprintf("CONSTRAINT %s: %s must not have a missing value", index, constraints$CONDITION[index]))
+          stop(sprintf("constraint %s: %s must not have a missing value", index, constraints$CONDITION[index]))
         }
         if (any(c(constraints$LB[index], constraints$UB[index]) < 0) || constraints$LB[index] > constraints$UB[index]) {
-          stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
+          stop(sprintf("constraint %s has invalid LB/UB", index))
         } else if (constraints$LB[index] == constraints$UB[index]) {
           list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
           list_constraints[[index]]@dir <- "<="
@@ -499,7 +499,7 @@ loadConstraints <- function(file, pool, item.attrib, st.attrib = NULL) {
       constraint_type_is_valid <- TRUE
       condition_met <- which(with(item.attrib, eval(parse(text = constraints$CONDITION[index]))))
       if (length(condition_met) == 0) {
-        stop(sprintf("CONSTRAINT %s is invalid: %s returned 0 items", index, constraints$CONDITION[index]))
+        stop(sprintf("constraint %s is invalid: %s returned 0 items", index, constraints$CONDITION[index]))
       } else {
         list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
         list_constraints[[index]]@mat[1, condition_met] <- 1
@@ -518,7 +518,7 @@ loadConstraints <- function(file, pool, item.attrib, st.attrib = NULL) {
       constraint_type_is_valid <- TRUE
       condition_met <- which(with(item.attrib, eval(parse(text = constraints$CONDITION[index]))))
       if (length(condition_met) == 0) {
-        stop(sprintf("CONSTRAINT %s returned 0 items meeting CONDITION: %s", index, constraints$CONDITION[index]))
+        stop(sprintf("constraint %s returned 0 items meeting CONDITION: %s", index, constraints$CONDITION[index]))
       } else {
         list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
         list_constraints[[index]]@mat[1, condition_met] <- 1
@@ -531,7 +531,7 @@ loadConstraints <- function(file, pool, item.attrib, st.attrib = NULL) {
       condition_met <- which(with(item.attrib, eval(parse(text = constraints$CONDITION[index]))))
       n.met <- length(condition_met)
       if (n.met < 2) {
-        stop(sprintf("CONSTRAINT %s is invalid: %s returned < 2 items", index, constraints$CONDITION[index]))
+        stop(sprintf("constraint %s is invalid: %s returned < 2 items", index, constraints$CONDITION[index]))
       } else {
         list_constraints[[index]]@mat <- matrix(0, nrow = (n.met * (n.met - 1)) / 2, ncol = nv)
         list_constraints[[index]]@dir <- rep("==", (n.met * (n.met - 1)) / 2)
@@ -551,7 +551,7 @@ loadConstraints <- function(file, pool, item.attrib, st.attrib = NULL) {
       constraint_type_is_valid <- TRUE
       condition_met <- which(with(item.attrib, eval(parse(text = constraints$CONDITION[index]))))
       if (length(condition_met) < 2) {
-        stop(sprintf("CONSTRAINT %s is invalid: %s returned < 2 items", index, constraints$CONDITION[index]))
+        stop(sprintf("constraint %s is invalid: %s returned < 2 items", index, constraints$CONDITION[index]))
       } else {
         list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
         list_constraints[[index]]@mat[1, condition_met] <- 1
@@ -564,24 +564,24 @@ loadConstraints <- function(file, pool, item.attrib, st.attrib = NULL) {
       if (!list_constraints[[index]]@suspend) {
         if (constraints$CONDITION[index] %in% names(item.attrib)) {
           if (any(is.na(item.attrib[[constraints$CONDITION[index]]]))) {
-            stop(sprintf("CONSTRAINT %s: %s must not have a missing value", index, constraints$CONDITION[index]))
+            stop(sprintf("constraint %s: %s must not have a missing value", index, constraints$CONDITION[index]))
           }
           item_order <- item.attrib[[constraints$CONDITION[index]]]
           item_order_by <- constraints$CONDITION[index]
         } else {
-          stop(sprintf("CONSTRAINT %s is invalid: %s not found in item.attrib", index, constraints$CONDITION[index]))
+          stop(sprintf("constraint %s is invalid: %s not found in item.attrib", index, constraints$CONDITION[index]))
         }
       }
     }
     if (!constraint_type_is_valid) {
-      stop(sprintf("CONSTRAINT %s, %s is not a valid constraint type", index, constraints$TYPE[index]))
+      stop(sprintf("constraint %s, %s is not a valid constraint type", index, constraints$TYPE[index]))
     }
     list_constraints[[index]]@nc <- nrow(list_constraints[[index]]@mat)
   }
   if (set_based) {
     for (index in stim_constraints) {
       list_constraints[[index]] <- new("constraint")
-      list_constraints[[index]]@CONSTRAINT <- constraints$CONSTRAINT[index]
+      list_constraints[[index]]@constraint <- constraints$CONSTRAINT[index]
       constraint_type_is_valid <- FALSE
       list_constraints[[index]]@suspend <- constraints$ONOFF[index] == "OFF"
       if (constraints$TYPE[index] %in% c("NUMBER", "COUNT")) {
@@ -600,16 +600,16 @@ loadConstraints <- function(file, pool, item.attrib, st.attrib = NULL) {
             list_constraints[[index]]@dir <- c(">=", "<=")
             list_constraints[[index]]@rhs <- c(number.stimulus.LB, number.stimulus.UB)
           } else {
-            stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
+            stop(sprintf("constraint %s has invalid LB/UB", index))
           }
         } else if (constraints$CONDITION[index] %in% names(st.attrib)) {
           condition <- unique(st.attrib[constraints$CONDITION[index]])
           condition <- condition[!is.na(condition)]
           if (length(condition) == 0) {
-            stop(sprintf("CONSTRAINT %s returned 0 items meeting CONDITION: %s", index, constraints$CONDITION[index]))
+            stop(sprintf("constraint %s returned 0 items meeting CONDITION: %s", index, constraints$CONDITION[index]))
           }
           if (any(c(constraints$LB[index], constraints$UB[index]) < 0) || constraints$LB[index] > constraints$UB[index]) {
-            stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
+            stop(sprintf("constraint %s has invalid LB/UB", index))
           } else if (constraints$LB[index] == constraints$UB[index]) {
             list_constraints[[index]]@mat <- matrix(0, nrow = length(condition), ncol = nv)
             list_constraints[[index]]@dir <- rep("==", length(condition))
@@ -630,10 +630,10 @@ loadConstraints <- function(file, pool, item.attrib, st.attrib = NULL) {
         } else {
           condition_met <- which(with(st.attrib, eval(parse(text = constraints$CONDITION[index]))))
           if (length(condition_met) == 0) {
-            stop(sprintf("CONSTRAINT %s returned 0 items meeting CONDITION: %s", index, constraints$CONDITION[index]))
+            stop(sprintf("constraint %s returned 0 items meeting CONDITION: %s", index, constraints$CONDITION[index]))
           }
           if (any(c(constraints$LB[index], constraints$UB[index]) < 0) || constraints$LB[index] > constraints$UB[index]) {
-            stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
+            stop(sprintf("constraint %s has invalid LB/UB", index))
           } else if (constraints$LB[index] == constraints$UB[index]) {
             list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
             list_constraints[[index]]@mat[1, ni + condition_met] <- 1
@@ -650,13 +650,13 @@ loadConstraints <- function(file, pool, item.attrib, st.attrib = NULL) {
       if (constraints$TYPE[index] %in% c("SUM", "AVERAGE", "MEAN")) {
         constraint_type_is_valid <- TRUE
         if (!(constraints$CONDITION[index] %in% names(st.attrib))) {
-          stop(sprintf("CONSTRAINT %s has invalid: %s not found in item.attrib:", index, constraints$CONDITION[index]))
+          stop(sprintf("constraint %s has invalid: %s not found in item.attrib:", index, constraints$CONDITION[index]))
         } else {
           if (any(is.na(st.attrib[[constraints$CONDITION[index]]]))) {
-            stop(sprintf("CONSTRAINT %s: %s must not have a missing value", index, constraints$CONDITION[index]))
+            stop(sprintf("constraint %s: %s must not have a missing value", index, constraints$CONDITION[index]))
           }
           if (any(c(constraints$LB[index], constraints$UB[index]) < 0) || constraints$LB[index] > constraints$UB[index]) {
-            stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
+            stop(sprintf("constraint %s has invalid LB/UB", index))
           } else if (constraints$LB[index] == constraints$UB[index]) {
             list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
             list_constraints[[index]]@dir <- "<="
@@ -683,7 +683,7 @@ loadConstraints <- function(file, pool, item.attrib, st.attrib = NULL) {
         constraint_type_is_valid <- TRUE
         condition_met <- which(with(st.attrib, eval(parse(text = constraints$CONDITION[index]))))
         if (length(condition_met) == 0) {
-          stop(sprintf("CONSTRAINT %s is invalid: %s returned 0 items", index, constraints$CONDITION[index]))
+          stop(sprintf("constraint %s is invalid: %s returned 0 items", index, constraints$CONDITION[index]))
         } else {
           list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
           list_constraints[[index]]@mat[1, ni + condition_met] <- 1
@@ -695,7 +695,7 @@ loadConstraints <- function(file, pool, item.attrib, st.attrib = NULL) {
         constraint_type_is_valid <- TRUE
         condition_met <- which(with(st.attrib, eval(parse(text = constraints$CONDITION[index]))))
         if (length(condition_met) == 0) {
-          stop(sprintf("CONSTRAINT %s returned 0 items meeting CONDITION: %s", index, constraints$CONDITION[index]))
+          stop(sprintf("constraint %s returned 0 items meeting CONDITION: %s", index, constraints$CONDITION[index]))
         } else {
           list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
           list_constraints[[index]]@mat[1, ni + condition_met] <- 1
@@ -711,7 +711,7 @@ loadConstraints <- function(file, pool, item.attrib, st.attrib = NULL) {
         condition_met <- which(with(st.attrib, eval(parse(text = constraints$CONDITION[index]))))
         n.met <- length(condition_met)
         if (n.met < 2) {
-          stop(sprintf("CONSTRAINT %s is invalid: %s returned < 2 stimuli", index, constraints$CONDITION[index]))
+          stop(sprintf("constraint %s is invalid: %s returned < 2 stimuli", index, constraints$CONDITION[index]))
         } else {
           list_constraints[[index]]@mat <- matrix(0, nrow = (n.met * (n.met - 1)) / 2, ncol = nv)
           list_constraints[[index]]@dir <- rep("==", (n.met * (n.met - 1)) / 2)
@@ -731,7 +731,7 @@ loadConstraints <- function(file, pool, item.attrib, st.attrib = NULL) {
         constraint_type_is_valid <- TRUE
         condition_met <- which(with(st.attrib, eval(parse(text = constraints$CONDITION[index]))))
         if (length(condition_met) < 2) {
-          stop(sprintf("CONSTRAINT %s is invalid: %s returned < 2 stimuli", index, constraints$CONDITION[index]))
+          stop(sprintf("constraint %s is invalid: %s returned < 2 stimuli", index, constraints$CONDITION[index]))
         } else {
           list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
           list_constraints[[index]]@mat[1, ni + condition_met] <- 1
@@ -744,17 +744,17 @@ loadConstraints <- function(file, pool, item.attrib, st.attrib = NULL) {
         if (!list_constraints[[index]]@suspend) {
           if (constraints$CONDITION[index] %in% names(st.attrib)) {
             if (any(is.na(st.attrib[[constraints$CONDITION[index]]]))) {
-              stop(sprintf("CONSTRAINT %s: %s must not have a missing value", index, constraints$CONDITION[index]))
+              stop(sprintf("constraint %s: %s must not have a missing value", index, constraints$CONDITION[index]))
             }
             stim_order <- st.attrib[[constraints$CONDITION[index]]]
             stim_order_by <- constraints$CONDITION[index]
           } else {
-            stop(sprintf("CONSTRAINT %s is invalid: %s not found in st.attrib", index, constraints$CONDITION[index]))
+            stop(sprintf("constraint %s is invalid: %s not found in st.attrib", index, constraints$CONDITION[index]))
           }
         }
       }
       if (!constraint_type_is_valid) {
-        stop(sprintf("CONSTRAINT %s, %s is not a valid constraint type", index, constraints$TYPE[index]))
+        stop(sprintf("constraint %s, %s is not a valid constraint type", index, constraints$TYPE[index]))
       }
       list_constraints[[index]]@nc <- nrow(list_constraints[[index]]@mat)
     }
