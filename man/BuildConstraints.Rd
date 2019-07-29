@@ -8,7 +8,7 @@ buildConstraints(pool, file.constraints, file.item.attrib,
   file.st.attrib = NULL)
 }
 \arguments{
-\item{pool}{An \code{item.pool} object. Use \code{\link{LoadItemPool}} for this.}
+\item{pool}{An \code{item.pool} object. Use \code{\link{loadItemPool}} for this.}
 
 \item{file.constraints}{Character. The name of the file containing constraint specifications.}
 

@@ -4,20 +4,20 @@
 \alias{plotInfo}
 \title{Draw item information plots}
 \usage{
-plotInfo(object, theta, infoType = "FISHER", select = NULL,
-  PDF = NULL, color = "blue", width = 7, height = 6, mfrow = c(2,
-  4))
+plotInfo(object, theta, info.type = "FISHER", select = NULL,
+  file.pdf = NULL, color = "blue", width = 7, height = 6,
+  mfrow = c(2, 4))
 }
 \arguments{
 \item{object}{An \code{\linkS4class{item.pool}} object.}
 
 \item{theta}{A theta grid.}
 
-\item{infoType}{Type of information.}
+\item{info.type}{Type of information.}
 
 \item{select}{A vector of indices identifying the items to subset.}
 
-\item{PDF}{If supplied a filename, save as a PDF file.}
+\item{file.pdf}{If supplied a filename, save as a PDF file.}
 
 \item{color}{Plotting color.}
 

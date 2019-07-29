@@ -1,3 +1,14 @@
+# Program: Shadow
+# Author: Seung Choi
+# Assumptions: D = 1.0; the minimum score is 0 for all items
+
+# Naming conventions
+# Use lowerCamelCase for S3 and S4 function names.
+# Use lowerCamelCase for variable names and slot names.
+# Use period.separators for arguments.
+# Use period.separators for class names.
+# Use underscore_separators for local objects inside functions.
+
 #' @import Rglpk
 #' @import Matrix
 #' @import lpSolve
@@ -36,9 +47,4 @@ NULL
   }
 }
 
-#' Naming conventions
-#' Use period.separators for arguments.
-#' Use lowerCamelCase for S3 and S4 function names.
-#' Use lowerCamelCase for variable names and slot names.
-#' Use period.separators for class names.
-#' Use underscore_separators inside functions, including returning objects.
+

@@ -6,21 +6,21 @@
 \alias{Shadow,item.pool-method}
 \title{Run computerized adaptive testing with generalized shadow-test approach}
 \usage{
-Shadow(object, config, trueTheta = NULL, Constraints = NULL,
+Shadow(object, config, true.theta = NULL, constraints = NULL,
   prior = NULL, priorPar = NULL, data = NULL, session = NULL)
 
-\S4method{Shadow}{item.pool}(object, config, trueTheta = NULL,
-  Constraints = NULL, prior = NULL, priorPar = NULL, data = NULL,
+\S4method{Shadow}{item.pool}(object, config, true.theta = NULL,
+  constraints = NULL, prior = NULL, priorPar = NULL, data = NULL,
   session = NULL)
 }
 \arguments{
-\item{object}{An \code{\linkS4class{item.pool}} object. Use \code{\link{LoadItemPool}} for this.}
+\item{object}{An \code{\linkS4class{item.pool}} object. Use \code{\link{loadItemPool}} for this.}
 
 \item{config}{A \code{\linkS4class{Shadow.config}} object.}
 
-\item{trueTheta}{Numeric. A vector of true theta values to be used in simulation.}
+\item{true.theta}{Numeric. A vector of true theta values to be used in simulation.}
 
-\item{Constraints}{A list representing optimization constraints. Use \code{\link{LoadConstraints}} for this.}
+\item{constraints}{A list representing optimization constraints. Use \code{\link{loadConstraints}} for this.}
 
 \item{prior}{Numeric. A matrix or a vector containing priors.}
 
@@ -35,7 +35,7 @@ Run computerized adaptive testing with generalized shadow-test approach.
 }
 \examples{
 object <- itempool.science
-config <- config.Shadow()
+config <- createShadowTestConfig()
 trueTheta <- rnorm(1)
 solution <- Shadow(itempool.science, config, trueTheta, constraints.science)
 solution$output

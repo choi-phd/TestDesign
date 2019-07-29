@@ -3,7 +3,7 @@
 #' Perform Automated Test Assembly with specified configurations.
 #'
 #' @param config An \code{\linkS4class{ATA.config}} object containing configuration options. Use \code{\link{createStaticTestConfig}} for this.
-#' @param constraints A list representing optimization constraints. Use \code{\link{LoadConstraints}} for this.
+#' @param constraints A list representing optimization constraints. Use \code{\link{loadConstraints}} for this.
 #' @param plot Logical. If \code{TRUE}, draw Fisher information plot from the selected items.
 #' @param plot.range Numeric. A vector of length 2 containing the lower and upper bounds of plot range. The default is \code{c(-3, 3)}.
 #'
@@ -15,10 +15,10 @@
 #'     \item{\code{objval}} Objective value of the solution.
 #'     \item{\code{status}} Status value indicating whether an optimal solution was found.
 #'   }
-#'   \item{\code{Selected}} The attributes of the selected items.
+#'   \item{\code{selected}} The attributes of the selected items.
 #'   \item{\code{solver}} The name of the MIP solver used in the assembly.
 #'   \item{\code{obj.value}} Objective value of the solution. Identical to the one above.
-#'   \item{\code{solve.time}} The elapsed time in running the solver.
+#'   \item{\code{solve_time}} The elapsed time in running the solver.
 #' }
 #'
 #' @docType methods
@@ -75,21 +75,21 @@ setMethod(
         }
       }
       for (k in 1:nt) {
-        add.mat            <- matrix(0, nrow = 2, ncol = nv + 1)
-        add.mat[1, 1:ni]   <- objective[k, ]
-        add.mat[2, 1:ni]   <- objective[k, ]
-        add.mat[1, nv + 1] <- -1
-        add.mat[2, nv + 1] <- 1
-        mat <- rbind(mat, add.mat)
+        add_mat            <- matrix(0, nrow = 2, ncol = nv + 1)
+        add_mat[1, 1:ni]   <- objective[k, ]
+        add_mat[2, 1:ni]   <- objective[k, ]
+        add_mat[1, nv + 1] <- -1
+        add_mat[2, nv + 1] <- 1
+        mat <- rbind(mat, add_mat)
         dir <- c(dir, c("<=", ">="))
         rhs <- c(rhs, rep(config@itemSelection$targetValue[k], 2))
       }
-      add.mat <- c(rep(0, nv), 1)
-      mat <- rbind(mat, add.mat)
+      add_mat <- c(rep(0, nv), 1)
+      mat <- rbind(mat, add_mat)
       dir <- c(dir, ">=")
       rhs <- c(rhs, 0)
     }
-    solve.time <- proc.time()
+    solve_time <- proc.time()
     if (toupper(config@MIP$solver) == "SYMPHONY") {
       if (!maximize) {
         len_rhs      <- length(rhs)
@@ -104,20 +104,20 @@ setMethod(
       status <- MIP$status
       if (!names(status) %in% c("TM_OPTIMAL_SOLUTION_FOUND", "PREP_OPTIMAL_SOLUTION_FOUND")) {
         warning(sprintf("MIP solver returned non-zero status: %s", names(MIP$status)))
-        return(list(status = status, MIP = NULL, Selected = NULL))
+        return(list(status = status, MIP = NULL, selected = NULL))
       }
     } else if (toupper(config@MIP$solver) == "GUROBI") {
       if (!maximize) {
         len_rhs      <- length(rhs)
         rhs[len_rhs] <- config@MIP$gapLimit
       }
-      constraints.dir <- dir
-      constraints.dir[constraints.dir == "=="] <- "="
-      invisible(capture.output(MIP <- gurobi::gurobi(list(obj = obj, modelsense = ifelse(maximize, "max", "min"), rhs = rhs, sense = constraints.dir, vtype = types, A = mat), params = list(TimeLimit = config@MIP$timeLimit), env = NULL)))
+      constraints_dir <- dir
+      constraints_dir[constraints_dir == "=="] <- "="
+      invisible(capture.output(MIP <- gurobi::gurobi(list(obj = obj, modelsense = ifelse(maximize, "max", "min"), rhs = rhs, sense = constraints_dir, vtype = types, A = mat), params = list(TimeLimit = config@MIP$timeLimit), env = NULL)))
       status <- MIP$status
       if (MIP$status != "OPTIMAL") {
         warning(sprintf("MIP solver returned non-zero status: %s", MIP$status))
-        return(list(status = status, MIP = NULL, Selected = NULL))
+        return(list(status = status, MIP = NULL, selected = NULL))
       }
       MIP[["solution"]] <- MIP$x
     } else if (toupper(config@MIP$solver) == "GLPK") {
@@ -128,7 +128,7 @@ setMethod(
       status <- MIP$status
       if (MIP$status != 0) {
         warning(sprintf("MIP solver returned non-zero status: %s", MIP$status))
-        return(list(status = status, MIP = NULL, Selected = NULL))
+        return(list(status = status, MIP = NULL, selected = NULL))
       }
     } else if (toupper(config@MIP$solver) == "LPSOLVE") {
       if (!maximize) {
@@ -139,14 +139,14 @@ setMethod(
       status <- MIP$status
       if (MIP$status != 0) {
         warning(sprintf("MIP solver returned non-zero status: %s", MIP$status))
-        return(list(status = status, MIP = NULL, Selected = NULL))
+        return(list(status = status, MIP = NULL, selected = NULL))
       }
     }
 
-    solve.time <- proc.time() - solve.time
-    if (!is.null(constraints$StimulusOrder)) {
+    solve_time <- proc.time() - solve_time
+    if (!is.null(constraints$stimulusOrder)) {
       constraints$itemAttrib <- merge(constraints$itemAttrib,
-        constraints$StAttrib[c("STINDEX", "STID", constraints$StimulusOrderBy)],
+        constraints$StAttrib[c("STINDEX", "STID", constraints$stimulusOrderBy)],
         by = "STID", all.x = TRUE, sort = FALSE
       )
     } else if (!is.null(constraints$StAttrib)) {
@@ -157,18 +157,18 @@ setMethod(
     }
 
     selected <- constraints$itemAttrib[which(MIP$solution[1:constraints$ni] == 1), ]
-    obj.value <- sum(obj[which(MIP$solution[1:constraints$ni] == 1)])
+    obj_value <- sum(obj[which(MIP$solution[1:constraints$ni] == 1)])
 
-    if (!is.null(constraints$ItemOrderBy) && !is.null(constraints$StimulusOrderBy)) {
-      selected <- selected[order(selected[[constraints$StimulusOrderBy]], selected[["STID"]], selected[[constraints$ItemOrderBy]]), ]
-    } else if (!is.null(constraints$ItemOrderBy)) {
+    if (!is.null(constraints$itemOrderBy) && !is.null(constraints$stimulusOrderBy)) {
+      selected <- selected[order(selected[[constraints$stimulusOrderBy]], selected[["STID"]], selected[[constraints$itemOrderBy]]), ]
+    } else if (!is.null(constraints$itemOrderBy)) {
       if (constraints$setBased) {
-        selected <- selected[order(selected[["STID"]], selected[[constraints$ItemOrderBy]]), ]
+        selected <- selected[order(selected[["STID"]], selected[[constraints$itemOrderBy]]), ]
       } else {
-        selected <- selected[order(selected[[constraints$ItemOrderBy]]), ]
+        selected <- selected[order(selected[[constraints$itemOrderBy]]), ]
       }
-    } else if (!is.null(constraints$StimulusOrderBy)) {
-      selected <- selected[order(selected[[constraints$StimulusOrderBy]], selected[["STID"]]), ]
+    } else if (!is.null(constraints$stimulusOrderBy)) {
+      selected <- selected[order(selected[[constraints$stimulusOrderBy]], selected[["STID"]]), ]
     }
     row.names(selected) <- 1:nrow(selected)
 
@@ -226,8 +226,8 @@ setMethod(
 
     return(list(
       MIP = MIP, selected = selected,
-      solver = config@MIP$solver, obj.value = obj.value,
-      solve.time = solve.time, plot = p
+      solver = config@MIP$solver, objValue = obj_value,
+      solveTime = solve_time, plot = p
     ))
   }
 )

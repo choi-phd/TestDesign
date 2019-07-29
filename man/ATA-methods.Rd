@@ -14,7 +14,7 @@ ATA(config, constraints, plot = FALSE, plot.range = c(-3, 3))
 \arguments{
 \item{config}{An \code{\linkS4class{ATA.config}} object containing configuration options. Use \code{\link{createStaticTestConfig}} for this.}
 
-\item{constraints}{A list representing optimization constraints. Use \code{\link{LoadConstraints}} for this.}
+\item{constraints}{A list representing optimization constraints. Use \code{\link{loadConstraints}} for this.}
 
 \item{plot}{Logical. If \code{TRUE}, draw Fisher information plot from the selected items.}
 
@@ -29,10 +29,10 @@ A list containing the following entries:
     \item{\code{objval}} Objective value of the solution.
     \item{\code{status}} Status value indicating whether an optimal solution was found.
   }
-  \item{\code{Selected}} The attributes of the selected items.
+  \item{\code{selected}} The attributes of the selected items.
   \item{\code{solver}} The name of the MIP solver used in the assembly.
   \item{\code{obj.value}} Objective value of the solution. Identical to the one above.
-  \item{\code{solve.time}} The elapsed time in running the solver.
+  \item{\code{solve_time}} The elapsed time in running the solver.
 }
 }
 \description{

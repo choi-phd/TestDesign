@@ -4,8 +4,8 @@
 \alias{plotExposureRateFinal}
 \title{Draw exposure rate plots by final theta segment}
 \usage{
-plotExposureRateFinal(object, config = NULL, maxRate = 0.25,
-  theta = "Estimated", segmentCut = NULL, color = "red",
+plotExposureRateFinal(object, config = NULL, max.rate = 0.25,
+  theta = "Estimated", segment.cut = NULL, color = "red",
   PDF = NULL, width = 7, height = 6, mfrow = c(2, 4), burnIn = 0,
   retain = NULL)
 }
@@ -14,11 +14,11 @@ plotExposureRateFinal(object, config = NULL, maxRate = 0.25,
 
 \item{config}{A \code{\linkS4class{Shadow.config}} object.}
 
-\item{maxRate}{A target item exposure rate.}
+\item{max.rate}{A target item exposure rate.}
 
 \item{theta}{By which theta to generate the plots, either "Estimated" or "True".}
 
-\item{segmentCut}{A vector of cut values defining theta segments.}
+\item{segment.cut}{A vector of cut values defining theta segments.}
 
 \item{color}{A vector of colors.}
 

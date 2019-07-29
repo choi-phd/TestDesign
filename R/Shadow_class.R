@@ -346,28 +346,28 @@ setClass("Shadow.config",
 #' @param thetaGrid A numeric vector. Theta values to represent the continuum.
 #' @param auditTrail Set \code{TRUE} to generate audit trails.
 #'
-#' @rdname config.Shadow
+#' @rdname createShadowTestConfig
 #' @export
-config.Shadow <- function(itemSelection = NULL, contentBalancing = NULL, MIP = NULL, MCMC = NULL,
+createShadowTestConfig <- function(itemSelection = NULL, contentBalancing = NULL, MIP = NULL, MCMC = NULL,
                           refreshPolicy = NULL, exposureControl = NULL, stoppingCriterion = NULL,
                           interimTheta = NULL, finalTheta = NULL, thetaGrid = seq(-4, 4, .1), auditTrail = F) {
   conf <- new("Shadow.config")
 
-  arg.names <- c(
+  arg_names <- c(
     "itemSelection", "contentBalancing", "MIP", "MCMC",
     "refreshPolicy", "exposureControl", "stoppingCriterion",
     "interimTheta", "finalTheta"
   )
-  obj.names <- c()
-  for (arg in arg.names) {
+  obj_names <- c()
+  for (arg in arg_names) {
     if (!is.null(eval(parse(text = arg)))) {
-      eval(parse(text = paste0("obj.names <- names(conf@", arg, ")")))
-      for (entry in obj.names) {
-        entry.l <- paste0("conf@", arg, "$", entry)
-        entry.r <- paste0(arg, "$", entry)
-        tmp <- eval(parse(text = entry.r))
+      eval(parse(text = paste0("obj_names <- names(conf@", arg, ")")))
+      for (entry in obj_names) {
+        entry_l <- paste0("conf@", arg, "$", entry)
+        entry_r <- paste0(arg, "$", entry)
+        tmp <- eval(parse(text = entry_r))
         if (!is.null(tmp)) {
-          eval(parse(text = paste0(entry.l, " <- ", entry.r)))
+          eval(parse(text = paste0(entry_l, " <- ", entry_r)))
         }
       }
     }
@@ -541,13 +541,13 @@ setMethod("show", "Shadow.output", function(object) {
     cat("  Final Theta Estimate :", object@finalThetaEst, "\n")
     cat("  Final SE Estimate    :", object@finalSeEst, "\n")
     output <- data.frame(
-      Stage = 1:length(object@administeredItemIndex),
-      StimulusIndex = ifelse(is.nan(object@administeredStimulusIndex), rep(NA, length(object@administeredItemIndex)), object@administeredStimulusIndex),
-      ItemIndex = object@administeredItemIndex,
-      ItemResp = object@administeredItemResp,
-      InterimTheta = object@interimThetaEst,
-      InterimSE = object@interimSeEst,
-      ThetaSegment = object@thetaSegmentIndex
+      stage = 1:length(object@administeredItemIndex),
+      stimulusIndex = ifelse(is.nan(object@administeredStimulusIndex), rep(NA, length(object@administeredItemIndex)), object@administeredStimulusIndex),
+      itemIndex = object@administeredItemIndex,
+      itemResp = object@administeredItemResp,
+      interimTheta = object@interimThetaEst,
+      interimSE = object@interimSeEst,
+      thetaSegment = object@thetaSegmentIndex
     )
     print(output)
   } else {
