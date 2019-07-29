@@ -1,39 +1,39 @@
 if (FALSE) {
   # IRT models
 
-  item.1 <- new("item.1pl", difficulty = 0.5)
-  item.2 <- new("item.2pl", slope = 1.0, difficulty = 0.5)
-  item.3 <- new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
-  item.4 <- new("item.pc", threshold = c(-0.5, 0.5), ncat = 3)
-  item.5 <- new("item.gpc", slope = 1.0, threshold = c(-0.5, 0.0, 0.5), ncat = 4)
-  item.6 <- new("item.gr", slope = 1.0, category = c(-1, 0, 1), ncat = 4)
+  item_1 <- new("item.1pl", difficulty = 0.5)
+  item_2 <- new("item.2pl", slope = 1.0, difficulty = 0.5)
+  item_3 <- new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+  item_4 <- new("item.pc", threshold = c(-0.5, 0.5), ncat = 3)
+  item_5 <- new("item.gpc", slope = 1.0, threshold = c(-0.5, 0.0, 0.5), ncat = 4)
+  item_6 <- new("item.gr", slope = 1.0, category = c(-1, 0, 1), ncat = 4)
 
-  calcProb(item.1, 0)
-  calcFisher(item.2, 0)
-  calcEscore(item.3, 0.5)
-  calcDerivative(item.4, 1)
-  calcDerivative2(item.5, 1)
-  calcJacobian(item.6, 0, resp = 1)
-  calcHessian(item.6, 0, resp = 1)
+  calcProb(item_1, 0)
+  calcFisher(item_2, 0)
+  calcEscore(item_3, 0.5)
+  calcDerivative(item_4, 1)
+  calcDerivative2(item_5, 1)
+  calcJacobian(item_6, 0, resp = 1)
+  calcHessian(item_6, 0, resp = 1)
 
   # Manuscript figures
 
-  config.science <- config.ATA(itemSelection = list(method = "MAXINFO", targetLocation = c(-1, 0, 1)))
-  solution <- ATA(config.science, constraints.science, plot = T)
-  solution$Selected
+  config_science <- createStaticTestConfig(itemSelection = list(method = "MAXINFO", targetLocation = c(-1, 0, 1)))
+  solution <- ATA(config_science, constraints_science, plot = T)
+  solution$selected
 
   setEPS()
-  postscript("R/science.maxinfo.eps", width = 8, height = 3.25)
+  postscript("R/science_maxinfo.eps", width = 8, height = 3.25)
   solution$plot
   dev.off()
 
 
-  config.science <- config.ATA(itemSelection = list(method = "TCC", targetValue = c(15, 20, 25), targetLocation = c(-1, 0, 1)))
-  solution <- ATA(config.science, constraints.science, plot = T)
-  solution$Selected
+  config_science <- createStaticTestConfig(itemSelection = list(method = "TCC", targetValue = c(15, 20, 25), targetLocation = c(-1, 0, 1)))
+  solution <- ATA(config_science, constraints_science, plot = T)
+  solution$selected
 
   setEPS()
-  postscript("R/science.tcc.eps", width = 8, height = 3.25)
+  postscript("R/science_tcc.eps", width = 8, height = 3.25)
   solution$plot
   dev.off()
 
@@ -41,14 +41,14 @@ if (FALSE) {
 
   set.seed(1)
 
-  trueTheta <- runif(7000, min = -3.5, max = 3.5)
-  resp.science <- MakeTest(itempool.science, infoType = "FISHER", trueTheta = trueTheta)@Data
+  true_theta <- runif(7000, min = -3.5, max = 3.5)
+  resp_science <- makeTest(itempool_science, infoType = "FISHER", true_theta = true_theta)@Data
 
-  config.science <- config.Shadow(MIP = list(solver = "LPSOLVE"), exposureControl = list(method = "ELIGIBILITY"))
+  config_science <- config.Shadow(MIP = list(solver = "LPSOLVE"), exposureControl = list(method = "ELIGIBILITY"))
 
-  constraints.science2 <- UpdateConstraints(constraints.science, off = c(14:20, 32:36))
+  constraints_science2 <- updateConstraints(constraints_science, off = c(14:20, 32:36))
 
-  solution <- Shadow(itempool.science, config.science, trueTheta, constraints.science2, Data = resp.science)
+  solution <- Shadow(itempool_science, config_science, true_theta, constraints_science2, Data = resp_science)
 
   tt <- rep(NA, 7000)
 
@@ -68,19 +68,19 @@ if (FALSE) {
 
   set.seed(1)
 
-  trueTheta <- runif(1, min = -3.5, max = 3.5)
-  resp.science <- MakeTest(itempool.science, trueTheta = trueTheta)@Data
+  true_theta <- runif(1, min = -3.5, max = 3.5)
+  resp_science <- makeTest(itempool_science, true_theta = true_theta)@Data
 
-  config.science <- config.Shadow()
+  config_science <- config.Shadow()
 
-  solution <- Shadow(itempool.science, config.science,
-    trueTheta, constraints.science,
-    Data = resp.science
+  solution <- Shadow(itempool_science, config_science,
+    true_theta, constraints_science,
+    Data = resp_science
   )
 
   setEPS()
   postscript("R/science.shadowplot.eps", width = 8, height = 9.7)
-  p <- plotShadow(solution, constraints.science, examineeID = 1)
+  p <- plotShadow(solution, constraints_science, examineeID = 1)
   p
   dev.off()
 
@@ -94,16 +94,16 @@ if (FALSE) {
 
   # Manuscript example: adaptive test assembly (reading)
 
-  config.reading <- config.ATA(itemSelection = list(method = "MAXINFO", targetLocation = c(-1, 0, 1)))
+  config.reading <- createStaticTestConfig(itemSelection = list(method = "MAXINFO", targetLocation = c(-1, 0, 1)))
 
   solution <- ATA(config.reading, constraints.reading, plot = T)
-  solution$Selected
+  solution$selected
   solution$plot
 
   set.seed(1)
 
-  trueTheta <- runif(1, min = -3.5, max = 3.5)
-  resp.reading <- MakeTest(itempool.reading, trueTheta = trueTheta)@Data
+  true_theta <- runif(1, min = -3.5, max = 3.5)
+  resp.reading <- makeTest(itempool.reading, true_theta = true_theta)@Data
 
   config.reading <- config.Shadow(refreshPolicy = list(
     method = "STIMULUS"
@@ -132,10 +132,10 @@ if (FALSE) {
   print(p)
   dev.off()
 
-  config.fatigue <- config.ATA(itemSelection = list(method = "TIF", targetValue = c(40, 40, 40), targetLocation = c(0, 1, 2)))
+  config.fatigue <- createStaticTestConfig(itemSelection = list(method = "TIF", targetValue = c(40, 40, 40), targetLocation = c(0, 1, 2)))
 
   solution <- ATA(config.fatigue, constraints.fatigue, plot = T)
-  solution$Selected
+  solution$selected
 
   setEPS()
   postscript("R/fatigue.tif.eps", width = 8, height = 3.25)
@@ -147,15 +147,15 @@ if (FALSE) {
 
   set.seed(1)
 
-  trueTheta <- runif(1, min = -3.5, max = 3.5)
-  respData <- MakeTest(itempool.fatigue, trueTheta = trueTheta)@Data
+  true_theta <- runif(1, min = -3.5, max = 3.5)
+  respData <- makeTest(itempool.fatigue, true_theta = true_theta)@Data
 
   config.fatigue <- config.Shadow(refreshPolicy = list(
     method = "POSITION",
     position = c(1, 5, 9)
   ))
 
-  solution <- Shadow(itempool.fatigue, config.fatigue, trueTheta, constraints.fatigue, Data = respData)
+  solution <- Shadow(itempool.fatigue, config.fatigue, true_theta, constraints.fatigue, Data = respData)
 
   setEPS()
   postscript("R/fatigue.auditplot.eps", width = 8, height = 8)

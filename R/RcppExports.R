@@ -530,7 +530,7 @@ theta_FB_single <- function(nx, theta_init, theta_prop, item_mcmc, item_init, re
 #' @param x A numeric vector of theta values.
 #'
 #' @export
-findSegment <- function(segment, x) {
-    .Call('_TestDesign_findSegment', PACKAGE = 'TestDesign', segment, x)
+find_segment <- function(segment, x) {
+    .Call('_TestDesign_find_segment', PACKAGE = 'TestDesign', segment, x)
 }
 
