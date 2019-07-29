@@ -15,5 +15,5 @@ subsetItemPool(pool, select = NULL)
 Create a subset of an \code{\linkS4class{item.pool}} object.
 }
 \examples{
-sub.itempool <- subsetItemPool(itempool.science, 1:100)
+subitempool <- subsetItemPool(itempool.science, 1:100)
 }

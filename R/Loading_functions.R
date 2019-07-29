@@ -2,29 +2,29 @@
 #'
 #' Read item parameters from a .csv file or a data.frame and create an \linkS4class{item.pool} class.
 #'
-#' @param file.csv File path of a .csv file containing item parameters. The file content should not have column names.
+#' @param file File path of a .csv file containing item parameters. The file content should not have column names.
 #' @param ipar A data.frame created from a .csv file.
-#' @param se.file.csv File path of a .csv file containing standard errors.
+#' @param se.file File path of a .csv file containing standard errors.
 #' @return An \linkS4class{item.pool} object.
 #'
 #' @seealso \link{dataset.science} for example usage.
 #' @export
-LoadItemPool <- function(file.csv, ipar = NULL, se.file.csv = NULL) {
+loadItemPool <- function(file, ipar = NULL, se.file = NULL) {
   if (is.null(ipar)) {
-    ipar <- read.csv(file.csv, header = TRUE, as.is = TRUE)
+    ipar <- read.csv(file, header = TRUE, as.is = TRUE)
   }
   pool       <- new("item.pool")
   ni         <- nrow(ipar)
   pool@index <- 1:ni
-  pool@ID    <- as.character(ipar[[1]])
+  pool@id    <- as.character(ipar[[1]])
   model      <- ipar[[2]]
   NCAT       <- numeric(ni)
   parms      <- vector(mode = "list", length = ni)
   nfields    <- rowSums(!is.na(ipar))
   valid      <- logical(ni)
   pool@ipar  <- matrix(NA, nrow = ni, ncol = max(nfields) - 2)
-  if (!is.null(se.file.csv)) {
-    ipar.se <- read.csv(se.file.csv, header = TRUE, as.is = TRUE)
+  if (!is.null(se.file)) {
+    ipar.se <- read.csv(se.file, header = TRUE, as.is = TRUE)
     loadSE  <- TRUE
     SEs     <- matrix(NA, nrow = ni, ncol = max(nfields) - 2)
   } else {
@@ -135,7 +135,7 @@ LoadItemPool <- function(file.csv, ipar = NULL, se.file.csv = NULL) {
 #'
 #' Read item attributes from specified file.
 #'
-#' @param file.csv Character. The name of the file containing item attributes.
+#' @param file Character. The name of the file containing item attributes.
 #' @param pool An \code{\linkS4class{item.pool}} object. Use \code{\link{LoadItemPool}} for this.
 #'
 #' @return A \code{data.frame} containing parsed dataset.
@@ -143,46 +143,46 @@ LoadItemPool <- function(file.csv, ipar = NULL, se.file.csv = NULL) {
 #' @seealso \link{dataset.science} for example usage.
 #' @export
 
-LoadItemAttrib <- function(file.csv, pool) {
+loadItemAttrib <- function(file, pool) {
   if (is.null(pool) || class(pool) != "item.pool") {
     stop("pool is missing or not of class \"item.pool\"")
   }
-  ItemAttrib <- read.csv(file.csv, header = TRUE, as.is = TRUE)
-  names(ItemAttrib) <- toupper(names(ItemAttrib))
-  if (pool@ni != nrow(ItemAttrib)) {
+  item_attrib <- read.csv(file, header = TRUE, as.is = TRUE)
+  names(item_attrib) <- toupper(names(item_attrib))
+  if (pool@ni != nrow(item_attrib)) {
     stop("nrow of item attrib file not equal to pool@ni")
   }
-  if (!("ID" %in% names(ItemAttrib))) {
-    stop("no column name \"ID\" found in ItemAttrib")
+  if (!("ID" %in% names(item_attrib))) {
+    stop("no column name \"ID\" found in item_attrib")
   }
-  if (is.numeric(ItemAttrib$ID)) {
-    ItemAttrib$ID <- as.character(ItemAttrib$ID)
+  if (is.numeric(item_attrib$ID)) {
+    item_attrib$ID <- as.character(item_attrib$ID)
   }
-  if (any(ItemAttrib$ID %in% c("", " ", "NA", "N/A"))) {
-    stop("invalid ID entries were found in ItemAttrib")
+  if (any(item_attrib$ID %in% c("", " ", "NA", "N/A"))) {
+    stop("invalid ID entries were found in item_attrib")
   }
-  if (length(unique(ItemAttrib$ID)) != nrow(ItemAttrib)) {
+  if (length(unique(item_attrib$ID)) != nrow(item_attrib)) {
     stop("duplicate ID entries were found in item attrib")
-  } else if (!all(sort(pool@ID) == sort(ItemAttrib$ID))) {
+  } else if (!all(sort(pool@ID) == sort(item_attrib$ID))) {
     stop("ID entries in item attrib do not match pool@ID")
-  } else if (!all(pool@ID == ItemAttrib$ID)) {
-    ItemAttrib <- merge(data.frame(ID = pool@ID), ItemAttrib, by = "ID")[, names(ItemAttrib)] # re-ordering cols in attrib
+  } else if (!all(pool@ID == item_attrib$ID)) {
+    item_attrib <- merge(data.frame(ID = pool@ID), item_attrib, by = "ID")[, names(item_attrib)] # re-ordering cols in attrib
   }
-  ItemAttrib <- data.frame(cbind(INDEX = 1:nrow(ItemAttrib), ItemAttrib))
-  if ("STID" %in% names(ItemAttrib)) {
-    if (any(ItemAttrib$STID %in% c("", " ", "N/A"))) {
-      ItemAttrib$STID[ItemAttrib$STID %in% c("", " ", "N/A")] <- NA
+  item_attrib <- data.frame(cbind(index = 1:nrow(item_attrib), item_attrib))
+  if ("STID" %in% names(item_attrib)) {
+    if (any(item_attrib$STID %in% c("", " ", "N/A"))) {
+      item_attrib$STID[item_attrib$STID %in% c("", " ", "N/A")] <- NA
     }
   }
-  return(ItemAttrib)
+  return(item_attrib)
 }
 
 #' Load set/stimulus/passage attributes
 #'
 #' Read set, stimulus, or passage attributes from specified file.
 #'
-#' @param file.csv Character. The name of the file containing item attributes.
-#' @param ItemAttrib A \code{data.frame} containing item attributes. Use \code{\link{LoadItemAttrib}} for this.
+#' @param file Character. The name of the file containing item attributes.
+#' @param item.attrib A \code{data.frame} containing item attributes. Use \code{\link{loadItemAttrib}} for this.
 #'
 #' @return A \code{data.frame} containing stimulus attributes.
 #'
@@ -190,35 +190,35 @@ LoadItemAttrib <- function(file.csv, pool) {
 #'
 #' @export
 
-LoadStAttrib <- function(file.csv, ItemAttrib) {
-  StAttrib <- read.csv(file.csv, header = TRUE, as.is = TRUE)
-  names(StAttrib) <- toupper(names(StAttrib))
-  if (!("STID" %in% names(StAttrib))) {
+loadStAttrib <- function(file, item.attrib) {
+  st_attrib <- read.csv(file, header = TRUE, as.is = TRUE)
+  names(st_attrib) <- toupper(names(st_attrib))
+  if (!("STID" %in% names(st_attrib))) {
     stop("no column name \"STID\" found in set/stimulus/passage attrib")
   }
-  if (is.numeric(StAttrib$STID)) {
-    StAttrib$STID <- as.character(StAttrib$STID)
+  if (is.numeric(st_attrib$STID)) {
+    st_attrib$STID <- as.character(st_attrib$STID)
   }
-  if (!("STIDNTEX" %in% names(StAttrib))) {
-    StAttrib <- data.frame(cbind(STINDEX = 1:nrow(StAttrib), StAttrib))
+  if (!("STIDNTEX" %in% names(st_attrib))) {
+    st_attrib <- data.frame(cbind(STindex = 1:nrow(st_attrib), st_attrib))
   }
-  if (!("STID" %in% names(ItemAttrib))) {
-    stop("no column name \"STID\" found in ItemAttrib")
+  if (!("STID" %in% names(item.attrib))) {
+    stop("no column name \"STID\" found in item.attrib")
   }
-  if (any(StAttrib$STID %in% c("", " ", NA))) {
-    stop("invalid STID found in StAttrib")
+  if (any(st_attrib$STID %in% c("", " ", NA))) {
+    stop("invalid STID found in st_attrib")
   }
-  if (length(unique(StAttrib$STID)) != nrow(StAttrib)) {
+  if (length(unique(st_attrib$STID)) != nrow(st_attrib)) {
     stop("duplicate ID entries were found in set/stimulus attrib")
-  } else if (!(all(StAttrib$STID %in% unique(ItemAttrib$STID)))) {
-    stop("not all STID found in ItemAttrib")
-  } else if (any(ItemAttrib$STID %in% c("", " ", "NA", "N/A"))) {
+  } else if (!(all(st_attrib$STID %in% unique(item.attrib$STID)))) {
+    stop("not all STID found in item.attrib")
+  } else if (any(item.attrib$STID %in% c("", " ", "NA", "N/A"))) {
     # if items with no valid STID present (e.g., discrete items)
-    if (!all(sort(unique(ItemAttrib$STID[!(ItemAttrib$STID %in% c(NA, "", " ", "N/A"))])) == sort(StAttrib$STID))) {
-      stop("StAttrib must include all STID in ItemAttrib")
+    if (!all(sort(unique(item.attrib$STID[!(item.attrib$STID %in% c(NA, "", " ", "N/A"))])) == sort(st_attrib$STID))) {
+      stop("st_attrib must include all STID in item.attrib")
     }
   }
-  return(StAttrib)
+  return(st_attrib)
 }
 
 #' Load constraints
@@ -227,10 +227,10 @@ LoadStAttrib <- function(file.csv, ItemAttrib) {
 #'
 #' Use \code{vignette("constraints")} for instructions on how to create a constraint set object.
 #'
-#' @param file.csv Character. The name of the file containing specifications for constraints.
+#' @param file Character. The name of the file containing specifications for constraints.
 #' @param pool An \code{item.pool} object.
-#' @param ItemAttrib A \code{data.frame} containing item attributes. Use \code{\link{LoadItemAttrib}} for this.
-#' @param StAttrib (Optional) A \code{data.frame} containing stimulus attributes. Use \code{\link{LoadStAttrib}} for this.
+#' @param item.attrib A \code{data.frame} containing item attributes. Use \code{\link{loadItemAttrib}} for this.
+#' @param st.attrib (Optional) A \code{data.frame} containing stimulus attributes. Use \code{\link{loadStAttrib}} for this.
 #'
 #' @return A list containing the parsed constraints, to be used in \code{\link{ATA}} and \code{\link{Shadow}}.
 #'
@@ -238,16 +238,16 @@ LoadStAttrib <- function(file.csv, ItemAttrib) {
 #'
 #' @export
 
-LoadConstraints <- function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
+loadConstraints <- function(file, pool, item.attrib, st.attrib = NULL) {
   if (class(pool) != "item.pool") {
     stop("pool must be of class \"item.pool\"")
   }
 
   # Read file ------------------------------------------------------------
-  Constraints <- read.csv(file.csv, header = TRUE)
-  if ("ONOFF" %in% toupper(names(Constraints))) {
+  constraints <- read.csv(file, header = TRUE)
+  if ("ONOFF" %in% toupper(names(constraints))) {
     ONOFF <- TRUE
-    Constraints <- read.csv(file.csv,
+    constraints <- read.csv(file,
       header = TRUE,
       as.is = TRUE, colClasses = c(
         "character", "character", "character", "character",
@@ -255,10 +255,10 @@ LoadConstraints <- function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
       ),
       stringsAsFactors = FALSE
     )
-    Constraints$ONOFF <- toupper(Constraints$ONOFF)
+    constraints$ONOFF <- toupper(constraints$ONOFF)
   } else {
     ONOFF <- FALSE
-    Constraints <- read.csv(file.csv,
+    constraints <- read.csv(file,
       header = TRUE,
       as.is = TRUE, colClasses = c(
         "character", "character", "character", "character",
@@ -269,118 +269,118 @@ LoadConstraints <- function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
   }
   # Validation -----------------------------------------------------------
   # Validation: Column names
-  names(Constraints) <- toupper(names(Constraints))
-  if (!all(names(Constraints) %in% c("CONSTRAINT", "TYPE", "WHAT", "CONDITION", "LB", "UB", "ONOFF"))) {
+  names(constraints) <- toupper(names(constraints))
+  if (!all(names(constraints) %in% c("CONSTRAINT", "TYPE", "WHAT", "CONDITION", "LB", "UB", "ONOFF"))) {
     stop("Column names must be CONSTRAINT, TYPE, WHAT, CONDITION, LB, UB, and ONOFF")
   }
   # Validation: Bounds
-  if (!any(is.na(Constraints$LB) | is.na(Constraints$UB))) {
-    if (any(Constraints$LB > Constraints$UB)) {
+  if (!any(is.na(constraints$LB) | is.na(constraints$UB))) {
+    if (any(constraints$LB > constraints$UB)) {
       stop("invalid LB/UB specified for one or more constraints (LB > UB)")
     }
-  } else if (any(is.na(Constraints$LB) + is.na(Constraints$UB) == 1)) {
+  } else if (any(is.na(constraints$LB) + is.na(constraints$UB) == 1)) {
     stop("LB and UB should be both specified at the same time, or both omitted")
   }
   # Validation: Constraint types
-  Constraints$TYPE <- toupper(Constraints$TYPE)
-  Constraints$WHAT <- toupper(Constraints$WHAT)
-  if (!all(Constraints$TYPE %in% c("NUMBER", "COUNT", "ALLORNONE", "ALL OR NONE", "IIF", "MUTUALLYEXCLUSIVE", "MUTUALLY EXCLUSIVE", "XOR", "ENEMY", "SUM", "AVERAGE", "MEAN", "INCLUDE", "EXCLUDE", "NOT", "ORDER"))) {
+  constraints$TYPE <- toupper(constraints$TYPE)
+  constraints$WHAT <- toupper(constraints$WHAT)
+  if (!all(constraints$TYPE %in% c("NUMBER", "COUNT", "ALLORNONE", "ALL OR NONE", "IIF", "MUTUALLYEXCLUSIVE", "MUTUALLY EXCLUSIVE", "XOR", "ENEMY", "SUM", "AVERAGE", "MEAN", "INCLUDE", "EXCLUDE", "NOT", "ORDER"))) {
     stop("invalid TYPE specified")
   }
   # Validation: Pool
   ni <- pool@ni
   ns <- 0
   x <- numeric(ni)
-  nc <- nrow(Constraints)
-  if (nrow(ItemAttrib) != ni) {
-    stop("nrow of ItemAttrib not equal to pool@ni")
+  nc <- nrow(constraints)
+  if (nrow(item.attrib) != ni) {
+    stop("nrow of item.attrib not equal to pool@ni")
   }
-  if (!all(pool@ID == ItemAttrib$ID)) {
-    stop("item IDs in pool and ItemAttrib not matching")
+  if (!all(pool@ID == item.attrib$ID)) {
+    stop("item IDs in pool and item.attrib not matching")
   }
-  ListConstraints <- vector(mode = "list", length = nc)
-  ItemConstraints <- which(Constraints$WHAT == "ITEM")
-  StimulusConstraints <- which(Constraints$WHAT %in% c("STIMULUS", "PASSAGE", "SET", "TESTLET"))
-  ItemOrder <- ItemOrderBy <- NULL
-  StimulusOrder <- StimulusOrderBy <- NULL
-  if (length(StimulusConstraints) > 0) {
-    if (is.null(StAttrib)) {
-      stop("for stimulus-based, StAttrib must not be NULL")
+  list_constraints <- vector(mode = "list", length = nc)
+  item_constraints <- which(constraints$WHAT == "ITEM")
+  stim_constraints <- which(constraints$WHAT %in% c("STIMULUS", "PASSAGE", "SET", "TESTLET"))
+  item_order <- item_order_by <- NULL
+  stim_order <- stim_order_by <- NULL
+  if (length(stim_constraints) > 0) {
+    if (is.null(st.attrib)) {
+      stop("for stimulus-based, st.attrib must not be NULL")
     }
-    if (!("STID" %in% names(ItemAttrib))) {
-      stop("for stimulus-based, ItemAttrib must include \"STID\" ")
+    if (!("STID" %in% names(item.attrib))) {
+      stop("for stimulus-based, item.attrib must include \"STID\" ")
     }
-    setBased <- TRUE
-    ID <- c(ItemAttrib$ID, StAttrib$STID)
-    ns <- nrow(StAttrib)
+    set_based <- TRUE
+    ID <- c(item.attrib$ID, st.attrib$STID)
+    ns <- nrow(st.attrib)
     nv <- ni + ns
-    item.id.by.stimulus <- split(ItemAttrib$ID, as.factor(ItemAttrib$STID))
-    item.index.by.stimulus <- lapply(item.id.by.stimulus, function(x) which(ItemAttrib$ID %in% x))
-    item.index.by.stimulus <- lapply(StAttrib$STID, function(x) item.index.by.stimulus[[x]])
-    if (any(ItemAttrib$STID %in% c("", " ", "N/A", "n/a"))) {
-      ItemAttrib$STID[ItemAttrib$STID %in% c("", " ", "N/A", "n/a")] <- NA
+    item_id_by_stimulus <- split(item.attrib$ID, as.factor(item.attrib$STID))
+    item_index_by_stimulus <- lapply(item_id_by_stimulus, function(x) which(item.attrib$ID %in% x))
+    item_index_by_stimulus <- lapply(st.attrib$STID, function(x) item_index_by_stimulus[[x]])
+    if (any(item.attrib$STID %in% c("", " ", "N/A", "n/a"))) {
+      item.attrib$STID[item.attrib$STID %in% c("", " ", "N/A", "n/a")] <- NA
     }
-    stimulus.id.by.item <- ItemAttrib$STID
-    stimulus.index.by.item <- sapply(stimulus.id.by.item, function(x) which(StAttrib$STID == x))
-    if (any(toupper(Constraints$CONDITION) %in% c("PER STIMULUS", "PER PASSAGE", "PER SET", "PER TESTLET"))) {
-      common.stimulus.length <- TRUE
-    } else if (all(c("LB", "UB") %in% names(StAttrib))) {
-      common.stimulus.length <- FALSE
-      stimulus.length.LB <- StAttrib$LB
-      stimulus.length.UB <- StAttrib$UB
-      if (any(is.na(c(stimulus.length.LB, stimulus.length.UB))) || any(stimulus.length.LB > stimulus.length.UB) || any(c(stimulus.length.LB, stimulus.length.UB) < 0)) {
-        stop("LB/UB in StAttrib contains NA or improper values")
+    stimulus_id_by_item <- item.attrib$STID
+    stimulus_index_by_item<- sapply(stimulus_id_by_item, function(x) which(st.attrib$STID == x))
+    if (any(toupper(constraints$CONDITION) %in% c("PER STIMULUS", "PER PASSAGE", "PER SET", "PER TESTLET"))) {
+      common_stimulus_length <- TRUE
+    } else if (all(c("LB", "UB") %in% names(st.attrib))) {
+      common_stimulus_length <- FALSE
+      stimulus_length_LB <- st.attrib$LB
+      stimulus_length_UB <- st.attrib$UB
+      if (any(is.na(c(stimulus_length_LB, stimulus_length_UB))) || any(stimulus_length_LB > stimulus_length_UB) || any(c(stimulus_length_LB, stimulus_length_UB) < 0)) {
+        stop("LB/UB in st.attrib contains NA or improper values")
       }
     } else {
-      stop("StAttrib should contain columns LB and UB; otherwise, CONDITION should include \"PER STIMULUS\" ")
+      stop("st.attrib should contain columns LB and UB; otherwise, CONDITION should include \"PER STIMULUS\" ")
     }
-  } else if (length(ItemConstraints) > 0) {
-    setBased <- FALSE
+  } else if (length(item_constraints) > 0) {
+    set_based <- FALSE
     nv <- ni
-    ID <- ItemAttrib$ID
-    item.index.by.stimulus <- NULL
-    stimulus.index.by.item <- NULL
+    ID <- item.attrib$ID
+    item_index_by_stimulus <- NULL
+    stimulus_index_by_item <- NULL
   } else {
-    stop("Constraints must include at least one \"ITEM\" under WHAT; for stimulus-based, LB/UB should be specified for each stimulus.")
+    stop("constraints must include at least one \"ITEM\" under WHAT; for stimulus-based, LB/UB should be specified for each stimulus.")
   }
-  for (index in ItemConstraints) {
-    ListConstraints[[index]] <- new("constraint")
-    ListConstraints[[index]]@CONSTRAINT <- Constraints$CONSTRAINT[index]
-    ConstraintTypeIsValid <- FALSE
-    ListConstraints[[index]]@suspend <- Constraints$ONOFF[index] == "OFF"
-    if (Constraints$TYPE[index] %in% c("NUMBER", "COUNT")) {
-      ConstraintTypeIsValid <- TRUE
-      if (toupper(Constraints$CONDITION[index]) %in% c("", " ", "PER TEST", "TEST")) {
-        test.length.LB <- round(Constraints$LB[index])
-        test.length.UB <- round(Constraints$UB[index])
+  for (index in item_constraints) {
+    list_constraints[[index]] <- new("constraint")
+    list_constraints[[index]]@CONSTRAINT <- constraints$CONSTRAINT[index]
+    constraint_type_is_valid <- FALSE
+    list_constraints[[index]]@suspend <- constraints$ONOFF[index] == "OFF"
+    if (constraints$TYPE[index] %in% c("NUMBER", "COUNT")) {
+      constraint_type_is_valid <- TRUE
+      if (toupper(constraints$CONDITION[index]) %in% c("", " ", "PER TEST", "TEST")) {
+        test.length.LB <- round(constraints$LB[index])
+        test.length.UB <- round(constraints$UB[index])
         if (any(c(test.length.LB, test.length.UB) < 0) || test.length.LB > test.length.UB) {
           stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
         } else if (test.length.LB == test.length.UB) {
           testLength <- test.length.UB
-          ListConstraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
-          ListConstraints[[index]]@mat[1, 1:ni] <- 1
-          ListConstraints[[index]]@dir <- "=="
-          ListConstraints[[index]]@rhs <- test.length.UB
+          list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
+          list_constraints[[index]]@mat[1, 1:ni] <- 1
+          list_constraints[[index]]@dir <- "=="
+          list_constraints[[index]]@rhs <- test.length.UB
         } else {
           stop("LB and UB for ITEM NUMBER must be set equal.")
         }
-        if (setBased && !common.stimulus.length) {
-          n.LB.eq.UB <- sum(stimulus.length.LB == stimulus.length.UB)
-          n.LB.ne.UB <- sum(stimulus.length.LB != stimulus.length.UB)
+        if (set_based && !common_stimulus_length) {
+          n.LB.eq.UB <- sum(stimulus_length_LB == stimulus_length_UB)
+          n.LB.ne.UB <- sum(stimulus_length_LB != stimulus_length_UB)
           tmp.mat <- matrix(0, nrow = ns + n.LB.ne.UB, ncol = nv)
           tmp.dir <- character(ns + n.LB.ne.UB)
           tmp.rhs <- rep(0, ns + n.LB.ne.UB)
           tmp.index <- 1
           for (s in 1:ns) {
-            if (stimulus.length.LB[s] == stimulus.length.UB[s]) {
-              tmp.mat[tmp.index, item.index.by.stimulus[[s]]] <- 1
-              tmp.mat[tmp.index, ni + s] <- -stimulus.length.UB[s]
+            if (stimulus_length_LB[s] == stimulus_length_UB[s]) {
+              tmp.mat[tmp.index, item_index_by_stimulus[[s]]] <- 1
+              tmp.mat[tmp.index, ni + s] <- -stimulus_length_UB[s]
               tmp.dir[tmp.index] <- "=="
               tmp.index <- tmp.index + 1
-            } else if (stimulus.length.LB[s] < stimulus.length.UB[s]) {
-              tmp.mat[c(tmp.index, tmp.index + 1), item.index.by.stimulus[[s]]] <- 1
-              tmp.mat[tmp.index, ni + s] <- -stimulus.length.LB[s]
-              tmp.mat[tmp.index + 1, ni + s] <- -stimulus.length.UB[s]
+            } else if (stimulus_length_LB[s] < stimulus_length_UB[s]) {
+              tmp.mat[c(tmp.index, tmp.index + 1), item_index_by_stimulus[[s]]] <- 1
+              tmp.mat[tmp.index, ni + s] <- -stimulus_length_LB[s]
+              tmp.mat[tmp.index + 1, ni + s] <- -stimulus_length_UB[s]
               tmp.dir[tmp.index] <- ">="
               tmp.dir[tmp.index + 1] <- "<="
               tmp.index <- tmp.index + 2
@@ -388,396 +388,395 @@ LoadConstraints <- function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
               stop(sprintf("stimulus %s contains improper LB/UB (LB > UB)", s))
             }
           }
-          ListConstraints[[index]]@mat <- rbind(ListConstraints[[index]]@mat, tmp.mat)
-          ListConstraints[[index]]@dir <- c(ListConstraints[[index]]@dir, tmp.dir)
-          ListConstraints[[index]]@rhs <- c(ListConstraints[[index]]@rhs, tmp.rhs)
+          list_constraints[[index]]@mat <- rbind(list_constraints[[index]]@mat, tmp.mat)
+          list_constraints[[index]]@dir <- c(list_constraints[[index]]@dir, tmp.dir)
+          list_constraints[[index]]@rhs <- c(list_constraints[[index]]@rhs, tmp.rhs)
         }
-      } else if (toupper(Constraints$CONDITION[index]) %in% c("PER STIMULUS", "PER PASSAGE", "PER SET", "PER TESTLET")) {
-        if (!setBased) {
-          stop(sprintf("Constraints must include at least one \"STIMULUS\" under WHAT for CONDITION: %s", toupper(Constraints$CONDITION[index])))
+      } else if (toupper(constraints$CONDITION[index]) %in% c("PER STIMULUS", "PER PASSAGE", "PER SET", "PER TESTLET")) {
+        if (!set_based) {
+          stop(sprintf("constraints must include at least one \"STIMULUS\" under WHAT for CONDITION: %s", toupper(constraints$CONDITION[index])))
         }
-        stimulus.length.LB <- round(Constraints$LB[index])
-        stimulus.length.UB <- round(Constraints$UB[index])
-        if (any(c(stimulus.length.LB, stimulus.length.UB) < 0) || stimulus.length.LB > stimulus.length.UB) {
+        stimulus_length_LB <- round(constraints$LB[index])
+        stimulus_length_UB <- round(constraints$UB[index])
+        if (any(c(stimulus_length_LB, stimulus_length_UB) < 0) || stimulus_length_LB > stimulus_length_UB) {
           stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
-        } else if (stimulus.length.LB == stimulus.length.UB) {
-          ListConstraints[[index]]@mat <- matrix(0, nrow = ns, ncol = nv)
-          ListConstraints[[index]]@dir <- rep("==", ns)
-          ListConstraints[[index]]@rhs <- rep(0, ns)
+        } else if (stimulus_length_LB == stimulus_length_UB) {
+          list_constraints[[index]]@mat <- matrix(0, nrow = ns, ncol = nv)
+          list_constraints[[index]]@dir <- rep("==", ns)
+          list_constraints[[index]]@rhs <- rep(0, ns)
           for (s in 1:ns) {
-            ListConstraints[[index]]@mat[s, item.index.by.stimulus[[s]]] <- 1
-            ListConstraints[[index]]@mat[s, ni + s] <- -stimulus.length.UB
+            list_constraints[[index]]@mat[s, item_index_by_stimulus[[s]]] <- 1
+            list_constraints[[index]]@mat[s, ni + s] <- -stimulus_length_UB
           }
         } else {
-          ListConstraints[[index]]@mat <- matrix(0, nrow = ns * 2, ncol = nv)
-          ListConstraints[[index]]@dir <- rep(c(">=", "<="), ns)
-          ListConstraints[[index]]@rhs <- rep(0, ns * 2)
+          list_constraints[[index]]@mat <- matrix(0, nrow = ns * 2, ncol = nv)
+          list_constraints[[index]]@dir <- rep(c(">=", "<="), ns)
+          list_constraints[[index]]@rhs <- rep(0, ns * 2)
           for (s in 1:ns) {
-            ListConstraints[[index]]@mat[c(s * 2 - 1, s * 2), item.index.by.stimulus[[s]]] <- 1
-            ListConstraints[[index]]@mat[c(s * 2 - 1), ni + s] <- -stimulus.length.LB
-            ListConstraints[[index]]@mat[c(s * 2), ni + s] <- -stimulus.length.UB
+            list_constraints[[index]]@mat[c(s * 2 - 1, s * 2), item_index_by_stimulus[[s]]] <- 1
+            list_constraints[[index]]@mat[c(s * 2 - 1), ni + s] <- -stimulus_length_LB
+            list_constraints[[index]]@mat[c(s * 2), ni + s] <- -stimulus_length_UB
           }
         }
-      } else if (Constraints$CONDITION[index] %in% names(ItemAttrib)) {
-        condition <- unique(ItemAttrib[Constraints$CONDITION[index]])
+      } else if (constraints$CONDITION[index] %in% names(item.attrib)) {
+        condition <- unique(item.attrib[constraints$CONDITION[index]])
         condition <- condition[!is.na(condition)]
         if (length(condition) == 0) {
-          stop(sprintf("CONSTRAINT %s returned 0 items meeting CONDITION: %s", index, Constraints$CONDITION[index]))
+          stop(sprintf("CONSTRAINT %s returned 0 items meeting CONDITION: %s", index, constraints$CONDITION[index]))
         }
-        if (any(c(Constraints$LB[index], Constraints$UB[index]) < 0) || Constraints$LB[index] > Constraints$UB[index]) {
+        if (any(c(constraints$LB[index], constraints$UB[index]) < 0) || constraints$LB[index] > constraints$UB[index]) {
           stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
-        } else if (Constraints$LB[index] == Constraints$UB[index]) {
-          ListConstraints[[index]]@mat <- matrix(0, nrow = length(condition), ncol = nv)
-          ListConstraints[[index]]@dir <- rep("==", length(condition))
-          ListConstraints[[index]]@rhs <- rep(Constraints$UB[index], length(condition))
+        } else if (constraints$LB[index] == constraints$UB[index]) {
+          list_constraints[[index]]@mat <- matrix(0, nrow = length(condition), ncol = nv)
+          list_constraints[[index]]@dir <- rep("==", length(condition))
+          list_constraints[[index]]@rhs <- rep(constraints$UB[index], length(condition))
           for (m in 1:length(condition)) {
-            condition.met <- which(ItemAttrib[Constraints$CONDITION[index]] == condition[m])
-            ListConstraints[[index]]@mat[m, condition.met] <- 1
+            condition_met <- which(item.attrib[constraints$CONDITION[index]] == condition[m])
+            list_constraints[[index]]@mat[m, condition_met] <- 1
           }
-        } else if (Constraints$LB[index] <= Constraints$UB[index]) {
-          ListConstraints[[index]]@mat <- matrix(0, nrow = 2 * length(condition), ncol = nv)
-          ListConstraints[[index]]@dir <- rep(c(">=", "<="), length(condition))
-          ListConstraints[[index]]@rhs <- rep(c(Constraints$LB[index], Constraints$UB[index]), length(condition))
+        } else if (constraints$LB[index] <= constraints$UB[index]) {
+          list_constraints[[index]]@mat <- matrix(0, nrow = 2 * length(condition), ncol = nv)
+          list_constraints[[index]]@dir <- rep(c(">=", "<="), length(condition))
+          list_constraints[[index]]@rhs <- rep(c(constraints$LB[index], constraints$UB[index]), length(condition))
           for (m in 1:length(condition)) {
-            condition.met <- which(ItemAttrib[Constraints$CONDITION[index]] == condition[m])
-            ListConstraints[[index]]@mat[c(m * 2 - 1, m * 2), condition.met] <- 1
+            condition_met <- which(item.attrib[constraints$CONDITION[index]] == condition[m])
+            list_constraints[[index]]@mat[c(m * 2 - 1, m * 2), condition_met] <- 1
           }
         }
       } else {
-        condition.met <- which(with(ItemAttrib, eval(parse(text = Constraints$CONDITION[index]))))
-        if (length(condition.met) == 0) {
-          stop(sprintf("CONSTRAINT %s returned 0 items meeting CONDITION: %s", index, Constraints$CONDITION[index]))
+        condition_met <- which(with(item.attrib, eval(parse(text = constraints$CONDITION[index]))))
+        if (length(condition_met) == 0) {
+          stop(sprintf("CONSTRAINT %s returned 0 items meeting CONDITION: %s", index, constraints$CONDITION[index]))
         }
-        if (any(c(Constraints$LB[index], Constraints$UB[index]) < 0) || Constraints$LB[index] > Constraints$UB[index]) {
+        if (any(c(constraints$LB[index], constraints$UB[index]) < 0) || constraints$LB[index] > constraints$UB[index]) {
           stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
-        } else if (Constraints$LB[index] == Constraints$UB[index]) {
-          ListConstraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
-          ListConstraints[[index]]@mat[1, condition.met] <- 1
-          ListConstraints[[index]]@dir <- "=="
-          ListConstraints[[index]]@rhs <- Constraints$UB[index]
+        } else if (constraints$LB[index] == constraints$UB[index]) {
+          list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
+          list_constraints[[index]]@mat[1, condition_met] <- 1
+          list_constraints[[index]]@dir <- "=="
+          list_constraints[[index]]@rhs <- constraints$UB[index]
         } else {
-          ListConstraints[[index]]@mat <- matrix(0, nrow = 2, ncol = nv)
-          ListConstraints[[index]]@mat[, condition.met] <- 1
-          ListConstraints[[index]]@dir <- c(">=", "<=")
-          ListConstraints[[index]]@rhs <- c(Constraints$LB[index], Constraints$UB[index])
+          list_constraints[[index]]@mat <- matrix(0, nrow = 2, ncol = nv)
+          list_constraints[[index]]@mat[, condition_met] <- 1
+          list_constraints[[index]]@dir <- c(">=", "<=")
+          list_constraints[[index]]@rhs <- c(constraints$LB[index], constraints$UB[index])
         }
       }
     }
-    if (Constraints$TYPE[index] %in% c("SUM", "AVERAGE", "MEAN")) {
-      ConstraintTypeIsValid <- TRUE
-      if (!(Constraints$CONDITION[index] %in% names(ItemAttrib))) {
-        stop(sprintf("CONSTRAINT %s: %s not found in ItemAttrib:", index, Constraints$CONDITION[index]))
+    if (constraints$TYPE[index] %in% c("SUM", "AVERAGE", "MEAN")) {
+      constraint_type_is_valid <- TRUE
+      if (!(constraints$CONDITION[index] %in% names(item.attrib))) {
+        stop(sprintf("CONSTRAINT %s: %s not found in item.attrib:", index, constraints$CONDITION[index]))
       } else {
-        if (any(is.na(ItemAttrib[[Constraints$CONDITION[index]]]))) {
-          stop(sprintf("CONSTRAINT %s: %s must not have a missing value", index, Constraints$CONDITION[index]))
+        if (any(is.na(item.attrib[[constraints$CONDITION[index]]]))) {
+          stop(sprintf("CONSTRAINT %s: %s must not have a missing value", index, constraints$CONDITION[index]))
         }
-        if (any(c(Constraints$LB[index], Constraints$UB[index]) < 0) || Constraints$LB[index] > Constraints$UB[index]) {
+        if (any(c(constraints$LB[index], constraints$UB[index]) < 0) || constraints$LB[index] > constraints$UB[index]) {
           stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
-        } else if (Constraints$LB[index] == Constraints$UB[index]) {
-          ListConstraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
-          ListConstraints[[index]]@dir <- "<="
-          ListConstraints[[index]]@rhs <- Constraints$UB[index]
-          if (Constraints$TYPE[index] == "SUM") {
-            ListConstraints[[index]]@mat[1, 1:ni] <- ItemAttrib[[Constraints$CONDITION[index]]]
-          } else if (Constraints$TYPE[index] %in% c("AVERAGE", "MEAN")) {
-            ListConstraints[[index]]@mat[1, 1:ni] <- ItemAttrib[[Constraints$CONDITION[index]]] / test.length.UB
+        } else if (constraints$LB[index] == constraints$UB[index]) {
+          list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
+          list_constraints[[index]]@dir <- "<="
+          list_constraints[[index]]@rhs <- constraints$UB[index]
+          if (constraints$TYPE[index] == "SUM") {
+            list_constraints[[index]]@mat[1, 1:ni] <- item.attrib[[constraints$CONDITION[index]]]
+          } else if (constraints$TYPE[index] %in% c("AVERAGE", "MEAN")) {
+            list_constraints[[index]]@mat[1, 1:ni] <- item.attrib[[constraints$CONDITION[index]]] / test.length.UB
           }
         } else {
-          ListConstraints[[index]]@mat <- matrix(0, nrow = 2, ncol = nv)
-          ListConstraints[[index]]@dir <- c(">=", "<=")
-          ListConstraints[[index]]@rhs <- c(Constraints$LB[index], Constraints$UB[index])
-          if (Constraints$TYPE[index] == "SUM") {
-            ListConstraints[[index]]@mat[, 1:ni] <- ItemAttrib[[Constraints$CONDITION[index]]]
-          } else if (Constraints$TYPE[index] %in% c("AVERAGE", "MEAN")) {
-            ListConstraints[[index]]@mat[1, 1:ni] <- ItemAttrib[[Constraints$CONDITION[index]]] / test.length.UB
-            ListConstraints[[index]]@mat[2, 1:ni] <- ItemAttrib[[Constraints$CONDITION[index]]] / test.length.LB
+          list_constraints[[index]]@mat <- matrix(0, nrow = 2, ncol = nv)
+          list_constraints[[index]]@dir <- c(">=", "<=")
+          list_constraints[[index]]@rhs <- c(constraints$LB[index], constraints$UB[index])
+          if (constraints$TYPE[index] == "SUM") {
+            list_constraints[[index]]@mat[, 1:ni] <- item.attrib[[constraints$CONDITION[index]]]
+          } else if (constraints$TYPE[index] %in% c("AVERAGE", "MEAN")) {
+            list_constraints[[index]]@mat[1, 1:ni] <- item.attrib[[constraints$CONDITION[index]]] / test.length.UB
+            list_constraints[[index]]@mat[2, 1:ni] <- item.attrib[[constraints$CONDITION[index]]] / test.length.LB
           }
         }
       }
     }
-    if (Constraints$TYPE[index] == "INCLUDE") {
-      ConstraintTypeIsValid <- TRUE
-      condition.met <- which(with(ItemAttrib, eval(parse(text = Constraints$CONDITION[index]))))
-      if (length(condition.met) == 0) {
-        stop(sprintf("CONSTRAINT %s is invalid: %s returned 0 items", index, Constraints$CONDITION[index]))
+    if (constraints$TYPE[index] == "INCLUDE") {
+      constraint_type_is_valid <- TRUE
+      condition_met <- which(with(item.attrib, eval(parse(text = constraints$CONDITION[index]))))
+      if (length(condition_met) == 0) {
+        stop(sprintf("CONSTRAINT %s is invalid: %s returned 0 items", index, constraints$CONDITION[index]))
       } else {
-        ListConstraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
-        ListConstraints[[index]]@mat[1, condition.met] <- 1
-        ListConstraints[[index]]@dir <- "=="
-        if (setBased) {
-          stimulus.to.include <- unique(stimulus.index.by.item[condition.met])
-          stimulus.to.include <- stimulus.to.include[!is.na(stimulus.to.include)]
-          ListConstraints[[index]]@mat[1, ni + stimulus.to.include] <- 1
-          ListConstraints[[index]]@rhs <- length(condition.met) + length(stimulus.to.include)
+        list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
+        list_constraints[[index]]@mat[1, condition_met] <- 1
+        list_constraints[[index]]@dir <- "=="
+        if (set_based) {
+          stimulus_to_include <- unique(stimulus_index_by_item[condition_met])
+          stimulus_to_include <- stimulus_to_include[!is.na(stimulus_to_include)]
+          list_constraints[[index]]@mat[1, ni + stimulus_to_include] <- 1
+          list_constraints[[index]]@rhs <- length(condition_met) + length(stimulus_to_include)
         } else {
-          ListConstraints[[index]]@rhs <- length(condition.met)
+          list_constraints[[index]]@rhs <- length(condition_met)
         }
       }
     }
-    if (Constraints$TYPE[index] %in% c("EXCLUDE", "NOT", "NOT INCLUDE")) {
-      ConstraintTypeIsValid <- TRUE
-      condition.met <- which(with(ItemAttrib, eval(parse(text = Constraints$CONDITION[index]))))
-      if (length(condition.met) == 0) {
-        stop(sprintf("CONSTRAINT %s returned 0 items meeting CONDITION: %s", index, Constraints$CONDITION[index]))
+    if (constraints$TYPE[index] %in% c("EXCLUDE", "NOT", "NOT INCLUDE")) {
+      constraint_type_is_valid <- TRUE
+      condition_met <- which(with(item.attrib, eval(parse(text = constraints$CONDITION[index]))))
+      if (length(condition_met) == 0) {
+        stop(sprintf("CONSTRAINT %s returned 0 items meeting CONDITION: %s", index, constraints$CONDITION[index]))
       } else {
-        ListConstraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
-        ListConstraints[[index]]@mat[1, condition.met] <- 1
-        ListConstraints[[index]]@dir <- "=="
-        ListConstraints[[index]]@rhs <- 0
+        list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
+        list_constraints[[index]]@mat[1, condition_met] <- 1
+        list_constraints[[index]]@dir <- "=="
+        list_constraints[[index]]@rhs <- 0
       }
     }
-    if (Constraints$TYPE[index] %in% c("ALLORNONE", "ALL OR NONE", "IIF")) {
-      ConstraintTypeIsValid <- TRUE
-      condition.met <- which(with(ItemAttrib, eval(parse(text = Constraints$CONDITION[index]))))
-      n.met <- length(condition.met)
+    if (constraints$TYPE[index] %in% c("ALLORNONE", "ALL OR NONE", "IIF")) {
+      constraint_type_is_valid <- TRUE
+      condition_met <- which(with(item.attrib, eval(parse(text = constraints$CONDITION[index]))))
+      n.met <- length(condition_met)
       if (n.met < 2) {
-        stop(sprintf("CONSTRAINT %s is invalid: %s returned < 2 items", index, Constraints$CONDITION[index]))
+        stop(sprintf("CONSTRAINT %s is invalid: %s returned < 2 items", index, constraints$CONDITION[index]))
       } else {
-        ListConstraints[[index]]@mat <- matrix(0, nrow = (n.met * (n.met - 1)) / 2, ncol = nv)
-        ListConstraints[[index]]@dir <- rep("==", (n.met * (n.met - 1)) / 2)
-        ListConstraints[[index]]@rhs <- rep(0, (n.met * (n.met - 1)) / 2)
+        list_constraints[[index]]@mat <- matrix(0, nrow = (n.met * (n.met - 1)) / 2, ncol = nv)
+        list_constraints[[index]]@dir <- rep("==", (n.met * (n.met - 1)) / 2)
+        list_constraints[[index]]@rhs <- rep(0, (n.met * (n.met - 1)) / 2)
         tmp.index <- 0
-        for (i in condition.met) {
-          for (j in condition.met) {
+        for (i in condition_met) {
+          for (j in condition_met) {
             if (i < j) {
               tmp.index <- tmp.index + 1
-              ListConstraints[[index]]@mat[tmp.index, c(i, j)] <- c(1, -1)
+              list_constraints[[index]]@mat[tmp.index, c(i, j)] <- c(1, -1)
             }
           }
         }
       }
     }
-    if (Constraints$TYPE[index] %in% c("MUTUALLYEXCLUSIVE", "MUTUALLY EXCLUSIVE", "XOR", "ENEMY")) {
-      ConstraintTypeIsValid <- TRUE
-      condition.met <- which(with(ItemAttrib, eval(parse(text = Constraints$CONDITION[index]))))
-      if (length(condition.met) < 2) {
-        stop(sprintf("CONSTRAINT %s is invalid: %s returned < 2 items", index, Constraints$CONDITION[index]))
+    if (constraints$TYPE[index] %in% c("MUTUALLYEXCLUSIVE", "MUTUALLY EXCLUSIVE", "XOR", "ENEMY")) {
+      constraint_type_is_valid <- TRUE
+      condition_met <- which(with(item.attrib, eval(parse(text = constraints$CONDITION[index]))))
+      if (length(condition_met) < 2) {
+        stop(sprintf("CONSTRAINT %s is invalid: %s returned < 2 items", index, constraints$CONDITION[index]))
       } else {
-        ListConstraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
-        ListConstraints[[index]]@mat[1, condition.met] <- 1
-        ListConstraints[[index]]@dir <- "<="
-        ListConstraints[[index]]@rhs <- 1
+        list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
+        list_constraints[[index]]@mat[1, condition_met] <- 1
+        list_constraints[[index]]@dir <- "<="
+        list_constraints[[index]]@rhs <- 1
       }
     }
-    if (Constraints$TYPE[index] == "ORDER") {
-      ConstraintTypeIsValid <- TRUE
-      if (!ListConstraints[[index]]@suspend) {
-        if (Constraints$CONDITION[index] %in% names(ItemAttrib)) {
-          if (any(is.na(ItemAttrib[[Constraints$CONDITION[index]]]))) {
-            stop(sprintf("CONSTRAINT %s: %s must not have a missing value", index, Constraints$CONDITION[index]))
+    if (constraints$TYPE[index] == "ORDER") {
+      constraint_type_is_valid <- TRUE
+      if (!list_constraints[[index]]@suspend) {
+        if (constraints$CONDITION[index] %in% names(item.attrib)) {
+          if (any(is.na(item.attrib[[constraints$CONDITION[index]]]))) {
+            stop(sprintf("CONSTRAINT %s: %s must not have a missing value", index, constraints$CONDITION[index]))
           }
-          ItemOrder <- ItemAttrib[[Constraints$CONDITION[index]]]
-          ItemOrderBy <- Constraints$CONDITION[index]
+          item_order <- item.attrib[[constraints$CONDITION[index]]]
+          item_order_by <- constraints$CONDITION[index]
         } else {
-          stop(sprintf("CONSTRAINT %s is invalid: %s not found in ItemAttrib", index, Constraints$CONDITION[index]))
+          stop(sprintf("CONSTRAINT %s is invalid: %s not found in item.attrib", index, constraints$CONDITION[index]))
         }
       }
     }
-    if (!ConstraintTypeIsValid) {
-      stop(sprintf("CONSTRAINT %s, %s is not a valid constraint type", index, Constraints$TYPE[index]))
+    if (!constraint_type_is_valid) {
+      stop(sprintf("CONSTRAINT %s, %s is not a valid constraint type", index, constraints$TYPE[index]))
     }
-    ListConstraints[[index]]@nc <- nrow(ListConstraints[[index]]@mat)
+    list_constraints[[index]]@nc <- nrow(list_constraints[[index]]@mat)
   }
-  if (setBased) {
-    for (index in StimulusConstraints) {
-      ListConstraints[[index]] <- new("constraint")
-      ListConstraints[[index]]@CONSTRAINT <- Constraints$CONSTRAINT[index]
-      ConstraintTypeIsValid <- FALSE
-      ListConstraints[[index]]@suspend <- Constraints$ONOFF[index] == "OFF"
-      if (Constraints$TYPE[index] %in% c("NUMBER", "COUNT")) {
-        ConstraintTypeIsValid <- TRUE
-        if (toupper(Constraints$CONDITION[index]) %in% c("", " ", "PER TEST")) {
-          number.stimulus.LB <- round(Constraints$LB[index])
-          number.stimulus.UB <- round(Constraints$UB[index])
+  if (set_based) {
+    for (index in stim_constraints) {
+      list_constraints[[index]] <- new("constraint")
+      list_constraints[[index]]@CONSTRAINT <- constraints$CONSTRAINT[index]
+      constraint_type_is_valid <- FALSE
+      list_constraints[[index]]@suspend <- constraints$ONOFF[index] == "OFF"
+      if (constraints$TYPE[index] %in% c("NUMBER", "COUNT")) {
+        constraint_type_is_valid <- TRUE
+        if (toupper(constraints$CONDITION[index]) %in% c("", " ", "PER TEST")) {
+          number.stimulus.LB <- round(constraints$LB[index])
+          number.stimulus.UB <- round(constraints$UB[index])
           if (number.stimulus.LB == number.stimulus.UB) {
-            ListConstraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
-            ListConstraints[[index]]@mat[1, (ni + 1):nv] <- 1
-            ListConstraints[[index]]@dir <- "=="
-            ListConstraints[[index]]@rhs <- number.stimulus.UB
+            list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
+            list_constraints[[index]]@mat[1, (ni + 1):nv] <- 1
+            list_constraints[[index]]@dir <- "=="
+            list_constraints[[index]]@rhs <- number.stimulus.UB
           } else if (number.stimulus.LB < number.stimulus.UB) {
-            ListConstraints[[index]]@mat <- matrix(0, nrow = 2, ncol = nv)
-            ListConstraints[[index]]@mat[, (ni + 1):nv] <- 1
-            ListConstraints[[index]]@dir <- c(">=", "<=")
-            ListConstraints[[index]]@rhs <- c(number.stimulus.LB, number.stimulus.UB)
+            list_constraints[[index]]@mat <- matrix(0, nrow = 2, ncol = nv)
+            list_constraints[[index]]@mat[, (ni + 1):nv] <- 1
+            list_constraints[[index]]@dir <- c(">=", "<=")
+            list_constraints[[index]]@rhs <- c(number.stimulus.LB, number.stimulus.UB)
           } else {
             stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
           }
-        } else if (Constraints$CONDITION[index] %in% names(StAttrib)) {
-          condition <- unique(StAttrib[Constraints$CONDITION[index]])
+        } else if (constraints$CONDITION[index] %in% names(st.attrib)) {
+          condition <- unique(st.attrib[constraints$CONDITION[index]])
           condition <- condition[!is.na(condition)]
           if (length(condition) == 0) {
-            stop(sprintf("CONSTRAINT %s returned 0 items meeting CONDITION: %s", index, Constraints$CONDITION[index]))
+            stop(sprintf("CONSTRAINT %s returned 0 items meeting CONDITION: %s", index, constraints$CONDITION[index]))
           }
-          if (any(c(Constraints$LB[index], Constraints$UB[index]) < 0) || Constraints$LB[index] > Constraints$UB[index]) {
+          if (any(c(constraints$LB[index], constraints$UB[index]) < 0) || constraints$LB[index] > constraints$UB[index]) {
             stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
-          } else if (Constraints$LB[index] == Constraints$UB[index]) {
-            ListConstraints[[index]]@mat <- matrix(0, nrow = length(condition), ncol = nv)
-            ListConstraints[[index]]@dir <- rep("==", length(condition))
-            ListConstraints[[index]]@rhs <- rep(Constraints$UB[index], length(condition))
+          } else if (constraints$LB[index] == constraints$UB[index]) {
+            list_constraints[[index]]@mat <- matrix(0, nrow = length(condition), ncol = nv)
+            list_constraints[[index]]@dir <- rep("==", length(condition))
+            list_constraints[[index]]@rhs <- rep(constraints$UB[index], length(condition))
             for (m in 1:length(condition)) {
-              condition.met <- which(StAttrib[Constraints$CONDITION[index]] == condition[m])
-              ListConstraints[[index]]@mat[m, ni + condition.met] <- 1
+              condition_met <- which(st.attrib[constraints$CONDITION[index]] == condition[m])
+              list_constraints[[index]]@mat[m, ni + condition_met] <- 1
             }
-          } else if (Constraints$LB[index] <= Constraints$UB[index]) {
-            ListConstraints[[index]]@mat <- matrix(0, nrow = 2 * length(condition), ncol = nv)
-            ListConstraints[[index]]@dir <- rep(c(">=", "<="), length(condition))
-            ListConstraints[[index]]@rhs <- rep(c(Constraints$LB[index], Constraints$UB[index]), length(condition))
+          } else if (constraints$LB[index] <= constraints$UB[index]) {
+            list_constraints[[index]]@mat <- matrix(0, nrow = 2 * length(condition), ncol = nv)
+            list_constraints[[index]]@dir <- rep(c(">=", "<="), length(condition))
+            list_constraints[[index]]@rhs <- rep(c(constraints$LB[index], constraints$UB[index]), length(condition))
             for (m in 1:length(condition)) {
-              condition.met <- which(ItemAttrib[Constraints$CONDITION[index]] == condition[m])
-              ListConstraints[[index]]@mat[c(m * 2 - 1, m * 2), ni + condition.met] <- 1
+              condition_met <- which(item.attrib[constraints$CONDITION[index]] == condition[m])
+              list_constraints[[index]]@mat[c(m * 2 - 1, m * 2), ni + condition_met] <- 1
             }
           }
         } else {
-          condition.met <- which(with(StAttrib, eval(parse(text = Constraints$CONDITION[index]))))
-          if (length(condition.met) == 0) {
-            stop(sprintf("CONSTRAINT %s returned 0 items meeting CONDITION: %s", index, Constraints$CONDITION[index]))
+          condition_met <- which(with(st.attrib, eval(parse(text = constraints$CONDITION[index]))))
+          if (length(condition_met) == 0) {
+            stop(sprintf("CONSTRAINT %s returned 0 items meeting CONDITION: %s", index, constraints$CONDITION[index]))
           }
-          if (any(c(Constraints$LB[index], Constraints$UB[index]) < 0) || Constraints$LB[index] > Constraints$UB[index]) {
+          if (any(c(constraints$LB[index], constraints$UB[index]) < 0) || constraints$LB[index] > constraints$UB[index]) {
             stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
-          } else if (Constraints$LB[index] == Constraints$UB[index]) {
-            ListConstraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
-            ListConstraints[[index]]@mat[1, ni + condition.met] <- 1
-            ListConstraints[[index]]@dir <- "=="
-            ListConstraints[[index]]@rhs <- Constraints$UB[index]
+          } else if (constraints$LB[index] == constraints$UB[index]) {
+            list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
+            list_constraints[[index]]@mat[1, ni + condition_met] <- 1
+            list_constraints[[index]]@dir <- "=="
+            list_constraints[[index]]@rhs <- constraints$UB[index]
           } else {
-            ListConstraints[[index]]@mat <- matrix(0, nrow = 2, ncol = nv)
-            ListConstraints[[index]]@mat[, ni + condition.met] <- 1
-            ListConstraints[[index]]@dir <- c(">=", "<=")
-            ListConstraints[[index]]@rhs <- c(Constraints$LB[index], Constraints$UB[index])
+            list_constraints[[index]]@mat <- matrix(0, nrow = 2, ncol = nv)
+            list_constraints[[index]]@mat[, ni + condition_met] <- 1
+            list_constraints[[index]]@dir <- c(">=", "<=")
+            list_constraints[[index]]@rhs <- c(constraints$LB[index], constraints$UB[index])
           }
         }
       }
-      if (Constraints$TYPE[index] %in% c("SUM", "AVERAGE", "MEAN")) {
-        ConstraintTypeIsValid <- TRUE
-        if (!(Constraints$CONDITION[index] %in% names(StAttrib))) {
-          stop(sprintf("CONSTRAINT %s has invalid: %s not found in ItemAttrib:", index, Constraints$CONDITION[index]))
+      if (constraints$TYPE[index] %in% c("SUM", "AVERAGE", "MEAN")) {
+        constraint_type_is_valid <- TRUE
+        if (!(constraints$CONDITION[index] %in% names(st.attrib))) {
+          stop(sprintf("CONSTRAINT %s has invalid: %s not found in item.attrib:", index, constraints$CONDITION[index]))
         } else {
-          if (any(is.na(StAttrib[[Constraints$CONDITION[index]]]))) {
-            stop(sprintf("CONSTRAINT %s: %s must not have a missing value", index, Constraints$CONDITION[index]))
+          if (any(is.na(st.attrib[[constraints$CONDITION[index]]]))) {
+            stop(sprintf("CONSTRAINT %s: %s must not have a missing value", index, constraints$CONDITION[index]))
           }
-          if (any(c(Constraints$LB[index], Constraints$UB[index]) < 0) || Constraints$LB[index] > Constraints$UB[index]) {
+          if (any(c(constraints$LB[index], constraints$UB[index]) < 0) || constraints$LB[index] > constraints$UB[index]) {
             stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
-          } else if (Constraints$LB[index] == Constraints$UB[index]) {
-            ListConstraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
-            ListConstraints[[index]]@dir <- "<="
-            ListConstraints[[index]]@rhs <- Constraints$UB[index]
-            if (Constraints$TYPE[index] == "SUM") {
-              ListConstraints[[index]]@mat[1, (ni + 1):nv] <- StAttrib[[Constraints$CONDITION[index]]]
-            } else if (Constraints$TYPE[index] %in% c("AVERAGE", "MEAN")) {
-              ListConstraints[[index]]@mat[1, (ni + 1):nv] <- StAttrib[[Constraints$CONDITION[index]]] / number.stimulus.UB
+          } else if (constraints$LB[index] == constraints$UB[index]) {
+            list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
+            list_constraints[[index]]@dir <- "<="
+            list_constraints[[index]]@rhs <- constraints$UB[index]
+            if (constraints$TYPE[index] == "SUM") {
+              list_constraints[[index]]@mat[1, (ni + 1):nv] <- st.attrib[[constraints$CONDITION[index]]]
+            } else if (constraints$TYPE[index] %in% c("AVERAGE", "MEAN")) {
+              list_constraints[[index]]@mat[1, (ni + 1):nv] <- st.attrib[[constraints$CONDITION[index]]] / number.stimulus.UB
             }
           } else {
-            ListConstraints[[index]]@mat <- matrix(0, nrow = 2, ncol = nv)
-            ListConstraints[[index]]@dir <- c(">=", "<=")
-            ListConstraints[[index]]@rhs <- c(Constraints$LB[index], Constraints$UB[index])
-            if (Constraints$TYPE[index] == "SUM") {
-              ListConstraints[[index]]@mat[, (ni + 1):nv] <- StAttrib[[Constraints$CONDITION[index]]]
-            } else if (Constraints$TYPE[index] %in% c("AVERAGE", "MEAN")) {
-              ListConstraints[[index]]@mat[1, (ni + 1):nv] <- StAttrib[[Constraints$CONDITION[index]]] / number.stimulus.UB
-              ListConstraints[[index]]@mat[2, (ni + 1):nv] <- StAttrib[[Constraints$CONDITION[index]]] / number.stimulus.LB
+            list_constraints[[index]]@mat <- matrix(0, nrow = 2, ncol = nv)
+            list_constraints[[index]]@dir <- c(">=", "<=")
+            list_constraints[[index]]@rhs <- c(constraints$LB[index], constraints$UB[index])
+            if (constraints$TYPE[index] == "SUM") {
+              list_constraints[[index]]@mat[, (ni + 1):nv] <- st.attrib[[constraints$CONDITION[index]]]
+            } else if (constraints$TYPE[index] %in% c("AVERAGE", "MEAN")) {
+              list_constraints[[index]]@mat[1, (ni + 1):nv] <- st.attrib[[constraints$CONDITION[index]]] / number.stimulus.UB
+              list_constraints[[index]]@mat[2, (ni + 1):nv] <- st.attrib[[constraints$CONDITION[index]]] / number.stimulus.LB
             }
           }
         }
       }
-      if (Constraints$TYPE[index] == "INCLUDE") {
-        ConstraintTypeIsValid <- TRUE
-        condition.met <- which(with(StAttrib, eval(parse(text = Constraints$CONDITION[index]))))
-        if (length(condition.met) == 0) {
-          stop(sprintf("CONSTRAINT %s is invalid: %s returned 0 items", index, Constraints$CONDITION[index]))
+      if (constraints$TYPE[index] == "INCLUDE") {
+        constraint_type_is_valid <- TRUE
+        condition_met <- which(with(st.attrib, eval(parse(text = constraints$CONDITION[index]))))
+        if (length(condition_met) == 0) {
+          stop(sprintf("CONSTRAINT %s is invalid: %s returned 0 items", index, constraints$CONDITION[index]))
         } else {
-          ListConstraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
-          ListConstraints[[index]]@mat[1, ni + condition.met] <- 1
-          ListConstraints[[index]]@dir <- "=="
-          ListConstraints[[index]]@rhs <- length(condition.met)
+          list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
+          list_constraints[[index]]@mat[1, ni + condition_met] <- 1
+          list_constraints[[index]]@dir <- "=="
+          list_constraints[[index]]@rhs <- length(condition_met)
         }
       }
-      if (Constraints$TYPE[index] %in% c("EXCLUDE", "NOT", "NOT INCLUDE")) {
-        ConstraintTypeIsValid <- TRUE
-        condition.met <- which(with(StAttrib, eval(parse(text = Constraints$CONDITION[index]))))
-        if (length(condition.met) == 0) {
-          stop(sprintf("CONSTRAINT %s returned 0 items meeting CONDITION: %s", index, Constraints$CONDITION[index]))
+      if (constraints$TYPE[index] %in% c("EXCLUDE", "NOT", "NOT INCLUDE")) {
+        constraint_type_is_valid <- TRUE
+        condition_met <- which(with(st.attrib, eval(parse(text = constraints$CONDITION[index]))))
+        if (length(condition_met) == 0) {
+          stop(sprintf("CONSTRAINT %s returned 0 items meeting CONDITION: %s", index, constraints$CONDITION[index]))
         } else {
-          ListConstraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
-          ListConstraints[[index]]@mat[1, ni + condition.met] <- 1
-          ListConstraints[[index]]@dir <- "=="
-          ListConstraints[[index]]@rhs <- 0
-          for (s in condition.met) {
-            ListConstraints[[index]]@mat[1, item.index.by.stimulus[[s]]] <- 1
+          list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
+          list_constraints[[index]]@mat[1, ni + condition_met] <- 1
+          list_constraints[[index]]@dir <- "=="
+          list_constraints[[index]]@rhs <- 0
+          for (s in condition_met) {
+            list_constraints[[index]]@mat[1, item_index_by_stimulus[[s]]] <- 1
           }
         }
       }
-      if (Constraints$TYPE[index] %in% c("ALLORNONE", "ALL OR NONE", "IIF")) {
-        ConstraintTypeIsValid <- TRUE
-        condition.met <- which(with(StAttrib, eval(parse(text = Constraints$CONDITION[index]))))
-        n.met <- length(condition.met)
+      if (constraints$TYPE[index] %in% c("ALLORNONE", "ALL OR NONE", "IIF")) {
+        constraint_type_is_valid <- TRUE
+        condition_met <- which(with(st.attrib, eval(parse(text = constraints$CONDITION[index]))))
+        n.met <- length(condition_met)
         if (n.met < 2) {
-          stop(sprintf("CONSTRAINT %s is invalid: %s returned < 2 stimuli", index, Constraints$CONDITION[index]))
+          stop(sprintf("CONSTRAINT %s is invalid: %s returned < 2 stimuli", index, constraints$CONDITION[index]))
         } else {
-          ListConstraints[[index]]@mat <- matrix(0, nrow = (n.met * (n.met - 1)) / 2, ncol = nv)
-          ListConstraints[[index]]@dir <- rep("==", (n.met * (n.met - 1)) / 2)
-          ListConstraints[[index]]@rhs <- rep(0, (n.met * (n.met - 1)) / 2)
+          list_constraints[[index]]@mat <- matrix(0, nrow = (n.met * (n.met - 1)) / 2, ncol = nv)
+          list_constraints[[index]]@dir <- rep("==", (n.met * (n.met - 1)) / 2)
+          list_constraints[[index]]@rhs <- rep(0, (n.met * (n.met - 1)) / 2)
           tmp.index <- 0
-          for (i in condition.met) {
-            for (j in condition.met) {
+          for (i in condition_met) {
+            for (j in condition_met) {
               if (i < j) {
                 tmp.index <- tmp.index + 1
-                ListConstraints[[index]]@mat[tmp.index, ni + c(i, j)] <- c(1, -1)
+                list_constraints[[index]]@mat[tmp.index, ni + c(i, j)] <- c(1, -1)
               }
             }
           }
         }
       }
-      if (Constraints$TYPE[index] %in% c("MUTUALLYEXCLUSIVE", "MUTUALLY EXCLUSIVE", "XOR", "ENEMY")) {
-        ConstraintTypeIsValid <- TRUE
-        condition.met <- which(with(StAttrib, eval(parse(text = Constraints$CONDITION[index]))))
-        if (length(condition.met) < 2) {
-          stop(sprintf("CONSTRAINT %s is invalid: %s returned < 2 stimuli", index, Constraints$CONDITION[index]))
+      if (constraints$TYPE[index] %in% c("MUTUALLYEXCLUSIVE", "MUTUALLY EXCLUSIVE", "XOR", "ENEMY")) {
+        constraint_type_is_valid <- TRUE
+        condition_met <- which(with(st.attrib, eval(parse(text = constraints$CONDITION[index]))))
+        if (length(condition_met) < 2) {
+          stop(sprintf("CONSTRAINT %s is invalid: %s returned < 2 stimuli", index, constraints$CONDITION[index]))
         } else {
-          ListConstraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
-          ListConstraints[[index]]@mat[1, ni + condition.met] <- 1
-          ListConstraints[[index]]@dir <- "<="
-          ListConstraints[[index]]@rhs <- 1
+          list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
+          list_constraints[[index]]@mat[1, ni + condition_met] <- 1
+          list_constraints[[index]]@dir <- "<="
+          list_constraints[[index]]@rhs <- 1
         }
       }
-      if (Constraints$TYPE[index] == "ORDER") {
-        ConstraintTypeIsValid <- TRUE
-        if (!ListConstraints[[index]]@suspend) {
-          if (Constraints$CONDITION[index] %in% names(StAttrib)) {
-            if (any(is.na(StAttrib[[Constraints$CONDITION[index]]]))) {
-              stop(sprintf("CONSTRAINT %s: %s must not have a missing value", index, Constraints$CONDITION[index]))
+      if (constraints$TYPE[index] == "ORDER") {
+        constraint_type_is_valid <- TRUE
+        if (!list_constraints[[index]]@suspend) {
+          if (constraints$CONDITION[index] %in% names(st.attrib)) {
+            if (any(is.na(st.attrib[[constraints$CONDITION[index]]]))) {
+              stop(sprintf("CONSTRAINT %s: %s must not have a missing value", index, constraints$CONDITION[index]))
             }
-            StimulusOrder <- StAttrib[[Constraints$CONDITION[index]]]
-            StimulusOrderBy <- Constraints$CONDITION[index]
+            stim_order <- st.attrib[[constraints$CONDITION[index]]]
+            stim_order_by <- constraints$CONDITION[index]
           } else {
-            stop(sprintf("CONSTRAINT %s is invalid: %s not found in StAttrib", index, Constraints$CONDITION[index]))
+            stop(sprintf("CONSTRAINT %s is invalid: %s not found in st.attrib", index, constraints$CONDITION[index]))
           }
         }
       }
-      if (!ConstraintTypeIsValid) {
-        stop(sprintf("CONSTRAINT %s, %s is not a valid constraint type", index, Constraints$TYPE[index]))
+      if (!constraint_type_is_valid) {
+        stop(sprintf("CONSTRAINT %s, %s is not a valid constraint type", index, constraints$TYPE[index]))
       }
-      ListConstraints[[index]]@nc <- nrow(ListConstraints[[index]]@mat)
+      list_constraints[[index]]@nc <- nrow(list_constraints[[index]]@mat)
     }
   }
-  INDEX <- NULL
-  MAT <- NULL
-  DIR <- NULL
-  RHS <- NULL
+  index <- NULL
+  mat <- NULL
+  dir <- NULL
+  rhs <- NULL
   for (index in 1:nc) {
-    if (Constraints$TYPE[index] != "ORDER" && !ListConstraints[[index]]@suspend) {
-      ListConstraints[[index]]@nc <- nrow(ListConstraints[[index]]@mat)
-      MAT <- rbind(MAT, ListConstraints[[index]]@mat)
-      DIR <- c(DIR, ListConstraints[[index]]@dir)
-      RHS <- c(RHS, ListConstraints[[index]]@rhs)
-      INDEX <- c(INDEX, rep(Constraints$CONSTRAINT[index], ListConstraints[[index]]@nc))
+    if (constraints$TYPE[index] != "ORDER" && !list_constraints[[index]]@suspend) {
+      list_constraints[[index]]@nc <- nrow(list_constraints[[index]]@mat)
+      mat <- rbind(mat, list_constraints[[index]]@mat)
+      dir <- c(dir, list_constraints[[index]]@dir)
+      rhs <- c(rhs, list_constraints[[index]]@rhs)
+      index <- c(index, rep(constraints$CONSTRAINT[index], list_constraints[[index]]@nc))
     }
   }
   out <- list(
-    Constraints = Constraints, ListConstraints = ListConstraints, pool = pool, ItemAttrib = ItemAttrib, StAttrib = StAttrib,
-    testLength = testLength, nv = nv, ni = ni, ns = ns, ID = ID, INDEX = INDEX, MAT = MAT, DIR = DIR, RHS = RHS, setBased = setBased,
-    ItemOrder = ItemOrder, ItemOrderBy = ItemOrderBy, StimulusOrder = StimulusOrder, StimulusOrderBy = StimulusOrderBy,
-    ItemIndexByStimulus = item.index.by.stimulus, StimulusIndexByItem = stimulus.index.by.item
-  )
+    constraints = constraints, listConstraints = list_constraints, pool = pool, itemAttrib = item.attrib, stAttrib = st.attrib,
+    testLength = test_length, nv = nv, ni = ni, ns = ns, id = id, index = index, mat = mat, dir = dir, rhs = rhs, set_based = set_based,
+    itemOrder = item_order, itemOrderBy = item_order_by, stimOrder = stim_order, stimOrderBy = stim_order_by,
+    itemIndexByStimulus = item_index_by_stimulus, stimulusIndexByItem = stimulus_index_by_item)
   return(out)
 }
 
@@ -785,7 +784,7 @@ LoadConstraints <- function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
 #'
 #' Update the onstraints list
 #'
-#' @param object a list object returned from \code{\link{LoadConstraints}}
+#' @param object a list object returned from \code{\link{loadConstraints}}
 #' @param on a vector of constraints index to turn on.
 #' @param off a vector of constraints index to turn off.
 #'
@@ -793,13 +792,13 @@ LoadConstraints <- function(file.csv, pool, ItemAttrib, StAttrib = NULL) {
 #'
 #' @export
 
-UpdateConstraints <- function(object, on = NULL, off = NULL) {
-  nc <- nrow(object$Constraints)
+updateConstraints <- function(object, on = NULL, off = NULL) {
+  nc <- nrow(object$constraints)
   if (length(intersect(on, off)) > 0) {
     stop("the on- and off-vectors cannot contain a common constraint index")
   }
-  if (!"ONOFF" %in% names(object$Constraints)) {
-    object$Constraints$ONOFF <- ""
+  if (!"ONOFF" %in% names(object$constraints)) {
+    object$constraints$ONOFF <- ""
   }
   if (!is.null(on)) {
     if (any(!is.element(on, 1:nc))) {
@@ -807,7 +806,7 @@ UpdateConstraints <- function(object, on = NULL, off = NULL) {
     }
     for (index in on) {
       object$ListConstraints[[index]]@suspend <- FALSE
-      object$Constraints[index, "ONOFF"] <- ""
+      object$constraints[index, "ONOFF"] <- ""
     }
   }
   if (!is.null(off)) {
@@ -816,26 +815,26 @@ UpdateConstraints <- function(object, on = NULL, off = NULL) {
     }
     for (index in off) {
       object$ListConstraints[[index]]@suspend <- TRUE
-      object$Constraints[index, "ONOFF"] <- "OFF"
+      object$constraints[index, "ONOFF"] <- "OFF"
     }
   }
-  INDEX <- NULL
-  MAT <- NULL
-  DIR <- NULL
-  RHS <- NULL
+  index <- NULL
+  mat <- NULL
+  dir <- NULL
+  rhs <- NULL
   for (index in 1:nc) {
-    if (object$Constraints$TYPE[index] != "ORDER" && !object$ListConstraints[[index]]@suspend) {
+    if (object$constraints$TYPE[index] != "ORDER" && !object$ListConstraints[[index]]@suspend) {
       object$ListConstraints[[index]]@nc <- nrow(object$ListConstraints[[index]]@mat)
-      MAT <- rbind(MAT, object$ListConstraints[[index]]@mat)
-      DIR <- c(DIR, object$ListConstraints[[index]]@dir)
-      RHS <- c(RHS, object$ListConstraints[[index]]@rhs)
-      INDEX <- c(INDEX, rep(object$Constraints$CONSTRAINT[index], object$ListConstraints[[index]]@nc))
+      mat <- rbind(mat, object$ListConstraints[[index]]@mat)
+      dir <- c(dir, object$ListConstraints[[index]]@dir)
+      rhs <- c(rhs, object$ListConstraints[[index]]@rhs)
+      index <- c(index, rep(object$constraints$CONSTRAINT[index], object$ListConstraints[[index]]@nc))
     }
   }
-  object$INDEX <- INDEX
-  object$MAT <- MAT
-  object$DIR <- DIR
-  object$RHS <- RHS
+  object$index <- index
+  object$mat <- mat
+  object$dir <- dir
+  object$rhs <- rhs
   return(object)
 }
 
@@ -844,21 +843,21 @@ UpdateConstraints <- function(object, on = NULL, off = NULL) {
 #' Read constraints from specified files.
 #'
 #' @param pool An \code{item.pool} object. Use \code{\link{LoadItemPool}} for this.
-#' @param file.Constraints Character. The name of the file containing constraint specifications.
-#' @param file.ItemAttrib Character. The name of the file containing item attributes.
-#' @param file.StAttrib (Optional) Character. The name of the file containing set attributes.
+#' @param file.constraints Character. The name of the file containing constraint specifications.
+#' @param file.item.attrib Character. The name of the file containing item attributes.
+#' @param file.st.attrib (Optional) Character. The name of the file containing set attributes.
 #'
 #' @return A list containing the parsed constraints, to be used in \code{\link{ATA}} and \code{\link{Shadow}}.
 #'
 #' @export
 
-BuildConstraints <- function(pool, file.Constraints, file.ItemAttrib, file.StAttrib = NULL) {
-  ItemAttrib <- LoadItemAttrib(file.ItemAttrib, pool)
-  if (!is.null(file.StAttrib)) {
-    StAttrib <- LoadStAttrib(file.StAttrib, ItemAttrib)
+buildConstraints <- function(pool, file.constraints, file.item.attrib, file.st.attrib = NULL) {
+  item_attrib <- loadItemAttrib(file.item.attrib, pool)
+  if (!is.null(file.st.attrib)) {
+    st_attrib <- loadStAttrib(file.st.attrib, item_attrib)
   } else {
-    StAttrib <- NULL
+    st_attrib <- NULL
   }
-  Constraints <- LoadConstraints(file.Constraints, pool, ItemAttrib, StAttrib)
-  return(Constraints)
+  constraints <- loadConstraints(file.constraints, pool, item_attrib, st_attrib)
+  return(constraints)
 }

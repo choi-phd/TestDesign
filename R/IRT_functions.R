@@ -1,4 +1,4 @@
-msg.missing.theta <- "Argument 'theta' is empty, or contains missing values."
+msg_missing_theta <- "Argument 'theta' is empty, or contains missing values."
 
 #' Calculate item response probabilities
 #'
@@ -124,11 +124,11 @@ setMethod(
   signature = c("item.pool", "numeric"),
   definition = function(object, theta) {
     if (length(theta) > 0 && all(!is.na(theta))) {
-      Prob <- lapply(object@parms, calcProb, theta)
+      prob <- lapply(object@parms, calcProb, theta)
     } else {
-      stop(msg.missing.theta)
+      stop(msg_missing_theta)
     }
-    return(Prob)
+    return(prob)
   }
 )
 
@@ -203,9 +203,9 @@ setMethod(
   f = "calcEscore",
   signature = c("item.pc", "numeric"),
   definition = function(object, theta) {
-    prob <- calcProb(object, theta)
-    expected.score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
-    return(expected.score)
+    prob           <- calcProb(object, theta)
+    expected_score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
+    return(expected_score)
   }
 )
 
@@ -219,9 +219,9 @@ setMethod(
   f = "calcEscore",
   signature = c("item.gpc", "numeric"),
   definition = function(object, theta) {
-    prob <- calcProb(object, theta)
-    expected.score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
-    return(expected.score)
+    prob           <- calcProb(object, theta)
+    expected_score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
+    return(expected_score)
   }
 )
 
@@ -235,9 +235,9 @@ setMethod(
   f = "calcEscore",
   signature = c("item.gr", "numeric"),
   definition = function(object, theta) {
-    prob <- calcProb(object, theta)
-    expected.score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
-    return(expected.score)
+    prob           <- calcProb(object, theta)
+    expected_score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
+    return(expected_score)
   }
 )
 
@@ -250,11 +250,11 @@ setMethod(
   signature = c("item.pool", "numeric"),
   definition = function(object, theta) {
     if (length(theta) > 0 && all(!is.na(theta))) {
-      expected.score <- as.vector(Reduce("+", lapply(object@parms, calcEscore, theta)))
+      expected_score <- as.vector(Reduce("+", lapply(object@parms, calcEscore, theta)))
     } else {
-      stop(msg.missing.theta)
+      stop(msg_missing_theta)
     }
-    return(expected.score)
+    return(expected_score)
   }
 )
 
@@ -287,8 +287,8 @@ setMethod(
   f = "calcFisher",
   signature = c("item.1pl", "numeric"),
   definition = function(object, theta) {
-    fisher.info <- array_info_1pl(theta, object@difficulty)
-    return(fisher.info)
+    fisher_info <- array_info_1pl(theta, object@difficulty)
+    return(fisher_info)
   }
 )
 
@@ -302,8 +302,8 @@ setMethod(
   f = "calcFisher",
   signature = c("item.2pl", "numeric"),
   definition = function(object, theta) {
-    fisher.info <- array_info_2pl(theta, object@slope, object@difficulty)
-    return(fisher.info)
+    fisher_info <- array_info_2pl(theta, object@slope, object@difficulty)
+    return(fisher_info)
   }
 )
 
@@ -317,8 +317,8 @@ setMethod(
   f = "calcFisher",
   signature = c("item.3pl", "numeric"),
   definition = function(object, theta) {
-    fisher.info <- array_info_3pl(theta, object@slope, object@difficulty, object@guessing)
-    return(fisher.info)
+    fisher_info <- array_info_3pl(theta, object@slope, object@difficulty, object@guessing)
+    return(fisher_info)
   }
 )
 
@@ -331,8 +331,8 @@ setMethod(
   f = "calcFisher",
   signature = c("item.pc", "numeric"),
   definition = function(object, theta) {
-    fisher.info <- array_info_pc(theta, object@threshold)
-    return(fisher.info)
+    fisher_info <- array_info_pc(theta, object@threshold)
+    return(fisher_info)
   }
 )
 
@@ -346,8 +346,8 @@ setMethod(
   f = "calcFisher",
   signature = c("item.gpc", "numeric"),
   definition = function(object, theta) {
-    fisher.info <- array_info_gpc(theta, object@slope, object@threshold)
-    return(fisher.info)
+    fisher_info <- array_info_gpc(theta, object@slope, object@threshold)
+    return(fisher_info)
   }
 )
 
@@ -361,8 +361,8 @@ setMethod(
   f = "calcFisher",
   signature = c("item.gr", "numeric"),
   definition = function(object, theta) {
-    fisher.info <- array_info_gr(theta, object@slope, object@category)
-    return(fisher.info)
+    fisher_info <- array_info_gr(theta, object@slope, object@category)
+    return(fisher_info)
   }
 )
 
@@ -375,14 +375,14 @@ setMethod(
   signature = c("item.pool", "numeric"),
   definition = function(object, theta) {
     if (length(theta) > 0 && all(!is.na(theta))) {
-      fisher.info <- matrix(NA, length(theta), object@ni)
+      fisher_info <- matrix(NA, length(theta), object@ni)
       for (i in 1:object@ni) {
-        fisher.info[, i] <- calcFisher(object@parms[[i]], theta)
+        fisher_info[, i] <- calcFisher(object@parms[[i]], theta)
       }
     } else {
-      stop(msg.missing.theta)
+      stop(msg_missing_theta)
     }
-    return(fisher.info)
+    return(fisher_info)
   }
 )
 
@@ -393,11 +393,11 @@ setMethod(
   signature = c("pool.cluster", "numeric"),
   definition = function(object, theta) {
     if (length(theta) > 0 && all(!is.na(theta))) {
-      prob.list <- lapply(object@pools, calcProb, theta)
+      prob <- lapply(object@pools, calcProb, theta)
     } else {
-      stop(msg.missing.theta)
+      stop(msg_missing_theta)
     }
-    return(prob.list)
+    return(prob)
   }
 )
 
@@ -408,11 +408,11 @@ setMethod(
   signature = c("pool.cluster", "numeric"),
   definition = function(object, theta) {
     if (length(theta) > 0 && all(!is.na(theta))) {
-      expected.score <- lapply(object@pools, calcEscore, theta)
+      expected_score <- lapply(object@pools, calcEscore, theta)
     } else {
-      stop(msg.missing.theta)
+      stop(msg_missing_theta)
     }
-    return(expected.score)
+    return(expected_score)
   }
 )
 
@@ -424,14 +424,14 @@ setMethod(
   signature = c("pool.cluster", "numeric"),
   definition = function(object, theta) {
     if (length(theta) > 0 && all(!is.na(theta))) {
-      fisher.info.list <- vector(mode = "list", length = object@np)
+      fisher_info <- vector(mode = "list", length = object@np)
       for (i in 1:object@np) {
-        fisher.info.list[[i]] <- calcFisher(object@pools[[i]], theta)
+        fisher_info[[i]] <- calcFisher(object@pools[[i]], theta)
       }
     } else {
-      stop(msg.missing.theta)
+      stop(msg_missing_theta)
     }
-    return(fisher.info.list)
+    return(fisher_info)
   }
 )
 
@@ -547,8 +547,8 @@ setMethod(
   f = "calcLocation",
   signature = c("item.pool"),
   definition = function(object) {
-    Location <- lapply(object@parms, calcLocation)
-    return(Location)
+    location <- lapply(object@parms, calcLocation)
+    return(location)
   }
 )
 
@@ -558,8 +558,8 @@ setMethod(
   f = "calcLocation",
   signature = c("pool.cluster"),
   definition = function(object) {
-    LocationL <- lapply(object@pools, calcLocation)
-    return(LocationL)
+    location <- lapply(object@pools, calcLocation)
+    return(location)
   }
 )
 
@@ -641,10 +641,10 @@ setMethod(
   signature = c("item.pc", "numeric"),
   definition = function(object, theta) {
     prob           <- calcProb(object, theta)
-    expected.score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
+    expected_score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
     derivative     <- numeric(length(theta))
     for (k in 1:object@ncat) {
-      derivative <- derivative + prob[, k] * (k - expected.score) * k
+      derivative <- derivative + prob[, k] * (k - expected_score) * k
     }
     return(derivative)
   }
@@ -661,10 +661,10 @@ setMethod(
   signature = c("item.gpc", "numeric"),
   definition = function(object, theta) {
     prob           <- calcProb(object, theta)
-    expected.score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
+    expected_score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
     derivative     <- numeric(length(theta))
     for (k in 1:object@ncat) {
-      derivative <- derivative + object@slope * prob[, k] * (k - expected.score) * k
+      derivative <- derivative + object@slope * prob[, k] * (k - expected_score) * k
     }
     return(derivative)
   }
@@ -709,7 +709,7 @@ setMethod(
         derivative[, i] <- calcDerivative(object@parms[[i]], theta)
       }
     } else {
-      stop(msg.missing.theta)
+      stop(msg_missing_theta)
     }
     return(derivative)
   }
@@ -727,7 +727,7 @@ setMethod(
         derivative[[i]] <- calcFisher(object@pools[[i]], theta)
       }
     } else {
-      stop(msg.missing.theta)
+      stop(msg_missing_theta)
     }
     return(derivative)
   }
@@ -811,10 +811,10 @@ setMethod(
   signature = c("item.pc", "numeric"),
   definition = function(object, theta) {
     prob           <- calcProb(object, theta)
-    expected.score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
+    expected_score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
     derivative2    <- numeric(length(theta))
     for (k in 1:object@ncat) {
-      derivative2 <- derivative2 + prob[, k] * (k - expected.score) * k
+      derivative2 <- derivative2 + prob[, k] * (k - expected_score) * k
     }
     return(derivative2)
   }
@@ -831,10 +831,10 @@ setMethod(
   signature = c("item.gpc", "numeric"),
   definition = function(object, theta) {
     prob           <- calcProb(object, theta)
-    expected.score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
+    expected_score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
     derivative2    <- numeric(length(theta))
     for (k in 1:object@ncat) {
-      derivative2 <- derivative2 + object@slope * prob[, k] * (k - expected.score) * k
+      derivative2 <- derivative2 + object@slope * prob[, k] * (k - expected_score) * k
     }
     return(derivative2)
   }
@@ -879,7 +879,7 @@ setMethod(
         derivative2[, i] <- calcDerivative(object@parms[[i]], theta)
       }
     } else {
-      stop(msg.missing.theta)
+      stop(msg_missing_theta)
     }
     return(derivative2)
   }
@@ -897,7 +897,7 @@ setMethod(
         derivative2[[i]] <- calcFisher(object@pools[[i]], theta)
       }
     } else {
-      stop(msg.missing.theta)
+      stop(msg_missing_theta)
     }
     return(derivative2)
   }
@@ -969,8 +969,8 @@ setMethod(
     if (!(resp %in% c(0, 1))) {
       return(NA)
     }
-    expected.score <- calcEscore(object, theta)
-    return(object@slope * (resp - expected.score) * (expected.score - object@guessing) / (expected.score * (1.0 - object@guessing)))
+    expected_score <- calcEscore(object, theta)
+    return(object@slope * (resp - expected_score) * (expected_score - object@guessing) / (expected_score * (1.0 - object@guessing)))
   }
 )
 
@@ -1047,7 +1047,7 @@ setMethod(
         jacobian[, i] <- calcJacobian(object@parms[[i]], theta, resp[i])
       }
     } else {
-      stop(msg.missing.theta)
+      stop(msg_missing_theta)
     }
     return(jacobian)
   }
@@ -1065,7 +1065,7 @@ setMethod(
         jacobian[[i]] <- calcJacobian(object@pools[[i]], theta, resp[[i]])
       }
     } else {
-      stop(msg.missing.theta)
+      stop(msg_missing_theta)
     }
     return(jacobian)
   }
@@ -1218,7 +1218,7 @@ setMethod(
         hessian[, i] <- calcHessian(object@parms[[i]], theta, resp[i])
       }
     } else {
-      stop(msg.missing.theta)
+      stop(msg_missing_theta)
     }
     return(hessian)
   }
@@ -1236,7 +1236,7 @@ setMethod(
         hessian[[i]] <- calcHessian(object@pools[[i]], theta, resp[[i]])
       }
     } else {
-      stop(msg.missing.theta)
+      stop(msg_missing_theta)
     }
     return(hessian)
   }

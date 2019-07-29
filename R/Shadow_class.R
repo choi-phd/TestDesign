@@ -2,7 +2,7 @@
 #'
 #' An S4 class to represent a set of constraints.
 #'
-#' @slot CONSTRAINT Character. The index of the constraint set.
+#' @slot constraint Character. The index of the constraint set.
 #' @slot mat A matrix representing the left-hand side weights. Has nc rows.
 #' @slot dir A vector of length nc. Each entry represents a logical operator relating the left-hand side to the right-hand side.
 #' @slot rhs A vector of length nc. Each entry represents the right-hand side of the constraint.
@@ -12,7 +12,7 @@
 #' @export
 setClass("constraint",
   slots = c(
-    CONSTRAINT = "character",
+    constraint = "character",
     mat = "matrix",
     dir = "character",
     rhs = "numeric",
@@ -20,7 +20,7 @@ setClass("constraint",
     suspend = "logical"
   ),
   prototype = list(
-    CONSTRAINT = character(0),
+    constraint = character(0),
     mat = matrix(NA, 0, 0),
     dir = character(0),
     rhs = numeric(0),
@@ -42,39 +42,39 @@ setClassUnion("matrixOrNULL", c("matrix", "NULL"))
 #'
 #' @slot pool An \code{\linkS4class{item.pool}} object.
 #' @slot theta A theta grid.
-#' @slot Prob A list of item response probabilities.
-#' @slot Info A matrix of item information values.
+#' @slot prob A list of item response probabilities.
+#' @slot info A matrix of item information values.
 #' @slot trueTheta An optional vector of true theta values.
-#' @slot Data An optional matrix of item responses.
+#' @slot data An optional matrix of item responses.
 #'
 #' @export
 setClass("test",
   slots = c(
     pool = "item.pool",
     theta = "numeric",
-    Prob = "list",
-    Info = "matrix",
+    prob = "list",
+    info = "matrix",
     trueTheta = "numericOrNULL",
-    Data = "matrixOrNULL"
+    data = "matrixOrNULL"
   ),
   prototype = list(
     pool = new("item.pool"),
     theta = numeric(0),
-    Prob = list(0),
-    Info = matrix(0),
+    prob = list(0),
+    info = matrix(0),
     trueTheta = numeric(0),
-    Data = matrix(NA, 0, 0)
+    data = matrix(NA, 0, 0)
   ),
   validity = function(object) {
     errors <- NULL
-    if (length(object@Prob) != object@pool@ni) {
-      errors <- c(errors, "length(Prob) is not equal to pool@ni")
+    if (length(object@prob) != object@pool@ni) {
+      errors <- c(errors, "length(prob) is not equal to pool@ni")
     }
-    if (ncol(object@Info) != object@pool@ni) {
-      errors <- c(errors, "ncol(Info) is not equal to pool@ni")
+    if (ncol(object@info) != object@pool@ni) {
+      errors <- c(errors, "ncol(info) is not equal to pool@ni")
     }
-    if (nrow(object@Info) != length(object@theta)) {
-      errors <- c(errors, "nrow(Info) is not equal to length(theta)")
+    if (nrow(object@info) != length(object@theta)) {
+      errors <- c(errors, "nrow(info) is not equal to length(theta)")
     }
     if (length(errors) == 0) {
       return(TRUE)
@@ -180,7 +180,7 @@ setClass("Shadow.config",
       testLength = NULL,
       minNI = NULL,
       maxNI = NULL,
-      SeThreshold = NULL
+      seThreshold = NULL
     ),
     interimTheta = list(
       method = "EAP",
@@ -192,7 +192,7 @@ setClass("Shadow.config",
       maxIter = 50,
       crit = 0.001,
       maxChange = 1.0,
-      FisherScoring = TRUE
+      doFisher = TRUE
     ),
     finalTheta = list(
       method = "EAP",
@@ -204,7 +204,7 @@ setClass("Shadow.config",
       maxIter = 50,
       crit = 0.001,
       maxChange = 1.0,
-      FisherScoring = TRUE
+      doFisher = TRUE
     ),
     thetaGrid = seq(-4, 4, .1),
     auditTrail = FALSE
@@ -315,7 +315,7 @@ setClass("Shadow.config",
 #'   \item{\code{testLength}} Test length.
 #'   \item{\code{minNI}} Maximum number of items to administer.
 #'   \item{\code{maxNI}} Minumum number of items to administer.
-#'   \item{\code{SeThreshold}} Standard error threshold for stopping.
+#'   \item{\code{seThreshold}} Standard error threshold for stopping.
 #' }
 #' @param interimTheta A list containing interim theta estimation options.
 #' \itemize{
@@ -328,7 +328,7 @@ setClass("Shadow.config",
 #'   \item{\code{maxIter}} Maximum number of Newton-Raphson iterations.
 #'   \item{\code{crit}} Convergence criterion.
 #'   \item{\code{maxChange}} Maximum change in ML estimates between iterations.
-#'   \item{\code{FisherScoring}} Set \code{TRUE} to use Fisher's method of scoring.
+#'   \item{\code{doFisher}} Set \code{TRUE} to use Fisher's method of scoring.
 #' }
 #' @param finalTheta A list containing final theta estimation options.
 #' \itemize{
@@ -341,7 +341,7 @@ setClass("Shadow.config",
 #'   \item{\code{maxIter}} Maximum number of Newton-Raphson iterations.
 #'   \item{\code{crit}} Convergence criterion.
 #'   \item{\code{maxChange}} Maximum change in ML estimates between iterations.
-#'   \item{\code{FisherScoring}} Set \code{TRUE} to use Fisher's method of scoring.
+#'   \item{\code{doFisher}} Set \code{TRUE} to use Fisher's method of scoring.
 #' }
 #' @param thetaGrid A numeric vector. Theta values to represent the continuum.
 #' @param auditTrail Set \code{TRUE} to generate audit trails.
@@ -428,7 +428,7 @@ setMethod("show", "Shadow.config", function(object) {
   cat("    testLength     :", object@stoppingCriterion$testLength, "\n")
   cat("    minNI          :", object@stoppingCriterion$minNI, "\n")
   cat("    maxNI          :", object@stoppingCriterion$maxNI, "\n")
-  cat("    SeThreshold    :", ifelse(toupper(object@stoppingCriterion$method) == "VARIABLE", object@stoppingCriterion$SeThreshold, NA), "\n\n")
+  cat("    seThreshold    :", ifelse(toupper(object@stoppingCriterion$method) == "VARIABLE", object@stoppingCriterion$seThreshold, NA), "\n\n")
   cat("  interimTheta \n")
   cat("    method              :", object@interimTheta$method, "\n")
   cat("    shrinkageCorrection :", object@interimTheta$shrinkageCorrection, "\n")
@@ -439,7 +439,7 @@ setMethod("show", "Shadow.config", function(object) {
   cat("    maxIter             :", object@interimTheta$maxIter, "\n")
   cat("    crit                :", object@interimTheta$crit, "\n")
   cat("    maxChange           :", object@interimTheta$maxChange, "\n")
-  cat("    FisherScoring       :", object@interimTheta$FisherScoring, "\n\n")
+  cat("    doFisher       :", object@interimTheta$doFisher, "\n\n")
   cat("  finalTheta \n")
   cat("    method              :", object@finalTheta$method, "\n")
   cat("    shrinkageCorrection :", object@finalTheta$shrinkageCorrection, "\n")
@@ -450,7 +450,7 @@ setMethod("show", "Shadow.config", function(object) {
   cat("    maxIter             :", object@finalTheta$maxIter, "\n")
   cat("    crit                :", object@finalTheta$crit, "\n")
   cat("    maxChange           :", object@finalTheta$maxChange, "\n")
-  cat("    FisherScoring       :", object@finalTheta$FisherScoring, "\n\n")
+  cat("    doFisher            :", object@finalTheta$doFisher, "\n\n")
   cat("  thetaGrid \n")
   print(object@thetaGrid)
   cat("\n  auditTrail: ", object@auditTrail, "\n")

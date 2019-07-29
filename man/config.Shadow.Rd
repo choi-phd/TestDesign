@@ -70,7 +70,7 @@ config.Shadow(itemSelection = NULL, contentBalancing = NULL,
   \item{\code{testLength}} Test length.
   \item{\code{minNI}} Maximum number of items to administer.
   \item{\code{maxNI}} Minumum number of items to administer.
-  \item{\code{SeThreshold}} Standard error threshold for stopping.
+  \item{\code{seThreshold}} Standard error threshold for stopping.
 }}
 
 \item{interimTheta}{A list containing interim theta estimation options.
@@ -84,7 +84,7 @@ config.Shadow(itemSelection = NULL, contentBalancing = NULL,
   \item{\code{maxIter}} Maximum number of Newton-Raphson iterations.
   \item{\code{crit}} Convergence criterion.
   \item{\code{maxChange}} Maximum change in ML estimates between iterations.
-  \item{\code{FisherScoring}} Set \code{TRUE} to use Fisher's method of scoring.
+  \item{\code{doFisher}} Set \code{TRUE} to use Fisher's method of scoring.
 }}
 
 \item{finalTheta}{A list containing final theta estimation options.
@@ -98,7 +98,7 @@ config.Shadow(itemSelection = NULL, contentBalancing = NULL,
   \item{\code{maxIter}} Maximum number of Newton-Raphson iterations.
   \item{\code{crit}} Convergence criterion.
   \item{\code{maxChange}} Maximum change in ML estimates between iterations.
-  \item{\code{FisherScoring}} Set \code{TRUE} to use Fisher's method of scoring.
+  \item{\code{doFisher}} Set \code{TRUE} to use Fisher's method of scoring.
 }}
 
 \item{thetaGrid}{A numeric vector. Theta values to represent the continuum.}

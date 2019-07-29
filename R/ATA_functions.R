@@ -2,10 +2,10 @@
 #'
 #' Perform Automated Test Assembly with specified configurations.
 #'
-#' @param config An \code{\linkS4class{ATA.config}} object containing configuration options. Use \code{\link{CreateStaticTestConfig}} for this.
+#' @param config An \code{\linkS4class{ATA.config}} object containing configuration options. Use \code{\link{createStaticTestConfig}} for this.
 #' @param constraints A list representing optimization constraints. Use \code{\link{LoadConstraints}} for this.
 #' @param plot Logical. If \code{TRUE}, draw Fisher information plot from the selected items.
-#' @param plotrange Numeric. A vector of length 2 containing the lower and upper bounds of plot range. The default is \code{c(-3, 3)}.
+#' @param plot.range Numeric. A vector of length 2 containing the lower and upper bounds of plot range. The default is \code{c(-3, 3)}.
 #'
 #' @return A list containing the following entries:
 #' \itemize{
@@ -27,7 +27,7 @@
 
 setGeneric(
   name = "ATA",
-  def = function(config, constraints, plot = FALSE, plotrange = c(-3, 3)) {
+  def = function(config, constraints, plot = FALSE, plot.range = c(-3, 3)) {
     standardGeneric("ATA")
   }
 )
@@ -39,7 +39,7 @@ setGeneric(
 setMethod(
   f = "ATA",
   signature = c("ATA.config"),
-  definition = function(config, constraints, plot = FALSE, plotrange = c(-3, 3)) {
+  definition = function(config, constraints, plot = FALSE, plot.range = c(-3, 3)) {
     if (!validObject(config)) {
       stop("invalid configuration options.")
     }
@@ -145,18 +145,18 @@ setMethod(
 
     solve.time <- proc.time() - solve.time
     if (!is.null(constraints$StimulusOrder)) {
-      constraints$ItemAttrib <- merge(constraints$ItemAttrib,
+      constraints$itemAttrib <- merge(constraints$itemAttrib,
         constraints$StAttrib[c("STINDEX", "STID", constraints$StimulusOrderBy)],
         by = "STID", all.x = TRUE, sort = FALSE
       )
     } else if (!is.null(constraints$StAttrib)) {
-      constraints$ItemAttrib <- merge(constraints$ItemAttrib,
+      constraints$itemAttrib <- merge(constraints$itemAttrib,
         constraints$StAttrib[c("STINDEX", "STID")],
         by = "STID", all.x = TRUE, sort = FALSE
       )
     }
 
-    selected <- constraints$ItemAttrib[which(MIP$solution[1:constraints$ni] == 1), ]
+    selected <- constraints$itemAttrib[which(MIP$solution[1:constraints$ni] == 1), ]
     obj.value <- sum(obj[which(MIP$solution[1:constraints$ni] == 1)])
 
     if (!is.null(constraints$ItemOrderBy) && !is.null(constraints$StimulusOrderBy)) {
@@ -173,45 +173,45 @@ setMethod(
     row.names(selected) <- 1:nrow(selected)
 
     if (plot) {
-      continuum <- seq(plotrange[1], plotrange[2], .1)
+      continuum <- seq(plot.range[1], plot.range[2], .1)
       continuum <- sort(c(continuum, config@itemSelection$targetLocation))
       idx <- which(MIP$solution[1:ni] == 1)
 
       if (toupper(config@itemSelection$method) == "TIF") {
-        mat.sub <- calcFisher(constraints$pool, continuum)[, idx]
-        vec.sub <- apply(mat.sub, 1, sum)
+        mat_sub <- calcFisher(constraints$pool, continuum)[, idx]
+        vec_sub <- apply(mat_sub, 1, sum)
         ylab <- "Information"
         title <- "Test Information Function based on the selected items"
       }
       if (toupper(config@itemSelection$method) == "TCC") {
         l <- calcProb(constraints$pool, continuum)[idx]
         for (i in 1:length(l)) {
-          prob.mat <- l[[i]]
-          max.score <- dim(prob.mat)[2] - 1
-          prob.mat <- prob.mat * matrix(c(0:max.score), dim(prob.mat)[1], dim(prob.mat)[2], byrow = T)
-          l[[i]] <- apply(prob.mat, 1, sum)
+          prob_mat <- l[[i]]
+          max_score <- dim(prob_mat)[2] - 1
+          prob_mat <- prob_mat * matrix(c(0:max_score), dim(prob_mat)[1], dim(prob_mat)[2], byrow = T)
+          l[[i]] <- apply(prob_mat, 1, sum)
         }
-        vec.sub <- Reduce("+", l)
+        vec_sub <- Reduce("+", l)
         ylab <- "Expected Score"
         title <- "Test Characteristic Curve based on the selected items"
       }
       if (toupper(config@itemSelection$method) == "MAXINFO") {
-        mat.sub <- calcFisher(constraints$pool, continuum)[, idx]
-        vec.sub <- apply(mat.sub, 1, sum)
+        mat_sub <- calcFisher(constraints$pool, continuum)[, idx]
+        vec_sub <- apply(mat_sub, 1, sum)
         ylab <- "Information"
         title <- "Test Information Function based on the selected items"
       }
 
-      ymax <- max(vec.sub, config@itemSelection$targetValue)
+      ymax <- max(vec_sub, config@itemSelection$targetValue)
 
       pdf(NULL, bg = "white")
       dev.control(displaylist = "enable")
 
-      plot(continuum, vec.sub,
+      plot(continuum, vec_sub,
         xlim = c(min(continuum), max(continuum)), ylim = c(0, ymax),
         main = title, xlab = "Theta", ylab = ylab, type = "n"
       )
-      lines(continuum, vec.sub, lty = 1, lwd = 3)
+      lines(continuum, vec_sub, lty = 1, lwd = 3)
       if (!maximize) {
         abline(h = config@itemSelection$targetValue, lty = 3, lwd = 2)
       }

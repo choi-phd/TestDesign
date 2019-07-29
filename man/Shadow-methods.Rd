@@ -7,10 +7,10 @@
 \title{Run computerized adaptive testing with generalized shadow-test approach}
 \usage{
 Shadow(object, config, trueTheta = NULL, Constraints = NULL,
-  prior = NULL, priorPar = NULL, Data = NULL, session = NULL)
+  prior = NULL, priorPar = NULL, data = NULL, session = NULL)
 
 \S4method{Shadow}{item.pool}(object, config, trueTheta = NULL,
-  Constraints = NULL, prior = NULL, priorPar = NULL, Data = NULL,
+  Constraints = NULL, prior = NULL, priorPar = NULL, data = NULL,
   session = NULL)
 }
 \arguments{
@@ -26,7 +26,7 @@ Shadow(object, config, trueTheta = NULL, Constraints = NULL,
 
 \item{priorPar}{Numeric. A vector of parameters for prior distribution.}
 
-\item{Data}{Numeric. A matrix containing item response data.}
+\item{data}{Numeric. A matrix containing item response data.}
 
 \item{session}{Used to communicate with a Shiny session.}
 }

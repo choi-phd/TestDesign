@@ -1,6 +1,6 @@
-#' CreateStaticTestConfig
+#' createStaticTestConfig
 #'
-#' @rdname CreateStaticTestConfig
+#' @rdname createStaticTestConfig
 
 setClass("ATA.config",
   slots = c(
@@ -87,7 +87,7 @@ setClass("ATA.config",
 #' }
 #'
 #' @examples
-#' conf.1 <- CreateStaticTestConfig(
+#' conf.1 <- createStaticTestConfig(
 #'   list(
 #'     method = "MAXINFO",
 #'     infoType = "FISHER",
@@ -96,7 +96,7 @@ setClass("ATA.config",
 #'   )
 #' )
 #'
-#' conf.2 <- CreateStaticTestConfig(
+#' conf.2 <- createStaticTestConfig(
 #'   list(
 #'     method = "TIF",
 #'     infoType = "FISHER",
@@ -106,7 +106,7 @@ setClass("ATA.config",
 #'   )
 #' )
 #'
-#' conf.3 <- CreateStaticTestConfig(
+#' conf.3 <- createStaticTestConfig(
 #'   list(
 #'     method = "TCC",
 #'     infoType = "FISHER",
@@ -115,22 +115,22 @@ setClass("ATA.config",
 #'     targetValue = c(10, 15, 20)
 #'   )
 #' )
-#' @rdname CreateStaticTestConfig
+#' @rdname createStaticTestConfig
 #'
 #' @export
-CreateStaticTestConfig <- function(itemSelection = NULL, MIP = NULL) {
+createStaticTestConfig <- function(itemSelection = NULL, MIP = NULL) {
   conf <- new("ATA.config")
-  arg.names <- c("itemSelection", "MIP")
-  obj.names <- c()
-  for (arg in arg.names) {
+  arg_names <- c("itemSelection", "MIP")
+  obj_names <- c()
+  for (arg in arg_names) {
     if (!is.null(eval(parse(text = arg)))) {
-      eval(parse(text = paste0("obj.names <- names(conf@", arg, ")")))
-      for (entry in obj.names) {
-        entry.l <- paste0("conf@", arg, "$", entry)
-        entry.r <- paste0(arg, "$", entry)
-        tmp <- eval(parse(text = entry.r))
+      eval(parse(text = paste0("obj_names <- names(conf@", arg, ")")))
+      for (entry in obj_names) {
+        entry_l <- paste0("conf@", arg, "$", entry)
+        entry_r <- paste0(arg, "$", entry)
+        tmp <- eval(parse(text = entry_r))
         if (!is.null(tmp)) {
-          eval(parse(text = paste0(entry.l, " <- ", entry.r)))
+          eval(parse(text = paste0(entry_l, " <- ", entry_r)))
         }
       }
     }
