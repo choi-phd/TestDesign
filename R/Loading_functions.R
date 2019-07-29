@@ -136,7 +136,7 @@ loadItemPool <- function(file, ipar = NULL, se.file = NULL) {
 #' Read item attributes from specified file.
 #'
 #' @param file Character. The name of the file containing item attributes.
-#' @param pool An \code{\linkS4class{item.pool}} object. Use \code{\link{LoadItemPool}} for this.
+#' @param pool An \code{\linkS4class{item.pool}} object. Use \code{\link{loadItemPool}} for this.
 #'
 #' @return A \code{data.frame} containing parsed dataset.
 #'
@@ -337,7 +337,7 @@ loadConstraints <- function(file, pool, item.attrib, st.attrib = NULL) {
   } else if (length(item_constraints) > 0) {
     set_based <- FALSE
     nv <- ni
-    ID <- item.attrib$ID
+    id <- item.attrib$ID
     item_index_by_stimulus <- NULL
     stimulus_index_by_item <- NULL
   } else {
@@ -351,16 +351,16 @@ loadConstraints <- function(file, pool, item.attrib, st.attrib = NULL) {
     if (constraints$TYPE[index] %in% c("NUMBER", "COUNT")) {
       constraint_type_is_valid <- TRUE
       if (toupper(constraints$CONDITION[index]) %in% c("", " ", "PER TEST", "TEST")) {
-        test.length.LB <- round(constraints$LB[index])
-        test.length.UB <- round(constraints$UB[index])
-        if (any(c(test.length.LB, test.length.UB) < 0) || test.length.LB > test.length.UB) {
+        test_length_LB <- round(constraints$LB[index])
+        test_length_UB <- round(constraints$UB[index])
+        if (any(c(test_length_LB, test_length_UB) < 0) || test_length_LB > test_length_UB) {
           stop(sprintf("CONSTRAINT %s has invalid LB/UB", index))
-        } else if (test.length.LB == test.length.UB) {
-          testLength <- test.length.UB
+        } else if (test_length_LB == test_length_UB) {
+          test_length <- test_length_UB
           list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
           list_constraints[[index]]@mat[1, 1:ni] <- 1
           list_constraints[[index]]@dir <- "=="
-          list_constraints[[index]]@rhs <- test.length.UB
+          list_constraints[[index]]@rhs <- test_length_UB
         } else {
           stop("LB and UB for ITEM NUMBER must be set equal.")
         }
@@ -480,7 +480,7 @@ loadConstraints <- function(file, pool, item.attrib, st.attrib = NULL) {
           if (constraints$TYPE[index] == "SUM") {
             list_constraints[[index]]@mat[1, 1:ni] <- item.attrib[[constraints$CONDITION[index]]]
           } else if (constraints$TYPE[index] %in% c("AVERAGE", "MEAN")) {
-            list_constraints[[index]]@mat[1, 1:ni] <- item.attrib[[constraints$CONDITION[index]]] / test.length.UB
+            list_constraints[[index]]@mat[1, 1:ni] <- item.attrib[[constraints$CONDITION[index]]] / test_length_UB
           }
         } else {
           list_constraints[[index]]@mat <- matrix(0, nrow = 2, ncol = nv)
@@ -489,8 +489,8 @@ loadConstraints <- function(file, pool, item.attrib, st.attrib = NULL) {
           if (constraints$TYPE[index] == "SUM") {
             list_constraints[[index]]@mat[, 1:ni] <- item.attrib[[constraints$CONDITION[index]]]
           } else if (constraints$TYPE[index] %in% c("AVERAGE", "MEAN")) {
-            list_constraints[[index]]@mat[1, 1:ni] <- item.attrib[[constraints$CONDITION[index]]] / test.length.UB
-            list_constraints[[index]]@mat[2, 1:ni] <- item.attrib[[constraints$CONDITION[index]]] / test.length.LB
+            list_constraints[[index]]@mat[1, 1:ni] <- item.attrib[[constraints$CONDITION[index]]] / test_length_UB
+            list_constraints[[index]]@mat[2, 1:ni] <- item.attrib[[constraints$CONDITION[index]]] / test_length_LB
           }
         }
       }
@@ -842,7 +842,7 @@ updateConstraints <- function(object, on = NULL, off = NULL) {
 #'
 #' Read constraints from specified files.
 #'
-#' @param pool An \code{item.pool} object. Use \code{\link{LoadItemPool}} for this.
+#' @param pool An \code{item.pool} object. Use \code{\link{loadItemPool}} for this.
 #' @param file.constraints Character. The name of the file containing constraint specifications.
 #' @param file.item.attrib Character. The name of the file containing item attributes.
 #' @param file.st.attrib (Optional) Character. The name of the file containing set attributes.

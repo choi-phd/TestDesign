@@ -4,7 +4,7 @@
 \alias{plotExposureRateBySegment}
 \title{Draw exposure rate plots by theta segment}
 \usage{
-plotExposureRateBySegment(object, config, maxRate = 0.25, PDF = NULL,
+plotExposureRateBySegment(object, config, max.rate = 0.25, PDF = NULL,
   width = 7, height = 6, mfrow = c(2, 4))
 }
 \arguments{
@@ -12,7 +12,7 @@ plotExposureRateBySegment(object, config, maxRate = 0.25, PDF = NULL,
 
 \item{config}{A \code{\linkS4class{Shadow.config}} object.}
 
-\item{maxRate}{A target item exposure rate.}
+\item{max.rate}{A target item exposure rate.}
 
 \item{PDF}{If supplied a filename, save as a PDF file.}
 

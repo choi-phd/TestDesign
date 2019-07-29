@@ -4,10 +4,10 @@
 \alias{saveOutput}
 \title{Save or print audit trails}
 \usage{
-saveOutput(objectList, file = NULL)
+saveOutput(object.list, file = NULL)
 }
 \arguments{
-\item{objectList}{A list of output objects generated from \code{STA}.}
+\item{object.list}{A list of output objects generated from \code{STA}.}
 
 \item{file}{An optional file name as a character string to save the output.}
 }

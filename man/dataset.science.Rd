@@ -31,13 +31,13 @@ Also, the following datasets are intended for illustrating expected data structu
 \examples{
 \dontrun{
 write.csv(itempool.science.raw, "itempool.science.csv", row.names = FALSE)
-itempool.science <- LoadItemPool("itempool.science.csv")
+itempool.science <- loadItemPool("itempool.science.csv")
 
 write.csv(itemattrib.science.raw, "itemattrib.science.csv", row.names = FALSE)
-itemattrib.science <- LoadItemAttrib("itemattrib.science.csv", itempool.science)
+itemattrib.science <- loadItemAttrib("itemattrib.science.csv", itempool.science)
 
 write.csv(constraints.science.raw, "constraints.science.csv", row.names = FALSE)
-constraints.science <- LoadConstraints(
+constraints.science <- loadConstraints(
   "constraints.science.csv",
   itempool.science, itemattrib.science
 )

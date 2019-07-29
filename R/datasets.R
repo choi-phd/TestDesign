@@ -24,13 +24,13 @@
 #' @examples
 #' \dontrun{
 #' write.csv(itempool.science.raw, "itempool.science.csv", row.names = FALSE)
-#' itempool.science <- LoadItemPool("itempool.science.csv")
+#' itempool.science <- loadItemPool("itempool.science.csv")
 #'
 #' write.csv(itemattrib.science.raw, "itemattrib.science.csv", row.names = FALSE)
-#' itemattrib.science <- LoadItemAttrib("itemattrib.science.csv", itempool.science)
+#' itemattrib.science <- loadItemAttrib("itemattrib.science.csv", itempool.science)
 #'
 #' write.csv(constraints.science.raw, "constraints.science.csv", row.names = FALSE)
-#' constraints.science <- LoadConstraints(
+#' constraints.science <- loadConstraints(
 #'   "constraints.science.csv",
 #'   itempool.science, itemattrib.science
 #' )
@@ -65,16 +65,16 @@ NULL
 #' @examples
 #' \dontrun{
 #' write.csv(itempool.reading.raw, "itempool.reading.csv", row.names = FALSE)
-#' itempool.reading <- LoadItemPool("itempool.reading.csv")
+#' itempool.reading <- loadItemPool("itempool.reading.csv")
 #'
 #' write.csv(itemattrib.reading.raw, "itemattrib.reading.csv", row.names = FALSE)
-#' itemattrib.reading <- LoadItemAttrib("itemattrib.reading.csv", itempool.reading)
+#' itemattrib.reading <- loadItemAttrib("itemattrib.reading.csv", itempool.reading)
 #'
 #' write.csv(stimattrib.reading.raw, "stimattrib.reading.csv", row.names = FALSE)
-#' stimattrib.reading <- LoadStAttrib("stimattrib.reading.csv", itemattrib.reading)
+#' stimattrib.reading <- loadStAttrib("stimattrib.reading.csv", itemattrib.reading)
 #'
 #' write.csv(constraints.reading.raw, "constraints.reading.csv", row.names = FALSE)
-#' constraints.reading <- LoadConstraints(
+#' constraints.reading <- loadConstraints(
 #'   "constraints.reading.csv",
 #'   itempool.reading, itemattrib.reading, stimattrib.reading
 #' )
@@ -109,13 +109,13 @@ NULL
 #' @examples
 #' \dontrun{
 #' write.csv(itempool.fatigue.raw, "itempool.fatigue.csv", row.names = FALSE)
-#' itempool.fatigue <- LoadItemPool("itempool.fatigue.csv")
+#' itempool.fatigue <- loadItemPool("itempool.fatigue.csv")
 #'
 #' write.csv(itemattrib.fatigue, "itemattrib.fatigue.csv", row.names = FALSE)
-#' itemattrib.fatigue <- LoadItemAttrib("itemattrib.fatigue.csv", itempool.fatigue)
+#' itemattrib.fatigue <- loadItemAttrib("itemattrib.fatigue.csv", itempool.fatigue)
 #'
 #' write.csv(constraints.fatigue.raw, "constraints.fatigue.csv", row.names = FALSE)
-#' constraints.fatigue <- LoadConstraints(
+#' constraints.fatigue <- loadConstraints(
 #'   "constraints.fatigue.csv",
 #'   itempool.fatigue, itemattrib.fatigue
 #' )

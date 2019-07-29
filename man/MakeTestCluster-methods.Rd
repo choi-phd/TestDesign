@@ -7,20 +7,20 @@
 \alias{makeTestCluster,pool.cluster,numeric,list-method}
 \title{Generate a test cluster object}
 \usage{
-makeTestCluster(object, theta, trueTheta)
+makeTestCluster(object, theta, true.theta)
 
 \S4method{makeTestCluster}{pool.cluster,numeric,numeric}(object, theta,
-  trueTheta)
+  true.theta)
 
 \S4method{makeTestCluster}{pool.cluster,numeric,list}(object, theta,
-  trueTheta)
+  true.theta)
 }
 \arguments{
 \item{object}{An \code{\linkS4class{pool.cluster}} object}
 
 \item{theta}{A grid of theta values}
 
-\item{trueTheta}{An optional vector of true theta values to simulate response data}
+\item{true.theta}{An optional vector of true theta values to simulate response data}
 }
 \description{
 Generate a \code{\linkS4class{test.cluster}} object

@@ -4,12 +4,12 @@
 \alias{STA}
 \title{Perform shadow test assembly}
 \usage{
-STA(Constraints, objective, solver = "Symphony", xmat = NULL,
+STA(constraints, objective, solver = "Symphony", xmat = NULL,
   xdir = NULL, xrhs = NULL, maximize = TRUE, mps = FALSE,
-  lp = FALSE, verbosity = -2, time_limit = 5, gap_limit = -1, ...)
+  lp = FALSE, verbosity = -2, time.limit = 5, gap.limit = -1, ...)
 }
 \arguments{
-\item{Constraints}{A list representing optimization constraints. Use \code{\link{LoadConstraints}} for this.}
+\item{constraints}{A list representing optimization constraints. Use \code{\link{loadConstraints}} for this.}
 
 \item{objective}{A vector of objective values.}
 
@@ -29,9 +29,9 @@ STA(Constraints, objective, solver = "Symphony", xmat = NULL,
 
 \item{verbosity}{Verbosity level.}
 
-\item{time_limit}{Time limit passed onto the solver.}
+\item{time.limit}{Time limit passed onto the solver.}
 
-\item{gap_limit}{Gap limit passed onto the solver.}
+\item{gap.limit}{Gap limit passed onto the solver.}
 
 \item{...}{Only used when \code{solver} is \code{SYMPHONY}. Additional parameters to be passed onto the solver.}
 }
