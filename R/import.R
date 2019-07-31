@@ -1,3 +1,14 @@
+# Program: Shadow
+# Author: Seung Choi
+# Assumptions: D = 1.0; the minimum score is 0 for all items
+
+# Naming conventions
+# Use lowerCamelCase for S3 and S4 function names.
+# Use dot.case for arguments.
+# Use dot.case for class names.
+# Use snake_case for local objects inside functions.
+# Use snake_case for global objects and slot names.
+
 #' @import Rglpk
 #' @import Matrix
 #' @import lpSolve
@@ -21,9 +32,9 @@ NULL
   packageStartupMessage(white(bold("  Solver packages:")))
   packageStartupMessage(" ")
 
-  solvernames <- c("lpSolve", "Rsymphony", "gurobi", "Rglpk")
+  solver_names <- c("lpSolve", "Rsymphony", "gurobi", "Rglpk")
 
-  for (s in solvernames) {
+  for (s in solver_names) {
     x <- find.package(s, quiet = T)
     if (length(x) > 0) {
       status <- green("v")
@@ -35,3 +46,5 @@ NULL
     packageStartupMessage(status, " ", s, paste0(rep(" ", 10 - nchar(s)), collapse = ""), white(v))
   }
 }
+
+

@@ -24,7 +24,7 @@ A possible fix to this solution is as follows. An admin account is required thro
 su {username}
 ```
 
-First, install the `homebrew` package manager (if you do not already have it) by following the instructions on \link{http://brew.sh/}.
+First, install the `homebrew` package manager (if you do not already have it) by following the instructions on http://brew.sh/.
 
 Next, install `SYMPHONY` with homebrew by running the following commands in Terminal.
 

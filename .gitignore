@@ -9,7 +9,5 @@
 *.dcf
 src-i386/
 src-x64/
-R/run_47h.R
-R/deploy.R
 .vscode/
 inst/doc

@@ -1463,7 +1463,7 @@ NumericVector theta_FB_single(const int& nx,
 //' 
 //' @export
 // [[Rcpp::export]]
-IntegerVector findSegment(NumericVector segment,
+IntegerVector find_segment(NumericVector segment,
                           NumericVector x) {
   int ns = segment.size();
   int nx = x.size();
