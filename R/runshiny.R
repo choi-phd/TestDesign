@@ -33,7 +33,7 @@ OAT <- function() {
     message("Shiny application requires additional packages.")
     message("Run the following code to install:")
     message("")
-    tmp <- paste0("install.packages(", tmp, ")")
+    tmp <- paste0("install.packages(c(", tmp, "))")
     message(tmp)
   } else {
     shiny::runApp(app_dir, display.mode = "normal")

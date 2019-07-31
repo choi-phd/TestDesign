@@ -31,7 +31,7 @@ A list containing the following entries:
   }
   \item{\code{selected}} The attributes of the selected items.
   \item{\code{solver}} The name of the MIP solver used in the assembly.
-  \item{\code{obj.value}} Objective value of the solution. Identical to the one above.
+  \item{\code{obj_value}} Objective value of the solution. Identical to the one above.
   \item{\code{solve_time}} The elapsed time in running the solver.
 }
 }

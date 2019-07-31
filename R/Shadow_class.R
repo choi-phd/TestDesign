@@ -33,8 +33,8 @@ setClass("constraint",
   }
 )
 
-setClassUnion("numericOrNULL", c("numeric", "NULL"))
-setClassUnion("matrixOrNULL", c("matrix", "NULL"))
+setClassUnion("numeric.or.null", c("numeric", "NULL"))
+setClassUnion("matrix.or.null", c("matrix", "NULL"))
 
 #' An S4 class to represent a test
 #'
@@ -44,7 +44,7 @@ setClassUnion("matrixOrNULL", c("matrix", "NULL"))
 #' @slot theta A theta grid.
 #' @slot prob A list of item response probabilities.
 #' @slot info A matrix of item information values.
-#' @slot trueTheta An optional vector of true theta values.
+#' @slot true_theta An optional vector of true theta values.
 #' @slot data An optional matrix of item responses.
 #'
 #' @export
@@ -54,15 +54,15 @@ setClass("test",
     theta = "numeric",
     prob = "list",
     info = "matrix",
-    trueTheta = "numericOrNULL",
-    data = "matrixOrNULL"
+    true_theta = "numeric.or.null",
+    data = "matrix.or.null"
   ),
   prototype = list(
     pool = new("item.pool"),
     theta = numeric(0),
     prob = list(0),
     info = matrix(0),
-    trueTheta = numeric(0),
+    true_theta = numeric(0),
     data = matrix(NA, 0, 0)
   ),
   validity = function(object) {
@@ -125,89 +125,89 @@ setClass("test.cluster",
 #' @rdname config.Shadow
 setClass("Shadow.config",
   slots = c(
-    itemSelection = "list",
-    contentBalancing = "list",
+    item_selection = "list",
+    content_balancing = "list",
     MIP = "list",
     MCMC = "list",
-    refreshPolicy = "list",
-    exposureControl = "list",
-    stoppingCriterion = "list",
-    interimTheta = "list",
-    finalTheta = "list",
-    thetaGrid = "numeric",
-    auditTrail = "logical"
+    refresh_policy = "list",
+    exposure_control = "list",
+    stopping_criterion = "list",
+    interim_theta = "list",
+    final_theta = "list",
+    theta_grid = "numeric",
+    audit_trail = "logical"
   ),
   prototype = list(
-    itemSelection = list(
+    item_selection = list(
       method = "MFI",
-      infoType = "FISHER",
-      initialTheta = NULL,
-      fixedTheta = NULL
+      info_type = "FISHER",
+      initial_theta = NULL,
+      fixed_theta = NULL
     ),
-    contentBalancing = list(method = "STA"),
+    content_balancing = list(method = "STA"),
     MIP = list(
       solver = "LPSOLVE",
       verbosity = -2,
-      timeLimit = -1,
-      gapLimit = -1
+      time_limit = -1,
+      gap_limit = -1
     ),
     MCMC = list(
-      burnIn = 100,
-      postBurnIn = 500,
+      burn_in = 100,
+      post_burn_in = 500,
       thin = 1,
-      jumpFactor = 1
+      jump_factor = 1
     ),
-    refreshPolicy = list(
+    refresh_policy = list(
       method = "ALWAYS",
       interval = 1,
       threshold = 0.1,
       position = 1
     ),
-    exposureControl = list(
+    exposure_control = list(
       method = "ELIGIBILITY",
       M = NULL,
-      maxExposureRate = 0.25,
-      accelerationFactor = 1.0,
-      nSegment = 7,
-      firstSegment = NULL,
-      segmentCut = c(-Inf, -2.5, -1.5, -0.5, 0.5, 1.5, 2.5, Inf),
-      initialEligibilityStats = NULL,
-      fadingFactor = 0.999,
-      diagnosticStats = FALSE
+      max_exposure_rate = 0.25,
+      acceleration_factor = 1.0,
+      n_segment = 7,
+      first_segment = NULL,
+      segment_cut = c(-Inf, -2.5, -1.5, -0.5, 0.5, 1.5, 2.5, Inf),
+      initial_eligibility_stats = NULL,
+      fading_factor = 0.999,
+      diagnostic_stats = FALSE
     ),
-    stoppingCriterion = list(
+    stopping_criterion = list(
       method = "FIXED",
-      testLength = NULL,
-      minNI = NULL,
-      maxNI = NULL,
-      seThreshold = NULL
+      test_length = NULL,
+      min_ni = NULL,
+      max_ni = NULL,
+      se_threshold = NULL
     ),
-    interimTheta = list(
+    interim_theta = list(
       method = "EAP",
-      shrinkageCorrection = FALSE,
-      priorDist = "NORMAL",
-      priorPar = c(0, 1),
-      boundML = c(-4, 4),
-      truncateML = FALSE,
-      maxIter = 50,
+      shrinkage_correction = FALSE,
+      prior_dist = "NORMAL",
+      prior_par = c(0, 1),
+      bound_ML = c(-4, 4),
+      truncate_ML = FALSE,
+      max_iter = 50,
       crit = 0.001,
-      maxChange = 1.0,
-      doFisher = TRUE
+      max_change = 1.0,
+      do_fisher = TRUE
     ),
-    finalTheta = list(
+    final_theta = list(
       method = "EAP",
-      shrinkageCorrection = FALSE,
-      priorDist = "NORMAL",
-      priorPar = c(0, 1),
-      boundML = c(-4, 4),
-      truncateML = FALSE,
-      maxIter = 50,
+      shrinkage_correction = FALSE,
+      prior_dist = "NORMAL",
+      prior_par = c(0, 1),
+      bound_ML = c(-4, 4),
+      truncate_ML = FALSE,
+      max_iter = 50,
       crit = 0.001,
-      maxChange = 1.0,
-      doFisher = TRUE
+      max_change = 1.0,
+      do_fisher = TRUE
     ),
-    thetaGrid = seq(-4, 4, .1),
-    auditTrail = FALSE
+    theta_grid = seq(-4, 4, .1),
+    audit_trail = FALSE
   ),
   validity = function(object) {
     errors <- NULL
@@ -224,33 +224,33 @@ setClass("Shadow.config",
         errors <- c(errors, "SYMPHONY was specified but is not installed.")
       }
     }
-    if (!object@itemSelection$method %in% c("MFI", "MPWI", "EB", "FB")) {
+    if (!object@item_selection$method %in% c("MFI", "MPWI", "EB", "FB")) {
       errors <- c(errors, "invalid option for selectionCriterion")
     }
-    if (!object@contentBalancing$method %in% c("NONE", "STA")) {
-      errors <- c(errors, "invalid option for contentBalancing")
+    if (!object@content_balancing$method %in% c("NONE", "STA")) {
+      errors <- c(errors, "invalid option for content_balancing")
     }
-    if (!object@refreshPolicy$method %in%
+    if (!object@refresh_policy$method %in%
       c("ALWAYS", "POSITION", "INTERVAL", "THRESHOLD", "INTERVAL-THRESHOLD", "STIMULUS", "SET", "PASSAGE")) {
-      errors <- c(errors, "invalid option for refreshPolicy.")
+      errors <- c(errors, "invalid option for refresh_policy.")
     }
-    if (!object@exposureControl$method %in% c("NONE", "ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
-      errors <- c(errors, "invalid option for exposureControl.")
+    if (!object@exposure_control$method %in% c("NONE", "ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
+      errors <- c(errors, "invalid option for exposure_control.")
     }
-    if (object@exposureControl$nSegment != length(object@exposureControl$segmentCut) - 1) {
-      errors <- c(errors, "nSegment and segmentCut are incongruent.")
+    if (object@exposure_control$n_segment != length(object@exposure_control$segment_cut) - 1) {
+      errors <- c(errors, "n_segment and segment_cut are incongruent.")
     }
-    if (!object@stoppingCriterion$method %in% c("FIXED")) {
-      errors <- c(errors, "invalid option for stoppingCriterion.")
+    if (!object@stopping_criterion$method %in% c("FIXED")) {
+      errors <- c(errors, "invalid option for stopping_criterion.")
     }
-    if (!object@interimTheta$method %in% c("EAP", "MLE", "EB", "FB")) {
-      errors <- c(errors, "invalid option for interimTheta.")
+    if (!object@interim_theta$method %in% c("EAP", "MLE", "EB", "FB")) {
+      errors <- c(errors, "invalid option for interim_theta.")
     }
-    if (!object@finalTheta$method %in% c("EAP", "MLE", "EB", "FB")) {
-      errors <- c(errors, "invalid option for finalTheta.")
+    if (!object@final_theta$method %in% c("EAP", "MLE", "EB", "FB")) {
+      errors <- c(errors, "invalid option for final_theta.")
     }
-    if (object@exposureControl$method %in% c("BIGM-BAYESIAN") && !object@interimTheta$method %in% c("EB", "FB")) {
-      errors <- c(errors, "for exposureControl BIGM-BAYESIAN you must use interimTheta of EB of FB.")
+    if (object@exposure_control$method %in% c("BIGM-BAYESIAN") && !object@interim_theta$method %in% c("EB", "FB")) {
+      errors <- c(errors, "for exposure_control BIGM-BAYESIAN you must use interim_theta of EB of FB.")
     }
     if (length(errors) == 0) {
       return(TRUE)
@@ -264,14 +264,14 @@ setClass("Shadow.config",
 #'
 #' Create a \code{\linkS4class{Shadow.config}} object for Shadow Test Assembly (STA).
 #'
-#' @param itemSelection A list containing item selection criteria.
+#' @param item_selection A list containing item selection criteria.
 #' \itemize{
 #'   \item{\code{method}} The type of criteria. Accepts one of \code{MFI, MPWI, FB, EB}.
-#'   \item{\code{infoType}} The type of information. Accepts \code{FISHER}.
-#'   \item{\code{initialTheta}} Initial theta value(s) for the first item selection.
-#'   \item{\code{fixedTheta}} Fixed theta value(s) to optimize for all items to select.
+#'   \item{\code{info_type}} The type of information. Accepts \code{FISHER}.
+#'   \item{\code{initial_theta}} Initial theta value(s) for the first item selection.
+#'   \item{\code{fixed_theta}} Fixed theta value(s) to optimize for all items to select.
 #' }
-#' @param contentBalancing A list containing content balancing options.
+#' @param content_balancing A list containing content balancing options.
 #' \itemize{
 #'   \item{\code{method}} The type of balancing method. Accepts one of \code{NONE, STA}.
 #' }
@@ -279,84 +279,84 @@ setClass("Shadow.config",
 #' \itemize{
 #'   \item{\code{solver}} The type of solver. Accepts one of \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.
 #'   \item{\code{verbosity}} Verbosity level.
-#'   \item{\code{timeLimit}} Time limit to be passed onto solver. Used in solvers \code{SYMPHONY, GUROBI, GLPK}.
-#'   \item{\code{gapLimit}} Gap limit to be passed onto solver. Used in solvers \code{SYMPHONY, GUROBI}.
+#'   \item{\code{time_limit}} Time limit to be passed onto solver. Used in solvers \code{SYMPHONY, GUROBI, GLPK}.
+#'   \item{\code{gap_limit}} Gap limit to be passed onto solver. Used in solvers \code{SYMPHONY, GUROBI}.
 #' }
 #' @param MCMC A list containing Markov-chain Monte Carlo configurations.
 #' \itemize{
-#'   \item{\code{burnIn}} Numeric. The number of chains from the start to discard.
-#'   \item{\code{postBurnIn}}  Numeric. The number of chains to use after discarding the first \code{burnIn} chains.
+#'   \item{\code{burn_in}} Numeric. The number of chains from the start to discard.
+#'   \item{\code{post_burn_in}}  Numeric. The number of chains to use after discarding the first \code{burn_in} chains.
 #'   \item{\code{thin}} Numeric. Thinning interval.
 #'   \item{\code{jumpfactor}} Numeric. Jump factor.
 #' }
-#' @param refreshPolicy A list containing refresh policy for obtaining a new shadow test.
+#' @param refresh_policy A list containing refresh policy for obtaining a new shadow test.
 #' \itemize{
 #'   \item{\code{method}} The type of policy. Accepts one of \code{ALWAYS, POSITION, INTERVAL, THRESHOLD, INTERVAL-THRESHOLD, STIMULUS, SET, PASSAGE}.
 #'   \item{\code{interval}} Integer. Set to 1 to refresh at each position, 2 to refresh at every two positions, and so on.
 #'   \item{\code{threshold}} Numeric. The shadow test is refreshed when the absolute change in theta estimate is greater than this value.
 #'   \item{\code{position}} Numeric. Position(s) at which refresh to occur.
 #' }
-#' @param exposureControl A list containing exposure control settings.
+#' @param exposure_control A list containing exposure control settings.
 #' \itemize{
 #'   \item{\code{method}} Accepts one of \code{"NONE", "ELIGIBILITY", "BIGM", "BIGM-BAYESIAN"}.
 #'   \item{\code{M}} Big M constant.
-#'   \item{\code{maxExposureRate}} Maximum target exposure rate.
-#'   \item{\code{accelerationFactor}} Acceleration factor.
-#'   \item{\code{nSegment}} Number of theta segments.
-#'   \item{\code{firstSegment}} Theta segment assumed at the begining of test.
-#'   \item{\code{segmentCut}} A numeric vector of segment cuts.
-#'   \item{\code{initialEligibilityStats}} A list of eligibility statistics from a previous run.
-#'   \item{\code{fadingFactor}} Fading factor.
-#'   \item{\code{diagnosticStats}} \code{TRUE} to generate diagnostic statistics.
+#'   \item{\code{max_exposure_rate}} Maximum target exposure rate.
+#'   \item{\code{acceleration_factor}} Acceleration factor.
+#'   \item{\code{n_segment}} Number of theta segments.
+#'   \item{\code{first_segment}} Theta segment assumed at the begining of test.
+#'   \item{\code{segment_cut}} A numeric vector of segment cuts.
+#'   \item{\code{initial_eligibility_stats}} A list of eligibility statistics from a previous run.
+#'   \item{\code{fading_factor}} Fading factor.
+#'   \item{\code{diagnostic_stats}} \code{TRUE} to generate diagnostic statistics.
 #' }
-#' @param stoppingCriterion A list containing stopping criterion.
+#' @param stopping_criterion A list containing stopping criterion.
 #' \itemize{
 #'   \item{\code{method}} Accepts one of \code{"FIXED"}.
-#'   \item{\code{testLength}} Test length.
-#'   \item{\code{minNI}} Maximum number of items to administer.
-#'   \item{\code{maxNI}} Minumum number of items to administer.
-#'   \item{\code{seThreshold}} Standard error threshold for stopping.
+#'   \item{\code{test_length}} Test length.
+#'   \item{\code{min_ni}} Maximum number of items to administer.
+#'   \item{\code{max_ni}} Minumum number of items to administer.
+#'   \item{\code{se_threshold}} Standard error threshold for stopping.
 #' }
-#' @param interimTheta A list containing interim theta estimation options.
+#' @param interim_theta A list containing interim theta estimation options.
 #' \itemize{
 #'   \item{\code{method}} The type of estimation. Accepts one of \code{EAP, EB, FB}.
-#'   \item{\code{shrinkageCorrection}} Set \code{TRUE} to correct for shrinkage in EAP
-#'   \item{\code{priorDist}} The type of prior distribution. Accepts one of \code{NORMAL, UNIF}.
-#'   \item{\code{priorPar}} Distributional parameters for the prior.
-#'   \item{\code{boundML}} Theta bound for MLE.
-#'   \item{\code{truncateML}} Set \code{TRUE} to truncate MLE within \code{boundML}
-#'   \item{\code{maxIter}} Maximum number of Newton-Raphson iterations.
+#'   \item{\code{shrinkage_correction}} Set \code{TRUE} to correct for shrinkage in EAP
+#'   \item{\code{prior_dist}} The type of prior distribution. Accepts one of \code{NORMAL, UNIF}.
+#'   \item{\code{prior_par}} Distributional parameters for the prior.
+#'   \item{\code{bound_ML}} Theta bound for MLE.
+#'   \item{\code{truncate_ML}} Set \code{TRUE} to truncate MLE within \code{bound_ML}
+#'   \item{\code{max_iter}} Maximum number of Newton-Raphson iterations.
 #'   \item{\code{crit}} Convergence criterion.
-#'   \item{\code{maxChange}} Maximum change in ML estimates between iterations.
-#'   \item{\code{doFisher}} Set \code{TRUE} to use Fisher's method of scoring.
+#'   \item{\code{max_change}} Maximum change in ML estimates between iterations.
+#'   \item{\code{do_fisher}} Set \code{TRUE} to use Fisher's method of scoring.
 #' }
-#' @param finalTheta A list containing final theta estimation options.
+#' @param final_theta A list containing final theta estimation options.
 #' \itemize{
 #'   \item{\code{method}} The type of estimation. Accepts one of \code{EAP, EB, FB}.
-#'   \item{\code{shrinkageCorrection}} Set \code{TRUE} to correct for shrinkage in EAP.
-#'   \item{\code{priorDist}} The type of prior distribution. Accepts one of \code{NORMAL, UNIF}.
-#'   \item{\code{priorPar}} Distributional parameters for the prior.
-#'   \item{\code{boundML}} Theta bound for MLE.
-#'   \item{\code{truncateML}} Set \code{TRUE} to truncate MLE within \code{boundML}
-#'   \item{\code{maxIter}} Maximum number of Newton-Raphson iterations.
+#'   \item{\code{shrinkage_correction}} Set \code{TRUE} to correct for shrinkage in EAP.
+#'   \item{\code{prior_dist}} The type of prior distribution. Accepts one of \code{NORMAL, UNIF}.
+#'   \item{\code{prior_par}} Distributional parameters for the prior.
+#'   \item{\code{bound_ML}} Theta bound for MLE.
+#'   \item{\code{truncate_ML}} Set \code{TRUE} to truncate MLE within \code{bound_ML}
+#'   \item{\code{max_iter}} Maximum number of Newton-Raphson iterations.
 #'   \item{\code{crit}} Convergence criterion.
-#'   \item{\code{maxChange}} Maximum change in ML estimates between iterations.
-#'   \item{\code{doFisher}} Set \code{TRUE} to use Fisher's method of scoring.
+#'   \item{\code{max_change}} Maximum change in ML estimates between iterations.
+#'   \item{\code{do_fisher}} Set \code{TRUE} to use Fisher's method of scoring.
 #' }
-#' @param thetaGrid A numeric vector. Theta values to represent the continuum.
-#' @param auditTrail Set \code{TRUE} to generate audit trails.
+#' @param theta_grid A numeric vector. Theta values to represent the continuum.
+#' @param audit_trail Set \code{TRUE} to generate audit trails.
 #'
 #' @rdname createShadowTestConfig
 #' @export
-createShadowTestConfig <- function(itemSelection = NULL, contentBalancing = NULL, MIP = NULL, MCMC = NULL,
-                          refreshPolicy = NULL, exposureControl = NULL, stoppingCriterion = NULL,
-                          interimTheta = NULL, finalTheta = NULL, thetaGrid = seq(-4, 4, .1), auditTrail = F) {
+createShadowTestConfig <- function(item_selection = NULL, content_balancing = NULL, MIP = NULL, MCMC = NULL,
+                          refresh_policy = NULL, exposure_control = NULL, stopping_criterion = NULL,
+                          interim_theta = NULL, final_theta = NULL, theta_grid = seq(-4, 4, .1), audit_trail = F) {
   conf <- new("Shadow.config")
 
   arg_names <- c(
-    "itemSelection", "contentBalancing", "MIP", "MCMC",
-    "refreshPolicy", "exposureControl", "stoppingCriterion",
-    "interimTheta", "finalTheta"
+    "item_selection", "content_balancing", "MIP", "MCMC",
+    "refresh_policy", "exposure_control", "stopping_criterion",
+    "interim_theta", "final_theta"
   )
   obj_names <- c()
   for (arg in arg_names) {
@@ -372,11 +372,11 @@ createShadowTestConfig <- function(itemSelection = NULL, contentBalancing = NULL
       }
     }
   }
-  if (!is.null(thetaGrid)) {
-    conf@thetaGrid <- thetaGrid
+  if (!is.null(theta_grid)) {
+    conf@theta_grid <- theta_grid
   }
-  if (!is.null(auditTrail)) {
-    conf@auditTrail <- auditTrail
+  if (!is.null(audit_trail)) {
+    conf@audit_trail <- audit_trail
   }
   v <- validObject(conf)
   if (v) {
@@ -390,140 +390,140 @@ createShadowTestConfig <- function(itemSelection = NULL, contentBalancing = NULL
 #' @noRd
 setMethod("show", "Shadow.config", function(object) {
   cat("Shadow Configuration Settings \n\n")
-  cat("  itemSelection \n")
-  cat("    method         :", object@itemSelection$method, "\n")
-  cat("    infoType       :", object@itemSelection$infoType, "\n")
-  cat("    initialTheta   :", object@itemSelection$initialTheta, "\n")
-  cat("    fixedTheta     :", object@itemSelection$fixedTheta, "\n\n")
-  cat("  contentBalancing \n")
-  cat("    method         :", object@contentBalancing$method, "\n\n")
+  cat("  item_selection \n")
+  cat("    method          :", object@item_selection$method, "\n")
+  cat("    info_type       :", object@item_selection$info_type, "\n")
+  cat("    initial_theta   :", object@item_selection$initial_theta, "\n")
+  cat("    fixed_theta     :", object@item_selection$fixed_theta, "\n\n")
+  cat("  content_balancing \n")
+  cat("    method          :", object@content_balancing$method, "\n\n")
   cat("  MIP \n")
-  cat("    solver         :", object@MIP$solver, "\n")
-  cat("    verbosity      :", object@MIP$verbosity, "\n")
-  cat("    timeLimit      :", object@MIP$timeLimit, "\n")
-  cat("    gapLimit       :", object@MIP$gapLimit, "\n\n")
+  cat("    solver          :", object@MIP$solver, "\n")
+  cat("    verbosity       :", object@MIP$verbosity, "\n")
+  cat("    time_limit      :", object@MIP$time_limit, "\n")
+  cat("    gap_limit       :", object@MIP$gap_limit, "\n\n")
   cat("  MCMC \n")
-  cat("    burnIn         :", object@MCMC$burnIn, "\n")
-  cat("    postBurnIn     :", object@MCMC$postBurnIn, "\n")
-  cat("    thin           :", object@MCMC$thin, "\n")
-  cat("    jumpFactor     :", object@MCMC$jumpFactor, "\n\n")
-  cat("  refreshPolicy \n")
-  cat("    method         :", object@refreshPolicy$method, "\n")
-  cat("    interval       :", object@refreshPolicy$interval, "\n")
-  cat("    threshold      :", object@refreshPolicy$threshold, "\n")
-  cat("    position       :", object@refreshPolicy$position, "\n\n")
-  cat("  exposureControl \n")
-  cat("    method                  :", object@exposureControl$method, "\n")
-  cat("    M                       :", object@exposureControl$M, "\n")
-  cat("    maxExposureRate         :", object@exposureControl$maxExposureRate, "\n")
-  cat("    accelerationFactor      :", object@exposureControl$accelerationFactor, "\n")
-  cat("    nSegment                :", object@exposureControl$nSegment, "\n")
-  cat("    firstSegment            :", object@exposureControl$firstSegment, "\n")
-  cat("    segmentCut              :", object@exposureControl$segmentCut, "\n")
-  cat("    initialEligibilityStats :", !is.null(object@exposureControl$initialEligibilityStats), "\n")
-  cat("    fadingFactor            :", object@exposureControl$fadingFactor, "\n")
-  cat("    diagnosticsStats        :", object@exposureControl$diagnosticStats, "\n\n")
-  cat("  stoppingCriterion \n")
-  cat("    method         :", object@stoppingCriterion$method, "\n")
-  cat("    testLength     :", object@stoppingCriterion$testLength, "\n")
-  cat("    minNI          :", object@stoppingCriterion$minNI, "\n")
-  cat("    maxNI          :", object@stoppingCriterion$maxNI, "\n")
-  cat("    seThreshold    :", ifelse(toupper(object@stoppingCriterion$method) == "VARIABLE", object@stoppingCriterion$seThreshold, NA), "\n\n")
-  cat("  interimTheta \n")
-  cat("    method              :", object@interimTheta$method, "\n")
-  cat("    shrinkageCorrection :", object@interimTheta$shrinkageCorrection, "\n")
-  cat("    priorDist           :", ifelse(toupper(object@interimTheta$method == "EAP"), object@interimTheta$priorDist, NA), "\n")
-  cat("    priorPar            :", ifelse(toupper(object@interimTheta$method == "EAP"), sprintf(ifelse(toupper(object@interimTheta$priorDist) == "NORMAL", "Mean = %5.3f, SD = %5.3f", "Min = %5.3f, Max = %5.3f"), object@interimTheta$priorPar[1], object@interimTheta$priorPar[2]), NA), "\n")
-  cat("    boundML             :", object@interimTheta$boundML, "\n")
-  cat("    truncateML          :", object@interimTheta$truncateML, "\n")
-  cat("    maxIter             :", object@interimTheta$maxIter, "\n")
-  cat("    crit                :", object@interimTheta$crit, "\n")
-  cat("    maxChange           :", object@interimTheta$maxChange, "\n")
-  cat("    doFisher       :", object@interimTheta$doFisher, "\n\n")
-  cat("  finalTheta \n")
-  cat("    method              :", object@finalTheta$method, "\n")
-  cat("    shrinkageCorrection :", object@finalTheta$shrinkageCorrection, "\n")
-  cat("    priorDist           :", ifelse(toupper(object@finalTheta$method == "EAP"), object@finalTheta$priorDist, NA), "\n")
-  cat("    priorPar            :", ifelse(toupper(object@finalTheta$method == "EAP"), sprintf(ifelse(toupper(object@finalTheta$priorDist) == "NORMAL", "Mean = %5.3f, SD = %5.3f", "Min = %5.3f, Max = %5.3f"), object@finalTheta$priorPar[1], object@finalTheta$priorPar[2]), NA), "\n")
-  cat("    boundML             :", object@finalTheta$boundML, "\n")
-  cat("    truncateML          :", object@finalTheta$truncateML, "\n")
-  cat("    maxIter             :", object@finalTheta$maxIter, "\n")
-  cat("    crit                :", object@finalTheta$crit, "\n")
-  cat("    maxChange           :", object@finalTheta$maxChange, "\n")
-  cat("    doFisher            :", object@finalTheta$doFisher, "\n\n")
-  cat("  thetaGrid \n")
-  print(object@thetaGrid)
-  cat("\n  auditTrail: ", object@auditTrail, "\n")
+  cat("    burn_in         :", object@MCMC$burn_in, "\n")
+  cat("    post_burn_in    :", object@MCMC$post_burn_in, "\n")
+  cat("    thin            :", object@MCMC$thin, "\n")
+  cat("    jump_factor     :", object@MCMC$jump_factor, "\n\n")
+  cat("  refresh_policy \n")
+  cat("    method          :", object@refresh_policy$method, "\n")
+  cat("    interval        :", object@refresh_policy$interval, "\n")
+  cat("    threshold       :", object@refresh_policy$threshold, "\n")
+  cat("    position        :", object@refresh_policy$position, "\n\n")
+  cat("  exposure_control \n")
+  cat("    method                    :", object@exposure_control$method, "\n")
+  cat("    M                         :", object@exposure_control$M, "\n")
+  cat("    max_exposure_rate         :", object@exposure_control$max_exposure_rate, "\n")
+  cat("    acceleration_factor       :", object@exposure_control$acceleration_factor, "\n")
+  cat("    n_segment                 :", object@exposure_control$n_segment, "\n")
+  cat("    first_segment             :", object@exposure_control$first_segment, "\n")
+  cat("    segment_cut               :", object@exposure_control$segment_cut, "\n")
+  cat("    initial_eligibility_stats :", !is.null(object@exposure_control$initial_eligibility_stats), "\n")
+  cat("    fading_factor             :", object@exposure_control$fading_factor, "\n")
+  cat("    diagnosticsStats          :", object@exposure_control$diagnostic_stats, "\n\n")
+  cat("  stopping_criterion \n")
+  cat("    method          :", object@stopping_criterion$method, "\n")
+  cat("    test_length     :", object@stopping_criterion$test_length, "\n")
+  cat("    min_ni          :", object@stopping_criterion$min_ni, "\n")
+  cat("    max_ni          :", object@stopping_criterion$max_ni, "\n")
+  cat("    se_threshold    :", ifelse(toupper(object@stopping_criterion$method) == "VARIABLE", object@stopping_criterion$se_threshold, NA), "\n\n")
+  cat("  interim_theta \n")
+  cat("    method               :", object@interim_theta$method, "\n")
+  cat("    shrinkage_correction :", object@interim_theta$shrinkage_correction, "\n")
+  cat("    prior_dist           :", ifelse(toupper(object@interim_theta$method == "EAP"), object@interim_theta$prior_dist, NA), "\n")
+  cat("    prior_par            :", ifelse(toupper(object@interim_theta$method == "EAP"), sprintf(ifelse(toupper(object@interim_theta$prior_dist) == "NORMAL", "Mean = %5.3f, SD = %5.3f", "Min = %5.3f, Max = %5.3f"), object@interim_theta$prior_par[1], object@interim_theta$prior_par[2]), NA), "\n")
+  cat("    bound_ML             :", object@interim_theta$bound_ML, "\n")
+  cat("    truncate_ML          :", object@interim_theta$truncate_ML, "\n")
+  cat("    max_iter             :", object@interim_theta$max_iter, "\n")
+  cat("    crit                 :", object@interim_theta$crit, "\n")
+  cat("    max_change           :", object@interim_theta$max_change, "\n")
+  cat("    do_fisher            :", object@interim_theta$do_fisher, "\n\n")
+  cat("  final_theta \n")
+  cat("    method               :", object@final_theta$method, "\n")
+  cat("    shrinkage_correction :", object@final_theta$shrinkage_correction, "\n")
+  cat("    prior_dist           :", ifelse(toupper(object@final_theta$method == "EAP"), object@final_theta$prior_dist, NA), "\n")
+  cat("    prior_par            :", ifelse(toupper(object@final_theta$method == "EAP"), sprintf(ifelse(toupper(object@final_theta$prior_dist) == "NORMAL", "Mean = %5.3f, SD = %5.3f", "Min = %5.3f, Max = %5.3f"), object@final_theta$prior_par[1], object@final_theta$prior_par[2]), NA), "\n")
+  cat("    bound_ML             :", object@final_theta$bound_ML, "\n")
+  cat("    truncate_ML          :", object@final_theta$truncate_ML, "\n")
+  cat("    max_iter             :", object@final_theta$max_iter, "\n")
+  cat("    crit                 :", object@final_theta$crit, "\n")
+  cat("    max_change           :", object@final_theta$max_change, "\n")
+  cat("    do_fisher            :", object@final_theta$do_fisher, "\n\n")
+  cat("  theta_grid \n")
+  print(object@theta_grid)
+  cat("\n  audit_trail : ", object@audit_trail, "\n")
 })
 
 #' Shadow.output
 #'
-#' @slot simuleeIndex Numeric. The index of the simulee.
-#' @slot trueTheta Numeric or NULL. True theta value of the simulee if supplied in advance.
-#' @slot trueThetaSegment Numeric or NULL. Which segment the true theta value is in.
-#' @slot finalThetaEst Numeric. The estimated theta after the last administered item.
-#' @slot finalSeEst Numeric. The standard error of estimation after the last administered item.
-#' @slot administeredItemIndex Numeric. A vector of item indices administered at each position.
-#' @slot administeredItemResp Numeric. A vector of responses at each position.
-#' @slot administeredStimulusIndex Numeric. A vector of stimulus indices administered at each position.
-#' @slot shadowTestRefreshed Logical. A vector of logical values indicating whether the shadow test was refreshed before administering an item at each position.
-#' @slot shadowTestFeasible Logical. A vector of logical values indicating whether a feasible solution to the shadow test was available in each position.
-#' @slot solveTime Numeric. A vector of values indicating the time taken in obtaining a shadow test.
-#' @slot interimThetaEst Numeric. A vector containing estimated thetas at each position.
-#' @slot interimSeEst Numeric. A vector containing standard errors at each position.
-#' @slot thetaSegmentIndex Numeric. A vector containing which segments the estimated thetas were in at each position.
+#' @slot simulee_id Numeric. The index of the simulee.
+#' @slot true_theta Numeric or NULL. True theta value of the simulee if supplied in advance.
+#' @slot true_theta_segment Numeric or NULL. Which segment the true theta value is in.
+#' @slot final_theta_est Numeric. The estimated theta after the last administered item.
+#' @slot final_se_est Numeric. The standard error of estimation after the last administered item.
+#' @slot administered_item_index Numeric. A vector of item indices administered at each position.
+#' @slot administered_item_resp Numeric. A vector of responses at each position.
+#' @slot administered_stimulus_index Numeric. A vector of stimulus indices administered at each position.
+#' @slot shadow_test_refreshed Logical. A vector of logical values indicating whether the shadow test was refreshed before administering an item at each position.
+#' @slot shadow_test_feasible Logical. A vector of logical values indicating whether a feasible solution to the shadow test was available in each position.
+#' @slot solve_time Numeric. A vector of values indicating the time taken in obtaining a shadow test.
+#' @slot interim_theta_est Numeric. A vector containing estimated thetas at each position.
+#' @slot interim_se_est Numeric. A vector containing standard errors at each position.
+#' @slot theta_segment_index Numeric. A vector containing which segments the estimated thetas were in at each position.
 #' @slot prior Numeric. A prior distribution.
-#' @slot priorPar Numeric. The hyper parameters for the prior distribution.
+#' @slot prior_par Numeric. The hyper parameters for the prior distribution.
 #' @slot posterior Numeric. A posterior distribution.
-#' @slot posteriorSample Numeric. A vector containing MCMC samples.
+#' @slot posterior_sample Numeric. A vector containing MCMC samples.
 #' @slot likelihood Numeric. A likelihood distribution.
-#' @slot shadowTest A list of vectors containing item indices of the shadow test at each position.
+#' @slot shadow_test A list of vectors containing item indices of the shadow test at each position.
 #'
 #' @export
 setClass("Shadow.output",
   slots = c(
-    simuleeIndex = "numeric",
-    trueTheta = "numericOrNULL",
-    trueThetaSegment = "numericOrNULL",
-    finalThetaEst = "numeric",
-    finalSeEst = "numeric",
-    administeredItemIndex = "numeric",
-    administeredItemResp = "numeric",
-    administeredStimulusIndex = "numeric",
-    shadowTestRefreshed = "logical",
-    shadowTestFeasible = "logical",
-    solveTime = "numeric",
-    interimThetaEst = "numeric",
-    interimSeEst = "numeric",
-    thetaSegmentIndex = "numeric",
+    simulee_id = "numeric",
+    true_theta = "numeric.or.null",
+    true_theta_segment = "numeric.or.null",
+    final_theta_est = "numeric",
+    final_se_est = "numeric",
+    administered_item_index = "numeric",
+    administered_item_resp = "numeric",
+    administered_stimulus_index = "numeric",
+    shadow_test_refreshed = "logical",
+    shadow_test_feasible = "logical",
+    solve_time = "numeric",
+    interim_theta_est = "numeric",
+    interim_se_est = "numeric",
+    theta_segment_index = "numeric",
     prior = "numeric",
-    priorPar = "numeric",
+    prior_par = "numeric",
     posterior = "numeric",
-    posteriorSample = "numeric",
+    posterior_sample = "numeric",
     likelihood = "numeric",
-    shadowTest = "list"
+    shadow_test = "list"
   ),
   prototype = list(
-    simuleeIndex = numeric(0),
-    trueTheta = NULL,
-    trueThetaSegment = NULL,
-    finalThetaEst = numeric(0),
-    finalSeEst = numeric(0),
-    administeredItemIndex = numeric(0),
-    administeredItemResp = numeric(0),
-    administeredStimulusIndex = numeric(0),
-    shadowTestRefreshed = logical(0),
-    shadowTestFeasible = logical(0),
-    solveTime = numeric(0),
-    interimThetaEst = numeric(0),
-    interimSeEst = numeric(0),
-    thetaSegmentIndex = numeric(0),
+    simulee_id = numeric(0),
+    true_theta = NULL,
+    true_theta_segment = NULL,
+    final_theta_est = numeric(0),
+    final_se_est = numeric(0),
+    administered_item_index = numeric(0),
+    administered_item_resp = numeric(0),
+    administered_stimulus_index = numeric(0),
+    shadow_test_refreshed = logical(0),
+    shadow_test_feasible = logical(0),
+    solve_time = numeric(0),
+    interim_theta_est = numeric(0),
+    interim_se_est = numeric(0),
+    theta_segment_index = numeric(0),
     prior = numeric(0),
-    priorPar = numeric(0),
+    prior_par = numeric(0),
     posterior = numeric(0),
-    posteriorSample = numeric(0),
+    posterior_sample = numeric(0),
     likelihood = numeric(0),
-    shadowTest = list(0)
+    shadow_test = list(0)
   ),
   validity = function(object) {
     return(TRUE)
@@ -535,19 +535,19 @@ setClass("Shadow.output",
 #' @docType methods
 #' @noRd
 setMethod("show", "Shadow.output", function(object) {
-  if (length(object@administeredItemIndex) > 0) {
-    cat("Simulee Index          :", object@simuleeIndex, "\n")
-    cat("  True Theta           :", object@trueTheta, "\n")
-    cat("  Final Theta Estimate :", object@finalThetaEst, "\n")
-    cat("  Final SE Estimate    :", object@finalSeEst, "\n")
+  if (length(object@administered_item_index) > 0) {
+    cat("Simulee Index          :", object@simulee_id, "\n")
+    cat("  True Theta           :", object@true_theta, "\n")
+    cat("  Final Theta Estimate :", object@final_theta_est, "\n")
+    cat("  Final SE Estimate    :", object@final_se_est, "\n")
     output <- data.frame(
-      stage = 1:length(object@administeredItemIndex),
-      stimulusIndex = ifelse(is.nan(object@administeredStimulusIndex), rep(NA, length(object@administeredItemIndex)), object@administeredStimulusIndex),
-      itemIndex = object@administeredItemIndex,
-      itemResp = object@administeredItemResp,
-      interimTheta = object@interimThetaEst,
-      interimSE = object@interimSeEst,
-      thetaSegment = object@thetaSegmentIndex
+      stage = 1:length(object@administered_item_index),
+      stimulus_index = ifelse(is.nan(object@administered_stimulus_index), rep(NA, length(object@administered_item_index)), object@administered_stimulus_index),
+      item_index = object@administered_item_index,
+      item_resp = object@administered_item_resp,
+      interim_theta = object@interim_theta_est,
+      interim_se = object@interim_se_est,
+      theta_segment = object@theta_segment_index
     )
     print(output)
   } else {
