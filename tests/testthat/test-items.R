@@ -1,9 +1,9 @@
-item_1 <- new("item.1pl", difficulty = 0.5)
-item_2 <- new("item.2pl", slope = 1.5, difficulty = 0.5)
-item_3 <- new("item.3pl", slope = 1.5, difficulty = 0.5, guessing = 0.2)
-item_4 <- new("item.pc", threshold = c(-0.5, 0.5), ncat = 3)
-item_5 <- new("item.gpc", slope = 1.0, threshold = c(-0.5, 0.0, 0.5), ncat = 4)
-item_6 <- new("item.gr", slope = 1.0, category = c(-1, 0, 1), ncat = 4)
+item_1 <- new("item_1PL", difficulty = 0.5)
+item_2 <- new("item_2PL", slope = 1.5, difficulty = 0.5)
+item_3 <- new("item_3PL", slope = 1.5, difficulty = 0.5, guessing = 0.2)
+item_4 <- new("item_PC", threshold = c(-0.5, 0.5), ncat = 3)
+item_5 <- new("item_GPC", slope = 1.0, threshold = c(-0.5, 0.0, 0.5), ncat = 4)
+item_6 <- new("item_GR", slope = 1.0, category = c(-1, 0, 1), ncat = 4)
 item_names <- paste0("item_", 1:6)
 
 for (i in item_names) {

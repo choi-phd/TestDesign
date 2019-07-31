@@ -3,41 +3,41 @@
 \docType{methods}
 \name{calcJacobian}
 \alias{calcJacobian}
-\alias{calcJacobian,item.1pl,numeric,numeric-method}
-\alias{calcJacobian,item.1pl,numeric-method}
-\alias{calcJacobian,item.2pl,numeric,numeric-method}
-\alias{calcJacobian,item.2pl,numeric-method}
-\alias{calcJacobian,item.3pl,numeric,numeric-method}
-\alias{calcJacobian,item.3pl,numeric-method}
-\alias{calcJacobian,item.pc,numeric,numeric-method}
-\alias{calcJacobian,item.pc,numeric-method}
-\alias{calcJacobian,item.gpc,numeric,numeric-method}
-\alias{calcJacobian,item.gpc,numeric-method}
-\alias{calcJacobian,item.gr,numeric,numeric-method}
-\alias{calcJacobian,item.gr,numeric-method}
-\alias{calcJacobian,item.pool,numeric,numeric-method}
-\alias{calcJacobian,item.pool,numeric-method}
-\alias{calcJacobian,pool.cluster,numeric,list-method}
-\alias{calcJacobian,pool.cluster,numeric-method}
+\alias{calcJacobian,item_1PL,numeric,numeric-method}
+\alias{calcJacobian,item_1PL,numeric-method}
+\alias{calcJacobian,item_2PL,numeric,numeric-method}
+\alias{calcJacobian,item_2PL,numeric-method}
+\alias{calcJacobian,item_3PL,numeric,numeric-method}
+\alias{calcJacobian,item_3PL,numeric-method}
+\alias{calcJacobian,item_PC,numeric,numeric-method}
+\alias{calcJacobian,item_PC,numeric-method}
+\alias{calcJacobian,item_GPC,numeric,numeric-method}
+\alias{calcJacobian,item_GPC,numeric-method}
+\alias{calcJacobian,item_GR,numeric,numeric-method}
+\alias{calcJacobian,item_GR,numeric-method}
+\alias{calcJacobian,item_pool,numeric,numeric-method}
+\alias{calcJacobian,item_pool,numeric-method}
+\alias{calcJacobian,pool_cluster,numeric,list-method}
+\alias{calcJacobian,pool_cluster,numeric-method}
 \title{Calculate first derivative of log-likelihood}
 \usage{
 calcJacobian(object, theta, resp)
 
-\S4method{calcJacobian}{item.1pl,numeric,numeric}(object, theta, resp)
+\S4method{calcJacobian}{item_1PL,numeric,numeric}(object, theta, resp)
 
-\S4method{calcJacobian}{item.2pl,numeric,numeric}(object, theta, resp)
+\S4method{calcJacobian}{item_2PL,numeric,numeric}(object, theta, resp)
 
-\S4method{calcJacobian}{item.3pl,numeric,numeric}(object, theta, resp)
+\S4method{calcJacobian}{item_3PL,numeric,numeric}(object, theta, resp)
 
-\S4method{calcJacobian}{item.pc,numeric,numeric}(object, theta, resp)
+\S4method{calcJacobian}{item_PC,numeric,numeric}(object, theta, resp)
 
-\S4method{calcJacobian}{item.gpc,numeric,numeric}(object, theta, resp)
+\S4method{calcJacobian}{item_GPC,numeric,numeric}(object, theta, resp)
 
-\S4method{calcJacobian}{item.gr,numeric,numeric}(object, theta, resp)
+\S4method{calcJacobian}{item_GR,numeric,numeric}(object, theta, resp)
 
-\S4method{calcJacobian}{item.pool,numeric,numeric}(object, theta, resp)
+\S4method{calcJacobian}{item_pool,numeric,numeric}(object, theta, resp)
 
-\S4method{calcJacobian}{pool.cluster,numeric,list}(object, theta, resp)
+\S4method{calcJacobian}{pool_cluster,numeric,list}(object, theta, resp)
 }
 \arguments{
 \item{object}{An instance of an item class.}
@@ -53,17 +53,17 @@ First derivative values of log-likelihoods.
 An S4 generic and its methods to calculate the first derivative of the log-likelihood function.
 }
 \examples{
-item_1 = new("item.1pl", difficulty = 0.5)
+item_1 = new("item_1PL", difficulty = 0.5)
 j_item_1 = calcJacobian(item_1, seq(-3, 3, 1), 0)
-item_2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
+item_2 = new("item_2PL", slope = 1.0, difficulty = 0.5)
 j_item_2 = calcJacobian(item_2, seq(-3, 3, 1), 0)
-item_3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+item_3 = new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 j_item_3 = calcJacobian(item_3, seq(-3, 3, 1), 0)
-item_4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
+item_4 = new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
 j_item_4 = calcJacobian(item_4, seq(-3, 3, 1), 0)
-item_5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+item_5 = new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 j_item_5 = calcJacobian(item_5, seq(-3, 3, 1), 0)
-item_6 = new("item.gr", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+item_6 = new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
 j_item_6 = calcJacobian(item_6, seq(-3, 3, 1), 0)
 j_itempool <- calcJacobian(itempool_science, seq(-3, 3, 1), 0)
 }

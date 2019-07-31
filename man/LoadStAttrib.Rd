@@ -4,12 +4,12 @@
 \alias{loadStAttrib}
 \title{Load set/stimulus/passage attributes}
 \usage{
-loadStAttrib(file, item.attrib)
+loadStAttrib(file, item_attrib)
 }
 \arguments{
 \item{file}{Character. The name of the file containing item attributes.}
 
-\item{item.attrib}{A \code{data.frame} containing item attributes. Use \code{\link{loadItemAttrib}} for this.}
+\item{item_attrib}{A \code{data.frame} containing item attributes. Use \code{\link{loadItemAttrib}} for this.}
 }
 \value{
 A \code{data.frame} containing stimulus attributes.

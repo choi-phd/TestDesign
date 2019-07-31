@@ -4,20 +4,20 @@
 \alias{loadItemPool}
 \title{Load item paramaters}
 \usage{
-loadItemPool(file, ipar = NULL, se.file = NULL)
+loadItemPool(file, ipar = NULL, se_file = NULL)
 }
 \arguments{
 \item{file}{File path of a .csv file containing item parameters. The file content should not have column names.}
 
 \item{ipar}{A data.frame created from a .csv file.}
 
-\item{se.file}{File path of a .csv file containing standard errors.}
+\item{se_file}{File path of a .csv file containing standard errors.}
 }
 \value{
-An \linkS4class{item.pool} object.
+An \linkS4class{item_pool} object.
 }
 \description{
-Read item parameters from a .csv file or a data.frame and create an \linkS4class{item.pool} class.
+Read item parameters from a .csv file or a data.frame and create an \linkS4class{item_pool} class.
 }
 \seealso{
 \link{dataset_science} for example usage.

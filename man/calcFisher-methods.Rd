@@ -3,13 +3,13 @@
 \docType{methods}
 \name{calcFisher}
 \alias{calcFisher}
-\alias{calcFisher,item.1pl,numeric-method}
-\alias{calcFisher,item.2pl,numeric-method}
-\alias{calcFisher,item.3pl,numeric-method}
-\alias{calcFisher,item.pc,numeric-method}
+\alias{calcFisher,item_1PL,numeric-method}
+\alias{calcFisher,item_2PL,numeric-method}
+\alias{calcFisher,item_3PL,numeric-method}
+\alias{calcFisher,item_PC,numeric-method}
 \alias{item_4}
 \alias{=}
-\alias{new("item.pc",}
+\alias{new("item_PC",}
 \alias{threshold}
 \alias{c(-1,}
 \alias{0,}
@@ -21,29 +21,29 @@
 \alias{seq(-3,}
 \alias{3,}
 \alias{1))}
-\alias{calcFisher,item.gpc,numeric-method}
-\alias{calcFisher,item.gr,numeric-method}
-\alias{calcFisher,item.pool,numeric-method}
-\alias{calcFisher,pool.cluster,numeric-method}
+\alias{calcFisher,item_GPC,numeric-method}
+\alias{calcFisher,item_GR,numeric-method}
+\alias{calcFisher,item_pool,numeric-method}
+\alias{calcFisher,pool_cluster,numeric-method}
 \title{Calculate Fisher information}
 \usage{
 calcFisher(object, theta)
 
-\S4method{calcFisher}{item.1pl,numeric}(object, theta)
+\S4method{calcFisher}{item_1PL,numeric}(object, theta)
 
-\S4method{calcFisher}{item.2pl,numeric}(object, theta)
+\S4method{calcFisher}{item_2PL,numeric}(object, theta)
 
-\S4method{calcFisher}{item.3pl,numeric}(object, theta)
+\S4method{calcFisher}{item_3PL,numeric}(object, theta)
 
-\S4method{calcFisher}{item.pc,numeric}(object, theta)
+\S4method{calcFisher}{item_PC,numeric}(object, theta)
 
-\S4method{calcFisher}{item.gpc,numeric}(object, theta)
+\S4method{calcFisher}{item_GPC,numeric}(object, theta)
 
-\S4method{calcFisher}{item.gr,numeric}(object, theta)
+\S4method{calcFisher}{item_GR,numeric}(object, theta)
 
-\S4method{calcFisher}{item.pool,numeric}(object, theta)
+\S4method{calcFisher}{item_pool,numeric}(object, theta)
 
-\S4method{calcFisher}{pool.cluster,numeric}(object, theta)
+\S4method{calcFisher}{pool_cluster,numeric}(object, theta)
 }
 \arguments{
 \item{object}{An instance of an item class.}
@@ -51,21 +51,21 @@ calcFisher(object, theta)
 \item{theta}{A vector of theta values.}
 }
 \value{
-A vector of Fisher information values over theta (nq values) for a single item or a matrix of dimension (nq, ni) for an "item.pool".
+A vector of Fisher information values over theta (nq values) for a single item or a matrix of dimension (nq, ni) for an "item_pool".
 }
 \description{
 An S4 generic and its methods to calculate Fisher information given a vector of thetas for different item classes.
 }
 \examples{
-item_1 = new("item.1pl", difficulty = 0.5)
+item_1 = new("item_1PL", difficulty = 0.5)
 info_item_1 = calcFisher(item_1, seq(-3, 3, 1))
-item_2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
+item_2 = new("item_2PL", slope = 1.0, difficulty = 0.5)
 info_item_2 = calcFisher(item_2, seq(-3, 3, 1))
-item_3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+item_3 = new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 info_item_3 = calcFisher(item_3, seq(-3, 3, 1))
-item_5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+item_5 = new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 info_item_5 = calcFisher(item_5, seq(-3, 3, 1))
-item_6 = new("item.gr", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+item_6 = new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
 info_item_6 = calcFisher(item_6, seq(-3, 3, 1))
 info_itempool <- calcFisher(itempool_science, seq(-3, 3, 1))
 }
