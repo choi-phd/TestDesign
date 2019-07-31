@@ -14,7 +14,7 @@ This document explains how to create a constraint file. In test assembly, practi
 
 ## Structure
 
-As of *oat* version 0.2, constraints can be read in from a `.csv` file. The file is expected to be in the following structure:
+As of *TestDesign* version 0.2, constraints can be read in from a `.csv` file. The file is expected to be in the following structure:
 
 
 ```r

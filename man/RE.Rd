@@ -4,12 +4,12 @@
 \alias{RE}
 \title{Calculate Relative Errors}
 \usage{
-RE(RMSE.foc, RMSE.ref)
+RE(RMSE_foc, RMSE_ref)
 }
 \arguments{
-\item{RMSE.foc}{A vector of RMSE values for the focal group.}
+\item{RMSE_foc}{A vector of RMSE values for the focal group.}
 
-\item{RMSE.ref}{A vector of RMSE values for the reference group.}
+\item{RMSE_ref}{A vector of RMSE values for the reference group.}
 }
 \description{
 Calculate Relative Errors.

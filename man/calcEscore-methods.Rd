@@ -3,33 +3,33 @@
 \docType{methods}
 \name{calcEscore}
 \alias{calcEscore}
-\alias{calcEscore,item.1pl,numeric-method}
-\alias{calcEscore,item.2pl,numeric-method}
-\alias{calcEscore,item.3pl,numeric-method}
-\alias{calcEscore,item.pc,numeric-method}
-\alias{calcEscore,item.gpc,numeric-method}
-\alias{calcEscore,item.gr,numeric-method}
-\alias{calcEscore,item.pool,numeric-method}
-\alias{calcEscore,pool.cluster,numeric-method}
+\alias{calcEscore,item_1PL,numeric-method}
+\alias{calcEscore,item_2PL,numeric-method}
+\alias{calcEscore,item_3PL,numeric-method}
+\alias{calcEscore,item_PC,numeric-method}
+\alias{calcEscore,item_GPC,numeric-method}
+\alias{calcEscore,item_GR,numeric-method}
+\alias{calcEscore,item_pool,numeric-method}
+\alias{calcEscore,pool_cluster,numeric-method}
 \title{Calculate expected scores}
 \usage{
 calcEscore(object, theta)
 
-\S4method{calcEscore}{item.1pl,numeric}(object, theta)
+\S4method{calcEscore}{item_1PL,numeric}(object, theta)
 
-\S4method{calcEscore}{item.2pl,numeric}(object, theta)
+\S4method{calcEscore}{item_2PL,numeric}(object, theta)
 
-\S4method{calcEscore}{item.3pl,numeric}(object, theta)
+\S4method{calcEscore}{item_3PL,numeric}(object, theta)
 
-\S4method{calcEscore}{item.pc,numeric}(object, theta)
+\S4method{calcEscore}{item_PC,numeric}(object, theta)
 
-\S4method{calcEscore}{item.gpc,numeric}(object, theta)
+\S4method{calcEscore}{item_GPC,numeric}(object, theta)
 
-\S4method{calcEscore}{item.gr,numeric}(object, theta)
+\S4method{calcEscore}{item_GR,numeric}(object, theta)
 
-\S4method{calcEscore}{item.pool,numeric}(object, theta)
+\S4method{calcEscore}{item_pool,numeric}(object, theta)
 
-\S4method{calcEscore}{pool.cluster,numeric}(object, theta)
+\S4method{calcEscore}{pool_cluster,numeric}(object, theta)
 }
 \arguments{
 \item{object}{An instance of an item class.}
@@ -43,17 +43,17 @@ A vector of expected scores of length nq (the number of values on theta grid).
 An S4 generic and its methods to calculate expected scores given a vector of thetas for different item classes.
 }
 \examples{
-item_1 = new("item.1pl", difficulty = 0.5)
+item_1 = new("item_1PL", difficulty = 0.5)
 ICC_item_1 = calcEscore(item_1, seq(-3, 3, 1))
-item_2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
+item_2 = new("item_2PL", slope = 1.0, difficulty = 0.5)
 ICC_item_2 = calcEscore(item_2, seq(-3, 3, 1))
-item_3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+item_3 = new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 ICC_item_3 = calcEscore(item_3, seq(-3, 3, 1))
-item_4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
+item_4 = new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
 ICC_item_4 = calcEscore(item_4, seq(-3, 3, 1))
-item_5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+item_5 = new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 ICC_item_5 = calcEscore(item_5, seq(-3, 3, 1))
-item_6 = new("item.gr", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+item_6 = new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
 ICC_item_6 = calcEscore(item_6, seq(-3, 3, 1))
 TCC_itempool <- calcEscore(itempool_science, seq(-3, 3, 1))
 }

@@ -4,7 +4,7 @@
 #'
 #' This pool is associated with the following objects:
 #' \itemize{
-#'   \item \code{itempool_science} An \code{\linkS4class{item.pool}} object.
+#'   \item \code{itempool_science} An \code{\linkS4class{item_pool}} object.
 #'   \item \code{itemattrib_science} A data frame containing item attributes.
 #'   \item \code{constraints_science} A list containing 36 constraints.
 #' }
@@ -43,7 +43,7 @@ NULL
 #'
 #' This pool is associated with the following objects:
 #' \itemize{
-#'   \item \code{itempool_reading} An \code{\linkS4class{item.pool}} object.
+#'   \item \code{itempool_reading} An \code{\linkS4class{item_pool}} object.
 #'   \item \code{itemattrib_reading} A data frame containing item attributes.
 #'   \item \code{stimattrib_reading} A data frame containing stimulus attributes.
 #'   \item \code{constraints_reading} A list containing 18 constraints.
@@ -87,7 +87,7 @@ NULL
 #'
 #' This pool is associated with the following objects:
 #' \itemize{
-#'   \item \code{itempool_fatigue} An \code{\linkS4class{item.pool}} object.
+#'   \item \code{itempool_fatigue} An \code{\linkS4class{item_pool}} object.
 #'   \item \code{itemattrib_fatigue} A data frame containing item attributes.
 #'   \item \code{constraints_fatigue} A list containing 111 constraints.
 #' }

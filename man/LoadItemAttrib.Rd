@@ -9,7 +9,7 @@ loadItemAttrib(file, pool)
 \arguments{
 \item{file}{Character. The name of the file containing item attributes.}
 
-\item{pool}{An \code{\linkS4class{item.pool}} object. Use \code{\link{loadItemPool}} for this.}
+\item{pool}{An \code{\linkS4class{item_pool}} object. Use \code{\link{loadItemPool}} for this.}
 }
 \value{
 A \code{data.frame} containing parsed dataset.

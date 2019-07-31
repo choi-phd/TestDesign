@@ -3,28 +3,28 @@
 \docType{methods}
 \name{Shadow}
 \alias{Shadow}
-\alias{Shadow,item.pool-method}
+\alias{Shadow,item_pool-method}
 \title{Run computerized adaptive testing with generalized shadow-test approach}
 \usage{
-Shadow(object, config, true.theta = NULL, constraints = NULL,
-  prior = NULL, prior.par = NULL, data = NULL, session = NULL)
+Shadow(object, config, true_theta = NULL, constraints = NULL,
+  prior = NULL, prior_par = NULL, data = NULL, session = NULL)
 
-\S4method{Shadow}{item.pool}(object, config, true.theta = NULL,
-  constraints = NULL, prior = NULL, prior.par = NULL, data = NULL,
+\S4method{Shadow}{item_pool}(object, config, true_theta = NULL,
+  constraints = NULL, prior = NULL, prior_par = NULL, data = NULL,
   session = NULL)
 }
 \arguments{
-\item{object}{An \code{\linkS4class{item.pool}} object. Use \code{\link{loadItemPool}} for this.}
+\item{object}{An \code{\linkS4class{item_pool}} object. Use \code{\link{loadItemPool}} for this.}
 
-\item{config}{A \code{\linkS4class{Shadow.config}} object.}
+\item{config}{A \code{\linkS4class{config_Shadow}} object.}
 
-\item{true.theta}{Numeric. A vector of true theta values to be used in simulation.}
+\item{true_theta}{Numeric. A vector of true theta values to be used in simulation.}
 
 \item{constraints}{A list representing optimization constraints. Use \code{\link{loadConstraints}} for this.}
 
 \item{prior}{Numeric. A matrix or a vector containing priors.}
 
-\item{prior.par}{Numeric. A vector of parameters for prior distribution.}
+\item{prior_par}{Numeric. A vector of parameters for prior distribution.}
 
 \item{data}{Numeric. A matrix containing item response data.}
 

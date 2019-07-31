@@ -4,16 +4,16 @@
 \alias{loadConstraints}
 \title{Load constraints}
 \usage{
-loadConstraints(file, pool, item.attrib, st.attrib = NULL)
+loadConstraints(file, pool, item_attrib, st_attrib = NULL)
 }
 \arguments{
 \item{file}{Character. The name of the file containing specifications for constraints.}
 
-\item{pool}{An \code{item.pool} object.}
+\item{pool}{An \code{item_pool} object.}
 
-\item{item.attrib}{A \code{data.frame} containing item attributes. Use \code{\link{loadItemAttrib}} for this.}
+\item{item_attrib}{A \code{data.frame} containing item attributes. Use \code{\link{loadItemAttrib}} for this.}
 
-\item{st.attrib}{(Optional) A \code{data.frame} containing stimulus attributes. Use \code{\link{loadStAttrib}} for this.}
+\item{st_attrib}{(Optional) A \code{data.frame} containing stimulus attributes. Use \code{\link{loadStAttrib}} for this.}
 }
 \value{
 A list containing the parsed constraints, to be used in \code{\link{ATA}} and \code{\link{Shadow}}.

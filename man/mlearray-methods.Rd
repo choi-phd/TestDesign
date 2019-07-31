@@ -4,38 +4,38 @@
 \name{MLE}
 \alias{MLE}
 \alias{MLE,test-method}
-\alias{MLE,test.cluster-method}
+\alias{MLE,test_cluster-method}
 \title{Generate maximum likelihood estimates of theta}
 \usage{
-MLE(object, start.theta = NULL, max.iter = 100, crit = 0.001,
-  select = NULL, theta.range = c(-4, 4), truncate = FALSE,
-  max.change = 1, do.Fisher = TRUE)
+MLE(object, start_theta = NULL, max_iter = 100, crit = 0.001,
+  select = NULL, theta_range = c(-4, 4), truncate = FALSE,
+  max_change = 1, do_Fisher = TRUE)
 
-\S4method{MLE}{test}(object, start.theta = NULL, max.iter = 100,
-  crit = 0.001, select = NULL, theta.range = c(-4, 4),
-  truncate = FALSE, max.change = 1, do.Fisher = TRUE)
+\S4method{MLE}{test}(object, start_theta = NULL, max_iter = 100,
+  crit = 0.001, select = NULL, theta_range = c(-4, 4),
+  truncate = FALSE, max_change = 1, do_Fisher = TRUE)
 
-\S4method{MLE}{test.cluster}(object, start.theta = NULL,
-  max.iter = 100, crit = 0.001, select = NULL)
+\S4method{MLE}{test_cluster}(object, start_theta = NULL,
+  max_iter = 100, crit = 0.001, select = NULL)
 }
 \arguments{
 \item{object}{A \code{\linkS4class{test}} object.}
 
-\item{start.theta}{An optional vector of start theta values.}
+\item{start_theta}{An optional vector of start theta values.}
 
-\item{max.iter}{Maximum number of iterations.}
+\item{max_iter}{Maximum number of iterations.}
 
 \item{crit}{Convergence criterion.}
 
 \item{select}{A vector of indices identifying the items to subset.}
 
-\item{theta.range}{A range of theta values: c(minTheta, maxTheta).}
+\item{theta_range}{A range of theta values: c(minTheta, maxTheta).}
 
-\item{truncate}{Set \code{TRUE} to bound MLE to theta.range.}
+\item{truncate}{Set \code{TRUE} to bound MLE to theta_range.}
 
-\item{max.change}{Maximum change between iterations.}
+\item{max_change}{Maximum change between iterations.}
 
-\item{do.Fisher}{Set \code{TRUE} to use Fisher's method of scoring.}
+\item{do_Fisher}{Set \code{TRUE} to use Fisher's method of scoring.}
 }
 \description{
 Generate maximum likelihood estimates of theta.

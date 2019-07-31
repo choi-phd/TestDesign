@@ -2,10 +2,10 @@
 #'
 #' Perform Automated Test Assembly with specified configurations.
 #'
-#' @param config An \code{\linkS4class{ATA.config}} object containing configuration options. Use \code{\link{createStaticTestConfig}} for this.
+#' @param config An \code{\linkS4class{config_ATA}} object containing configuration options. Use \code{\link{createStaticTestConfig}} for this.
 #' @param constraints A list representing optimization constraints. Use \code{\link{loadConstraints}} for this.
 #' @param plot Logical. If \code{TRUE}, draw Fisher information plot from the selected items.
-#' @param plot.range Numeric. A vector of length 2 containing the lower and upper bounds of plot range. The default is \code{c(-3, 3)}.
+#' @param plot_range Numeric. A vector of length 2 containing the lower and upper bounds of plot range. The default is \code{c(-3, 3)}.
 #'
 #' @return A list containing the following entries:
 #' \itemize{
@@ -27,7 +27,7 @@
 
 setGeneric(
   name = "ATA",
-  def = function(config, constraints, plot = FALSE, plot.range = c(-3, 3)) {
+  def = function(config, constraints, plot = FALSE, plot_range = c(-3, 3)) {
     standardGeneric("ATA")
   }
 )
@@ -38,8 +38,8 @@ setGeneric(
 
 setMethod(
   f = "ATA",
-  signature = c("ATA.config"),
-  definition = function(config, constraints, plot = FALSE, plot.range = c(-3, 3)) {
+  signature = c("config_ATA"),
+  definition = function(config, constraints, plot = FALSE, plot_range = c(-3, 3)) {
 
     if (!validObject(config)) {
       stop("invalid configuration options.")
@@ -189,7 +189,7 @@ setMethod(
     row.names(selected) <- 1:nrow(selected)
 
     if (plot) {
-      continuum <- seq(plot.range[1], plot.range[2], .1)
+      continuum <- seq(plot_range[1], plot_range[2], .1)
       continuum <- sort(c(continuum, config@item_selection$target_location))
       idx <- which(MIP$solution[1:ni] == 1)
 

@@ -18,7 +18,7 @@ Item-based example pool with item contents (95 items).
 \details{
 This pool is associated with the following objects:
 \itemize{
-  \item \code{itempool_fatigue} An \code{\linkS4class{item.pool}} object.
+  \item \code{itempool_fatigue} An \code{\linkS4class{item_pool}} object.
   \item \code{itemattrib_fatigue} A data frame containing item attributes.
   \item \code{constraints_fatigue} A list containing 111 constraints.
 }
