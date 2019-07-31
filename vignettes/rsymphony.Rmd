@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-If you are a Mac user, there is a good chance of receving an error message when trying to install `Rsymphony`, one of the suggested solvers in this package.
+If you are Mac user, there is a good chance of receving an error message when trying to install `Rsymphony`, one of the suggested solvers in TestDesign package.
 
 ```
 * installing *source* package ‘Rsymphony’ ...
@@ -18,13 +18,15 @@ See <https://projects.coin-or.org/SYMPHONY>.
 ERROR: configuration failed for package ‘Rsymphony’
 ```
 
-A possible fix to this solution is as follows. An admin account is required throughout the steps. Switch to the account by running the following line, replacing `{username}` with your username (without brackets). Type in the account password.
+This document describes a potential fix to this problem. An admin account is required.
+
+First, open the terminal from Launchpad. Switch to the admin account by running the following line, replacing `{username}` with your username (without brackets). Type in the account password once prompted.
 
 ```
 su {username}
 ```
 
-First, install the `homebrew` package manager (if you do not already have it) by following the instructions on http://brew.sh/.
+Install the `homebrew` package manager by following the instructions on http://brew.sh/. The purpose of this step to allow installing `SYMPHONY` with it.
 
 Next, install `SYMPHONY` with homebrew by running the following commands in Terminal.
 
@@ -33,35 +35,46 @@ brew tap coin-or-tools/coinor
 brew install symphony
 ```
 
-Now install `pkg-config`, a tool for querying installed libraries when compiling software source code by pasting the following command in your Terminal prompt.
+Now install `pkg-config` pasting the following command in your Terminal prompt.
 
 ```
 brew install pkg-config
 ```
 
-At this point, `Rsymphony` should now be able to locate the `SYMPHONY` libraries. Reinstall the package from R.
+Rsymphony package should now be able to locate the `SYMPHONY` libraries. Retry installing the Rsymphony package in R.
 
-If you still cannot install the package by running the command above, a workaround is available. Run the following commands in Terminal to download `Rsymphony` tarball.
+
+# Fix 2
+
+If Fix 1 did not fix the problem, attempt a workaround.
+
+First, install `wget` by running the following commands in Terminal. The purpose of this step is to allow downloading the package file directly from CRAN servers.
 
 ```
-brew install wget 
+brew intall wget
+```
+
+Run the following commands in Terminal to download the Rsymphony package. The first line downloads the package file, and the second line unpacks the file.
+
+```
 sudo wget https://cran.revolutionanalytics.com/src/contrib/Rsymphony_0.1-28.tar.gz 
 sudo tar -xzvf Rsymphony_0.1-28.tar.gz
 ```
 
-If you are attempting to reinstall the package, `wget` may return an error because the file already exists in your system. Run the following to remove the file, and retry the above step.
+(Optional) If you are attempting to follow the steps from scratch, `wget` will give an error.
+This is because the previously file already exists in your system. Run the following line to remove the file, and retry the above step.
 
 ```
 sudo rm Rsymphony_0.1-28.tar.gz
 ```
 
-Now, open the `Rsymphony` folder with the below command. Leave the Terminal open as it will be used in later steps.
+Now, open the `Rsymphony` folder with the below command. This will open a window in Finder. Leave the Terminal open as it will be used in later steps.
 
 ```
 open ./Rsymphony
 ```
 
-Open the file `configure` with a text editor software. Comment out the lines 51-55 by inserting `#`s in the beginning of each line as below. Save it as the same file.
+Open the file `configure` with a text editor software. Comment out the lines 51-55 by inserting `#`s at the beginning of each line as below. Save it as the same file.
 
 ```
 #if test ${status} -ne 0; then 
@@ -88,6 +101,15 @@ Finally, run the following command on your Terminal.
 ```
 sudo R CMD install Rsymphony
 ```
+
+This will make Rsymphony package available in R.
+
+# Fix 3
+
+If the `R CMD` failed with `--lgfortran` error, try the following steps.
+The cause of the error is that R tried to build the package with `lgfortran` compiler, but could not because it does not know where the compiler is located.
+
+The purpose of Fix 3 is to locate the compiler manually, and tell R where it is.
 
 For further reference, please refer to these following external links.
 
