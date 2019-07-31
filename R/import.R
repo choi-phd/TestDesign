@@ -4,10 +4,10 @@
 
 # Naming conventions
 # Use lowerCamelCase for S3 and S4 function names.
-# Use period.separators for arguments.
-# Use period.separators for class names.
+# Use dot.case for arguments.
+# Use dot.case for class names.
 # Use snake_case for local objects inside functions.
-# Use snake_case for variable and slot names.
+# Use snake_case for global objects and slot names.
 
 #' @import Rglpk
 #' @import Matrix
