@@ -3,37 +3,37 @@
 \docType{methods}
 \name{mle}
 \alias{mle}
-\alias{mle,item.pool-method}
+\alias{mle,item_pool-method}
 \title{Generate maximum likelihood estimates of theta}
 \usage{
-mle(object, resp, start.theta = NULL, max.iter = 100, crit = 0.001,
-  select = NULL, theta.range = c(-4, 4), truncate = FALSE,
-  max.change = 1, do.Fisher = TRUE)
+mle(object, resp, start_theta = NULL, max_iter = 100, crit = 0.001,
+  select = NULL, theta_range = c(-4, 4), truncate = FALSE,
+  max_change = 1, do_Fisher = TRUE)
 
-\S4method{mle}{item.pool}(object, resp, start.theta = NULL,
-  max.iter = 50, crit = 0.005, select = NULL, theta.range = c(-4,
-  4), truncate = FALSE, max.change = 1, do.Fisher = TRUE)
+\S4method{mle}{item_pool}(object, resp, start_theta = NULL,
+  max_iter = 50, crit = 0.005, select = NULL, theta_range = c(-4,
+  4), truncate = FALSE, max_change = 1, do_Fisher = TRUE)
 }
 \arguments{
 \item{object}{A \code{\linkS4class{test}} object.}
 
 \item{resp}{A vector (or matrix) of item responses.}
 
-\item{start.theta}{An optional vector of start theta values.}
+\item{start_theta}{An optional vector of start theta values.}
 
-\item{max.iter}{Maximum number of iterations.}
+\item{max_iter}{Maximum number of iterations.}
 
 \item{crit}{Convergence criterion.}
 
 \item{select}{A vector of indices identifying the items to subset.}
 
-\item{theta.range}{A range of theta values.}
+\item{theta_range}{A range of theta values.}
 
-\item{truncate}{Set \code{TRUE} to bound MLE to theta.range: c(minTheta, maxTheta).}
+\item{truncate}{Set \code{TRUE} to bound MLE to theta_range: c(minTheta, maxTheta).}
 
-\item{max.change}{Maximum change between iterations.}
+\item{max_change}{Maximum change between iterations.}
 
-\item{do.Fisher}{\code{TRUE} to use Fisher's method of scoring.}
+\item{do_Fisher}{\code{TRUE} to use Fisher's method of scoring.}
 }
 \description{
 Generate maximum likelihood estimates of theta.

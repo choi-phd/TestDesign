@@ -3,41 +3,41 @@
 \docType{methods}
 \name{calcLocation}
 \alias{calcLocation}
-\alias{calcLocation,item.1pl-method}
-\alias{calcLocation,item.1pl,numeric-method}
-\alias{calcLocation,item.2pl-method}
-\alias{calcLocation,item.2pl,numeric-method}
-\alias{calcLocation,item.3pl-method}
-\alias{calcLocation,item.3pl,numeric-method}
-\alias{calcLocation,item.pc-method}
-\alias{calcLocation,item.pc,numeric-method}
-\alias{calcLocation,item.gpc-method}
-\alias{calcLocation,item.gpc,numeric-method}
-\alias{calcLocation,item.gr-method}
-\alias{calcLocation,item.gr,numeric-method}
-\alias{calcLocation,item.pool-method}
-\alias{calcLocation,item.pool,numeric-method}
-\alias{calcLocation,pool.cluster-method}
-\alias{calcLocation,pool.cluster,numeric-method}
+\alias{calcLocation,item_1PL-method}
+\alias{calcLocation,item_1PL,numeric-method}
+\alias{calcLocation,item_2PL-method}
+\alias{calcLocation,item_2PL,numeric-method}
+\alias{calcLocation,item_3PL-method}
+\alias{calcLocation,item_3PL,numeric-method}
+\alias{calcLocation,item_PC-method}
+\alias{calcLocation,item_PC,numeric-method}
+\alias{calcLocation,item_GPC-method}
+\alias{calcLocation,item_GPC,numeric-method}
+\alias{calcLocation,item_GR-method}
+\alias{calcLocation,item_GR,numeric-method}
+\alias{calcLocation,item_pool-method}
+\alias{calcLocation,item_pool,numeric-method}
+\alias{calcLocation,pool_cluster-method}
+\alias{calcLocation,pool_cluster,numeric-method}
 \title{Calculate item location}
 \usage{
 calcLocation(object)
 
-\S4method{calcLocation}{item.1pl}(object)
+\S4method{calcLocation}{item_1PL}(object)
 
-\S4method{calcLocation}{item.2pl}(object)
+\S4method{calcLocation}{item_2PL}(object)
 
-\S4method{calcLocation}{item.3pl}(object)
+\S4method{calcLocation}{item_3PL}(object)
 
-\S4method{calcLocation}{item.pc}(object)
+\S4method{calcLocation}{item_PC}(object)
 
-\S4method{calcLocation}{item.gpc}(object)
+\S4method{calcLocation}{item_GPC}(object)
 
-\S4method{calcLocation}{item.gr}(object)
+\S4method{calcLocation}{item_GR}(object)
 
-\S4method{calcLocation}{item.pool}(object)
+\S4method{calcLocation}{item_pool}(object)
 
-\S4method{calcLocation}{pool.cluster}(object)
+\S4method{calcLocation}{pool_cluster}(object)
 }
 \arguments{
 \item{object}{An instance of an item class.}
@@ -49,17 +49,17 @@ Item location values.
 An S4 generic and its methods to calculate item location.
 }
 \examples{
-item_1 = new("item.1pl", difficulty = 0.5)
+item_1 = new("item_1PL", difficulty = 0.5)
 theta_item_1 = calcLocation(item_1)
-item_2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
+item_2 = new("item_2PL", slope = 1.0, difficulty = 0.5)
 theta_item_2 = calcLocation(item_2)
-item_3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+item_3 = new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 theta_item_3 = calcLocation(item_3)
-item_4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
+item_4 = new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
 theta_item_4 = calcLocation(item_4)
-item_5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+item_5 = new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 theta_item_5 = calcLocation(item_5)
-item_6 = new("item.gr", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+item_6 = new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
 theta_item_6 = calcLocation(item_6)
 theta_itempool <- calcLocation(itempool_science)
 }

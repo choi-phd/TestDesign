@@ -3,23 +3,23 @@
 \docType{methods}
 \name{makeTest}
 \alias{makeTest}
-\alias{makeTest,item.pool-method}
+\alias{makeTest,item_pool-method}
 \title{Generate a test object}
 \usage{
-makeTest(object, theta = seq(-4, 4, 0.1), info.type = "FISHER",
-  true.theta = NULL)
+makeTest(object, theta = seq(-4, 4, 0.1), info_type = "FISHER",
+  true_theta = NULL)
 
-\S4method{makeTest}{item.pool}(object, theta = seq(-4, 4, 0.1),
-  info.type = "FISHER", true.theta = NULL)
+\S4method{makeTest}{item_pool}(object, theta = seq(-4, 4, 0.1),
+  info_type = "FISHER", true_theta = NULL)
 }
 \arguments{
-\item{object}{An \code{\linkS4class{item.pool}} object.}
+\item{object}{An \code{\linkS4class{item_pool}} object.}
 
 \item{theta}{A grid of theta values.}
 
-\item{info.type}{An information type.}
+\item{info_type}{An information type.}
 
-\item{true.theta}{An optional vector of true theta values to simulate response data.}
+\item{true_theta}{An optional vector of true theta values to simulate response data.}
 }
 \description{
 Generate a \code{\linkS4class{test}} object

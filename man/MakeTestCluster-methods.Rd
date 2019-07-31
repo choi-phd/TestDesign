@@ -3,25 +3,25 @@
 \docType{methods}
 \name{makeTestCluster}
 \alias{makeTestCluster}
-\alias{makeTestCluster,pool.cluster,numeric,numeric-method}
-\alias{makeTestCluster,pool.cluster,numeric,list-method}
+\alias{makeTestCluster,pool_cluster,numeric,numeric-method}
+\alias{makeTestCluster,pool_cluster,numeric,list-method}
 \title{Generate a test cluster object}
 \usage{
-makeTestCluster(object, theta, true.theta)
+makeTestCluster(object, theta, true_theta)
 
-\S4method{makeTestCluster}{pool.cluster,numeric,numeric}(object, theta,
-  true.theta)
+\S4method{makeTestCluster}{pool_cluster,numeric,numeric}(object, theta,
+  true_theta)
 
-\S4method{makeTestCluster}{pool.cluster,numeric,list}(object, theta,
-  true.theta)
+\S4method{makeTestCluster}{pool_cluster,numeric,list}(object, theta,
+  true_theta)
 }
 \arguments{
-\item{object}{An \code{\linkS4class{pool.cluster}} object}
+\item{object}{An \code{\linkS4class{pool_cluster}} object}
 
 \item{theta}{A grid of theta values}
 
-\item{true.theta}{An optional vector of true theta values to simulate response data}
+\item{true_theta}{An optional vector of true theta values to simulate response data}
 }
 \description{
-Generate a \code{\linkS4class{test.cluster}} object
+Generate a \code{\linkS4class{test_cluster}} object
 }

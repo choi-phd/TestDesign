@@ -5,7 +5,7 @@
 #' @param object An instance of an item class.
 #' @param theta A vector of theta values.
 #'
-#' @return A matrix of probability values with a dimension (nq, ncat) for a single item or a list of matrices for an instance of "item.pool".
+#' @return A matrix of probability values with a dimension (nq, ncat) for a single item or a list of matrices for an instance of "item_pool".
 #'
 #' @export
 #' @docType methods
@@ -18,14 +18,14 @@ setGeneric(
 )
 
 #' @rdname calcProb-methods
-#' @aliases calcProb,item.1pl,numeric-method
+#' @aliases calcProb,item_1PL,numeric-method
 #' @examples
-#' item_1 = new("item.1pl", difficulty = 0.5)
+#' item_1 = new("item_1PL", difficulty = 0.5)
 #' prob_item_1 = calcProb(item_1, seq(-3, 3, 1))
 #' @template 1pl-ref
 setMethod(
   f = "calcProb",
-  signature = c("item.1pl", "numeric"),
+  signature = c("item_1PL", "numeric"),
   definition = function(object, theta) {
     prob <- matrix(NA, length(theta), 2)
     prob[, 2] <- array_p_1pl(theta, object@difficulty)
@@ -35,14 +35,14 @@ setMethod(
 )
 
 #' @rdname calcProb-methods
-#' @aliases calcProb,item.2pl,numeric-method
+#' @aliases calcProb,item_2PL,numeric-method
 #' @examples
-#' item_2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
+#' item_2 = new("item_2PL", slope = 1.0, difficulty = 0.5)
 #' prob_item_2 = calcProb(item_2, seq(-3, 3, 1))
 #' @template 2pl-ref
 setMethod(
   f = "calcProb",
-  signature = c("item.2pl", "numeric"),
+  signature = c("item_2PL", "numeric"),
   definition = function(object, theta) {
     prob <- matrix(NA, length(theta), 2)
     prob[, 2] <- array_p_2pl(theta, object@slope, object@difficulty)
@@ -52,14 +52,14 @@ setMethod(
 )
 
 #' @rdname calcProb-methods
-#' @aliases calcProb,item.3pl,numeric-method
+#' @aliases calcProb,item_3PL,numeric-method
 #' @examples
-#' item_3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+#' item_3 = new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 #' prob_item_3 = calcProb(item_3, seq(-3, 3, 1))
 #' @template 3pl-ref
 setMethod(
   f = "calcProb",
-  signature = c("item.3pl", "numeric"),
+  signature = c("item_3PL", "numeric"),
   definition = function(object, theta) {
     prob <- matrix(NA, length(theta), 2)
     prob[, 2] <- array_p_3pl(theta, object@slope, object@difficulty, object@guessing)
@@ -69,14 +69,14 @@ setMethod(
 )
 
 #' @rdname calcProb-methods
-#' @aliases calcProb,item.pc,numeric-method
+#' @aliases calcProb,item_PC,numeric-method
 #' @examples
-#' item_4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
+#' item_4 = new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
 #' prob_item_4 = calcProb(item_4, seq(-3, 3, 1))
 #' @template pc-ref
 setMethod(
   f = "calcProb",
-  signature = c("item.pc", "numeric"),
+  signature = c("item_PC", "numeric"),
   definition = function(object, theta) {
     prob <- array_p_pc(theta, object@threshold)
     return(prob)
@@ -84,14 +84,14 @@ setMethod(
 )
 
 #' @rdname calcProb-methods
-#' @aliases calcProb,item.gpc,numeric-method
+#' @aliases calcProb,item_GPC,numeric-method
 #' @examples
-#' item_5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+#' item_5 = new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 #' prob_item_5 = calcProb(item_5, seq(-3, 3, 1))
 #' @template gpc-ref
 setMethod(
   f = "calcProb",
-  signature = c("item.gpc", "numeric"),
+  signature = c("item_GPC", "numeric"),
   definition = function(object, theta) {
     prob <- array_p_gpc(theta, object@slope, object@threshold)
     return(prob)
@@ -99,14 +99,14 @@ setMethod(
 )
 
 #' @rdname calcProb-methods
-#' @aliases calcProb,item.gr,numeric-method
+#' @aliases calcProb,item_GR,numeric-method
 #' @examples
-#' item_6 = new("item.gr", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+#' item_6 = new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
 #' prob_item_6 = calcProb(item_6, seq(-3, 3, 1))
 #' @template gr-ref
 setMethod(
   f = "calcProb",
-  signature = c("item.gr", "numeric"),
+  signature = c("item_GR", "numeric"),
   definition = function(object, theta) {
     prob <- array_p_gr(theta, object@slope, object@category)
     return(prob)
@@ -114,12 +114,12 @@ setMethod(
 )
 
 #' @rdname calcProb-methods
-#' @aliases calcProb,item.pool,numeric-method
+#' @aliases calcProb,item_pool,numeric-method
 #' @examples
 #' prob_itempool <- calcProb(itempool_science, seq(-3, 3, 1))
 setMethod(
   f = "calcProb",
-  signature = c("item.pool", "numeric"),
+  signature = c("item_pool", "numeric"),
   definition = function(object, theta) {
     if (length(theta) > 0 && all(!is.na(theta))) {
       prob <- lapply(object@parms, calcProb, theta)
@@ -150,56 +150,56 @@ setGeneric(
 )
 
 #' @rdname calcEscore-methods
-#' @aliases calcEscore,item.1pl,numeric-method
+#' @aliases calcEscore,item_1PL,numeric-method
 #' @examples
-#' item_1 = new("item.1pl", difficulty = 0.5)
+#' item_1 = new("item_1PL", difficulty = 0.5)
 #' ICC_item_1 = calcEscore(item_1, seq(-3, 3, 1))
 #' @template 1pl-ref
 setMethod(
   f = "calcEscore",
-  signature = c("item.1pl", "numeric"),
+  signature = c("item_1PL", "numeric"),
   definition = function(object, theta) {
     return(calcProb(object, theta)[, 2])
   }
 )
 
 #' @rdname calcEscore-methods
-#' @aliases calcEscore,item.2pl,numeric-method
+#' @aliases calcEscore,item_2PL,numeric-method
 #' @examples
-#' item_2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
+#' item_2 = new("item_2PL", slope = 1.0, difficulty = 0.5)
 #' ICC_item_2 = calcEscore(item_2, seq(-3, 3, 1))
 #' @template 2pl-ref
 setMethod(
   f = "calcEscore",
-  signature = c("item.2pl", "numeric"),
+  signature = c("item_2PL", "numeric"),
   definition = function(object, theta) {
     return(calcProb(object, theta)[, 2])
   }
 )
 
 #' @rdname calcEscore-methods
-#' @aliases calcEscore,item.3pl,numeric-method
+#' @aliases calcEscore,item_3PL,numeric-method
 #' @examples
-#' item_3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+#' item_3 = new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 #' ICC_item_3 = calcEscore(item_3, seq(-3, 3, 1))
 #' @template 3pl-ref
 setMethod(
   f = "calcEscore",
-  signature = c("item.3pl", "numeric"),
+  signature = c("item_3PL", "numeric"),
   definition = function(object, theta) {
     return(calcProb(object, theta)[, 2])
   }
 )
 
 #' @rdname calcEscore-methods
-#' @aliases calcEscore,item.pc,numeric-method
+#' @aliases calcEscore,item_PC,numeric-method
 #' @examples
-#' item_4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
+#' item_4 = new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
 #' ICC_item_4 = calcEscore(item_4, seq(-3, 3, 1))
 #' @template pc-ref
 setMethod(
   f = "calcEscore",
-  signature = c("item.pc", "numeric"),
+  signature = c("item_PC", "numeric"),
   definition = function(object, theta) {
     prob           <- calcProb(object, theta)
     expected_score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
@@ -208,14 +208,14 @@ setMethod(
 )
 
 #' @rdname calcEscore-methods
-#' @aliases calcEscore,item.gpc,numeric-method
+#' @aliases calcEscore,item_GPC,numeric-method
 #' @examples
-#' item_5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+#' item_5 = new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 #' ICC_item_5 = calcEscore(item_5, seq(-3, 3, 1))
 #' @template gpc-ref
 setMethod(
   f = "calcEscore",
-  signature = c("item.gpc", "numeric"),
+  signature = c("item_GPC", "numeric"),
   definition = function(object, theta) {
     prob           <- calcProb(object, theta)
     expected_score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
@@ -224,14 +224,14 @@ setMethod(
 )
 
 #' @rdname calcEscore-methods
-#' @aliases calcEscore,item.gr,numeric-method
+#' @aliases calcEscore,item_GR,numeric-method
 #' @examples
-#' item_6 = new("item.gr", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+#' item_6 = new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
 #' ICC_item_6 = calcEscore(item_6, seq(-3, 3, 1))
 #' @template gr-ref
 setMethod(
   f = "calcEscore",
-  signature = c("item.gr", "numeric"),
+  signature = c("item_GR", "numeric"),
   definition = function(object, theta) {
     prob           <- calcProb(object, theta)
     expected_score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
@@ -240,12 +240,12 @@ setMethod(
 )
 
 #' @rdname calcEscore-methods
-#' @aliases calcEscore,item.pool,numeric-method
+#' @aliases calcEscore,item_pool,numeric-method
 #' @examples
 #' TCC_itempool <- calcEscore(itempool_science, seq(-3, 3, 1))
 setMethod(
   f = "calcEscore",
-  signature = c("item.pool", "numeric"),
+  signature = c("item_pool", "numeric"),
   definition = function(object, theta) {
     if (length(theta) > 0 && all(!is.na(theta))) {
       expected_score <- as.vector(Reduce("+", lapply(object@parms, calcEscore, theta)))
@@ -263,7 +263,7 @@ setMethod(
 #' @param object An instance of an item class.
 #' @param theta A vector of theta values.
 #'
-#' @return A vector of Fisher information values over theta (nq values) for a single item or a matrix of dimension (nq, ni) for an "item.pool".
+#' @return A vector of Fisher information values over theta (nq values) for a single item or a matrix of dimension (nq, ni) for an "item_pool".
 #'
 #' @export
 #' @docType methods
@@ -276,14 +276,14 @@ setGeneric(
 )
 
 #' @rdname calcFisher-methods
-#' @aliases calcFisher,item.1pl,numeric-method
+#' @aliases calcFisher,item_1PL,numeric-method
 #' @examples
-#' item_1 = new("item.1pl", difficulty = 0.5)
+#' item_1 = new("item_1PL", difficulty = 0.5)
 #' info_item_1 = calcFisher(item_1, seq(-3, 3, 1))
 #' @template 1pl-ref
 setMethod(
   f = "calcFisher",
-  signature = c("item.1pl", "numeric"),
+  signature = c("item_1PL", "numeric"),
   definition = function(object, theta) {
     info_Fisher <- array_info_1pl(theta, object@difficulty)
     return(info_Fisher)
@@ -291,14 +291,14 @@ setMethod(
 )
 
 #' @rdname calcFisher-methods
-#' @aliases calcFisher,item.2pl,numeric-method
+#' @aliases calcFisher,item_2PL,numeric-method
 #' @examples
-#' item_2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
+#' item_2 = new("item_2PL", slope = 1.0, difficulty = 0.5)
 #' info_item_2 = calcFisher(item_2, seq(-3, 3, 1))
 #' @template 2pl-ref
 setMethod(
   f = "calcFisher",
-  signature = c("item.2pl", "numeric"),
+  signature = c("item_2PL", "numeric"),
   definition = function(object, theta) {
     info_Fisher <- array_info_2pl(theta, object@slope, object@difficulty)
     return(info_Fisher)
@@ -306,14 +306,14 @@ setMethod(
 )
 
 #' @rdname calcFisher-methods
-#' @aliases calcFisher,item.3pl,numeric-method
+#' @aliases calcFisher,item_3PL,numeric-method
 #' @examples
-#' item_3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+#' item_3 = new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 #' info_item_3 = calcFisher(item_3, seq(-3, 3, 1))
 #' @template 3pl-ref
 setMethod(
   f = "calcFisher",
-  signature = c("item.3pl", "numeric"),
+  signature = c("item_3PL", "numeric"),
   definition = function(object, theta) {
     info_Fisher <- array_info_3pl(theta, object@slope, object@difficulty, object@guessing)
     return(info_Fisher)
@@ -321,13 +321,13 @@ setMethod(
 )
 
 #' @rdname calcFisher-methods
-#' @aliases calcFisher,item.pc,numeric-method
-#' item_4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
+#' @aliases calcFisher,item_PC,numeric-method
+#' item_4 = new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
 #' info_item_4 = calcFisher(item_4, seq(-3, 3, 1))
 #' @template pc-ref
 setMethod(
   f = "calcFisher",
-  signature = c("item.pc", "numeric"),
+  signature = c("item_PC", "numeric"),
   definition = function(object, theta) {
     info_Fisher <- array_info_pc(theta, object@threshold)
     return(info_Fisher)
@@ -335,14 +335,14 @@ setMethod(
 )
 
 #' @rdname calcFisher-methods
-#' @aliases calcFisher,item.gpc,numeric-method
+#' @aliases calcFisher,item_GPC,numeric-method
 #' @examples
-#' item_5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+#' item_5 = new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 #' info_item_5 = calcFisher(item_5, seq(-3, 3, 1))
 #' @template gpc-ref
 setMethod(
   f = "calcFisher",
-  signature = c("item.gpc", "numeric"),
+  signature = c("item_GPC", "numeric"),
   definition = function(object, theta) {
     info_Fisher <- array_info_gpc(theta, object@slope, object@threshold)
     return(info_Fisher)
@@ -350,14 +350,14 @@ setMethod(
 )
 
 #' @rdname calcFisher-methods
-#' @aliases calcFisher,item.gr,numeric-method
+#' @aliases calcFisher,item_GR,numeric-method
 #' @examples
-#' item_6 = new("item.gr", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+#' item_6 = new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
 #' info_item_6 = calcFisher(item_6, seq(-3, 3, 1))
 #' @template gr-ref
 setMethod(
   f = "calcFisher",
-  signature = c("item.gr", "numeric"),
+  signature = c("item_GR", "numeric"),
   definition = function(object, theta) {
     info_Fisher <- array_info_gr(theta, object@slope, object@category)
     return(info_Fisher)
@@ -365,12 +365,12 @@ setMethod(
 )
 
 #' @rdname calcFisher-methods
-#' @aliases calcFisher,item.pool,numeric-method
+#' @aliases calcFisher,item_pool,numeric-method
 #' @examples
 #' info_itempool <- calcFisher(itempool_science, seq(-3, 3, 1))
 setMethod(
   f = "calcFisher",
-  signature = c("item.pool", "numeric"),
+  signature = c("item_pool", "numeric"),
   definition = function(object, theta) {
     if (length(theta) > 0 && all(!is.na(theta))) {
       info_Fisher <- matrix(NA, length(theta), object@ni)
@@ -385,10 +385,10 @@ setMethod(
 )
 
 #' @rdname calcProb-methods
-#' @aliases calcProb,pool.cluster,numeric-method
+#' @aliases calcProb,pool_cluster,numeric-method
 setMethod(
   f = "calcProb",
-  signature = c("pool.cluster", "numeric"),
+  signature = c("pool_cluster", "numeric"),
   definition = function(object, theta) {
     if (length(theta) > 0 && all(!is.na(theta))) {
       prob <- lapply(object@pools, calcProb, theta)
@@ -400,10 +400,10 @@ setMethod(
 )
 
 #' @rdname calcEscore-methods
-#' @aliases calcEscore,pool.cluster,numeric-method
+#' @aliases calcEscore,pool_cluster,numeric-method
 setMethod(
   f = "calcEscore",
-  signature = c("pool.cluster", "numeric"),
+  signature = c("pool_cluster", "numeric"),
   definition = function(object, theta) {
     if (length(theta) > 0 && all(!is.na(theta))) {
       expected_score <- lapply(object@pools, calcEscore, theta)
@@ -415,11 +415,11 @@ setMethod(
 )
 
 #' @rdname calcFisher-methods
-#' @aliases calcFisher,pool.cluster,numeric-method
+#' @aliases calcFisher,pool_cluster,numeric-method
 #' @export
 setMethod(
   f = "calcFisher",
-  signature = c("pool.cluster", "numeric"),
+  signature = c("pool_cluster", "numeric"),
   definition = function(object, theta) {
     if (length(theta) > 0 && all(!is.na(theta))) {
       info_Fisher <- vector(mode = "list", length = object@np)
@@ -452,42 +452,42 @@ setGeneric(
 )
 
 #' @rdname calcLocation-methods
-#' @aliases calcLocation,item.1pl,numeric-method
+#' @aliases calcLocation,item_1PL,numeric-method
 #' @examples
-#' item_1 = new("item.1pl", difficulty = 0.5)
+#' item_1 = new("item_1PL", difficulty = 0.5)
 #' theta_item_1 = calcLocation(item_1)
 #' @template 1pl-ref
 setMethod(
   f = "calcLocation",
-  signature = c("item.1pl"),
+  signature = c("item_1PL"),
   definition = function(object) {
     return(object@difficulty)
   }
 )
 
 #' @rdname calcLocation-methods
-#' @aliases calcLocation,item.2pl,numeric-method
+#' @aliases calcLocation,item_2PL,numeric-method
 #' @examples
-#' item_2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
+#' item_2 = new("item_2PL", slope = 1.0, difficulty = 0.5)
 #' theta_item_2 = calcLocation(item_2)
 #' @template 2pl-ref
 setMethod(
   f = "calcLocation",
-  signature = c("item.2pl"),
+  signature = c("item_2PL"),
   definition = function(object) {
     return(object@difficulty)
   }
 )
 
 #' @rdname calcLocation-methods
-#' @aliases calcLocation,item.3pl,numeric-method
+#' @aliases calcLocation,item_3PL,numeric-method
 #' @examples
-#' item_3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+#' item_3 = new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 #' theta_item_3 = calcLocation(item_3)
 #' @template 3pl-ref
 setMethod(
   f = "calcLocation",
-  signature = c("item.3pl"),
+  signature = c("item_3PL"),
   definition = function(object) {
     location <- object@difficulty + (log(0.5 + sqrt(1 + 8 * object@guessing) / 2) / object@slope) # Birnbaum 1968, p. 464
     return(location)
@@ -495,14 +495,14 @@ setMethod(
 )
 
 #' @rdname calcLocation-methods
-#' @aliases calcLocation,item.pc,numeric-method
+#' @aliases calcLocation,item_PC,numeric-method
 #' @examples
-#' item_4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
+#' item_4 = new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
 #' theta_item_4 = calcLocation(item_4)
 #' @template pc-ref
 setMethod(
   f = "calcLocation",
-  signature = c("item.pc"),
+  signature = c("item_PC"),
   definition = function(object) {
     return(mean(object@threshold))
   }
@@ -510,40 +510,40 @@ setMethod(
 
 
 #' @rdname calcLocation-methods
-#' @aliases calcLocation,item.gpc,numeric-method
+#' @aliases calcLocation,item_GPC,numeric-method
 #' @examples
-#' item_5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+#' item_5 = new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 #' theta_item_5 = calcLocation(item_5)
 #' @template gpc-ref
 setMethod(
   f = "calcLocation",
-  signature = c("item.gpc"),
+  signature = c("item_GPC"),
   definition = function(object) {
     return(mean(object@threshold))
   }
 )
 
 #' @rdname calcLocation-methods
-#' @aliases calcLocation,item.gr,numeric-method
+#' @aliases calcLocation,item_GR,numeric-method
 #' @examples
-#' item_6 = new("item.gr", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+#' item_6 = new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
 #' theta_item_6 = calcLocation(item_6)
 #' @template gr-ref
 setMethod(
   f = "calcLocation",
-  signature = c("item.gr"),
+  signature = c("item_GR"),
   definition = function(object) {
     return(mean(object@category))
   }
 )
 
 #' @rdname calcLocation-methods
-#' @aliases calcLocation,item.pool,numeric-method
+#' @aliases calcLocation,item_pool,numeric-method
 #' @examples
 #' theta_itempool <- calcLocation(itempool_science)
 setMethod(
   f = "calcLocation",
-  signature = c("item.pool"),
+  signature = c("item_pool"),
   definition = function(object) {
     location <- lapply(object@parms, calcLocation)
     return(location)
@@ -551,10 +551,10 @@ setMethod(
 )
 
 #' @rdname calcLocation-methods
-#' @aliases calcLocation,pool.cluster,numeric-method
+#' @aliases calcLocation,pool_cluster,numeric-method
 setMethod(
   f = "calcLocation",
-  signature = c("pool.cluster"),
+  signature = c("pool_cluster"),
   definition = function(object) {
     location <- lapply(object@pools, calcLocation)
     return(location)
@@ -581,14 +581,14 @@ setGeneric(
 )
 
 #' @rdname calcDerivative-methods
-#' @aliases calcDerivative,item.1pl,numeric-method
+#' @aliases calcDerivative,item_1PL,numeric-method
 #' @examples
-#' item_1 = new("item.1pl", difficulty = 0.5)
+#' item_1 = new("item_1PL", difficulty = 0.5)
 #' d.item_1 = calcDerivative(item_1, seq(-3, 3, 1))
 #' @template 1pl-ref
 setMethod(
   f = "calcDerivative",
-  signature = c("item.1pl", "numeric"),
+  signature = c("item_1PL", "numeric"),
   definition = function(object, theta) {
     prob       <- calcProb(object, theta)
     derivative <- prob[, 1] * prob[, 2]
@@ -597,14 +597,14 @@ setMethod(
 )
 
 #' @rdname calcDerivative-methods
-#' @aliases calcDerivative,item.2pl,numeric-method
+#' @aliases calcDerivative,item_2PL,numeric-method
 #' @examples
-#' item_2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
+#' item_2 = new("item_2PL", slope = 1.0, difficulty = 0.5)
 #' d.item_2 = calcDerivative(item_2, seq(-3, 3, 1))
 #' @template 2pl-ref
 setMethod(
   f = "calcDerivative",
-  signature = c("item.2pl", "numeric"),
+  signature = c("item_2PL", "numeric"),
   definition = function(object, theta) {
     prob       <- calcProb(object, theta)
     derivative <- object@slope * prob[, 1] * prob[, 2]
@@ -613,14 +613,14 @@ setMethod(
 )
 
 #' @rdname calcDerivative-methods
-#' @aliases calcDerivative,item.3pl,numeric-method
+#' @aliases calcDerivative,item_3PL,numeric-method
 #' @examples
-#' item_3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+#' item_3 = new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 #' d.item_3 = calcDerivative(item_3, seq(-3, 3, 1))
 #' @template 3pl-ref
 setMethod(
   f = "calcDerivative",
-  signature = c("item.3pl", "numeric"),
+  signature = c("item_3PL", "numeric"),
   definition = function(object, theta) {
     prob       <- calcProb(object, theta)
     derivative <- object@slope * prob[, 1] * (prob[, 2] - object@guessing) / (1 - object@guessing)
@@ -629,14 +629,14 @@ setMethod(
 )
 
 #' @rdname calcDerivative-methods
-#' @aliases calcDerivative,item.pc,numeric-method
+#' @aliases calcDerivative,item_PC,numeric-method
 #' @examples
-#' item_4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
+#' item_4 = new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
 #' d.item_4 = calcDerivative(item_4, seq(-3, 3, 1))
 #' @template pc-ref
 setMethod(
   f = "calcDerivative",
-  signature = c("item.pc", "numeric"),
+  signature = c("item_PC", "numeric"),
   definition = function(object, theta) {
     prob           <- calcProb(object, theta)
     expected_score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
@@ -649,14 +649,14 @@ setMethod(
 )
 
 #' @rdname calcDerivative-methods
-#' @aliases calcDerivative,item.gpc,numeric-method
+#' @aliases calcDerivative,item_GPC,numeric-method
 #' @examples
-#' item_5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+#' item_5 = new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 #' d.item_5 = calcDerivative(item_5, seq(-3, 3, 1))
 #' @template gpc-ref
 setMethod(
   f = "calcDerivative",
-  signature = c("item.gpc", "numeric"),
+  signature = c("item_GPC", "numeric"),
   definition = function(object, theta) {
     prob           <- calcProb(object, theta)
     expected_score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
@@ -669,14 +669,14 @@ setMethod(
 )
 
 #' @rdname calcDerivative-methods
-#' @aliases calcDerivative,item.gr,numeric-method
+#' @aliases calcDerivative,item_GR,numeric-method
 #' @examples
-#' item_6 = new("item.gr", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+#' item_6 = new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
 #' d.item_6 = calcDerivative(item_6, seq(-3, 3, 1))
 #' @template gr-ref
 setMethod(
   f = "calcDerivative",
-  signature = c("item.gr", "numeric"),
+  signature = c("item_GR", "numeric"),
   definition = function(object, theta) {
     prob       <- calcProb(object, theta)
     derivative <- numeric(length(theta))
@@ -694,12 +694,12 @@ setMethod(
 )
 
 #' @rdname calcDerivative-methods
-#' @aliases calcDerivative,item.pool,numeric-method
+#' @aliases calcDerivative,item_pool,numeric-method
 #' @examples
 #' d_itempool <- calcDerivative(itempool_science, seq(-3, 3, 1))
 setMethod(
   f = "calcDerivative",
-  signature = c("item.pool", "numeric"),
+  signature = c("item_pool", "numeric"),
   definition = function(object, theta) {
     if (length(theta) > 0 && all(!is.na(theta))) {
       derivative <- matrix(NA, length(theta), object@ni)
@@ -714,10 +714,10 @@ setMethod(
 )
 
 #' @rdname calcDerivative-methods
-#' @aliases calcDerivative,pool.cluster,numeric-method
+#' @aliases calcDerivative,pool_cluster,numeric-method
 setMethod(
   f = "calcDerivative",
-  signature = c("pool.cluster", "numeric"),
+  signature = c("pool_cluster", "numeric"),
   definition = function(object, theta) {
     if (length(theta) > 0 && all(!is.na(theta))) {
       derivative <- vector(mode = "list", length = object@np)
@@ -751,14 +751,14 @@ setGeneric(
 )
 
 #' @rdname calcDerivative2-methods
-#' @aliases calcDerivative2,item.1pl,numeric-method
+#' @aliases calcDerivative2,item_1PL,numeric-method
 #' @examples
-#' item_1 = new("item.1pl", difficulty = 0.5)
+#' item_1 = new("item_1PL", difficulty = 0.5)
 #' dd_item_1 = calcDerivative2(item_1, seq(-3, 3, 1))
 #' @template 1pl-ref
 setMethod(
   f = "calcDerivative2",
-  signature = c("item.1pl", "numeric"),
+  signature = c("item_1PL", "numeric"),
   definition = function(object, theta) {
     prob <- calcProb(object, theta)
     derivative2 <- prob[, 1] * prob[, 2] * (prob[, 1] - prob[, 2])
@@ -767,14 +767,14 @@ setMethod(
 )
 
 #' @rdname calcDerivative2-methods
-#' @aliases calcDerivative2,item.2pl,numeric-method
+#' @aliases calcDerivative2,item_2PL,numeric-method
 #' @examples
-#' item_2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
+#' item_2 = new("item_2PL", slope = 1.0, difficulty = 0.5)
 #' dd_item_2 = calcDerivative2(item_2, seq(-3, 3, 1))
 #' @template 2pl-ref
 setMethod(
   f = "calcDerivative2",
-  signature = c("item.2pl", "numeric"),
+  signature = c("item_2PL", "numeric"),
   definition = function(object, theta) {
     prob <- calcProb(object, theta)
     derivative2 <- object@slope^2 * (prob[, 1] * prob[, 2] * (prob[, 1] - prob[, 2]))
@@ -783,14 +783,14 @@ setMethod(
 )
 
 #' @rdname calcDerivative2-methods
-#' @aliases calcDerivative2,item.3pl,numeric-method
+#' @aliases calcDerivative2,item_3PL,numeric-method
 #' @examples
-#' item_3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+#' item_3 = new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 #' dd_item_3 = calcDerivative2(item_3, seq(-3, 3, 1))
 #' @template 3pl-ref
 setMethod(
   f = "calcDerivative2",
-  signature = c("item.3pl", "numeric"),
+  signature = c("item_3PL", "numeric"),
   definition = function(object, theta) {
     prob        <- calcProb(object, theta)
     derivative2 <- object@slope^2 * prob[, 1] * (prob[, 2] - object@guessing) * (prob[, 1] - prob[, 2] + object@guessing) / (1 - object@guessing)^2
@@ -799,14 +799,14 @@ setMethod(
 )
 
 #' @rdname calcDerivative2-methods
-#' @aliases calcDerivative2,item.pc,numeric-method
+#' @aliases calcDerivative2,item_PC,numeric-method
 #' @examples
-#' item_4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
+#' item_4 = new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
 #' dd_item_4 = calcDerivative2(item_4, seq(-3, 3, 1))
 #' @template pc-ref
 setMethod(
   f = "calcDerivative2",
-  signature = c("item.pc", "numeric"),
+  signature = c("item_PC", "numeric"),
   definition = function(object, theta) {
     prob           <- calcProb(object, theta)
     expected_score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
@@ -819,14 +819,14 @@ setMethod(
 )
 
 #' @rdname calcDerivative2-methods
-#' @aliases calcDerivative2,item.gpc,numeric-method
+#' @aliases calcDerivative2,item_GPC,numeric-method
 #' @examples
-#' item_5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+#' item_5 = new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 #' dd_item_5 = calcDerivative2(item_5, seq(-3, 3, 1))
 #' @template gpc-ref
 setMethod(
   f = "calcDerivative2",
-  signature = c("item.gpc", "numeric"),
+  signature = c("item_GPC", "numeric"),
   definition = function(object, theta) {
     prob           <- calcProb(object, theta)
     expected_score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
@@ -839,14 +839,14 @@ setMethod(
 )
 
 #' @rdname calcDerivative2-methods
-#' @aliases calcDerivative2,item.gr,numeric-method
+#' @aliases calcDerivative2,item_GR,numeric-method
 #' @examples
-#' item_6 = new("item.gr", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+#' item_6 = new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
 #' dd_item_6 = calcDerivative2(item_6, seq(-3, 3, 1))
 #' @template gr-ref
 setMethod(
   f = "calcDerivative2",
-  signature = c("item.gr", "numeric"),
+  signature = c("item_GR", "numeric"),
   definition = function(object, theta) {
     prob        <- calcProb(object, theta)
     derivative2 <- numeric(length(theta))
@@ -864,12 +864,12 @@ setMethod(
 )
 
 #' @rdname calcDerivative2-methods
-#' @aliases calcDerivative2,item.pool,numeric-method
+#' @aliases calcDerivative2,item_pool,numeric-method
 #' @examples
 #' dd_itempool <- calcDerivative2(itempool_science, seq(-3, 3, 1))
 setMethod(
   f = "calcDerivative2",
-  signature = c("item.pool", "numeric"),
+  signature = c("item_pool", "numeric"),
   definition = function(object, theta) {
     if (length(theta) > 0 && all(!is.na(theta))) {
       derivative2 <- matrix(NA, length(theta), object@ni)
@@ -884,10 +884,10 @@ setMethod(
 )
 
 #' @rdname calcDerivative2-methods
-#' @aliases calcDerivative2,pool.cluster,numeric-method
+#' @aliases calcDerivative2,pool_cluster,numeric-method
 setMethod(
   f = "calcDerivative2",
-  signature = c("pool.cluster", "numeric"),
+  signature = c("pool_cluster", "numeric"),
   definition = function(object, theta) {
     if (length(theta) > 0 && all(!is.na(theta))) {
       derivative2 <- vector(mode = "list", length = object@np)
@@ -921,14 +921,14 @@ setGeneric(
 )
 
 #' @rdname calcJacobian-methods
-#' @aliases calcJacobian,item.1pl,numeric-method
+#' @aliases calcJacobian,item_1PL,numeric-method
 #' @examples
-#' item_1 = new("item.1pl", difficulty = 0.5)
+#' item_1 = new("item_1PL", difficulty = 0.5)
 #' j_item_1 = calcJacobian(item_1, seq(-3, 3, 1), 0)
 #' @template 1pl-ref
 setMethod(
   f = "calcJacobian",
-  signature = c("item.1pl", "numeric", "numeric"),
+  signature = c("item_1PL", "numeric", "numeric"),
   definition = function(object, theta, resp) {
     if (!(resp %in% c(0, 1))) {
       return(NA)
@@ -938,14 +938,14 @@ setMethod(
 )
 
 #' @rdname calcJacobian-methods
-#' @aliases calcJacobian,item.2pl,numeric-method
+#' @aliases calcJacobian,item_2PL,numeric-method
 #' @examples
-#' item_2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
+#' item_2 = new("item_2PL", slope = 1.0, difficulty = 0.5)
 #' j_item_2 = calcJacobian(item_2, seq(-3, 3, 1), 0)
 #' @template 2pl-ref
 setMethod(
   f = "calcJacobian",
-  signature = c("item.2pl", "numeric", "numeric"),
+  signature = c("item_2PL", "numeric", "numeric"),
   definition = function(object, theta, resp) {
     if (!(resp %in% c(0, 1))) {
       return(NA)
@@ -955,14 +955,14 @@ setMethod(
 )
 
 #' @rdname calcJacobian-methods
-#' @aliases calcJacobian,item.3pl,numeric-method
+#' @aliases calcJacobian,item_3PL,numeric-method
 #' @examples
-#' item_3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+#' item_3 = new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 #' j_item_3 = calcJacobian(item_3, seq(-3, 3, 1), 0)
 #' @template 3pl-ref
 setMethod(
   f = "calcJacobian",
-  signature = c("item.3pl", "numeric", "numeric"),
+  signature = c("item_3PL", "numeric", "numeric"),
   definition = function(object, theta, resp) {
     if (!(resp %in% c(0, 1))) {
       return(NA)
@@ -973,14 +973,14 @@ setMethod(
 )
 
 #' @rdname calcJacobian-methods
-#' @aliases calcJacobian,item.pc,numeric-method
+#' @aliases calcJacobian,item_PC,numeric-method
 #' @examples
-#' item_4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
+#' item_4 = new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
 #' j_item_4 = calcJacobian(item_4, seq(-3, 3, 1), 0)
 #' @template pc-ref
 setMethod(
   f = "calcJacobian",
-  signature = c("item.pc", "numeric", "numeric"),
+  signature = c("item_PC", "numeric", "numeric"),
   definition = function(object, theta, resp) {
     if (!(resp %in% 0:(object@ncat - 1))) {
       return(NA)
@@ -990,14 +990,14 @@ setMethod(
 )
 
 #' @rdname calcJacobian-methods
-#' @aliases calcJacobian,item.gpc,numeric-method
+#' @aliases calcJacobian,item_GPC,numeric-method
 #' @examples
-#' item_5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+#' item_5 = new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 #' j_item_5 = calcJacobian(item_5, seq(-3, 3, 1), 0)
 #' @template gpc-ref
 setMethod(
   f = "calcJacobian",
-  signature = c("item.gpc", "numeric", "numeric"),
+  signature = c("item_GPC", "numeric", "numeric"),
   definition = function(object, theta, resp) {
     if (!(resp %in% 0:(object@ncat - 1))) {
       return(NA)
@@ -1007,14 +1007,14 @@ setMethod(
 )
 
 #' @rdname calcJacobian-methods
-#' @aliases calcJacobian,item.gr,numeric-method
+#' @aliases calcJacobian,item_GR,numeric-method
 #' @examples
-#' item_6 = new("item.gr", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+#' item_6 = new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
 #' j_item_6 = calcJacobian(item_6, seq(-3, 3, 1), 0)
 #' @template gr-ref
 setMethod(
   f = "calcJacobian",
-  signature = c("item.gr", "numeric", "numeric"),
+  signature = c("item_GR", "numeric", "numeric"),
   definition = function(object, theta, resp) {
     if (!(resp %in% 0:(object@ncat - 1))) {
       return(NA)
@@ -1032,12 +1032,12 @@ setMethod(
 )
 
 #' @rdname calcJacobian-methods
-#' @aliases calcJacobian,item.pool,numeric-method
+#' @aliases calcJacobian,item_pool,numeric-method
 #' @examples
 #' j_itempool <- calcJacobian(itempool_science, seq(-3, 3, 1), 0)
 setMethod(
   f = "calcJacobian",
-  signature = c("item.pool", "numeric", "numeric"),
+  signature = c("item_pool", "numeric", "numeric"),
   definition = function(object, theta, resp) {
     if (length(theta) > 0 && all(!is.na(theta))) {
       mat_Jacobian <- matrix(NA, length(theta), object@ni)
@@ -1052,10 +1052,10 @@ setMethod(
 )
 
 #' @rdname calcJacobian-methods
-#' @aliases calcJacobian,pool.cluster,numeric-method
+#' @aliases calcJacobian,pool_cluster,numeric-method
 setMethod(
   f = "calcJacobian",
-  signature = c("pool.cluster", "numeric", "list"),
+  signature = c("pool_cluster", "numeric", "list"),
   definition = function(object, theta, resp) {
     if (length(theta) > 0 && all(!is.na(theta))) {
       mat_Jacobian <- vector(mode = "list", length = object@np)
@@ -1089,14 +1089,14 @@ setGeneric(
 )
 
 #' @rdname calcHessian-methods
-#' @aliases calcHessian,item.1pl,numeric-method
+#' @aliases calcHessian,item_1PL,numeric-method
 #' @examples
-#' item_1 = new("item.1pl", difficulty = 0.5)
+#' item_1 = new("item_1PL", difficulty = 0.5)
 #' h_item_1 = calcHessian(item_1, seq(-3, 3, 1), 0)
 #' @template 1pl-ref
 setMethod(
   f = "calcHessian",
-  signature = c("item.1pl", "numeric", "numeric"),
+  signature = c("item_1PL", "numeric", "numeric"),
   definition = function(object, theta, resp) {
     if (!(resp %in% c(0, 1))) {
       return(NA)
@@ -1106,14 +1106,14 @@ setMethod(
 )
 
 #' @rdname calcHessian-methods
-#' @aliases calcHessian,item.2pl,numeric-method
+#' @aliases calcHessian,item_2PL,numeric-method
 #' @examples
-#' item_2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
+#' item_2 = new("item_2PL", slope = 1.0, difficulty = 0.5)
 #' h_item_2 = calcHessian(item_2, seq(-3, 3, 1), 0)
 #' @template 2pl-ref
 setMethod(
   f = "calcHessian",
-  signature = c("item.2pl", "numeric", "numeric"),
+  signature = c("item_2PL", "numeric", "numeric"),
   definition = function(object, theta, resp) {
     if (!(resp %in% c(0, 1))) {
       return(NA)
@@ -1123,14 +1123,14 @@ setMethod(
 )
 
 #' @rdname calcHessian-methods
-#' @aliases calcHessian,item.3pl,numeric-method
+#' @aliases calcHessian,item_3PL,numeric-method
 #' @examples
-#' item_3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+#' item_3 = new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 #' h_item_3 = calcHessian(item_3, seq(-3, 3, 1), 0)
 #' @template 3pl-ref
 setMethod(
   f = "calcHessian",
-  signature = c("item.3pl", "numeric", "numeric"),
+  signature = c("item_3PL", "numeric", "numeric"),
   definition = function(object, theta, resp) {
     if (!(resp %in% c(0, 1))) {
       return(NA)
@@ -1141,14 +1141,14 @@ setMethod(
 )
 
 #' @rdname calcHessian-methods
-#' @aliases calcHessian,item.pc,numeric-method
+#' @aliases calcHessian,item_PC,numeric-method
 #' @examples
-#' item_4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
+#' item_4 = new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
 #' h_item_4 = calcHessian(item_4, seq(-3, 3, 1), 0)
 #' @template pc-ref
 setMethod(
   f = "calcHessian",
-  signature = c("item.pc", "numeric", "numeric"),
+  signature = c("item_PC", "numeric", "numeric"),
   definition = function(object, theta, resp) {
     if (!(resp %in% 0:(object@ncat - 1))) {
       return(NA)
@@ -1158,14 +1158,14 @@ setMethod(
 )
 
 #' @rdname calcHessian-methods
-#' @aliases calcHessian,item.gpc,numeric-method
+#' @aliases calcHessian,item_GPC,numeric-method
 #' @examples
-#' item_5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+#' item_5 = new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 #' h_item_5 = calcHessian(item_5, seq(-3, 3, 1), 0)
 #' @template gpc-ref
 setMethod(
   f = "calcHessian",
-  signature = c("item.gpc", "numeric", "numeric"),
+  signature = c("item_GPC", "numeric", "numeric"),
   definition = function(object, theta, resp) {
     if (!(resp %in% 0:(object@ncat - 1))) {
       return(NA)
@@ -1175,14 +1175,14 @@ setMethod(
 )
 
 #' @rdname calcHessian-methods
-#' @aliases calcHessian,item.gr,numeric-method
+#' @aliases calcHessian,item_GR,numeric-method
 #' @examples
-#' item_6 = new("item.gr", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+#' item_6 = new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
 #' h_item_6 = calcHessian(item_6, seq(-3, 3, 1), 0)
 #' @template gr-ref
 setMethod(
   f = "calcHessian",
-  signature = c("item.gr", "numeric", "numeric"),
+  signature = c("item_GR", "numeric", "numeric"),
   definition = function(object, theta, resp) {
     if (!(resp %in% 0:(object@ncat - 1))) {
       return(NA)
@@ -1202,12 +1202,12 @@ setMethod(
 )
 
 #' @rdname calcHessian-methods
-#' @aliases calcHessian,item.pool,numeric-method
+#' @aliases calcHessian,item_pool,numeric-method
 #' @examples
 #' h_itempool <- calcHessian(itempool_science, seq(-3, 3, 1), 0)
 setMethod(
   f = "calcHessian",
-  signature = c("item.pool", "numeric", "numeric"),
+  signature = c("item_pool", "numeric", "numeric"),
   definition = function(object, theta, resp) {
     if (length(theta) > 0 && all(!is.na(theta))) {
       calcProb(object, theta)
@@ -1223,10 +1223,10 @@ setMethod(
 )
 
 #' @rdname calcHessian-methods
-#' @aliases calcHessian,pool.cluster,numeric-method
+#' @aliases calcHessian,pool_cluster,numeric-method
 setMethod(
   f = "calcHessian",
-  signature = c("pool.cluster", "numeric", "list"),
+  signature = c("pool_cluster", "numeric", "list"),
   definition = function(object, theta, resp) {
     if (length(theta) > 0 && all(!is.na(theta))) {
       mat_Hessian <- vector(mode = "list", length = object@np)
@@ -1260,14 +1260,14 @@ setGeneric(
 )
 
 #' @rdname simResp-methods
-#' @aliases simResp,item.1pl,numeric-method
+#' @aliases simResp,item_1PL,numeric-method
 #' @examples
-#' item_1 = new("item.1pl", difficulty = 0.5)
+#' item_1 = new("item_1PL", difficulty = 0.5)
 #' sim_item_1 = simResp(item_1, seq(-3, 3, 1))
 #' @template 1pl-ref
 setMethod(
   f = "simResp",
-  signature = c("item.1pl", "numeric"),
+  signature = c("item_1PL", "numeric"),
   definition = function(object, theta) {
     prob   <- calcProb(object, theta)
     random <- runif(length(theta))
@@ -1278,14 +1278,14 @@ setMethod(
 )
 
 #' @rdname simResp-methods
-#' @aliases simResp,item.2pl,numeric-method
+#' @aliases simResp,item_2PL,numeric-method
 #' @examples
-#' item_2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
+#' item_2 = new("item_2PL", slope = 1.0, difficulty = 0.5)
 #' sim_item_2 = simResp(item_2, seq(-3, 3, 1))
 #' @template 2pl-ref
 setMethod(
   f = "simResp",
-  signature = c("item.2pl", "numeric"),
+  signature = c("item_2PL", "numeric"),
   definition = function(object, theta) {
     prob   <- calcProb(object, theta)
     random <- runif(length(theta))
@@ -1296,14 +1296,14 @@ setMethod(
 )
 
 #' @rdname simResp-methods
-#' @aliases simResp,item.3pl,numeric-method
+#' @aliases simResp,item_3PL,numeric-method
 #' @examples
-#' item_3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+#' item_3 = new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 #' sim_item_3 = simResp(item_3, seq(-3, 3, 1))
 #' @template 3pl-ref
 setMethod(
   f = "simResp",
-  signature = c("item.3pl", "numeric"),
+  signature = c("item_3PL", "numeric"),
   definition = function(object, theta) {
     prob   <- calcProb(object, theta)
     random <- runif(length(theta))
@@ -1314,14 +1314,14 @@ setMethod(
 )
 
 #' @rdname simResp-methods
-#' @aliases simResp,item.pc,numeric-method
+#' @aliases simResp,item_PC,numeric-method
 #' @examples
-#' item_4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
+#' item_4 = new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
 #' sim_item_4 = simResp(item_4, seq(-3, 3, 1))
 #' @template pc-ref
 setMethod(
   f = "simResp",
-  signature = c("item.pc", "numeric"),
+  signature = c("item_PC", "numeric"),
   definition = function(object, theta) {
     prob   <- calcProb(object, theta)
     random <- runif(length(theta))
@@ -1336,14 +1336,14 @@ setMethod(
 )
 
 #' @rdname simResp-methods
-#' @aliases simResp,item.gpc,numeric-method
+#' @aliases simResp,item_GPC,numeric-method
 #' @examples
-#' item_5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+#' item_5 = new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 #' sim_item_5 = simResp(item_5, seq(-3, 3, 1))
 #' @template gpc-ref
 setMethod(
   f = "simResp",
-  signature = c("item.gpc", "numeric"),
+  signature = c("item_GPC", "numeric"),
   definition = function(object, theta) {
     prob   <- calcProb(object, theta)
     random <- runif(length(theta))
@@ -1358,14 +1358,14 @@ setMethod(
 )
 
 #' @rdname simResp-methods
-#' @aliases simResp,item.gr,numeric-method
+#' @aliases simResp,item_GR,numeric-method
 #' @examples
-#' item_6 = new("item.gr", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+#' item_6 = new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
 #' sim_item_6 = simResp(item_6, seq(-3, 3, 1))
 #' @template gr-ref
 setMethod(
   f = "simResp",
-  signature = c("item.gr", "numeric"),
+  signature = c("item_GR", "numeric"),
   definition = function(object, theta) {
     prob   <- calcProb(object, theta)
     random <- runif(length(theta))
@@ -1380,12 +1380,12 @@ setMethod(
 )
 
 #' @rdname simResp-methods
-#' @aliases simResp,item.pool,numeric-method
+#' @aliases simResp,item_pool,numeric-method
 #' @examples
 #' sim_itempool <- simResp(itempool_science, seq(-3, 3, 1))
 setMethod(
   f = "simResp",
-  signature = c("item.pool", "numeric"),
+  signature = c("item_pool", "numeric"),
   definition = function(object, theta) {
     if (length(theta) > 0 && all(!is.na(theta))) {
       data <- matrix(NA, length(theta), object@ni)
@@ -1400,10 +1400,10 @@ setMethod(
 )
 
 #' @rdname simResp-methods
-#' @aliases simResp,pool.cluster,numeric-method
+#' @aliases simResp,pool_cluster,numeric-method
 setMethod(
   f = "simResp",
-  signature = c("pool.cluster", "numeric"),
+  signature = c("pool_cluster", "numeric"),
   definition = function(object, theta) {
     if (length(theta) > 0 && all(!is.na(theta))) {
       data <- vector(mode = "list", length = object@np)
@@ -1418,10 +1418,10 @@ setMethod(
 )
 
 #' @rdname simResp-methods
-#' @aliases simResp,pool.cluster,list-method
+#' @aliases simResp,pool_cluster,list-method
 setMethod(
   f = "simResp",
-  signature = c("pool.cluster", "list"),
+  signature = c("pool_cluster", "list"),
   definition = function(object, theta) {
     if (length(theta) != length(object@np)) {
       data <- vector(mode = "list", length = object@np)

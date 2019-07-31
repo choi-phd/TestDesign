@@ -3,15 +3,15 @@
 \docType{methods}
 \name{eap}
 \alias{eap}
-\alias{eap,item.pool-method}
+\alias{eap,item_pool-method}
 \title{Generate expected a posteriori estimates of theta}
 \usage{
 eap(object, theta, prior, resp, select = NULL)
 
-\S4method{eap}{item.pool}(object, theta, prior, resp, select = NULL)
+\S4method{eap}{item_pool}(object, theta, prior, resp, select = NULL)
 }
 \arguments{
-\item{object}{An \code{\linkS4class{item.pool}} object.}
+\item{object}{An \code{\linkS4class{item_pool}} object.}
 
 \item{theta}{A theta grid.}
 

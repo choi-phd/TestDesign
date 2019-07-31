@@ -4,12 +4,12 @@
 \name{extract-methods}
 \alias{extract-methods}
 \alias{[,test,ANY,ANY,ANY-method}
-\alias{[,item.pool,ANY,ANY,ANY-method}
+\alias{[,item_pool,ANY,ANY,ANY-method}
 \title{Extract}
 \usage{
 \S4method{[}{test,ANY,ANY,ANY}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{item.pool,ANY,ANY,ANY}(x, i, j, ..., drop = TRUE)
+\S4method{[}{item_pool,ANY,ANY,ANY}(x, i, j, ..., drop = TRUE)
 }
 \arguments{
 \item{x}{x}

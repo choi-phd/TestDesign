@@ -3,33 +3,33 @@
 \docType{methods}
 \name{calcDerivative}
 \alias{calcDerivative}
-\alias{calcDerivative,item.1pl,numeric-method}
-\alias{calcDerivative,item.2pl,numeric-method}
-\alias{calcDerivative,item.3pl,numeric-method}
-\alias{calcDerivative,item.pc,numeric-method}
-\alias{calcDerivative,item.gpc,numeric-method}
-\alias{calcDerivative,item.gr,numeric-method}
-\alias{calcDerivative,item.pool,numeric-method}
-\alias{calcDerivative,pool.cluster,numeric-method}
+\alias{calcDerivative,item_1PL,numeric-method}
+\alias{calcDerivative,item_2PL,numeric-method}
+\alias{calcDerivative,item_3PL,numeric-method}
+\alias{calcDerivative,item_PC,numeric-method}
+\alias{calcDerivative,item_GPC,numeric-method}
+\alias{calcDerivative,item_GR,numeric-method}
+\alias{calcDerivative,item_pool,numeric-method}
+\alias{calcDerivative,pool_cluster,numeric-method}
 \title{Calculate first derivative}
 \usage{
 calcDerivative(object, theta)
 
-\S4method{calcDerivative}{item.1pl,numeric}(object, theta)
+\S4method{calcDerivative}{item_1PL,numeric}(object, theta)
 
-\S4method{calcDerivative}{item.2pl,numeric}(object, theta)
+\S4method{calcDerivative}{item_2PL,numeric}(object, theta)
 
-\S4method{calcDerivative}{item.3pl,numeric}(object, theta)
+\S4method{calcDerivative}{item_3PL,numeric}(object, theta)
 
-\S4method{calcDerivative}{item.pc,numeric}(object, theta)
+\S4method{calcDerivative}{item_PC,numeric}(object, theta)
 
-\S4method{calcDerivative}{item.gpc,numeric}(object, theta)
+\S4method{calcDerivative}{item_GPC,numeric}(object, theta)
 
-\S4method{calcDerivative}{item.gr,numeric}(object, theta)
+\S4method{calcDerivative}{item_GR,numeric}(object, theta)
 
-\S4method{calcDerivative}{item.pool,numeric}(object, theta)
+\S4method{calcDerivative}{item_pool,numeric}(object, theta)
 
-\S4method{calcDerivative}{pool.cluster,numeric}(object, theta)
+\S4method{calcDerivative}{pool_cluster,numeric}(object, theta)
 }
 \arguments{
 \item{object}{An instance of an item class.}
@@ -43,17 +43,17 @@ First derivative values.
 An S4 generic and its methods to calculate the first derivative of the probability function.
 }
 \examples{
-item_1 = new("item.1pl", difficulty = 0.5)
+item_1 = new("item_1PL", difficulty = 0.5)
 d.item_1 = calcDerivative(item_1, seq(-3, 3, 1))
-item_2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
+item_2 = new("item_2PL", slope = 1.0, difficulty = 0.5)
 d.item_2 = calcDerivative(item_2, seq(-3, 3, 1))
-item_3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+item_3 = new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 d.item_3 = calcDerivative(item_3, seq(-3, 3, 1))
-item_4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
+item_4 = new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
 d.item_4 = calcDerivative(item_4, seq(-3, 3, 1))
-item_5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+item_5 = new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 d.item_5 = calcDerivative(item_5, seq(-3, 3, 1))
-item_6 = new("item.gr", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+item_6 = new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
 d.item_6 = calcDerivative(item_6, seq(-3, 3, 1))
 d_itempool <- calcDerivative(itempool_science, seq(-3, 3, 1))
 }
