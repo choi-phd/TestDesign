@@ -16,7 +16,7 @@ Item-based example item pool (1000 items).
 \details{
 This pool is associated with the following objects:
 \itemize{
-  \item \code{itempool_science} An \code{\linkS4class{item.pool}} object.
+  \item \code{itempool_science} An \code{\linkS4class{item_pool}} object.
   \item \code{itemattrib_science} A data frame containing item attributes.
   \item \code{constraints_science} A list containing 36 constraints.
 }
