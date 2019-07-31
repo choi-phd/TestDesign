@@ -6,16 +6,6 @@ test_that("Exposure control", {
 
   config_science <- createShadowTestConfig(MIP = list(solver = "LPSOLVE"), exposure_control = list(method = "ELIGIBILITY"))
   solution <- Shadow(itempool_science, config_science, true_theta, constraints_science2, data = resp_science)
-
-  object = itempool_science
-  config = config_science
-  true.theta = true_theta
-  constraints = constraints_science2
-  data = resp_science
-  prior = NULL
-  prior.par = NULL
-  session = NULL
-
   expect_equal(mean(solution$exposure_rate[solution$exposure_rate > 0]) < config_science@exposure_control$max_exposure_rate, TRUE)
 
   true_theta <- runif(1, min = -3.5, max = 3.5)
