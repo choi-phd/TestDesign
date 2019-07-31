@@ -55,7 +55,7 @@ NULL
 #' @slot difficulty Numeric. A difficulty parameter value.
 #'
 #' @examples
-#' item.1 <- new("item.1pl", difficulty = 0.5)
+#' item_1 <- new("item.1pl", difficulty = 0.5)
 #' @template 1pl-ref
 setClass("item.1pl",
   slots = c(difficulty = "numeric"),
@@ -79,7 +79,7 @@ setMethod("show", "item.1pl", function(object) {
 #' @slot difficulty Numeric. A difficulty parameter value.
 #'
 #' @examples
-#' item.2 <- new("item.2pl", slope = 1.0, difficulty = 0.5)
+#' item_2 <- new("item.2pl", slope = 1.0, difficulty = 0.5)
 #' @template 2pl-ref
 setClass("item.2pl",
   slots = c(
@@ -120,7 +120,7 @@ setMethod("show", "item.2pl", function(object) {
 #' @slot guessing Numeric. A guessing parameter value.
 #'
 #' @examples
-#' item.3 <- new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+#' item_3 <- new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 #' @template 3pl-ref
 setClass("item.3pl",
   slots = c(
@@ -164,7 +164,7 @@ setMethod("show", "item.3pl", function(object) {
 #' @slot ncat Numeric. The number of response categories.
 #'
 #' @examples
-#' item.4 <- new("item.pc", threshold = c(-0.5, 0.5), ncat = 3)
+#' item_4 <- new("item.pc", threshold = c(-0.5, 0.5), ncat = 3)
 #' @template pc-ref
 setClass("item.pc",
   slots = c(
@@ -206,7 +206,7 @@ setMethod("show", "item.pc", function(object) {
 #' @slot ncat Numeric. The number of response categories.
 #'
 #' @examples
-#' item.5 <- new("item.gpc", slope = 1.0, threshold = c(-0.5, 0.0, 0.5), ncat = 4)
+#' item_5 <- new("item.gpc", slope = 1.0, threshold = c(-0.5, 0.0, 0.5), ncat = 4)
 #' @template gpc-ref
 setClass("item.gpc",
   slots = c(
@@ -251,7 +251,7 @@ setMethod("show", "item.gpc", function(object) {
 #' @slot ncat Numeric. The number of response categories.
 #'
 #' @examples
-#' item.6 <- new("item.gr", slope = 1.0, category = c(-2.0, -1.0, 0, 1.0, 2.0), ncat = 6)
+#' item_6 <- new("item.gr", slope = 1.0, category = c(-2.0, -1.0, 0, 1.0, 2.0), ncat = 6)
 #' @template gr-ref
 setClass("item.gr",
   slots = c(
@@ -294,35 +294,37 @@ setMethod("show", "item.gr", function(object) {
 #' An S4 class to represent an item pool.
 #'
 #' @slot ni Numeric. The number of items in the item pool.
-#' @slot maxCat Numeric. The maximum number of response categories across all items.
+#' @slot max_cat Numeric. The maximum number of response categories across all items.
 #' @slot index Numeric. A vector of item indices.
 #' @slot id Character. A vector of item ids.
 #' @slot model Numeric. A vector of item model codes (1: item.1pl, 2: item.2pl, 3: item.3pl, 4: item.pc, 5: item.gpc, 6: item.gr).
 #' @slot NCAT Numeric. A vector of the number of response categories for each item.
 #' @slot parms A list of item parameters in the pool.
 #' @slot ipar A matrix of item parameters in the pool.
+#' @slot se A matrix representing standard errors of the item parameters.
+
 setClass("item.pool",
   slots = c(
     ni = "numeric",
-    maxCat = "numeric",
+    max_cat = "numeric",
     index = "numeric",
     id = "character",
     model = "character",
     NCAT = "numeric",
     parms = "list",
     ipar = "matrix",
-    SEs = "matrix"
+    se = "matrix"
   ),
   prototype = list(
     ni = numeric(0),
-    maxCat = numeric(0),
+    max_cat = numeric(0),
     index = numeric(0),
     id = character(0),
     model = character(0),
     NCAT = numeric(0),
     parms = list(0),
     ipar = matrix(0),
-    SEs = matrix(0)
+    se = matrix(0)
   ),
   validity = function(object) {
     if (length(unique(object@id)) != object@ni) stop("entries in @id are not unique.")
@@ -337,7 +339,7 @@ setClass("item.pool",
 setMethod("show", "item.pool", function(object) {
   if (length(object@ni) > 0) {
     cat("@ni    :", object@ni, "\n")
-    cat("@maxCat :", object@maxCat, "\n\n")
+    cat("@max_cat :", object@max_cat, "\n\n")
     print(data.frame(index = object@index, id = object@id, model = object@model, NCAT = object@NCAT))
     for (i in 1:object@ni) {
       cat("\n", paste0(object@index[i], ". "))

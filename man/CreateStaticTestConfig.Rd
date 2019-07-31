@@ -6,25 +6,25 @@
 \alias{createStaticTestConfig}
 \title{createStaticTestConfig}
 \usage{
-createStaticTestConfig(itemSelection = NULL, MIP = NULL)
+createStaticTestConfig(item_selection = NULL, MIP = NULL)
 }
 \arguments{
-\item{itemSelection}{A list containing item selection criteria. This should have the following entries:
+\item{item_selection}{A list containing item selection criteria. This should have the following entries:
 \itemize{
   \item{\code{method}} The type of criteria. Accepts \code{MAXINFO, TIF, TCC}.
-  \item{\code{infoType}} The type of information. Accepts \code{FISHER}.
-  \item{\code{targetLocation}} A numeric vector containing the locations of target theta points. (e.g. \code{c(-1, 0, 1)})
-  \item{\code{targetValue}} A numeric vector containing the target values at each theta location. This should have the same length with \code{targetLocation}. Ignored if method is \code{MAXINFO}.
-  \item{\code{targetWeight}} A numeric vector containing the weights for each theta location. This should have the same length with \code{targetlocation}. Defaults to a vector of 1s.
+  \item{\code{info_type}} The type of information. Accepts \code{FISHER}.
+  \item{\code{target_location}} A numeric vector containing the locations of target theta points. (e.g. \code{c(-1, 0, 1)})
+  \item{\code{target_value}} A numeric vector containing the target values at each theta location. This should have the same length with \code{target_location}. Ignored if method is \code{MAXINFO}.
+  \item{\code{target_weight}} A numeric vector containing the weights for each theta location. This should have the same length with \code{targetlocation}. Defaults to a vector of 1s.
 }}
 
 \item{MIP}{A list containing solver options. This should have the following entries:
 \itemize{
   \item{\code{solver}} The type of solver. Accepts \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.
   \item{\code{verbosity}} Verbosity level of the solver. Defaults to -2.
-  \item{\code{timeLimit}} Time limit in seconds passed onto the solver. Defaults to 60. Used in solvers \code{SYMPHONY, GUROBI, GLPK}.
-  \item{\code{gapLimit}} Termination criteria in relative scale passed onto the solver. Defaults to .05. Used in solvers \code{SYMPHONY, GUROBI}.
-  \item{\code{gapLimitAbs}} Termination criteria in absolute scale passed onto the solver. Defaults to 1. Used in solver \code{GUROBI}.
+  \item{\code{time_limit}} Time limit in seconds passed onto the solver. Defaults to 60. Used in solvers \code{SYMPHONY, GUROBI, GLPK}.
+  \item{\code{gap_limit}} Termination criteria in relative scale passed onto the solver. Defaults to .05. Used in solvers \code{SYMPHONY, GUROBI}.
+  \item{\code{gap_limit_abs}} Termination criteria in absolute scale passed onto the solver. Defaults to 1. Used in solver \code{GUROBI}.
 }}
 }
 \description{
@@ -34,29 +34,29 @@ Create an \code{\linkS4class{ATA.config}} object for Automated Test Assembly (AT
 conf.1 <- createStaticTestConfig(
   list(
     method = "MAXINFO",
-    infoType = "FISHER",
-    targetLocation = c(-1, 0, 1),
-    targetWeight = c(1, 1, 1)
+    info_type = "FISHER",
+    target_location = c(-1, 0, 1),
+    target_weight = c(1, 1, 1)
   )
 )
 
 conf.2 <- createStaticTestConfig(
   list(
     method = "TIF",
-    infoType = "FISHER",
-    targetLocation = c(-1, 0, 1),
-    targetWeight = c(1, 1, 1),
-    targetValue = c(8, 10, 12)
+    info_type = "FISHER",
+    target_location = c(-1, 0, 1),
+    target_weight = c(1, 1, 1),
+    target_value = c(8, 10, 12)
   )
 )
 
 conf.3 <- createStaticTestConfig(
   list(
     method = "TCC",
-    infoType = "FISHER",
-    targetLocation = c(-1, 0, 1),
-    targetWeight = c(1, 1, 1),
-    targetValue = c(10, 15, 20)
+    info_type = "FISHER",
+    target_location = c(-1, 0, 1),
+    target_weight = c(1, 1, 1),
+    target_value = c(10, 15, 20)
   )
 )
 }

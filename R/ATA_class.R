@@ -4,54 +4,54 @@
 
 setClass("ATA.config",
   slots = c(
-    itemSelection = "list",
+    item_selection = "list",
     MIP = "list"
   ),
   prototype = list(
-    itemSelection = list(
+    item_selection = list(
       method = "MaxInfo",
-      infoType = "FISHER",
-      targetLocation = c(-1.2, 0, 1.2),
-      targetValue = NULL,
-      targetWeight = c(1, 1, 1)
+      info_type = "FISHER",
+      target_location = c(-1.2, 0, 1.2),
+      target_value = NULL,
+      target_weight = c(1, 1, 1)
     ),
     MIP = list(
       solver = "LPSOLVE",
       verbosity = -2,
-      timeLimit = 60,
-      gapLimit = 0.05,
-      gapLimitAbs = 1
+      time_limit = 60,
+      gap_limit = 0.05,
+      gap_limit_abs = 1
     )
   ),
   validity = function(object) {
     errors <- NULL
-    if (!toupper(object@itemSelection$method) %in% c("MAXINFO", "TIF", "TCC")) {
-      errors <- c(errors, "invalid option for itemSelection$method: accepts MaxInfo, TIF, or TCC.")
+    if (!toupper(object@item_selection$method) %in% c("MAXINFO", "TIF", "TCC")) {
+      errors <- c(errors, "invalid option for item_selection$method: accepts MaxInfo, TIF, or TCC.")
     }
-    if (toupper(object@itemSelection$method) == "MAXINFO") {
-      if (!is.null(object@itemSelection$targetValue)) {
-        errors <- c(errors, "targetValue must be left blank when MaxInfo method is specified.")
+    if (toupper(object@item_selection$method) == "MAXINFO") {
+      if (!is.null(object@item_selection$target_value)) {
+        errors <- c(errors, "target_value must be left blank when MaxInfo method is specified.")
       }
-      target.lengths <- unique(c(
-        length(object@itemSelection$targetLocation),
-        length(object@itemSelection$targetWeight)
+      target_lengths <- unique(c(
+        length(object@item_selection$target_location),
+        length(object@item_selection$target_weight)
       ))
-      if (length(target.lengths) != 1) {
-        errors <- c(errors, "itemSelection$targetLocation, itemSelection$targetWeight have different lengths. They must have the same length.")
+      if (length(target_lengths) != 1) {
+        errors <- c(errors, "item_selection$target_location, item_selection$target_weight have different lengths. They must have the same length.")
       }
     }
-    if (toupper(object@itemSelection$method) != "MAXINFO") {
-      target.lengths <- unique(c(
-        length(object@itemSelection$targetLocation),
-        length(object@itemSelection$targetValue),
-        length(object@itemSelection$targetWeight)
+    if (toupper(object@item_selection$method) != "MAXINFO") {
+      target_lengths <- unique(c(
+        length(object@item_selection$target_location),
+        length(object@item_selection$target_value),
+        length(object@item_selection$target_weight)
       ))
-      if (length(target.lengths) != 1) {
-        errors <- c(errors, "itemSelection$targetLocation, itemSelection$targetValue, itemSelection$targetWeight have different lengths. They must have the same length.")
+      if (length(target_lengths) != 1) {
+        errors <- c(errors, "item_selection$target_location, item_selection$target_value, item_selection$target_weight have different lengths. They must have the same length.")
       }
     }
-    if (toupper(object@itemSelection$infoType) != "FISHER") {
-      errors <- c(errors, "invalid option ", object@itemSelection$infoType, " for itemSelection$infoType: accepts Fisher.")
+    if (toupper(object@item_selection$info_type) != "FISHER") {
+      errors <- c(errors, "invalid option ", object@item_selection$info_type, " for item_selection$info_type: accepts Fisher.")
     }
     if (!toupper(object@MIP$solver) %in% c("SYMPHONY", "GUROBI", "GLPK", "LPSOLVE")) {
       errors <- c(errors, "invalid option ", object@MIP$solver, " for MIP$solver: accepts Symphony, Gurobi, GLPK, or LpSolve.")
@@ -69,58 +69,58 @@ setClass("ATA.config",
 #'
 #' Create an \code{\linkS4class{ATA.config}} object for Automated Test Assembly (ATA).
 #'
-#' @param itemSelection A list containing item selection criteria. This should have the following entries:
+#' @param item_selection A list containing item selection criteria. This should have the following entries:
 #' \itemize{
 #'   \item{\code{method}} The type of criteria. Accepts \code{MAXINFO, TIF, TCC}.
-#'   \item{\code{infoType}} The type of information. Accepts \code{FISHER}.
-#'   \item{\code{targetLocation}} A numeric vector containing the locations of target theta points. (e.g. \code{c(-1, 0, 1)})
-#'   \item{\code{targetValue}} A numeric vector containing the target values at each theta location. This should have the same length with \code{targetLocation}. Ignored if method is \code{MAXINFO}.
-#'   \item{\code{targetWeight}} A numeric vector containing the weights for each theta location. This should have the same length with \code{targetlocation}. Defaults to a vector of 1s.
+#'   \item{\code{info_type}} The type of information. Accepts \code{FISHER}.
+#'   \item{\code{target_location}} A numeric vector containing the locations of target theta points. (e.g. \code{c(-1, 0, 1)})
+#'   \item{\code{target_value}} A numeric vector containing the target values at each theta location. This should have the same length with \code{target_location}. Ignored if method is \code{MAXINFO}.
+#'   \item{\code{target_weight}} A numeric vector containing the weights for each theta location. This should have the same length with \code{targetlocation}. Defaults to a vector of 1s.
 #' }
 #' @param MIP A list containing solver options. This should have the following entries:
 #' \itemize{
 #'   \item{\code{solver}} The type of solver. Accepts \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.
 #'   \item{\code{verbosity}} Verbosity level of the solver. Defaults to -2.
-#'   \item{\code{timeLimit}} Time limit in seconds passed onto the solver. Defaults to 60. Used in solvers \code{SYMPHONY, GUROBI, GLPK}.
-#'   \item{\code{gapLimit}} Termination criteria in relative scale passed onto the solver. Defaults to .05. Used in solvers \code{SYMPHONY, GUROBI}.
-#'   \item{\code{gapLimitAbs}} Termination criteria in absolute scale passed onto the solver. Defaults to 1. Used in solver \code{GUROBI}.
+#'   \item{\code{time_limit}} Time limit in seconds passed onto the solver. Defaults to 60. Used in solvers \code{SYMPHONY, GUROBI, GLPK}.
+#'   \item{\code{gap_limit}} Termination criteria in relative scale passed onto the solver. Defaults to .05. Used in solvers \code{SYMPHONY, GUROBI}.
+#'   \item{\code{gap_limit_abs}} Termination criteria in absolute scale passed onto the solver. Defaults to 1. Used in solver \code{GUROBI}.
 #' }
 #'
 #' @examples
 #' conf.1 <- createStaticTestConfig(
 #'   list(
 #'     method = "MAXINFO",
-#'     infoType = "FISHER",
-#'     targetLocation = c(-1, 0, 1),
-#'     targetWeight = c(1, 1, 1)
+#'     info_type = "FISHER",
+#'     target_location = c(-1, 0, 1),
+#'     target_weight = c(1, 1, 1)
 #'   )
 #' )
 #'
 #' conf.2 <- createStaticTestConfig(
 #'   list(
 #'     method = "TIF",
-#'     infoType = "FISHER",
-#'     targetLocation = c(-1, 0, 1),
-#'     targetWeight = c(1, 1, 1),
-#'     targetValue = c(8, 10, 12)
+#'     info_type = "FISHER",
+#'     target_location = c(-1, 0, 1),
+#'     target_weight = c(1, 1, 1),
+#'     target_value = c(8, 10, 12)
 #'   )
 #' )
 #'
 #' conf.3 <- createStaticTestConfig(
 #'   list(
 #'     method = "TCC",
-#'     infoType = "FISHER",
-#'     targetLocation = c(-1, 0, 1),
-#'     targetWeight = c(1, 1, 1),
-#'     targetValue = c(10, 15, 20)
+#'     info_type = "FISHER",
+#'     target_location = c(-1, 0, 1),
+#'     target_weight = c(1, 1, 1),
+#'     target_value = c(10, 15, 20)
 #'   )
 #' )
 #' @rdname createStaticTestConfig
 #'
 #' @export
-createStaticTestConfig <- function(itemSelection = NULL, MIP = NULL) {
+createStaticTestConfig <- function(item_selection = NULL, MIP = NULL) {
   conf <- new("ATA.config")
-  arg_names <- c("itemSelection", "MIP")
+  arg_names <- c("item_selection", "MIP")
   obj_names <- c()
   for (arg in arg_names) {
     if (!is.null(eval(parse(text = arg)))) {
@@ -148,14 +148,14 @@ createStaticTestConfig <- function(itemSelection = NULL, MIP = NULL) {
 setMethod("show", "ATA.config", function(object) {
   cat("ATA Configuration Settings \n\n")
   cat("  Item selection criterion \n")
-  cat("    Method         :", object@itemSelection$method, "\n")
-  cat("    Info type      :", object@itemSelection$infoType, "\n")
-  cat("    Theta Location :", object@itemSelection$targetLocation, "\n")
-  cat("    Target Value   :", object@itemSelection$targetValue, "\n")
-  cat("    Target Weight  :", object@itemSelection$targetWeight, "\n\n")
+  cat("    Method         :", object@item_selection$method, "\n")
+  cat("    Info type      :", object@item_selection$info_type, "\n")
+  cat("    Theta location :", object@item_selection$target_location, "\n")
+  cat("    Target value   :", object@item_selection$target_value, "\n")
+  cat("    Target weight  :", object@item_selection$target_weight, "\n\n")
   cat("  MIP \n")
   cat("    Solver         :", object@MIP$solver, "\n")
   cat("    Verbosity      :", object@MIP$verbosity, "\n")
-  cat("    Time limit     :", object@MIP$timeLimit, "\n")
-  cat("    Gap limit      :", object@MIP$gapLimit, "\n\n")
+  cat("    Time limit     :", object@MIP$time_limit, "\n")
+  cat("    Gap limit      :", object@MIP$gap_limit, "\n\n")
 })
