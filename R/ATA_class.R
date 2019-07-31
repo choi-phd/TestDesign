@@ -2,7 +2,7 @@
 #'
 #' @rdname createStaticTestConfig
 
-setClass("ATA.config",
+setClass("config_ATA",
   slots = c(
     item_selection = "list",
     MIP = "list"
@@ -65,9 +65,9 @@ setClass("ATA.config",
   }
 )
 
-#' Create an ATA.config object
+#' Create an config_ATA object
 #'
-#' Create an \code{\linkS4class{ATA.config}} object for Automated Test Assembly (ATA).
+#' Create an \code{\linkS4class{config_ATA}} object for Automated Test Assembly (ATA).
 #'
 #' @param item_selection A list containing item selection criteria. This should have the following entries:
 #' \itemize{
@@ -119,7 +119,7 @@ setClass("ATA.config",
 #'
 #' @export
 createStaticTestConfig <- function(item_selection = NULL, MIP = NULL) {
-  conf <- new("ATA.config")
+  conf <- new("config_ATA")
   arg_names <- c("item_selection", "MIP")
   obj_names <- c()
   for (arg in arg_names) {
@@ -142,10 +142,10 @@ createStaticTestConfig <- function(item_selection = NULL, MIP = NULL) {
 }
 
 #' @name show-method
-#' @aliases show,ATA.config-method
+#' @aliases show,config_ATA-method
 #' @docType methods
 #' @noRd
-setMethod("show", "ATA.config", function(object) {
+setMethod("show", "config_ATA", function(object) {
   cat("ATA Configuration Settings \n\n")
   cat("  Item selection criterion \n")
   cat("    Method         :", object@item_selection$method, "\n")

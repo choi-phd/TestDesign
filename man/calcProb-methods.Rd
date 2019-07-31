@@ -3,33 +3,33 @@
 \docType{methods}
 \name{calcProb}
 \alias{calcProb}
-\alias{calcProb,item.1pl,numeric-method}
-\alias{calcProb,item.2pl,numeric-method}
-\alias{calcProb,item.3pl,numeric-method}
-\alias{calcProb,item.pc,numeric-method}
-\alias{calcProb,item.gpc,numeric-method}
-\alias{calcProb,item.gr,numeric-method}
-\alias{calcProb,item.pool,numeric-method}
-\alias{calcProb,pool.cluster,numeric-method}
+\alias{calcProb,item_1PL,numeric-method}
+\alias{calcProb,item_2PL,numeric-method}
+\alias{calcProb,item_3PL,numeric-method}
+\alias{calcProb,item_PC,numeric-method}
+\alias{calcProb,item_GPC,numeric-method}
+\alias{calcProb,item_GR,numeric-method}
+\alias{calcProb,item_pool,numeric-method}
+\alias{calcProb,pool_cluster,numeric-method}
 \title{Calculate item response probabilities}
 \usage{
 calcProb(object, theta)
 
-\S4method{calcProb}{item.1pl,numeric}(object, theta)
+\S4method{calcProb}{item_1PL,numeric}(object, theta)
 
-\S4method{calcProb}{item.2pl,numeric}(object, theta)
+\S4method{calcProb}{item_2PL,numeric}(object, theta)
 
-\S4method{calcProb}{item.3pl,numeric}(object, theta)
+\S4method{calcProb}{item_3PL,numeric}(object, theta)
 
-\S4method{calcProb}{item.pc,numeric}(object, theta)
+\S4method{calcProb}{item_PC,numeric}(object, theta)
 
-\S4method{calcProb}{item.gpc,numeric}(object, theta)
+\S4method{calcProb}{item_GPC,numeric}(object, theta)
 
-\S4method{calcProb}{item.gr,numeric}(object, theta)
+\S4method{calcProb}{item_GR,numeric}(object, theta)
 
-\S4method{calcProb}{item.pool,numeric}(object, theta)
+\S4method{calcProb}{item_pool,numeric}(object, theta)
 
-\S4method{calcProb}{pool.cluster,numeric}(object, theta)
+\S4method{calcProb}{pool_cluster,numeric}(object, theta)
 }
 \arguments{
 \item{object}{An instance of an item class.}
@@ -37,23 +37,23 @@ calcProb(object, theta)
 \item{theta}{A vector of theta values.}
 }
 \value{
-A matrix of probability values with a dimension (nq, ncat) for a single item or a list of matrices for an instance of "item.pool".
+A matrix of probability values with a dimension (nq, ncat) for a single item or a list of matrices for an instance of "item_pool".
 }
 \description{
 An S4 generic and its methods to calculate item response probabilities for different item classes
 }
 \examples{
-item_1 = new("item.1pl", difficulty = 0.5)
+item_1 = new("item_1PL", difficulty = 0.5)
 prob_item_1 = calcProb(item_1, seq(-3, 3, 1))
-item_2 = new("item.2pl", slope = 1.0, difficulty = 0.5)
+item_2 = new("item_2PL", slope = 1.0, difficulty = 0.5)
 prob_item_2 = calcProb(item_2, seq(-3, 3, 1))
-item_3 = new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+item_3 = new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 prob_item_3 = calcProb(item_3, seq(-3, 3, 1))
-item_4 = new("item.pc", threshold = c(-1, 0, 1), ncat = 4)
+item_4 = new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
 prob_item_4 = calcProb(item_4, seq(-3, 3, 1))
-item_5 = new("item.gpc", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+item_5 = new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 prob_item_5 = calcProb(item_5, seq(-3, 3, 1))
-item_6 = new("item.gr", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+item_6 = new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
 prob_item_6 = calcProb(item_6, seq(-3, 3, 1))
 prob_itempool <- calcProb(itempool_science, seq(-3, 3, 1))
 }

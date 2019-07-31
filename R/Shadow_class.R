@@ -33,14 +33,14 @@ setClass("constraint",
   }
 )
 
-setClassUnion("numeric.or.null", c("numeric", "NULL"))
-setClassUnion("matrix.or.null", c("matrix", "NULL"))
+setClassUnion("numeric_or_null", c("numeric", "NULL"))
+setClassUnion("matrix_or_null", c("matrix", "NULL"))
 
 #' An S4 class to represent a test
 #'
 #' An S4 class to represent a test.
 #'
-#' @slot pool An \code{\linkS4class{item.pool}} object.
+#' @slot pool An \code{\linkS4class{item_pool}} object.
 #' @slot theta A theta grid.
 #' @slot prob A list of item response probabilities.
 #' @slot info A matrix of item information values.
@@ -50,15 +50,15 @@ setClassUnion("matrix.or.null", c("matrix", "NULL"))
 #' @export
 setClass("test",
   slots = c(
-    pool = "item.pool",
+    pool = "item_pool",
     theta = "numeric",
     prob = "list",
     info = "matrix",
-    true_theta = "numeric.or.null",
-    data = "matrix.or.null"
+    true_theta = "numeric_or_null",
+    data = "matrix_or_null"
   ),
   prototype = list(
-    pool = new("item.pool"),
+    pool = new("item_pool"),
     theta = numeric(0),
     prob = list(0),
     info = matrix(0),
@@ -93,7 +93,7 @@ setClass("test",
 #' @slot names Character. A vector of names corresponding to the \code{\linkS4class{test}} objects.
 #'
 #' @export
-setClass("test.cluster",
+setClass("test_cluster",
   slots = c(
     nt = "numeric",
     tests = "list",
@@ -120,10 +120,10 @@ setClass("test.cluster",
   }
 )
 
-#' config.Shadow
+#' config_shadow
 #'
-#' @rdname config.Shadow
-setClass("Shadow.config",
+#' @rdname config_shadow
+setClass("config_Shadow",
   slots = c(
     item_selection = "list",
     content_balancing = "list",
@@ -260,9 +260,9 @@ setClass("Shadow.config",
   }
 )
 
-#' Create a Shadow.config object
+#' Create a config_Shadow object
 #'
-#' Create a \code{\linkS4class{Shadow.config}} object for Shadow Test Assembly (STA).
+#' Create a \code{\linkS4class{config_Shadow}} object for Shadow Test Assembly (STA).
 #'
 #' @param item_selection A list containing item selection criteria.
 #' \itemize{
@@ -351,7 +351,7 @@ setClass("Shadow.config",
 createShadowTestConfig <- function(item_selection = NULL, content_balancing = NULL, MIP = NULL, MCMC = NULL,
                           refresh_policy = NULL, exposure_control = NULL, stopping_criterion = NULL,
                           interim_theta = NULL, final_theta = NULL, theta_grid = seq(-4, 4, .1), audit_trail = F) {
-  conf <- new("Shadow.config")
+  conf <- new("config_Shadow")
 
   arg_names <- c(
     "item_selection", "content_balancing", "MIP", "MCMC",
@@ -385,10 +385,10 @@ createShadowTestConfig <- function(item_selection = NULL, content_balancing = NU
 }
 
 #' @name show-method
-#' @aliases show,Shadow.config-method
+#' @aliases show,config_Shadow-method
 #' @docType methods
 #' @noRd
-setMethod("show", "Shadow.config", function(object) {
+setMethod("show", "config_Shadow", function(object) {
   cat("Shadow Configuration Settings \n\n")
   cat("  item_selection \n")
   cat("    method          :", object@item_selection$method, "\n")
@@ -456,7 +456,7 @@ setMethod("show", "Shadow.config", function(object) {
   cat("\n  audit_trail : ", object@audit_trail, "\n")
 })
 
-#' Shadow.output
+#' output_Shadow
 #'
 #' @slot simulee_id Numeric. The index of the simulee.
 #' @slot true_theta Numeric or NULL. True theta value of the simulee if supplied in advance.
@@ -480,11 +480,11 @@ setMethod("show", "Shadow.config", function(object) {
 #' @slot shadow_test A list of vectors containing item indices of the shadow test at each position.
 #'
 #' @export
-setClass("Shadow.output",
+setClass("output_Shadow",
   slots = c(
     simulee_id = "numeric",
-    true_theta = "numeric.or.null",
-    true_theta_segment = "numeric.or.null",
+    true_theta = "numeric_or_null",
+    true_theta_segment = "numeric_or_null",
     final_theta_est = "numeric",
     final_se_est = "numeric",
     administered_item_index = "numeric",
@@ -531,10 +531,10 @@ setClass("Shadow.output",
 )
 
 #' @name show-method
-#' @aliases show,Shadow.output-method
+#' @aliases show,output_Shadow-method
 #' @docType methods
 #' @noRd
-setMethod("show", "Shadow.output", function(object) {
+setMethod("show", "output_Shadow", function(object) {
   if (length(object@administered_item_index) > 0) {
     cat("Simulee Index          :", object@simulee_id, "\n")
     cat("  True Theta           :", object@true_theta, "\n")
@@ -551,7 +551,7 @@ setMethod("show", "Shadow.output", function(object) {
     )
     print(output)
   } else {
-    cat("empty object of class Shadow.output\n")
+    cat("empty object of class output_Shadow\n")
   }
   cat("\n")
 })

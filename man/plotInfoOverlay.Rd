@@ -4,19 +4,19 @@
 \alias{plotInfoOverlay}
 \title{Overlay item information plots}
 \usage{
-plotInfoOverlay(object, theta, info.type = "FISHER", select = NULL,
-  file.pdf = NULL, color = "red", width = 7, height = 6)
+plotInfoOverlay(object, theta, info_type = "FISHER", select = NULL,
+  file_pdf = NULL, color = "red", width = 7, height = 6)
 }
 \arguments{
-\item{object}{An \code{\linkS4class{item.pool}} object.}
+\item{object}{An \code{\linkS4class{item_pool}} object.}
 
 \item{theta}{A theta grid.}
 
-\item{info.type}{Type of information.}
+\item{info_type}{Type of information.}
 
 \item{select}{A vector of indices identifying the items to subset.}
 
-\item{file.pdf}{If supplied a filename, save as a PDF file.}
+\item{file_pdf}{If supplied a filename, save as a PDF file.}
 
 \item{color}{Plotting color.}
 

@@ -4,28 +4,28 @@
 \name{plotShadow}
 \alias{plotShadow}
 \alias{plotShadow,list-method}
-\alias{plotShadow,Shadow.output-method}
+\alias{plotShadow,output_Shadow-method}
 \title{Draw a shadow test chart}
 \usage{
-plotShadow(object, constraints, examinee.id = 1,
-  sort.by.difficulty = FALSE, file.pdf = NULL, ...)
+plotShadow(object, constraints, examinee_id = 1,
+  sort_by_difficulty = FALSE, file_pdf = NULL, ...)
 
-\S4method{plotShadow}{list}(object, constraints, examinee.id = 1,
-  sort.by.difficulty = FALSE, file.pdf = NULL, ...)
+\S4method{plotShadow}{list}(object, constraints, examinee_id = 1,
+  sort_by_difficulty = FALSE, file_pdf = NULL, ...)
 
-\S4method{plotShadow}{Shadow.output}(object, constraints,
-  examinee.id = 1, sort.by.difficulty = FALSE, file.pdf = NULL, ...)
+\S4method{plotShadow}{output_Shadow}(object, constraints,
+  examinee_id = 1, sort_by_difficulty = FALSE, file_pdf = NULL, ...)
 }
 \arguments{
 \item{object}{An output from \code{\link{Shadow}} function.}
 
 \item{constraints}{The constraint object used in obtaining the output.}
 
-\item{examinee.id}{Numeric ID of the examinee to draw the plot.}
+\item{examinee_id}{Numeric ID of the examinee to draw the plot.}
 
-\item{sort.by.difficulty}{Sort the items by difficulty.}
+\item{sort_by_difficulty}{Sort the items by difficulty.}
 
-\item{file.pdf}{If supplied a filename, save as a PDF file.}
+\item{file_pdf}{If supplied a filename, save as a PDF file.}
 
 \item{...}{Additional options to be passed on to \code{pdf()}.}
 }

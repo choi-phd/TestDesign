@@ -10,7 +10,7 @@ An S4 class to represent a test.
 \section{Slots}{
 
 \describe{
-\item{\code{pool}}{An \code{\linkS4class{item.pool}} object.}
+\item{\code{pool}}{An \code{\linkS4class{item_pool}} object.}
 
 \item{\code{theta}}{A theta grid.}
 

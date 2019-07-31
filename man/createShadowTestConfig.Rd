@@ -2,7 +2,7 @@
 % Please edit documentation in R/shadow_class.R
 \name{createShadowTestConfig}
 \alias{createShadowTestConfig}
-\title{Create a Shadow.config object}
+\title{Create a config_Shadow object}
 \usage{
 createShadowTestConfig(item_selection = NULL, content_balancing = NULL,
   MIP = NULL, MCMC = NULL, refresh_policy = NULL,
@@ -104,5 +104,5 @@ createShadowTestConfig(item_selection = NULL, content_balancing = NULL,
 \item{audit_trail}{Set \code{TRUE} to generate audit trails.}
 }
 \description{
-Create a \code{\linkS4class{Shadow.config}} object for Shadow Test Assembly (STA).
+Create a \code{\linkS4class{config_Shadow}} object for Shadow Test Assembly (STA).
 }

@@ -55,19 +55,19 @@ NULL
 #' @slot difficulty Numeric. A difficulty parameter value.
 #'
 #' @examples
-#' item_1 <- new("item.1pl", difficulty = 0.5)
+#' item_1 <- new("item_1PL", difficulty = 0.5)
 #' @template 1pl-ref
-setClass("item.1pl",
+setClass("item_1PL",
   slots = c(difficulty = "numeric"),
   prototype = list(difficulty = numeric(0))
 )
 
 #' @name show-method
-#' @aliases show,item.1pl-method
+#' @aliases show,item_1PL-method
 #' @docType methods
 #' @noRd
-setMethod("show", "item.1pl", function(object) {
-  cat("One-parameter logistic or Rasch model (item.1pl)\n")
+setMethod("show", "item_1PL", function(object) {
+  cat("One-parameter logistic or Rasch model (item_1PL)\n")
   cat("  Difficulty     :", object@difficulty, "\n")
 })
 
@@ -79,9 +79,9 @@ setMethod("show", "item.1pl", function(object) {
 #' @slot difficulty Numeric. A difficulty parameter value.
 #'
 #' @examples
-#' item_2 <- new("item.2pl", slope = 1.0, difficulty = 0.5)
+#' item_2 <- new("item_2PL", slope = 1.0, difficulty = 0.5)
 #' @template 2pl-ref
-setClass("item.2pl",
+setClass("item_2PL",
   slots = c(
     slope = "numeric",
     difficulty = "numeric"
@@ -102,11 +102,11 @@ setClass("item.2pl",
 )
 
 #' @name show-method
-#' @aliases show,item.2pl-method
+#' @aliases show,item_2PL-method
 #' @docType methods
 #' @noRd
-setMethod("show", "item.2pl", function(object) {
-  cat("Two-parameter logistic model (item.2pl) \n")
+setMethod("show", "item_2PL", function(object) {
+  cat("Two-parameter logistic model (item_2PL) \n")
   cat("  Slope          :", object@slope, "\n")
   cat("  Difficulty     :", object@difficulty, "\n")
 })
@@ -120,9 +120,9 @@ setMethod("show", "item.2pl", function(object) {
 #' @slot guessing Numeric. A guessing parameter value.
 #'
 #' @examples
-#' item_3 <- new("item.3pl", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+#' item_3 <- new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 #' @template 3pl-ref
-setClass("item.3pl",
+setClass("item_3PL",
   slots = c(
     slope = "numeric",
     difficulty = "numeric",
@@ -146,11 +146,11 @@ setClass("item.3pl",
 )
 
 #' @name show-method
-#' @aliases show,item.3pl-method
+#' @aliases show,item_3PL-method
 #' @docType methods
 #' @noRd
-setMethod("show", "item.3pl", function(object) {
-  cat("Three-parameter logistic model (item.3pl)\n")
+setMethod("show", "item_3PL", function(object) {
+  cat("Three-parameter logistic model (item_3PL)\n")
   cat("  Slope          :", object@slope, "\n")
   cat("  Difficulty     :", object@difficulty, "\n")
   cat("  Guessing       :", object@guessing, "\n")
@@ -164,9 +164,9 @@ setMethod("show", "item.3pl", function(object) {
 #' @slot ncat Numeric. The number of response categories.
 #'
 #' @examples
-#' item_4 <- new("item.pc", threshold = c(-0.5, 0.5), ncat = 3)
+#' item_4 <- new("item_PC", threshold = c(-0.5, 0.5), ncat = 3)
 #' @template pc-ref
-setClass("item.pc",
+setClass("item_PC",
   slots = c(
     threshold = "numeric",
     ncat = "numeric"
@@ -188,11 +188,11 @@ setClass("item.pc",
 )
 
 #' @name show-method
-#' @aliases show,item.pc-method
+#' @aliases show,item_PC-method
 #' @docType methods
 #' @noRd
-setMethod("show", "item.pc", function(object) {
-  cat("Partial credit model (item.pc)\n")
+setMethod("show", "item_PC", function(object) {
+  cat("Partial credit model (item_PC)\n")
   cat("  Threshold     :", object@threshold, "\n")
   cat("  N categories  :", object@ncat, "\n")
 })
@@ -206,9 +206,9 @@ setMethod("show", "item.pc", function(object) {
 #' @slot ncat Numeric. The number of response categories.
 #'
 #' @examples
-#' item_5 <- new("item.gpc", slope = 1.0, threshold = c(-0.5, 0.0, 0.5), ncat = 4)
+#' item_5 <- new("item_GPC", slope = 1.0, threshold = c(-0.5, 0.0, 0.5), ncat = 4)
 #' @template gpc-ref
-setClass("item.gpc",
+setClass("item_GPC",
   slots = c(
     slope = "numeric",
     threshold = "numeric",
@@ -232,11 +232,11 @@ setClass("item.gpc",
 )
 
 #' @name show-method
-#' @aliases show,item.gpc-method
+#' @aliases show,item_GPC-method
 #' @docType methods
 #' @noRd
-setMethod("show", "item.gpc", function(object) {
-  cat("Generalized partial credit model (item.gpc)\n")
+setMethod("show", "item_GPC", function(object) {
+  cat("Generalized partial credit model (item_GPC)\n")
   cat("  Slope         :", object@slope, "\n")
   cat("  Threshold     :", object@threshold, "\n")
   cat("  N categories  :", object@ncat, "\n")
@@ -251,9 +251,9 @@ setMethod("show", "item.gpc", function(object) {
 #' @slot ncat Numeric. The number of response categories.
 #'
 #' @examples
-#' item_6 <- new("item.gr", slope = 1.0, category = c(-2.0, -1.0, 0, 1.0, 2.0), ncat = 6)
+#' item_6 <- new("item_GR", slope = 1.0, category = c(-2.0, -1.0, 0, 1.0, 2.0), ncat = 6)
 #' @template gr-ref
-setClass("item.gr",
+setClass("item_GR",
   slots = c(
     slope = "numeric",
     category = "numeric",
@@ -279,11 +279,11 @@ setClass("item.gr",
 )
 
 #' @name show-method
-#' @aliases show,item.gr-method
+#' @aliases show,item_GR-method
 #' @docType methods
 #' @noRd
-setMethod("show", "item.gr", function(object) {
-  cat("Graded response model (item.gr)\n")
+setMethod("show", "item_GR", function(object) {
+  cat("Graded response model (item_GR)\n")
   cat("  Slope         :", object@slope, "\n")
   cat("  Category b    :", object@category, "\n")
   cat("  N categories  :", object@ncat, "\n")
@@ -297,13 +297,13 @@ setMethod("show", "item.gr", function(object) {
 #' @slot max_cat Numeric. The maximum number of response categories across all items.
 #' @slot index Numeric. A vector of item indices.
 #' @slot id Character. A vector of item ids.
-#' @slot model Numeric. A vector of item model codes (1: item.1pl, 2: item.2pl, 3: item.3pl, 4: item.pc, 5: item.gpc, 6: item.gr).
+#' @slot model Numeric. A vector of item model codes (1: item.1pl, 2: item_2PL, 3: item_3PL, 4: item_PC, 5: item_GPC, 6: item_GR).
 #' @slot NCAT Numeric. A vector of the number of response categories for each item.
 #' @slot parms A list of item parameters in the pool.
 #' @slot ipar A matrix of item parameters in the pool.
 #' @slot se A matrix representing standard errors of the item parameters.
 
-setClass("item.pool",
+setClass("item_pool",
   slots = c(
     ni = "numeric",
     max_cat = "numeric",
@@ -333,10 +333,10 @@ setClass("item.pool",
 )
 
 #' @name show-method
-#' @aliases show,item.pool-method
+#' @aliases show,item_pool-method
 #' @docType methods
 #' @noRd
-setMethod("show", "item.pool", function(object) {
+setMethod("show", "item_pool", function(object) {
   if (length(object@ni) > 0) {
     cat("@ni    :", object@ni, "\n")
     cat("@max_cat :", object@max_cat, "\n\n")
@@ -356,9 +356,9 @@ setMethod("show", "item.pool", function(object) {
 #' An S4 class to represent a cluster of item pools.
 #'
 #' @slot np A scalar to indicate the number of item pools in the cluster.
-#' @slot pools A list of \code{item.pool} objects.
+#' @slot pools A list of \code{item_pool} objects.
 #' @slot names A character vector of item pool names of length np.
-setClass("pool.cluster",
+setClass("pool_cluster",
   slots = c(
     np = "numeric",
     pools = "list",
@@ -386,10 +386,10 @@ setClass("pool.cluster",
 )
 
 #' @name show-method
-#' @aliases show,pool.cluster-method
+#' @aliases show,pool_cluster-method
 #' @docType methods
 #' @noRd
-setMethod("show", "pool.cluster", function(object) {
+setMethod("show", "pool_cluster", function(object) {
   if (length(object@np) > 0) {
     cat("@np    :", object@np, "\n")
     cat("@names :", paste0(object@names, collapse = ", "), "\n\n")

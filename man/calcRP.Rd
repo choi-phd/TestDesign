@@ -4,19 +4,19 @@
 \alias{calcRP}
 \title{Find matching theta to supplied probability}
 \usage{
-calcRP(object, rp = 0.5, max.iter = 100, conv = 1e-04,
-  start.theta = 0)
+calcRP(object, rp = 0.5, max_iter = 100, conv = 1e-04,
+  start_theta = 0)
 }
 \arguments{
-\item{object}{An \code{\linkS4class{item.pool}} object.}
+\item{object}{An \code{\linkS4class{item_pool}} object.}
 
 \item{rp}{A response probability value.}
 
-\item{max.iter}{A maximum number of iterations.}
+\item{max_iter}{A maximum number of iterations.}
 
 \item{conv}{A convergence criterion.}
 
-\item{start.theta}{A starting theta value.}
+\item{start_theta}{A starting theta value.}
 }
 \description{
 Find theta corresponding to a response probability value for each item.

@@ -4,17 +4,17 @@
 \alias{buildConstraints}
 \title{Build constraints}
 \usage{
-buildConstraints(pool, file.constraints, file.item.attrib,
-  file.st.attrib = NULL)
+buildConstraints(pool, file_constraints, file_item_attrib,
+  file_st_attrib = NULL)
 }
 \arguments{
-\item{pool}{An \code{item.pool} object. Use \code{\link{loadItemPool}} for this.}
+\item{pool}{An \code{item_pool} object. Use \code{\link{loadItemPool}} for this.}
 
-\item{file.constraints}{Character. The name of the file containing constraint specifications.}
+\item{file_constraints}{Character. The name of the file containing constraint specifications.}
 
-\item{file.item.attrib}{Character. The name of the file containing item attributes.}
+\item{file_item_attrib}{Character. The name of the file containing item attributes.}
 
-\item{file.st.attrib}{(Optional) Character. The name of the file containing set attributes.}
+\item{file_st_attrib}{(Optional) Character. The name of the file containing set attributes.}
 }
 \value{
 A list containing the parsed constraints, to be used in \code{\link{ATA}} and \code{\link{Shadow}}.

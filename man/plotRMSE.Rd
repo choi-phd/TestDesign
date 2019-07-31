@@ -4,21 +4,22 @@
 \alias{plotRMSE}
 \title{Draw RMSE plots}
 \usage{
-plotRMSE(..., title = NULL, legendTitle = NULL, legendLabels = NULL,
-  ltySet = NULL, colSet = NULL, theta = seq(-2, 2, 1))
+plotRMSE(..., title = NULL, legend_title = NULL,
+  legend_labels = NULL, lty_set = NULL, col_set = NULL,
+  theta = seq(-2, 2, 1))
 }
 \arguments{
 \item{...}{A series of RMSE values.}
 
 \item{title}{A plot title.}
 
-\item{legendTitle}{A legend title.}
+\item{legend_title}{A legend title.}
 
-\item{legendLabels}{A vector of labels for the series.}
+\item{legend_labels}{A vector of labels for the series.}
 
-\item{ltySet}{A vector of line types for the series.}
+\item{lty_set}{A vector of line types for the series.}
 
-\item{colSet}{A vector of colors for the series.}
+\item{col_set}{A vector of colors for the series.}
 
 \item{theta}{A theta grid.}
 }

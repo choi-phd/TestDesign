@@ -1,7 +1,7 @@
 test_that("Exposure control", {
   set.seed(1)
   true_theta <- runif(10, min = -3.5, max = 3.5)
-  resp_science <- makeTest(itempool_science, info.type = "FISHER", true.theta = true_theta)@data
+  resp_science <- makeTest(itempool_science, info_type = "FISHER", true_theta = true_theta)@data
   constraints_science2 <- updateConstraints(constraints_science, off = c(14:20, 32:36))
 
   config_science <- createShadowTestConfig(MIP = list(solver = "LPSOLVE"), exposure_control = list(method = "ELIGIBILITY"))
@@ -20,7 +20,7 @@ test_that("Exposure control", {
 
   set.seed(1)
   true_theta <- runif(10, min = -3.5, max = 3.5)
-  resp_science <- makeTest(itempool_science, info.type = "FISHER", true.theta = true_theta)@data
+  resp_science <- makeTest(itempool_science, info_type = "FISHER", true_theta = true_theta)@data
   constraints_science2 <- updateConstraints(constraints_science, off = c(14:20, 32:36))
 
   config_science <- createShadowTestConfig(MIP = list(solver = "LPSOLVE"), exposure_control = list(method = "ELIGIBILITY"))

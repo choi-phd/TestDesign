@@ -4,12 +4,12 @@
 \alias{iparPosteriorSample}
 \title{Sample item parameter estimates from their posterior distributions}
 \usage{
-iparPosteriorSample(pool, n.sample = 500)
+iparPosteriorSample(pool, n_sample = 500)
 }
 \arguments{
-\item{pool}{An \code{\linkS4class{item.pool}} object.}
+\item{pool}{An \code{\linkS4class{item_pool}} object.}
 
-\item{n.sample}{An integer as the number of sampled parameters.}
+\item{n_sample}{An integer as the number of sampled parameters.}
 }
 \description{
 Sample item parameter estimates from their posterior distributions.

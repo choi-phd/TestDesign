@@ -3,22 +3,22 @@
 \docType{methods}
 \name{ATA}
 \alias{ATA}
-\alias{ATA,ATA.config-method}
+\alias{ATA,config_ATA-method}
 \title{Run Automated Test Assembly}
 \usage{
-ATA(config, constraints, plot = FALSE, plot.range = c(-3, 3))
+ATA(config, constraints, plot = FALSE, plot_range = c(-3, 3))
 
-\S4method{ATA}{ATA.config}(config, constraints, plot = FALSE,
-  plot.range = c(-3, 3))
+\S4method{ATA}{config_ATA}(config, constraints, plot = FALSE,
+  plot_range = c(-3, 3))
 }
 \arguments{
-\item{config}{An \code{\linkS4class{ATA.config}} object containing configuration options. Use \code{\link{createStaticTestConfig}} for this.}
+\item{config}{An \code{\linkS4class{config_ATA}} object containing configuration options. Use \code{\link{createStaticTestConfig}} for this.}
 
 \item{constraints}{A list representing optimization constraints. Use \code{\link{loadConstraints}} for this.}
 
 \item{plot}{Logical. If \code{TRUE}, draw Fisher information plot from the selected items.}
 
-\item{plot.range}{Numeric. A vector of length 2 containing the lower and upper bounds of plot range. The default is \code{c(-3, 3)}.}
+\item{plot_range}{Numeric. A vector of length 2 containing the lower and upper bounds of plot range. The default is \code{c(-3, 3)}.}
 }
 \value{
 A list containing the following entries:
