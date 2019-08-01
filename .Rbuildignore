@@ -2,13 +2,10 @@
 ^.vscode$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^run_47h$
-^deploy$
 ^data-raw$
-^\.html$
-^\.rmd$
-^tutorial$
 ^.*\.eps$
 ^cleanup\.cmd$
 ^cleanup\.sh$
 ^readme.md$
+^doc$
+^Meta$
