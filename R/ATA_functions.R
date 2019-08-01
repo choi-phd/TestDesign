@@ -129,7 +129,7 @@ setMethod(
 
       invisible(capture.output(MIP <- gurobi::gurobi(list(obj = obj, modelsense = ifelse(maximize, "max", "min"), rhs = rhs, sense = constraints_dir, vtype = types, A = mat), params = list(TimeLimit = config@MIP$time_limit), env = NULL)))
 
-      if (is_optimal) {
+      if (isOptimal(MIP$status, config@MIP$solver)) {
         MIP[["solution"]] <- MIP$x
       }
 
