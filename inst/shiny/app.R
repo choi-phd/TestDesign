@@ -43,7 +43,7 @@ ui <- fluidPage(
         fileInput("content_file",    buttonLabel = "Item contents (optional)",        label = NULL, accept = accepted_files),
         checkboxGroupButtons(
           inputId = "clear_files", justified = TRUE,
-          choices = c("Clear files"), checkIcon = list(yes = icon("drafting-compass"), no = icon("drafting-compass"))
+          choices = c("Clear files"), checkIcon = list(yes = icon("trash-alt"), no = icon("trash-alt"))
         ),
         circle = FALSE, status = "primary", icon = icon("file-import"), width = "100%"
       ),
