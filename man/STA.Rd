@@ -4,7 +4,7 @@
 \alias{STA}
 \title{Perform shadow test assembly}
 \usage{
-STA(constraints, objective, solver = "Symphony", xmat = NULL,
+STA(constraints, objective, solver = "Lpsolve", xmat = NULL,
   xdir = NULL, xrhs = NULL, maximize = TRUE, mps = FALSE,
   lp = FALSE, verbosity = -2, time_limit = 5, gap_limit = -1, ...)
 }
