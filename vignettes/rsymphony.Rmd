@@ -91,17 +91,22 @@ This will make the Rsymphony solver package available in R.
 
 If the `R CMD` fails with `--lgfortran` error, proceed to the next step.
 
-## Tell R where the Fortran compiler is located
+## Tell R where Fortran libraries are located
 
-The cause of the error is that R needs Fortran compiler to build the package, but it does not know where it is.
+The cause of the error is that R needs Fortran libraries to build the package, but it does not know where they are. They are already available on your system: when you installed the SYMPHONY libraries from the previous steps, it installed gcc library as a requirement, which contains Fortran libraries as well. 
 
-**Step 1.** Run the following lines in terminal.
+**Step 1.** Run the following lines in terminal. This points R to the Fortran libraries.
 
 ```
 mkdir ~/.R
 cat << EOF >> ~/.R/Makevars
-FLIBS = -L/usr/local/gfortran -lgfortran -lquadmath -lm
+FLIBS = -L/usr/local/gfortran/lib -lgfortran -lquadmath -lm
 EOF
+```
+
+**Step 2.** Run the following line in terminal to install the modified Rsymphony package.
+```
+sudo R CMD install Rsymphony
 ```
 
 ## Resources
