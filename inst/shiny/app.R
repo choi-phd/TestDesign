@@ -43,7 +43,7 @@ ui <- fluidPage(
         fileInput("content_file",    buttonLabel = "Item contents (optional)",        label = NULL, accept = accepted_files),
         checkboxGroupButtons(
           inputId = "clear_files", justified = TRUE,
-          choices = c("Clear files"), checkIcon = list(yes = icon("drafting-compass"), no = icon("drafting-compass"))
+          choices = c("Clear files"), checkIcon = list(yes = icon("trash-alt"), no = icon("trash-alt"))
         ),
         circle = FALSE, status = "primary", icon = icon("file-import"), width = "100%"
       ),
@@ -56,7 +56,7 @@ ui <- fluidPage(
       ),
       radioGroupButtons(
         inputId = "solvertype", justified = TRUE,
-        choices = c("Symphony", "Gurobi", "GLPK", "lpSolve"), checkIcon = list(yes = icon("drafting-compass"), no = icon("drafting-compass"))
+        choices = c("lpSolve", "Symphony", "Gurobi", "GLPK"), checkIcon = list(yes = icon("drafting-compass"), no = icon("drafting-compass"))
       ),
       radioGroupButtons(
         inputId = "objtype", justified = TRUE, label = h3("Objective type:"),
@@ -134,6 +134,9 @@ ui <- fluidPage(
           inputId = "refresh_policy", justified = TRUE, direction = "vertical",
           choices = c("ALWAYS", "POSITION", "INTERVAL", "THRESHOLD", "INTERVAL-THRESHOLD", "SET")
         ),
+        textInput("refresh_threshold", label = h3("Refresh when theta change exceeds"), value = "0.1"),
+        textInput("refresh_position", label = h3("Refresh at item positions (comma-separated)"), value = "1, 10"),
+        textInput("refresh_interval", label = h3("Refresh at item intervals (1 = always)"), value = "2"),
         circle = FALSE, icon = icon("cog"), width = "100%"
       ),
 
@@ -311,6 +314,31 @@ server <- function(input, output, session) {
     }
   })
 
+  observeEvent(input$clear_files, {
+    shinyjs::reset("itempool_file")
+    shinyjs::reset("itemse_file")
+    shinyjs::reset("itemattrib_file")
+    shinyjs::reset("stimattrib_file")
+    shinyjs::reset("const_file")
+    shinyjs::reset("content_file")
+    v$itempool   <- NULL
+    v$itemattrib <- NULL
+    v$stimattrib <- NULL
+    v$const      <- NULL
+    v$content    <- NULL
+    v$itempool_exists   <- FALSE
+    v$itemattrib_exists <- FALSE
+    v$stimattrib_exists <- FALSE
+    v$const_exists      <- FALSE
+    v$content_exists    <- FALSE
+    v$text <- "Files cleared."
+    updateCheckboxGroupButtons(
+      session = session,
+      inputId = "clear_files",
+      selected = character(0)
+    )
+  })
+
   observeEvent(input$problemtype, {
     shinyjs::toggle("objtype",                  condition = input$problemtype == 1)
     shinyjs::toggle("thetas",                   condition = input$problemtype == 1)
@@ -333,6 +361,12 @@ server <- function(input, output, session) {
 
   observeEvent(input$objtype, {
     shinyjs::toggleState("targets", input$objtype != "MAXINFO")
+  })
+
+  observeEvent(input$refresh_policy, {
+    shinyjs::toggle("refresh_threshold", condition = input$refresh_policy %in% c("THRESHOLD", "INTERVAL-THRESHOLD"))
+    shinyjs::toggle("refresh_interval",  condition = input$refresh_policy %in% c("INTERVAL", "INTERVAL-THRESHOLD"))
+    shinyjs::toggle("refresh_position",  condition = input$refresh_policy %in% c("POSITION"))
   })
 
   observeEvent(input$simulee_id, {
@@ -375,30 +409,6 @@ server <- function(input, output, session) {
     )
   })
 
-  observeEvent(input$clear_files, {
-    shinyjs::reset("itempool_file")
-    shinyjs::reset("itemse_file")
-    shinyjs::reset("itemattrib_file")
-    shinyjs::reset("stimattrib_file")
-    shinyjs::reset("const_file")
-    shinyjs::reset("content_file")
-    v$itempool   <- NULL
-    v$itemattrib <- NULL
-    v$stimattrib <- NULL
-    v$const      <- NULL
-    v$content    <- NULL
-    v$itempool_exists   <- FALSE
-    v$itemattrib_exists <- FALSE
-    v$stimattrib_exists <- FALSE
-    v$const_exists      <- FALSE
-    v$content_exists    <- FALSE
-    v$text <- "Files cleared."
-    updateCheckboxGroupButtons(
-      session = session,
-      inputId = "clear_files",
-      selected = character(0)
-    )
-  })
 
   observeEvent(input$run_solver, {
     shinyjs::disable("run_solver")
@@ -562,7 +572,7 @@ server <- function(input, output, session) {
           break
         }
         if (parseText(input$interim_prior_par)) {
-          eval(parse(text = paste0("conf@interim_theta$prior_par = c(", input$interim_prior_par, ")")))
+          eval(parse(text = sprintf("conf@interim_theta$prior_par = c(%s)", input$interim_prior_par)))
           if (length(conf@interim_theta$prior_par) != 2) {
             v$text <- "Interim prior parameters should be two numeric values."
             break
@@ -572,7 +582,7 @@ server <- function(input, output, session) {
           break
         }
         if (parseText(input$final_prior_par)) {
-          eval(parse(text = paste0("conf@final_theta$prior_par = c(", input$final_prior_par, ")")))
+          eval(parse(text = sprintf("conf@final_theta$prior_par = c(%s)", input$final_prior_par)))
           if (length(conf@final_theta$prior_par) != 2) {
             v$text <- "Final prior parameters should be two values."
             break
@@ -591,6 +601,33 @@ server <- function(input, output, session) {
         }
 
         conf@refresh_policy$method <- input$refresh_policy
+
+        if (parseText(input$refresh_interval)) {
+          eval(parse(text = sprintf("conf@refresh_policy$interval <- c(%s)[1]", input$refresh_interval)))
+          if (conf@refresh_policy$interval < 1 |
+              all(conf@refresh_policy$interval != as.integer(conf@refresh_policy$interval))) {
+            v$text <- "Refresh interval should be an integer of at least 1."
+            break
+          }
+        }
+        if (parseText(input$refresh_position)) {
+          eval(parse(text = sprintf("conf@refresh_policy$position <- c(%s)", input$refresh_position)))
+          if (conf@refresh_policy$position < 1 |
+              all(conf@refresh_policy$position != as.integer(conf@refresh_policy$position))) {
+            v$text <- "Refresh positions should be comma-separated integers of at least 1."
+            break
+          }
+        }
+        if (parseText(input$refresh_threshold)) {
+          eval(parse(text = sprintf("conf@refresh_policy$threshold <- c(%s)[1]", input$refresh_threshold)))
+          if (conf@refresh_policy$threshold < 0) {
+            v$text <- "Refresh threshold should be a positive value."
+            break
+          }
+        }
+
+        eval(parse(text = sprintf("conf@item_selection$target_location <- c(%s)", input$thetas)))
+
         conf@MIP$solver <- input$solvertype
 
         assignObject(conf,
