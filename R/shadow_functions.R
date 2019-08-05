@@ -500,9 +500,9 @@ setMethod(
     }
 
     par(oma = c(3, 3, 0, 0), mar = c(3, 3, 2, 2))
-    plotER(ni, exposure_rate, exposure_rate_final, max_rate = max_rate, title = "Overall", color = "black", simple = TRUE)
+    plotER(ni, exposure_rate, exposure_rate_final, max_rate = max_rate, title = "Overall", color = "black", color_final = "black", simple = TRUE)
     for (k in 1:n_segment) {
-      plotER(ni, exposure_rate_segment[[k]], exposure_rate_segment_final[[k]], max_rate = max_rate, title = segment_label[k], color = "black", simple = TRUE)
+      plotER(ni, exposure_rate_segment[[k]], exposure_rate_segment_final[[k]], max_rate = max_rate, title = segment_label[k], color = "black", color_final = "black", simple = TRUE)
     }
     mtext(text = "Item", side = 1, line = 0, outer = T)
     mtext(text = "Exposure Rate", side = 2, line = 0, outer = T)
