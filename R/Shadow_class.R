@@ -120,9 +120,9 @@ setClass("test_cluster",
   }
 )
 
-#' config_shadow
+#' createShadowTestConfig
 #'
-#' @rdname config_shadow
+#' @rdname createShadowTestConfig
 setClass("config_Shadow",
   slots = c(
     item_selection = "list",
