@@ -41,6 +41,10 @@ ui <- fluidPage(
         fileInput("stimattrib_file", buttonLabel = "Stimulus attributes (optional)",  label = NULL, accept = accepted_files),
         fileInput("const_file",      buttonLabel = "Constraints",                     label = NULL, accept = accepted_files),
         fileInput("content_file",    buttonLabel = "Item contents (optional)",        label = NULL, accept = accepted_files),
+        checkboxGroupButtons(
+          inputId = "clear_files", justified = TRUE,
+          choices = c("Clear files"), checkIcon = list(yes = icon("drafting-compass"), no = icon("drafting-compass"))
+        ),
         circle = FALSE, status = "primary", icon = icon("file-import"), width = "100%"
       ),
 
@@ -371,6 +375,31 @@ server <- function(input, output, session) {
     )
   })
 
+  observeEvent(input$clear_files, {
+    shinyjs::reset("itempool_file")
+    shinyjs::reset("itemse_file")
+    shinyjs::reset("itemattrib_file")
+    shinyjs::reset("stimattrib_file")
+    shinyjs::reset("const_file")
+    shinyjs::reset("content_file")
+    v$itempool   <- NULL
+    v$itemattrib <- NULL
+    v$stimattrib <- NULL
+    v$const      <- NULL
+    v$content    <- NULL
+    v$itempool_exists   <- FALSE
+    v$itemattrib_exists <- FALSE
+    v$stimattrib_exists <- FALSE
+    v$const_exists      <- FALSE
+    v$content_exists    <- FALSE
+    v$text <- "Files cleared."
+    updateCheckboxGroupButtons(
+      session = session,
+      inputId = "clear_files",
+      selected = character(0)
+    )
+  })
+
   observeEvent(input$run_solver, {
     shinyjs::disable("run_solver")
 
@@ -607,13 +636,13 @@ server <- function(input, output, session) {
     shinyjs::enable("run_solver")
   })
 
-  output$table_itempool <- renderDT(parseObject(v$ipar), options = list(pageLength = 100))
-  output$table_itemattrib <- renderDT(parseObject(v$itemattrib), options = list(pageLength = 100))
-  output$table_stimattrib <- renderDT(parseObject(v$stimattrib), options = list(pageLength = 100))
+  output$table_itempool    <- renderDT(parseObject(v$ipar), options = list(pageLength = 100))
+  output$table_itemattrib  <- renderDT(parseObject(v$itemattrib), options = list(pageLength = 100))
+  output$table_stimattrib  <- renderDT(parseObject(v$stimattrib), options = list(pageLength = 100))
   output$table_constraints <- renderDT(parseObject(v$constraints), options = list(pageLength = 100))
-  output$results <- renderDT(parseObject(v$results), options = list(pageLength = 100))
-  output$text_output <- renderText(parseObject(v$text))
-  output$plot_output <- renderPlot(parseObject(v$plot_output))
+  output$results      <- renderDT(parseObject(v$results), options = list(pageLength = 100))
+  output$text_output  <- renderText(parseObject(v$text))
+  output$plot_output  <- renderPlot(parseObject(v$plot_output))
   output$shadow_chart <- renderPlot(parseObject(v$shadow_chart))
 
   output$export_data <- downloadHandler(
