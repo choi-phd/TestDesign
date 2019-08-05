@@ -500,9 +500,9 @@ setMethod(
     }
 
     par(oma = c(3, 3, 0, 0), mar = c(3, 3, 2, 2))
-    plotER(ni, exposure_rate, exposure_rate_final, max_rate = max_rate, title = "Overall", color = "black", simple = TRUE)
+    plotER(ni, exposure_rate, exposure_rate_final, max_rate = max_rate, title = "Overall", color = "black", color_final = "black", simple = TRUE)
     for (k in 1:n_segment) {
-      plotER(ni, exposure_rate_segment[[k]], exposure_rate_segment_final[[k]], max_rate = max_rate, title = segment_label[k], color = "black", simple = TRUE)
+      plotER(ni, exposure_rate_segment[[k]], exposure_rate_segment_final[[k]], max_rate = max_rate, title = segment_label[k], color = "black", color_final = "black", simple = TRUE)
     }
     mtext(text = "Item", side = 1, line = 0, outer = T)
     mtext(text = "Exposure Rate", side = 2, line = 0, outer = T)
@@ -978,7 +978,7 @@ setMethod(
     } else if (length(start_theta) != nj) {
       stop("start_theta must be of length 1 or the number of examinees")
     }
-    
+
     th    <- numeric(nj)
     se    <- numeric(nj)
     conv  <- logical(nj)
@@ -1076,7 +1076,7 @@ setMethod(
     ni <- ncol(object@data)
     nj <- nrow(object@data)
     nq <- length(object@theta)
-    
+
     if (is.null(select)) {
       select <- 1:object@pool@ni
       resp <- object@data
@@ -1086,7 +1086,7 @@ setMethod(
       }
       resp <- object@data[, unique(select)]
     }
-    
+
     if (!is.null(select)) {
       if (anyDuplicated(select) > 0) {
         warning("select contains duplicated indices")
@@ -1120,7 +1120,7 @@ setMethod(
       raw_score <- sum(object@data[j, items], na.rm = TRUE)
 
       if (raw_score > 0 && raw_score < max_raw_score) {
-        
+
         converged <- FALSE
         done <- FALSE
         iteration <- 0
@@ -1582,7 +1582,7 @@ setMethod(
       cut_lower    <- segment_cut[1:n_segment]
       cut_upper    <- segment_cut[2:(n_segment + 1)]
       pe_i <- matrix(1, n_segment, ni)
-      
+
       if (set_based) {
         pe_s <- matrix(1, n_segment, ns)
       } else {
@@ -1985,7 +1985,7 @@ setMethod(
                 }
 
                 optimal <- STA(constraints, info, xmat = rbind(xmat, imat), xdir = c(xdir, idir), xrhs = c(xrhs, irhs), maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$time_limit, gap_limit = config@MIP$gap_limit, solver = config@MIP$solver)
-                
+
                 is_optimal <- isOptimal(optimal$status, config@MIP$solver)
                 if (!is_optimal) {
                   output@shadow_test_feasible[position] <- FALSE
@@ -2337,7 +2337,7 @@ setMethod(
             eligible_set_in_final_segment <- ineligible_s[segment_final, ] == 0
             rho_sjk[segment_final, ] <- fading_factor * rho_sjk[segment_final ]
             rho_sjk[segment_final, eligible_set_in_final_segment] <- rho_sjk[segment_final, eligible_set_in_final_segment] + 1
-            
+
             if (fading_factor != 1) {
               no_fading_alpha_sjk[segment_final, output@administered_stimulus_index] <- no_fading_alpha_sjk[segment_final, output@administered_stimulus_index] + 1
               no_fading_rho_sjk[segment_final, eligible_set_in_final_segment] <- no_fading_rho_sjk[segment_final, eligible_set_in_final_segment] + 1
@@ -2463,7 +2463,7 @@ setMethod(
         }
 
         if (config@exposure_control$diagnostic_stats) {
-          
+
           for (g in 1:n_segment) {
             alpha_g_i[j, (g - 1) * ni + 1:ni]   <- alpha_ijk[g, ]
             epsilon_g_i[j, (g - 1) * ni + 1:ni] <- rho_ijk[g, ]
@@ -2499,11 +2499,11 @@ setMethod(
       }
 
     }
-    
+
     final_theta_est <- unlist(lapply(1:nj, function(j) output_list[[j]]@final_theta_est))
     final_se_est    <- unlist(lapply(1:nj, function(j) output_list[[j]]@final_se_est))
     exposure_rate <- colSums(usage_matrix) / nj
-    
+
     eligibility_stats           <- NULL
     check_eligibility_stats     <- NULL
     no_fading_eligibility_stats <- NULL
@@ -2599,7 +2599,7 @@ plotEligibilityStats <- function(config, object = NULL, object_no_fading = NULL,
   } else if (!is.null(file)) {
     eligibility_stats <- read.csv(file, header = TRUE, sep = ",")
   }
-  
+
   eligibility_stats_no_fading <- NULL
   if (!is.null(object_no_fading)) {
     eligibility_stats_no_fading <- object_no_fading
@@ -2788,7 +2788,7 @@ checkConstraints <- function(constraints, usage_matrix, true_theta = NULL) {
 #'
 #' @export
 plotRMSE <- function(..., title = NULL, legend_title = NULL, legend_labels = NULL, lty_set = NULL, col_set = NULL, theta = seq(-2, 2, 1)) {
-  
+
   output_list <- list(...)
   n_output <- length(output_list)
 
@@ -2922,7 +2922,7 @@ plotExposureRateBySegment <- function(object, config, max_rate = 0.25, file_pdf 
 #' @param retain An optional vector of indices identifying the simulees to retain.
 #' @export
 plotExposureRateFinal <- function(object, config = NULL, max_rate = 0.25, theta = "Estimated", segment_cut = NULL, color = "red", file_pdf = NULL, width = 7, height = 6, mfrow = c(2, 4), burn = 0, retain = NULL) {
-  
+
   true_theta <- object$true_theta
   est_theta  <- object$final_theta_est
   nj         <- length(true_theta)
@@ -2941,7 +2941,7 @@ plotExposureRateFinal <- function(object, config = NULL, max_rate = 0.25, theta 
   n_retained <- sum(retained)
 
   ni <- ncol(object$usage_matrix)
-  
+
   if (is.null(config)) {
     config <- object$config
   }
@@ -3023,7 +3023,7 @@ plotExposureRateFinal <- function(object, config = NULL, max_rate = 0.25, theta 
     } else if (any(is.nan(exposure_rate_segment_final[[k]]))) {
       exposure_rate_segment_final[[k]][is.nan(exposure_rate_segment_final[[k]])] <- 0
     }
-  }  
+  }
 
   if (!is.null(file_pdf)) {
     pdf(file = file_pdf, width = width, height = height)
@@ -3077,13 +3077,13 @@ plotExposureRateFinalFlag <- function(object, pool, theta = seq(-3, 3, .1), flag
   segment_cut[length(segment_cut)] <- max(theta)
   segment_label <- object$segment_label
   items_flagged_segment <- lapply(seq_len(object$n_segment), function(j) which(object$exposure_rate_segment[[j]] > flag_from))
-  
+
   if (!is.null(file_pdf)) {
     pdf(file = file_pdf, width = width, height = height)
   }
-  
+
   par(mfrow = mfrow)
-  
+
   for (k in 1:n_segment) {
     theta_segment_range         <- which(theta >= segment_cut[k] & theta <= segment_cut[k + 1])
     theta_segment_range_outside <- which(theta <= segment_cut[k] | theta >= segment_cut[k + 1])
@@ -3140,7 +3140,7 @@ plotInfo <- function(object, theta, info_type = "FISHER", select = NULL, file_pd
   items <- 1:object@ni
   if (!is.null(select) && all(select %in% items)) {
     items <- select
-  }  
+  }
   for (i in items) {
     plot(theta, info[, i], xlab = "Theta", ylab = "Info", main = object@id[i], type = "l", col = color, ylim = c(0, max(info)))
   }
@@ -3163,7 +3163,7 @@ plotInfo <- function(object, theta, info_type = "FISHER", select = NULL, file_pd
 #' @param width Width of the graphics device.
 #' @param height Height of the graphics device.
 plotInfoOverlay <- function(object, theta, info_type = "FISHER", select = NULL, file_pdf = NULL, color = "red", width = 7, height = 6) {
-  
+
   if (toupper(info_type) == "FISHER") {
     info <- calcFisher(object, theta)
   } else {
@@ -3173,7 +3173,7 @@ plotInfoOverlay <- function(object, theta, info_type = "FISHER", select = NULL, 
   if (!is.null(file_pdf)) {
     pdf(file = file_pdf, width = width, height = height)
   }
-  
+
   items <- 1:object@ni
   if (!is.null(select) && all(select %in% items)) {
     items <- select
@@ -3320,10 +3320,10 @@ plotMaxInfo <- function(pool, constraints, theta = seq(-3, 3, .5)) {
     max_info[i] <- sum(sort(calcFisher(pool, theta[i]), TRUE)[1:n_items])
     min_info[i] <- sum(sort(calcFisher(pool, theta[i]), FALSE)[1:n_items])
   }
-  
+
   pdf(NULL, bg = "white")
   dev.control(displaylist = "enable")
-  
+
   plot(0, 0,
     type = "n", xlim = c(-3, 3), ylim = c(0, max(max_info)),
     xlab = "Theta", ylab = "Information", main = "Range of attainable information based on the number of items"
