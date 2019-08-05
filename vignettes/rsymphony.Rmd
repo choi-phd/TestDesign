@@ -49,7 +49,7 @@ If the install fails, proceed to the next step.
 **Step 1.** Install `wget` by running the following line in terminal. The purpose of this step is to allow downloading the package file directly from CRAN servers.
 
 ```
-brew intall wget
+brew install wget
 ```
 
 **Step 2.** Run the following lines in terminal to download the Rsymphony solver package. The first line downloads the package file, and the second line unpacks the file.
@@ -69,8 +69,8 @@ open ./Rsymphony
 
 ```
 #if test ${status} -ne 0; then 
-# echo “Cannot find SYMPHONY libraries and headers.” 
-# echo “See https://projects.coin-or.org/SYMPHONY.” 
+# echo "Cannot find SYMPHONY libraries and headers." 
+# echo "See https://projects.coin-or.org/SYMPHONY."
 # exit 1 
 #fi
 ```
