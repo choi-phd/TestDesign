@@ -19,7 +19,7 @@
 #' @return A list containing the optimal solution and pertinent diagnostics.
 #'
 #' @export
-STA <- function(constraints, objective, solver = "Symphony", xmat = NULL, xdir = NULL, xrhs = NULL,
+STA <- function(constraints, objective, solver = "Lpsolve", xmat = NULL, xdir = NULL, xrhs = NULL,
   maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = -2, time_limit = 5, gap_limit = -1, ...) {
 
   if (length(objective) == constraints$nv) {
@@ -1486,7 +1486,7 @@ setMethod(
           } else {
             stop("invalid entries in config@refresh_policy$position")
           }
-        } else if (refresh_policy %in% c("INTERNVAL", "INTERVAL-THRESHOLD")) {
+        } else if (refresh_policy %in% c("INTERVAL", "INTERVAL-THRESHOLD")) {
           if (config@refresh_policy$interval >= 1 && config@refresh_policy$interval <= test_length) {
             refresh_shadow[seq(1, test_length, config@refresh_policy$interval)] <- TRUE
           } else {
