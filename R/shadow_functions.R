@@ -55,7 +55,7 @@ STA <- function(constraints, objective, solver = "Lpsolve", xmat = NULL, xdir = 
     }
     MIP[["solution"]] <- MIP$x
   } else if (toupper(solver) == "GLPK") {
-    MIP <- Rglpk_solve_LP(obj, mat, dir, rhs, max = maximize, types = "B", control = list(verbose = ifelse(verbosity != -2, TRUE, FALSE), presolve = TRUE, tm_limit = time_limit))
+    MIP <- Rglpk::Rglpk_solve_LP(obj, mat, dir, rhs, max = maximize, types = "B", control = list(verbose = ifelse(verbosity != -2, TRUE, FALSE), presolve = TRUE, tm_limit = time_limit))
     if (!isOptimal(MIP$status, solver)) {
       warning(sprintf("MIP solver returned non-zero status: %s", MIP$status))
       return(list(status = MIP$status, MIP = NULL, selected = NULL))
