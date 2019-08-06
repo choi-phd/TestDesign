@@ -1,3 +1,6 @@
+#' @include solver_functions.R
+NULL
+
 #' An S4 class to represent a set of constraints
 #'
 #' An S4 class to represent a set of constraints.

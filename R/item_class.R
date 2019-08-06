@@ -1,3 +1,6 @@
+#' @include RcppExports.R import.R
+NULL
+
 #' @noRd
 validateSlope <- function(object) {
   if (object@slope <= 0) {
