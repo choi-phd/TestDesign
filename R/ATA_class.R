@@ -1,3 +1,6 @@
+#' @include loading_functions.R
+NULL
+
 #' createStaticTestConfig
 #'
 #' @rdname createStaticTestConfig

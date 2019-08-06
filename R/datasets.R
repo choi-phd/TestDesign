@@ -1,3 +1,6 @@
+#' @include shadow_functions.R
+NULL
+
 #' Science dataset
 #'
 #' Item-based example item pool (1000 items).

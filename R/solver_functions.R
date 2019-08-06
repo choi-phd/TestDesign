@@ -1,3 +1,6 @@
+#' @include ATA_functions.R
+NULL
+
 #' @noRd
 
 isOptimal <- function(status, solver){
