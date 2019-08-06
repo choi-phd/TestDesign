@@ -1,3 +1,6 @@
+#' @include item_functions.R
+NULL
+
 #' Load item paramaters
 #'
 #' Read item parameters from a .csv file or a data.frame and create an \linkS4class{item_pool} class.
