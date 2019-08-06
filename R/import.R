@@ -10,13 +10,11 @@
 # Use snake_case for global objects (example datasets).
 # Use snake_case for S3 list slot names and S4 class slot names.
 
-#' @import Rglpk
 #' @import Matrix
 #' @import lpSolve
 #' @import Rcpp methods
 #' @import foreach
 #' @import crayon
-#' @importFrom Rcpp evalCpp
 #' @importFrom Rdpack reprompt
 #' @importFrom methods new show validObject
 #' @importFrom logitnorm logit rlogitnorm
@@ -24,7 +22,6 @@
 #' @importFrom stats runif dnorm rlnorm rnorm sd
 #' @importFrom utils capture.output read.csv setTxtProgressBar txtProgressBar write.table packageVersion
 #' @importFrom graphics plot abline lines axis grid layout legend mtext par plot.new points rect text strheight
-#' @importFrom lattice xyplot
 #' @useDynLib TestDesign
 NULL
 

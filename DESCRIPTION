@@ -11,10 +11,11 @@ Description: Use the optimal test design approach by Birnbaum and van der Linden
     Supports the following mixed-integer programming (MIP) solver packages: Rsymphony, gurobi, lpSolve, and Rglpk. The gurobi package is not available from CRAN; see gurobi website for obtaining the solver package. See vignettes for installing Rsymphony package on Mac systems.
 License: GPL (>= 2)
 Depends: R (>= 2.10)
-Imports: Rcpp (>= 1.0.0), methods, Matrix, Rglpk, lpSolve, Rdpack, foreach, logitnorm, lattice, crayon
+Imports: Rcpp (>= 1.0.0), methods, Matrix, lpSolve, foreach, logitnorm, Rdpack, crayon
 Suggests:
     gurobi,
     Rsymphony,
+    Rglpk,
     shiny,
     shinythemes,
     shinyWidgets,
