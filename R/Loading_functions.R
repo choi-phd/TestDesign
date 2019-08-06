@@ -1,3 +1,6 @@
+#' @include item_functions.R
+NULL
+
 #' Load item paramaters
 #'
 #' Read item parameters from a .csv file or a data.frame and create an \linkS4class{item_pool} class.
@@ -10,7 +13,7 @@
 #' @seealso \link{dataset_science} for example usage.
 #' @export
 loadItemPool <- function(file, ipar = NULL, se_file = NULL) {
-  
+
   if (is.null(ipar)) {
     ipar <- read.csv(file, header = TRUE, as.is = TRUE)
   }
@@ -25,7 +28,7 @@ loadItemPool <- function(file, ipar = NULL, se_file = NULL) {
   nfields    <- rowSums(!is.na(ipar))
   valid      <- logical(ni)
   pool@ipar  <- matrix(NA, nrow = ni, ncol = max(nfields) - 2)
-  
+
   if (!is.null(se_file)) {
     ipar_se  <- read.csv(se_file, header = TRUE, as.is = TRUE)
     load_se  <- TRUE
@@ -823,7 +826,7 @@ updateConstraints <- function(object, on = NULL, off = NULL) {
       object$constraints[index, "ONOFF"] <- "OFF"
     }
   }
-  
+
   index <- NULL
   mat   <- NULL
   dir   <- NULL

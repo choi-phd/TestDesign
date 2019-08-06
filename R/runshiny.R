@@ -1,3 +1,6 @@
+#' @include datasets.R
+NULL
+
 #' Launch Shiny app
 #'
 #' Launch Shiny app locally.

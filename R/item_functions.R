@@ -1,3 +1,6 @@
+#' @include item_class.R
+NULL
+
 #' Calculate item response probabilities
 #'
 #' An S4 generic and its methods to calculate item response probabilities for different item classes

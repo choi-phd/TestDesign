@@ -1,3 +1,6 @@
+#' @include RcppExports.R import.R
+NULL
+
 #' @noRd
 validateSlope <- function(object) {
   if (object@slope <= 0) {
@@ -401,90 +404,3 @@ setMethod("show", "pool_cluster", function(object) {
     cat("item pool cluster is empty.")
   }
 })
-
-setClassUnion("numeric_or_null", c("numeric", "NULL"))
-setClassUnion("matrix_or_null", c("matrix", "NULL"))
-
-#' An S4 class to represent a test
-#'
-#' An S4 class to represent a test.
-#'
-#' @slot pool An \code{\linkS4class{item_pool}} object.
-#' @slot theta A theta grid.
-#' @slot prob A list of item response probabilities.
-#' @slot info A matrix of item information values.
-#' @slot true_theta An optional vector of true theta values.
-#' @slot data An optional matrix of item responses.
-#'
-#' @export
-setClass("test",
-         slots = c(
-           pool = "item_pool",
-           theta = "numeric",
-           prob = "list",
-           info = "matrix",
-           true_theta = "numeric_or_null",
-           data = "matrix_or_null"
-         ),
-         prototype = list(
-           pool = new("item_pool"),
-           theta = numeric(0),
-           prob = list(0),
-           info = matrix(0),
-           true_theta = numeric(0),
-           data = matrix(NA, 0, 0)
-         ),
-         validity = function(object) {
-           errors <- NULL
-           if (length(object@prob) != object@pool@ni) {
-             errors <- c(errors, "length(prob) is not equal to pool@ni")
-           }
-           if (ncol(object@info) != object@pool@ni) {
-             errors <- c(errors, "ncol(info) is not equal to pool@ni")
-           }
-           if (nrow(object@info) != length(object@theta)) {
-             errors <- c(errors, "nrow(info) is not equal to length(theta)")
-           }
-           if (length(errors) == 0) {
-             return(TRUE)
-           } else {
-             return(errors)
-           }
-         }
-)
-
-#' An S4 class to represent a test cluster
-#'
-#' An S4 class to represent a test cluster from a list of \code{\linkS4class{test}} objects.
-#'
-#' @slot nt Numeric. A scalar to indicate the number of \code{\linkS4class{test}} objects to be clustered.
-#' @slot tests A list \code{\linkS4class{test}} objects.
-#' @slot names Character. A vector of names corresponding to the \code{\linkS4class{test}} objects.
-#'
-#' @export
-setClass("test_cluster",
-         slots = c(
-           nt = "numeric",
-           tests = "list",
-           names = "character"
-         ),
-         prototype = list(
-           nt = numeric(0),
-           tests = list(0),
-           names = character(0)
-         ),
-         validity = function(object) {
-           errors <- NULL
-           if (length(object@tests) != object@nt) {
-             errors <- c(errors, "length(tests) is not equal to nt")
-           }
-           if (length(object@names) != object@nt) {
-             errors <- c(errors, "length(names) is not equal to nt")
-           }
-           if (length(errors) == 0) {
-             return(TRUE)
-           } else {
-             return(errors)
-           }
-         }
-)

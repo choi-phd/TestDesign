@@ -1,3 +1,6 @@
+#' @include ATA_class.R
+NULL
+
 #' Run Automated Test Assembly
 #'
 #' Perform Automated Test Assembly with specified configurations.
