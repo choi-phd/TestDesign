@@ -1,3 +1,6 @@
+#' @include RcppExports.R import.R
+NULL
+
 #' @noRd
 validateSlope <- function(object) {
   if (object@slope <= 0) {
@@ -373,7 +376,7 @@ setClass("pool_cluster",
     errors <- NULL
     if (length(object@pools) != object@np) {
       errors <- c(errors, "length(pools) is not equal to np.")
-    } 
+    }
     if (length(object@names) != object@np) {
       errors <- c(errors, "length(names) is not equal to np.")
     }
