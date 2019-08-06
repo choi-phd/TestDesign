@@ -138,7 +138,7 @@ setMethod(
       len_rhs      <- length(rhs)
       rhs[len_rhs] <- config@MIP$gap_limit
 
-      MIP <- Rglpk_solve_LP(obj, mat, dir, rhs, max = maximize, types = types,
+      MIP <- Rglpk::Rglpk_solve_LP(obj, mat, dir, rhs, max = maximize, types = types,
                             control = list(verbose = ifelse(config@MIP$verbosity != -2, TRUE, FALSE), presolve = FALSE, tm_limit = config@MIP$time_limit * 1000))
 
     } else if (toupper(config@MIP$solver) == "LPSOLVE") {
