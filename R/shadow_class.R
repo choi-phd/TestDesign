@@ -36,8 +36,10 @@ setClass("constraint",
   }
 )
 
+
 setClassUnion("numeric_or_null", c("numeric", "NULL"))
 setClassUnion("matrix_or_null", c("matrix", "NULL"))
+
 
 #' An S4 class to represent a test
 #'
@@ -87,6 +89,7 @@ setClass("test",
   }
 )
 
+
 #' An S4 class to represent a test cluster
 #'
 #' An S4 class to represent a test cluster from a list of \code{\linkS4class{test}} objects.
@@ -96,6 +99,7 @@ setClass("test",
 #' @slot names Character. A vector of names corresponding to the \code{\linkS4class{test}} objects.
 #'
 #' @export
+
 setClass("test_cluster",
   slots = c(
     nt = "numeric",
