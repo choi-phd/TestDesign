@@ -1,3 +1,6 @@
+#' @include shadow_class.R
+NULL
+
 #' Perform shadow test assembly
 #'
 #' Perform Shadow Test Assembly (STA) for computerized adaptive testing.
