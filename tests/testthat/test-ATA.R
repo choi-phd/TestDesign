@@ -26,14 +26,14 @@ test_that("ATA", {
       expect_equal(dim(solution$selected)[1], 30)
 
       config_reading <- createStaticTestConfig(
-        item_selection = list(method = "MAXINFO", target_location = c(-2, 2), target_weight = c(1, 1)),
+        item_selection = list(method = "MAXINFO", target_location = c(-2, 2)),
         MIP = list(solver = solver_names[i])
       )
       solution <- ATA(config_reading, constraints_reading, plot = TRUE)
       expect_equal(dim(solution$selected)[1], 30)
 
       config_reading <- createStaticTestConfig(
-        item_selection = list(method = "TIF", target_location = c(1, 2), target_value = c(10, 30), target_weight = c(1, 1)),
+        item_selection = list(method = "TIF", target_location = c(1, 2), target_value = c(10, 30)),
         MIP = list(solver = solver_names[i])
       )
       solution <- ATA(config_reading, constraints_reading, plot = TRUE)

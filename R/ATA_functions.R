@@ -24,6 +24,11 @@ NULL
 #'   \item{\code{solve_time}} The elapsed time in running the solver.
 #' }
 #'
+#' @examples
+#' config_science <- createStaticTestConfig(
+#'   item_selection = list(method = "MAXINFO", target_location = c(-1, 1)),
+#' )
+#' solution <- ATA(config_science, constraints_science, plot = TRUE)
 #' @docType methods
 #' @rdname ATA-methods
 #' @export

@@ -19,6 +19,11 @@ An \linkS4class{item_pool} object.
 \description{
 Read item parameters from a .csv file or a data.frame and create an \linkS4class{item_pool} class.
 }
+\examples{
+\donttest{
+itempool_science <- loadItemPool("itempool_science.csv")
+}
+}
 \seealso{
 \link{dataset_science} for example usage.
 }
