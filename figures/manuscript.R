@@ -1,6 +1,3 @@
-#' @include runshiny.R
-NULL
-
 if (FALSE) {
   # IRT models
 

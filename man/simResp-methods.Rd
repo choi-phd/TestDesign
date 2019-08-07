@@ -48,18 +48,18 @@ Simulated responses.
 An S4 generic and its methods to simulate responses.
 }
 \examples{
-item_1 = new("item_1PL", difficulty = 0.5)
-sim_item_1 = simResp(item_1, seq(-3, 3, 1))
-item_2 = new("item_2PL", slope = 1.0, difficulty = 0.5)
-sim_item_2 = simResp(item_2, seq(-3, 3, 1))
-item_3 = new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
-sim_item_3 = simResp(item_3, seq(-3, 3, 1))
-item_4 = new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
-sim_item_4 = simResp(item_4, seq(-3, 3, 1))
-item_5 = new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
-sim_item_5 = simResp(item_5, seq(-3, 3, 1))
-item_6 = new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
-sim_item_6 = simResp(item_6, seq(-3, 3, 1))
+item_1     <- new("item_1PL", difficulty = 0.5)
+sim_item_1 <- simResp(item_1, seq(-3, 3, 1))
+item_2     <- new("item_2PL", slope = 1.0, difficulty = 0.5)
+sim_item_2 <- simResp(item_2, seq(-3, 3, 1))
+item_3     <- new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+sim_item_3 <- simResp(item_3, seq(-3, 3, 1))
+item_4     <- new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
+sim_item_4 <- simResp(item_4, seq(-3, 3, 1))
+item_5     <- new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+sim_item_5 <- simResp(item_5, seq(-3, 3, 1))
+item_6     <- new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+sim_item_6 <- simResp(item_6, seq(-3, 3, 1))
 sim_itempool <- simResp(itempool_science, seq(-3, 3, 1))
 }
 \references{

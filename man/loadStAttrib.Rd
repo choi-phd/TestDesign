@@ -17,6 +17,15 @@ A \code{data.frame} containing stimulus attributes.
 \description{
 Read set, stimulus, or passage attributes from specified file.
 }
+\examples{
+\donttest{
+itempool_reading <- loadItemPool("itempool_reading.csv")
+itemattrib_reading <- loadItemAttrib("itemattrib_reading.csv", itempool_reading)
+stimattrib_reading <- loadStAttrib("stimattrib_reading.csv", itemattrib_reading)
+constraints_reading <- loadConstraints("constraints_reading.csv",
+  itempool_reading, itemattrib_reading, stimattrib_reading)
+}
+}
 \seealso{
 \link{dataset_reading} for example usage.
 }

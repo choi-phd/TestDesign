@@ -23,8 +23,8 @@ setGeneric(
 #' @rdname calcProb-methods
 #' @aliases calcProb,item_1PL,numeric-method
 #' @examples
-#' item_1 = new("item_1PL", difficulty = 0.5)
-#' prob_item_1 = calcProb(item_1, seq(-3, 3, 1))
+#' item_1      <- new("item_1PL", difficulty = 0.5)
+#' prob_item_1 <- calcProb(item_1, seq(-3, 3, 1))
 #' @template 1pl-ref
 setMethod(
   f = "calcProb",
@@ -40,8 +40,8 @@ setMethod(
 #' @rdname calcProb-methods
 #' @aliases calcProb,item_2PL,numeric-method
 #' @examples
-#' item_2 = new("item_2PL", slope = 1.0, difficulty = 0.5)
-#' prob_item_2 = calcProb(item_2, seq(-3, 3, 1))
+#' item_2      <- new("item_2PL", slope = 1.0, difficulty = 0.5)
+#' prob_item_2 <- calcProb(item_2, seq(-3, 3, 1))
 #' @template 2pl-ref
 setMethod(
   f = "calcProb",
@@ -57,8 +57,8 @@ setMethod(
 #' @rdname calcProb-methods
 #' @aliases calcProb,item_3PL,numeric-method
 #' @examples
-#' item_3 = new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
-#' prob_item_3 = calcProb(item_3, seq(-3, 3, 1))
+#' item_3      <- new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+#' prob_item_3 <- calcProb(item_3, seq(-3, 3, 1))
 #' @template 3pl-ref
 setMethod(
   f = "calcProb",
@@ -74,8 +74,8 @@ setMethod(
 #' @rdname calcProb-methods
 #' @aliases calcProb,item_PC,numeric-method
 #' @examples
-#' item_4 = new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
-#' prob_item_4 = calcProb(item_4, seq(-3, 3, 1))
+#' item_4      <- new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
+#' prob_item_4 <- calcProb(item_4, seq(-3, 3, 1))
 #' @template pc-ref
 setMethod(
   f = "calcProb",
@@ -89,8 +89,8 @@ setMethod(
 #' @rdname calcProb-methods
 #' @aliases calcProb,item_GPC,numeric-method
 #' @examples
-#' item_5 = new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
-#' prob_item_5 = calcProb(item_5, seq(-3, 3, 1))
+#' item_5      <- new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+#' prob_item_5 <- calcProb(item_5, seq(-3, 3, 1))
 #' @template gpc-ref
 setMethod(
   f = "calcProb",
@@ -104,8 +104,8 @@ setMethod(
 #' @rdname calcProb-methods
 #' @aliases calcProb,item_GR,numeric-method
 #' @examples
-#' item_6 = new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
-#' prob_item_6 = calcProb(item_6, seq(-3, 3, 1))
+#' item_6      <- new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+#' prob_item_6 <- calcProb(item_6, seq(-3, 3, 1))
 #' @template gr-ref
 setMethod(
   f = "calcProb",
@@ -155,8 +155,8 @@ setGeneric(
 #' @rdname calcEscore-methods
 #' @aliases calcEscore,item_1PL,numeric-method
 #' @examples
-#' item_1 = new("item_1PL", difficulty = 0.5)
-#' ICC_item_1 = calcEscore(item_1, seq(-3, 3, 1))
+#' item_1     <- new("item_1PL", difficulty = 0.5)
+#' ICC_item_1 <- calcEscore(item_1, seq(-3, 3, 1))
 #' @template 1pl-ref
 setMethod(
   f = "calcEscore",
@@ -169,8 +169,8 @@ setMethod(
 #' @rdname calcEscore-methods
 #' @aliases calcEscore,item_2PL,numeric-method
 #' @examples
-#' item_2 = new("item_2PL", slope = 1.0, difficulty = 0.5)
-#' ICC_item_2 = calcEscore(item_2, seq(-3, 3, 1))
+#' item_2     <- new("item_2PL", slope = 1.0, difficulty = 0.5)
+#' ICC_item_2 <- calcEscore(item_2, seq(-3, 3, 1))
 #' @template 2pl-ref
 setMethod(
   f = "calcEscore",
@@ -183,8 +183,8 @@ setMethod(
 #' @rdname calcEscore-methods
 #' @aliases calcEscore,item_3PL,numeric-method
 #' @examples
-#' item_3 = new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
-#' ICC_item_3 = calcEscore(item_3, seq(-3, 3, 1))
+#' item_3     <- new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+#' ICC_item_3 <- calcEscore(item_3, seq(-3, 3, 1))
 #' @template 3pl-ref
 setMethod(
   f = "calcEscore",
@@ -197,8 +197,8 @@ setMethod(
 #' @rdname calcEscore-methods
 #' @aliases calcEscore,item_PC,numeric-method
 #' @examples
-#' item_4 = new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
-#' ICC_item_4 = calcEscore(item_4, seq(-3, 3, 1))
+#' item_4     <- new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
+#' ICC_item_4 <- calcEscore(item_4, seq(-3, 3, 1))
 #' @template pc-ref
 setMethod(
   f = "calcEscore",
@@ -213,8 +213,8 @@ setMethod(
 #' @rdname calcEscore-methods
 #' @aliases calcEscore,item_GPC,numeric-method
 #' @examples
-#' item_5 = new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
-#' ICC_item_5 = calcEscore(item_5, seq(-3, 3, 1))
+#' item_5     <- new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+#' ICC_item_5 <- calcEscore(item_5, seq(-3, 3, 1))
 #' @template gpc-ref
 setMethod(
   f = "calcEscore",
@@ -229,8 +229,8 @@ setMethod(
 #' @rdname calcEscore-methods
 #' @aliases calcEscore,item_GR,numeric-method
 #' @examples
-#' item_6 = new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
-#' ICC_item_6 = calcEscore(item_6, seq(-3, 3, 1))
+#' item_6     <- new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+#' ICC_item_6 <- calcEscore(item_6, seq(-3, 3, 1))
 #' @template gr-ref
 setMethod(
   f = "calcEscore",
@@ -281,8 +281,8 @@ setGeneric(
 #' @rdname calcFisher-methods
 #' @aliases calcFisher,item_1PL,numeric-method
 #' @examples
-#' item_1 = new("item_1PL", difficulty = 0.5)
-#' info_item_1 = calcFisher(item_1, seq(-3, 3, 1))
+#' item_1      <- new("item_1PL", difficulty = 0.5)
+#' info_item_1 <- calcFisher(item_1, seq(-3, 3, 1))
 #' @template 1pl-ref
 setMethod(
   f = "calcFisher",
@@ -296,8 +296,8 @@ setMethod(
 #' @rdname calcFisher-methods
 #' @aliases calcFisher,item_2PL,numeric-method
 #' @examples
-#' item_2 = new("item_2PL", slope = 1.0, difficulty = 0.5)
-#' info_item_2 = calcFisher(item_2, seq(-3, 3, 1))
+#' item_2      <- new("item_2PL", slope = 1.0, difficulty = 0.5)
+#' info_item_2 <- calcFisher(item_2, seq(-3, 3, 1))
 #' @template 2pl-ref
 setMethod(
   f = "calcFisher",
@@ -311,8 +311,8 @@ setMethod(
 #' @rdname calcFisher-methods
 #' @aliases calcFisher,item_3PL,numeric-method
 #' @examples
-#' item_3 = new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
-#' info_item_3 = calcFisher(item_3, seq(-3, 3, 1))
+#' item_3      <- new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+#' info_item_3 <- calcFisher(item_3, seq(-3, 3, 1))
 #' @template 3pl-ref
 setMethod(
   f = "calcFisher",
@@ -325,8 +325,8 @@ setMethod(
 
 #' @rdname calcFisher-methods
 #' @aliases calcFisher,item_PC,numeric-method
-#' item_4 = new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
-#' info_item_4 = calcFisher(item_4, seq(-3, 3, 1))
+#' item_4      <- new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
+#' info_item_4 <- calcFisher(item_4, seq(-3, 3, 1))
 #' @template pc-ref
 setMethod(
   f = "calcFisher",
@@ -340,8 +340,8 @@ setMethod(
 #' @rdname calcFisher-methods
 #' @aliases calcFisher,item_GPC,numeric-method
 #' @examples
-#' item_5 = new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
-#' info_item_5 = calcFisher(item_5, seq(-3, 3, 1))
+#' item_5      <- new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+#' info_item_5 <- calcFisher(item_5, seq(-3, 3, 1))
 #' @template gpc-ref
 setMethod(
   f = "calcFisher",
@@ -355,8 +355,8 @@ setMethod(
 #' @rdname calcFisher-methods
 #' @aliases calcFisher,item_GR,numeric-method
 #' @examples
-#' item_6 = new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
-#' info_item_6 = calcFisher(item_6, seq(-3, 3, 1))
+#' item_6      <- new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+#' info_item_6 <- calcFisher(item_6, seq(-3, 3, 1))
 #' @template gr-ref
 setMethod(
   f = "calcFisher",
@@ -457,8 +457,8 @@ setGeneric(
 #' @rdname calcLocation-methods
 #' @aliases calcLocation,item_1PL,numeric-method
 #' @examples
-#' item_1 = new("item_1PL", difficulty = 0.5)
-#' theta_item_1 = calcLocation(item_1)
+#' item_1       <- new("item_1PL", difficulty = 0.5)
+#' theta_item_1 <- calcLocation(item_1)
 #' @template 1pl-ref
 setMethod(
   f = "calcLocation",
@@ -471,8 +471,8 @@ setMethod(
 #' @rdname calcLocation-methods
 #' @aliases calcLocation,item_2PL,numeric-method
 #' @examples
-#' item_2 = new("item_2PL", slope = 1.0, difficulty = 0.5)
-#' theta_item_2 = calcLocation(item_2)
+#' item_2       <- new("item_2PL", slope = 1.0, difficulty = 0.5)
+#' theta_item_2 <- calcLocation(item_2)
 #' @template 2pl-ref
 setMethod(
   f = "calcLocation",
@@ -485,8 +485,8 @@ setMethod(
 #' @rdname calcLocation-methods
 #' @aliases calcLocation,item_3PL,numeric-method
 #' @examples
-#' item_3 = new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
-#' theta_item_3 = calcLocation(item_3)
+#' item_3       <- new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+#' theta_item_3 <- calcLocation(item_3)
 #' @template 3pl-ref
 setMethod(
   f = "calcLocation",
@@ -500,8 +500,8 @@ setMethod(
 #' @rdname calcLocation-methods
 #' @aliases calcLocation,item_PC,numeric-method
 #' @examples
-#' item_4 = new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
-#' theta_item_4 = calcLocation(item_4)
+#' item_4       <- new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
+#' theta_item_4 <- calcLocation(item_4)
 #' @template pc-ref
 setMethod(
   f = "calcLocation",
@@ -515,8 +515,8 @@ setMethod(
 #' @rdname calcLocation-methods
 #' @aliases calcLocation,item_GPC,numeric-method
 #' @examples
-#' item_5 = new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
-#' theta_item_5 = calcLocation(item_5)
+#' item_5       <- new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+#' theta_item_5 <- calcLocation(item_5)
 #' @template gpc-ref
 setMethod(
   f = "calcLocation",
@@ -529,8 +529,8 @@ setMethod(
 #' @rdname calcLocation-methods
 #' @aliases calcLocation,item_GR,numeric-method
 #' @examples
-#' item_6 = new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
-#' theta_item_6 = calcLocation(item_6)
+#' item_6       <- new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+#' theta_item_6 <- calcLocation(item_6)
 #' @template gr-ref
 setMethod(
   f = "calcLocation",
@@ -586,8 +586,8 @@ setGeneric(
 #' @rdname calcDerivative-methods
 #' @aliases calcDerivative,item_1PL,numeric-method
 #' @examples
-#' item_1 = new("item_1PL", difficulty = 0.5)
-#' d.item_1 = calcDerivative(item_1, seq(-3, 3, 1))
+#' item_1   <- new("item_1PL", difficulty = 0.5)
+#' d.item_1 <- calcDerivative(item_1, seq(-3, 3, 1))
 #' @template 1pl-ref
 setMethod(
   f = "calcDerivative",
@@ -602,8 +602,8 @@ setMethod(
 #' @rdname calcDerivative-methods
 #' @aliases calcDerivative,item_2PL,numeric-method
 #' @examples
-#' item_2 = new("item_2PL", slope = 1.0, difficulty = 0.5)
-#' d.item_2 = calcDerivative(item_2, seq(-3, 3, 1))
+#' item_2   <- new("item_2PL", slope = 1.0, difficulty = 0.5)
+#' d.item_2 <- calcDerivative(item_2, seq(-3, 3, 1))
 #' @template 2pl-ref
 setMethod(
   f = "calcDerivative",
@@ -618,8 +618,8 @@ setMethod(
 #' @rdname calcDerivative-methods
 #' @aliases calcDerivative,item_3PL,numeric-method
 #' @examples
-#' item_3 = new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
-#' d.item_3 = calcDerivative(item_3, seq(-3, 3, 1))
+#' item_3   <- new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+#' d.item_3 <- calcDerivative(item_3, seq(-3, 3, 1))
 #' @template 3pl-ref
 setMethod(
   f = "calcDerivative",
@@ -634,8 +634,8 @@ setMethod(
 #' @rdname calcDerivative-methods
 #' @aliases calcDerivative,item_PC,numeric-method
 #' @examples
-#' item_4 = new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
-#' d.item_4 = calcDerivative(item_4, seq(-3, 3, 1))
+#' item_4   <- new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
+#' d.item_4 <- calcDerivative(item_4, seq(-3, 3, 1))
 #' @template pc-ref
 setMethod(
   f = "calcDerivative",
@@ -654,8 +654,8 @@ setMethod(
 #' @rdname calcDerivative-methods
 #' @aliases calcDerivative,item_GPC,numeric-method
 #' @examples
-#' item_5 = new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
-#' d.item_5 = calcDerivative(item_5, seq(-3, 3, 1))
+#' item_5   <- new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+#' d.item_5 <- calcDerivative(item_5, seq(-3, 3, 1))
 #' @template gpc-ref
 setMethod(
   f = "calcDerivative",
@@ -674,8 +674,8 @@ setMethod(
 #' @rdname calcDerivative-methods
 #' @aliases calcDerivative,item_GR,numeric-method
 #' @examples
-#' item_6 = new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
-#' d.item_6 = calcDerivative(item_6, seq(-3, 3, 1))
+#' item_6   <- new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+#' d.item_6 <- calcDerivative(item_6, seq(-3, 3, 1))
 #' @template gr-ref
 setMethod(
   f = "calcDerivative",
@@ -756,8 +756,8 @@ setGeneric(
 #' @rdname calcDerivative2-methods
 #' @aliases calcDerivative2,item_1PL,numeric-method
 #' @examples
-#' item_1 = new("item_1PL", difficulty = 0.5)
-#' dd_item_1 = calcDerivative2(item_1, seq(-3, 3, 1))
+#' item_1    <- new("item_1PL", difficulty = 0.5)
+#' dd_item_1 <- calcDerivative2(item_1, seq(-3, 3, 1))
 #' @template 1pl-ref
 setMethod(
   f = "calcDerivative2",
@@ -772,8 +772,8 @@ setMethod(
 #' @rdname calcDerivative2-methods
 #' @aliases calcDerivative2,item_2PL,numeric-method
 #' @examples
-#' item_2 = new("item_2PL", slope = 1.0, difficulty = 0.5)
-#' dd_item_2 = calcDerivative2(item_2, seq(-3, 3, 1))
+#' item_2    <- new("item_2PL", slope = 1.0, difficulty = 0.5)
+#' dd_item_2 <- calcDerivative2(item_2, seq(-3, 3, 1))
 #' @template 2pl-ref
 setMethod(
   f = "calcDerivative2",
@@ -788,8 +788,8 @@ setMethod(
 #' @rdname calcDerivative2-methods
 #' @aliases calcDerivative2,item_3PL,numeric-method
 #' @examples
-#' item_3 = new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
-#' dd_item_3 = calcDerivative2(item_3, seq(-3, 3, 1))
+#' item_3    <- new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+#' dd_item_3 <- calcDerivative2(item_3, seq(-3, 3, 1))
 #' @template 3pl-ref
 setMethod(
   f = "calcDerivative2",
@@ -804,8 +804,8 @@ setMethod(
 #' @rdname calcDerivative2-methods
 #' @aliases calcDerivative2,item_PC,numeric-method
 #' @examples
-#' item_4 = new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
-#' dd_item_4 = calcDerivative2(item_4, seq(-3, 3, 1))
+#' item_4    <- new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
+#' dd_item_4 <- calcDerivative2(item_4, seq(-3, 3, 1))
 #' @template pc-ref
 setMethod(
   f = "calcDerivative2",
@@ -824,8 +824,8 @@ setMethod(
 #' @rdname calcDerivative2-methods
 #' @aliases calcDerivative2,item_GPC,numeric-method
 #' @examples
-#' item_5 = new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
-#' dd_item_5 = calcDerivative2(item_5, seq(-3, 3, 1))
+#' item_5    <- new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+#' dd_item_5 <- calcDerivative2(item_5, seq(-3, 3, 1))
 #' @template gpc-ref
 setMethod(
   f = "calcDerivative2",
@@ -844,8 +844,8 @@ setMethod(
 #' @rdname calcDerivative2-methods
 #' @aliases calcDerivative2,item_GR,numeric-method
 #' @examples
-#' item_6 = new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
-#' dd_item_6 = calcDerivative2(item_6, seq(-3, 3, 1))
+#' item_6    <- new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+#' dd_item_6 <- calcDerivative2(item_6, seq(-3, 3, 1))
 #' @template gr-ref
 setMethod(
   f = "calcDerivative2",
@@ -926,8 +926,8 @@ setGeneric(
 #' @rdname calcJacobian-methods
 #' @aliases calcJacobian,item_1PL,numeric-method
 #' @examples
-#' item_1 = new("item_1PL", difficulty = 0.5)
-#' j_item_1 = calcJacobian(item_1, seq(-3, 3, 1), 0)
+#' item_1   <- new("item_1PL", difficulty = 0.5)
+#' j_item_1 <- calcJacobian(item_1, seq(-3, 3, 1), 0)
 #' @template 1pl-ref
 setMethod(
   f = "calcJacobian",
@@ -943,8 +943,8 @@ setMethod(
 #' @rdname calcJacobian-methods
 #' @aliases calcJacobian,item_2PL,numeric-method
 #' @examples
-#' item_2 = new("item_2PL", slope = 1.0, difficulty = 0.5)
-#' j_item_2 = calcJacobian(item_2, seq(-3, 3, 1), 0)
+#' item_2   <- new("item_2PL", slope = 1.0, difficulty = 0.5)
+#' j_item_2 <- calcJacobian(item_2, seq(-3, 3, 1), 0)
 #' @template 2pl-ref
 setMethod(
   f = "calcJacobian",
@@ -960,8 +960,8 @@ setMethod(
 #' @rdname calcJacobian-methods
 #' @aliases calcJacobian,item_3PL,numeric-method
 #' @examples
-#' item_3 = new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
-#' j_item_3 = calcJacobian(item_3, seq(-3, 3, 1), 0)
+#' item_3   <- new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+#' j_item_3 <- calcJacobian(item_3, seq(-3, 3, 1), 0)
 #' @template 3pl-ref
 setMethod(
   f = "calcJacobian",
@@ -978,8 +978,8 @@ setMethod(
 #' @rdname calcJacobian-methods
 #' @aliases calcJacobian,item_PC,numeric-method
 #' @examples
-#' item_4 = new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
-#' j_item_4 = calcJacobian(item_4, seq(-3, 3, 1), 0)
+#' item_4   <- new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
+#' j_item_4 <- calcJacobian(item_4, seq(-3, 3, 1), 0)
 #' @template pc-ref
 setMethod(
   f = "calcJacobian",
@@ -995,8 +995,8 @@ setMethod(
 #' @rdname calcJacobian-methods
 #' @aliases calcJacobian,item_GPC,numeric-method
 #' @examples
-#' item_5 = new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
-#' j_item_5 = calcJacobian(item_5, seq(-3, 3, 1), 0)
+#' item_5   <- new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+#' j_item_5 <- calcJacobian(item_5, seq(-3, 3, 1), 0)
 #' @template gpc-ref
 setMethod(
   f = "calcJacobian",
@@ -1012,8 +1012,8 @@ setMethod(
 #' @rdname calcJacobian-methods
 #' @aliases calcJacobian,item_GR,numeric-method
 #' @examples
-#' item_6 = new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
-#' j_item_6 = calcJacobian(item_6, seq(-3, 3, 1), 0)
+#' item_6   <- new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+#' j_item_6 <- calcJacobian(item_6, seq(-3, 3, 1), 0)
 #' @template gr-ref
 setMethod(
   f = "calcJacobian",
@@ -1094,8 +1094,8 @@ setGeneric(
 #' @rdname calcHessian-methods
 #' @aliases calcHessian,item_1PL,numeric-method
 #' @examples
-#' item_1 = new("item_1PL", difficulty = 0.5)
-#' h_item_1 = calcHessian(item_1, seq(-3, 3, 1), 0)
+#' item_1   <- new("item_1PL", difficulty = 0.5)
+#' h_item_1 <- calcHessian(item_1, seq(-3, 3, 1), 0)
 #' @template 1pl-ref
 setMethod(
   f = "calcHessian",
@@ -1111,8 +1111,8 @@ setMethod(
 #' @rdname calcHessian-methods
 #' @aliases calcHessian,item_2PL,numeric-method
 #' @examples
-#' item_2 = new("item_2PL", slope = 1.0, difficulty = 0.5)
-#' h_item_2 = calcHessian(item_2, seq(-3, 3, 1), 0)
+#' item_2   <- new("item_2PL", slope = 1.0, difficulty = 0.5)
+#' h_item_2 <- calcHessian(item_2, seq(-3, 3, 1), 0)
 #' @template 2pl-ref
 setMethod(
   f = "calcHessian",
@@ -1128,8 +1128,8 @@ setMethod(
 #' @rdname calcHessian-methods
 #' @aliases calcHessian,item_3PL,numeric-method
 #' @examples
-#' item_3 = new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
-#' h_item_3 = calcHessian(item_3, seq(-3, 3, 1), 0)
+#' item_3   <- new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+#' h_item_3 <- calcHessian(item_3, seq(-3, 3, 1), 0)
 #' @template 3pl-ref
 setMethod(
   f = "calcHessian",
@@ -1146,8 +1146,8 @@ setMethod(
 #' @rdname calcHessian-methods
 #' @aliases calcHessian,item_PC,numeric-method
 #' @examples
-#' item_4 = new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
-#' h_item_4 = calcHessian(item_4, seq(-3, 3, 1), 0)
+#' item_4   <- new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
+#' h_item_4 <- calcHessian(item_4, seq(-3, 3, 1), 0)
 #' @template pc-ref
 setMethod(
   f = "calcHessian",
@@ -1163,8 +1163,8 @@ setMethod(
 #' @rdname calcHessian-methods
 #' @aliases calcHessian,item_GPC,numeric-method
 #' @examples
-#' item_5 = new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
-#' h_item_5 = calcHessian(item_5, seq(-3, 3, 1), 0)
+#' item_5   <- new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+#' h_item_5 <- calcHessian(item_5, seq(-3, 3, 1), 0)
 #' @template gpc-ref
 setMethod(
   f = "calcHessian",
@@ -1180,8 +1180,8 @@ setMethod(
 #' @rdname calcHessian-methods
 #' @aliases calcHessian,item_GR,numeric-method
 #' @examples
-#' item_6 = new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
-#' h_item_6 = calcHessian(item_6, seq(-3, 3, 1), 0)
+#' item_6   <- new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+#' h_item_6 <- calcHessian(item_6, seq(-3, 3, 1), 0)
 #' @template gr-ref
 setMethod(
   f = "calcHessian",
@@ -1265,8 +1265,8 @@ setGeneric(
 #' @rdname simResp-methods
 #' @aliases simResp,item_1PL,numeric-method
 #' @examples
-#' item_1 = new("item_1PL", difficulty = 0.5)
-#' sim_item_1 = simResp(item_1, seq(-3, 3, 1))
+#' item_1     <- new("item_1PL", difficulty = 0.5)
+#' sim_item_1 <- simResp(item_1, seq(-3, 3, 1))
 #' @template 1pl-ref
 setMethod(
   f = "simResp",
@@ -1283,8 +1283,8 @@ setMethod(
 #' @rdname simResp-methods
 #' @aliases simResp,item_2PL,numeric-method
 #' @examples
-#' item_2 = new("item_2PL", slope = 1.0, difficulty = 0.5)
-#' sim_item_2 = simResp(item_2, seq(-3, 3, 1))
+#' item_2     <- new("item_2PL", slope = 1.0, difficulty = 0.5)
+#' sim_item_2 <- simResp(item_2, seq(-3, 3, 1))
 #' @template 2pl-ref
 setMethod(
   f = "simResp",
@@ -1301,8 +1301,8 @@ setMethod(
 #' @rdname simResp-methods
 #' @aliases simResp,item_3PL,numeric-method
 #' @examples
-#' item_3 = new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
-#' sim_item_3 = simResp(item_3, seq(-3, 3, 1))
+#' item_3     <- new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+#' sim_item_3 <- simResp(item_3, seq(-3, 3, 1))
 #' @template 3pl-ref
 setMethod(
   f = "simResp",
@@ -1319,8 +1319,8 @@ setMethod(
 #' @rdname simResp-methods
 #' @aliases simResp,item_PC,numeric-method
 #' @examples
-#' item_4 = new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
-#' sim_item_4 = simResp(item_4, seq(-3, 3, 1))
+#' item_4     <- new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
+#' sim_item_4 <- simResp(item_4, seq(-3, 3, 1))
 #' @template pc-ref
 setMethod(
   f = "simResp",
@@ -1341,8 +1341,8 @@ setMethod(
 #' @rdname simResp-methods
 #' @aliases simResp,item_GPC,numeric-method
 #' @examples
-#' item_5 = new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
-#' sim_item_5 = simResp(item_5, seq(-3, 3, 1))
+#' item_5     <- new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+#' sim_item_5 <- simResp(item_5, seq(-3, 3, 1))
 #' @template gpc-ref
 setMethod(
   f = "simResp",
@@ -1363,8 +1363,8 @@ setMethod(
 #' @rdname simResp-methods
 #' @aliases simResp,item_GR,numeric-method
 #' @examples
-#' item_6 = new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
-#' sim_item_6 = simResp(item_6, seq(-3, 3, 1))
+#' item_6     <- new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+#' sim_item_6 <- simResp(item_6, seq(-3, 3, 1))
 #' @template gr-ref
 setMethod(
   f = "simResp",

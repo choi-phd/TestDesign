@@ -53,18 +53,18 @@ First derivative values of log-likelihoods.
 An S4 generic and its methods to calculate the first derivative of the log-likelihood function.
 }
 \examples{
-item_1 = new("item_1PL", difficulty = 0.5)
-j_item_1 = calcJacobian(item_1, seq(-3, 3, 1), 0)
-item_2 = new("item_2PL", slope = 1.0, difficulty = 0.5)
-j_item_2 = calcJacobian(item_2, seq(-3, 3, 1), 0)
-item_3 = new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
-j_item_3 = calcJacobian(item_3, seq(-3, 3, 1), 0)
-item_4 = new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
-j_item_4 = calcJacobian(item_4, seq(-3, 3, 1), 0)
-item_5 = new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
-j_item_5 = calcJacobian(item_5, seq(-3, 3, 1), 0)
-item_6 = new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
-j_item_6 = calcJacobian(item_6, seq(-3, 3, 1), 0)
+item_1   <- new("item_1PL", difficulty = 0.5)
+j_item_1 <- calcJacobian(item_1, seq(-3, 3, 1), 0)
+item_2   <- new("item_2PL", slope = 1.0, difficulty = 0.5)
+j_item_2 <- calcJacobian(item_2, seq(-3, 3, 1), 0)
+item_3   <- new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+j_item_3 <- calcJacobian(item_3, seq(-3, 3, 1), 0)
+item_4   <- new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
+j_item_4 <- calcJacobian(item_4, seq(-3, 3, 1), 0)
+item_5   <- new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+j_item_5 <- calcJacobian(item_5, seq(-3, 3, 1), 0)
+item_6   <- new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+j_item_6 <- calcJacobian(item_6, seq(-3, 3, 1), 0)
 j_itempool <- calcJacobian(itempool_science, seq(-3, 3, 1), 0)
 }
 \references{
