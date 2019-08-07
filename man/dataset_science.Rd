@@ -21,26 +21,19 @@ This pool is associated with the following objects:
   \item \code{constraints_science} A list containing 36 constraints.
 }
 
-Also, the following datasets are intended for illustrating expected data structures. See examples below.
+Also, the following datasets are intended for illustrating expected data structures.
 \itemize{
-  \item \code{itempool_science_raw} Item parameters.
-  \item \code{itemattrib_science_raw} Item attributes.
-  \item \code{constraints_science_raw} Constraints.
+  \item \code{itempool_science_raw} Item parameters. Use \code{write.csv(itempool_science_raw, "itempool_science.csv", row.names = FALSE)} to save into a file.
+  \item \code{itemattrib_science_raw} Item attributes. Use \code{write.csv(itemattrib_science_raw, "itemattrib_science.csv", row.names = FALSE)} to save into a file.
+  \item \code{constraints_science_raw} Constraints. Use \code{write.csv(constraints_science_raw, "constraints_science.csv", row.names = FALSE)} to save into a file.
 }
 }
 \examples{
-\dontrun{
-write.csv(itempool_science_raw, "itempool_science.csv", row.names = FALSE)
+\donttest{
 itempool_science <- loadItemPool("itempool_science.csv")
-
-write.csv(itemattrib_science_raw, "itemattrib_science.csv", row.names = FALSE)
 itemattrib_science <- loadItemAttrib("itemattrib_science.csv", itempool_science)
-
-write.csv(constraints_science_raw, "constraints_science.csv", row.names = FALSE)
-constraints_science <- loadConstraints(
-  "constraints_science.csv",
-  itempool_science, itemattrib_science
-)
+constraints_science <- loadConstraints("constraints_science.csv",
+  itempool_science, itemattrib_science)
 }
 }
 \keyword{datasets}

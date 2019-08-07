@@ -90,7 +90,7 @@ setClass("config_ATA",
 #' }
 #'
 #' @examples
-#' conf.1 <- createStaticTestConfig(
+#' cfg.1 <- createStaticTestConfig(
 #'   list(
 #'     method = "MAXINFO",
 #'     info_type = "FISHER",
@@ -99,7 +99,7 @@ setClass("config_ATA",
 #'   )
 #' )
 #'
-#' conf.2 <- createStaticTestConfig(
+#' cfg.2 <- createStaticTestConfig(
 #'   list(
 #'     method = "TIF",
 #'     info_type = "FISHER",
@@ -109,7 +109,7 @@ setClass("config_ATA",
 #'   )
 #' )
 #'
-#' conf.3 <- createStaticTestConfig(
+#' cfg.3 <- createStaticTestConfig(
 #'   list(
 #'     method = "TCC",
 #'     info_type = "FISHER",
@@ -122,14 +122,14 @@ setClass("config_ATA",
 #'
 #' @export
 createStaticTestConfig <- function(item_selection = NULL, MIP = NULL) {
-  conf <- new("config_ATA")
+  cfg <- new("config_ATA")
   arg_names <- c("item_selection", "MIP")
   obj_names <- c()
   for (arg in arg_names) {
     if (!is.null(eval(parse(text = arg)))) {
-      eval(parse(text = paste0("obj_names <- names(conf@", arg, ")")))
+      eval(parse(text = paste0("obj_names <- names(cfg@", arg, ")")))
       for (entry in obj_names) {
-        entry_l <- paste0("conf@", arg, "$", entry)
+        entry_l <- paste0("cfg@", arg, "$", entry)
         entry_r <- paste0(arg, "$", entry)
         tmp <- eval(parse(text = entry_r))
         if (!is.null(tmp)) {
@@ -138,9 +138,17 @@ createStaticTestConfig <- function(item_selection = NULL, MIP = NULL) {
       }
     }
   }
-  v <- validObject(conf)
+
+  if (is.null(item_selection$target_weight)) {
+    cfg@item_selection$target_weight <- rep(1, length(cfg@item_selection$target_location))
+  }
+  if (toupper(cfg@item_selection$method) == "MAXINFO") {
+    cfg@item_selection$target_value <- NULL
+  }
+
+  v <- validObject(cfg)
   if (v) {
-    return(conf)
+    return(cfg)
   }
 }
 

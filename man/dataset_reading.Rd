@@ -26,28 +26,19 @@ This pool is associated with the following objects:
 
 Also, the following datasets are intended for illustrating expected data structures. See examples below.
 \itemize{
-  \item \code{itempool_reading_raw} Item parameters.
-  \item \code{itemattrib_reading_raw} Item attributes.
-  \item \code{stimattrib_reading_raw} Item attributes.
-  \item \code{constraints_reading_raw} Constraints.
+  \item \code{itempool_reading_raw} Item parameters. Use \code{write.csv(itempool_reading_raw, "itempool_reading.csv", row.names = FALSE)} to save into a file.
+  \item \code{itemattrib_reading_raw} Item attributes. Use \code{write.csv(itemattrib_reading_raw, "itemattrib_reading.csv", row.names = FALSE)} to save into a file.
+  \item \code{stimattrib_reading_raw} Item attributes. Use \code{write.csv(stimattrib_reading_raw, "stimattrib_reading.csv", row.names = FALSE)} to save into a file.
+  \item \code{constraints_reading_raw} Constraints. Use \code{write.csv(constraints_reading_raw, "constraints_reading.csv", row.names = FALSE)} to save into a file.
 }
 }
 \examples{
-\dontrun{
-write.csv(itempool_reading_raw, "itempool_reading.csv", row.names = FALSE)
+\donttest{
 itempool_reading <- loadItemPool("itempool_reading.csv")
-
-write.csv(itemattrib_reading_raw, "itemattrib_reading.csv", row.names = FALSE)
 itemattrib_reading <- loadItemAttrib("itemattrib_reading.csv", itempool_reading)
-
-write.csv(stimattrib_reading_raw, "stimattrib_reading.csv", row.names = FALSE)
 stimattrib_reading <- loadStAttrib("stimattrib_reading.csv", itemattrib_reading)
-
-write.csv(constraints_reading_raw, "constraints_reading.csv", row.names = FALSE)
-constraints_reading <- loadConstraints(
-  "constraints_reading.csv",
-  itempool_reading, itemattrib_reading, stimattrib_reading
-)
+constraints_reading <- loadConstraints("constraints_reading.csv",
+  itempool_reading, itemattrib_reading, stimattrib_reading)
 }
 }
 \keyword{datasets}
