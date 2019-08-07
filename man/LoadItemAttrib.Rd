@@ -17,6 +17,12 @@ A \code{data.frame} containing parsed dataset.
 \description{
 Read item attributes from specified file.
 }
+\examples{
+\donttest{
+itempool_science <- loadItemPool("itempool_science.csv")
+itemattrib_science <- loadItemAttrib("itemattrib_science.csv", itempool_science)
+}
+}
 \seealso{
 \link{dataset_science} for example usage.
 }

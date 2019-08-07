@@ -38,12 +38,12 @@ on.exit(par(oldpar))
 ...
 f.i.: plotShadow-methods
 ```
-* Added `oldpar` caching and `on.exit` revert calls for all 5 cases of `par()` calls across the package: Lines 210, 367, 514, 1777, 2910 in `shadow_functions.R`.
+* Added `oldpar` caching and `on.exit` revert calls for all 5 cases of `par()` calls across the package: Lines 210, 367, 514, 1777, 2910 in `shadow_functions.R` (line numbers based on the revised codes).
 
 ```
 Are you sure you want to set a seed to 1 within a function? manuscript.R
 ```
-* Removed `manuscript.R` from the package. These codes are for reproducing figures for a separate manuscipt, and therefore are not necessary to be included in the package.
+* Removed `manuscript.R` from the package. These are not necessary to be included in the package.
 
 ```
 Please ensure that your functions do not write by default or in your 
@@ -59,7 +59,7 @@ In your examples/vignettes/tests you can write to tempdir().
 the user. That's why wrapping examples in \dontrun{} adds the comment 
 ("# Not run:") as a warning for the user.
 ```
-* Removed the writes in `datasets.R` and moved them into dataset descriptions instead. The instructions for write calls are necessary to make the expected formats available to the user.
+* Removed the write calls in `datasets.R` and moved them into dataset descriptions instead. The instructions for write calls are necessary to make the expected formats available to the user.
 
 ```
 Please add small executable examples in your Rd-files to illustrate the 
@@ -89,7 +89,10 @@ would be desirable:
 * Added an example for `ATA()` in `ATA_class.R`.
 * Added examples for `loadItemPool()`, `loadItemAttrib()`, `loadStAttrib()`, `loadConstraints()`, `updateConstraints()` in `loading_functions.R`.
 
-The following changes were made to improve consistency.
+The following functional changes were made to improve usability.
+
+* `createStaticTestConfig()` now fills targetWeight automatically to 1s if not explicitly supplied. Unit tests in `tests/testthat/test-ATA.R` were appropriately changed to reflect this.
+
+The following cosmetic changes were made to improve consistency.
 
 * Changed the examples in `item_functions.R` to use `<-` for assignments.
-* `createStaticTestConfig()` now fills targetWeight automatically to 1s if not explicitly supplied. Unit tests in `tests/testthat/test-ATA.R` were appropriately changed to reflect this.
