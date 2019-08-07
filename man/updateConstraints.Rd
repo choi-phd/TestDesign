@@ -19,3 +19,7 @@ An updated list of constraints to be used in \code{\link{ATA}} and \code{\link{S
 \description{
 Update the onstraints list
 }
+\examples{
+constraints_science2 <- updateConstraints(constraints_science, off = 32:36)
+constraints_science3 <- updateConstraints(constraints_science, on = 32:36)
+}
