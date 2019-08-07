@@ -25,29 +25,19 @@ This pool is associated with the following objects:
 
 Also, the following datasets are intended for illustrating expected data structures. See examples below.
 \itemize{
-  \item \code{itempool_fatigue_raw} Item parameters.
-  \item \code{itemattrib_fatigue_raw} Item attributes.
-  \item \code{itemcontent_fatigue_raw} Item contents.
-  \item \code{constraints_fatigue_raw} Constraints.
-  \item \code{resp_fatigue_raw} Raw response data.
+  \item \code{itempool_fatigue_raw} Item parameters. Use \code{write.csv(itempool_fatigue_raw, "itempool_fatigue.csv", row.names = FALSE)} to save into a file.
+  \item \code{itemattrib_fatigue_raw} Item attributes. Use \code{write.csv(itemattrib_fatigue, "itemattrib_fatigue.csv", row.names = FALSE)} to save into a file.
+  \item \code{itemcontent_fatigue_raw} Item contents. Use \code{write.csv(itemcontent_fatigue_raw, "itemcontent_fatigue.csv", row.names = FALSE)} to save into a file.
+  \item \code{constraints_fatigue_raw} Constraints. Use \code{write.csv(constraints_fatigue_raw, "constraints_fatigue.csv", row.names = FALSE)} to save into a file.
+  \item \code{resp_fatigue_raw} Raw response data. Use \code{write.table(resp_fatigue_raw, "resp_fatigue.csv", row.names = FALSE, col.names = FALSE, sep = ",")} to save into a file.
 }
 }
 \examples{
-\dontrun{
-write.csv(itempool_fatigue_raw, "itempool_fatigue.csv", row.names = FALSE)
+\donttest{
 itempool_fatigue <- loadItemPool("itempool_fatigue.csv")
-
-write.csv(itemattrib_fatigue, "itemattrib_fatigue.csv", row.names = FALSE)
 itemattrib_fatigue <- loadItemAttrib("itemattrib_fatigue.csv", itempool_fatigue)
-
-write.csv(constraints_fatigue_raw, "constraints_fatigue.csv", row.names = FALSE)
-constraints_fatigue <- loadConstraints(
-  "constraints_fatigue.csv",
-  itempool_fatigue, itemattrib_fatigue
-)
-
-write.csv(itemcontent_fatigue_raw, "itemcontent_fatigue.csv", row.names = FALSE)
-write.table(resp_fatigue_raw, "resp_fatigue.csv", row.names = FALSE, col.names = FALSE, sep = ",")
+constraints_fatigue <- loadConstraints("constraints_fatigue.csv",
+  itempool_fatigue, itemattrib_fatigue)
 }
 }
 \keyword{datasets}
