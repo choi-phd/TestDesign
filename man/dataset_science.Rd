@@ -21,19 +21,30 @@ This pool is associated with the following objects:
   \item \code{constraints_science} A list containing 36 constraints.
 }
 
-Also, the following datasets are intended for illustrating expected data structures.
+Also, the following datasets are intended for illustrating expected data structures. See examples below.
 \itemize{
-  \item \code{itempool_science_raw} Item parameters. Use \code{write.csv(itempool_science_raw, "itempool_science.csv", row.names = FALSE)} to save into a file.
-  \item \code{itemattrib_science_raw} Item attributes. Use \code{write.csv(itemattrib_science_raw, "itemattrib_science.csv", row.names = FALSE)} to save into a file.
-  \item \code{constraints_science_raw} Constraints. Use \code{write.csv(constraints_science_raw, "constraints_science.csv", row.names = FALSE)} to save into a file.
+  \item \code{itempool_science_raw} Item parameters.
+  \item \code{itemattrib_science_raw} Item attributes.
+  \item \code{constraints_science_raw} Constraints.
 }
 }
 \examples{
-\donttest{
-itempool_science <- loadItemPool("itempool_science.csv")
-itemattrib_science <- loadItemAttrib("itemattrib_science.csv", itempool_science)
-constraints_science <- loadConstraints("constraints_science.csv",
+## Write to tempdir() and clean afterwards
+f <- file.path(tempdir(), "itempool_science.csv")
+write.csv(itempool_science_raw, f, row.names = FALSE)
+itempool_science <- loadItemPool(f)
+file.remove(f)
+
+f <- file.path(tempdir(), "itemattrib_science.csv")
+write.csv(itemattrib_science_raw, f, row.names = FALSE)
+itemattrib_science <- loadItemAttrib(f, itempool_science)
+file.remove(f)
+
+f <- file.path(tempdir(), "constraints_science.csv")
+write.csv(constraints_science_raw, f, row.names = FALSE)
+constraints_science <- loadConstraints(f,
   itempool_science, itemattrib_science)
-}
+file.remove(f)
+
 }
 \keyword{datasets}

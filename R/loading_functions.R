@@ -11,9 +11,12 @@ NULL
 #' @return An \linkS4class{item_pool} object.
 #'
 #' @examples
-#' \donttest{
-#' itempool_science <- loadItemPool("itempool_science.csv")
-#' }
+#' ## Write to tempdir() and clean afterwards
+#' f <- file.path(tempdir(), "itempool_science.csv")
+#' write.csv(itempool_science_raw, f, row.names = FALSE)
+#' itempool_science <- loadItemPool(f)
+#' file.remove(f)
+#'
 #' @seealso \link{dataset_science} for example usage.
 #'
 #' @export
@@ -153,10 +156,17 @@ loadItemPool <- function(file, ipar = NULL, se_file = NULL) {
 #' @return A \code{data.frame} containing parsed dataset.
 #'
 #' @examples
-#' \donttest{
-#' itempool_science <- loadItemPool("itempool_science.csv")
-#' itemattrib_science <- loadItemAttrib("itemattrib_science.csv", itempool_science)
-#' }
+#' ## Write to tempdir() and clean afterwards
+#' f <- file.path(tempdir(), "itempool_science.csv")
+#' write.csv(itempool_science_raw, f, row.names = FALSE)
+#' itempool_science <- loadItemPool(f)
+#' file.remove(f)
+#'
+#' f <- file.path(tempdir(), "itemattrib_science.csv")
+#' write.csv(itemattrib_science_raw, f, row.names = FALSE)
+#' itemattrib_science <- loadItemAttrib(f, itempool_science)
+#' file.remove(f)
+#'
 #' @seealso \link{dataset_science} for example usage.
 #'
 #' @export
@@ -206,13 +216,28 @@ loadItemAttrib <- function(file, pool) {
 #' @return A \code{data.frame} containing stimulus attributes.
 #'
 #' @examples
-#' \donttest{
-#' itempool_reading <- loadItemPool("itempool_reading.csv")
-#' itemattrib_reading <- loadItemAttrib("itemattrib_reading.csv", itempool_reading)
-#' stimattrib_reading <- loadStAttrib("stimattrib_reading.csv", itemattrib_reading)
-#' constraints_reading <- loadConstraints("constraints_reading.csv",
+#' ## Write to tempdir() and clean afterwards
+#' f <- file.path(tempdir(), "itempool_reading.csv")
+#' write.csv(itempool_reading_raw, f, row.names = FALSE)
+#' itempool_reading <- loadItemPool(f)
+#' file.remove(f)
+#'
+#' f <- file.path(tempdir(), "itemattrib_reading.csv")
+#' write.csv(itemattrib_reading_raw, f, row.names = FALSE)
+#' itemattrib_reading <- loadItemAttrib(f, itempool_reading)
+#' file.remove(f)
+#'
+#' f <- file.path(tempdir(), "stimattrib_reading.csv")
+#' write.csv(stimattrib_reading_raw, f, row.names = FALSE)
+#' stimattrib_reading <- loadStAttrib(f, itemattrib_reading)
+#' file.remove(f)
+#'
+#' f <- file.path(tempdir(), "constraints_reading.csv")
+#' write.csv(constraints_reading_raw, f, row.names = FALSE)
+#' constraints_reading <- loadConstraints(f,
 #'   itempool_reading, itemattrib_reading, stimattrib_reading)
-#' }
+#' file.remove(f)
+#'
 #' @seealso \link{dataset_reading} for example usage.
 #'
 #' @export
@@ -262,12 +287,23 @@ loadStAttrib <- function(file, item_attrib) {
 #' @return A list containing the parsed constraints, to be used in \code{\link{ATA}} and \code{\link{Shadow}}.
 #'
 #' @examples
-#' \donttest{
-#' itempool_science <- loadItemPool("itempool_science.csv")
-#' itemattrib_science <- loadItemAttrib("itemattrib_science.csv", itempool_science)
-#' constraints_science <- loadConstraints("constraints_science.csv",
+#' ## Write to tempdir() and clean afterwards
+#' f <- file.path(tempdir(), "itempool_science.csv")
+#' write.csv(itempool_science_raw, f, row.names = FALSE)
+#' itempool_science <- loadItemPool(f)
+#' file.remove(f)
+#'
+#' f <- file.path(tempdir(), "itemattrib_science.csv")
+#' write.csv(itemattrib_science_raw, f, row.names = FALSE)
+#' itemattrib_science <- loadItemAttrib(f, itempool_science)
+#' file.remove(f)
+#'
+#' f <- file.path(tempdir(), "constraints_science.csv")
+#' write.csv(constraints_science_raw, f, row.names = FALSE)
+#' constraints_science <- loadConstraints(f,
 #'   itempool_science, itemattrib_science)
-#' }
+#' file.remove(f)
+#'
 #' @seealso \link{dataset_science} for example usage.
 #'
 #' @export
@@ -290,6 +326,7 @@ loadConstraints <- function(file, pool, item_attrib, st_attrib = NULL) {
       stringsAsFactors = FALSE
     )
     constraints[["ONOFF"]] <- toupper(constraints[["ONOFF"]])
+    constraints[["ONOFF"]][is.na(constraints[["ONOFF"]])] <- ""
   } else {
     ONOFF <- FALSE
     constraints <- read.csv(file,
@@ -827,6 +864,7 @@ loadConstraints <- function(file, pool, item_attrib, st_attrib = NULL) {
 #' @examples
 #' constraints_science2 <- updateConstraints(constraints_science, off = 32:36)
 #' constraints_science3 <- updateConstraints(constraints_science, on = 32:36)
+#'
 #' @export
 
 updateConstraints <- function(object, on = NULL, off = NULL) {
@@ -889,6 +927,18 @@ updateConstraints <- function(object, on = NULL, off = NULL) {
 #'
 #' @return A list containing the parsed constraints, to be used in \code{\link{ATA}} and \code{\link{Shadow}}.
 #'
+#' @examples
+#' ## Write to tempdir() and clean afterwards
+#' f1 <- file.path(tempdir(), "constraints_science.csv")
+#' write.csv(constraints_science_raw, f1, row.names = FALSE)
+#' f2 <- file.path(tempdir(), "itemattrib_science.csv")
+#' write.csv(itemattrib_science_raw, f2, row.names = FALSE)
+#'
+#' constraints <- buildConstraints(itempool_science, f1, f2)
+#' 
+#' file.remove(f1)
+#' file.remove(f2)
+#' 
 #' @export
 
 buildConstraints <- function(pool, file_constraints, file_item_attrib, file_st_attrib = NULL) {

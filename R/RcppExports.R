@@ -2,309 +2,283 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #' Calculate probability at a single theta (1PL)
-#'
+#' 
 #' Calculate the probability of correct response at a theta value, under the 1PL model.
-#'
+#' 
 #' @template x-single
 #' @template 1pl-params
 #' @template 1pl-ref
-#' @export
 p_1pl <- function(x, b) {
     .Call('_TestDesign_p_1pl', PACKAGE = 'TestDesign', x, b)
 }
 
 #' Calculate probability at multiple thetas (1PL)
-#'
+#' 
 #' Calculate the probability of correct response at theta values, under the 1PL model.
-#'
+#' 
 #' @template x-vector
 #' @template 1pl-params
 #' @template 1pl-ref
-#' @export
 array_p_1pl <- function(x, b) {
     .Call('_TestDesign_array_p_1pl', PACKAGE = 'TestDesign', x, b)
 }
 
 #' Calculate probability at a single theta (2PL)
-#'
+#' 
 #' Calculate the probability of correct response at a theta value, under the 2PL model.
-#'
+#' 
 #' @template x-single
 #' @template 2pl-params
 #' @template 2pl-ref
-#' @export
 p_2pl <- function(x, a, b) {
     .Call('_TestDesign_p_2pl', PACKAGE = 'TestDesign', x, a, b)
 }
 
 #' Calculate probability at multiple thetas (2PL)
-#'
+#' 
 #' Calculate the probability of correct response at theta values, under the 2PL model.
-#'
+#'  
 #' @template x-vector
 #' @template 2pl-params
 #' @template 2pl-ref
-#' @export
 array_p_2pl <- function(x, a, b) {
     .Call('_TestDesign_array_p_2pl', PACKAGE = 'TestDesign', x, a, b)
 }
 
 #' Calculate probability at a single theta (3PL)
-#'
+#' 
 #' Calculate the probability of correct response at a theta value, under the 3PL model.
-#'
+#' 
 #' @template x-single
 #' @template 3pl-params
 #' @template 3pl-ref
-#' @export
 p_3pl <- function(x, a, b, c) {
     .Call('_TestDesign_p_3pl', PACKAGE = 'TestDesign', x, a, b, c)
 }
 
 #' Calculate probability at multiple thetas (3PL)
-#'
+#' 
 #' Calculate the probability of correct response at theta values, under the 3PL model.
-#'
+#' 
 #' @template x-vector
 #' @template 3pl-params
 #' @template 3pl-ref
-#' @export
 array_p_3pl <- function(x, a, b, c) {
     .Call('_TestDesign_array_p_3pl', PACKAGE = 'TestDesign', x, a, b, c)
 }
 
 #' Calculate probability at a single theta (PC)
-#'
+#' 
 #' Calculate the probability of correct response at a theta value, under the partial credit model.
-#'
+#' 
 #' @template x-single
 #' @template pc-params
 #' @template pc-ref
-#' @export
 p_pc <- function(x, b) {
     .Call('_TestDesign_p_pc', PACKAGE = 'TestDesign', x, b)
 }
 
 #' Calculate probability at multiple thetas (PC)
-#'
+#' 
 #' Calculate the probability of correct response at theta values, under the partial credit model.
-#'
+#' 
 #' @template x-vector
 #' @template pc-params
 #' @template pc-ref
-#' @export
 array_p_pc <- function(x, b) {
     .Call('_TestDesign_array_p_pc', PACKAGE = 'TestDesign', x, b)
 }
 
 #' Calculate probability at a single theta (GPC)
-#'
+#' 
 #' Calculate the probability of correct response at a theta value, under the generalized partial credit model.
-#'
+#' 
 #' @template x-single
 #' @template gpc-params
 #' @template gpc-ref
-#' @export
 p_gpc <- function(x, a, b) {
     .Call('_TestDesign_p_gpc', PACKAGE = 'TestDesign', x, a, b)
 }
 
 #' Calculate probability at multiple thetas (GPC)
-#'
+#' 
 #' Calculate the probability of correct response at theta values, under the generalized partial credit model.
-#'
+#' 
 #' @template x-vector
 #' @template gpc-params
 #' @template gpc-ref
-#' @export
 array_p_gpc <- function(x, a, b) {
     .Call('_TestDesign_array_p_gpc', PACKAGE = 'TestDesign', x, a, b)
 }
 
 #' Calculate probability at a single theta (GR)
-#'
+#' 
 #' Calculate the probability of correct response at a theta value, under the graded response model.
-#'
+#' 
 #' @template x-single
 #' @template gr-params
 #' @template gr-ref
-#' @export
 p_gr <- function(x, a, b) {
     .Call('_TestDesign_p_gr', PACKAGE = 'TestDesign', x, a, b)
 }
 
 #' Calculate probability at multiple thetas (GR)
-#'
+#' 
 #' Calculate the probability of correct response at theta values, under the graded response model.
-#'
+#' 
 #' @template x-vector
 #' @template gr-params
 #' @template gr-ref
-#' @export
 array_p_gr <- function(x, a, b) {
     .Call('_TestDesign_array_p_gr', PACKAGE = 'TestDesign', x, a, b)
 }
 
 #' Calculate Fisher information at a single theta (1PL)
-#'
+#' 
 #' Calculate the Fisher information at a theta value according to the 1PL model.
-#'
+#' 
 #' @template x-single
 #' @template 1pl-params
 #' @template 1pl-ref
-#' @export
 info_1pl <- function(x, b) {
     .Call('_TestDesign_info_1pl', PACKAGE = 'TestDesign', x, b)
 }
 
 #' Calculate Fisher information at multiple thetas (1PL)
-#'
+#' 
 #' Calculate the Fisher information at theta values according to the 1PL model.
-#'
+#' 
 #' @template x-vector
 #' @template 1pl-params
 #' @template 1pl-ref
-#' @export
 array_info_1pl <- function(x, b) {
     .Call('_TestDesign_array_info_1pl', PACKAGE = 'TestDesign', x, b)
 }
 
 #' Calculate Fisher information at a single theta (2PL)
-#'
+#' 
 #' Calculate the Fisher information at a theta value according to the 2PL model.
-#'
+#' 
 #' @template x-single
 #' @template 2pl-params
 #' @template 2pl-ref
-#' @export
 info_2pl <- function(x, a, b) {
     .Call('_TestDesign_info_2pl', PACKAGE = 'TestDesign', x, a, b)
 }
 
 #' Calculate Fisher information at multiple thetas (2PL)
-#'
+#' 
 #' Calculate the Fisher information at theta values according to the 2PL model.
-#'
+#' 
 #' @template x-vector
 #' @template 2pl-params
 #' @template 2pl-ref
-#' @export
 array_info_2pl <- function(x, a, b) {
     .Call('_TestDesign_array_info_2pl', PACKAGE = 'TestDesign', x, a, b)
 }
 
 #' Calculate Fisher information at a single theta (3PL)
-#'
+#' 
 #' Calculate the Fisher information at a theta value according to the 3PL model.
-#'
+#' 
 #' @template x-single
 #' @template 3pl-params
 #' @template 3pl-ref
-#' @export
 info_3pl <- function(x, a, b, c) {
     .Call('_TestDesign_info_3pl', PACKAGE = 'TestDesign', x, a, b, c)
 }
 
 #' Calculate Fisher information at multiple thetas (3PL)
-#'
+#' 
 #' Calculate the Fisher information at theta values according to the 3PL model.
-#'
+#' 
 #' @template x-vector
 #' @template 3pl-params
 #' @template 3pl-ref
-#' @export
 array_info_3pl <- function(x, a, b, c) {
     .Call('_TestDesign_array_info_3pl', PACKAGE = 'TestDesign', x, a, b, c)
 }
 
 #' Calculate Fisher information at a single theta (PC)
-#'
+#' 
 #' Calculate the Fisher information at a theta value according to the partial credit model.
-#'
+#' 
 #' @template x-single
 #' @template pc-params
 #' @template pc-ref
-#' @export
 info_pc <- function(x, b) {
     .Call('_TestDesign_info_pc', PACKAGE = 'TestDesign', x, b)
 }
 
 #' Calculate Fisher information at multiple thetas (PC)
-#'
+#' 
 #' Calculate the Fisher information at theta values according to the partial credit model.
-#'
+#' 
 #' @template x-vector
 #' @template pc-params
 #' @template pc-ref
-#' @export
 array_info_pc <- function(x, b) {
     .Call('_TestDesign_array_info_pc', PACKAGE = 'TestDesign', x, b)
 }
 
 #' Calculate Fisher information at a single theta (GPC).
-#'
+#' 
 #' Calculate the Fisher information at a theta value according to the generalizied partial credit model.
-#'
+#' 
 #' @template x-single
 #' @template gpc-params
 #' @template gpc-ref
-#' @export
 info_gpc <- function(x, a, b) {
     .Call('_TestDesign_info_gpc', PACKAGE = 'TestDesign', x, a, b)
 }
 
 #' Calculate Fisher information at multiple thetas (GPC)
-#'
+#' 
 #' Calculate the Fisher information at theta values according to the generalized partial credit model.
-#'
+#' 
 #' @template x-vector
 #' @template gpc-params
 #' @template gpc-ref
-#' @export
 array_info_gpc <- function(x, a, b) {
     .Call('_TestDesign_array_info_gpc', PACKAGE = 'TestDesign', x, a, b)
 }
 
 #' Calculate Fisher information at a single theta (GR).
-#'
+#' 
 #' Calculate the Fisher information at a theta value according to the graded resposne model.
-#'
+#' 
 #' @template x-single
 #' @template gr-params
 #' @template gr-ref
-#' @export
 info_gr <- function(x, a, b) {
     .Call('_TestDesign_info_gr', PACKAGE = 'TestDesign', x, a, b)
 }
 
 #' Calculate Fisher information at multiple thetas (GR)
-#'
+#' 
 #' Calculate the Fisher information at theta values according to the graded response model.
-#'
+#' 
 #' @template x-vector
 #' @template gr-params
 #' @template gr-ref
-#' @export
 array_info_gr <- function(x, a, b) {
     .Call('_TestDesign_array_info_gr', PACKAGE = 'TestDesign', x, a, b)
 }
 
 #' Calculate the Fisher information matrix for a single theta value and a set of items, potentially with a mixture of different models
-#'
+#' 
 #' @param x Numeric. A single theta value.
 #' @param item_parm A matrix of item parameters.
 #' @template calc-params-mini
-#' @export
 calc_info <- function(x, item_parm, ncat, model) {
     .Call('_TestDesign_calc_info', PACKAGE = 'TestDesign', x, item_parm, ncat, model)
 }
 
 #' Calculate the Fisher information matrix for a vector of theta values and a set of items, potentially with a mixture of different models
-#'
+#' 
 #' @param x Numeric. A vector of theta values.
 #' @param item_parm A matrix of item parameters.
 #' @template calc-params-mini
-#' @export
 calc_info_matrix <- function(x, item_parm, ncat, model) {
     .Call('_TestDesign_calc_info_matrix', PACKAGE = 'TestDesign', x, item_parm, ncat, model)
 }
@@ -312,7 +286,7 @@ calc_info_matrix <- function(x, item_parm, ncat, model) {
 #' Calculate the Fisher information using empirical Bayes
 #'
 #' Calculate the Fisher information using empirical Bayes.
-#'
+#' 
 #' @param x A numeric vector of MCMC sampled theta values.
 #' @param item_parm A numeric matrix of item parameters.
 #' @template calc-params-mini
@@ -321,9 +295,9 @@ calc_info_EB <- function(x, item_parm, ncat, model) {
 }
 
 #' Calculate the Fisher information using full Bayesian
-#'
+#' 
 #' Calculate the Fisher information using full Bayesian.
-#'
+#' 
 #' @param x A numeric vector of MCMC sampled theta values.
 #' @param items_list A list of item parameter matrices.
 #' @template calc-params-mini
@@ -333,9 +307,9 @@ calc_info_FB <- function(x, items_list, ncat, model, useEAP = FALSE) {
 }
 
 #' Calculate the mutual information using full Bayesian
-#'
+#' 
 #' Calculate the mutual information using full Bayesian.
-#'
+#' 
 #' @param x A numeric vector of MCMC sampled theta values.
 #' @param items_list A list of item parameter matrices.
 #' @template calc-params-mini
@@ -344,84 +318,78 @@ calc_MI_FB <- function(x, items_list, ncat, model) {
 }
 
 #' Calculate a likelihood value of theta
-#'
+#' 
 #' Calculate a likelihood value of theta.
-#'
+#' 
 #' @param x Numeric. A single theta value.
 #' @param item_parm A numeric matrix of item parameters.
 #' @param resp A numeric vector of item responses.
 #' @template calc-params-mini
-#' @export
 calc_likelihood <- function(x, item_parm, resp, ncat, model) {
     .Call('_TestDesign_calc_likelihood', PACKAGE = 'TestDesign', x, item_parm, resp, ncat, model)
 }
 
 #' Calculate a likelihood function of theta
-#'
+#' 
 #' Calculate a likelihood function of theta.
-#'
+#' 
 #' @param theta_grid An equi-spaced grid of theta values.
 #' @param item_parm A numeric matrix of item parameters.
 #' @param resp A numeric vector of item responses.
 #' @template calc-params-mini
-#'
-#' @export
+#' 
 calc_likelihood_function <- function(theta_grid, item_parm, resp, ncat, model) {
     .Call('_TestDesign_calc_likelihood_function', PACKAGE = 'TestDesign', theta_grid, item_parm, resp, ncat, model)
 }
 
 #' Calculate a log-likelihood value of theta
-#'
+#' 
 #' Calculate a log-likelihood value of theta.
-#'
+#' 
 #' @param x A length-one numeric vector for a theta value.
 #' @param item_parm A numeric matrix of item parameters.
 #' @template calc-params
-#' @export
 calc_log_likelihood <- function(x, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_calc_log_likelihood', PACKAGE = 'TestDesign', x, item_parm, resp, ncat, model, prior, prior_parm)
 }
 
 #' Calculate a log-likelihood function of theta
-#'
+#' 
 #' Calculate a log-likelihood function of theta.
-#'
+#' 
 #' @param theta_grid An equi-spaced grid of theta values.
 #' @param item_parm A numeric matrix of item parameters.
-#' @template calc-params
-#' @export
+#' @template calc-params 
 calc_log_likelihood_function <- function(theta_grid, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_calc_log_likelihood_function', PACKAGE = 'TestDesign', theta_grid, item_parm, resp, ncat, model, prior, prior_parm)
 }
 
 #' Calculate a posterior value of theta
-#'
+#' 
 #' Calculate a posterior value of theta.
-#'
+#' 
 #' @param x A length-one numeric vector for a theta value.
 #' @param item_parm A numeric matrix of item parameters.
 #' @template calc-params
-#' @export
 calc_posterior <- function(x, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_calc_posterior', PACKAGE = 'TestDesign', x, item_parm, resp, ncat, model, prior, prior_parm)
 }
 
 #' Calculate a posterior distribution of theta
-#'
+#' 
 #' Calculate a posterior distribution of theta.
-#'
+#' 
 #' @param theta_grid An equi-spaced grid of theta values.
 #' @param item_parm A numeric matrix of item parameters.
 #' @template calc-params
-#' @export
 calc_posterior_function <- function(theta_grid, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_calc_posterior_function', PACKAGE = 'TestDesign', theta_grid, item_parm, resp, ncat, model, prior, prior_parm)
 }
 
 #' Calculate a posterior value of theta for a single item
-#'
+#' 
 #' Calculate a posterior value of theta for a single item.
-#'
+#' 
 #' @param x A length-one numeric vector for a theta value.
 #' @param item_parm A numeric vector of item parameters (for one item).
 #' @param resp A length-one numeric vector of item responses.
@@ -429,28 +397,26 @@ calc_posterior_function <- function(theta_grid, item_parm, resp, ncat, model, pr
 #' @param model A length-one numeric vector of the IRT model by item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).
 #' @param prior The type of prior distribution (1: normal, 2: uniform).
 #' @param prior_parm A numeric vector of hyperparameters for the prior distribution, c(mu, sigma) or c(ll, ul).
-#'
-#' @export
+#' 
 calc_posterior_single <- function(x, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_calc_posterior_single', PACKAGE = 'TestDesign', x, item_parm, resp, ncat, model, prior, prior_parm)
 }
 
 #' Calculate an EAP estimate of theta for one examinee
-#'
+#' 
 #' Calculate an expected a posterior estimate of theta for one examinee.
-#'
+#' 
 #' @param theta_grid An equi-spaced theta grid.
 #' @param item_parm A numeric matrix of item parameters.
 #' @template calc-params
-#' @export
 theta_EAP <- function(theta_grid, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_theta_EAP', PACKAGE = 'TestDesign', theta_grid, item_parm, resp, ncat, model, prior, prior_parm)
 }
 
 #' Calculate EAP estimates of theta for a group of examinees
-#'
+#' 
 #' Calculate expected a posteriori estimates of theta for a group of examinees.
-#'
+#' 
 #' @param theta_grid An equi-spaced theta grid.
 #' @param item_parm A numeric matrix of item parameters.
 #' @param Resp A numeric matrix of item responses.
@@ -458,36 +424,33 @@ theta_EAP <- function(theta_grid, item_parm, resp, ncat, model, prior, prior_par
 #' @param model A numeric vector of the IRT model by item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).
 #' @param prior The type of prior distribution (1: normal, 2: uniform).
 #' @param prior_parm A numeric vector of hyperparameters for the prior distribution, c(mu, sigma) or c(ll, ul).
-#'
-#' @export
+#' 
 theta_EAP_matrix <- function(theta_grid, item_parm, Resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_theta_EAP_matrix', PACKAGE = 'TestDesign', theta_grid, item_parm, Resp, ncat, model, prior, prior_parm)
 }
 
 #' Calculate an empirical Bayes estimate of theta for one examinee
-#'
+#' 
 #' Calculate an empirical Bayes estimate of theta for one examinee.
-#'
+#' 
 #' @param nx The number of MCMC draws.
 #' @param theta_init A value for initial estimate of theta.
 #' @param theta_prop SD of the proposal distribution.
 #' @param item_parm A numeric matrix of item parameters.
 #' @template calc-params
-#' @export
 theta_EB <- function(nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_theta_EB', PACKAGE = 'TestDesign', nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm)
 }
 
 #' Calculate an empirical Bayes estimate of theta for a single item
-#'
+#' 
 #' Calculate an empirical Bayes estimate of theta for a single item.
-#'
+#' 
 #' @param nx The number of MCMC draws.
 #' @param theta_init A value for initial estimate of theta.
 #' @param theta_prop SD of the proposal distribution.
 #' @param item_parm A numeric matrix of item parameters.
 #' @template calc-params
-#' @export
 theta_EB_single <- function(nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_theta_EB_single', PACKAGE = 'TestDesign', nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm)
 }
@@ -495,41 +458,38 @@ theta_EB_single <- function(nx, theta_init, theta_prop, item_parm, resp, ncat, m
 #' Calculate a fully Bayesian estimate of theta for an examinee
 #'
 #' Calculate a fully Bayesian estimate of theta for an examinee.
-#'
+#' 
 #' @param nx The number of MCMC draws.
 #' @param theta_init A value for initial estimate of theta.
 #' @param theta_prop SD of the proposal distribution.
 #' @param items_list A list of item_parm matrices.
 #' @param item_init A matrix of item parameter estimates (one row per item).
 #' @template calc-params
-#' @export
 theta_FB <- function(nx, theta_init, theta_prop, items_list, item_init, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_theta_FB', PACKAGE = 'TestDesign', nx, theta_init, theta_prop, items_list, item_init, resp, ncat, model, prior, prior_parm)
 }
 
 #' Calculate a fully Bayesian estimate of theta for a single item
-#'
+#' 
 #' Calculate a fully Bayesian estimate of theta for a single item.
-#'
+#' 
 #' @param nx The number of MCMC draws.
 #' @param theta_init A value for initial estimate of theta.
 #' @param theta_prop SD of the proposal distribution.
 #' @param item_mcmc A matrix of sampled item parameters for a single item.
 #' @param item_init A matrix of item parameter estimates (one row per item).
 #' @template calc-params
-#' @export
 theta_FB_single <- function(nx, theta_init, theta_prop, item_mcmc, item_init, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_theta_FB_single', PACKAGE = 'TestDesign', nx, theta_init, theta_prop, item_mcmc, item_init, resp, ncat, model, prior, prior_parm)
 }
 
 #' Find the segment to which each theta value belongs
-#'
+#' 
 #' Find the segment to which each theta value belongs.
-#'
+#' 
 #' @param segment A numeric vector of segment cuts.
 #' @param x A numeric vector of theta values.
-#'
-#' @export
+#' 
 find_segment <- function(segment, x) {
     .Call('_TestDesign_find_segment', PACKAGE = 'TestDesign', segment, x)
 }
