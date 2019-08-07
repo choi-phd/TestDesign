@@ -1,7 +1,6 @@
-## Resubmission
-This is a resubmission.
+## Resubmission of 'TestDesign' package
 
-The following issues have been addressed:
+The following issues raised by Martina Schmirl in email correspondence have been addressed in 'TestDesign' v0.2.1:
 
 ```
 Please provide a link to the gurobi website to the description field of 
