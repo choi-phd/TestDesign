@@ -5,9 +5,17 @@ NULL
 #'
 #' Launch Shiny app locally.
 #'
-#' @export
+#' @examples
+#' if (interactive()) {
+#'   OAT()
+#'   ## or
+#'   app()
+#' }
+#'
 #' @aliases app
 #' @rdname OAT
+#' @export
+
 OAT <- function() {
   app_dir <- system.file("shiny", package = "TestDesign")
   if (app_dir == "") {
@@ -43,8 +51,8 @@ OAT <- function() {
   }
 }
 
-#' @export
 #' @rdname OAT
+#' @export
 
 app <- function() {
   OAT()

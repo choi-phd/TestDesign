@@ -108,3 +108,12 @@ createShadowTestConfig(item_selection = NULL, content_balancing = NULL,
 \description{
 Create a \code{\linkS4class{config_Shadow}} object for Shadow Test Assembly (STA).
 }
+\examples{
+cfg1 <- createShadowTestConfig(refresh_policy = list(
+  method = "STIMULUS"
+))
+cfg2 <- createShadowTestConfig(refresh_policy = list(
+  method = "POSITION",
+  position = c(1, 5, 9)
+))
+}

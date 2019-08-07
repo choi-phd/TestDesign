@@ -8,7 +8,6 @@
 #' @template x-single
 #' @template 1pl-params
 #' @template 1pl-ref
-#' @export
 p_1pl <- function(x, b) {
     .Call('_TestDesign_p_1pl', PACKAGE = 'TestDesign', x, b)
 }
@@ -20,7 +19,6 @@ p_1pl <- function(x, b) {
 #' @template x-vector
 #' @template 1pl-params
 #' @template 1pl-ref
-#' @export
 array_p_1pl <- function(x, b) {
     .Call('_TestDesign_array_p_1pl', PACKAGE = 'TestDesign', x, b)
 }
@@ -32,7 +30,6 @@ array_p_1pl <- function(x, b) {
 #' @template x-single
 #' @template 2pl-params
 #' @template 2pl-ref
-#' @export
 p_2pl <- function(x, a, b) {
     .Call('_TestDesign_p_2pl', PACKAGE = 'TestDesign', x, a, b)
 }
@@ -44,7 +41,6 @@ p_2pl <- function(x, a, b) {
 #' @template x-vector
 #' @template 2pl-params
 #' @template 2pl-ref
-#' @export
 array_p_2pl <- function(x, a, b) {
     .Call('_TestDesign_array_p_2pl', PACKAGE = 'TestDesign', x, a, b)
 }
@@ -56,7 +52,6 @@ array_p_2pl <- function(x, a, b) {
 #' @template x-single
 #' @template 3pl-params
 #' @template 3pl-ref
-#' @export
 p_3pl <- function(x, a, b, c) {
     .Call('_TestDesign_p_3pl', PACKAGE = 'TestDesign', x, a, b, c)
 }
@@ -68,7 +63,6 @@ p_3pl <- function(x, a, b, c) {
 #' @template x-vector
 #' @template 3pl-params
 #' @template 3pl-ref
-#' @export
 array_p_3pl <- function(x, a, b, c) {
     .Call('_TestDesign_array_p_3pl', PACKAGE = 'TestDesign', x, a, b, c)
 }
@@ -80,7 +74,6 @@ array_p_3pl <- function(x, a, b, c) {
 #' @template x-single
 #' @template pc-params
 #' @template pc-ref
-#' @export
 p_pc <- function(x, b) {
     .Call('_TestDesign_p_pc', PACKAGE = 'TestDesign', x, b)
 }
@@ -92,7 +85,6 @@ p_pc <- function(x, b) {
 #' @template x-vector
 #' @template pc-params
 #' @template pc-ref
-#' @export
 array_p_pc <- function(x, b) {
     .Call('_TestDesign_array_p_pc', PACKAGE = 'TestDesign', x, b)
 }
@@ -104,7 +96,6 @@ array_p_pc <- function(x, b) {
 #' @template x-single
 #' @template gpc-params
 #' @template gpc-ref
-#' @export
 p_gpc <- function(x, a, b) {
     .Call('_TestDesign_p_gpc', PACKAGE = 'TestDesign', x, a, b)
 }
@@ -116,7 +107,6 @@ p_gpc <- function(x, a, b) {
 #' @template x-vector
 #' @template gpc-params
 #' @template gpc-ref
-#' @export
 array_p_gpc <- function(x, a, b) {
     .Call('_TestDesign_array_p_gpc', PACKAGE = 'TestDesign', x, a, b)
 }
@@ -128,7 +118,6 @@ array_p_gpc <- function(x, a, b) {
 #' @template x-single
 #' @template gr-params
 #' @template gr-ref
-#' @export
 p_gr <- function(x, a, b) {
     .Call('_TestDesign_p_gr', PACKAGE = 'TestDesign', x, a, b)
 }
@@ -140,7 +129,6 @@ p_gr <- function(x, a, b) {
 #' @template x-vector
 #' @template gr-params
 #' @template gr-ref
-#' @export
 array_p_gr <- function(x, a, b) {
     .Call('_TestDesign_array_p_gr', PACKAGE = 'TestDesign', x, a, b)
 }
@@ -152,7 +140,6 @@ array_p_gr <- function(x, a, b) {
 #' @template x-single
 #' @template 1pl-params
 #' @template 1pl-ref
-#' @export
 info_1pl <- function(x, b) {
     .Call('_TestDesign_info_1pl', PACKAGE = 'TestDesign', x, b)
 }
@@ -164,7 +151,6 @@ info_1pl <- function(x, b) {
 #' @template x-vector
 #' @template 1pl-params
 #' @template 1pl-ref
-#' @export
 array_info_1pl <- function(x, b) {
     .Call('_TestDesign_array_info_1pl', PACKAGE = 'TestDesign', x, b)
 }
@@ -176,7 +162,6 @@ array_info_1pl <- function(x, b) {
 #' @template x-single
 #' @template 2pl-params
 #' @template 2pl-ref
-#' @export
 info_2pl <- function(x, a, b) {
     .Call('_TestDesign_info_2pl', PACKAGE = 'TestDesign', x, a, b)
 }
@@ -188,7 +173,6 @@ info_2pl <- function(x, a, b) {
 #' @template x-vector
 #' @template 2pl-params
 #' @template 2pl-ref
-#' @export
 array_info_2pl <- function(x, a, b) {
     .Call('_TestDesign_array_info_2pl', PACKAGE = 'TestDesign', x, a, b)
 }
@@ -200,7 +184,6 @@ array_info_2pl <- function(x, a, b) {
 #' @template x-single
 #' @template 3pl-params
 #' @template 3pl-ref
-#' @export
 info_3pl <- function(x, a, b, c) {
     .Call('_TestDesign_info_3pl', PACKAGE = 'TestDesign', x, a, b, c)
 }
@@ -212,7 +195,6 @@ info_3pl <- function(x, a, b, c) {
 #' @template x-vector
 #' @template 3pl-params
 #' @template 3pl-ref
-#' @export
 array_info_3pl <- function(x, a, b, c) {
     .Call('_TestDesign_array_info_3pl', PACKAGE = 'TestDesign', x, a, b, c)
 }
@@ -224,7 +206,6 @@ array_info_3pl <- function(x, a, b, c) {
 #' @template x-single
 #' @template pc-params
 #' @template pc-ref
-#' @export
 info_pc <- function(x, b) {
     .Call('_TestDesign_info_pc', PACKAGE = 'TestDesign', x, b)
 }
@@ -236,7 +217,6 @@ info_pc <- function(x, b) {
 #' @template x-vector
 #' @template pc-params
 #' @template pc-ref
-#' @export
 array_info_pc <- function(x, b) {
     .Call('_TestDesign_array_info_pc', PACKAGE = 'TestDesign', x, b)
 }
@@ -248,7 +228,6 @@ array_info_pc <- function(x, b) {
 #' @template x-single
 #' @template gpc-params
 #' @template gpc-ref
-#' @export
 info_gpc <- function(x, a, b) {
     .Call('_TestDesign_info_gpc', PACKAGE = 'TestDesign', x, a, b)
 }
@@ -260,7 +239,6 @@ info_gpc <- function(x, a, b) {
 #' @template x-vector
 #' @template gpc-params
 #' @template gpc-ref
-#' @export
 array_info_gpc <- function(x, a, b) {
     .Call('_TestDesign_array_info_gpc', PACKAGE = 'TestDesign', x, a, b)
 }
@@ -272,7 +250,6 @@ array_info_gpc <- function(x, a, b) {
 #' @template x-single
 #' @template gr-params
 #' @template gr-ref
-#' @export
 info_gr <- function(x, a, b) {
     .Call('_TestDesign_info_gr', PACKAGE = 'TestDesign', x, a, b)
 }
@@ -284,7 +261,6 @@ info_gr <- function(x, a, b) {
 #' @template x-vector
 #' @template gr-params
 #' @template gr-ref
-#' @export
 array_info_gr <- function(x, a, b) {
     .Call('_TestDesign_array_info_gr', PACKAGE = 'TestDesign', x, a, b)
 }
@@ -294,7 +270,6 @@ array_info_gr <- function(x, a, b) {
 #' @param x Numeric. A single theta value.
 #' @param item_parm A matrix of item parameters.
 #' @template calc-params-mini
-#' @export
 calc_info <- function(x, item_parm, ncat, model) {
     .Call('_TestDesign_calc_info', PACKAGE = 'TestDesign', x, item_parm, ncat, model)
 }
@@ -304,7 +279,6 @@ calc_info <- function(x, item_parm, ncat, model) {
 #' @param x Numeric. A vector of theta values.
 #' @param item_parm A matrix of item parameters.
 #' @template calc-params-mini
-#' @export
 calc_info_matrix <- function(x, item_parm, ncat, model) {
     .Call('_TestDesign_calc_info_matrix', PACKAGE = 'TestDesign', x, item_parm, ncat, model)
 }
@@ -351,7 +325,6 @@ calc_MI_FB <- function(x, items_list, ncat, model) {
 #' @param item_parm A numeric matrix of item parameters.
 #' @param resp A numeric vector of item responses.
 #' @template calc-params-mini
-#' @export
 calc_likelihood <- function(x, item_parm, resp, ncat, model) {
     .Call('_TestDesign_calc_likelihood', PACKAGE = 'TestDesign', x, item_parm, resp, ncat, model)
 }
@@ -365,7 +338,6 @@ calc_likelihood <- function(x, item_parm, resp, ncat, model) {
 #' @param resp A numeric vector of item responses.
 #' @template calc-params-mini
 #'
-#' @export
 calc_likelihood_function <- function(theta_grid, item_parm, resp, ncat, model) {
     .Call('_TestDesign_calc_likelihood_function', PACKAGE = 'TestDesign', theta_grid, item_parm, resp, ncat, model)
 }
@@ -377,7 +349,6 @@ calc_likelihood_function <- function(theta_grid, item_parm, resp, ncat, model) {
 #' @param x A length-one numeric vector for a theta value.
 #' @param item_parm A numeric matrix of item parameters.
 #' @template calc-params
-#' @export
 calc_log_likelihood <- function(x, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_calc_log_likelihood', PACKAGE = 'TestDesign', x, item_parm, resp, ncat, model, prior, prior_parm)
 }
@@ -389,7 +360,6 @@ calc_log_likelihood <- function(x, item_parm, resp, ncat, model, prior, prior_pa
 #' @param theta_grid An equi-spaced grid of theta values.
 #' @param item_parm A numeric matrix of item parameters.
 #' @template calc-params
-#' @export
 calc_log_likelihood_function <- function(theta_grid, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_calc_log_likelihood_function', PACKAGE = 'TestDesign', theta_grid, item_parm, resp, ncat, model, prior, prior_parm)
 }
@@ -401,7 +371,6 @@ calc_log_likelihood_function <- function(theta_grid, item_parm, resp, ncat, mode
 #' @param x A length-one numeric vector for a theta value.
 #' @param item_parm A numeric matrix of item parameters.
 #' @template calc-params
-#' @export
 calc_posterior <- function(x, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_calc_posterior', PACKAGE = 'TestDesign', x, item_parm, resp, ncat, model, prior, prior_parm)
 }
@@ -413,7 +382,6 @@ calc_posterior <- function(x, item_parm, resp, ncat, model, prior, prior_parm) {
 #' @param theta_grid An equi-spaced grid of theta values.
 #' @param item_parm A numeric matrix of item parameters.
 #' @template calc-params
-#' @export
 calc_posterior_function <- function(theta_grid, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_calc_posterior_function', PACKAGE = 'TestDesign', theta_grid, item_parm, resp, ncat, model, prior, prior_parm)
 }
@@ -430,7 +398,6 @@ calc_posterior_function <- function(theta_grid, item_parm, resp, ncat, model, pr
 #' @param prior The type of prior distribution (1: normal, 2: uniform).
 #' @param prior_parm A numeric vector of hyperparameters for the prior distribution, c(mu, sigma) or c(ll, ul).
 #'
-#' @export
 calc_posterior_single <- function(x, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_calc_posterior_single', PACKAGE = 'TestDesign', x, item_parm, resp, ncat, model, prior, prior_parm)
 }
@@ -442,7 +409,6 @@ calc_posterior_single <- function(x, item_parm, resp, ncat, model, prior, prior_
 #' @param theta_grid An equi-spaced theta grid.
 #' @param item_parm A numeric matrix of item parameters.
 #' @template calc-params
-#' @export
 theta_EAP <- function(theta_grid, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_theta_EAP', PACKAGE = 'TestDesign', theta_grid, item_parm, resp, ncat, model, prior, prior_parm)
 }
@@ -459,7 +425,6 @@ theta_EAP <- function(theta_grid, item_parm, resp, ncat, model, prior, prior_par
 #' @param prior The type of prior distribution (1: normal, 2: uniform).
 #' @param prior_parm A numeric vector of hyperparameters for the prior distribution, c(mu, sigma) or c(ll, ul).
 #'
-#' @export
 theta_EAP_matrix <- function(theta_grid, item_parm, Resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_theta_EAP_matrix', PACKAGE = 'TestDesign', theta_grid, item_parm, Resp, ncat, model, prior, prior_parm)
 }
@@ -473,7 +438,6 @@ theta_EAP_matrix <- function(theta_grid, item_parm, Resp, ncat, model, prior, pr
 #' @param theta_prop SD of the proposal distribution.
 #' @param item_parm A numeric matrix of item parameters.
 #' @template calc-params
-#' @export
 theta_EB <- function(nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_theta_EB', PACKAGE = 'TestDesign', nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm)
 }
@@ -487,7 +451,6 @@ theta_EB <- function(nx, theta_init, theta_prop, item_parm, resp, ncat, model, p
 #' @param theta_prop SD of the proposal distribution.
 #' @param item_parm A numeric matrix of item parameters.
 #' @template calc-params
-#' @export
 theta_EB_single <- function(nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_theta_EB_single', PACKAGE = 'TestDesign', nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm)
 }
@@ -502,7 +465,6 @@ theta_EB_single <- function(nx, theta_init, theta_prop, item_parm, resp, ncat, m
 #' @param items_list A list of item_parm matrices.
 #' @param item_init A matrix of item parameter estimates (one row per item).
 #' @template calc-params
-#' @export
 theta_FB <- function(nx, theta_init, theta_prop, items_list, item_init, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_theta_FB', PACKAGE = 'TestDesign', nx, theta_init, theta_prop, items_list, item_init, resp, ncat, model, prior, prior_parm)
 }
@@ -517,7 +479,6 @@ theta_FB <- function(nx, theta_init, theta_prop, items_list, item_init, resp, nc
 #' @param item_mcmc A matrix of sampled item parameters for a single item.
 #' @param item_init A matrix of item parameter estimates (one row per item).
 #' @template calc-params
-#' @export
 theta_FB_single <- function(nx, theta_init, theta_prop, item_mcmc, item_init, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_theta_FB_single', PACKAGE = 'TestDesign', nx, theta_init, theta_prop, item_mcmc, item_init, resp, ncat, model, prior, prior_parm)
 }
@@ -529,7 +490,6 @@ theta_FB_single <- function(nx, theta_init, theta_prop, item_mcmc, item_init, re
 #' @param segment A numeric vector of segment cuts.
 #' @param x A numeric vector of theta values.
 #'
-#' @export
 find_segment <- function(segment, x) {
     .Call('_TestDesign_find_segment', PACKAGE = 'TestDesign', segment, x)
 }

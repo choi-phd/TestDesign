@@ -40,3 +40,11 @@ plotCAT(object, examinee_id = 1, min_theta = -5, max_theta = 5,
 \description{
 Draw an audit trail plot.
 }
+\examples{
+object <- itempool_science
+config <- createShadowTestConfig()
+true_theta <- rnorm(1)
+solution <- Shadow(itempool_science, config, true_theta, constraints_science)
+plotCAT(solution, 1)
+
+}
