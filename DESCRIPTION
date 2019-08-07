@@ -30,3 +30,17 @@ Encoding: UTF-8
 LazyData: true
 RdMacros: Rdpack
 VignetteBuilder: knitr
+Collate: 
+    'import.R'
+    'RcppExports.R'
+    'item_class.R'
+    'item_functions.R'
+    'loading_functions.R'
+    'ATA_class.R'
+    'ATA_functions.R'
+    'solver_functions.R'
+    'shadow_class.R'
+    'shadow_functions.R'
+    'datasets.R'
+    'runshiny.R'
+    'manuscript.R'
