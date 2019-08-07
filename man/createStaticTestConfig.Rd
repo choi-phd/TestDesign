@@ -31,7 +31,7 @@ createStaticTestConfig(item_selection = NULL, MIP = NULL)
 Create an \code{\linkS4class{config_ATA}} object for Automated Test Assembly (ATA).
 }
 \examples{
-conf.1 <- createStaticTestConfig(
+cfg.1 <- createStaticTestConfig(
   list(
     method = "MAXINFO",
     info_type = "FISHER",
@@ -40,7 +40,7 @@ conf.1 <- createStaticTestConfig(
   )
 )
 
-conf.2 <- createStaticTestConfig(
+cfg.2 <- createStaticTestConfig(
   list(
     method = "TIF",
     info_type = "FISHER",
@@ -50,7 +50,7 @@ conf.2 <- createStaticTestConfig(
   )
 )
 
-conf.3 <- createStaticTestConfig(
+cfg.3 <- createStaticTestConfig(
   list(
     method = "TCC",
     info_type = "FISHER",
