@@ -204,8 +204,12 @@ setMethod(
   signature = "output_Shadow",
   definition = function(object, constraints, examinee_id = 1, sort_by_difficulty = FALSE, file_pdf = NULL, ...) {
     max_ni <- constraints$test_length
-    ni <- constraints$ni
+    ni     <- constraints$ni
+
+    oldpar <- par()
+    on.exit(par(oldpar))
     par(mar = c(2, 3, 1, 1) + 0.1, mfrow = c(1, 1))
+
     n_points <- sum(!is.na(object@administered_item_resp)) # this should be equal to constraints$test_length
     item_id <- constraints$item_attrib[["ID"]][object@administered_item_index]
     item_sequence <- object@administered_item_index
@@ -358,7 +362,11 @@ setMethod(
   definition = function(object, examinee_id = 1, min_theta = -5, max_theta = 5, min_score = 0, max_score = 1, z_ci = 1.96, file_pdf = NULL, ...) {
     n_items <- length(object@administered_item_index)
     if (n_items > 0) {
+
+      oldpar <- par()
+      on.exit(par(oldpar))
       par(mar = c(2, 3, 1, 1) + 0.1)
+
       layout(rbind(c(1, 1), c(1, 1), c(1, 1), c(1, 1), c(2, 2)))
       plot(1:n_items, seq(min_theta, max_theta, length = n_items), ylab = "Theta", type = "n", las = 1, xlim = c(0, n_items), xaxt = "n", yaxt = "n")
       grid()
@@ -502,7 +510,10 @@ setMethod(
       pdf(file = file_pdf, ...)
     }
 
+    oldpar <- par()
+    on.exit(par(oldpar))
     par(oma = c(3, 3, 0, 0), mar = c(3, 3, 2, 2))
+
     plotER(ni, exposure_rate, exposure_rate_final, max_rate = max_rate, title = "Overall", color = "black", color_final = "black", simple = TRUE)
     for (k in 1:n_segment) {
       plotER(ni, exposure_rate_segment[[k]], exposure_rate_segment_final[[k]], max_rate = max_rate, title = segment_label[k], color = "black", color_final = "black", simple = TRUE)
@@ -1762,7 +1773,10 @@ setMethod(
 
     plotAuditTrail <- function() {
 
+      oldpar <- par()
+      on.exit(par(oldpar))
       par(mar = c(2, 3, 1, 1) + 0.1, mfrow = c(2, 1))
+
       plot(1:max_ni, seq(min_theta, max_theta, length = max_ni), main = paste0("Examinee ", j), xlab = "Items Administered", ylab = "Theta", type = "n", las = 1)
       points(1:max_ni, output@interim_theta_est, type = "b", pch = 9, col = "blue")
 
@@ -2891,7 +2905,11 @@ plotExposureRateBySegment <- function(object, config, max_rate = 0.25, file_pdf 
   if (!is.null(file_pdf)) {
     pdf(file = file_pdf, width = width, height = height)
   }
+
+  oldpar <- par()
+  on.exit(par(oldpar))
   par(mfrow = mfrow)
+
   plotER(ni, exposure_rate, NULL, max_rate = max_rate, title = paste0("Overall (N = ", nj, ")"), color = "blue")
   for (k in 1:config@exposure_control$n_segment) {
     plotER(

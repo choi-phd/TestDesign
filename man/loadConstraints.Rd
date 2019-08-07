@@ -24,6 +24,14 @@ Read constraints from specified file.
 \details{
 Use \code{vignette("constraints")} for instructions on how to create a constraint set object.
 }
+\examples{
+\donttest{
+itempool_science <- loadItemPool("itempool_science.csv")
+itemattrib_science <- loadItemAttrib("itemattrib_science.csv", itempool_science)
+constraints_science <- loadConstraints("constraints_science.csv",
+  itempool_science, itemattrib_science)
+}
+}
 \seealso{
 \link{dataset_science} for example usage.
 }
