@@ -49,18 +49,18 @@ Item location values.
 An S4 generic and its methods to calculate item location.
 }
 \examples{
-item_1 = new("item_1PL", difficulty = 0.5)
-theta_item_1 = calcLocation(item_1)
-item_2 = new("item_2PL", slope = 1.0, difficulty = 0.5)
-theta_item_2 = calcLocation(item_2)
-item_3 = new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
-theta_item_3 = calcLocation(item_3)
-item_4 = new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
-theta_item_4 = calcLocation(item_4)
-item_5 = new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
-theta_item_5 = calcLocation(item_5)
-item_6 = new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
-theta_item_6 = calcLocation(item_6)
+item_1       <- new("item_1PL", difficulty = 0.5)
+theta_item_1 <- calcLocation(item_1)
+item_2       <- new("item_2PL", slope = 1.0, difficulty = 0.5)
+theta_item_2 <- calcLocation(item_2)
+item_3       <- new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+theta_item_3 <- calcLocation(item_3)
+item_4       <- new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
+theta_item_4 <- calcLocation(item_4)
+item_5       <- new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+theta_item_5 <- calcLocation(item_5)
+item_6       <- new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+theta_item_6 <- calcLocation(item_6)
 theta_itempool <- calcLocation(itempool_science)
 }
 \references{

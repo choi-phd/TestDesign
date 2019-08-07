@@ -10,7 +10,12 @@ NULL
 #' @param se_file File path of a .csv file containing standard errors.
 #' @return An \linkS4class{item_pool} object.
 #'
+#' @examples
+#' \donttest{
+#' itempool_science <- loadItemPool("itempool_science.csv")
+#' }
 #' @seealso \link{dataset_science} for example usage.
+#'
 #' @export
 loadItemPool <- function(file, ipar = NULL, se_file = NULL) {
 
@@ -147,7 +152,13 @@ loadItemPool <- function(file, ipar = NULL, se_file = NULL) {
 #'
 #' @return A \code{data.frame} containing parsed dataset.
 #'
+#' @examples
+#' \donttest{
+#' itempool_science <- loadItemPool("itempool_science.csv")
+#' itemattrib_science <- loadItemAttrib("itemattrib_science.csv", itempool_science)
+#' }
 #' @seealso \link{dataset_science} for example usage.
+#'
 #' @export
 
 loadItemAttrib <- function(file, pool) {
@@ -194,6 +205,14 @@ loadItemAttrib <- function(file, pool) {
 #'
 #' @return A \code{data.frame} containing stimulus attributes.
 #'
+#' @examples
+#' \donttest{
+#' itempool_reading <- loadItemPool("itempool_reading.csv")
+#' itemattrib_reading <- loadItemAttrib("itemattrib_reading.csv", itempool_reading)
+#' stimattrib_reading <- loadStAttrib("stimattrib_reading.csv", itemattrib_reading)
+#' constraints_reading <- loadConstraints("constraints_reading.csv",
+#'   itempool_reading, itemattrib_reading, stimattrib_reading)
+#' }
 #' @seealso \link{dataset_reading} for example usage.
 #'
 #' @export
@@ -242,6 +261,13 @@ loadStAttrib <- function(file, item_attrib) {
 #'
 #' @return A list containing the parsed constraints, to be used in \code{\link{ATA}} and \code{\link{Shadow}}.
 #'
+#' @examples
+#' \donttest{
+#' itempool_science <- loadItemPool("itempool_science.csv")
+#' itemattrib_science <- loadItemAttrib("itemattrib_science.csv", itempool_science)
+#' constraints_science <- loadConstraints("constraints_science.csv",
+#'   itempool_science, itemattrib_science)
+#' }
 #' @seealso \link{dataset_science} for example usage.
 #'
 #' @export
@@ -798,6 +824,9 @@ loadConstraints <- function(file, pool, item_attrib, st_attrib = NULL) {
 #'
 #' @return An updated list of constraints to be used in \code{\link{ATA}} and \code{\link{Shadow}}.
 #'
+#' @examples
+#' constraints_science2 <- updateConstraints(constraints_science, off = 32:36)
+#' constraints_science3 <- updateConstraints(constraints_science, on = 32:36)
 #' @export
 
 updateConstraints <- function(object, on = NULL, off = NULL) {
