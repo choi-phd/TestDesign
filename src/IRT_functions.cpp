@@ -8,7 +8,6 @@ using namespace Rcpp;
 //' @template x-single
 //' @template 1pl-params
 //' @template 1pl-ref
-//' @export
 // [[Rcpp::export]]
 double p_1pl(const double& x, const double& b){
   return 1/(1+exp(b-x));
@@ -21,7 +20,6 @@ double p_1pl(const double& x, const double& b){
 //' @template x-vector
 //' @template 1pl-params
 //' @template 1pl-ref
-//' @export
 // [[Rcpp::export]]
 NumericVector array_p_1pl(NumericVector x, const double& b){
   int nx = x.size();
@@ -39,7 +37,6 @@ NumericVector array_p_1pl(NumericVector x, const double& b){
 //' @template x-single
 //' @template 2pl-params
 //' @template 2pl-ref
-//' @export
 // [[Rcpp::export]]
 double p_2pl(const double& x, const double& a, const double& b){
   return 1/(1+exp(-a*(x-b)));
@@ -52,7 +49,6 @@ double p_2pl(const double& x, const double& a, const double& b){
 //' @template x-vector
 //' @template 2pl-params
 //' @template 2pl-ref
-//' @export
 // [[Rcpp::export]]
 NumericVector array_p_2pl(NumericVector x, const double& a, const double& b){
   int nx = x.size();
@@ -70,7 +66,6 @@ NumericVector array_p_2pl(NumericVector x, const double& a, const double& b){
 //' @template x-single
 //' @template 3pl-params
 //' @template 3pl-ref
-//' @export
 // [[Rcpp::export]]
 double p_3pl(const double& x, const double& a, const double& b, const double& c){
   return c+(1-c)/(1+exp(-a*(x-b)));
@@ -83,7 +78,6 @@ double p_3pl(const double& x, const double& a, const double& b, const double& c)
 //' @template x-vector
 //' @template 3pl-params
 //' @template 3pl-ref
-//' @export
 // [[Rcpp::export]]
 NumericVector array_p_3pl(NumericVector x, const double& a, const double& b, const double& c){
   int nx = x.size();
@@ -101,7 +95,6 @@ NumericVector array_p_3pl(NumericVector x, const double& a, const double& b, con
 //' @template x-single
 //' @template pc-params
 //' @template pc-ref
-//' @export
 // [[Rcpp::export]]
 NumericVector p_pc(const double& x, NumericVector b){
   int nk = b.size()+1;
@@ -123,7 +116,6 @@ NumericVector p_pc(const double& x, NumericVector b){
 //' @template x-vector
 //' @template pc-params
 //' @template pc-ref
-//' @export
 // [[Rcpp::export]]
 NumericMatrix array_p_pc(NumericVector x, NumericVector b){
   int nx = x.size();
@@ -146,7 +138,6 @@ NumericMatrix array_p_pc(NumericVector x, NumericVector b){
 //' @template x-single
 //' @template gpc-params
 //' @template gpc-ref
-//' @export
 // [[Rcpp::export]]
 NumericVector p_gpc(const double& x, const double& a, NumericVector b){
   int nk = b.size()+1;
@@ -168,7 +159,6 @@ NumericVector p_gpc(const double& x, const double& a, NumericVector b){
 //' @template x-vector
 //' @template gpc-params
 //' @template gpc-ref
-//' @export
 // [[Rcpp::export]]
 NumericMatrix array_p_gpc(NumericVector x, const double& a, NumericVector b){
   int nx = x.size();
@@ -191,7 +181,6 @@ NumericMatrix array_p_gpc(NumericVector x, const double& a, NumericVector b){
 //' @template x-single
 //' @template gr-params
 //' @template gr-ref
-//' @export
 // [[Rcpp::export]]
 NumericVector p_gr(const double& x, const double& a, NumericVector b){
   int nk = b.size()+1;
@@ -214,7 +203,6 @@ NumericVector p_gr(const double& x, const double& a, NumericVector b){
 //' @template x-vector
 //' @template gr-params
 //' @template gr-ref
-//' @export
 // [[Rcpp::export]]
 NumericMatrix array_p_gr(NumericVector x, const double& a, NumericVector b){
   int nx = x.size();
@@ -237,7 +225,6 @@ NumericMatrix array_p_gr(NumericVector x, const double& a, NumericVector b){
 //' @template x-single
 //' @template 1pl-params
 //' @template 1pl-ref
-//' @export
 // [[Rcpp::export]]
 double info_1pl(const double& x, const double& b){
   double p = p_1pl(x,b);
@@ -251,7 +238,6 @@ double info_1pl(const double& x, const double& b){
 //' @template x-vector
 //' @template 1pl-params
 //' @template 1pl-ref
-//' @export
 // [[Rcpp::export]]
 NumericVector array_info_1pl(NumericVector x, const double& b){
   int nx = x.size();
@@ -269,7 +255,6 @@ NumericVector array_info_1pl(NumericVector x, const double& b){
 //' @template x-single
 //' @template 2pl-params
 //' @template 2pl-ref
-//' @export
 // [[Rcpp::export]]
 double info_2pl(const double& x, const double& a, const double& b){
   double p = p_2pl(x,a,b);
@@ -283,7 +268,6 @@ double info_2pl(const double& x, const double& a, const double& b){
 //' @template x-vector
 //' @template 2pl-params
 //' @template 2pl-ref
-//' @export
 // [[Rcpp::export]]
 NumericVector array_info_2pl(NumericVector x, const double& a, const double& b){
   int nx = x.size();
@@ -301,7 +285,6 @@ NumericVector array_info_2pl(NumericVector x, const double& a, const double& b){
 //' @template x-single
 //' @template 3pl-params
 //' @template 3pl-ref
-//' @export
 // [[Rcpp::export]]
 double info_3pl(const double& x, const double& a, const double& b, const double& c){
   double p = p_3pl(x,a,b,c);
@@ -315,7 +298,6 @@ double info_3pl(const double& x, const double& a, const double& b, const double&
 //' @template x-vector
 //' @template 3pl-params
 //' @template 3pl-ref
-//' @export
 // [[Rcpp::export]]
 NumericVector array_info_3pl(NumericVector x, const double& a, const double& b, const double& c){
   int nx = x.size();
@@ -333,7 +315,6 @@ NumericVector array_info_3pl(NumericVector x, const double& a, const double& b, 
 //' @template x-single
 //' @template pc-params
 //' @template pc-ref
-//' @export
 // [[Rcpp::export]]
 double info_pc(const double& x, NumericVector b){
   NumericVector p = p_pc(x,b);
@@ -353,7 +334,6 @@ double info_pc(const double& x, NumericVector b){
 //' @template x-vector
 //' @template pc-params
 //' @template pc-ref
-//' @export
 // [[Rcpp::export]]
 NumericVector array_info_pc(NumericVector x, NumericVector b){
   int nx = x.size();
@@ -371,7 +351,6 @@ NumericVector array_info_pc(NumericVector x, NumericVector b){
 //' @template x-single
 //' @template gpc-params
 //' @template gpc-ref
-//' @export
 // [[Rcpp::export]]
 double info_gpc(const double& x, const double& a, NumericVector b){
   NumericVector p = p_gpc(x,a,b);
@@ -391,7 +370,6 @@ double info_gpc(const double& x, const double& a, NumericVector b){
 //' @template x-vector
 //' @template gpc-params
 //' @template gpc-ref
-//' @export
 // [[Rcpp::export]]
 NumericVector array_info_gpc(NumericVector x, const double& a, NumericVector b){
   int nx = x.size();
@@ -409,7 +387,6 @@ NumericVector array_info_gpc(NumericVector x, const double& a, NumericVector b){
 //' @template x-single
 //' @template gr-params
 //' @template gr-ref
-//' @export
 // [[Rcpp::export]]
 double info_gr(const double& x, const double& a, NumericVector b){
   int nk = b.size()+1;
@@ -433,7 +410,6 @@ double info_gr(const double& x, const double& a, NumericVector b){
 //' @template x-vector
 //' @template gr-params
 //' @template gr-ref
-//' @export
 // [[Rcpp::export]]
 NumericVector array_info_gr(NumericVector x, const double& a, NumericVector b){
   int nx = x.size();
@@ -449,7 +425,6 @@ NumericVector array_info_gr(NumericVector x, const double& a, NumericVector b){
 //' @param x Numeric. A single theta value.
 //' @param item_parm A matrix of item parameters.
 //' @template calc-params-mini
-//' @export
 // [[Rcpp::export]]
 NumericVector calc_info(const double& x,
                         NumericMatrix item_parm,
@@ -494,7 +469,6 @@ NumericVector calc_info(const double& x,
 //' @param x Numeric. A vector of theta values.
 //' @param item_parm A matrix of item parameters.
 //' @template calc-params-mini
-//' @export
 // [[Rcpp::export]]
 NumericMatrix calc_info_matrix(NumericVector x,
                                NumericMatrix item_parm,
@@ -759,7 +733,6 @@ NumericVector calc_MI_FB(NumericVector x,
 //' @param item_parm A numeric matrix of item parameters.
 //' @param resp A numeric vector of item responses.
 //' @template calc-params-mini
-//' @export
 // [[Rcpp::export]]
 double calc_likelihood(const double& x,
                        NumericMatrix item_parm,
@@ -828,7 +801,6 @@ double calc_likelihood(const double& x,
 //' @param resp A numeric vector of item responses.
 //' @template calc-params-mini
 //' 
-//' @export
 // [[Rcpp::export]]
 NumericVector calc_likelihood_function(NumericVector theta_grid,
                                        NumericMatrix item_parm,
@@ -893,7 +865,6 @@ NumericVector calc_likelihood_function(NumericVector theta_grid,
 //' @param x A length-one numeric vector for a theta value.
 //' @param item_parm A numeric matrix of item parameters.
 //' @template calc-params
-//' @export
 // [[Rcpp::export]]
 double calc_log_likelihood(const double& x,
                        NumericMatrix item_parm,
@@ -962,7 +933,6 @@ double calc_log_likelihood(const double& x,
 //' @param theta_grid An equi-spaced grid of theta values.
 //' @param item_parm A numeric matrix of item parameters.
 //' @template calc-params 
-//' @export
 // [[Rcpp::export]]
 NumericVector calc_log_likelihood_function(NumericVector theta_grid,
                                        NumericMatrix item_parm,
@@ -1031,7 +1001,6 @@ NumericVector calc_log_likelihood_function(NumericVector theta_grid,
 //' @param x A length-one numeric vector for a theta value.
 //' @param item_parm A numeric matrix of item parameters.
 //' @template calc-params
-//' @export
 // [[Rcpp::export]]
 double calc_posterior(const double& x,
                       NumericMatrix item_parm,
@@ -1059,7 +1028,6 @@ double calc_posterior(const double& x,
 //' @param theta_grid An equi-spaced grid of theta values.
 //' @param item_parm A numeric matrix of item parameters.
 //' @template calc-params
-//' @export
 // [[Rcpp::export]]
 NumericVector calc_posterior_function(NumericVector theta_grid,
                                       NumericMatrix item_parm,
@@ -1096,7 +1064,6 @@ NumericVector calc_posterior_function(NumericVector theta_grid,
 //' @param prior The type of prior distribution (1: normal, 2: uniform).
 //' @param prior_parm A numeric vector of hyperparameters for the prior distribution, c(mu, sigma) or c(ll, ul).
 //' 
-//' @export
 // [[Rcpp::export]]
 double calc_posterior_single(const double& x,
                              NumericVector item_parm,
@@ -1169,7 +1136,6 @@ double calc_posterior_single(const double& x,
 //' @param theta_grid An equi-spaced theta grid.
 //' @param item_parm A numeric matrix of item parameters.
 //' @template calc-params
-//' @export
 // [[Rcpp::export]]
 NumericVector theta_EAP(NumericVector theta_grid,
                         NumericMatrix item_parm,
@@ -1205,7 +1171,6 @@ NumericVector theta_EAP(NumericVector theta_grid,
 //' @param prior The type of prior distribution (1: normal, 2: uniform).
 //' @param prior_parm A numeric vector of hyperparameters for the prior distribution, c(mu, sigma) or c(ll, ul).
 //' 
-//' @export
 // [[Rcpp::export]]
 NumericMatrix theta_EAP_matrix(NumericVector theta_grid,
                                NumericMatrix item_parm,
@@ -1244,7 +1209,6 @@ NumericMatrix theta_EAP_matrix(NumericVector theta_grid,
 //' @param theta_prop SD of the proposal distribution.
 //' @param item_parm A numeric matrix of item parameters.
 //' @template calc-params
-//' @export
 // [[Rcpp::export]]
 NumericVector theta_EB(const int& nx,
                        const double& theta_init,
@@ -1286,7 +1250,6 @@ NumericVector theta_EB(const int& nx,
 //' @param theta_prop SD of the proposal distribution.
 //' @param item_parm A numeric matrix of item parameters.
 //' @template calc-params
-//' @export
 // [[Rcpp::export]]
 NumericVector theta_EB_single(const int& nx,
                               const double& theta_init,
@@ -1329,7 +1292,6 @@ NumericVector theta_EB_single(const int& nx,
 //' @param items_list A list of item_parm matrices.
 //' @param item_init A matrix of item parameter estimates (one row per item).
 //' @template calc-params
-//' @export
 // [[Rcpp::export]]
 NumericVector theta_FB(const int& nx,
                        const double& theta_init,
@@ -1400,7 +1362,6 @@ NumericVector theta_FB(const int& nx,
 //' @param item_mcmc A matrix of sampled item parameters for a single item.
 //' @param item_init A matrix of item parameter estimates (one row per item).
 //' @template calc-params
-//' @export
 // [[Rcpp::export]]
 NumericVector theta_FB_single(const int& nx,
                               const double& theta_init,
@@ -1461,7 +1422,6 @@ NumericVector theta_FB_single(const int& nx,
 //' @param segment A numeric vector of segment cuts.
 //' @param x A numeric vector of theta values.
 //' 
-//' @export
 // [[Rcpp::export]]
 IntegerVector find_segment(NumericVector segment,
                           NumericVector x) {

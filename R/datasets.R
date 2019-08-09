@@ -12,25 +12,37 @@ NULL
 #'   \item \code{constraints_science} A list containing 36 constraints.
 #' }
 #'
-#' Also, the following datasets are intended for illustrating expected data structures.
+#' Also, the following datasets are intended for illustrating expected data structures. See examples below.
 #' \itemize{
-#'   \item \code{itempool_science_raw} Item parameters. Use \code{write.csv(itempool_science_raw, "itempool_science.csv", row.names = FALSE)} to save into a file.
-#'   \item \code{itemattrib_science_raw} Item attributes. Use \code{write.csv(itemattrib_science_raw, "itemattrib_science.csv", row.names = FALSE)} to save into a file.
-#'   \item \code{constraints_science_raw} Constraints. Use \code{write.csv(constraints_science_raw, "constraints_science.csv", row.names = FALSE)} to save into a file.
+#'   \item \code{itempool_science_raw} Item parameters.
+#'   \item \code{itemattrib_science_raw} Item attributes.
+#'   \item \code{constraints_science_raw} Constraints.
 #' }
 #'
+#' @examples
+#' ## Write to tempdir() and clean afterwards
+#' f <- file.path(tempdir(), "itempool_science.csv")
+#' write.csv(itempool_science_raw, f, row.names = FALSE)
+#' itempool_science <- loadItemPool(f)
+#' file.remove(f)
+#'
+#' f <- file.path(tempdir(), "itemattrib_science.csv")
+#' write.csv(itemattrib_science_raw, f, row.names = FALSE)
+#' itemattrib_science <- loadItemAttrib(f, itempool_science)
+#' file.remove(f)
+#'
+#' f <- file.path(tempdir(), "constraints_science.csv")
+#' write.csv(constraints_science_raw, f, row.names = FALSE)
+#' constraints_science <- loadConstraints(f,
+#'   itempool_science, itemattrib_science)
+#' file.remove(f)
+#'
+#' @aliases itempool_science_raw itemattrib_science_raw constraints_science_raw itempool_science itemattrib_science constraints_science
 #' @docType data
 #' @keywords datasets
-#' @rdname dataset_science
 #' @name dataset_science
-#' @aliases itempool_science_raw itemattrib_science_raw constraints_science_raw itempool_science itemattrib_science constraints_science
-#' @examples
-#' \donttest{
-#' itempool_science <- loadItemPool("itempool_science.csv")
-#' itemattrib_science <- loadItemAttrib("itemattrib_science.csv", itempool_science)
-#' constraints_science <- loadConstraints("constraints_science.csv",
-#'   itempool_science, itemattrib_science)
-#' }
+#' @rdname dataset_science
+
 NULL
 
 #' Reading dataset
@@ -47,25 +59,41 @@ NULL
 #'
 #' Also, the following datasets are intended for illustrating expected data structures. See examples below.
 #' \itemize{
-#'   \item \code{itempool_reading_raw} Item parameters. Use \code{write.csv(itempool_reading_raw, "itempool_reading.csv", row.names = FALSE)} to save into a file.
-#'   \item \code{itemattrib_reading_raw} Item attributes. Use \code{write.csv(itemattrib_reading_raw, "itemattrib_reading.csv", row.names = FALSE)} to save into a file.
-#'   \item \code{stimattrib_reading_raw} Item attributes. Use \code{write.csv(stimattrib_reading_raw, "stimattrib_reading.csv", row.names = FALSE)} to save into a file.
-#'   \item \code{constraints_reading_raw} Constraints. Use \code{write.csv(constraints_reading_raw, "constraints_reading.csv", row.names = FALSE)} to save into a file.
+#'   \item \code{itempool_reading_raw} Item parameters.
+#'   \item \code{itemattrib_reading_raw} Item attributes.
+#'   \item \code{stimattrib_reading_raw} Item attributes.
+#'   \item \code{constraints_reading_raw} Constraints.
 #' }
 #'
+#' @examples
+#' ## Write to tempdir() and clean afterwards
+#' f <- file.path(tempdir(), "itempool_reading.csv")
+#' write.csv(itempool_reading_raw, f, row.names = FALSE)
+#' itempool_reading <- loadItemPool(f)
+#' file.remove(f)
+#'
+#' f <- file.path(tempdir(), "itemattrib_reading.csv")
+#' write.csv(itemattrib_reading_raw, f, row.names = FALSE)
+#' itemattrib_reading <- loadItemAttrib(f, itempool_reading)
+#' file.remove(f)
+#'
+#' f <- file.path(tempdir(), "stimattrib_reading.csv")
+#' write.csv(stimattrib_reading_raw, f, row.names = FALSE)
+#' stimattrib_reading <- loadStAttrib(f, itemattrib_reading)
+#' file.remove(f)
+#'
+#' f <- file.path(tempdir(), "constraints_reading.csv")
+#' write.csv(constraints_reading_raw, f, row.names = FALSE)
+#' constraints_reading <- loadConstraints(f,
+#'   itempool_reading, itemattrib_reading, stimattrib_reading)
+#' file.remove(f)
+#'
+#' @aliases itempool_reading_raw itemattrib_reading_raw stimattrib_reading_raw constraints_reading_raw itempool_reading itemattrib_reading stimattrib_reading constraints_reading
 #' @docType data
 #' @keywords datasets
-#' @rdname dataset_reading
 #' @name dataset_reading
-#' @aliases itempool_reading_raw itemattrib_reading_raw stimattrib_reading_raw constraints_reading_raw itempool_reading itemattrib_reading stimattrib_reading constraints_reading
-#' @examples
-#' \donttest{
-#' itempool_reading <- loadItemPool("itempool_reading.csv")
-#' itemattrib_reading <- loadItemAttrib("itemattrib_reading.csv", itempool_reading)
-#' stimattrib_reading <- loadStAttrib("stimattrib_reading.csv", itemattrib_reading)
-#' constraints_reading <- loadConstraints("constraints_reading.csv",
-#'   itempool_reading, itemattrib_reading, stimattrib_reading)
-#' }
+#' @rdname dataset_reading
+
 NULL
 
 #' Fatigue dataset
@@ -81,23 +109,46 @@ NULL
 #'
 #' Also, the following datasets are intended for illustrating expected data structures. See examples below.
 #' \itemize{
-#'   \item \code{itempool_fatigue_raw} Item parameters. Use \code{write.csv(itempool_fatigue_raw, "itempool_fatigue.csv", row.names = FALSE)} to save into a file.
-#'   \item \code{itemattrib_fatigue_raw} Item attributes. Use \code{write.csv(itemattrib_fatigue, "itemattrib_fatigue.csv", row.names = FALSE)} to save into a file.
-#'   \item \code{itemcontent_fatigue_raw} Item contents. Use \code{write.csv(itemcontent_fatigue_raw, "itemcontent_fatigue.csv", row.names = FALSE)} to save into a file.
-#'   \item \code{constraints_fatigue_raw} Constraints. Use \code{write.csv(constraints_fatigue_raw, "constraints_fatigue.csv", row.names = FALSE)} to save into a file.
-#'   \item \code{resp_fatigue_raw} Raw response data. Use \code{write.table(resp_fatigue_raw, "resp_fatigue.csv", row.names = FALSE, col.names = FALSE, sep = ",")} to save into a file.
+#'   \item \code{itempool_fatigue_raw} Item parameters.
+#'   \item \code{itemattrib_fatigue_raw} Item attributes.
+#'   \item \code{itemcontent_fatigue_raw} Item contents.
+#'   \item \code{constraints_fatigue_raw} Constraints.
+#'   \item \code{resp_fatigue_raw} Raw response data.
 #' }
+#'
+#' @examples
+#' ## Write to tempdir() and clean afterwards
+#' f <- file.path(tempdir(), "itempool_fatigue.csv")
+#' write.csv(itempool_fatigue_raw, f, row.names = FALSE)
+#' itempool_fatigue <- loadItemPool(f)
+#' file.remove(f)
+#'
+#' f <- file.path(tempdir(), "itemattrib_fatigue.csv")
+#' write.csv(itemattrib_fatigue_raw, f, row.names = FALSE)
+#' itemattrib_fatigue <- loadItemAttrib(f, itempool_fatigue)
+#' file.remove(f)
+#'
+#' f <- file.path(tempdir(), "constraints_fatigue.csv")
+#' write.csv(constraints_fatigue_raw, f, row.names = FALSE)
+#' constraints_fatigue <- loadConstraints(f,
+#'   itempool_fatigue, itemattrib_fatigue)
+#' file.remove(f)
+#'
+#' ## Item contents for use in shiny app
+#' f <- file.path(tempdir(), "itemcontent_fatigue.csv")
+#' write.csv(itemcontent_fatigue_raw, f, row.names = FALSE)
+#' file.remove(f)
+#'
+#' ## Raw item responses for reference
+#' f <- file.path(tempdir(), "resp_fatigue.csv")
+#' write.table(resp_fatigue_raw, f, row.names = FALSE, col.names = FALSE, sep = ",")
+#' file.remove(f)
+#'
+#' @aliases itempool_fatigue_raw itemattrib_fatigue_raw itemcontent_fatigue_raw constraints_fatigue_raw resp_fatigue_raw itempool_fatigue itemattrib_fatigue constraints_fatigue
 #'
 #' @docType data
 #' @keywords datasets
-#' @rdname dataset_fatigue
 #' @name dataset_fatigue
-#' @aliases itempool_fatigue_raw itemattrib_fatigue_raw itemcontent_fatigue_raw constraints_fatigue_raw resp_fatigue_raw itempool_fatigue itemattrib_fatigue constraints_fatigue
-#' @examples
-#' \donttest{
-#' itempool_fatigue <- loadItemPool("itempool_fatigue.csv")
-#' itemattrib_fatigue <- loadItemAttrib("itemattrib_fatigue.csv", itempool_fatigue)
-#' constraints_fatigue <- loadConstraints("constraints_fatigue.csv",
-#'   itempool_fatigue, itemattrib_fatigue)
-#' }
+#' @rdname dataset_fatigue
+
 NULL

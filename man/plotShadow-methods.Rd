@@ -32,3 +32,11 @@ plotShadow(object, constraints, examinee_id = 1,
 \description{
 Draw a chart of shadow tests constructed for each simulee. The index of a column represents the position of item administration process, and each column represents the item pool.
 }
+\examples{
+object <- itempool_science
+config <- createShadowTestConfig()
+true_theta <- rnorm(1)
+solution <- Shadow(itempool_science, config, true_theta, constraints_science)
+plotShadow(solution, constraints_science, 1)
+
+}
