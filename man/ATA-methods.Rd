@@ -48,3 +48,6 @@ config_science <- createStaticTestConfig(
 solution <- ATA(config_science, constraints_science, plot = TRUE)
 
 }
+\references{
+\insertRef{van_der_linden_linear_2005}{TestDesign}
+}
