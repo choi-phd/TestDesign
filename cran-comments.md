@@ -54,6 +54,7 @@ The following changes were made to improve usability.
 * `subsetItemPool()` now also accepts a single numeric value for `select` argument.
 * `plotInfo()` now has a default value for `theta` argument.
 
+
 ## Test environments
 
 * local OS X install, R 3.6.1
@@ -62,6 +63,7 @@ The following changes were made to improve usability.
 * Ubuntu Linux 16.04 LTS, R-release, GCC (on R-hub)
 * Fedora Linux, R-devel, clang, gfortran (on R-hub)
 * Debian Linux, R-devel, GCC ASAN/UBSAN (on R-hub)
+
 
 ## R CMD check results
 
@@ -78,6 +80,7 @@ Suggests or Enhances not in mainstream repositories:
 ```
 
 Information on obtaining 'gurobi' is described in `DESCRIPTON`.
+
 
 ## Downstream dependencies
 
