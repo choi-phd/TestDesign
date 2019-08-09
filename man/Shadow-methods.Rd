@@ -41,11 +41,13 @@ solution <- Shadow(itempool_science, config, true_theta, constraints_science)
 solution$output
 }
 \references{
-\insertRef{van_der_linden_model_1998}{TestDesign}
+{
+  \insertRef{van_der_linden_model_1998}{TestDesign}
 
-\insertRef{van_der_linden_optimal_1998}{TestDesign}
+  \insertRef{van_der_linden_optimal_1998}{TestDesign}
 
-\insertRef{van_der_linden_optimal_2000}{TestDesign}
+  \insertRef{van_der_linden_optimal_2000}{TestDesign}
 
-\insertRef{van_der_linden_linear_2005}{TestDesign}
+  \insertRef{van_der_linden_linear_2005}{TestDesign}
+}
 }
