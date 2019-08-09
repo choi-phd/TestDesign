@@ -22,4 +22,5 @@ Update the onstraints list
 \examples{
 constraints_science2 <- updateConstraints(constraints_science, off = 32:36)
 constraints_science3 <- updateConstraints(constraints_science, on = 32:36)
+
 }
