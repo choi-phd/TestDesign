@@ -12,3 +12,11 @@ app()
 \description{
 Launch Shiny app locally.
 }
+\examples{
+if (interactive()) {
+  OAT()
+  ## or
+  app()
+}
+
+}

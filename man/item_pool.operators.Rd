@@ -28,9 +28,25 @@
 \description{
 \code{pool1 + pool2} combines two \code{\linkS4class{item_pool}} objects.
 
-\code{pool1 - pool2} combines the second from the first. Thw two \code{\linkS4class{item_pool}} objects must overlap for this to be performed.
+\code{pool1 - pool2} excludes the items in the second item pool from the first. The two \code{\linkS4class{item_pool}} objects must overlap for this to be performed.
 
 \code{pool1 == pool2} tests equality of the two item_pool objects.
 
 \code{pool_cluster1 == pool_cluster2} tests equality of the two pool_cluster objects.
+}
+\examples{
+itempool <- itempool_science + itempool_reading
+
+subitempool <- subsetItemPool(itempool_science, 1:500)
+itempool <- itempool_science - subitempool
+
+itempool <- subsetItemPool(itempool_science, 1:500)
+subitempool1 <- itempool_science - itempool
+subitempool2 <- subsetItemPool(itempool_science, 501:1000)
+subitempool1 == subitempool2  ## TRUE
+
+cluster1 <- makeItemPoolCluster(c(itempool_science, itempool_reading))
+cluster2 <- makeItemPoolCluster(c(cluster1@pools[[1]], cluster1@pools[[2]]))
+cluster1 == cluster2  ## TRUE
+
 }

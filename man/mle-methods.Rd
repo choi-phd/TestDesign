@@ -15,7 +15,7 @@ mle(object, resp, start_theta = NULL, max_iter = 100, crit = 0.001,
   4), truncate = FALSE, max_change = 1, do_Fisher = TRUE)
 }
 \arguments{
-\item{object}{A \code{\linkS4class{test}} object.}
+\item{object}{A \code{\linkS4class{item_pool}} object.}
 
 \item{resp}{A vector (or matrix) of item responses.}
 
@@ -37,4 +37,7 @@ mle(object, resp, start_theta = NULL, max_iter = 100, crit = 0.001,
 }
 \description{
 Generate maximum likelihood estimates of theta.
+}
+\examples{
+mle(itempool_fatigue, resp_fatigue_raw[10,])
 }
