@@ -14,3 +14,7 @@ iparPosteriorSample(pool, n_sample = 500)
 \description{
 Sample item parameter estimates from their posterior distributions.
 }
+\examples{
+ipar <- iparPosteriorSample(itempool_science, 5)
+
+}

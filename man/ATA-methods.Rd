@@ -40,7 +40,14 @@ Perform Automated Test Assembly with specified configurations.
 }
 \examples{
 config_science <- createStaticTestConfig(
-  item_selection = list(method = "MAXINFO", target_location = c(-1, 1)),
+  list(
+    method = "MAXINFO",
+    target_location = c(-1, 1)
+  )
 )
 solution <- ATA(config_science, constraints_science, plot = TRUE)
+
+}
+\references{
+\insertRef{van_der_linden_linear_2005}{TestDesign}
 }

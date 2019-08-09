@@ -26,19 +26,34 @@ This pool is associated with the following objects:
 
 Also, the following datasets are intended for illustrating expected data structures. See examples below.
 \itemize{
-  \item \code{itempool_reading_raw} Item parameters. Use \code{write.csv(itempool_reading_raw, "itempool_reading.csv", row.names = FALSE)} to save into a file.
-  \item \code{itemattrib_reading_raw} Item attributes. Use \code{write.csv(itemattrib_reading_raw, "itemattrib_reading.csv", row.names = FALSE)} to save into a file.
-  \item \code{stimattrib_reading_raw} Item attributes. Use \code{write.csv(stimattrib_reading_raw, "stimattrib_reading.csv", row.names = FALSE)} to save into a file.
-  \item \code{constraints_reading_raw} Constraints. Use \code{write.csv(constraints_reading_raw, "constraints_reading.csv", row.names = FALSE)} to save into a file.
+  \item \code{itempool_reading_raw} Item parameters.
+  \item \code{itemattrib_reading_raw} Item attributes.
+  \item \code{stimattrib_reading_raw} Item attributes.
+  \item \code{constraints_reading_raw} Constraints.
 }
 }
 \examples{
-\donttest{
-itempool_reading <- loadItemPool("itempool_reading.csv")
-itemattrib_reading <- loadItemAttrib("itemattrib_reading.csv", itempool_reading)
-stimattrib_reading <- loadStAttrib("stimattrib_reading.csv", itemattrib_reading)
-constraints_reading <- loadConstraints("constraints_reading.csv",
+## Write to tempdir() and clean afterwards
+f <- file.path(tempdir(), "itempool_reading.csv")
+write.csv(itempool_reading_raw, f, row.names = FALSE)
+itempool_reading <- loadItemPool(f)
+file.remove(f)
+
+f <- file.path(tempdir(), "itemattrib_reading.csv")
+write.csv(itemattrib_reading_raw, f, row.names = FALSE)
+itemattrib_reading <- loadItemAttrib(f, itempool_reading)
+file.remove(f)
+
+f <- file.path(tempdir(), "stimattrib_reading.csv")
+write.csv(stimattrib_reading_raw, f, row.names = FALSE)
+stimattrib_reading <- loadStAttrib(f, itemattrib_reading)
+file.remove(f)
+
+f <- file.path(tempdir(), "constraints_reading.csv")
+write.csv(constraints_reading_raw, f, row.names = FALSE)
+constraints_reading <- loadConstraints(f,
   itempool_reading, itemattrib_reading, stimattrib_reading)
-}
+file.remove(f)
+
 }
 \keyword{datasets}

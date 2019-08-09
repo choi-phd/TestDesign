@@ -25,19 +25,40 @@ This pool is associated with the following objects:
 
 Also, the following datasets are intended for illustrating expected data structures. See examples below.
 \itemize{
-  \item \code{itempool_fatigue_raw} Item parameters. Use \code{write.csv(itempool_fatigue_raw, "itempool_fatigue.csv", row.names = FALSE)} to save into a file.
-  \item \code{itemattrib_fatigue_raw} Item attributes. Use \code{write.csv(itemattrib_fatigue, "itemattrib_fatigue.csv", row.names = FALSE)} to save into a file.
-  \item \code{itemcontent_fatigue_raw} Item contents. Use \code{write.csv(itemcontent_fatigue_raw, "itemcontent_fatigue.csv", row.names = FALSE)} to save into a file.
-  \item \code{constraints_fatigue_raw} Constraints. Use \code{write.csv(constraints_fatigue_raw, "constraints_fatigue.csv", row.names = FALSE)} to save into a file.
-  \item \code{resp_fatigue_raw} Raw response data. Use \code{write.table(resp_fatigue_raw, "resp_fatigue.csv", row.names = FALSE, col.names = FALSE, sep = ",")} to save into a file.
+  \item \code{itempool_fatigue_raw} Item parameters.
+  \item \code{itemattrib_fatigue_raw} Item attributes.
+  \item \code{itemcontent_fatigue_raw} Item contents.
+  \item \code{constraints_fatigue_raw} Constraints.
+  \item \code{resp_fatigue_raw} Raw response data.
 }
 }
 \examples{
-\donttest{
-itempool_fatigue <- loadItemPool("itempool_fatigue.csv")
-itemattrib_fatigue <- loadItemAttrib("itemattrib_fatigue.csv", itempool_fatigue)
-constraints_fatigue <- loadConstraints("constraints_fatigue.csv",
+## Write to tempdir() and clean afterwards
+f <- file.path(tempdir(), "itempool_fatigue.csv")
+write.csv(itempool_fatigue_raw, f, row.names = FALSE)
+itempool_fatigue <- loadItemPool(f)
+file.remove(f)
+
+f <- file.path(tempdir(), "itemattrib_fatigue.csv")
+write.csv(itemattrib_fatigue_raw, f, row.names = FALSE)
+itemattrib_fatigue <- loadItemAttrib(f, itempool_fatigue)
+file.remove(f)
+
+f <- file.path(tempdir(), "constraints_fatigue.csv")
+write.csv(constraints_fatigue_raw, f, row.names = FALSE)
+constraints_fatigue <- loadConstraints(f,
   itempool_fatigue, itemattrib_fatigue)
-}
+file.remove(f)
+
+## Item contents for use in shiny app
+f <- file.path(tempdir(), "itemcontent_fatigue.csv")
+write.csv(itemcontent_fatigue_raw, f, row.names = FALSE)
+file.remove(f)
+
+## Raw item responses for reference
+f <- file.path(tempdir(), "resp_fatigue.csv")
+write.table(resp_fatigue_raw, f, row.names = FALSE, col.names = FALSE, sep = ",")
+file.remove(f)
+
 }
 \keyword{datasets}

@@ -18,13 +18,28 @@ A \code{data.frame} containing stimulus attributes.
 Read set, stimulus, or passage attributes from specified file.
 }
 \examples{
-\donttest{
-itempool_reading <- loadItemPool("itempool_reading.csv")
-itemattrib_reading <- loadItemAttrib("itemattrib_reading.csv", itempool_reading)
-stimattrib_reading <- loadStAttrib("stimattrib_reading.csv", itemattrib_reading)
-constraints_reading <- loadConstraints("constraints_reading.csv",
+## Write to tempdir() and clean afterwards
+f <- file.path(tempdir(), "itempool_reading.csv")
+write.csv(itempool_reading_raw, f, row.names = FALSE)
+itempool_reading <- loadItemPool(f)
+file.remove(f)
+
+f <- file.path(tempdir(), "itemattrib_reading.csv")
+write.csv(itemattrib_reading_raw, f, row.names = FALSE)
+itemattrib_reading <- loadItemAttrib(f, itempool_reading)
+file.remove(f)
+
+f <- file.path(tempdir(), "stimattrib_reading.csv")
+write.csv(stimattrib_reading_raw, f, row.names = FALSE)
+stimattrib_reading <- loadStAttrib(f, itemattrib_reading)
+file.remove(f)
+
+f <- file.path(tempdir(), "constraints_reading.csv")
+write.csv(constraints_reading_raw, f, row.names = FALSE)
+constraints_reading <- loadConstraints(f,
   itempool_reading, itemattrib_reading, stimattrib_reading)
-}
+file.remove(f)
+
 }
 \seealso{
 \link{dataset_reading} for example usage.

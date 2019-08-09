@@ -14,3 +14,7 @@ logitHyperPars(mean, sd)
 \description{
 Calculate hyperparameters for logit-normal distribution.
 }
+\examples{
+logitHyperPars(.5, 1)
+
+}

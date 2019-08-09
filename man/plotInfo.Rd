@@ -4,14 +4,14 @@
 \alias{plotInfo}
 \title{Draw item information plots}
 \usage{
-plotInfo(object, theta, info_type = "FISHER", select = NULL,
-  file_pdf = NULL, color = "blue", width = 7, height = 6,
-  mfrow = c(2, 4))
+plotInfo(object, theta = seq(-3, 3, 0.1), info_type = "FISHER",
+  select = NULL, file_pdf = NULL, color = "blue", width = 7,
+  height = 6, mfrow = c(2, 4))
 }
 \arguments{
 \item{object}{An \code{\linkS4class{item_pool}} object.}
 
-\item{theta}{A theta grid.}
+\item{theta}{A theta grid. Default is \code{seq(-3, 3, .1)}.}
 
 \item{info_type}{Type of information.}
 
@@ -29,4 +29,9 @@ plotInfo(object, theta, info_type = "FISHER", select = NULL,
 }
 \description{
 Draw item information plots.
+}
+\examples{
+subitempool <- subsetItemPool(itempool_science, 1:8)
+plotInfo(subitempool)
+
 }

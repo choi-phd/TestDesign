@@ -21,15 +21,15 @@ NULL
 #'
 #' @return A list containing the optimal solution and pertinent diagnostics.
 #'
-#' @references
-#' \insertRef{van_der_linden_model_1998}{TestDesign}
+#' @references{
+#'   \insertRef{van_der_linden_model_1998}{TestDesign}
 #'
-#' \insertRef{van_der_linden_optimal_1998}{TestDesign}
+#'   \insertRef{van_der_linden_optimal_1998}{TestDesign}
 #'
-#' \insertRef{van_der_linden_optimal_2000}{TestDesign}
+#'   \insertRef{van_der_linden_optimal_2000}{TestDesign}
 #'
-#' \insertRef{van_der_linden_linear_2005}{TestDesign}
-#'
+#'   \insertRef{van_der_linden_linear_2005}{TestDesign}
+#' }
 #' @export
 STA <- function(constraints, objective, solver = "Lpsolve", xmat = NULL, xdir = NULL, xrhs = NULL,
   maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = -2, time_limit = 5, gap_limit = -1, ...) {
@@ -136,8 +136,6 @@ STA <- function(constraints, objective, solver = "Lpsolve", xmat = NULL, xdir = 
 #' @param file An optional file name as a character string to save the output.
 #'
 #' @return None
-#'
-#' @export
 saveOutput <- function(object_list, file = NULL) {
   nj <- length(object_list)
   for (j in 1:nj) {
@@ -172,6 +170,13 @@ saveOutput <- function(object_list, file = NULL) {
 #' @param sort_by_difficulty Sort the items by difficulty.
 #' @param file_pdf If supplied a filename, save as a PDF file.
 #' @param ... Additional options to be passed on to \code{pdf()}.
+#'
+#' @examples
+#' object <- itempool_science
+#' config <- createShadowTestConfig()
+#' true_theta <- rnorm(1)
+#' solution <- Shadow(itempool_science, config, true_theta, constraints_science)
+#' plotShadow(solution, constraints_science, 1)
 #'
 #' @docType methods
 #' @rdname plotShadow-methods
@@ -215,10 +220,11 @@ setMethod(
     max_ni <- constraints$test_length
     ni     <- constraints$ni
 
-    oldpar <- par()
-    on.exit(par(oldpar))
+    old_mar   <- par()$mar
+    old_mfrow <- par()$mfrow
+    on.exit(par(mar = old_mar, mfrow = old_mfrow))
     par(mar = c(2, 3, 1, 1) + 0.1, mfrow = c(1, 1))
-    
+
     n_points <- sum(!is.na(object@administered_item_resp)) # this should be equal to constraints$test_length
     item_id <- constraints$item_attrib[["ID"]][object@administered_item_index]
     item_sequence <- object@administered_item_index
@@ -330,6 +336,13 @@ setMethod(
 #' @param file_pdf If supplied a filename, save as a PDF file.
 #' @param ... Additional options to be passed on to \code{pdf()}.
 #'
+#' @examples
+#' object <- itempool_science
+#' config <- createShadowTestConfig()
+#' true_theta <- rnorm(1)
+#' solution <- Shadow(itempool_science, config, true_theta, constraints_science)
+#' plotCAT(solution, 1)
+#'
 #' @docType methods
 #' @rdname plotCAT-methods
 #' @export
@@ -371,9 +384,9 @@ setMethod(
   definition = function(object, examinee_id = 1, min_theta = -5, max_theta = 5, min_score = 0, max_score = 1, z_ci = 1.96, file_pdf = NULL, ...) {
     n_items <- length(object@administered_item_index)
     if (n_items > 0) {
-      
-      oldpar <- par()
-      on.exit(par(oldpar))
+
+      old_mar <- par()$mar
+      on.exit(par(mar = old_mar))
       par(mar = c(2, 3, 1, 1) + 0.1)
 
       layout(rbind(c(1, 1), c(1, 1), c(1, 1), c(1, 1), c(2, 2)))
@@ -429,6 +442,18 @@ setMethod(
 #' @param file_pdf If supplied a filename, save as a PDF file.
 #' @param ... Additional options to be passed on to \code{pdf()}.
 #'
+#' @examples
+#' true_theta <- runif(10, min = -3.5, max = 3.5)
+#' resp_science <- makeTest(itempool_science, info_type = "FISHER", true_theta = true_theta)@data
+#' constraints_science2 <- updateConstraints(constraints_science, off = c(14:20, 32:36))
+#' config_science <- createShadowTestConfig(
+#'   MIP = list(solver = "LPSOLVE"),
+#'   exposure_control = list(method = "ELIGIBILITY")
+#' )
+#' solution <- Shadow(itempool_science, config_science,
+#'   true_theta, constraints_science2, data = resp_science)
+#' p <- plotExposure(solution)
+#'
 #' @docType methods
 #' @rdname plotExposure-methods
 #' @export
@@ -477,13 +502,18 @@ setMethod(
       usage_matrix_final[j, object$output[[j]]@administered_item_index[object$output[[j]]@theta_segment_index != theta_segment_index[j]]] <- FALSE
       segment_index_table[j, ] <- object$output[[j]]@theta_segment_index
     }
+
     segment_freq <- matrix(0, n_segment, n_segment)
     for (i in 1:object$constraints$test_length) {
-      segment_table <- tapply(segment_index_table[, i], theta_segment_index, table)
-      for (s in 1:n_segment) {
-        segment_freq[s, as.numeric(names(segment_table[[s]]))] <- segment_freq[s, as.numeric(names(segment_table[[s]]))] + segment_table[[s]]
+      factor(segment_index_table[, i], levels = 1:n_segment)
+      segment_table <- tapply(factor(segment_index_table[, i], levels = 1:n_segment), theta_segment_index, table)
+      for (s in 1:length(segment_table)) {
+        idx_r <- as.numeric(names(segment_table)[s])
+        idx_c <- as.numeric(names(segment_table[[s]]))
+        segment_freq[idx_r, idx_c] <- segment_freq[idx_r, idx_c] + segment_table[[s]]
       }
     }
+
     segment_rate                <- segment_freq / segment_n
     segment_rate_table          <- data.frame(
       segment_class = factor(rep(segment_label, rep(n_segment, n_segment)), levels = segment_label),
@@ -519,8 +549,9 @@ setMethod(
       pdf(file = file_pdf, ...)
     }
 
-    oldpar <- par()
-    on.exit(par(oldpar))
+    old_oma <- par()$oma
+    old_mar <- par()$mar
+    on.exit(par(oma = old_oma, mar = old_mar))
     par(oma = c(3, 3, 0, 0), mar = c(3, 3, 2, 2))
 
     plotER(ni, exposure_rate, exposure_rate_final, max_rate = max_rate, title = "Overall", color = "black", color_final = "black", simple = TRUE)
@@ -610,10 +641,13 @@ setMethod(
 #' @param pool1 An \code{\linkS4class{item_pool}} object.
 #' @param pool2 An \code{\linkS4class{item_pool}} object.
 #'
-#' @export
+#' @examples
+#' itempool <- itempool_science + itempool_reading
+#'
 #' @rdname item_pool.operators
+#' @export
 
-"+.item_pool" <- function(pool1, pool2) {
+`+.item_pool` <- function(pool1, pool2) {
   if (class(pool1) != "item_pool" || class(pool2) != "item_pool") stop("operarands must be of class \"item_pool\" ")
   if (validObject(pool1) && validObject(pool2)) {
     combined_pool <- new("item_pool")
@@ -621,9 +655,25 @@ setMethod(
     model     <- c(pool1@model, pool2@model)
     NCAT      <- c(pool1@NCAT, pool2@NCAT)
     parms     <- c(pool1@parms, pool2@parms)
-    ipar      <- cbind(pool1@ipar, pool2@ipar)
-    se        <- cbind(pool1@ipar, pool2@ipar)
+
+    nfield1   <- dim(pool1@ipar)[2]
+    nfield2   <- dim(pool2@ipar)[2]
+    nfield    <- max(nfield1, nfield2)
+
+    ipar1              <- matrix(NA, dim(pool1@ipar)[1], nfield)
+    ipar1[, 1:nfield1] <- pool1@ipar
+    ipar2              <- matrix(NA, dim(pool2@ipar)[1], nfield)
+    ipar2[, 1:nfield2] <- pool2@ipar
+    ipar               <- rbind(ipar1, ipar2)
+
+    se1                <- matrix(NA, dim(pool1@se)[1], nfield)
+    se1[, 1:nfield1]   <- pool1@se
+    se2                <- matrix(NA, dim(pool2@se)[1], nfield)
+    se2[, 1:nfield2]   <- pool2@se
+    se                 <- rbind(se1, se2)
+
     is_unique <- which(!duplicated(id))
+
     combined_pool@ni      <- length(is_unique)
     combined_pool@max_cat <- max(NCAT[is_unique])
     combined_pool@index   <- 1:combined_pool@ni
@@ -631,10 +681,12 @@ setMethod(
     combined_pool@model   <- model[is_unique]
     combined_pool@NCAT    <- NCAT[is_unique]
     combined_pool@parms   <- parms[is_unique]
-    combined_pool@se      <- se[is_unique]
+    combined_pool@ipar    <- ipar[is_unique, , drop = FALSE]
+    combined_pool@se      <- se[is_unique, , drop = FALSE]
+
     if (sum(duplicated(id)) > 0) {
       warning("duplicate items were found and removed")
-      cat("duplicate id:", id[duplicated(id)], "\n")
+      warning("duplicate ids: %s", paste0(id[duplicated(id)], collapse = ", "))
     }
     return(combined_pool)
   } else {
@@ -642,15 +694,19 @@ setMethod(
   }
 }
 
-#' @description \code{pool1 - pool2} combines the second from the first. Thw two \code{\linkS4class{item_pool}} objects must overlap for this to be performed.
+#' @description \code{pool1 - pool2} excludes the items in the second item pool from the first. The two \code{\linkS4class{item_pool}} objects must overlap for this to be performed.
 #'
-#' @export
+#' @examples
+#' subitempool <- subsetItemPool(itempool_science, 1:500)
+#' itempool <- itempool_science - subitempool
+#'
 #' @rdname item_pool.operators
+#' @export
 
-"-.item_pool" <- function(pool1, pool2) {
+`-.item_pool` <- function(pool1, pool2) {
   if (class(pool1) != "item_pool" || class(pool2) != "item_pool") stop("operarands must be of class \"item_pool\" ")
-  if (any(pool2@ID %in% pool1@ID)) {
-    left <- which(!(pool1@ID %in% pool2@ID))
+  if (any(pool2@id %in% pool1@id)) {
+    left <- which(!(pool1@id %in% pool2@id))
     if (length(left) > 0) {
       pool1@ni      <- length(left)
       pool1@max_cat <- max(pool1@NCAT[left])
@@ -659,8 +715,8 @@ setMethod(
       pool1@model   <- pool1@model[left]
       pool1@NCAT    <- pool1@NCAT[left]
       pool1@parms   <- pool1@parms[left]
-      pool1@ipar    <- pool1@ipar[left, ]
-      pool1@se      <- pool1@se[left, ]
+      pool1@ipar    <- pool1@ipar[left, , drop = FALSE]
+      pool1@se      <- pool1@se[left, , drop = FALSE]
     } else {
       return("item pool is empty")
     }
@@ -669,11 +725,16 @@ setMethod(
 }
 
 #' @description \code{pool1 == pool2} tests equality of the two item_pool objects.
+#' @examples
+#' itempool <- subsetItemPool(itempool_science, 1:500)
+#' subitempool1 <- itempool_science - itempool
+#' subitempool2 <- subsetItemPool(itempool_science, 501:1000)
+#' subitempool1 == subitempool2  ## TRUE
 #'
-#' @export
 #' @rdname item_pool.operators
+#' @export
 
-"==.item_pool" <- function(pool1, pool2) {
+`==.item_pool` <- function(pool1, pool2) {
   if (class(pool1) != "item_pool" || class(pool2) != "item_pool") stop("operarands must be of class \"item_pool\" ")
   return(identical(pool1, pool2))
 }
@@ -683,10 +744,15 @@ setMethod(
 #' @param pool_cluster1 A \code{\linkS4class{pool_cluster}} object.
 #' @param pool_cluster2 A \code{\linkS4class{pool_cluster}} object.
 #'
-#' @export
+#' @examples
+#' cluster1 <- makeItemPoolCluster(c(itempool_science, itempool_reading))
+#' cluster2 <- makeItemPoolCluster(c(cluster1@pools[[1]], cluster1@pools[[2]]))
+#' cluster1 == cluster2  ## TRUE
+#'
 #' @rdname item_pool.operators
+#' @export
 
-"==.pool_cluster" <- function(pool_cluster1, pool_cluster2) {
+`==.pool_cluster` <- function(pool_cluster1, pool_cluster2) {
   if (class(pool_cluster1) != "pool_cluster" || class(pool_cluster2) != "pool_cluster") stop("operarands must be of class \"pool_cluster\" ")
   return(identical(pool_cluster1, pool_cluster2))
 }
@@ -794,7 +860,8 @@ subsetItemPool <- function(pool, select = NULL) {
     sub_pool@NCAT    <- pool@NCAT[select]
     sub_pool@parms   <- pool@parms[select]
     sub_pool@max_cat <- max(sub_pool@NCAT)
-    sub_pool@se      <- pool@se[select, ]
+    sub_pool@ipar    <- pool@ipar[select, , drop = FALSE]
+    sub_pool@se      <- pool@se[select, , drop = FALSE]
     return(sub_pool)
   } else {
     stop("select contains invalid item indices")
@@ -932,7 +999,7 @@ setMethod(
 #'
 #' Generate maximum likelihood estimates of theta.
 #'
-#' @param object A \code{\linkS4class{test}} object.
+#' @param object A \code{\linkS4class{item_pool}} object.
 #' @param resp A vector (or matrix) of item responses.
 #' @param start_theta An optional vector of start theta values.
 #' @param max_iter Maximum number of iterations.
@@ -945,6 +1012,8 @@ setMethod(
 #'
 #' @docType methods
 #' @rdname mle-methods
+#' @examples
+#' mle(itempool_fatigue, resp_fatigue_raw[10,])
 #' @export
 
 setGeneric(
@@ -956,7 +1025,6 @@ setGeneric(
 
 #' @docType methods
 #' @rdname mle-methods
-#' @export
 
 setMethod(
   f = "mle",
@@ -1393,7 +1461,10 @@ setMethod(
 #'
 #' @param pools A list of \code{\linkS4class{item_pool}} objects.
 #' @param names An optional vector of \code{\linkS4class{item_pool}} names.
-
+#' @examples
+#'
+#' cluster <- makeItemPoolCluster(c(itempool_science, itempool_reading))
+#' @export
 makeItemPoolCluster <- function(pools, names = NULL) {
   np <- length(pools)
   if (np == 0) {
@@ -1433,15 +1504,15 @@ makeItemPoolCluster <- function(pools, names = NULL) {
 #' @param data Numeric. A matrix containing item response data.
 #' @param session Used to communicate with a Shiny session.
 #'
-#' @references
-#' \insertRef{van_der_linden_model_1998}{TestDesign}
+#' @references{
+#'   \insertRef{van_der_linden_model_1998}{TestDesign}
 #'
-#' \insertRef{van_der_linden_optimal_1998}{TestDesign}
+#'   \insertRef{van_der_linden_optimal_1998}{TestDesign}
 #'
-#' \insertRef{van_der_linden_optimal_2000}{TestDesign}
+#'   \insertRef{van_der_linden_optimal_2000}{TestDesign}
 #'
-#' \insertRef{van_der_linden_linear_2005}{TestDesign}
-#'
+#'   \insertRef{van_der_linden_linear_2005}{TestDesign}
+#' }
 #' @rdname Shadow-methods
 #'
 #' @examples
@@ -1791,8 +1862,9 @@ setMethod(
 
     plotAuditTrail <- function() {
 
-      oldpar <- par()
-      on.exit(par(oldpar))
+      old_mar   <- par()$mar
+      old_mfrow <- par()$mfrow
+      on.exit(par(mar = old_mar, mfrow = old_mfrow))
       par(mar = c(2, 3, 1, 1) + 0.1, mfrow = c(2, 1))
 
       plot(1:max_ni, seq(min_theta, max_theta, length = max_ni), main = paste0("Examinee ", j), xlab = "Items Administered", ylab = "Theta", type = "n", las = 1)
@@ -2587,8 +2659,7 @@ setMethod(
 #'
 #' @param color A vector of color names or RGB color codes.
 #' @param alpha A vector of integers between 0 and 255 (0 = fully transparent, 255 = fully visible).
-#'
-#' @export
+
 addTrans <- function(color, alpha) {
   if (length(color) != length(alpha) & !any(c(length(color), length(alpha)) == 1)) {
     stop("Vector lengths not correct")
@@ -2622,6 +2693,7 @@ addTrans <- function(color, alpha) {
 #' @param file_pdf If supplied a filename, save as a PDF file.
 #' @param max_rate A target item exposure rate.
 #' @param discard_first A integer identifying the first x simulees to discard as burn-in.
+
 plotEligibilityStats <- function(config, object = NULL, object_no_fading = NULL, file = NULL, file_no_fading = NULL, segment = 1, items = c(1), file_pdf = NULL, max_rate = 0.25, discard_first = NULL) {
   fading_factor <- config@exposure_control$fading_factor
   if (!is.null(file_pdf)) {
@@ -2703,6 +2775,7 @@ plotEligibilityStats <- function(config, object = NULL, object_no_fading = NULL,
 #' @param x A vector of values.
 #' @param y A vector of values.
 #' @param conditional If \code{TRUE}, calculate RMSE conditional on x.
+
 RMSE <- function(x, y, conditional = TRUE) {
   if (length(x) != length(y)) {
     stop("length(x) and length(y) are not equal")
@@ -2721,6 +2794,7 @@ RMSE <- function(x, y, conditional = TRUE) {
 #'
 #' @param RMSE_foc A vector of RMSE values for the focal group.
 #' @param RMSE_ref A vector of RMSE values for the reference group.
+
 RE <- function(RMSE_foc, RMSE_ref) {
   if (length(RMSE_foc) != length(RMSE_ref)) {
     stop("length(x) and length(y) are not equal")
@@ -2820,8 +2894,7 @@ checkConstraints <- function(constraints, usage_matrix, true_theta = NULL) {
 #' @param lty_set A vector of line types for the series.
 #' @param col_set A vector of colors for the series.
 #' @param theta A theta grid.
-#'
-#' @export
+
 plotRMSE <- function(..., title = NULL, legend_title = NULL, legend_labels = NULL, lty_set = NULL, col_set = NULL, theta = seq(-2, 2, 1)) {
 
   output_list <- list(...)
@@ -2924,8 +2997,8 @@ plotExposureRateBySegment <- function(object, config, max_rate = 0.25, file_pdf 
     pdf(file = file_pdf, width = width, height = height)
   }
 
-  oldpar <- par()
-  on.exit(par(oldpar))
+  old_mfrow <- par()$mfrow
+  on.exit(par(mfrow = old_mfrow))
   par(mfrow = mfrow)
 
   plotER(ni, exposure_rate, NULL, max_rate = max_rate, title = paste0("Overall (N = ", nj, ")"), color = "blue")
@@ -2959,6 +3032,19 @@ plotExposureRateBySegment <- function(object, config, max_rate = 0.25, file_pdf 
 #' @param mfrow Number of multiple figures defined as c(nrow, ncol).
 #' @param burn An integer identifying the first x simulees to discard as burn-in.
 #' @param retain An optional vector of indices identifying the simulees to retain.
+#'
+#' @examples
+#' true_theta <- runif(10, min = -3.5, max = 3.5)
+#' resp_science <- makeTest(itempool_science, info_type = "FISHER", true_theta = true_theta)@data
+#' constraints_science2 <- updateConstraints(constraints_science, off = c(14:20, 32:36))
+#' config_science <- createShadowTestConfig(
+#'   MIP = list(solver = "LPSOLVE"),
+#'   exposure_control = list(method = "ELIGIBILITY")
+#' )
+#' solution <- Shadow(itempool_science, config_science,
+#'   true_theta, constraints_science2, data = resp_science)
+#' p <- plotExposureRateFinal(solution, config_science, 0.25)
+#'
 #' @export
 plotExposureRateFinal <- function(object, config = NULL, max_rate = 0.25, theta = "Estimated", segment_cut = NULL, color = "red", file_pdf = NULL, width = 7, height = 6, mfrow = c(2, 4), burn = 0, retain = NULL) {
 
@@ -3002,7 +3088,7 @@ plotExposureRateFinal <- function(object, config = NULL, max_rate = 0.25, theta 
   segment_n    <- numeric(n_segment)
   segment_dist <- table(theta_segment_index)
   segment_n[as.numeric(names(segment_dist))] <- segment_dist
-  segment_index_table <- matrix(NA, n_retained, object$Constraints$test_length)
+  segment_index_table <- matrix(NA, n_retained, object$constraints$test_length)
   for (k in 1:n_segment) {
     if (k < n_segment) {
       segment_label[k] <- paste0("(", cut_lower[k], ",", cut_upper[k], "]")
@@ -3023,10 +3109,13 @@ plotExposureRateFinal <- function(object, config = NULL, max_rate = 0.25, theta 
   }
 
   segment_freq <- matrix(0, n_segment, n_segment)
-  for (i in 1:object$Constraints$test_length) {
-    segment_table <- tapply(segment_index_table[, i], theta_segment_index, table)
-    for (s in 1:n_segment) {
-      segment_freq[s, as.numeric(names(segment_table[[s]]))] <- segment_freq[s, as.numeric(names(segment_table[[s]]))] + segment_table[[s]]
+  for (i in 1:object$constraints$test_length) {
+    factor(segment_index_table[, i], levels = 1:n_segment)
+    segment_table <- tapply(factor(segment_index_table[, i], levels = 1:n_segment), theta_segment_index, table)
+    for (s in 1:length(segment_table)) {
+      idx_r <- as.numeric(names(segment_table)[s])
+      idx_c <- as.numeric(names(segment_table[[s]]))
+      segment_freq[idx_r, idx_c] <- segment_freq[idx_r, idx_c] + segment_table[[s]]
     }
   }
 
@@ -3067,7 +3156,11 @@ plotExposureRateFinal <- function(object, config = NULL, max_rate = 0.25, theta 
   if (!is.null(file_pdf)) {
     pdf(file = file_pdf, width = width, height = height)
   }
+
+  old_mfrow <- par()$mfrow
+  on.exit(par(mfrow = old_mfrow))
   par(mfrow = mfrow)
+
   plotER(ni, exposure_rate, exposure_rate_final, max_rate = max_rate, title = paste0("Overall (N = ", n_retained, ")"), color = color)
   for (k in 1:n_segment) {
     plotER(
@@ -3121,6 +3214,8 @@ plotExposureRateFinalFlag <- function(object, pool, theta = seq(-3, 3, .1), flag
     pdf(file = file_pdf, width = width, height = height)
   }
 
+  old_mfrow <- par()$mfrow
+  on.exit(par(mfrow = old_mfrow))
   par(mfrow = mfrow)
 
   for (k in 1:n_segment) {
@@ -3154,7 +3249,7 @@ plotExposureRateFinalFlag <- function(object, pool, theta = seq(-3, 3, .1), flag
 #' Draw item information plots.
 #'
 #' @param object An \code{\linkS4class{item_pool}} object.
-#' @param theta A theta grid.
+#' @param theta A theta grid. Default is \code{seq(-3, 3, .1)}.
 #' @param info_type Type of information.
 #' @param select A vector of indices identifying the items to subset.
 #' @param file_pdf If supplied a filename, save as a PDF file.
@@ -3163,8 +3258,13 @@ plotExposureRateFinalFlag <- function(object, pool, theta = seq(-3, 3, .1), flag
 #' @param height Width of graphics device.
 #' @param mfrow Number of multiple figures defined as c(nrow, ncol).
 #'
+#' @examples
+#' subitempool <- subsetItemPool(itempool_science, 1:8)
+#' plotInfo(subitempool)
+#'
 #' @export
-plotInfo <- function(object, theta, info_type = "FISHER", select = NULL, file_pdf = NULL, color = "blue", width = 7, height = 6, mfrow = c(2, 4)) {
+
+plotInfo <- function(object, theta = seq(-3, 3, .1), info_type = "FISHER", select = NULL, file_pdf = NULL, color = "blue", width = 7, height = 6, mfrow = c(2, 4)) {
   if (toupper(info_type) == "FISHER") {
     info <- calcFisher(object, theta)
   } else {
@@ -3175,7 +3275,10 @@ plotInfo <- function(object, theta, info_type = "FISHER", select = NULL, file_pd
     pdf(file = file_pdf, width = width, height = height)
   }
 
+  old_mfrow <- par()$mfrow
+  on.exit(par(mfrow = old_mfrow))
   par(mfrow = mfrow)
+
   items <- 1:object@ni
   if (!is.null(select) && all(select %in% items)) {
     items <- select
@@ -3201,6 +3304,7 @@ plotInfo <- function(object, theta, info_type = "FISHER", select = NULL, file_pd
 #' @param color Plotting color.
 #' @param width Width of the graphics device.
 #' @param height Height of the graphics device.
+
 plotInfoOverlay <- function(object, theta, info_type = "FISHER", select = NULL, file_pdf = NULL, color = "red", width = 7, height = 6) {
 
   if (toupper(info_type) == "FISHER") {
@@ -3238,6 +3342,9 @@ plotInfoOverlay <- function(object, theta, info_type = "FISHER", select = NULL, 
 #' @param mean Mean of the distribution.
 #' @param sd Standard deviation of the distribution.
 #'
+#' @examples
+#' lnHyperPars(.5, 1)
+#'
 #' @export
 lnHyperPars <- function(mean, sd) {
   location <- log(mean^2 / sqrt(sd^2 + mean^2))
@@ -3251,6 +3358,9 @@ lnHyperPars <- function(mean, sd) {
 #'
 #' @param mean Mean of the distribution.
 #' @param sd Standard deviation of the distribution.
+#'
+#' @examples
+#' logitHyperPars(.5, 1)
 #'
 #' @export
 logitHyperPars <- function(mean, sd) {
@@ -3279,6 +3389,9 @@ logitHyperPars <- function(mean, sd) {
 #'
 #' @param pool An \code{\linkS4class{item_pool}} object.
 #' @param n_sample An integer as the number of sampled parameters.
+#'
+#' @examples
+#' ipar <- iparPosteriorSample(itempool_science, 5)
 #'
 #' @export
 iparPosteriorSample <- function(pool, n_sample = 500) {
@@ -3348,6 +3461,7 @@ iparPosteriorSample <- function(pool, n_sample = 500) {
 #'
 #' @examples
 #' p <- plotMaxInfo(itempool_science, constraints_science)
+#'
 #' @export
 plotMaxInfo <- function(pool, constraints, theta = seq(-3, 3, .5)) {
   idx_n_items <- which(toupper(constraints$constraints[["WHAT"]]) == "ITEM" &

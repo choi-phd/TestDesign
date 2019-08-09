@@ -20,9 +20,12 @@ An \linkS4class{item_pool} object.
 Read item parameters from a .csv file or a data.frame and create an \linkS4class{item_pool} class.
 }
 \examples{
-\donttest{
-itempool_science <- loadItemPool("itempool_science.csv")
-}
+## Write to tempdir() and clean afterwards
+f <- file.path(tempdir(), "itempool_science.csv")
+write.csv(itempool_science_raw, f, row.names = FALSE)
+itempool_science <- loadItemPool(f)
+file.remove(f)
+
 }
 \seealso{
 \link{dataset_science} for example usage.

@@ -353,6 +353,14 @@ setClass("config_Shadow",
 #' @param theta_grid A numeric vector. Theta values to represent the continuum.
 #' @param audit_trail Set \code{TRUE} to generate audit trails.
 #'
+#' @examples
+#' cfg1 <- createShadowTestConfig(refresh_policy = list(
+#'   method = "STIMULUS"
+#' ))
+#' cfg2 <- createShadowTestConfig(refresh_policy = list(
+#'   method = "POSITION",
+#'   position = c(1, 5, 9)
+#' ))
 #' @rdname createShadowTestConfig
 #' @export
 createShadowTestConfig <- function(item_selection = NULL, content_balancing = NULL, MIP = NULL, MCMC = NULL,

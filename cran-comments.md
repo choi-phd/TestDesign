@@ -1,98 +1,88 @@
 ## Resubmission of 'TestDesign' package
 
-The following issues raised by Martina Schmirl in email correspondence have been addressed in 'TestDesign' v0.2.1:
-
-```
-Please provide a link to the gurobi website to the description field of 
-your DESCRIPTION file in the form
-<http:...> or <https:...>
-with angle brackets for auto-linking and no space after 'http:' and
-'https:'.
-```
-* Added a link in the description field of DESCRIPTION file.
-
-```
-Please write references in the form
-authors (year) <doi:...>
-authors (year) <arXiv:...>
-authors (year, ISBN:...)
-with no space after 'doi:', 'arXiv:' and angle brackets for auto-linking.
-```
-* Added references in appropriate forms.
-
-```
-Please always write package names, software names and API names in 
-single quotes in the title and the description field.
-f.i.: --> 'gurobi'
-```
-* Added single quotes in the description field of DESCRIPTION file.
-
-```
-Please make sure that you do not change the user's options, par or 
-working directory. If you really have to do so, please ensure with an 
-*immediate* call of on.exit() that the settings are reset when the 
-function is exited, similar to this:
-...
-oldpar <- par(mfrow = c(1,2))
-on.exit(par(oldpar))
-...
-f.i.: plotShadow-methods
-```
-* Added `oldpar` caching and `on.exit` revert calls for all 5 cases of `par()` calls across the package: Lines 210, 367, 514, 1777, 2910 in `shadow_functions.R` (line numbers based on the revised codes).
-
-```
-Are you sure you want to set a seed to 1 within a function? manuscript.R
-```
-* Removed `manuscript.R` from the package. These are not necessary to be included in the package.
-
-```
-Please ensure that your functions do not write by default or in your 
-examples/vignettes/tests in the user's home filespace (including the 
-package directory and getwd()). That is not allowed by CRAN policies. 
-Please only write/save files if the user has specified a directory in 
-the function themselves. Therefore please omit any default path = 
-getwd() in writing functions.
-In your examples/vignettes/tests you can write to tempdir().
-
-\dontrun{} should be only used if the example really cannot be executed 
-(e.g. because of missing additional software, missing API keys, ...) by 
-the user. That's why wrapping examples in \dontrun{} adds the comment 
-("# Not run:") as a warning for the user.
-```
-* Removed the write calls in `datasets.R` and moved them into dataset descriptions instead. The instructions for write calls are necessary to make the expected formats available to the user.
+The following issues raised by Martina Schmirl in email correspondence have been addressed in 'TestDesign' v0.2.2:
 
 ```
 Please add small executable examples in your Rd-files to illustrate the 
 use of the exported function but also enable automatic testing.
-When creating the examples please keep in mind that the structure
-would be desirable:
-\examples{
-    examples for users and checks:
-    executable in < 5 sec
-    \dontshow{
-        examples for checks:
-        executable in < 5 sec together with the examples above
-        not shown to users
-    }
-    \donttest{
-        further examples for users; not used for checks
-        (f.i. data loading examples )
-    }
-    if(interactive()){
-        functions not intended for use in scripts, or are supposed
-    to only run interactively (f.i. shiny)
-    not used for checks
-    }
-}
 ```
-* Changed the examples in `datasets.R` to `\donttest`.
-* Added an example for `ATA()` in `ATA_class.R`.
-* Added examples for `loadItemPool()`, `loadItemAttrib()`, `loadStAttrib()`, `loadConstraints()`, `updateConstraints()` in `loading_functions.R`.
 
-The following functional changes were made to improve usability.
+* All exported functions now provide their respective examples and tests. The example codes are intended to serve as user examples and automatic tests.
+* Added examples for the following exported functions:
+* * `buildConstraints()`
+* * `createShadowTestConfig()`
+* * `iparPosteriorSample()`
+* * `lnHyperPars()`
+* * `logitHyperPars()`
+* * `makeItemPoolCluster()`
+* * `mle()`
+* * `OAT()`
+* * `plotCAT()`
+* * `plotExposure()`
+* * `plotExposureRateFinal()`
+* * `plotInfo()`
+* * `plotShadow()`
+* * Operators in `item_pool.operators.Rd`
 
-* `createStaticTestConfig()` now fills targetWeight automatically to 1s if not explicitly supplied. Unit tests in `tests/testthat/test-ATA.R` were appropriately changed to reflect this.
+* Removed all cpp functions from exports. Wrapper functions are available for the user.
+* Also removed `addTrans()` and `plotRMSE()` from exports.
 
-The following cosmetic changes were made to improve consistency.
+```
+>    Removed the write calls in `datasets.R` and moved
+>    them into dataset descriptions instead. The
+>    instructions for write calls are necessary to make
+>    the expected formats available to the
+>    user.
 
-* Changed the examples in `item_functions.R` to use `<-` for assignments.
+Why? the write() functions are not part of your package and ppl are 
+aware of write() functions?
+Anyway, you can still keep those in the example. Just write to 
+tempdir(). The user can change the direction themselves.
+```
+
+* Changed the examples in `datasets.R` to write to `tempdir()` and clean afterwards. Removed `\donttest` to make them also used in automatic testing.
+
+The following changes were made to fix errors.
+
+* `on.exit(par())` calls now only use relevant parameters. Only the relevant parameters are cached.
+* Line 293 in `loading_functions.R`: assign empty strings to `ONOFF` column to avoid errors from trying parse `NA` values.
+* Fixed segment table population in  `plotExposure()` and `plotExposureRateFinal()`.
+* Operators documented in `item_pool.operators.Rd` now work correctly.
+* Updated `inst/REFERENCES.bib`.
+
+The following changes were made to improve usability.
+
+* `subsetItemPool()` now also accepts a single numeric value for `select` argument.
+* `plotInfo()` now has a default value for `theta` argument.
+
+
+## Test environments
+
+* local OS X install, R 3.6.1
+* local Windows 10 install, R 3.6.1
+* Windows Server 2008 R2 SP1, R-devel, 32/64 bit (on R-hub)
+* Ubuntu Linux 16.04 LTS, R-release, GCC (on R-hub)
+* Fedora Linux, R-devel, clang, gfortran (on R-hub)
+* Debian Linux, R-devel, GCC ASAN/UBSAN (on R-hub)
+
+
+## R CMD check results
+
+```
+Status: 1 NOTE
+
+* checking CRAN incoming feasibility ... NOTE
+Maintainer: 'Seung W. Choi <schoi@austin.utexas.edu>'
+  
+New submission
+
+Suggests or Enhances not in mainstream repositories:
+  gurobi
+```
+
+Information on obtaining 'gurobi' is described in `DESCRIPTON`.
+
+
+## Downstream dependencies
+
+There are no downstream dependencies of the previous version of 'TestDesign' v0.2.1.
