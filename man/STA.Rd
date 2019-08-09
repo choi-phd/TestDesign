@@ -41,3 +41,14 @@ A list containing the optimal solution and pertinent diagnostics.
 \description{
 Perform Shadow Test Assembly (STA) for computerized adaptive testing.
 }
+\references{
+{
+  \insertRef{van_der_linden_model_1998}{TestDesign}
+
+  \insertRef{van_der_linden_optimal_1998}{TestDesign}
+
+  \insertRef{van_der_linden_optimal_2000}{TestDesign}
+
+  \insertRef{van_der_linden_linear_2005}{TestDesign}
+}
+}
