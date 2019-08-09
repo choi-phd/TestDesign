@@ -90,7 +90,7 @@ setClass("config_ATA",
 #' }
 #'
 #' @examples
-#' cfg.1 <- createStaticTestConfig(
+#' cfg1 <- createStaticTestConfig(
 #'   list(
 #'     method = "MAXINFO",
 #'     info_type = "FISHER",
@@ -99,7 +99,7 @@ setClass("config_ATA",
 #'   )
 #' )
 #'
-#' cfg.2 <- createStaticTestConfig(
+#' cfg2 <- createStaticTestConfig(
 #'   list(
 #'     method = "TIF",
 #'     info_type = "FISHER",
@@ -109,7 +109,7 @@ setClass("config_ATA",
 #'   )
 #' )
 #'
-#' cfg.3 <- createStaticTestConfig(
+#' cfg3 <- createStaticTestConfig(
 #'   list(
 #'     method = "TCC",
 #'     info_type = "FISHER",

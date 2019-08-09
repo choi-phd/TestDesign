@@ -3,7 +3,7 @@ NULL
 
 #' @noRd
 
-isOptimal <- function(status, solver){
+isOptimal <- function(status, solver) {
   is_optimal <- FALSE
   if (toupper(solver) == "SYMPHONY") {
     is_optimal <- names(status) %in% c("TM_OPTIMAL_SOLUTION_FOUND", "PREP_OPTIMAL_SOLUTION_FOUND")

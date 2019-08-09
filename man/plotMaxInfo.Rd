@@ -18,4 +18,5 @@ Draw a plot of maximum attainable information given the imposed constraints.
 }
 \examples{
 p <- plotMaxInfo(itempool_science, constraints_science)
+
 }
