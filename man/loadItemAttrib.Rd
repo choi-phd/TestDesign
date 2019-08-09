@@ -18,10 +18,17 @@ A \code{data.frame} containing parsed dataset.
 Read item attributes from specified file.
 }
 \examples{
-\donttest{
-itempool_science <- loadItemPool("itempool_science.csv")
-itemattrib_science <- loadItemAttrib("itemattrib_science.csv", itempool_science)
-}
+## Write to tempdir() and clean afterwards
+f <- file.path(tempdir(), "itempool_science.csv")
+write.csv(itempool_science_raw, f, row.names = FALSE)
+itempool_science <- loadItemPool(f)
+file.remove(f)
+
+f <- file.path(tempdir(), "itemattrib_science.csv")
+write.csv(itemattrib_science_raw, f, row.names = FALSE)
+itemattrib_science <- loadItemAttrib(f, itempool_science)
+file.remove(f)
+
 }
 \seealso{
 \link{dataset_science} for example usage.

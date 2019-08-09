@@ -14,3 +14,7 @@ lnHyperPars(mean, sd)
 \description{
 Calculate hyperparameters for log-normal distribution.
 }
+\examples{
+lnHyperPars(.5, 1)
+
+}

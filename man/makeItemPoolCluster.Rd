@@ -14,3 +14,7 @@ makeItemPoolCluster(pools, names = NULL)
 \description{
 Create a \code{\linkS4class{pool_cluster}} object.
 }
+\examples{
+
+cluster <- makeItemPoolCluster(c(itempool_science, itempool_reading))
+}
