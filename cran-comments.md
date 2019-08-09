@@ -48,6 +48,7 @@ The following changes were made to fix errors.
 * Line 293 in `loading_functions.R`: assign empty strings to `ONOFF` column to avoid errors from trying parse `NA` values.
 * Fixed segment table population in  `plotExposure()` and `plotExposureRateFinal()`.
 * Operators documented in `item_pool.operators.Rd` now work correctly.
+* Updated `inst/REFERENCES.bib`.
 
 The following changes were made to improve usability.
 
