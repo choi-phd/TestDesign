@@ -21,15 +21,15 @@ NULL
 #'
 #' @return A list containing the optimal solution and pertinent diagnostics.
 #'
-#' @references
-#' \insertRef{van_der_linden_model_1998}{TestDesign}
+#' @references{
+#'   \insertRef{van_der_linden_model_1998}{TestDesign}
 #'
-#' \insertRef{van_der_linden_optimal_1998}{TestDesign}
+#'   \insertRef{van_der_linden_optimal_1998}{TestDesign}
 #'
-#' \insertRef{van_der_linden_optimal_2000}{TestDesign}
+#'   \insertRef{van_der_linden_optimal_2000}{TestDesign}
 #'
-#' \insertRef{van_der_linden_linear_2005}{TestDesign}
-#'
+#'   \insertRef{van_der_linden_linear_2005}{TestDesign}
+#' }
 #' @export
 STA <- function(constraints, objective, solver = "Lpsolve", xmat = NULL, xdir = NULL, xrhs = NULL,
   maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = -2, time_limit = 5, gap_limit = -1, ...) {
@@ -1504,15 +1504,15 @@ makeItemPoolCluster <- function(pools, names = NULL) {
 #' @param data Numeric. A matrix containing item response data.
 #' @param session Used to communicate with a Shiny session.
 #'
-#' @references
-#' \insertRef{van_der_linden_model_1998}{TestDesign}
+#' @references{
+#'   \insertRef{van_der_linden_model_1998}{TestDesign}
 #'
-#' \insertRef{van_der_linden_optimal_1998}{TestDesign}
+#'   \insertRef{van_der_linden_optimal_1998}{TestDesign}
 #'
-#' \insertRef{van_der_linden_optimal_2000}{TestDesign}
+#'   \insertRef{van_der_linden_optimal_2000}{TestDesign}
 #'
-#' \insertRef{van_der_linden_linear_2005}{TestDesign}
-#'
+#'   \insertRef{van_der_linden_linear_2005}{TestDesign}
+#' }
 #' @rdname Shadow-methods
 #'
 #' @examples
