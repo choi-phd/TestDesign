@@ -23,6 +23,9 @@ NULL
 #'   \item{\code{obj_value}} Objective value of the solution. Identical to the one above.
 #'   \item{\code{solve_time}} The elapsed time in running the solver.
 #' }
+#' 
+#' @references
+#' \insertRef{van_der_linden_linear_2005}{TestDesign}
 #'
 #' @examples
 #' config_science <- createStaticTestConfig(
