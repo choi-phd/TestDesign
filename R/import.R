@@ -33,7 +33,7 @@ NULL
   solver_names <- c("lpSolve", "Rsymphony", "gurobi", "Rglpk")
 
   for (s in solver_names) {
-    x <- find.package(s, quiet = T)
+    x <- find.package(s, quiet = TRUE)
     if (length(x) > 0) {
       status <- green("v")
       v <- packageVersion(s)
