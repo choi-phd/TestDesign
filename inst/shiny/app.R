@@ -1,9 +1,9 @@
-library(shiny)
-library(shinythemes)
-library(shinyWidgets)
-library(shinyjs)
+library(shiny, quietly = TRUE)
+library(shinythemes, quietly = TRUE)
+library(shinyWidgets, quietly = TRUE)
+suppressPackageStartupMessages(library(shinyjs, quietly = TRUE, warn.conflicts = FALSE))
+library(DT, quietly = TRUE, warn.conflicts = FALSE)
 library(TestDesign)
-library(DT)
 
 accepted_files <- c("text/csv", "text/comma-separated-values,text/plain", ".csv")
 css_y <- "overflow-y:scroll; max-height: 65vh"
@@ -12,26 +12,28 @@ ui <- fluidPage(
   theme = shinytheme("lumen"),
   shinyjs::useShinyjs(),
   tags$head(
-    tags$style(
-      HTML("
-        h3 { font-size: 125%; }
-        i { display: inline-block; margin-right: 0.2em; }
-        label, .form-group, .progress { margin-bottom: 0px; }
-        .btn { width: 100%; }"
-      )
-    )
+    tags$style(type = "text/css", "h2 { font-size: 170%; }"),
+    tags$style(type = "text/css", "h3 { font-size: 125%; }"),
+    tags$style(type = "text/css", "i { display: inline-block; margin-right: 0.2em; }"),
+    tags$style(type = "text/css", "label, .form-group, .progress { margin-bottom: 0px; }"),
+    tags$style(type = "text/css", "select { min-width: 100%; max-width: 100%; }"),
+    tags$style(type = "text/css", ".span4 { min-width: 100%; max-width: 100%; }"),
+    tags$style(type = "text/css", ".well { min-width: 100%; max-width: 100%; }"),
+    tags$style(type = "text/css", "#text_output { background-color: rgba(64,64,64,1); color: cyan; overflow-y:auto; height: 64px; display: flex; flex-direction: column-reverse; }"),
+    tags$style(type = "text/css", ".shiny-notification { font-size: 20px; background-color: #404040; color: #fff; }"),
+    tags$style(type = "text/css", "#shiny-notification-panel { width: 500px; }"),
+    tags$style(type = "text/css", ".progress { margin-top: -10px; margin-bottom: 15px }"),
+    tags$style(type = "text/css", ".progress-number { font-size: 0px; }"),
+    tags$style(type = "text/css", ".btn { width: 100%; border-width: 1px; }"),
+    tags$style(type = "text/css", ".btn:hover { border-width: 1px; margin-top: 0px; }"),
+    tags$style(type = "text/css", ".well { -webkit-box-shadow: inset 0 0px 0 rgba(0,0,0,0.05); box-shadow: inset 0 0px 0 rgba(0,0,0,0.05); }")
   ),
 
   titlePanel("TestDesign: Optimal Test Assembly"),
 
   sidebarLayout(
     sidebarPanel(
-      tags$head(
-        tags$style(type = "text/css", "select { min-width: 100%; max-width: 100%; }"),
-        tags$style(type = "text/css", ".span4 { min-width: 100%; max-width: 100%; }"),
-        tags$style(type = "text/css", ".well { min-width: 100%; max-width: 100%; }")
-      ),
-
+      width = 3,
       dropdownButton(
         h3(""),
         label = "Load files",
@@ -45,10 +47,17 @@ ui <- fluidPage(
           inputId = "clear_files", justified = TRUE,
           choices = c("Clear files"), checkIcon = list(yes = icon("trash-alt"), no = icon("trash-alt"))
         ),
-        circle = FALSE, status = "primary", icon = icon("file-import"), width = "100%"
+        circle = FALSE, icon = icon("file-import"), width = "100%"
       ),
 
-      h3(""),
+      disabled(
+        checkboxGroupButtons(
+          inputId = "run_solver", justified = TRUE,
+          choices = c("Run Solver"), checkIcon = list(yes = icon("drafting-compass"), no = icon("drafting-compass")), status = "primary"
+        )
+      ),
+
+      progressBar(id = "pb", value = 0, total = 1, display_pct = TRUE),
 
       radioGroupButtons(
         inputId = "problemtype", justified = TRUE,
@@ -66,6 +75,8 @@ ui <- fluidPage(
       textInput("thetas", label = h3("Theta values (comma-separated)"), value = "0, 1"),
       textInput("targets", label = h3("Target values (comma-separated)"), value = "15, 20"),
 
+      h3(""),
+
       checkboxGroupButtons(
         inputId = "maxinfo_button", justified = TRUE,
         choices = c("Check obtainable info range"), checkIcon = list(yes = icon("less-than-equal"), no = icon("less-than-equal"))
@@ -80,7 +91,7 @@ ui <- fluidPage(
         textInput("simulee_theta_params", label = "True theta distribution parameters", value = "0, 1"),
         textInput("n_simulees", label = h3("# of simulees"), value = "1"),
         textInput("simulee_id", label = h3("Display plots for simulee:"), value = "1"),
-        circle = FALSE, icon = icon("database"), width = "100%", status = "danger"
+        circle = FALSE, icon = icon("database"), width = "100%"
       ),
 
       dropdownButton(
@@ -144,17 +155,8 @@ ui <- fluidPage(
     ),
 
     mainPanel(
-      tags$head(
-        tags$style(type = "text/css", "#text_output {background-color: rgba(64,64,64,1); color: cyan;}")
-      ),
-      disabled(
-        checkboxGroupButtons(
-          inputId = "run_solver", justified = TRUE,
-          choices = c("Run Solver"), checkIcon = list(yes = icon("drafting-compass"), no = icon("drafting-compass")), status = "primary"
-        )
-      ),
+      width = 9,
       verbatimTextOutput("text_output", placeholder = TRUE),
-      progressBar(id = "pb", value = 0, total = 1, display_pct = TRUE),
       hr(),
       tabsetPanel(
         id = "tabs",
@@ -195,6 +197,12 @@ assignObject <- function(obj, objname, desc) {
   message(tmp)
 }
 
+updateLogs <- function(v, newlog) {
+  v$logs      <- c(v$logs, newlog)
+  v$logs_text <- paste0(v$logs, collapse = "\n")
+  return(v)
+}
+
 server <- function(input, output, session) {
   v <- reactiveValues(
     itempool_exists = FALSE,
@@ -210,7 +218,7 @@ server <- function(input, output, session) {
       v$itempool <- try(loadItemPool(input$itempool_file$datapath))
       if (class(v$itempool) == "item_pool") {
         v$itempool_exists <- TRUE
-        v$text <- "Step 1. Item parameter file: OK"
+        v <- updateLogs(v, "Step 1. Item parameter file: OK")
         v$ipar <- v$itempool@ipar
         assignObject(v$itempool,
           "shiny_itempool",
@@ -220,7 +228,7 @@ server <- function(input, output, session) {
           "Item parameters (matrix)")
       } else {
         v$itempool_exists <- FALSE
-        v$text <- "Step 1 Error: Item parameters are not in the correct format."
+        v <- updateLogs(v, "Error: Item parameters are not in the correct format. See ?dataset_science for details.")
       }
     }
   })
@@ -230,13 +238,13 @@ server <- function(input, output, session) {
       v$itempool <- try(loadItemPool(input$itempool_file$datapath, se.file.csv = input$itemse_file$datapath))
       if (class(v$itempool) == "item_pool") {
         v$itemse_exists <- TRUE
-        v$text <- "Optional Step. Item standard error file: OK"
+        v <- updateLogs(v, "Item standard error file: OK")
         assignObject(v$itempool,
           "shiny_itempool",
           "Item parameters (full object)")
       } else {
         v$itemse_exists <- FALSE
-        v$text <- "Optional Step Error: Item standard errors are not in the correct format."
+        v <- updateLogs(v, "Error: Item standard errors are not in the correct format.")
       }
     }
   })
@@ -246,13 +254,13 @@ server <- function(input, output, session) {
       v$itemattrib <- try(loadItemAttrib(input$itemattrib_file$datapath, v$itempool))
       if (class(v$itemattrib) == "data.frame") {
         v$itemattrib_exists <- TRUE
-        v$text <- "Step 2. Item attributes: OK"
+        v <- updateLogs(v, "Step 2. Item attributes: OK")
         assignObject(v$itemattrib,
           "shiny_itemattrib",
           "Item attributes")
       } else {
         v$itemattrib_exists <- FALSE
-        v$text <- "Step 2 Error: Item attributes are not in the correct format."
+        v <- updateLogs(v, "Step 2 Error: Item attributes are not in the correct format. See ?dataset_science for details.")
       }
     }
   })
@@ -262,13 +270,13 @@ server <- function(input, output, session) {
       v$stimattrib <- try(loadStAttrib(input$stimattrib_file$datapath, v$itemattrib))
       if (class(v$stimattrib) == "data.frame") {
         v$stimattrib_exists <- TRUE
-        v$text <- "Optional Step. Stimulus attributes: OK"
+        v <- updateLogs(v, "Stimulus attributes: OK")
         assignObject(v$stimattrib,
           "shiny_stimattrib",
           "Stimulus attributes")
       } else {
         v$stimattrib_exists <- FALSE
-        v$text <- "Optional Step Error: Stimulus attributes are not in the correct format."
+        v <- updateLogs(v, "Error: Stimulus attributes are not in the correct format. See ?dataset_reading for details.")
       }
     }
   })
@@ -282,7 +290,7 @@ server <- function(input, output, session) {
       }
       if (class(v$const) == "list") {
         v$const_exists <- TRUE
-        v$text <- "Step 3. Constraints: OK. Press button to run solver."
+        v <- updateLogs(v, "Step 3. Constraints: OK. Press the button to run solver.")
         v$constraints <- v$const$constraints
         assignObject(v$const,
           "shiny_const",
@@ -292,7 +300,7 @@ server <- function(input, output, session) {
           "Constraints (data.frame)")
       } else {
         v$const_exists <- FALSE
-        v$text <- "Step 3 Error: Constraints are not in the correct format."
+        v <- updateLogs(v, "Error: Constraints are not in the expected format. See ?dataset_science for details.")
       }
       shinyjs::toggleState("run_solver", v$const_exists)
     }
@@ -303,13 +311,13 @@ server <- function(input, output, session) {
       v$content <- try(read.csv(input$content_file$datapath))
       if (class(v$content) == "data.frame") {
         v$content_exists <- TRUE
-        v$text <- "Optional Step. Item contents: OK."
+        v <- updateLogs(v, "Item contents: OK.")
         assignObject(v$content,
           "shiny_content",
           "Item contents")
       } else {
         v$content_exists <- FALSE
-        v$text <- "Optional Step Error: Item contents are not in the correct format."
+        v <- updateLogs(v, "Error: Item contents are not in the expected format. See ?dataset_fatigue for details.")
       }
     }
   })
@@ -331,7 +339,7 @@ server <- function(input, output, session) {
     v$stimattrib_exists <- FALSE
     v$const_exists      <- FALSE
     v$content_exists    <- FALSE
-    v$text <- "Files cleared."
+    v <- updateLogs(v, "Files cleared.")
     updateCheckboxGroupButtons(
       session = session,
       inputId = "clear_files",
@@ -374,21 +382,32 @@ server <- function(input, output, session) {
       if (!is.null(v$fit)) {
         if (parseText(input$simulee_id)) {
           eval(parse(text = sprintf("simulee_id = c(%s)[1]", input$simulee_id)))
+          if (is.null(simulee_id)) {
+            simulee_id <- 1
+          }
           v$simulee_id <- min(simulee_id, v$n_simulees)
+          message(v$simulee_id)
+          message(input$simulee_id)
+          updateTextInput(session, "simulee_id", value = as.character(v$simulee_id))
         } else {
-          v$text <- "Number of simulees should be an integer."
+          v <- updateLogs(v, "The index of simulee to plot should be an integer.")
           break
         }
-        v$plot_output <- plotCAT(v$fit, v$simulee_id)
-        assignObject(v$plot_output,
-          sprintf("shiny_audit_plot_%i", v$simulee_id),
-          sprintf("Audit trail plot for simulee %i", v$simulee_id)
-        )
-        v$shadow_chart <- plotShadow(v$fit, v$const, v$simulee_id)
-        assignObject(v$shadow_chart,
-          sprintf("shiny_shadow_chart_%i", v$simulee_id),
-          sprintf("Shadow test chart for simulee %i", v$simulee_id)
-        )
+
+        if (input$simulee_id != "") {
+          v <- updateLogs(v, sprintf("Created plots for simulee %i", v$simulee_id))
+
+          v$plot_output <- plotCAT(v$fit, v$simulee_id)
+          assignObject(v$plot_output,
+            sprintf("shiny_audit_plot_%i", v$simulee_id),
+            sprintf("Audit trail plot for simulee %i", v$simulee_id)
+          )
+          v$shadow_chart <- plotShadow(v$fit, v$const, v$simulee_id)
+          assignObject(v$shadow_chart,
+            sprintf("shiny_shadow_chart_%i", v$simulee_id),
+            sprintf("Shadow test chart for simulee %i", v$simulee_id)
+          )
+        }
       }
     }
   })
@@ -401,6 +420,7 @@ server <- function(input, output, session) {
         "shiny_info_range_plot",
         "Obtainable info range plot"
       )
+      v <- updateLogs(v, "Info range plot is printed on the 'Main' tab.")
     }
     updateCheckboxGroupButtons(
       session = session,
@@ -423,7 +443,7 @@ server <- function(input, output, session) {
         if (parseText(input$thetas)) {
           eval(parse(text = sprintf("conf@item_selection$target_location <- c(%s)", input$thetas)))
         } else {
-          v$text <- "Theta values should be comma-separated numbers."
+          v <- updateLogs(v, "Theta values should be comma-separated numbers.")
           break
         }
 
@@ -433,7 +453,7 @@ server <- function(input, output, session) {
             if (parseText(input$targets)) {
             eval(parse(text = sprintf("conf@item_selection$target_value <- c(%s)", input$targets)))
           } else {
-            v$text <- "Target values should be comma-separated numbers."
+            v <- updateLogs(v, "Target values should be comma-separated numbers.")
             break
           }
         } else {
@@ -447,7 +467,12 @@ server <- function(input, output, session) {
           "config_ATA object"
         )
 
-        v$text <- "Solving.."
+        progress <- Progress$new(session)
+        on.exit(progress$close())
+        progress$set(
+          message = 'Computing..',
+          detail = 'This may take a while.'
+        )
 
         v$fit <- ATA(conf, v$const, T)
         assignObject(v$fit,
@@ -456,11 +481,11 @@ server <- function(input, output, session) {
         )
 
         if (is.null(v$fit$MIP)) {
-          v$text <- "Solver did not find a solution. Try relaxing the target values."
+          v <- updateLogs(v, "Solver did not find a solution. Try relaxing the target values.")
         } else {
           v$plot_output <- v$fit$plot
 
-          v$text <- sprintf("%-10s : solved in %3.3fs", conf@MIP$solver, v$fit$solve_time[3])
+          v <- updateLogs(v, sprintf("%-10s : solved in %3.3fs", conf@MIP$solver, v$fit$solve_time[3]))
           v$selected_index <- which(v$fit$MIP$solution == 1)
           v$selected_index <- v$selected_index[v$selected_index <= v$itempool@ni]
 
@@ -489,13 +514,13 @@ server <- function(input, output, session) {
 
         if (input$exposure_method == "BIGM-BAYESIAN") {
           if (!input$interim_method %in% c("FB", "EB")) {
-            v$text <- "BIGM-BAYESIAN requires interim methods FB or EB."
+            v <- updateLogs(v, "BIGM-BAYESIAN requires interim methods FB or EB.")
             break
           }
         }
         if (input$exposure_method == "BIGM-BAYESIAN") {
           if (!input$item_selection_method %in% c("FB", "EB")) {
-            v$text <- "BIGM-BAYESIAN requires item selection method FB or EB."
+            v <- updateLogs(v, "BIGM-BAYESIAN requires item selection method FB or EB.")
             break
           }
         }
@@ -505,21 +530,21 @@ server <- function(input, output, session) {
           v$n_simulees <- min(100, v$n_simulees)
           updateProgressBar(session = session, id = "pb", value = 0, total = v$n_simulees)
         } else {
-          v$text <- "Number of simulees should be an integer."
+          v <- updateLogs(v, "Number of simulees should be an integer.")
           break
         }
 
         if (parseText(input$simulee_id)) {
           eval(parse(text = sprintf("v$simulee_id <- c(%s)[1]", input$simulee_id)))
         } else {
-          v$text <- "Number of simulees should be an integer."
+          v <- updateLogs(v, "Number of simulees should be an integer.")
           break
         }
 
         if (parseText(input$simulee_theta_params)) {
           eval(parse(text = sprintf("v$simulee_theta_params <- c(%s)[1:2]", input$simulee_theta_params)))
         } else {
-          v$text <- "Theta distribution parameters should be two numbers."
+          v <- updateLogs(v, "Theta distribution parameters should be two numbers.")
           break
         }
 
@@ -550,11 +575,11 @@ server <- function(input, output, session) {
         if (parseText(input$exposure_acc_factor)) {
           eval(parse(text = sprintf("conf@exposure_control$acceleration_factor <- c(%s)[1]", input$exposure_acc_factor)))
           if (conf@exposure_control$acceleration_factor < 1) {
-            v$text <- "Acceleration factor should be a number at least 1."
+            v <- updateLogs(v, "Acceleration factor should be a number larger than or equal to 1.0.")
             break
           }
         } else {
-          v$text <- "Acceleration factor should be a number at least 1."
+          v <- updateLogs(v, "Acceleration factor should be a number larger than or equal to 1.0.")
           break
         }
 
@@ -568,34 +593,34 @@ server <- function(input, output, session) {
         conf@item_selection$method <- input$item_selection_method
 
         if (conf@interim_theta$method == "FB" & v$itemse_exists == F) {
-          v$text <- "FB interim method requires the standard errors associated with the item parameters."
+          v <- updateLogs(v, "FB interim method requires the standard errors to be supplied.")
           break
         }
         if (parseText(input$interim_prior_par)) {
           eval(parse(text = sprintf("conf@interim_theta$prior_par = c(%s)", input$interim_prior_par)))
           if (length(conf@interim_theta$prior_par) != 2) {
-            v$text <- "Interim prior parameters should be two numeric values."
+            v <- updateLogs(v, "Interim prior parameters should be two values.")
             break
           }
         } else {
-          v$text <- "Interim prior parameters should be two values."
+          v <- updateLogs(v, "Interim prior parameters should be two values.")
           break
         }
         if (parseText(input$final_prior_par)) {
           eval(parse(text = sprintf("conf@final_theta$prior_par = c(%s)", input$final_prior_par)))
           if (length(conf@final_theta$prior_par) != 2) {
-            v$text <- "Final prior parameters should be two values."
+            v <- updateLogs(v, "Final prior parameters should be two values.")
             break
           }
         } else {
-          v$text <- "Final prior parameters should be two values."
+          v <- updateLogs(v, "Final prior parameters should be two values.")
           break
         }
 
 
         if (conf@item_selection$method == "FB") {
           if (conf@interim_theta$method != "FB") {
-            v$text <- "FB item selection method requires FB interim method."
+            v <- updateLogs(v, "FB item selection method requires FB interim method.")
             break
           }
         }
@@ -606,7 +631,7 @@ server <- function(input, output, session) {
           eval(parse(text = sprintf("conf@refresh_policy$interval <- c(%s)[1]", input$refresh_interval)))
           if (conf@refresh_policy$interval < 1 |
               all(conf@refresh_policy$interval != as.integer(conf@refresh_policy$interval))) {
-            v$text <- "Refresh interval should be an integer of at least 1."
+            v <- updateLogs(v, "Refresh interval should be an integer larger than or equal to 1.")
             break
           }
         }
@@ -614,14 +639,14 @@ server <- function(input, output, session) {
           eval(parse(text = sprintf("conf@refresh_policy$position <- c(%s)", input$refresh_position)))
           if (conf@refresh_policy$position < 1 |
               all(conf@refresh_policy$position != as.integer(conf@refresh_policy$position))) {
-            v$text <- "Refresh positions should be comma-separated integers of at least 1."
+            v <- updateLogs(v, "Refresh positions should be comma-separated integers larger than or equal to 1.")
             break
           }
         }
         if (parseText(input$refresh_threshold)) {
           eval(parse(text = sprintf("conf@refresh_policy$threshold <- c(%s)[1]", input$refresh_threshold)))
           if (conf@refresh_policy$threshold < 0) {
-            v$text <- "Refresh threshold should be a positive value."
+            v <- updateLogs(v, "Refresh threshold should be a positive value.")
             break
           }
         }
@@ -635,7 +660,13 @@ server <- function(input, output, session) {
           "config_Shadow object"
         )
 
-        v$text <- "Simulating.."
+        progress <- Progress$new(session)
+        on.exit(progress$close())
+        progress$set(
+          message = 'Computing..',
+          detail = 'This may take a while.'
+        )
+
         v$time <- Sys.time()
         v$fit <- Shadow(v$itempool, conf, true_theta, constraints = v$const, prior = NULL, prior_par = c(0, 1), data = resp_data, session = session)
         message("\n")
@@ -644,24 +675,26 @@ server <- function(input, output, session) {
           "Simulation result"
         )
 
-        if (v$simulee_id > v$n_simulees) {
-          v$simulee_id <- 1
-        }
+        v$time <- difftime(Sys.time(), v$time, units = "secs")
 
-        v$plot_output <- plotCAT(v$fit, v$simulee_id)
-        assignObject(v$plot_output,
-          sprintf("shiny_thetaplot_%i", v$simulee_id),
-          sprintf("Theta plot for simulee %i", v$simulee_id)
-        )
-        v$shadow_chart <- plotShadow(v$fit, v$const, v$simulee_id)
-        assignObject(v$shadow_chart,
-          sprintf("shiny_shadow_chart_%i", v$simulee_id),
-          sprintf("Shadow test chart for simulee %i", v$simulee_id)
-        )
+        v <- updateLogs(v, sprintf("%-10s: simulation complete in %3.3fs", conf@MIP$solver, v$time))
 
-        v$time <- Sys.time() - v$time
+        updateTextInput(session, "simulee_id", value = "")
 
-        v$text <- sprintf("%-10s: simulation complete in %3.3fs", conf@MIP$solver, v$time)
+        #if (v$simulee_id > v$n_simulees) {
+        #  v$simulee_id <- 1
+        #}
+
+        #v$plot_output <- plotCAT(v$fit, v$simulee_id)
+        #assignObject(v$plot_output,
+        #  sprintf("shiny_thetaplot_%i", v$simulee_id),
+        #  sprintf("Theta plot for simulee %i", v$simulee_id)
+        #)
+        #v$shadow_chart <- plotShadow(v$fit, v$const, v$simulee_id)
+        #assignObject(v$shadow_chart,
+        #  sprintf("shiny_shadow_chart_%i", v$simulee_id),
+        #  sprintf("Shadow test chart for simulee %i", v$simulee_id)
+        #)
       }
     }
 
@@ -678,7 +711,7 @@ server <- function(input, output, session) {
   output$table_stimattrib  <- renderDT(parseObject(v$stimattrib), options = list(pageLength = 100))
   output$table_constraints <- renderDT(parseObject(v$constraints), options = list(pageLength = 100))
   output$results      <- renderDT(parseObject(v$results), options = list(pageLength = 100))
-  output$text_output  <- renderText(parseObject(v$text))
+  output$text_output  <- renderText(parseObject(v$logs_text))
   output$plot_output  <- renderPlot(parseObject(v$plot_output))
   output$shadow_chart <- renderPlot(parseObject(v$shadow_chart))
 
