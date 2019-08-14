@@ -12,8 +12,10 @@ ui <- fluidPage(
   theme = shinytheme("lumen"),
   shinyjs::useShinyjs(),
   tags$head(
+    tags$style(type = "text/css", ":focus { outline: -webkit-focus-ring-color auto 0px; }"),
     tags$style(type = "text/css", "h2 { font-size: 170%; }"),
-    tags$style(type = "text/css", "h3 { font-size: 125%; }"),
+    tags$style(type = "text/css", "h3 { font-size: 12px; font-weight: bold; text-transform: uppercase; color: #555555; }"),
+    tags$style(type = "text/css", ".form-control { font-size: 12px; text-transform: uppercase; color: #555555; }"),
     tags$style(type = "text/css", "i { display: inline-block; margin-right: 0.2em; }"),
     tags$style(type = "text/css", "label, .form-group, .progress { margin-bottom: 0px; }"),
     tags$style(type = "text/css", "select { min-width: 100%; max-width: 100%; }"),
@@ -22,8 +24,10 @@ ui <- fluidPage(
     tags$style(type = "text/css", "#text_output { background-color: rgba(64,64,64,1); color: cyan; overflow-y:auto; height: 64px; display: flex; flex-direction: column-reverse; }"),
     tags$style(type = "text/css", ".shiny-notification { font-size: 20px; background-color: #404040; color: #fff; }"),
     tags$style(type = "text/css", "#shiny-notification-panel { width: 500px; }"),
-    tags$style(type = "text/css", ".progress { margin-top: -10px; margin-bottom: 15px }"),
+    tags$style(type = "text/css", ".progress { margin-top: -10px; margin-bottom: 15px; }"),
+    tags$style(type = "text/css", ".progress.shiny-file-input-progress { margin-top: 0px; }"),
     tags$style(type = "text/css", ".progress-number { font-size: 0px; }"),
+    tags$style(type = "text/css", ".progress-bar { -webkit-box-shadow: inset 0 0px 0 rgba(0,0,0,0.15); box-shadow: inset 0 0px 0 rgba(0,0,0,0.15);}"),
     tags$style(type = "text/css", ".btn { width: 100%; border-width: 1px; }"),
     tags$style(type = "text/css", ".btn:hover { border-width: 1px; margin-top: 0px; }"),
     tags$style(type = "text/css", ".well { -webkit-box-shadow: inset 0 0px 0 rgba(0,0,0,0.05); box-shadow: inset 0 0px 0 rgba(0,0,0,0.05); }")
@@ -79,7 +83,7 @@ ui <- fluidPage(
 
       checkboxGroupButtons(
         inputId = "maxinfo_button", justified = TRUE,
-        choices = c("Check obtainable info range"), checkIcon = list(yes = icon("less-than-equal"), no = icon("less-than-equal"))
+        choices = c("Obtainable info range"), checkIcon = list(yes = icon("less-than-equal"), no = icon("less-than-equal"))
       ),
 
       dropdownButton(
@@ -157,7 +161,6 @@ ui <- fluidPage(
     mainPanel(
       width = 9,
       verbatimTextOutput("text_output", placeholder = TRUE),
-      hr(),
       tabsetPanel(
         id = "tabs",
         tabPanel("Main",                value = 1, plotOutput("plot_output", width = "100%", height = "65vh")),
@@ -381,13 +384,11 @@ server <- function(input, output, session) {
     if (v$problemtype == 2) {
       if (!is.null(v$fit)) {
         if (parseText(input$simulee_id)) {
-          eval(parse(text = sprintf("simulee_id = c(%s)[1]", input$simulee_id)))
+          eval(parse(text = sprintf("simulee_id <- c(%s)[1]", input$simulee_id)))
           if (is.null(simulee_id)) {
             simulee_id <- 1
           }
           v$simulee_id <- min(simulee_id, v$n_simulees)
-          message(v$simulee_id)
-          message(input$simulee_id)
           updateTextInput(session, "simulee_id", value = as.character(v$simulee_id))
         } else {
           v <- updateLogs(v, "The index of simulee to plot should be an integer.")
@@ -485,7 +486,7 @@ server <- function(input, output, session) {
         } else {
           v$plot_output <- v$fit$plot
 
-          v <- updateLogs(v, sprintf("%-10s : solved in %3.3fs", conf@MIP$solver, v$fit$solve_time[3]))
+          v <- updateLogs(v, sprintf("%-10s: solved in %3.3fs", conf@MIP$solver, v$fit$solve_time[3]))
           v$selected_index <- which(v$fit$MIP$solution == 1)
           v$selected_index <- v$selected_index[v$selected_index <= v$itempool@ni]
 
@@ -681,20 +682,6 @@ server <- function(input, output, session) {
 
         updateTextInput(session, "simulee_id", value = "")
 
-        #if (v$simulee_id > v$n_simulees) {
-        #  v$simulee_id <- 1
-        #}
-
-        #v$plot_output <- plotCAT(v$fit, v$simulee_id)
-        #assignObject(v$plot_output,
-        #  sprintf("shiny_thetaplot_%i", v$simulee_id),
-        #  sprintf("Theta plot for simulee %i", v$simulee_id)
-        #)
-        #v$shadow_chart <- plotShadow(v$fit, v$const, v$simulee_id)
-        #assignObject(v$shadow_chart,
-        #  sprintf("shiny_shadow_chart_%i", v$simulee_id),
-        #  sprintf("Shadow test chart for simulee %i", v$simulee_id)
-        #)
       }
     }
 
