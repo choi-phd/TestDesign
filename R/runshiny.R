@@ -22,21 +22,13 @@ OAT <- function() {
     stop("Could not find the application directory. Try re-installing `TestDesign`.", call. = FALSE)
   }
 
+  pkgs <- c("shiny", "shinythemes", "shinyWidgets", "shinyjs", "DT")
   tmp <- NULL
-  if (!requireNamespace("shiny")) {
-    tmp <- c(tmp, "'shiny'")
-  }
-  if (!requireNamespace("shinythemes")) {
-    tmp <- c(tmp, "'shinythemes'")
-  }
-  if (!requireNamespace("shinyWidgets")) {
-    tmp <- c(tmp, "'shinyWidgets'")
-  }
-  if (!requireNamespace("shinyjs")) {
-    tmp <- c(tmp, "'shinyjs'")
-  }
-  if (!requireNamespace("DT")) {
-    tmp <- c(tmp, "'DT'")
+
+  for (pkg in pkgs) {
+    if (length(find.package(pkg, quiet = TRUE)) == 0) {
+      tmp <- c(tmp, sprintf("'%s'", pkg))
+    }
   }
 
   if (!is.null(tmp)) {
