@@ -41,6 +41,7 @@ tempdir(). The user can change the direction themselves.
 ```
 
 * Changed the examples in `datasets.R` to write to `tempdir()` and clean afterwards. Removed `\donttest` to make them also used in automatic testing.
+* "Export Data" in Shiny app now does not change the working directory when writing to `tempdir()`, and cleans afterwards.
 
 The following changes were made to fix errors.
 
@@ -54,16 +55,18 @@ The following changes were made to improve usability.
 
 * `subsetItemPool()` now also accepts a single numeric value for `select` argument.
 * `plotInfo()` now has a default value for `theta` argument.
-
+* Shiny app now loads required namespaces silently.
+* Shiny app now has a cleaner layout.
 
 ## Test environments
 
 * local OS X install, R 3.6.1
 * local Windows 10 install, R 3.6.1
-* Windows Server 2008 R2 SP1, R-devel, 32/64 bit (on R-hub)
-* Ubuntu Linux 16.04 LTS, R-release, GCC (on R-hub)
-* Fedora Linux, R-devel, clang, gfortran (on R-hub)
-* Debian Linux, R-devel, GCC ASAN/UBSAN (on R-hub)
+* R-hub with ``rhub::check_for_cran(env_vars = c(`_R_CHECK_FORCE_SUGGESTS_` = "false"))``:
+* * Fedora Linux, R-devel, clang, gfortran
+* * Ubuntu Linux 16.04 LTS, R-release, GCC
+* * Windows Server 2008 R2 SP1, R-devel, 32/64 bit
+* * Debian Linux, R-devel, GCC ASAN/UBSAN
 
 
 ## R CMD check results
