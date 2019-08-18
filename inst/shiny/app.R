@@ -3,7 +3,7 @@ library(shinythemes, quietly = TRUE)
 library(shinyWidgets, quietly = TRUE)
 suppressPackageStartupMessages(library(shinyjs, quietly = TRUE, warn.conflicts = FALSE))
 library(DT, quietly = TRUE, warn.conflicts = FALSE)
-library(TestDesign)
+library(TestDesign, quietly = TRUE)
 
 accepted_files <- c("text/csv", "text/comma-separated-values,text/plain", ".csv")
 css_y <- "overflow-y:scroll; max-height: 65vh"
@@ -25,12 +25,21 @@ ui <- fluidPage(
     tags$style(type = "text/css", ".shiny-notification { font-size: 20px; background-color: #404040; color: #fff; }"),
     tags$style(type = "text/css", "#shiny-notification-panel { width: 500px; }"),
     tags$style(type = "text/css", ".progress { margin-top: -10px; margin-bottom: 15px; }"),
-    tags$style(type = "text/css", ".progress.shiny-file-input-progress { margin-top: 0px; }"),
+    tags$style(type = "text/css", ".progress.shiny-file-input-progress { margin-top: 0px; margin-bottom: 0px; }"),
     tags$style(type = "text/css", ".progress-number { font-size: 0px; }"),
-    tags$style(type = "text/css", ".progress-bar { -webkit-box-shadow: inset 0 0px 0 rgba(0,0,0,0.15); box-shadow: inset 0 0px 0 rgba(0,0,0,0.15);}"),
-    tags$style(type = "text/css", ".btn { width: 100%; border-width: 1px; }"),
+    tags$style(type = "text/css", ".progress-bar { line-height: 1.5em; -webkit-box-shadow: inset 0 0px 0 rgba(0,0,0,0.15); box-shadow: inset 0 0px 0 rgba(0,0,0,0.15);}"),
+    tags$style(type = "text/css", ".btn { width: 100%; border-width: 1px; padding: 7px 12px; }"),
     tags$style(type = "text/css", ".btn:hover { border-width: 1px; margin-top: 0px; }"),
-    tags$style(type = "text/css", ".well { -webkit-box-shadow: inset 0 0px 0 rgba(0,0,0,0.05); box-shadow: inset 0 0px 0 rgba(0,0,0,0.05); }")
+    tags$style(type = "text/css", ".well { -webkit-box-shadow: inset 0 0px 0 rgba(0,0,0,0.05); box-shadow: inset 0 0px 0 rgba(0,0,0,0.05); }"),
+    tags$style(type = "text/css", ".form-control { -webkit-box-shadow: inset 0 0px 0 rgba(0,0,0,0.075); box-shadow: inset 0 0px 0 rgba(0,0,0,0.075); }"),
+    tags$style(type = "text/css", ".form-control[readonly] { background-color: transparent; height: auto; }"),
+    tags$style(type = "text/css", ".form-control[disabled] { background-color: #ffffff; opacity: 0.2; }"),
+    tags$style(type = "text/css", ".progress { -webkit-box-shadow: inset 0 2px 0 rgba(0,0,0,0.1); box-shadow: inset 0 0px 0 rgba(0,0,0,0.1); }"),
+    tags$style(type = "text/css", "button { overflow: hidden; }"),
+    tags$style(type = "text/css", ".btn.disabled { opacity: 0.2; }"),
+    tags$style(type = "text/css", "html { overflow:scroll; overflow-x:hidden; }"),
+    tags$style(type = "text/css", "::-webkit-scrollbar { width:0; background:transparent; }"),
+    tags$style(type = "text/css", "label { font-weight: bold; text-transform: uppercase; font-size: 12px; }")
   ),
 
   titlePanel("TestDesign: Optimal Test Assembly"),
@@ -204,6 +213,10 @@ updateLogs <- function(v, newlog) {
   v$logs      <- c(v$logs, newlog)
   v$logs_text <- paste0(v$logs, collapse = "\n")
   return(v)
+}
+
+getTempFilePath <- function(fname) {
+  return(file.path(tempdir(), fname))
 }
 
 server <- function(input, output, session) {
@@ -707,38 +720,38 @@ server <- function(input, output, session) {
       paste("data-", Sys.Date(), ".zip", sep = "")
     },
     content = function(fname) {
+
       fs <- c()
-      setwd(tempdir())
 
       if (!is.null(v$ipar)) {
-        path <- "raw_data_item_params.csv"
+        path <- getTempFilePath("raw_data_item_params.csv")
         fs <- c(fs, path)
         write.csv(v$ipar, path, row.names = F)
       }
       if (!is.null(v$itemattrib)) {
-        path <- "raw_data_item_attribs.csv"
+        path <- getTempFilePath("raw_data_item_attribs.csv")
         fs <- c(fs, path)
         write.csv(v$itemattrib, path, row.names = F)
       }
       if (!is.null(v$stimattrib)) {
-        path <- "raw_data_stim_attribs.csv"
+        path <- getTempFilePath("raw_data_stim_attribs.csv")
         fs <- c(fs, path)
         write.csv(v$stimattrib, path, row.names = F)
       }
       if (!is.null(v$constraints)) {
-        path <- "raw_data_constraints.csv"
+        path <- getTempFilePath("raw_data_constraints.csv")
         fs <- c(fs, path)
         write.csv(v$constraints, path, row.names = F)
       }
       if (!is.null(v$content)) {
-        path <- "raw_data_content.csv"
+        path <- getTempFilePath("raw_data_content.csv")
         fs <- c(fs, path)
         write.csv(v$content, path, row.names = F)
       }
 
       if (v$problemtype == 1) {
         if (!is.null(v$plot_output)) {
-          path <- "plot.pdf"
+          path <- getTempFilePath("plot.pdf")
           fs <- c(fs, path)
           pdf(path)
           print(v$plot_output)
@@ -746,14 +759,14 @@ server <- function(input, output, session) {
         }
         if (v$content_exists) {
           if (!is.null(v$selected_item_contents)) {
-            path <- "selected_item_contents.csv"
+            path <- getTempFilePath("selected_item_contents.csv")
             fs <- c(fs, path)
             write.csv(v$selected_item_contents, path, row.names = F)
           }
         }
         if (!is.null(v$selected_item_attribs)) {
           if (!is.null(v$selected_index)) {
-            path <- "selected_item_attribs.csv"
+            path <- getTempFilePath("selected_item_attribs.csv")
             fs <- c(fs, path)
             write.csv(v$selected_item_attribs, path, row.names = F)
           }
@@ -762,19 +775,23 @@ server <- function(input, output, session) {
 
       if (v$problemtype == 2) {
         if (!is.null(v$fit)) {
-          path <- sprintf("audit_plot_%i.pdf", v$simulee_id)
+          path <- getTempFilePath(sprintf("audit_plot_%i.pdf", v$simulee_id))
           fs <- c(fs, path)
           pdf(path)
           print(v$plot_output)
           dev.off()
-          path <- sprintf("shadow_chart_%i.pdf", v$simulee_id)
+          path <- getTempFilePath(sprintf("shadow_chart_%i.pdf", v$simulee_id))
           fs <- c(fs, path)
           pdf(path)
           print(v$shadow_chart)
           dev.off()
         }
       }
-      zip(zipfile = fname, files = fs, flags = "-j")
+
+      if (length(fs) > 0) {
+        zip(zipfile = fname, files = fs, flags = "-j")
+        file.remove(fs)
+      }
     },
     contentType = "application/zip"
   )
