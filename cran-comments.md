@@ -54,7 +54,8 @@ The following changes were made to improve usability.
 
 * `subsetItemPool()` now also accepts a single numeric value for `select` argument.
 * `plotInfo()` now has a default value for `theta` argument.
-
+* Shiny app now loads required namespaces silently.
+* Shiny app now has a cleaner layout.
 
 ## Test environments
 

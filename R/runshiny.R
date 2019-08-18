@@ -39,6 +39,7 @@ OAT <- function() {
     tmp <- paste0("install.packages(c(", tmp, "))")
     message(tmp)
   } else {
+    requireNamespace("shiny", quietly = TRUE)
     shiny::runApp(app_dir, display.mode = "normal")
   }
 }

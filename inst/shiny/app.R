@@ -3,7 +3,7 @@ library(shinythemes, quietly = TRUE)
 library(shinyWidgets, quietly = TRUE)
 suppressPackageStartupMessages(library(shinyjs, quietly = TRUE, warn.conflicts = FALSE))
 library(DT, quietly = TRUE, warn.conflicts = FALSE)
-library(TestDesign)
+library(TestDesign, quietly = TRUE)
 
 accepted_files <- c("text/csv", "text/comma-separated-values,text/plain", ".csv")
 css_y <- "overflow-y:scroll; max-height: 65vh"
@@ -27,10 +27,15 @@ ui <- fluidPage(
     tags$style(type = "text/css", ".progress { margin-top: -10px; margin-bottom: 15px; }"),
     tags$style(type = "text/css", ".progress.shiny-file-input-progress { margin-top: 0px; }"),
     tags$style(type = "text/css", ".progress-number { font-size: 0px; }"),
-    tags$style(type = "text/css", ".progress-bar { -webkit-box-shadow: inset 0 0px 0 rgba(0,0,0,0.15); box-shadow: inset 0 0px 0 rgba(0,0,0,0.15);}"),
-    tags$style(type = "text/css", ".btn { width: 100%; border-width: 1px; }"),
+    tags$style(type = "text/css", ".progress-bar { line-height: 1.5em; -webkit-box-shadow: inset 0 0px 0 rgba(0,0,0,0.15); box-shadow: inset 0 0px 0 rgba(0,0,0,0.15);}"),
+    tags$style(type = "text/css", ".btn { width: 100%; border-width: 1px; padding: 7px 12px; }"),
     tags$style(type = "text/css", ".btn:hover { border-width: 1px; margin-top: 0px; }"),
-    tags$style(type = "text/css", ".well { -webkit-box-shadow: inset 0 0px 0 rgba(0,0,0,0.05); box-shadow: inset 0 0px 0 rgba(0,0,0,0.05); }")
+    tags$style(type = "text/css", ".well { -webkit-box-shadow: inset 0 0px 0 rgba(0,0,0,0.05); box-shadow: inset 0 0px 0 rgba(0,0,0,0.05); }"),
+    tags$style(type = "text/css", ".form-control { -webkit-box-shadow: inset 0 0px 0 rgba(0,0,0,0.075); box-shadow: inset 0 0px 0 rgba(0,0,0,0.075); }"),
+    tags$style(type = "text/css", ".form-control[readonly] { height: auto; }"),
+    tags$style(type = "text/css", ".progress { -webkit-box-shadow: inset 0 2px 0 rgba(0,0,0,0.1); box-shadow: inset 0 0px 0 rgba(0,0,0,0.1); }"),
+    tags$style(type = "text/css", "button { overflow: hidden; }"),
+    tags$style(type = "text/css", ".btn.disabled { opacity: 0.2; }")
   ),
 
   titlePanel("TestDesign: Optimal Test Assembly"),
