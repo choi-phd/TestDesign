@@ -41,6 +41,7 @@ tempdir(). The user can change the direction themselves.
 ```
 
 * Changed the examples in `datasets.R` to write to `tempdir()` and clean afterwards. Removed `\donttest` to make them also used in automatic testing.
+* "Export Data" in Shiny app now does not change the working directory when writing to `tempdir()`, and cleans afterwards.
 
 The following changes were made to fix errors.
 

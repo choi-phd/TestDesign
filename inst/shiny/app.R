@@ -215,6 +215,10 @@ updateLogs <- function(v, newlog) {
   return(v)
 }
 
+getTempFilePath <- function(fname) {
+  return(file.path(tempdir(), fname))
+}
+
 server <- function(input, output, session) {
   v <- reactiveValues(
     itempool_exists = FALSE,
@@ -716,38 +720,38 @@ server <- function(input, output, session) {
       paste("data-", Sys.Date(), ".zip", sep = "")
     },
     content = function(fname) {
+
       fs <- c()
-      setwd(tempdir())
 
       if (!is.null(v$ipar)) {
-        path <- "raw_data_item_params.csv"
+        path <- getTempFilePath("raw_data_item_params.csv")
         fs <- c(fs, path)
         write.csv(v$ipar, path, row.names = F)
       }
       if (!is.null(v$itemattrib)) {
-        path <- "raw_data_item_attribs.csv"
+        path <- getTempFilePath("raw_data_item_attribs.csv")
         fs <- c(fs, path)
         write.csv(v$itemattrib, path, row.names = F)
       }
       if (!is.null(v$stimattrib)) {
-        path <- "raw_data_stim_attribs.csv"
+        path <- getTempFilePath("raw_data_stim_attribs.csv")
         fs <- c(fs, path)
         write.csv(v$stimattrib, path, row.names = F)
       }
       if (!is.null(v$constraints)) {
-        path <- "raw_data_constraints.csv"
+        path <- getTempFilePath("raw_data_constraints.csv")
         fs <- c(fs, path)
         write.csv(v$constraints, path, row.names = F)
       }
       if (!is.null(v$content)) {
-        path <- "raw_data_content.csv"
+        path <- getTempFilePath("raw_data_content.csv")
         fs <- c(fs, path)
         write.csv(v$content, path, row.names = F)
       }
 
       if (v$problemtype == 1) {
         if (!is.null(v$plot_output)) {
-          path <- "plot.pdf"
+          path <- getTempFilePath("plot.pdf")
           fs <- c(fs, path)
           pdf(path)
           print(v$plot_output)
@@ -755,14 +759,14 @@ server <- function(input, output, session) {
         }
         if (v$content_exists) {
           if (!is.null(v$selected_item_contents)) {
-            path <- "selected_item_contents.csv"
+            path <- getTempFilePath("selected_item_contents.csv")
             fs <- c(fs, path)
             write.csv(v$selected_item_contents, path, row.names = F)
           }
         }
         if (!is.null(v$selected_item_attribs)) {
           if (!is.null(v$selected_index)) {
-            path <- "selected_item_attribs.csv"
+            path <- getTempFilePath("selected_item_attribs.csv")
             fs <- c(fs, path)
             write.csv(v$selected_item_attribs, path, row.names = F)
           }
@@ -771,19 +775,23 @@ server <- function(input, output, session) {
 
       if (v$problemtype == 2) {
         if (!is.null(v$fit)) {
-          path <- sprintf("audit_plot_%i.pdf", v$simulee_id)
+          path <- getTempFilePath(sprintf("audit_plot_%i.pdf", v$simulee_id))
           fs <- c(fs, path)
           pdf(path)
           print(v$plot_output)
           dev.off()
-          path <- sprintf("shadow_chart_%i.pdf", v$simulee_id)
+          path <- getTempFilePath(sprintf("shadow_chart_%i.pdf", v$simulee_id))
           fs <- c(fs, path)
           pdf(path)
           print(v$shadow_chart)
           dev.off()
         }
       }
-      zip(zipfile = fname, files = fs, flags = "-j")
+
+      if (length(fs) > 0) {
+        zip(zipfile = fname, files = fs, flags = "-j")
+        file.remove(fs)
+      }
     },
     contentType = "application/zip"
   )
