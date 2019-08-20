@@ -136,7 +136,7 @@ if (FALSE) {
 
   set.seed(1)
 
-  true_theta <- runif(1, min = -3.5, max = 3.5)
+  true_theta <- runif(10, min = -3.5, max = 3.5)
   resp_fatigue <- makeTest(itempool_fatigue, true_theta = true_theta)@data
 
   config_fatigue <- createShadowTestConfig(refresh_policy = list(
@@ -153,8 +153,8 @@ if (FALSE) {
   dev.off()
 
   setEPS()
-  postscript("R/fatigue.shadowplot.eps", width = 8, height = 6)
-  p <- plotShadow(solution, constraints_fatigue, 1)
+  postscript("figures/fatigue_shadowplot.eps", width = 8, height = 6)
+  p <- plotShadow(solution, constraints_fatigue, 2)
   p
   dev.off()
 
