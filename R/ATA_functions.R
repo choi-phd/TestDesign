@@ -23,7 +23,7 @@ NULL
 #'   \item{\code{obj_value}} Objective value of the solution. Identical to the one above.
 #'   \item{\code{solve_time}} The elapsed time in running the solver.
 #' }
-#' 
+#'
 #' @references
 #' \insertRef{van_der_linden_linear_2005}{TestDesign}
 #'
@@ -186,6 +186,8 @@ setMethod(
         by = "STID", all.x = TRUE, sort = FALSE
       )
     }
+
+    MIP$solution[types == "B"] <- round(MIP$solution[types == "B"], 0)
 
     selected  <- constraints$item_attrib[which(MIP$solution[1:constraints$ni] == 1), ]
     obj_value <- sum(obj[which(MIP$solution[1:constraints$ni] == 1)])
