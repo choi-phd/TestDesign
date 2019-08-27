@@ -31,6 +31,7 @@ NULL
 #'   \insertRef{van_der_linden_linear_2005}{TestDesign}
 #' }
 #' @export
+
 STA <- function(constraints, objective, solver = "Lpsolve", xmat = NULL, xdir = NULL, xrhs = NULL,
   maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = -2, time_limit = 5, gap_limit = -1, ...) {
 
@@ -42,6 +43,7 @@ STA <- function(constraints, objective, solver = "Lpsolve", xmat = NULL, xdir = 
   } else {
     stop(sprintf("length of objective must be %s", constraints$nv))
   }
+
   if (!is.null(xmat) && !is.null(xdir) && !is.null(xrhs)) {
     mat <- rbind(constraints$mat, xmat)
     dir <- c(constraints$dir, xdir)
@@ -51,45 +53,74 @@ STA <- function(constraints, objective, solver = "Lpsolve", xmat = NULL, xdir = 
     dir <- constraints$dir
     rhs <- constraints$rhs
   }
+
   solve_time <- proc.time()
+
   if (toupper(solver) == "SYMPHONY") {
+
     MIP <- Rsymphony::Rsymphony_solve_LP(obj, mat, dir, rhs, max = maximize, types = "B", write_mps = mps, write_lp = lp, verbosity = verbosity, time_limit = time_limit, gap_limit = gap_limit, ...)
+
     if (!isOptimal(MIP$status, solver)) {
       warning(sprintf("MIP solver returned non-zero status: %s", names(MIP$status)))
-      return(list(status = MIP$status, MIP = NULL, selected = NULL))
+      return(list(status = MIP$status, MIP = MIP, selected = NULL))
     }
+
   } else if (toupper(solver) == "GUROBI") {
+
     dir[dir == "=="] <- "="
     invisible(capture.output(MIP <- gurobi::gurobi(list(obj = obj, modelsense = "max", rhs = rhs, sense = dir, vtype = "B", A = mat), params = NULL, env = NULL)))
+
     if (!isOptimal(MIP$status, solver)) {
       warning(sprintf("MIP solver returned non-zero status: %s", MIP$status))
-      return(list(status = MIP$status, MIP = NULL, selected = NULL))
+      return(list(status = MIP$status, MIP = MIP, selected = NULL))
     }
+
     MIP[["solution"]] <- MIP$x
+
   } else if (toupper(solver) == "GLPK") {
+
     MIP <- Rglpk::Rglpk_solve_LP(obj, mat, dir, rhs, max = maximize, types = "B", control = list(verbose = ifelse(verbosity != -2, TRUE, FALSE), presolve = TRUE, tm_limit = time_limit))
     if (!isOptimal(MIP$status, solver)) {
       warning(sprintf("MIP solver returned non-zero status: %s", MIP$status))
-      return(list(status = MIP$status, MIP = NULL, selected = NULL))
+      return(list(status = MIP$status, MIP = MIP, selected = NULL))
     }
+
   } else if (toupper(solver) == "LPSOLVE") {
+
     MIP <- lp(direction = ifelse(maximize, "max", "min"), obj, mat, dir, rhs, all.bin = TRUE, presolve = TRUE)
     if (!isOptimal(MIP$status, solver)) {
       warning(sprintf("MIP solver returned non-zero status: %s", MIP$status))
-      return(list(status = MIP$status, MIP = NULL, selected = NULL))
+      return(list(status = MIP$status, MIP = MIP, selected = NULL))
     }
+
   } else {
     stop("solver must be Symphony, Gurobi, glpk, lpSolve")
   }
+
+  MIP$solution <- round(MIP$solution, 0)
+
   solve_time <- (proc.time() - solve_time)["elapsed"]
-  if (!is.null(constraints$stimulus_order)) {
-    constraints$item_attrib <- merge(constraints$item_attrib, constraints$st_attrib[c("STINDEX", "STID", constraints$stim_order_by)], by = "STID", all.x = TRUE, sort = FALSE)
+
+  if (!is.null(constraints$stim_order)) {
+    constraints$item_attrib$tmpsort <- 1:constraints$ni
+    constraints$item_attrib <- merge(constraints$item_attrib,
+      constraints$st_attrib[c("STINDEX", "STID", constraints$stim_order_by)],
+      by = "STID", all.x = TRUE, sort = FALSE)
+    constraints$item_attrib <- constraints$item_attrib[order(constraints$item_attrib$tmpsort), ]
+    constraints$item_attrib <- constraints$item_attrib[, !(colnames(constraints$item_attrib) %in% 'tmpsort')]
   } else if (!is.null(constraints$st_attrib)) {
-    constraints$item_attrib <- merge(constraints$item_attrib, constraints$st_attrib[c("STINDEX", "STID")], by = "STID", all.x = TRUE, sort = FALSE)
+    constraints$item_attrib$tmpsort <- 1:constraints$ni
+    constraints$item_attrib <- merge(constraints$item_attrib,
+      constraints$st_attrib[c("STINDEX", "STID")],
+      by = "STID", all.x = TRUE, sort = FALSE)
+    constraints$item_attrib <- constraints$item_attrib[order(constraints$item_attrib$tmpsort), ]
+    constraints$item_attrib <- constraints$item_attrib[, !(colnames(constraints$item_attrib) %in% 'tmpsort')]
   }
+
   index_solution <- which(MIP$solution[1:constraints$ni] == 1)
   info <- obj[index_solution]
   shadow_test <- data.frame(cbind(constraints$item_attrib[index_solution, ], info))
+
   if (constraints$set_based) {
     if (any(is.na(shadow_test[["STID"]]))) {
       shadow_test <- data.frame(cbind(.sequence = 1:nrow(shadow_test), shadow_test))
@@ -123,8 +154,10 @@ STA <- function(constraints, objective, solver = "Lpsolve", xmat = NULL, xdir = 
       shadow_test <- shadow_test[order(shadow_test[["info"]], decreasing = TRUE), ]
     }
   }
+
   obj_value <- sum(info)
   row.names(shadow_test) <- 1:nrow(shadow_test)
+
   return(list(status = MIP$status, MIP = MIP, shadow_test = shadow_test, obj_value = obj_value, solve_time = solve_time))
 }
 
@@ -1537,6 +1570,7 @@ setMethod(
   f = "Shadow",
   signature = "item_pool",
   definition = function(object, config, true_theta, constraints, prior, prior_par, data, session) {
+
     if (!validObject(config)) {
       stop("invalid configuration options specified")
     }
@@ -1563,52 +1597,77 @@ setMethod(
     } else if (!is.null(data)) {
       nj <- nrow(data)
     } else {
-      stop("either true_theta or data should be provided at a minimum")
+      stop("either true_theta or data must be supplied")
     }
 
     nq        <- length(config@theta_grid)
     min_theta <- min(config@theta_grid)
     max_theta <- max(config@theta_grid)
+
     exposure_control <- toupper(config@exposure_control$method)
     refresh_policy   <- toupper(config@refresh_policy$method)
+
     if (toupper(config@content_balancing$method %in% c("STA", "SHADOW", "SHADOWTEST", "SHADOW TEST"))) {
+
       if (is.null(constraints)) {
         stop("constraints must not be NULL for STA")
-      } else {
-        sta <- TRUE
-        set_based    <- constraints$set_based
-        test_length  <- constraints$test_length
-        min_ni       <- constraints$test_length
-        max_ni       <- constraints$test_length
-        refresh_shadow <- rep(FALSE, test_length)
-        if (refresh_policy %in% c("ALWAYS", "THRESHOLD")) {
-          refresh_shadow <- rep(TRUE, test_length)
-        } else if (refresh_policy == "POSITION") {
-          if (all(config@refresh_policy$position %in% 1:test_length)) {
-            refresh_shadow[config@refresh_policy$position] <- TRUE
-          } else {
-            stop("invalid entries in config@refresh_policy$position")
-          }
-        } else if (refresh_policy %in% c("INTERVAL", "INTERVAL-THRESHOLD")) {
-          if (config@refresh_policy$interval >= 1 && config@refresh_policy$interval <= test_length) {
-            refresh_shadow[seq(1, test_length, config@refresh_policy$interval)] <- TRUE
-          } else {
-            stop("invalid entry in config@refresh_policy$interval")
-          }
-        } else if (refresh_policy %in% c("STIMULUS", "SET", "PASSAGE")) {
-          if (!set_based) {
-            stop("set_based must be TRUE when config@refresh_policy$method equals \"STIMULUS\"")
-          }
-        }
-        refresh_shadow[1] <- TRUE
       }
+
+      sta <- TRUE
+      set_based    <- constraints$set_based
+      test_length  <- constraints$test_length
+      min_ni       <- constraints$test_length
+      max_ni       <- constraints$test_length
+
+      #####
+      ###    Mark refresh points
+      #####
+
+      refresh_shadow <- rep(FALSE, test_length)
+
+      if (refresh_policy %in% c("ALWAYS", "THRESHOLD")) {
+
+        refresh_shadow <- rep(TRUE, test_length)
+
+      } else if (refresh_policy == "POSITION") {
+
+        if (!all(config@refresh_policy$position %in% 1:test_length)) {
+          stop("config@refresh_policy$position must be within test length")
+        }
+
+        refresh_shadow[config@refresh_policy$position] <- TRUE
+
+      } else if (refresh_policy %in% c("INTERVAL", "INTERVAL-THRESHOLD")) {
+
+        if (!(config@refresh_policy$interval >= 1 && config@refresh_policy$interval > test_length)) {
+          stop("config@refresh_policy$interval must be not greater than test length, and be at least 1")
+        }
+
+        refresh_shadow[seq(1, test_length, config@refresh_policy$interval)] <- TRUE
+
+      } else if (refresh_policy %in% c("STIMULUS", "SET", "PASSAGE")) {
+
+        if (!set_based) {
+          stop("constraints$set_based must be TRUE when config@refresh_policy$method is 'STIMULUS'")
+        }
+
+      }
+
+      refresh_shadow[1] <- TRUE
+
     } else {
+
       sta <- FALSE
       set_based <- FALSE
       min_ni <- config@stopping_criterion$min_ni
       max_ni <- config@stopping_criterion$max_ni
       max_se <- config@stopping_criterion$se_threshold
+
     }
+
+    #####
+    ###    Simulate datasets with supplied values
+    #####
 
     if (!is.null(data)) {
       test <- makeTest(object, config@theta_grid, info_type = "FISHER", true_theta = NULL)
@@ -1625,6 +1684,10 @@ setMethod(
     }
 
     max_info <- max(test@info)
+
+    #####
+    ###    Priors
+    #####
 
     if (is.null(prior)) {
       if (!is.null(prior_par)) {
@@ -1659,14 +1722,22 @@ setMethod(
         ipar_list <- iparPosteriorSample(object, n_sample)
       }
     }
+
     if (!is.null(config@item_selection$initial_theta)) {
       initial_theta <- rep(config@item_selection$initial_theta, nj)
     } else {
       initial_theta <- as.vector(posterior %*% matrix(config@theta_grid, ncol = 1))
     }
+
     items_administered <- matrix(FALSE, nj, ni)
     output_list <- vector(mode = "list", length = nj)
+
     if (exposure_control %in% c("ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
+
+      #####
+      ###    Initialize segment-wise exposure rates
+      #####
+
       item_eligibility_control <- TRUE
       max_exposure_rate   <- config@exposure_control$max_exposure_rate
       fading_factor       <- config@exposure_control$fading_factor
@@ -1691,16 +1762,19 @@ setMethod(
       } else {
         pe_s <- NULL
         alpha_sjk <- NULL
-        rho_sjk <- NULL
+        rho_sjk   <- NULL
       }
 
       if (config@exposure_control$diagnostic_stats) {
+
         alpha_g_i   <- matrix(0, nrow = nj, ncol = n_segment * ni)
         epsilon_g_i <- matrix(0, nrow = nj, ncol = n_segment * ni)
+
         if (set_based) {
           alpha_g_s   <- matrix(0, nrow = nj, ncol = n_segment * ns)
           epsilon_g_s <- matrix(0, nrow = nj, ncol = n_segment * ns)
         }
+
         if (fading_factor != 1) {
           noFading_alpha_g_i   <- matrix(0, nrow = nj, ncol = n_segment * ni)
           noFading_epsilon_g_i <- matrix(0, nrow = nj, ncol = n_segment * ni)
@@ -1742,10 +1816,13 @@ setMethod(
       }
 
     } else {
+
       item_eligibility_control <- FALSE
       true_segment_count <- NULL
       est_segment_count  <- NULL
+
     }
+
     if (!is.null(config@item_selection$fixed_theta)) {
       if (length(config@item_selection$fixed_theta) == 1) {
         info_fixed_theta <- vector(mode = "list", length = nj)
@@ -1783,34 +1860,44 @@ setMethod(
         } else if (config@item_selection$info_type %in% c("MI", "MUTUAL")) {
           info <- calc_MI_FB(output@posterior_sample, ipar_list, object@NCAT, model)
         }
-      } else {
-        stop("invalid option for config@item_selection$method")
       }
       return(info)
     }
 
+    #####
+    ###    select a non-administered item with the largest information
+    #####
+
     selectItem <- function() {
+
       if (position > 1) {
         info[output@administered_item_index[1:(position - 1)]] <- -1
       }
+
       info_index    <- order(info, decreasing = TRUE)
       item_selected <- info_index[1]
+
       if (item_selected %in% output@administered_item_index[1:(position - 1)]) {
         stop(sprintf("the selected item %i has been already administered", item_selected))
       }
+
       return(item_selected)
     }
 
     selectItemShadowTest <- function() {
+
       n_remaining <- test_length - position
       new_stimulus_selected <- FALSE
       last_stimulus_index <- 0
+
       if (!set_based) {
         stimulus_selected <- NA
         stimulus_finished <- FALSE
       }
+
       if (position == 1) {
         selected <- 1
+
         if (set_based) {
           stimulus_selected <- optimal$shadow_test[["STINDEX"]][1]
           new_stimulus_selected <- TRUE
@@ -1820,6 +1907,7 @@ setMethod(
             stimulus_finished <- FALSE
           }
         }
+
       } else {
         remaining <- which(!optimal$shadow_test[["INDEX"]] %in% output@administered_item_index[1:(position - 1)])
         if (!set_based) {
@@ -1847,7 +1935,9 @@ setMethod(
           }
         }
       }
+
       item_selected <- optimal$shadow_test[["INDEX"]][selected]
+
       return(
         list(
           item_selected = item_selected,
@@ -1858,6 +1948,7 @@ setMethod(
           n_remaining = n_remaining
         )
       )
+
     }
 
     plotAuditTrail <- function() {
@@ -1897,11 +1988,12 @@ setMethod(
 
     pb <- txtProgressBar(0, nj, char = "|", style = 3)
 
-    ###########################################################################################
-    ############## FOR LOOP OVER SIMULEES #####################################################
-    ###########################################################################################
+    #####
+    ###    Loop over simulees
+    #####
 
     for (j in 1:nj) {
+
       output <- new("output_Shadow")
       output@simulee_id <- j
 
@@ -1913,10 +2005,10 @@ setMethod(
 
       output@prior <- posterior[j, ]
       output@administered_item_index <- numeric(max_ni)
-      output@administered_item_resp <- numeric(max_ni)
-      output@theta_segment_index <- numeric(max_ni)
-      output@interim_theta_est <- numeric(max_ni)
-      output@interim_se_est <- numeric(max_ni)
+      output@administered_item_resp  <- numeric(max_ni)
+      output@theta_segment_index     <- numeric(max_ni)
+      output@interim_theta_est       <- numeric(max_ni)
+      output@interim_se_est          <- numeric(max_ni)
       output@administered_stimulus_index <- NaN
       output@shadow_test <- vector(mode = "list", length = max_ni)
 
@@ -1939,12 +2031,12 @@ setMethod(
       if (set_based) {
         output@administered_stimulus_index <- numeric(max_ni)
         end_set <- TRUE
-        finished_stimulus_index <- NULL
+        finished_stimulus_index      <- NULL
         finished_stimulus_item_count <- NULL
       }
 
       if (sta) {
-        output@shadow_test_feasible <- logical(test_length)
+        output@shadow_test_feasible  <- logical(test_length)
         output@shadow_test_refreshed <- logical(test_length)
         imat <- NULL
         idir <- NULL
@@ -1961,14 +2053,21 @@ setMethod(
       done         <- FALSE
       position     <- 0
 
+      #####
+      ###    Get which items are eligible
+      #####
+
       if (exposure_control %in% c("ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
+
         ineligible_i <- matrix(0, n_segment, ni)
-        prob_random <- matrix(runif(n_segment * ni), n_segment, ni)
+        prob_random  <- matrix(runif(n_segment * ni), n_segment, ni)
         ineligible_i[prob_random >= pe_i] <- 1
+
         if (set_based) {
           ineligible_s <- matrix(0, n_segment, ns)
           prob_random <- matrix(runif(n_segment * ns), n_segment, ns)
           ineligible_s[prob_random >= pe_s] <- 1
+
           for (k in 1:n_segment) {
             for (s in which(ineligible_s[k, ] == 1)) {
               ineligible_i[k, constraints$item_index_by_stimulus[[s]]] <- 1
@@ -1977,18 +2076,28 @@ setMethod(
               ineligible_i[k, constraints$item_index_by_stimulus[[s]]] <- 0
             }
           }
+
         }
+
         if (exposure_control %in% c("ELIGIBILITY")) {
           xmat <- NULL
           xdir <- NULL
           xrhs <- NULL
         }
+
       }
 
+      #####
+      ###    Administer (test_length) items
+      #####
+
       while (!done) {
+
         position <- position + 1
-        info <- getInfo()
+        info     <- getInfo()
+
         if (sta) {
+
           if (exposure_control %in% c("ELIGIBILITY", "BIGM")) {
             if (!is.null(config@exposure_control$first_segment) && length(config@exposure_control$first_segment) >= position && all(config@exposure_control$first_segment >= 1) && all(config@exposure_control$first_segment <= n_segment)) {
               output@theta_segment_index[position] <- config@exposure_control$first_segment[position]
@@ -2003,20 +2112,26 @@ setMethod(
             segment_prob[segment_classified] <- segment_distribution
             output@theta_segment_index[position] <- which.max(segment_prob)
           }
+
           if (position == 1 ||
             (refresh_policy == "ALWAYS") ||
             (refresh_policy %in% c("POSITION", "INTERVAL") && refresh_shadow[position]) ||
             (refresh_policy == "THRESHOLD" && abs(theta_change) > config@refresh_policy$threshold) ||
             (refresh_policy == "INTERVAL-THRESHOLD" && refresh_shadow[position] && abs(theta_change) > config@refresh_policy$threshold) ||
             (refresh_policy %in% c("STIMULUS", "SET", "PASSAGE") && set_based && end_set)) {
+
             output@shadow_test_refreshed[position] <- TRUE
+
             if (position > 1) {
               imat <- matrix(0, nrow = position - 1, ncol = nv)
+
               for (p in 1:(position - 1)) {
                 imat[p, output@administered_item_index[p]] <- 1
               }
+
               idir <- rep("==", position - 1)
               irhs <- rep(1, position - 1)
+
               if (set_based) {
                 if (sum(output@administered_stimulus_index[1:(position - 1)] > 0) > 0) {
                   administered_stimulus_index <- unique(output@administered_stimulus_index[1:(position - 1)])
@@ -2031,6 +2146,7 @@ setMethod(
                   idir <- c(idir, sdir)
                   irhs <- c(irhs, srhs)
                   if (refresh_policy %in% c("STIMULUS", "SET", "PASSAGE") && set_based && end_set) {
+
                     n_administered_stimulus <- length(administered_stimulus_index)
                     if (n_administered_stimulus > 0) {
                       smat <- matrix(0, nrow = n_administered_stimulus, ncol = nv)
@@ -2044,8 +2160,11 @@ setMethod(
                       idir <- c(idir, sdir)
                       irhs <- c(irhs, srhs)
                     }
+
                   } else {
+
                     n_finished_stimulus <- length(finished_stimulus_index)
+
                     if (n_finished_stimulus > 0) {
                       smat <- matrix(0, nrow = n_finished_stimulus, ncol = nv)
                       sdir <- rep("==", n_finished_stimulus)
@@ -2057,22 +2176,27 @@ setMethod(
                       idir <- c(idir, sdir)
                       irhs <- c(irhs, srhs)
                     }
+
                   }
                 }
               }
             }
+
             if (item_eligibility_control) {
               item_ineligible <- ineligible_i[output@theta_segment_index[position], ]
               if (set_based) {
                 stimulus_ineligible <- ineligible_s[output@theta_segment_index[position], ]
               }
+
               if (position > 1) {
                 item_ineligible[output@administered_item_index[1:(position - 1)]] <- 0
                 if (set_based) {
                   stimulus_ineligible[unique(output@administered_stimulus_index[1:(position - 1)])] <- 0
                 }
               }
+
               if (exposure_control %in% c("ELIGIBILITY")) {
+
                 if (any(item_ineligible == 1)) {
                   xmat <- numeric(nv)
                   xmat[1:ni] <- item_ineligible
@@ -2102,6 +2226,7 @@ setMethod(
                 }
 
               } else if (exposure_control %in% c("BIGM", "BIGM-BAYESIAN")) {
+
                 if (!is.null(config@exposure_control$M)) {
                   info[item_ineligible == 1] <- info[item_ineligible == 1] - config@exposure_control$M
                 } else {
@@ -2109,6 +2234,7 @@ setMethod(
                 }
                 optimal <- STA(constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$time_limit, gap_limit = config@MIP$gap_limit, solver = config@MIP$solver)
                 output@shadow_test_feasible[position] <- TRUE
+
               }
             } else {
               optimal <- STA(constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$time_limit, gap_limit = config@MIP$gap_limit, solver = config@MIP$solver)
@@ -2123,15 +2249,19 @@ setMethod(
             output@solve_time[position] <- optimal$solve_time
 
           } else {
+
             output@shadow_test_refreshed[position] <- FALSE
             output@shadow_test_feasible[position]  <- TRUE
           }
+
           selection <- selectItemShadowTest()
           output@administered_item_index[position] <- selection$item_selected
           output@shadow_test[[position]]           <- optimal$shadow_test[["INDEX"]]
+
         } else {
           output@administered_item_index[position] <- selectItem()
         }
+
         if (set_based) {
           output@administered_stimulus_index[position] <- selection$stimulus_selected
           if (selection$stimulus_finished) {
@@ -2144,11 +2274,13 @@ setMethod(
             finished_stimulus_item_count <- c(finished_stimulus_item_count, sum(output@administered_stimulus_index[1:(position - 1)] == selection$last_stimulus_index))
           }
         }
+
         output@administered_item_resp[position] <- test@data[j, output@administered_item_index[position]]
         items_administered[j, output@administered_item_index[position]] <- TRUE
         prob_resp      <- test@prob[[output@administered_item_index[position]]][, output@administered_item_resp[position] + 1]
         posterior[j, ] <- posterior[j, ] * prob_resp
         likelihood     <- likelihood * prob_resp
+
         if (toupper(config@interim_theta$method) == "EAP") {
           output@interim_theta_est[position] <- sum(posterior[j, ] * test@theta) / sum(posterior[j, ])
           output@interim_se_est[position]    <- sqrt(sum(posterior[j, ] * (test@theta - output@interim_theta_est[position])^2) / sum(posterior[j, ]))
@@ -2186,24 +2318,33 @@ setMethod(
         } else {
           stop("invalid interim_theta@method specified")
         }
+
         theta_change  <- output@interim_theta_est[position] - current_theta
         current_theta <- output@interim_theta_est[position]
         current_se    <- output@interim_se_est[position]
+
+
+        #####
+        ###    Refresh shadow test if conditions are met
+        #####
+
         if (refresh_policy == "THRESHOLD") {
           if ((abs(theta_change) > config@refresh_policy$threshold) && (position < test_length)) {
             refresh_shadow[position + 1] <- TRUE
           }
         }
+
         if (position == max_ni) {
           done <- TRUE
           output@likelihood <- likelihood
-          output@posterior <- posterior[j, ]
+          output@posterior  <- posterior[j, ]
         }
+
       }
 
       if (identical(config@final_theta, config@interim_theta)) {
         output@final_theta_est <- output@interim_theta_est[position]
-        output@final_se_est   <- output@interim_se_est[position]
+        output@final_se_est    <- output@interim_se_est[position]
       } else if (toupper(config@final_theta$method == "EAP")) {
 
         if (toupper(config@final_theta$prior_dist) == "NORMAL") {
@@ -2609,6 +2750,11 @@ setMethod(
 
     final_theta_est <- unlist(lapply(1:nj, function(j) output_list[[j]]@final_theta_est))
     final_se_est    <- unlist(lapply(1:nj, function(j) output_list[[j]]@final_se_est))
+
+    #####
+    ###    DO EXPOSURE CONTROL
+    #####
+
     exposure_rate <- colSums(usage_matrix) / nj
 
     eligibility_stats           <- NULL
@@ -2616,15 +2762,27 @@ setMethod(
     no_fading_eligibility_stats <- NULL
 
     if (item_eligibility_control) {
-      eligibility_stats <- list(pe_i = pe_i, n_jk = n_jk, alpha_ijk = alpha_ijk, phi_jk = phi_jk, rho_ijk = rho_ijk, pe_s = pe_s, alpha_sjk = alpha_sjk, rho_sjk = rho_sjk)
+
+      eligibility_stats <- list(
+        pe_i = pe_i, n_jk = n_jk,
+        alpha_ijk = alpha_ijk, phi_jk = phi_jk, rho_ijk = rho_ijk,
+        pe_s = pe_s,
+        alpha_sjk = alpha_sjk, rho_sjk = rho_sjk)
+
       if (config@exposure_control$diagnostic_stats) {
-        check_eligibility_stats <- as.data.frame(cbind(1:nj, true_theta, find_segment(segment_cut, true_theta), true_segment_count, alpha_g_i, epsilon_g_i), row.names = NULL)
+
+        check_eligibility_stats <- as.data.frame(
+          cbind(1:nj, true_theta, find_segment(segment_cut, true_theta), true_segment_count, alpha_g_i, epsilon_g_i),
+          row.names = NULL)
+
         names(check_eligibility_stats) <- c("Examinee", "TrueTheta", "TrueSegment", "TrueSegmentCount", paste("a", "g", rep(1:n_segment, rep(ni, n_segment)), "i", rep(1:ni, n_segment), sep = "_"), paste("e", "g", rep(1:n_segment, rep(ni, n_segment)), "i", rep(1:ni, n_segment), sep = "_"))
+
         if (set_based) {
           check_eligibility_stats_stimulus <- as.data.frame(cbind(alpha_g_s, epsilon_g_s), row.names = NULL)
           names(check_eligibility_stats_stimulus) <- c(paste("a", "g", rep(1:n_segment, rep(ns, n_segment)), "s", rep(1:ns, n_segment), sep = "_"), paste("e", "g", rep(1:n_segment, rep(ns, n_segment)), "s", rep(1:ns, n_segment), sep = "_"))
           check_eligibility_stats <- cbind(check_eligibility_stats, check_eligibility_stats_stimulus)
         }
+
         if (fading_factor != 1) {
           no_fading_eligibility_stats <- as.data.frame(cbind(1:nj, true_theta, find_segment(segment_cut, true_theta), true_segment_count, noFading_alpha_g_i, noFading_epsilon_g_i), row.names = NULL)
           names(no_fading_eligibility_stats) <- c("Examinee", "TrueTheta", "TrueSegment", "TrueSegmentCount", paste("a", "g", rep(1:n_segment, rep(ni, n_segment)), "i", rep(1:ni, n_segment), sep = "_"), paste("e", "g", rep(1:n_segment, rep(ni, n_segment)), "i", rep(1:ni, n_segment), sep = "_"))
@@ -2634,13 +2792,16 @@ setMethod(
             no_fading_eligibility_stats <- cbind(no_fading_eligibility_stats, no_fading_eligibility_stats_stimulus)
           }
         }
+
       }
     }
+
     if (sta) {
       freq_infeasible <- table(unlist(lapply(1:nj, function(j) sum(!output_list[[j]]@shadow_test_feasible))))
     } else {
       freq_infeasible <- NULL
     }
+
     return(
       list(
         output = output_list, pool = object, config = config, true_theta = true_theta, constraints = constraints,
@@ -2812,6 +2973,7 @@ RE <- function(RMSE_foc, RMSE_ref) {
 #' @param true_theta A vector of true theta values.
 
 checkConstraints <- function(constraints, usage_matrix, true_theta = NULL) {
+
   constraints      <- constraints$constraints
   list_constraints <- constraints$listConstraints
 
@@ -2968,6 +3130,7 @@ plotER <- function(ni, exposure_rate, exposure_rate_final = NULL, max_rate = max
 #' @param mfrow Number of multiple figures defined as c(nrow, ncol).
 
 plotExposureRateBySegment <- function(object, config, max_rate = 0.25, file_pdf = NULL, width = 7, height = 6, mfrow = c(2, 4)) {
+
   nj <- length(object$true_theta)
   ni <- ncol(object$usage_matrix)
   segment_cut <- config@exposure_control$segment_cut
@@ -2975,6 +3138,7 @@ plotExposureRateBySegment <- function(object, config, max_rate = 0.25, file_pdf 
   cut_lower   <- segment_cut[1:n_segment]
   cut_upper   <- segment_cut[2:(n_segment + 1)]
   segment_label <- character(n_segment)
+
   for (k in 1:n_segment) {
     if (k < n_segment) {
       segment_label[k] <- paste0("(", round(cut_lower[k], 1), ",", round(cut_upper[k], 1), "]")
@@ -2982,6 +3146,7 @@ plotExposureRateBySegment <- function(object, config, max_rate = 0.25, file_pdf 
       segment_label[k] <- paste0("(", round(cut_lower[k], 1), ",", round(cut_upper[k], 1), ")")
     }
   }
+
   exposure_rate <- colSums(object$usage_matrix) / nj
   exposure_rate_segment <- vector("list", n_segment)
   names(exposure_rate_segment) <- segment_label

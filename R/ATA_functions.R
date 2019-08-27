@@ -23,7 +23,7 @@ NULL
 #'   \item{\code{obj_value}} Objective value of the solution. Identical to the one above.
 #'   \item{\code{solve_time}} The elapsed time in running the solver.
 #' }
-#' 
+#'
 #' @references
 #' \insertRef{van_der_linden_linear_2005}{TestDesign}
 #'
@@ -175,31 +175,37 @@ setMethod(
 
     solve_time <- proc.time() - solve_time
 
-    if (!is.null(constraints$stimulus_order)) {
+    if (!is.null(constraints$stim_order)) {
+      constraints$item_attrib$tmpsort <- 1:constraints$ni
       constraints$item_attrib <- merge(constraints$item_attrib,
-        constraints$st_attrib[c("STINDEX", "STID", constraints$stimulus_order_by)],
-        by = "STID", all.x = TRUE, sort = FALSE
-      )
+        constraints$st_attrib[c("STINDEX", "STID", constraints$stim_order_by)],
+        by = "STID", all.x = TRUE, sort = FALSE)
+      constraints$item_attrib <- constraints$item_attrib[order(constraints$item_attrib$tmpsort), ]
+      constraints$item_attrib <- constraints$item_attrib[, !(colnames(constraints$item_attrib) %in% 'tmpsort')]
     } else if (!is.null(constraints$st_attrib)) {
+      constraints$item_attrib$tmpsort <- 1:constraints$ni
       constraints$item_attrib <- merge(constraints$item_attrib,
         constraints$st_attrib[c("STINDEX", "STID")],
-        by = "STID", all.x = TRUE, sort = FALSE
-      )
+        by = "STID", all.x = TRUE, sort = FALSE)
+      constraints$item_attrib <- constraints$item_attrib[order(constraints$item_attrib$tmpsort), ]
+      constraints$item_attrib <- constraints$item_attrib[, !(colnames(constraints$item_attrib) %in% 'tmpsort')]
     }
+
+    MIP$solution[types == "B"] <- round(MIP$solution[types == "B"], 0)
 
     selected  <- constraints$item_attrib[which(MIP$solution[1:constraints$ni] == 1), ]
     obj_value <- sum(obj[which(MIP$solution[1:constraints$ni] == 1)])
 
-    if (!is.null(constraints$item_order_by) && !is.null(constraints$stimulus_order_by)) {
-      selected <- selected[order(selected[[constraints$stimulus_order_by]], selected[["STID"]], selected[[constraints$item_order_by]]), ]
+    if (!is.null(constraints$item_order_by) && !is.null(constraints$stim_order_by)) {
+      selected <- selected[order(selected[[constraints$stim_order_by]], selected[["STID"]], selected[[constraints$item_order_by]]), ]
     } else if (!is.null(constraints$item_order_by)) {
       if (constraints$set_based) {
         selected <- selected[order(selected[["STID"]], selected[[constraints$item_order_by]]), ]
       } else {
         selected <- selected[order(selected[[constraints$item_order_by]]), ]
       }
-    } else if (!is.null(constraints$stimulus_order_by)) {
-      selected <- selected[order(selected[[constraints$stimulus_order_by]], selected[["STID"]]), ]
+    } else if (!is.null(constraints$stim_order_by)) {
+      selected <- selected[order(selected[[constraints$stim_order_by]], selected[["STID"]]), ]
     }
     row.names(selected) <- 1:nrow(selected)
 
