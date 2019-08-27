@@ -98,12 +98,23 @@ STA <- function(constraints, objective, solver = "Lpsolve", xmat = NULL, xdir = 
   }
 
   MIP$solution <- round(MIP$solution, 0)
+
   solve_time <- (proc.time() - solve_time)["elapsed"]
 
-  if (!is.null(constraints$stimulus_order)) {
-    constraints$item_attrib <- merge(constraints$item_attrib, constraints$st_attrib[c("STINDEX", "STID", constraints$stim_order_by)], by = "STID", all.x = TRUE, sort = FALSE)
+  if (!is.null(constraints$stim_order)) {
+    constraints$item_attrib$tmpsort <- 1:ni
+    constraints$item_attrib <- merge(constraints$item_attrib,
+      constraints$st_attrib[c("STINDEX", "STID", constraints$stim_order_by)],
+      by = "STID", all.x = TRUE, sort = FALSE)
+    constraints$item_attrib <- constraints$item_attrib[order(constraints$item_attrib$tmpsort), ]
+    constraints$item_attrib <- subset(constraints$item_attrib, select = -tmpsort)
   } else if (!is.null(constraints$st_attrib)) {
-    constraints$item_attrib <- merge(constraints$item_attrib, constraints$st_attrib[c("STINDEX", "STID")], by = "STID", all.x = TRUE, sort = FALSE)
+    constraints$item_attrib$tmpsort <- 1:ni
+    constraints$item_attrib <- merge(constraints$item_attrib,
+      constraints$st_attrib[c("STINDEX", "STID")],
+      by = "STID", all.x = TRUE, sort = FALSE)
+    constraints$item_attrib <- constraints$item_attrib[order(constraints$item_attrib$tmpsort), ]
+    constraints$item_attrib <- subset(constraints$item_attrib, select = -tmpsort)
   }
 
   index_solution <- which(MIP$solution[1:constraints$ni] == 1)
@@ -1975,7 +1986,7 @@ setMethod(
 
     }
 
-    # pb <- txtProgressBar(0, nj, char = "|", style = 3)
+    pb <- txtProgressBar(0, nj, char = "|", style = 3)
 
     #####
     ###    Loop over simulees
@@ -2079,8 +2090,6 @@ setMethod(
       #####
       ###    Administer (test_length) items
       #####
-
-      pb <- txtProgressBar(0, test_length, char = "|", style = 3)
 
       while (!done) {
 
