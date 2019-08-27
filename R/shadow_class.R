@@ -232,20 +232,21 @@ setClass("config_Shadow",
       }
     }
     if (!object@item_selection$method %in% c("MFI", "MPWI", "EB", "FB")) {
-      errors <- c(errors, "invalid option for selectionCriterion")
+      errors <- c(errors, "invalid option for item_selection$method: accepts MFI, MPWI, EB, or FB")
     }
+
     if (!object@content_balancing$method %in% c("NONE", "STA")) {
-      errors <- c(errors, "invalid option for content_balancing")
+      errors <- c(errors, "invalid option for content_balancing$method: accepts NONE or STA")
     }
     if (!object@refresh_policy$method %in%
       c("ALWAYS", "POSITION", "INTERVAL", "THRESHOLD", "INTERVAL-THRESHOLD", "STIMULUS", "SET", "PASSAGE")) {
-      errors <- c(errors, "invalid option for refresh_policy.")
+      errors <- c(errors, "invalid option for refresh_policy$method")
     }
     if (!object@exposure_control$method %in% c("NONE", "ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
-      errors <- c(errors, "invalid option for exposure_control.")
+      errors <- c(errors, "invalid option for exposure_control$method")
     }
     if (object@exposure_control$n_segment != length(object@exposure_control$segment_cut) - 1) {
-      errors <- c(errors, "n_segment and segment_cut are incongruent.")
+      errors <- c(errors, "n_segment and segment_cut are inconsistent")
     }
     if (!object@stopping_criterion$method %in% c("FIXED")) {
       errors <- c(errors, "invalid option for stopping_criterion.")
@@ -257,7 +258,7 @@ setClass("config_Shadow",
       errors <- c(errors, "invalid option for final_theta.")
     }
     if (object@exposure_control$method %in% c("BIGM-BAYESIAN") && !object@interim_theta$method %in% c("EB", "FB")) {
-      errors <- c(errors, "for exposure_control BIGM-BAYESIAN you must use interim_theta of EB of FB.")
+      errors <- c(errors, "BIGM-BAYESIAN exposure control requires interim_theta of EB or FB.")
     }
     if (length(errors) == 0) {
       return(TRUE)
