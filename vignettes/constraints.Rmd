@@ -21,8 +21,8 @@ library(TestDesign)
 
 
 ```{r echo = FALSE}
-kable(constraints_science_raw[1:5, ]) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+knitr::kable(constraints_science_raw[1:5, ]) %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
   column_spec(1, "5em") %>%
   column_spec(2, "5em") %>%
   column_spec(3, "5em") %>%
@@ -55,8 +55,8 @@ This column specifies the type of constraint. Following values are expected: `Nu
 * `Number` specifies the constraint to be applied to the number of selected items (if `WHAT` column is `Item`), or to the number of selected item sets (if `WHAT` column is `Stimulus`). For example, the following row tells the solver to select a total of 30 items.
 
 ```{r, echo = FALSE}
-kable(constraints_science_raw[1, ], row.names = FALSE) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+knitr::kable(constraints_science_raw[1, ], row.names = FALSE) %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
   column_spec(1, "5em") %>%
   column_spec(2, "5em", background = 'cyan') %>%
   column_spec(3, "5em") %>%
@@ -72,8 +72,8 @@ kable(constraints_science_raw[1, ], row.names = FALSE) %>%
 * `Order` specifies the selection to be made in ascending order. The following row tells the solver to select the items in ascending `LEVEL`, based on the supplied item attributes.
 
 ```{r, echo = FALSE}
-kable(constraints_science_raw[32, ], row.names = FALSE) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+knitr::kable(constraints_science_raw[32, ], row.names = FALSE) %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
   column_spec(1, "5em") %>%
   column_spec(2, "5em", background = 'cyan') %>%
   column_spec(3, "5em") %>%
@@ -89,8 +89,8 @@ kable(constraints_science_raw[32, ], row.names = FALSE) %>%
 * `Enemy` specifies the items (or item sets) matching the condition to be treated as enemy items. To tell the solver to select at most one of the two items:
 
 ```{r, echo = FALSE}
-kable(constraints_science_raw[33, ], row.names = FALSE) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+knitr::kable(constraints_science_raw[33, ], row.names = FALSE) %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
   column_spec(1, "5em") %>%
   column_spec(2, "5em", background = 'cyan') %>%
   column_spec(3, "5em") %>%
@@ -106,8 +106,8 @@ kable(constraints_science_raw[33, ], row.names = FALSE) %>%
 * `Include` specifies the items matching the condition to be included in selection. For example, the following row tells the solver to include the two items `SC00003` and `SC00004`:
 
 ```{r, echo = FALSE}
-kable(constraints_science_raw[34, ], row.names = FALSE) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+knitr::kable(constraints_science_raw[34, ], row.names = FALSE) %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
   column_spec(1, "5em") %>%
   column_spec(2, "5em", background = 'cyan') %>%
   column_spec(3, "5em") %>%
@@ -123,8 +123,8 @@ kable(constraints_science_raw[34, ], row.names = FALSE) %>%
 * `Exclude` specifies the items matching the condition to be excluded in selection. The following row tells the solver to exclude the items satisfying `PTBIS < 0.15`, based on the supplied item attributes.
 
 ```{r, echo = FALSE}
-kable(constraints_science_raw[35, ], row.names = FALSE) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+knitr::kable(constraints_science_raw[35, ], row.names = FALSE) %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
   column_spec(1, "5em") %>%
   column_spec(2, "5em", background = 'cyan') %>%
   column_spec(3, "5em") %>%
@@ -140,8 +140,8 @@ kable(constraints_science_raw[35, ], row.names = FALSE) %>%
 * `AllOrNone` specifies the items matching the condition to be either all included or all excluded. To tell the solver to either select the items `SC00005` and `SC00006` at the same time or exclude them at the same time:
 
 ```{r, echo = FALSE}
-kable(constraints_science_raw[36, ], row.names = FALSE) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+knitr::kable(constraints_science_raw[36, ], row.names = FALSE) %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
   column_spec(1, "5em") %>%
   column_spec(2, "5em", background = 'cyan') %>%
   column_spec(3, "5em") %>%
@@ -177,8 +177,8 @@ Some examples are:
 Also, `Per Stimulus` can be used to specify the number of items to select in each stimulus. For example, the following row tells the solver to select 4 to 6 items per stimulus:
 
 ```{r, echo = FALSE}
-kable(constraints_reading_raw[3, ], row.names = FALSE) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+knitr::kable(constraints_reading_raw[3, ], row.names = FALSE) %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
   column_spec(1, "5em") %>%
   column_spec(2, "5em") %>%
   column_spec(3, "5em") %>%
@@ -201,8 +201,8 @@ Some example rows are provided.
 * To select a total of 12 items:
 
 ```{r, echo = FALSE}
-kable(constraints_fatigue_raw[1, ], row.names = FALSE) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+knitr::kable(constraints_fatigue_raw[1, ], row.names = FALSE) %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
   column_spec(1, "5em") %>%
   column_spec(2, "5em") %>%
   column_spec(3, "5em") %>%
@@ -218,8 +218,8 @@ kable(constraints_fatigue_raw[1, ], row.names = FALSE) %>%
 * To select 15 to 30 items satisfying `DOK >= 2`:
 
 ```{r, echo = FALSE}
-kable(constraints_reading_raw[17, ], row.names = FALSE) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+knitr::kable(constraints_reading_raw[17, ], row.names = FALSE) %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
   column_spec(1, "5em") %>%
   column_spec(2, "5em") %>%
   column_spec(3, "5em") %>%
@@ -238,8 +238,8 @@ kable(constraints_reading_raw[17, ], row.names = FALSE) %>%
 Set this to `OFF` to turn off the constraint from being applied. `ON` or leaving it blank applies the constraint. The following example specifies the order constraint to be not applied.
 
 ```{r, echo = FALSE}
-kable(constraints_reading_raw[18, ], row.names = FALSE) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+knitr::kable(constraints_reading_raw[18, ], row.names = FALSE) %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
   column_spec(1, "5em") %>%
   column_spec(2, "5em") %>%
   column_spec(3, "5em") %>%
