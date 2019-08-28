@@ -14,11 +14,6 @@
 ```
 Status: 1 NOTE
 
-* checking CRAN incoming feasibility ... NOTE
-Maintainer: 'Seung W. Choi <schoi@austin.utexas.edu>'
-  
-New submission
-
 Suggests or Enhances not in mainstream repositories:
   gurobi
 ```
