@@ -156,7 +156,8 @@ setClass("config_Shadow",
       solver = "LPSOLVE",
       verbosity = -2,
       time_limit = -1,
-      gap_limit = -1
+      gap_limit = NULL,
+      gap_limit_relative = NULL
     ),
     MCMC = list(
       burn_in = 100,
