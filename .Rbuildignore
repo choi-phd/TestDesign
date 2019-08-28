@@ -10,3 +10,4 @@
 ^cleanup\..*$
 ^cran-comments\.md$
 ^readme\.md$
+^\.travis\.yml$
