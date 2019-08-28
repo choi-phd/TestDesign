@@ -1,7 +1,7 @@
 ---
 title: "Creating constraints file in TestDesign package"
 author: Sangdon Lim
-output: rmarkdown::html_vignette
+output: html_document
 vignette: >
   %\VignetteIndexEntry{Creating constraints file in TestDesign package}
   %\VignetteEngine{knitr::rmarkdown}
@@ -10,78 +10,162 @@ vignette: >
 
 ## Introduction
 
-This document explains how to create a constraint file. In test assembly, practitioners often want to select the items that satify various types of constraints.
+This document explains how to create a constraint file. In test assembly, practitioners often want to select the items that satify various types of constraints. As of *TestDesign* version 0.2, constraints can be read in from a `.csv` spreadsheet file. The file is expected to be in the following structure:
 
-## Structure
-
-As of *TestDesign* version 0.2, constraints can be read in from a `.csv` file. The file is expected to be in the following structure:
-
-```{r, eval = F}
-CONSTRAINT,TYPE,WHAT,CONDITION,LB,UB,ONOFF
-1,Number,Item,,30,30,
-2,Number,Item,LEVEL == 3,10,10,
-3,Number,Item,LEVEL == 4,10,10,
-4,Number,Item,LEVEL == 5,10,10,
-5,Number,Item,STANDARD == 1,17,20,
+```{r echo = FALSE, message = FALSE}
+library(knitr)
+library(kableExtra)
+library(TestDesign)
 ```
 
-The constraint file should have 7 columns, named as `CONSTRAINT`, `TYPE`, `WHAT`, `CONDITION`, `LB`, `UB`, `ONOFF` on the first row of the file.
 
-Beginning from the second row, each row should have the corresponding values for the 7 columns.
 
-A convenient way to creating a `.csv` file is to use a spreadsheet application (e.g. Excel), work on the contents from there, and then saving it as a `.csv` file.
+```{r echo = FALSE}
+knitr::kable(constraints_science_raw[1:5, ]) %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  column_spec(1, "5em") %>%
+  column_spec(2, "5em") %>%
+  column_spec(3, "5em") %>%
+  column_spec(4, "10em") %>%
+  column_spec(5, "3em") %>%
+  column_spec(6, "3em") %>%
+  column_spec(7, "3em")
+```
 
-### CONSTRAINT
+The constraint file should have 7 columns, named as `CONSTRAINT`, `TYPE`, `WHAT`, `CONDITION`, `LB`, `UB`, `ONOFF` on the first row of the file. Beginning from the second row, each row should have the corresponding values for the 7 columns. A convenient way to creating the file is to use a spreadsheet application (e.g. Excel), work on the contents from there, and then saving it as a `.csv` file.
 
-This column serves as indices for the constraints. A single numeric value should be put into this column, ascending by 1 per row.
+\
 
-### TYPE
+***
 
-This column specifies the type of constraint. The following values are expected: `Number`, `Order`, `Enemy`, `Include`, `Exclude`, `AllorNone`.
+#### CONSTRAINT
+
+This column serves as indices for the constraints. A single numeric value should be put into each row, incrementing by 1.
+
+\
+
+***
+
+#### TYPE
+
+This column specifies the type of constraint. Following values are expected: `Number`, `Order`, `Enemy`, `Include`, `Exclude`, `AllorNone`.
+
+\
 
 * `Number` specifies the constraint to be applied to the number of selected items (if `WHAT` column is `Item`), or to the number of selected item sets (if `WHAT` column is `Stimulus`). For example, the following row tells the solver to select a total of 30 items.
 
-```{r, eval = F}
-1,Number,Item,,30,30
+```{r, echo = FALSE}
+knitr::kable(constraints_science_raw[1, ], row.names = FALSE) %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  column_spec(1, "5em") %>%
+  column_spec(2, "5em", background = 'cyan') %>%
+  column_spec(3, "5em") %>%
+  column_spec(4, "10em") %>%
+  column_spec(5, "3em") %>%
+  column_spec(6, "3em") %>%
+  column_spec(7, "3em")
 ```
+
+\
+\
 
 * `Order` specifies the selection to be made in ascending order. The following row tells the solver to select the items in ascending `LEVEL`, based on the supplied item attributes.
 
-```{r, eval = F}
-32,Order,Item,LEVEL,,
+```{r, echo = FALSE}
+knitr::kable(constraints_science_raw[32, ], row.names = FALSE) %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  column_spec(1, "5em") %>%
+  column_spec(2, "5em", background = 'cyan') %>%
+  column_spec(3, "5em") %>%
+  column_spec(4, "10em") %>%
+  column_spec(5, "3em") %>%
+  column_spec(6, "3em") %>%
+  column_spec(7, "3em")
 ```
+
+\
+\
 
 * `Enemy` specifies the items (or item sets) matching the condition to be treated as enemy items. To tell the solver to select at most one of the two items:
 
-```{r, eval = F}
-33,Enemy,Item,"ID %in% c(""SC00001"", ""SC00002"")",,
+```{r, echo = FALSE}
+knitr::kable(constraints_science_raw[33, ], row.names = FALSE) %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  column_spec(1, "5em") %>%
+  column_spec(2, "5em", background = 'cyan') %>%
+  column_spec(3, "5em") %>%
+  column_spec(4, "10em") %>%
+  column_spec(5, "3em") %>%
+  column_spec(6, "3em") %>%
+  column_spec(7, "3em")
 ```
+
+\
+\
 
 * `Include` specifies the items matching the condition to be included in selection. For example, the following row tells the solver to include the two items `SC00003` and `SC00004`:
 
-```{r, eval = F}
-34,Include,Item,"ID %in% c(""SC00003"", ""SC00004"")",,
+```{r, echo = FALSE}
+knitr::kable(constraints_science_raw[34, ], row.names = FALSE) %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  column_spec(1, "5em") %>%
+  column_spec(2, "5em", background = 'cyan') %>%
+  column_spec(3, "5em") %>%
+  column_spec(4, "10em") %>%
+  column_spec(5, "3em") %>%
+  column_spec(6, "3em") %>%
+  column_spec(7, "3em")
 ```
+
+\
+\
 
 * `Exclude` specifies the items matching the condition to be excluded in selection. The following row tells the solver to exclude the items satisfying `PTBIS < 0.15`, based on the supplied item attributes.
 
-```{r, eval = F}
-35,Exclude,Item,PTBIS < 0.15,,
+```{r, echo = FALSE}
+knitr::kable(constraints_science_raw[35, ], row.names = FALSE) %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  column_spec(1, "5em") %>%
+  column_spec(2, "5em", background = 'cyan') %>%
+  column_spec(3, "5em") %>%
+  column_spec(4, "10em") %>%
+  column_spec(5, "3em") %>%
+  column_spec(6, "3em") %>%
+  column_spec(7, "3em")
 ```
 
-* `AllorNone` specifies the items matching the condition to be either all included or all excluded. To tell the solver to either select the items `SC00005` and `SC00006` at the same time or exclude them at the same time:
+\
+\
 
-```{r, eval = F}
-36,AllOrNone,Item,"ID %in% c(""SC00005"", ""SC00006"")",,
+* `AllOrNone` specifies the items matching the condition to be either all included or all excluded. To tell the solver to either select the items `SC00005` and `SC00006` at the same time or exclude them at the same time:
+
+```{r, echo = FALSE}
+knitr::kable(constraints_science_raw[36, ], row.names = FALSE) %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  column_spec(1, "5em") %>%
+  column_spec(2, "5em", background = 'cyan') %>%
+  column_spec(3, "5em") %>%
+  column_spec(4, "10em") %>%
+  column_spec(5, "3em") %>%
+  column_spec(6, "3em") %>%
+  column_spec(7, "3em")
 ```
 
-### WHAT
+\
+
+***
+
+#### WHAT
 
 This column specifies where the constraint is applied. The expected values are `Item` or `Stimulus`.
 
-### CONDITION
+\
 
-This column specifies the condition of the constraint. R expressions returning logical values (`TRUE` or `FALSE`) is expected. The variables supplied in item attributes can be used in the expression as variable names.
+***
+
+#### CONDITION
+
+This column specifies the condition of the constraint. An R expression returning a logical value (`TRUE` or `FALSE`) is expected. The variables supplied in item attributes can be used in the expression as variable names.
 
 Some examples are:
 
@@ -92,11 +176,23 @@ Some examples are:
 
 Also, `Per Stimulus` can be used to specify the number of items to select in each stimulus. For example, the following row tells the solver to select 4 to 6 items per stimulus:
 
-```{r, eval = F}
-3,Number,Item,Per Stimulus,4,6,
+```{r, echo = FALSE}
+knitr::kable(constraints_reading_raw[3, ], row.names = FALSE) %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  column_spec(1, "5em") %>%
+  column_spec(2, "5em") %>%
+  column_spec(3, "5em") %>%
+  column_spec(4, "10em", background = 'cyan') %>%
+  column_spec(5, "3em") %>%
+  column_spec(6, "3em") %>%
+  column_spec(7, "3em")
 ```
 
-### LB and UB
+\
+
+***
+
+#### LB and UB
 
 These two columns specify the lower and upper bounds on the number of selected items. These columns should be specified when `TYPE` is `Number`, and should be left empty otherwise.
 
@@ -104,21 +200,52 @@ Some example rows are provided.
 
 * To select a total of 12 items:
 
-```{r, eval = F}
-1,Number,Item,,12,12
+```{r, echo = FALSE}
+knitr::kable(constraints_fatigue_raw[1, ], row.names = FALSE) %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  column_spec(1, "5em") %>%
+  column_spec(2, "5em") %>%
+  column_spec(3, "5em") %>%
+  column_spec(4, "10em") %>%
+  column_spec(5, "3em", background = 'cyan') %>%
+  column_spec(6, "3em", background = 'cyan') %>%
+  column_spec(7, "3em")
 ```
+
+\
+\
 
 * To select 15 to 30 items satisfying `DOK >= 2`:
 
-```{r, eval = F}
-17,Number,Item,DOK >= 2,15,30,
+```{r, echo = FALSE}
+knitr::kable(constraints_reading_raw[17, ], row.names = FALSE) %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  column_spec(1, "5em") %>%
+  column_spec(2, "5em") %>%
+  column_spec(3, "5em") %>%
+  column_spec(4, "10em") %>%
+  column_spec(5, "3em", background = 'cyan') %>%
+  column_spec(6, "3em", background = 'cyan') %>%
+  column_spec(7, "3em")
 ```
 
-### ONOFF
+\
+
+***
+
+#### ONOFF
 
 Set this to `OFF` to turn off the constraint from being applied. `ON` or leaving it blank applies the constraint. The following example specifies the order constraint to be not applied.
 
-```{r, eval = F}
-18,Order,Passage,CONTENT,,,OFF
+```{r, echo = FALSE}
+knitr::kable(constraints_reading_raw[18, ], row.names = FALSE) %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  column_spec(1, "5em") %>%
+  column_spec(2, "5em") %>%
+  column_spec(3, "5em") %>%
+  column_spec(4, "10em") %>%
+  column_spec(5, "3em") %>%
+  column_spec(6, "3em") %>%
+  column_spec(7, "3em", background = 'cyan')
 ```
 
