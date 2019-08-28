@@ -27,7 +27,7 @@ CONSTRAINT,TYPE,WHAT,CONDITION,LB,UB,ONOFF
 
 The constraint file should have 7 columns, named as `CONSTRAINT`, `TYPE`, `WHAT`, `CONDITION`, `LB`, `UB`, `ONOFF` on the first row of the file.
 
-Beginning from the second row, each row should have the corresponding values for the 6 columns.
+Beginning from the second row, each row should have the corresponding values for the 7 columns.
 
 A convenient way to creating a `.csv` file is to use a spreadsheet application (e.g. Excel), work on the contents from there, and then saving it as a `.csv` file.
 
@@ -116,7 +116,7 @@ Some example rows are provided.
 
 ### ONOFF
 
-This column can be used to turn off a constraint from being applied. The following row specifies the order constraint to be not applied.
+Set this to `OFF` to turn off the constraint from being applied. `ON` or leaving it blank applies the constraint. The following example specifies the order constraint to be not applied.
 
 ```{r, eval = F}
 18,Order,Passage,CONTENT,,,OFF
