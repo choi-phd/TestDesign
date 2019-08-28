@@ -8,4 +8,4 @@
 
 ## Others
 
-* Add `URL` and `BugReports` field to `DESCRIPTION` file.
+* Add `URL` and `BugReports` fields to `DESCRIPTION` file.
