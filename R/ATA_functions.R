@@ -176,19 +176,19 @@ setMethod(
     solve_time <- proc.time() - solve_time
 
     if (!is.null(constraints$stim_order)) {
-      constraints$item_attrib$tmpsort <- 1:ni
+      constraints$item_attrib$tmpsort <- 1:constraints$ni
       constraints$item_attrib <- merge(constraints$item_attrib,
         constraints$st_attrib[c("STINDEX", "STID", constraints$stim_order_by)],
         by = "STID", all.x = TRUE, sort = FALSE)
       constraints$item_attrib <- constraints$item_attrib[order(constraints$item_attrib$tmpsort), ]
-      constraints$item_attrib <- subset(constraints$item_attrib, select = -tmpsort)
+      constraints$item_attrib <- constraints$item_attrib[, !(colnames(constraints$item_attrib) %in% 'tmpsort')]
     } else if (!is.null(constraints$st_attrib)) {
-      constraints$item_attrib$tmpsort <- 1:ni
+      constraints$item_attrib$tmpsort <- 1:constraints$ni
       constraints$item_attrib <- merge(constraints$item_attrib,
         constraints$st_attrib[c("STINDEX", "STID")],
         by = "STID", all.x = TRUE, sort = FALSE)
       constraints$item_attrib <- constraints$item_attrib[order(constraints$item_attrib$tmpsort), ]
-      constraints$item_attrib <- subset(constraints$item_attrib, select = -tmpsort)
+      constraints$item_attrib <- constraints$item_attrib[, !(colnames(constraints$item_attrib) %in% 'tmpsort')]
     }
 
     MIP$solution[types == "B"] <- round(MIP$solution[types == "B"], 0)
