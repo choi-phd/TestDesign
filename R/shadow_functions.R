@@ -16,7 +16,8 @@ NULL
 #' @param lp Only used when \code{solver} is \code{SYMPHONY}. If \code{TRUE}, print an LP representation of the problem for debugging purposes.
 #' @param verbosity Verbosity level.
 #' @param time_limit Time limit passed onto the solver.
-#' @param gap_limit Gap limit passed onto the solver.
+#' @param gap_limit Gap limit (absolute) passed onto the solver.
+#' @param gap_limit_relative Gap limit (relative) passed onto the solver.
 #' @param ... Only used when \code{solver} is \code{SYMPHONY}. Additional parameters to be passed onto the solver.
 #'
 #' @return A list containing the optimal solution and pertinent diagnostics.
@@ -33,7 +34,7 @@ NULL
 #' @export
 
 STA <- function(constraints, objective, solver = "Lpsolve", xmat = NULL, xdir = NULL, xrhs = NULL,
-  maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = -2, time_limit = 5, gap_limit = -1, ...) {
+  maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = -2, time_limit = 5, gap_limit = NULL, gap_limit_relative = NULL, ...) {
 
   if (length(objective) == constraints$nv) {
     obj <- objective
@@ -58,7 +59,11 @@ STA <- function(constraints, objective, solver = "Lpsolve", xmat = NULL, xdir = 
 
   if (toupper(solver) == "SYMPHONY") {
 
-    MIP <- Rsymphony::Rsymphony_solve_LP(obj, mat, dir, rhs, max = maximize, types = "B", write_mps = mps, write_lp = lp, verbosity = verbosity, time_limit = time_limit, gap_limit = gap_limit, ...)
+    if (!is.null(gap_limit)) {
+      MIP <- Rsymphony::Rsymphony_solve_LP(obj, mat, dir, rhs, max = maximize, types = "B", write_mps = mps, write_lp = lp, verbosity = verbosity, time_limit = time_limit, gap_limit = gap_limit, ...)
+    } else {
+      MIP <- Rsymphony::Rsymphony_solve_LP(obj, mat, dir, rhs, max = maximize, types = "B", write_mps = mps, write_lp = lp, verbosity = verbosity, time_limit = time_limit, ...)
+    }
 
     if (!isOptimal(MIP$status, solver)) {
       warning(sprintf("MIP solver returned non-zero status: %s", names(MIP$status)))
@@ -68,7 +73,11 @@ STA <- function(constraints, objective, solver = "Lpsolve", xmat = NULL, xdir = 
   } else if (toupper(solver) == "GUROBI") {
 
     dir[dir == "=="] <- "="
-    invisible(capture.output(MIP <- gurobi::gurobi(list(obj = obj, modelsense = "max", rhs = rhs, sense = dir, vtype = "B", A = mat), params = NULL, env = NULL)))
+    if (!is.null(gap_limit_relative)) {
+      invisible(capture.output(MIP <- gurobi::gurobi(list(obj = obj, modelsense = "max", rhs = rhs, sense = dir, vtype = "B", A = mat), params = list(MIPGap = gap_limit_relative), env = NULL)))
+    } else {
+      invisible(capture.output(MIP <- gurobi::gurobi(list(obj = obj, modelsense = "max", rhs = rhs, sense = dir, vtype = "B", A = mat), env = NULL)))
+    }
 
     if (!isOptimal(MIP$status, solver)) {
       warning(sprintf("MIP solver returned non-zero status: %s", MIP$status))
@@ -2215,12 +2224,12 @@ setMethod(
                   }
                 }
 
-                optimal <- STA(constraints, info, xmat = rbind(xmat, imat), xdir = c(xdir, idir), xrhs = c(xrhs, irhs), maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$time_limit, gap_limit = config@MIP$gap_limit, solver = config@MIP$solver)
+                optimal <- STA(constraints, info, xmat = rbind(xmat, imat), xdir = c(xdir, idir), xrhs = c(xrhs, irhs), maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$time_limit, gap_limit = config@MIP$gap_limit, gap_limit_relative = config@MIP$gap_limit_relative, solver = config@MIP$solver)
 
                 is_optimal <- isOptimal(optimal$status, config@MIP$solver)
                 if (!is_optimal) {
                   output@shadow_test_feasible[position] <- FALSE
-                  optimal <- STA(constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$time_limit, gap_limit = config@MIP$gap_limit, solver = config@MIP$solver)
+                  optimal <- STA(constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$time_limit, gap_limit = config@MIP$gap_limit, gap_limit_relative = config@MIP$gap_limit_relative, solver = config@MIP$solver)
                 } else {
                   output@shadow_test_feasible[position] <- TRUE
                 }
@@ -2232,12 +2241,12 @@ setMethod(
                 } else {
                   info[item_ineligible == 1] <- -1 * max_info - 1
                 }
-                optimal <- STA(constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$time_limit, gap_limit = config@MIP$gap_limit, solver = config@MIP$solver)
+                optimal <- STA(constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$time_limit, gap_limit = config@MIP$gap_limit, gap_limit_relative = config@MIP$gap_limit_relative, solver = config@MIP$solver)
                 output@shadow_test_feasible[position] <- TRUE
 
               }
             } else {
-              optimal <- STA(constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$time_limit, gap_limit = config@MIP$gap_limit, solver = config@MIP$solver)
+              optimal <- STA(constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$time_limit, gap_limit = config@MIP$gap_limit, gap_limit_relative = config@MIP$gap_limit_relative, solver = config@MIP$solver)
               output@shadow_test_feasible[position] <- TRUE
             }
 
