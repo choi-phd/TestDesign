@@ -1,13 +1,13 @@
-# TestDesign 0.2.4
+# TestDesign 0.2.5
 
 ## Bug fixes
 
-* Fix where `gap_limit` was incorrectly being passed onto `SYMPHONY` solver in `ATA()` and `Shadow()`, instead of `gap_limit_abs`. The two gap limits use the same default values, so this should not affect the solutions.
-* Fix where `gap_limit` was not being passed onto `GUROBI` solver in `ATA()` and `Shadow()`.
-* Fix where `time_limit` was not being passed onto `GUROBI` solver in `Shadow()`.
-* Fix where `time_limit` was incorrectly being passed in ms units to `GLPK` solver in `Shadow()`.
-* Fix where a valid interval-based refresh policy was triggering an error in `Shadow()`.
-* Prevent the Shiny app from crashing when running adaptive assembly with a set-based refresh policy on item pools without sets.
+* Fix where `gap_limit` was passed onto `SYMPHONY` in `ATA()` and `Shadow()`, instead of `gap_limit_abs`.
+* Fix where `gap_limit` was not passed onto `GUROBI` in `ATA()` and `Shadow()`.
+* Fix where `time_limit` was not passed onto `GUROBI` in `Shadow()`.
+* Fix where `time_limit` was incorrectly passed in microseconds to `GLPK` in `Shadow()`.
+* Fix where a valid interval-based refresh policy triggered an error in `Shadow()`.
+* Prevent the Shiny app from crashing when the user erroneously requests an adaptive assembly with a set-based refresh policy on item pools with no item sets.
 
 ## Others
 
