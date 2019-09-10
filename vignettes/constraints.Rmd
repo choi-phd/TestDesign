@@ -8,7 +8,9 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-## Introduction
+<br/>
+
+### Introduction
 
 This document explains how to create a constraint file. In test assembly, practitioners often want to select the items that satify various types of constraints. As of *TestDesign* version 0.2, constraints can be read in from a `.csv` spreadsheet file. The file is expected to be in the following structure:
 
@@ -34,7 +36,7 @@ knitr::kable(constraints_science_raw[1:5, ]) %>%
 
 The constraint file should have 7 columns, named as `CONSTRAINT`, `TYPE`, `WHAT`, `CONDITION`, `LB`, `UB`, `ONOFF` on the first row of the file. Beginning from the second row, each row should have the corresponding values for the 7 columns. A convenient way to creating the file is to use a spreadsheet application (e.g. Excel), work on the contents from there, and then saving it as a `.csv` file.
 
-\
+<br/>
 
 ***
 
@@ -42,7 +44,7 @@ The constraint file should have 7 columns, named as `CONSTRAINT`, `TYPE`, `WHAT`
 
 This column serves as indices for the constraints. A single numeric value should be put into each row, incrementing by 1.
 
-\
+<br/>
 
 ***
 
@@ -50,7 +52,7 @@ This column serves as indices for the constraints. A single numeric value should
 
 This column specifies the type of constraint. Following values are expected: `Number`, `Order`, `Enemy`, `Include`, `Exclude`, `AllorNone`.
 
-\
+<br/>
 
 * `Number` specifies the constraint to be applied to the number of selected items (if `WHAT` column is `Item`), or to the number of selected item sets (if `WHAT` column is `Stimulus`). For example, the following row tells the solver to select a total of 30 items.
 
@@ -66,8 +68,8 @@ knitr::kable(constraints_science_raw[1, ], row.names = FALSE) %>%
   column_spec(7, "3em")
 ```
 
-\
-\
+<br/>
+<br/>
 
 * `Order` specifies the selection to be made in ascending order. The following row tells the solver to select the items in ascending `LEVEL`, based on the supplied item attributes.
 
@@ -83,8 +85,8 @@ knitr::kable(constraints_science_raw[32, ], row.names = FALSE) %>%
   column_spec(7, "3em")
 ```
 
-\
-\
+<br/>
+<br/>
 
 * `Enemy` specifies the items (or item sets) matching the condition to be treated as enemy items. To tell the solver to select at most one of the two items:
 
@@ -100,8 +102,8 @@ knitr::kable(constraints_science_raw[33, ], row.names = FALSE) %>%
   column_spec(7, "3em")
 ```
 
-\
-\
+<br/>
+<br/>
 
 * `Include` specifies the items matching the condition to be included in selection. For example, the following row tells the solver to include the two items `SC00003` and `SC00004`:
 
@@ -117,8 +119,8 @@ knitr::kable(constraints_science_raw[34, ], row.names = FALSE) %>%
   column_spec(7, "3em")
 ```
 
-\
-\
+<br/>
+<br/>
 
 * `Exclude` specifies the items matching the condition to be excluded in selection. The following row tells the solver to exclude the items satisfying `PTBIS < 0.15`, based on the supplied item attributes.
 
@@ -134,8 +136,8 @@ knitr::kable(constraints_science_raw[35, ], row.names = FALSE) %>%
   column_spec(7, "3em")
 ```
 
-\
-\
+<br/>
+<br/>
 
 * `AllOrNone` specifies the items matching the condition to be either all included or all excluded. To tell the solver to either select the items `SC00005` and `SC00006` at the same time or exclude them at the same time:
 
@@ -151,7 +153,7 @@ knitr::kable(constraints_science_raw[36, ], row.names = FALSE) %>%
   column_spec(7, "3em")
 ```
 
-\
+<br/>
 
 ***
 
@@ -159,7 +161,7 @@ knitr::kable(constraints_science_raw[36, ], row.names = FALSE) %>%
 
 This column specifies where the constraint is applied. The expected values are `Item` or `Stimulus`.
 
-\
+<br/>
 
 ***
 
@@ -188,7 +190,7 @@ knitr::kable(constraints_reading_raw[3, ], row.names = FALSE) %>%
   column_spec(7, "3em")
 ```
 
-\
+<br/>
 
 ***
 
@@ -212,8 +214,8 @@ knitr::kable(constraints_fatigue_raw[1, ], row.names = FALSE) %>%
   column_spec(7, "3em")
 ```
 
-\
-\
+<br/>
+<br/>
 
 * To select 15 to 30 items satisfying `DOK >= 2`:
 
@@ -229,7 +231,7 @@ knitr::kable(constraints_reading_raw[17, ], row.names = FALSE) %>%
   column_spec(7, "3em")
 ```
 
-\
+<br/>
 
 ***
 
@@ -249,3 +251,4 @@ knitr::kable(constraints_reading_raw[18, ], row.names = FALSE) %>%
   column_spec(7, "3em", background = 'cyan')
 ```
 
+<br/>
