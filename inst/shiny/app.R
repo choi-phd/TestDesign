@@ -600,6 +600,8 @@ server <- function(input, output, session) {
         conf@exposure_control$method <- input$exposure_method
         conf@exposure_control$diagnostic_stats <- TRUE
 
+        # parse theta estimation settings
+
         conf@interim_theta$method <- input$interim_method
         conf@interim_theta$prior_dist <- input$interim_prior
         conf@final_theta$method <- input$final_method
@@ -639,7 +641,14 @@ server <- function(input, output, session) {
           }
         }
 
+        # parse refresh policy settings
+
         conf@refresh_policy$method <- input$refresh_policy
+
+        if (conf@refresh_policy$method == "SET" && v$const$set_based == FALSE) {
+          v <- updateLogs(v, "Set-based refresh policy is only applicable for set-based item pools.")
+          break
+        }
 
         if (parseText(input$refresh_interval)) {
           eval(parse(text = sprintf("conf@refresh_policy$interval <- c(%s)[1]", input$refresh_interval)))
