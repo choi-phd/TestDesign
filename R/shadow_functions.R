@@ -16,8 +16,8 @@ NULL
 #' @param lp Only used when \code{solver} is \code{SYMPHONY}. If \code{TRUE}, print an LP representation of the problem for debugging purposes.
 #' @param verbosity Verbosity level.
 #' @param time_limit Time limit passed onto the solver.
-#' @param gap_limit Gap limit (absolute) passed onto the solver.
-#' @param gap_limit_relative Gap limit (relative) passed onto the solver.
+#' @param gap_limit Gap limit (relative) passed onto the solver. Used in solver \code{GUROBI}.
+#' @param gap_limit_abs Gap limit (absolute) passed onto the solver. Used in solver \code{SYMPHONY}.
 #' @param ... Only used when \code{solver} is \code{SYMPHONY}. Additional parameters to be passed onto the solver.
 #'
 #' @return A list containing the optimal solution and pertinent diagnostics.
@@ -34,7 +34,7 @@ NULL
 #' @export
 
 STA <- function(constraints, objective, solver = "Lpsolve", xmat = NULL, xdir = NULL, xrhs = NULL,
-  maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = -2, time_limit = 5, gap_limit = NULL, gap_limit_relative = NULL, ...) {
+  maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = -2, time_limit = 5, gap_limit = NULL, gap_limit_abs = NULL, ...) {
 
   if (length(objective) == constraints$nv) {
     obj <- objective
@@ -59,8 +59,8 @@ STA <- function(constraints, objective, solver = "Lpsolve", xmat = NULL, xdir = 
 
   if (toupper(solver) == "SYMPHONY") {
 
-    if (!is.null(gap_limit)) {
-      MIP <- Rsymphony::Rsymphony_solve_LP(obj, mat, dir, rhs, max = maximize, types = "B", write_mps = mps, write_lp = lp, verbosity = verbosity, time_limit = time_limit, gap_limit = gap_limit, ...)
+    if (!is.null(gap_limit_abs)) {
+      MIP <- Rsymphony::Rsymphony_solve_LP(obj, mat, dir, rhs, max = maximize, types = "B", write_mps = mps, write_lp = lp, verbosity = verbosity, time_limit = time_limit, gap_limit = gap_limit_abs, ...)
     } else {
       MIP <- Rsymphony::Rsymphony_solve_LP(obj, mat, dir, rhs, max = maximize, types = "B", write_mps = mps, write_lp = lp, verbosity = verbosity, time_limit = time_limit, ...)
     }
@@ -73,10 +73,10 @@ STA <- function(constraints, objective, solver = "Lpsolve", xmat = NULL, xdir = 
   } else if (toupper(solver) == "GUROBI") {
 
     dir[dir == "=="] <- "="
-    if (!is.null(gap_limit_relative)) {
-      invisible(capture.output(MIP <- gurobi::gurobi(list(obj = obj, modelsense = "max", rhs = rhs, sense = dir, vtype = "B", A = mat), params = list(MIPGap = gap_limit_relative), env = NULL)))
+    if (!is.null(gap_limit)) {
+      invisible(capture.output(MIP <- gurobi::gurobi(list(obj = obj, modelsense = "max", rhs = rhs, sense = dir, vtype = "B", A = mat), params = list(MIPGap = gap_limit, TimeLimit = time_limit), env = NULL)))
     } else {
-      invisible(capture.output(MIP <- gurobi::gurobi(list(obj = obj, modelsense = "max", rhs = rhs, sense = dir, vtype = "B", A = mat), env = NULL)))
+      invisible(capture.output(MIP <- gurobi::gurobi(list(obj = obj, modelsense = "max", rhs = rhs, sense = dir, vtype = "B", A = mat), params = list(TimeLimit = time_limit), env = NULL)))
     }
 
     if (!isOptimal(MIP$status, solver)) {
@@ -88,7 +88,7 @@ STA <- function(constraints, objective, solver = "Lpsolve", xmat = NULL, xdir = 
 
   } else if (toupper(solver) == "GLPK") {
 
-    MIP <- Rglpk::Rglpk_solve_LP(obj, mat, dir, rhs, max = maximize, types = "B", control = list(verbose = ifelse(verbosity != -2, TRUE, FALSE), presolve = TRUE, tm_limit = time_limit))
+    MIP <- Rglpk::Rglpk_solve_LP(obj, mat, dir, rhs, max = maximize, types = "B", control = list(verbose = ifelse(verbosity != -2, TRUE, FALSE), presolve = TRUE, tm_limit = time_limit * 1000))
     if (!isOptimal(MIP$status, solver)) {
       warning(sprintf("MIP solver returned non-zero status: %s", MIP$status))
       return(list(status = MIP$status, MIP = MIP, selected = NULL))
@@ -485,6 +485,7 @@ setMethod(
 #' @param ... Additional options to be passed on to \code{pdf()}.
 #'
 #' @examples
+#' \donttest{
 #' true_theta <- runif(10, min = -3.5, max = 3.5)
 #' resp_science <- makeTest(itempool_science, info_type = "FISHER", true_theta = true_theta)@data
 #' constraints_science2 <- updateConstraints(constraints_science, off = c(14:20, 32:36))
@@ -495,7 +496,7 @@ setMethod(
 #' solution <- Shadow(itempool_science, config_science,
 #'   true_theta, constraints_science2, data = resp_science)
 #' p <- plotExposure(solution)
-#'
+#' }
 #' @docType methods
 #' @rdname plotExposure-methods
 #' @export
@@ -1648,7 +1649,7 @@ setMethod(
 
       } else if (refresh_policy %in% c("INTERVAL", "INTERVAL-THRESHOLD")) {
 
-        if (!(config@refresh_policy$interval >= 1 && config@refresh_policy$interval > test_length)) {
+        if (!(config@refresh_policy$interval >= 1 && config@refresh_policy$interval <= test_length)) {
           stop("config@refresh_policy$interval must be not greater than test length, and be at least 1")
         }
 
@@ -2224,12 +2225,16 @@ setMethod(
                   }
                 }
 
-                optimal <- STA(constraints, info, xmat = rbind(xmat, imat), xdir = c(xdir, idir), xrhs = c(xrhs, irhs), maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$time_limit, gap_limit = config@MIP$gap_limit, gap_limit_relative = config@MIP$gap_limit_relative, solver = config@MIP$solver)
+                optimal <- STA(constraints, info, xmat = rbind(xmat, imat), xdir = c(xdir, idir), xrhs = c(xrhs, irhs),
+                  maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$time_limit,
+                  gap_limit = config@MIP$gap_limit, gap_limit_abs = config@MIP$gap_limit_abs, solver = config@MIP$solver)
 
                 is_optimal <- isOptimal(optimal$status, config@MIP$solver)
                 if (!is_optimal) {
                   output@shadow_test_feasible[position] <- FALSE
-                  optimal <- STA(constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$time_limit, gap_limit = config@MIP$gap_limit, gap_limit_relative = config@MIP$gap_limit_relative, solver = config@MIP$solver)
+                  optimal <- STA(constraints, info, xmat = imat, xdir = idir, xrhs = irhs,
+                    maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$time_limit,
+                    gap_limit = config@MIP$gap_limit, gap_limit_abs = config@MIP$gap_limit_abs, solver = config@MIP$solver)
                 } else {
                   output@shadow_test_feasible[position] <- TRUE
                 }
@@ -2241,12 +2246,16 @@ setMethod(
                 } else {
                   info[item_ineligible == 1] <- -1 * max_info - 1
                 }
-                optimal <- STA(constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$time_limit, gap_limit = config@MIP$gap_limit, gap_limit_relative = config@MIP$gap_limit_relative, solver = config@MIP$solver)
+                optimal <- STA(constraints, info, xmat = imat, xdir = idir, xrhs = irhs,
+                  maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$time_limit,
+                  gap_limit = config@MIP$gap_limit, gap_limit_abs = config@MIP$gap_limit_abs, solver = config@MIP$solver)
                 output@shadow_test_feasible[position] <- TRUE
 
               }
             } else {
-              optimal <- STA(constraints, info, xmat = imat, xdir = idir, xrhs = irhs, maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$time_limit, gap_limit = config@MIP$gap_limit, gap_limit_relative = config@MIP$gap_limit_relative, solver = config@MIP$solver)
+              optimal <- STA(constraints, info, xmat = imat, xdir = idir, xrhs = irhs,
+                maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$time_limit,
+                gap_limit = config@MIP$gap_limit, gap_limit_abs = config@MIP$gap_limit_abs, solver = config@MIP$solver)
               output@shadow_test_feasible[position] <- TRUE
             }
 
@@ -3208,6 +3217,7 @@ plotExposureRateBySegment <- function(object, config, max_rate = 0.25, file_pdf 
 #' @param retain An optional vector of indices identifying the simulees to retain.
 #'
 #' @examples
+#' \donttest{
 #' true_theta <- runif(10, min = -3.5, max = 3.5)
 #' resp_science <- makeTest(itempool_science, info_type = "FISHER", true_theta = true_theta)@data
 #' constraints_science2 <- updateConstraints(constraints_science, off = c(14:20, 32:36))
@@ -3218,7 +3228,7 @@ plotExposureRateBySegment <- function(object, config, max_rate = 0.25, file_pdf 
 #' solution <- Shadow(itempool_science, config_science,
 #'   true_theta, constraints_science2, data = resp_science)
 #' p <- plotExposureRateFinal(solution, config_science, 0.25)
-#'
+#' }
 #' @export
 plotExposureRateFinal <- function(object, config = NULL, max_rate = 0.25, theta = "Estimated", segment_cut = NULL, color = "red", file_pdf = NULL, width = 7, height = 6, mfrow = c(2, 4), burn = 0, retain = NULL) {
 
