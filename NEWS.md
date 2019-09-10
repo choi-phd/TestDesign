@@ -7,7 +7,7 @@
 * Fix where `time_limit` was not being passed onto `GUROBI` solver in `Shadow()`.
 * Fix where `time_limit` was incorrectly being passed in ms units to `GLPK` solver in `Shadow()`.
 * Fix where a valid interval-based refresh policy was triggering an error in `Shadow()`.
-* Running adaptive assembly with a set-based refresh policy on item pools without sets, now displays a message instead of crashing the Shiny app.
+* Prevent the Shiny app from crashing when running adaptive assembly with a set-based refresh policy on item pools without sets.
 
 ## Others
 
