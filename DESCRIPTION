@@ -6,7 +6,8 @@ Date: 2019-09-04
 Authors@R: c(
     person("Seung W.", "Choi",
         email = "schoi@austin.utexas.edu",
-        role = c("aut", "cre")),
+        role = c("aut", "cre"),
+        comment = c(ORCID = "0000-0003-4777-5420")),
     person("Sangdon", "Lim",
         email = "sangdonlim@utexas.edu",
         role = "aut",

@@ -7,7 +7,7 @@
 STA(constraints, objective, solver = "Lpsolve", xmat = NULL,
   xdir = NULL, xrhs = NULL, maximize = TRUE, mps = FALSE,
   lp = FALSE, verbosity = -2, time_limit = 5, gap_limit = NULL,
-  gap_limit_relative = NULL, ...)
+  gap_limit_abs = NULL, ...)
 }
 \arguments{
 \item{constraints}{A list representing optimization constraints. Use \code{\link{loadConstraints}} for this.}
@@ -32,9 +32,9 @@ STA(constraints, objective, solver = "Lpsolve", xmat = NULL,
 
 \item{time_limit}{Time limit passed onto the solver.}
 
-\item{gap_limit}{Gap limit (absolute) passed onto the solver.}
+\item{gap_limit}{Gap limit (relative) passed onto the solver. Used in solver \code{GUROBI}.}
 
-\item{gap_limit_relative}{Gap limit (relative) passed onto the solver.}
+\item{gap_limit_abs}{Gap limit (absolute) passed onto the solver. Used in solver \code{SYMPHONY}.}
 
 \item{...}{Only used when \code{solver} is \code{SYMPHONY}. Additional parameters to be passed onto the solver.}
 }

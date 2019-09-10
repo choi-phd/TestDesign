@@ -123,26 +123,29 @@ setMethod(
 
       if (!maximize) {
         len_rhs      <- length(rhs)
-        rhs[len_rhs] <- config@MIP$gap_limit
+        rhs[len_rhs] <- config@MIP$obj_tol
       }
 
       MIP <- Rsymphony::Rsymphony_solve_LP(obj, mat, dir, rhs,
         max = maximize, types = types,
         verbosity = config@MIP$verbosity,
         time_limit = config@MIP$time_limit,
-        gap_limit = config@MIP$gap_limit
+        gap_limit = config@MIP$gap_limit_abs
       )
 
     } else if (toupper(config@MIP$solver) == "GUROBI") {
 
       if (!maximize) {
         len_rhs      <- length(rhs)
-        rhs[len_rhs] <- config@MIP$gap_limit
+        rhs[len_rhs] <- config@MIP$obj_tol
       }
       constraints_dir <- dir
       constraints_dir[constraints_dir == "=="] <- "="
 
-      invisible(capture.output(MIP <- gurobi::gurobi(list(obj = obj, modelsense = ifelse(maximize, "max", "min"), rhs = rhs, sense = constraints_dir, vtype = types, A = mat), params = list(TimeLimit = config@MIP$time_limit), env = NULL)))
+      invisible(capture.output(MIP <- gurobi::gurobi(
+        list(obj = obj, modelsense = ifelse(maximize, "max", "min"), rhs = rhs, sense = constraints_dir, vtype = types, A = mat),
+        params = list(TimeLimit = config@MIP$time_limit, MIPGap = config@MIP$gap_limit),
+        env = NULL)))
 
       if (isOptimal(MIP$status, config@MIP$solver)) {
         MIP[["solution"]] <- MIP$x
@@ -150,17 +153,19 @@ setMethod(
 
     } else if (toupper(config@MIP$solver) == "GLPK") {
 
-      len_rhs      <- length(rhs)
-      rhs[len_rhs] <- config@MIP$gap_limit
+      if (!maximize) {
+        len_rhs      <- length(rhs)
+        rhs[len_rhs] <- config@MIP$obj_tol
+      }
 
       MIP <- Rglpk::Rglpk_solve_LP(obj, mat, dir, rhs, max = maximize, types = types,
-                            control = list(verbose = ifelse(config@MIP$verbosity != -2, TRUE, FALSE), presolve = FALSE, tm_limit = config@MIP$time_limit * 1000))
+        control = list(verbose = ifelse(config@MIP$verbosity != -2, TRUE, FALSE), presolve = FALSE, tm_limit = config@MIP$time_limit * 1000))
 
     } else if (toupper(config@MIP$solver) == "LPSOLVE") {
 
       if (!maximize) {
         len_rhs      <- length(rhs)
-        rhs[len_rhs] <- config@MIP$gap_limit
+        rhs[len_rhs] <- config@MIP$obj_tol
       }
 
       MIP <- lpSolve::lp(direction = ifelse(maximize, "max", "min"), obj, mat, dir, rhs, binary.vec = 1:nv, presolve = TRUE)
