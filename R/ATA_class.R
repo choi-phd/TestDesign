@@ -23,7 +23,8 @@ setClass("config_ATA",
       verbosity = -2,
       time_limit = 60,
       gap_limit = 0.05,
-      gap_limit_abs = 1
+      gap_limit_abs = 0.05,
+      obj_tol = 0.05
     )
   ),
   validity = function(object) {
@@ -85,8 +86,9 @@ setClass("config_ATA",
 #'   \item{\code{solver}} The type of solver. Accepts \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.
 #'   \item{\code{verbosity}} Verbosity level of the solver. Defaults to -2.
 #'   \item{\code{time_limit}} Time limit in seconds passed onto the solver. Defaults to 60. Used in solvers \code{SYMPHONY, GUROBI, GLPK}.
-#'   \item{\code{gap_limit}} Termination criteria in relative scale passed onto the solver. Defaults to .05. Used in solvers \code{SYMPHONY, GUROBI}.
-#'   \item{\code{gap_limit_abs}} Termination criteria in absolute scale passed onto the solver. Defaults to 1. Used in solver \code{GUROBI}.
+#'   \item{\code{gap_limit}} Termination criterion. Gap limit in relative scale passed onto the solver. Defaults to .05. Used in solver \code{GUROBI}.
+#'   \item{\code{gap_limit_abs}} Termination criterion. Gap limit in absolute scale passed onto the solver. Defaults to .05. Used in solver \code{SYMPHONY}.
+#'   \item{\code{obj_tol}} Termination criterion. Tolerance on target objective value in absolute difference scale. Defaults to .05. Ignored if method is \code{MAXINFO}.
 #' }
 #'
 #' @examples
@@ -168,5 +170,7 @@ setMethod("show", "config_ATA", function(object) {
   cat("    Solver         :", object@MIP$solver, "\n")
   cat("    Verbosity      :", object@MIP$verbosity, "\n")
   cat("    Time limit     :", object@MIP$time_limit, "\n")
-  cat("    Gap limit      :", object@MIP$gap_limit, "\n\n")
+  cat("    Gap limit      \n")
+  cat("      Relative     :", object@MIP$gap_limit, "\n")
+  cat("      Absolute     :", object@MIP$gap_limit_abs, "\n\n")
 })
