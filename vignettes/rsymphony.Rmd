@@ -1,11 +1,17 @@
 ---
 title: "Installing Rsymphony solver package on Mac"
-output: rmarkdown::html_vignette
+output: 
+  html_document: 
+    highlight: null
 vignette: >
   %\VignetteIndexEntry{Installing Rsymphony solver package on Mac}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
 ---
+
+<br/>
+
+### Introduction
 
 Rsymphony is one of the solver packages supported by TestDesign. As of Rsymphony version 0.1.28, Mac users are likely to encounter error messages like below when the user tries to install the solver package from R.
 
@@ -20,7 +26,10 @@ ERROR: configuration failed for package ‘Rsymphony’
 
 This document describes a potential fix to this problem. An admin account is required.
 
-## Install SYMPHONY libraries
+<br/>
+<br/>
+
+### Install SYMPHONY libraries
 
 The cause of the error is that Rsymphony requires SYMPHONY libraries, but the libraries are not installed. The goal of this section is to install the libraries.
 
@@ -44,7 +53,10 @@ Rsymphony solver package should now be able to locate the SYMPHONY libraries. Re
 
 If the install fails, proceed to the next step.
 
-## Modify the Rsymphony solver package to manually point to SYMPHONY libraries
+<br/>
+<br/>
+
+### Modify the Rsymphony solver package to manually point to SYMPHONY libraries
 
 **Step 1.** Install `wget` by running the following line in terminal. The purpose of this step is to allow downloading the package file directly from CRAN servers.
 
@@ -91,7 +103,10 @@ This will make the Rsymphony solver package available in R.
 
 If the `R CMD` fails with `--lgfortran` error, proceed to the next step.
 
-## Tell R where Fortran libraries are located
+<br/>
+<br/>
+
+### Tell R where Fortran libraries are located
 
 The cause of the error is that R needs Fortran libraries to build the package, but it does not know where they are. They are already available on your system: when you installed the SYMPHONY libraries from the previous steps, it installed gcc library as a requirement, which contains Fortran libraries as well. 
 
@@ -109,7 +124,10 @@ EOF
 sudo R CMD install Rsymphony
 ```
 
-## Resources
+<br/>
+<br/>
+
+### Resources
 
 For further reference, please refer to these following external links.
 
