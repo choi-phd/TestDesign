@@ -23,8 +23,9 @@ createStaticTestConfig(item_selection = NULL, MIP = NULL)
   \item{\code{solver}} The type of solver. Accepts \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.
   \item{\code{verbosity}} Verbosity level of the solver. Defaults to -2.
   \item{\code{time_limit}} Time limit in seconds passed onto the solver. Defaults to 60. Used in solvers \code{SYMPHONY, GUROBI, GLPK}.
-  \item{\code{gap_limit}} Termination criteria in relative scale passed onto the solver. Defaults to .05. Used in solvers \code{SYMPHONY, GUROBI}.
-  \item{\code{gap_limit_abs}} Termination criteria in absolute scale passed onto the solver. Defaults to 1. Used in solver \code{GUROBI}.
+  \item{\code{gap_limit}} Termination criterion. Gap limit in relative scale passed onto the solver. Defaults to .05. Used in solver \code{GUROBI}.
+  \item{\code{gap_limit_abs}} Termination criterion. Gap limit in absolute scale passed onto the solver. Defaults to .05. Used in solver \code{SYMPHONY}.
+  \item{\code{obj_tol}} Termination criterion. Tolerance on target objective value in absolute difference scale. Defaults to .05. Ignored if method is \code{MAXINFO}.
 }}
 }
 \description{
