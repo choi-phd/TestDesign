@@ -155,8 +155,9 @@ setClass("config_Shadow",
     MIP = list(
       solver = "LPSOLVE",
       verbosity = -2,
-      time_limit = -1,
-      gap_limit = -1
+      time_limit = 60,
+      gap_limit = .05,
+      gap_limit_abs = .05
     ),
     MCMC = list(
       burn_in = 100,
@@ -288,7 +289,8 @@ setClass("config_Shadow",
 #'   \item{\code{solver}} The type of solver. Accepts one of \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.
 #'   \item{\code{verbosity}} Verbosity level.
 #'   \item{\code{time_limit}} Time limit to be passed onto solver. Used in solvers \code{SYMPHONY, GUROBI, GLPK}.
-#'   \item{\code{gap_limit}} Gap limit to be passed onto solver. Used in solvers \code{SYMPHONY, GUROBI}.
+#'   \item{\code{gap_limit}} Gap limit (relative) to be passed onto solver. Used in solver \code{GUROBI}. Uses the solver default when \code{NULL}.
+#'   \item{\code{gap_limit_abs}} Gap limit (absolute) to be passed onto solver. Used in solver \code{SYMPHONY}. Uses the solver default when \code{NULL}.
 #' }
 #' @param MCMC A list containing Markov-chain Monte Carlo configurations.
 #' \itemize{
@@ -417,7 +419,8 @@ setMethod("show", "config_Shadow", function(object) {
   cat("    solver          :", object@MIP$solver, "\n")
   cat("    verbosity       :", object@MIP$verbosity, "\n")
   cat("    time_limit      :", object@MIP$time_limit, "\n")
-  cat("    gap_limit       :", object@MIP$gap_limit, "\n\n")
+  cat("    gap_limit       :", object@MIP$gap_limit, "\n")
+  cat("    gap_limit_abs   :", object@MIP$gap_limit_abs, "\n\n")
   cat("  MCMC \n")
   cat("    burn_in         :", object@MCMC$burn_in, "\n")
   cat("    post_burn_in    :", object@MCMC$post_burn_in, "\n")

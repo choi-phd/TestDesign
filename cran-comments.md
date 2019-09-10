@@ -18,4 +18,4 @@ Information on obtaining 'gurobi' is described in `DESCRIPTON`.
 
 ## Downstream dependencies
 
-There are no downstream dependencies of the previous version of 'TestDesign' v0.2.2.
+There are no downstream dependencies of the previous version of 'TestDesign' v0.2.3.

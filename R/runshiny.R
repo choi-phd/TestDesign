@@ -42,7 +42,7 @@ OAT <- function() {
     if (!isNamespaceLoaded("shiny")) {
       attachNamespace("shiny")
     }
-    shiny::runApp(app_dir, display.mode = "normal")
+    shiny::runApp(app_dir, display.mode = "normal", launch.browser = TRUE)
   }
 }
 
