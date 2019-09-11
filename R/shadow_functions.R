@@ -485,6 +485,7 @@ setMethod(
 #' @param ... Additional options to be passed on to \code{pdf()}.
 #'
 #' @examples
+#' \donttest{
 #' true_theta <- runif(10, min = -3.5, max = 3.5)
 #' resp_science <- makeTest(itempool_science, info_type = "FISHER", true_theta = true_theta)@data
 #' constraints_science2 <- updateConstraints(constraints_science, off = c(14:20, 32:36))
@@ -495,7 +496,7 @@ setMethod(
 #' solution <- Shadow(itempool_science, config_science,
 #'   true_theta, constraints_science2, data = resp_science)
 #' p <- plotExposure(solution)
-#'
+#' }
 #' @docType methods
 #' @rdname plotExposure-methods
 #' @export
@@ -3216,6 +3217,7 @@ plotExposureRateBySegment <- function(object, config, max_rate = 0.25, file_pdf 
 #' @param retain An optional vector of indices identifying the simulees to retain.
 #'
 #' @examples
+#' \donttest{
 #' true_theta <- runif(10, min = -3.5, max = 3.5)
 #' resp_science <- makeTest(itempool_science, info_type = "FISHER", true_theta = true_theta)@data
 #' constraints_science2 <- updateConstraints(constraints_science, off = c(14:20, 32:36))
@@ -3226,7 +3228,7 @@ plotExposureRateBySegment <- function(object, config, max_rate = 0.25, file_pdf 
 #' solution <- Shadow(itempool_science, config_science,
 #'   true_theta, constraints_science2, data = resp_science)
 #' p <- plotExposureRateFinal(solution, config_science, 0.25)
-#'
+#' }
 #' @export
 plotExposureRateFinal <- function(object, config = NULL, max_rate = 0.25, theta = "Estimated", segment_cut = NULL, color = "red", file_pdf = NULL, width = 7, height = 6, mfrow = c(2, 4), burn = 0, retain = NULL) {
 

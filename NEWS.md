@@ -1,4 +1,4 @@
-# TestDesign 0.2.4
+# TestDesign 0.2.5
 
 ## Bug fixes
 
