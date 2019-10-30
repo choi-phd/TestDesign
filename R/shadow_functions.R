@@ -932,11 +932,13 @@ setMethod(
       stop("misspecification for prior or prior_par")
     }
 
-    if (toupper(config@interim_theta$method) %in% c("EB", "FB")) {
+    # Initialize bayesian stuff
+
+    if (toupper(config@interim_theta$method) %in% c("EB", "FB") || toupper(config@final_theta$method) %in% c("EB", "FB")) {
       n_sample <- config@MCMC$burn_in + config@MCMC$post_burn_in
-      if (toupper(config@interim_theta$method) == "FB" || toupper(config@final_theta$method) == "FB") {
-        ipar_list <- iparPosteriorSample(pool, n_sample)
-      }
+    }
+    if (toupper(config@interim_theta$method) == "FB" || toupper(config@final_theta$method) == "FB") {
+      ipar_list <- iparPosteriorSample(pool, n_sample)
     }
 
     # Get initial theta estimate
@@ -1717,13 +1719,27 @@ setMethod(
       } else if (toupper(config@final_theta$method) %in% c("EB", "FB")) {
 
         if (toupper(config@interim_theta$method) == toupper(config@final_theta$method) && identical(config@interim_theta$prior_par, config@final_theta$prior_par)) {
+
           output@final_theta_est <- output@interim_theta_est[position]
           output@final_se_est    <- output@interim_se_est[position]
+
         } else {
+
+          if (toupper(config@final_theta$method) %in% c("EB", "FB")) {
+            if (is.vector(prior_par) && length(prior_par) == 2) {
+              output@prior_par <- prior_par
+            } else if (is.matrix(prior_par) && all(dim(prior_par) == c(nj, 2))) {
+              output@prior_par <- prior_par[j, ]
+            } else {
+              output@prior_par <- config@final_theta$prior_par
+            }
+          }
+
           output@posterior_sample <- rnorm(n_sample, mean = output@prior_par[1], sd = output@prior_par[2])
           output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = n_sample, by = config@MCMC$thin)]
           current_theta <- mean(output@posterior_sample)
           current_se    <- sd(output@posterior_sample) * config@MCMC$jump_factor
+
           if (toupper(config@final_theta$method == "EB")) {
             output@posterior_sample <- theta_EB(
               n_sample, current_theta, current_se,
@@ -1739,9 +1755,11 @@ setMethod(
               model[output@administered_item_index[1:position]], 1, c(current_theta, current_se)
             )
           }
+
           output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = n_sample, by = config@MCMC$thin)]
           output@final_theta_est  <- mean(output@posterior_sample)
           output@final_se_est     <- sd(output@posterior_sample)
+
         }
 
       }

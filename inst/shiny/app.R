@@ -251,7 +251,7 @@ server <- function(input, output, session) {
 
   observeEvent(input$itemse_file, {
     if (!is.null(input$itemse_file) & v$itempool_exists) {
-      v$itempool <- try(loadItemPool(input$itempool_file$datapath, se.file.csv = input$itemse_file$datapath))
+      v$itempool <- try(loadItemPool(input$itempool_file$datapath, se_file = input$itemse_file$datapath))
       if (class(v$itempool) == "item_pool") {
         v$itemse_exists <- TRUE
         v <- updateLogs(v, "Item standard error file: OK")
@@ -351,6 +351,7 @@ server <- function(input, output, session) {
     v$const      <- NULL
     v$content    <- NULL
     v$itempool_exists   <- FALSE
+    v$itemse_exists     <- FALSE
     v$itemattrib_exists <- FALSE
     v$stimattrib_exists <- FALSE
     v$const_exists      <- FALSE
@@ -612,6 +613,11 @@ server <- function(input, output, session) {
           v <- updateLogs(v, "FB interim method requires the standard errors to be supplied.")
           break
         }
+        if (conf@final_theta$method == "FB" & v$itemse_exists == F) {
+          v <- updateLogs(v, "FB final method requires the standard errors to be supplied.")
+          break
+        }
+
         if (parseText(input$interim_prior_par)) {
           eval(parse(text = sprintf("conf@interim_theta$prior_par = c(%s)", input$interim_prior_par)))
           if (length(conf@interim_theta$prior_par) != 2) {
