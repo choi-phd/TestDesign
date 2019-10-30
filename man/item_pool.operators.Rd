@@ -14,12 +14,6 @@
 
 \method{==}{item_pool}(pool1, pool2)
 
-\method{+}{item_pool}(pool1, pool2)
-
-\method{-}{item_pool}(pool1, pool2)
-
-\method{==}{item_pool}(pool1, pool2)
-
 \method{==}{pool_cluster}(pool_cluster1, pool_cluster2)
 }
 \arguments{
@@ -30,18 +24,8 @@
 \item{pool_cluster1}{A \code{\linkS4class{pool_cluster}} object.}
 
 \item{pool_cluster2}{A \code{\linkS4class{pool_cluster}} object.}
-
-\item{pool1}{An \code{\linkS4class{item_pool}} object.}
-
-\item{pool2}{An \code{\linkS4class{item_pool}} object.}
 }
 \description{
-\code{pool1 + pool2} combines two \code{\linkS4class{item_pool}} objects.
-
-\code{pool1 - pool2} excludes the items in the second item pool from the first. The two \code{\linkS4class{item_pool}} objects must overlap for this to be performed.
-
-\code{pool1 == pool2} tests equality of the two item_pool objects.
-
 \code{pool1 + pool2} combines two \code{\linkS4class{item_pool}} objects.
 
 \code{pool1 - pool2} excludes the items in the second item pool from the first. The two \code{\linkS4class{item_pool}} objects must overlap for this to be performed.
@@ -51,16 +35,6 @@
 \code{pool_cluster1 == pool_cluster2} tests equality of the two pool_cluster objects.
 }
 \examples{
-itempool <- itempool_science + itempool_reading
-
-subitempool <- subsetItemPool(itempool_science, 1:500)
-itempool <- itempool_science - subitempool
-
-itempool <- subsetItemPool(itempool_science, 1:500)
-subitempool1 <- itempool_science - itempool
-subitempool2 <- subsetItemPool(itempool_science, 501:1000)
-subitempool1 == subitempool2  ## TRUE
-
 itempool <- itempool_science + itempool_reading
 
 subitempool <- subsetItemPool(itempool_science, 1:500)

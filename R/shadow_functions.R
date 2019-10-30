@@ -1,625 +1,5 @@
-#' @include shadow_class.R
+#' @include static_functions.R
 NULL
-
-#' Perform shadow test assembly
-#'
-#' Perform Shadow Test Assembly (STA) for computerized adaptive testing.
-#'
-#' @param constraints A list representing optimization constraints. Use \code{\link{loadConstraints}} for this.
-#' @param objective A vector of objective values.
-#' @param solver The type of solver. Accepts \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.
-#' @param xmat A matrix of additional constraint coefficients for any previously administered items.
-#' @param xdir A character vector with the directions for the constraints in \code{xmat}.
-#' @param xrhs A vector of right-side values for the constraints in \code{xmat}.
-#' @param maximize If \code{TRUE}, treat as a maximization problem. Otherwise treat as a minimization problem.
-#' @param mps Only used when \code{solver} is \code{SYMPHONY}. If \code{TRUE}, print an MPS representation of the problem for debugging purposes.
-#' @param lp Only used when \code{solver} is \code{SYMPHONY}. If \code{TRUE}, print an LP representation of the problem for debugging purposes.
-#' @param verbosity Verbosity level.
-#' @param time_limit Time limit passed onto the solver.
-#' @param gap_limit Gap limit (relative) passed onto the solver. Used in solver \code{GUROBI}.
-#' @param gap_limit_abs Gap limit (absolute) passed onto the solver. Used in solver \code{SYMPHONY}.
-#' @param ... Only used when \code{solver} is \code{SYMPHONY}. Additional parameters to be passed onto the solver.
-#'
-#' @return A list containing the optimal solution and pertinent diagnostics.
-#'
-#' @references{
-#'   \insertRef{van_der_linden_model_1998}{TestDesign}
-#'
-#'   \insertRef{van_der_linden_optimal_1998}{TestDesign}
-#'
-#'   \insertRef{van_der_linden_optimal_2000}{TestDesign}
-#'
-#'   \insertRef{van_der_linden_linear_2005}{TestDesign}
-#' }
-#' @export
-
-STA <- function(constraints, objective, solver = "Lpsolve", xmat = NULL, xdir = NULL, xrhs = NULL,
-  maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = -2, time_limit = 5, gap_limit = NULL, gap_limit_abs = NULL, ...) {
-
-  if (length(objective) == constraints$nv) {
-    obj <- objective
-  } else if (length(objective) == constraints$ni) {
-    obj <- numeric(constraints$nv)
-    obj[1:constraints$ni] <- objective
-  } else {
-    stop(sprintf("length of objective must be %s", constraints$nv))
-  }
-
-  if (!is.null(xmat) && !is.null(xdir) && !is.null(xrhs)) {
-    mat <- rbind(constraints$mat, xmat)
-    dir <- c(constraints$dir, xdir)
-    rhs <- c(constraints$rhs, xrhs)
-  } else {
-    mat <- constraints$mat
-    dir <- constraints$dir
-    rhs <- constraints$rhs
-  }
-
-  solve_time <- proc.time()
-
-  if (toupper(solver) == "SYMPHONY") {
-
-    if (!is.null(gap_limit_abs)) {
-      MIP <- Rsymphony::Rsymphony_solve_LP(obj, mat, dir, rhs, max = maximize, types = "B", write_mps = mps, write_lp = lp, verbosity = verbosity, time_limit = time_limit, gap_limit = gap_limit_abs, ...)
-    } else {
-      MIP <- Rsymphony::Rsymphony_solve_LP(obj, mat, dir, rhs, max = maximize, types = "B", write_mps = mps, write_lp = lp, verbosity = verbosity, time_limit = time_limit, ...)
-    }
-
-    if (!isOptimal(MIP$status, solver)) {
-      warning(sprintf("MIP solver returned non-zero status: %s", names(MIP$status)))
-      return(list(status = MIP$status, MIP = MIP, selected = NULL))
-    }
-
-  } else if (toupper(solver) == "GUROBI") {
-
-    dir[dir == "=="] <- "="
-    if (!is.null(gap_limit)) {
-      invisible(capture.output(MIP <- gurobi::gurobi(list(obj = obj, modelsense = "max", rhs = rhs, sense = dir, vtype = "B", A = mat), params = list(MIPGap = gap_limit, TimeLimit = time_limit), env = NULL)))
-    } else {
-      invisible(capture.output(MIP <- gurobi::gurobi(list(obj = obj, modelsense = "max", rhs = rhs, sense = dir, vtype = "B", A = mat), params = list(TimeLimit = time_limit), env = NULL)))
-    }
-
-    if (!isOptimal(MIP$status, solver)) {
-      warning(sprintf("MIP solver returned non-zero status: %s", MIP$status))
-      return(list(status = MIP$status, MIP = MIP, selected = NULL))
-    }
-
-    MIP[["solution"]] <- MIP$x
-
-  } else if (toupper(solver) == "GLPK") {
-
-    MIP <- Rglpk::Rglpk_solve_LP(obj, mat, dir, rhs, max = maximize, types = "B", control = list(verbose = ifelse(verbosity != -2, TRUE, FALSE), presolve = TRUE, tm_limit = time_limit * 1000))
-    if (!isOptimal(MIP$status, solver)) {
-      warning(sprintf("MIP solver returned non-zero status: %s", MIP$status))
-      return(list(status = MIP$status, MIP = MIP, selected = NULL))
-    }
-
-  } else if (toupper(solver) == "LPSOLVE") {
-
-    MIP <- lp(direction = ifelse(maximize, "max", "min"), obj, mat, dir, rhs, all.bin = TRUE, presolve = TRUE)
-    if (!isOptimal(MIP$status, solver)) {
-      warning(sprintf("MIP solver returned non-zero status: %s", MIP$status))
-      return(list(status = MIP$status, MIP = MIP, selected = NULL))
-    }
-
-  } else {
-    stop("solver must be Symphony, Gurobi, glpk, lpSolve")
-  }
-
-  MIP$solution <- round(MIP$solution, 0)
-
-  solve_time <- (proc.time() - solve_time)["elapsed"]
-
-  if (!is.null(constraints$stim_order)) {
-    constraints$item_attrib$tmpsort <- 1:constraints$ni
-    constraints$item_attrib <- merge(constraints$item_attrib,
-      constraints$st_attrib[c("STINDEX", "STID", constraints$stim_order_by)],
-      by = "STID", all.x = TRUE, sort = FALSE)
-    constraints$item_attrib <- constraints$item_attrib[order(constraints$item_attrib$tmpsort), ]
-    constraints$item_attrib <- constraints$item_attrib[, !(colnames(constraints$item_attrib) %in% 'tmpsort')]
-  } else if (!is.null(constraints$st_attrib)) {
-    constraints$item_attrib$tmpsort <- 1:constraints$ni
-    constraints$item_attrib <- merge(constraints$item_attrib,
-      constraints$st_attrib[c("STINDEX", "STID")],
-      by = "STID", all.x = TRUE, sort = FALSE)
-    constraints$item_attrib <- constraints$item_attrib[order(constraints$item_attrib$tmpsort), ]
-    constraints$item_attrib <- constraints$item_attrib[, !(colnames(constraints$item_attrib) %in% 'tmpsort')]
-  }
-
-  index_solution <- which(MIP$solution[1:constraints$ni] == 1)
-  info <- obj[index_solution]
-  shadow_test <- data.frame(cbind(constraints$item_attrib[index_solution, ], info))
-
-  if (constraints$set_based) {
-    if (any(is.na(shadow_test[["STID"]]))) {
-      shadow_test <- data.frame(cbind(.sequence = 1:nrow(shadow_test), shadow_test))
-      shadow_test_discrete <- shadow_test[is.na(shadow_test[["STID"]]), ]
-      shadow_test_discrete <- data.frame(cbind(shadow_test_discrete, meanInfo = shadow_test_discrete$info))
-      shadow_test_stimulus <- shadow_test[!is.na(shadow_test[["STID"]]), ]
-      mean_info <- tapply(shadow_test_stimulus$info, shadow_test_stimulus[["STID"]], mean)
-      mean_info <- data.frame(STID = names(mean_info), meanInfo = mean_info)
-      shadow_test_stimulus <- merge(shadow_test_stimulus, mean_info, by = "STID", all.x = TRUE, sort = FALSE)
-      shadow_test <- rbind(shadow_test_discrete, shadow_test_stimulus)
-      shadow_test <- shadow_test[order(shadow_test$.sequence), ]
-      shadow_test <- shadow_test[-1]
-    } else {
-      mean_info <- tapply(shadow_test$info, shadow_test[["STID"]], mean)
-      mean_info <- data.frame(STID = names(mean_info), meanInfo = mean_info)
-      shadow_test <- merge(shadow_test, mean_info, by = "STID", all.x = TRUE, sort = FALSE)
-    }
-    if (!is.null(constraints$stim_order_by) && !is.null(constraints$item_order_by)) {
-      shadow_test <- shadow_test[order(shadow_test[[constraints$stim_order_by]], shadow_test[["meanInfo"]], shadow_test[["STID"]], shadow_test[[constraints$item_order_by]], shadow_test[["info"]], decreasing = c(FALSE, TRUE, FALSE, FALSE, TRUE), method = "radix"), ]
-    } else if (!is.null(constraints$stim_order_by)) {
-      shadow_test <- shadow_test[order(shadow_test[[constraints$stim_order_by]], shadow_test[["meanInfo"]], shadow_test[["STID"]], shadow_test[["info"]], decreasing = c(FALSE, TRUE, FALSE, TRUE), method = "radix"), ]
-    } else if (!is.null(constraints$item_order_by)) {
-      shadow_test <- shadow_test[order(shadow_test[["meanInfo"]], shadow_test[["STID"]], shadow_test[[constraints$item_order_by]], shadow_test[["info"]], decreasing = c(TRUE, FALSE, FALSE, TRUE), method = "radix"), ]
-    } else {
-      shadow_test <- shadow_test[order(shadow_test[["meanInfo"]], shadow_test[["STID"]], shadow_test[["info"]], decreasing = c(TRUE, FALSE, TRUE), method = "radix"), ]
-    }
-  } else {
-    if (!is.null(constraints$item_order_by)) {
-      shadow_test <- shadow_test[order(shadow_test[[constraints$item_order_by]], shadow_test[["info"]], decreasing = c(FALSE, TRUE), method = "radix"), ]
-    } else {
-      shadow_test <- shadow_test[order(shadow_test[["info"]], decreasing = TRUE), ]
-    }
-  }
-
-  obj_value <- sum(info)
-  row.names(shadow_test) <- 1:nrow(shadow_test)
-
-  return(list(status = MIP$status, MIP = MIP, shadow_test = shadow_test, obj_value = obj_value, solve_time = solve_time))
-}
-
-#' Save or print audit trails
-#'
-#' Save or print audit trails for all simulees.
-#'
-#' @param object_list A list of output objects generated from \code{STA}.
-#' @param file An optional file name as a character string to save the output.
-#'
-#' @return None
-saveOutput <- function(object_list, file = NULL) {
-  nj <- length(object_list)
-  for (j in 1:nj) {
-    object <- object_list[[j]]
-    output <- data.frame(
-      simulee = object@simulee_id,
-      true_theta = object@true_theta,
-      true_theta_segment = object@true_theta_segment,
-      stage = 1:length(object@administered_item_index),
-      stimulus_index = ifelse(is.nan(object@administered_stimulus_index), rep(NA, length(object@administered_item_index)), object@administered_stimulus_index),
-      item_index = object@administered_item_index,
-      item_resp = object@administered_item_resp,
-      interim_theta = object@interim_theta_est,
-      interim_se = object@interim_se_est,
-      interim_theta_segment = object@theta_segment_index
-    )
-    if (!is.null(file)) {
-      write.table(output, file = file, append = j > 1, row.names = FALSE, col.names = j == 1, sep = ",")
-    } else {
-      print(output)
-    }
-  }
-}
-
-#' Draw a shadow test chart
-#'
-#' Draw a chart of shadow tests constructed for each simulee. The index of a column represents the position of item administration process, and each column represents the item pool.
-#'
-#' @param object An output from \code{\link{Shadow}} function.
-#' @param constraints The constraint object used in obtaining the output.
-#' @param examinee_id Numeric ID of the examinee to draw the plot.
-#' @param sort_by_difficulty Sort the items by difficulty.
-#' @param file_pdf If supplied a filename, save as a PDF file.
-#' @param ... Additional options to be passed on to \code{pdf()}.
-#'
-#' @examples
-#' object <- itempool_science
-#' config <- createShadowTestConfig()
-#' true_theta <- rnorm(1)
-#' solution <- Shadow(itempool_science, config, true_theta, constraints_science)
-#' plotShadow(solution, constraints_science, 1)
-#'
-#' @docType methods
-#' @rdname plotShadow-methods
-#' @export
-setGeneric(
-  name = "plotShadow",
-  def = function(object, constraints, examinee_id = 1, sort_by_difficulty = FALSE, file_pdf = NULL, ...) {
-    standardGeneric("plotShadow")
-  }
-)
-
-#' @docType methods
-#' @rdname plotShadow-methods
-#' @export
-setMethod(
-  f = "plotShadow",
-  signature = "list",
-  definition = function(object, constraints, examinee_id = 1, sort_by_difficulty = FALSE, file_pdf = NULL, ...) {
-    if (!is.null(file_pdf)) {
-      pdf(file = file_pdf, bg = "white")
-    }
-    for (i in examinee_id) {
-      plotShadow(object$output[[i]], constraints, examinee_id, file_pdf = NULL, ...)
-    }
-    if (!is.null(file_pdf)) {
-      dev.off()
-    } else {
-      p <- recordPlot()
-      return(p)
-    }
-  }
-)
-
-#' @docType methods
-#' @rdname plotShadow-methods
-#' @export
-setMethod(
-  f = "plotShadow",
-  signature = "output_Shadow",
-  definition = function(object, constraints, examinee_id = 1, sort_by_difficulty = FALSE, file_pdf = NULL, ...) {
-    max_ni <- constraints$test_length
-    ni     <- constraints$ni
-
-    old_mar   <- par()$mar
-    old_mfrow <- par()$mfrow
-    on.exit(par(mar = old_mar, mfrow = old_mfrow))
-    par(mar = c(2, 3, 1, 1) + 0.1, mfrow = c(1, 1))
-
-    n_points <- sum(!is.na(object@administered_item_resp)) # this should be equal to constraints$test_length
-    item_id <- constraints$item_attrib[["ID"]][object@administered_item_index]
-    item_sequence <- object@administered_item_index
-    responses <- object@administered_item_resp
-    plot(c(0.5, max_ni + 0.5), c(0.5, ni + 0.5), type = "n", las = 1, xlim = c(0, max_ni), xaxt = "n", yaxt = "n", ylab = "")
-    usr <- par("usr")
-    text(max_ni / 2, usr[3] / 2, "Position", adj = c(0.5, 0), cex = 1.0)
-    if (sort_by_difficulty) {
-      axis(2, at = ni / 2, labels = "Easier <-  Items  -> Harder", cex.axis = 1.5, tick = FALSE, line = 0)
-    } else {
-      axis(2, at = ni / 2, labels = "Items", cex.axis = 1.5, tick = FALSE, line = 0)
-    }
-    text(max_ni / 2, mean(c(usr[4], ni)), paste0("Examinee ID: ", object@simulee_id), adj = c(0.5, 0.5), cex = 1)
-    axis(1, at = 0:max_ni, tick = TRUE, labels = 0:max_ni, cex.axis = 0.7)
-    text(0, seq(10, ni, 10), seq(10, ni, 10), adj = c(0.5, 0.5), cex = 0.7)
-    for (i in 1:n_points) {
-      for (j in 1:ni) {
-        rect(i - 0.25, j - 0.25, i + 0.25, j + 0.25, border = "gray88", lwd = 0.3)
-      }
-      if (object@shadow_test_refreshed[i]) {
-        text(i, usr[3] + strheight("S") / 3, "S", col = "red", cex = 0.7, adj = c(0.5, 0))
-      }
-    }
-    if (constraints$set_based) {
-      for (p in 1:constraints$ns) {
-        for (i in 1:n_points) {
-          rect(i - 0.35, min(constraints$item_index_by_stimulus[[p]]) - 0.5, i + 0.35, max(constraints$item_index_by_stimulus[[p]]) + 0.5, border = "gray88", lwd = 0.5)
-        }
-      }
-    }
-    shadow_tests <- object@shadow_test
-    if (constraints$set_based) {
-      item_table <- merge(constraints$item_attrib, constraints$st_attrib[c("STID", "STINDEX", "NITEM")], by = "STID", all.x = TRUE, sort = FALSE)
-      for (k in 1:n_points) {
-        items <- shadow_tests[[k]]
-        current_item <- object@administered_item_index[k]
-        passages <- unique(item_table[["STINDEX"]][items])
-        current_passage <- item_table[["STINDEX"]][current_item]
-        for (p in 1:length(passages)) {
-          sub_items <- constraints$item_index_by_stimulus[[passages[p]]]
-          if (passages[p] == current_passage) {
-            rect(k - 0.35, min(sub_items) - 0.5, k + 0.35, max(sub_items) + 0.5, border = "blue", col = "khaki", lwd = 0.5)
-            for (i in 1:length(sub_items)) {
-              if (sub_items[i] == current_item) {
-                if (responses[k] >= 1) {
-                  rect(k - 0.25, sub_items[i] - 0.25, k + 0.25, sub_items[i] + 0.25, border = "lime green", col = "lime green", lwd = 0.3)
-                } else if (responses[k] == 0) {
-                  rect(k - 0.25, sub_items[i] - 0.25, k + 0.25, sub_items[i] + 0.25, border = "red", col = "red", lwd = 0.3)
-                }
-              } else if (sub_items[i] %in% items) {
-                rect(k - 0.25, sub_items[i] - 0.25, k + 0.25, sub_items[i] + 0.25, border = "black", lwd = 0.3)
-              } else {
-                rect(k - 0.25, sub_items[i] - 0.25, k + 0.25, sub_items[i] + 0.25, border = "white", lwd = 0.3)
-              }
-            }
-          } else {
-            rect(k - 0.35, min(sub_items) - 0.5, k + 0.35, max(sub_items) + 0.5, border = "blue", col = "gray50", lwd = 0.5)
-            for (i in 1:length(sub_items)) {
-              if (sub_items[i] %in% items) {
-                rect(k - 0.25, sub_items[i] - 0.25, k + 0.25, sub_items[i] + 0.25, border = "black", lwd = 0.3)
-              } else {
-                rect(k - 0.25, sub_items[i] - 0.25, k + 0.25, sub_items[i] + 0.25, border = "gray88", lwd = 0.3)
-              }
-            }
-          }
-        }
-      }
-    } else {
-      for (k in 1:n_points) {
-        items <- shadow_tests[[k]]
-        current_item <- object@administered_item_index[k]
-        for (i in 1:length(items)) {
-          if (items[i] != current_item) {
-            rect(k - 0.25, items[i] - 0.25, k + 0.25, items[i] + 0.25, border = "black", lwd = 0.3)
-          }
-        }
-      }
-      for (k in 1:n_points) {
-        items <- shadow_tests[[k]]
-        current_item <- object@administered_item_index[k]
-        for (i in 1:length(items)) {
-          if (items[i] == current_item) {
-            for (kk in k:n_points) {
-              rect(kk - 0.25, items[i] - 0.25, kk + 0.25, items[i] + 0.25, border = "gray33", col = "gray33", lwd = 0.3)
-            }
-            if (responses[k] >= 1) {
-              rect(k - 0.25, items[i] - 0.25, k + 0.25, items[i] + 0.25, border = "lime green", col = "lime green", lwd = 0.3)
-            } else if (responses[k] == 0) {
-              rect(k - 0.25, items[i] - 0.25, k + 0.25, items[i] + 0.25, border = "red", col = "red", lwd = 0.3)
-            }
-          }
-        }
-      }
-    }
-  }
-)
-
-#' Draw an audit trail plot
-#'
-#' Draw an audit trail plot.
-#'
-#' @param object An output object generated by \code{\link{Shadow}}.
-#' @param examinee_id Numeric ID of the examinee to draw the plot.
-#' @param min_theta A lower bound of theta.
-#' @param max_theta An upper bound of theta.
-#' @param min_score A minimum item score.
-#' @param max_score A maximum item score.
-#' @param z_ci A quantile of the normal distribution for confidence intervals.
-#' @param file_pdf If supplied a filename, save as a PDF file.
-#' @param ... Additional options to be passed on to \code{pdf()}.
-#'
-#' @examples
-#' object <- itempool_science
-#' config <- createShadowTestConfig()
-#' true_theta <- rnorm(1)
-#' solution <- Shadow(itempool_science, config, true_theta, constraints_science)
-#' plotCAT(solution, 1)
-#'
-#' @docType methods
-#' @rdname plotCAT-methods
-#' @export
-setGeneric(
-  name = "plotCAT",
-  def = function(object, examinee_id = 1, min_theta = -5, max_theta = 5, min_score = 0, max_score = 1, z_ci = 1.96, file_pdf = NULL, ...) {
-    standardGeneric("plotCAT")
-  }
-)
-
-#' @docType methods
-#' @rdname plotCAT-methods
-#' @export
-setMethod(
-  f = "plotCAT",
-  signature = "list",
-  definition = function(object, examinee_id = 1, min_theta = -5, max_theta = 5, min_score = 0, max_score = 1, z_ci = 1.96, file_pdf = NULL, ...) {
-    if (!is.null(file_pdf)) {
-      pdf(file = file_pdf, bg = "white")
-    }
-    for (i in examinee_id) {
-      plotCAT(object$output[[i]], examinee_id, min_theta = min_theta, max_theta = max_theta, min_score = min_score, max_score = max_score, z_ci = z_ci, file_pdf = NULL, ...)
-    }
-    if (!is.null(file_pdf)) {
-      dev.off()
-    } else {
-      p <- recordPlot()
-      return(p)
-    }
-  }
-)
-
-#' @docType methods
-#' @rdname plotCAT-methods
-#' @export
-setMethod(
-  f = "plotCAT",
-  signature = "output_Shadow",
-  definition = function(object, examinee_id = 1, min_theta = -5, max_theta = 5, min_score = 0, max_score = 1, z_ci = 1.96, file_pdf = NULL, ...) {
-    n_items <- length(object@administered_item_index)
-    if (n_items > 0) {
-
-      old_mar <- par()$mar
-      on.exit(par(mar = old_mar))
-      par(mar = c(2, 3, 1, 1) + 0.1)
-
-      layout(rbind(c(1, 1), c(1, 1), c(1, 1), c(1, 1), c(2, 2)))
-      plot(1:n_items, seq(min_theta, max_theta, length = n_items), ylab = "Theta", type = "n", las = 1, xlim = c(0, n_items), xaxt = "n", yaxt = "n")
-      grid()
-      text(n_items / 2, max_theta, paste0("Examinee ID: ", object@simulee_id), adj = c(0.5, 0.5), cex = 2)
-      axis(1, at = 0:n_items, tick = TRUE, labels = 0:n_items, cex.axis = 1.5)
-      axis(2, at = min_theta:max_theta, labels = min_theta:max_theta, cex.axis = 1.5)
-      text(0.5, min_theta + 1.0, paste("Final Theta: ", round(object@final_theta_est, digits = 2), " SE: ", round(object@final_se_est, digits = 2)), cex = 1.5, adj = 0)
-      for (i in 1:n_items) {
-        lines(rep(i, 2), c(object@interim_theta_est[i] - z_ci * object@interim_se_est[i], object@interim_theta_est[i] + z_ci * object@interim_se_est[i]), col = "purple4")
-        lines(c(i - 0.25, i + 0.25), c(object@interim_theta_est[i] - z_ci * object@interim_se_est[i], object@interim_theta_est[i] - z_ci * object@interim_se_est[i]), col = "purple4")
-        lines(c(i - 0.25, i + 0.25), c(object@interim_theta_est[i] + z_ci * object@interim_se_est[i], object@interim_theta_est[i] + z_ci * object@interim_se_est[i]), col = "purple4")
-      }
-      lines(1:n_items, object@interim_theta_est, lty = 3, col = "blue", lwd = 1.5)
-      points(1:n_items, object@interim_theta_est, pch = 16, cex = 2.5, col = "blue")
-      points(1:n_items, object@interim_theta_est, pch = 1, cex = 2.5, col = "purple4")
-      if (!is.null(object@true_theta)) {
-        abline(h = object@true_theta, lty = 1, col = "red")
-      }
-      for (i in 1:n_items) {
-        if (object@shadow_test_refreshed[i]) {
-          text(i, min_theta, "S", col = "red", cex = 1.5)
-        }
-      }
-      plot(1:n_items, seq(min_score, max_score, length.out = n_items), type = "n", xaxt = "n", ylim = c(min_score - 1, max_score + 1), xlim = c(0, n_items), yaxt = "n", ylab = "")
-      mtext("Position", side = 1, line = 1, outer = FALSE, cex = 1.5)
-      axis(2, at = (min_score + max_score) / 2, labels = "Response", cex.axis = 2, tick = FALSE)
-      for (i in 1:n_items) {
-        x <- i
-        y <- object@administered_item_resp[i]
-        if (!is.na(y)) {
-          if (object@administered_item_resp[i] == min_score) {
-            rect(x - 0.25, min_score - 1, x + 0.25, y, col = "red", border = "black")
-          } else {
-            rect(x - 0.25, min_score - 1, x + 0.25, y, col = "lime green", border = "black")
-          }
-        }
-      }
-    } else {
-      cat("output_Shadow is empty\n")
-    }
-  }
-)
-
-#' Draw an item exposure plot
-#'
-#' Draw a plot of item exposure rates
-#'
-#' @param object An output object generated by \code{\link{Shadow}}.
-#' @param max_rate A target exposure rate.
-#' @param theta_segment True or Estimated theta used to create segments ("Estimated" or "True").
-#' @param file_pdf If supplied a filename, save as a PDF file.
-#' @param ... Additional options to be passed on to \code{pdf()}.
-#'
-#' @examples
-#' \donttest{
-#' true_theta <- runif(10, min = -3.5, max = 3.5)
-#' resp_science <- makeTest(itempool_science, info_type = "FISHER", true_theta = true_theta)@data
-#' constraints_science2 <- updateConstraints(constraints_science, off = c(14:20, 32:36))
-#' config_science <- createShadowTestConfig(
-#'   MIP = list(solver = "LPSOLVE"),
-#'   exposure_control = list(method = "ELIGIBILITY")
-#' )
-#' solution <- Shadow(itempool_science, config_science,
-#'   true_theta, constraints_science2, data = resp_science)
-#' p <- plotExposure(solution)
-#' }
-#' @docType methods
-#' @rdname plotExposure-methods
-#' @export
-setGeneric(
-  name = "plotExposure",
-  def = function(object, max_rate = 0.25, theta_segment = "Estimated", file_pdf = NULL, ...) {
-    standardGeneric("plotExposure")
-  }
-)
-
-#' @docType methods
-#' @rdname plotExposure-methods
-#' @export
-
-setMethod(
-  f = "plotExposure",
-  signature = "list",
-  definition = function(object, max_rate = 0.25, theta_segment = "Estimated", file_pdf = NULL, ...) {
-    nj <- length(object$true_theta)
-    ni <- ncol(object$usage_matrix)
-    segment_cut   <- object$config@exposure_control$segment_cut
-    n_segment     <- object$config@exposure_control$n_segment
-    cut_lower     <- segment_cut[1:n_segment]
-    cut_upper     <- segment_cut[2:(n_segment + 1)]
-    segment_label <- character(n_segment)
-    theta_segment_index <- numeric(nj)
-    if (toupper(theta_segment) == "TRUE") {
-      theta_segment_index <- find_segment(segment_cut, object$true_theta)
-    } else {
-      theta_segment_index <- find_segment(segment_cut, object$final_theta_est)
-    }
-    segment_n    <- numeric(n_segment)
-    segment_dist <- table(theta_segment_index)
-    segment_n[as.numeric(names(segment_dist))] <- segment_dist
-    segment_index_table <- matrix(NA, nj, object$constraints$test_length)
-    for (k in 1:n_segment) {
-      if (k < n_segment) {
-        segment_label[k] <- paste0("(", cut_lower[k], ",", cut_upper[k], "]")
-      } else {
-        segment_label[k] <- paste0("(", cut_lower[k], ",", cut_upper[k], ")")
-      }
-    }
-    usage_matrix <- object$usage_matrix
-    usage_matrix_final <- object$usage_matrix
-    for (j in 1:nj) {
-      usage_matrix_final[j, object$output[[j]]@administered_item_index[object$output[[j]]@theta_segment_index != theta_segment_index[j]]] <- FALSE
-      segment_index_table[j, ] <- object$output[[j]]@theta_segment_index
-    }
-
-    segment_freq <- matrix(0, n_segment, n_segment)
-    for (i in 1:object$constraints$test_length) {
-      factor(segment_index_table[, i], levels = 1:n_segment)
-      segment_table <- tapply(factor(segment_index_table[, i], levels = 1:n_segment), theta_segment_index, table)
-      for (s in 1:length(segment_table)) {
-        idx_r <- as.numeric(names(segment_table)[s])
-        idx_c <- as.numeric(names(segment_table[[s]]))
-        segment_freq[idx_r, idx_c] <- segment_freq[idx_r, idx_c] + segment_table[[s]]
-      }
-    }
-
-    segment_rate                <- segment_freq / segment_n
-    segment_rate_table          <- data.frame(
-      segment_class = factor(rep(segment_label, rep(n_segment, n_segment)), levels = segment_label),
-      segment = rep(1:n_segment, n_segment),
-      avg_visit = matrix(t(segment_rate),
-      nrow = n_segment^2, ncol = 1)
-    )
-    exposure_rate               <- colSums(usage_matrix) / nj
-    exposure_rate_final         <- colSums(usage_matrix_final) / nj
-    exposure_rate_segment       <- vector("list", n_segment)
-    exposure_rate_segment_final <- vector("list", n_segment)
-    names(exposure_rate_segment)       <- segment_label
-    names(exposure_rate_segment_final) <- segment_label
-
-    for (k in 1:n_segment) {
-      if (segment_n[k] > 2) {
-        exposure_rate_segment[[k]] <- colMeans(usage_matrix[theta_segment_index == k, ])
-        exposure_rate_segment_final[[k]] <- colMeans(usage_matrix_final[theta_segment_index == k, ])
-      }
-      if (is.null(exposure_rate_segment[[k]])) {
-        exposure_rate_segment[[k]] <- numeric(ni)
-      } else if (any(is.nan(exposure_rate_segment[[k]]))) {
-        exposure_rate_segment[[k]][is.nan(exposure_rate_segment[[k]])] <- 0
-      }
-      if (is.null(exposure_rate_segment_final[[k]])) {
-        exposure_rate_segment_final[[k]] <- numeric(ni)
-      } else if (any(is.nan(exposure_rate_segment_final[[k]]))) {
-        exposure_rate_segment_final[[k]][is.nan(exposure_rate_segment_final[[k]])] <- 0
-      }
-    }
-
-    if (!is.null(file_pdf)) {
-      pdf(file = file_pdf, ...)
-    }
-
-    old_oma <- par()$oma
-    old_mar <- par()$mar
-    on.exit(par(oma = old_oma, mar = old_mar))
-    par(oma = c(3, 3, 0, 0), mar = c(3, 3, 2, 2))
-
-    plotER(ni, exposure_rate, exposure_rate_final, max_rate = max_rate, title = "Overall", color = "black", color_final = "black", simple = TRUE)
-    for (k in 1:n_segment) {
-      plotER(ni, exposure_rate_segment[[k]], exposure_rate_segment_final[[k]], max_rate = max_rate, title = segment_label[k], color = "black", color_final = "black", simple = TRUE)
-    }
-    mtext(text = "Item", side = 1, line = 0, outer = T)
-    mtext(text = "Exposure Rate", side = 2, line = 0, outer = T)
-    if (!is.null(file_pdf)) {
-      dev.off()
-    }
-    return(
-      list(
-        exposure_rate = exposure_rate,
-        exposure_rate_segment = exposure_rate_segment,
-        exposure_rate_segment_final = exposure_rate_segment_final,
-        segment_rate_table = segment_rate_table,
-        n_segment = n_segment,
-        segment_n = segment_n,
-        segment_cut = segment_cut,
-        segment_label = segment_label
-      )
-    )
-  }
-)
 
 #' Find matching theta to supplied probability
 #'
@@ -676,112 +56,6 @@ setMethod(
   }
 )
 
-#' @name item_pool.operators
-#' @title Item pool and pool cluster operators
-#'
-#' @description \code{pool1 + pool2} combines two \code{\linkS4class{item_pool}} objects.
-#'
-#' @param pool1 An \code{\linkS4class{item_pool}} object.
-#' @param pool2 An \code{\linkS4class{item_pool}} object.
-#'
-#' @examples
-#' itempool <- itempool_science + itempool_reading
-#'
-#' @rdname item_pool.operators
-#' @export
-
-`+.item_pool` <- function(pool1, pool2) {
-  if (class(pool1) != "item_pool" || class(pool2) != "item_pool") stop("operarands must be of class \"item_pool\" ")
-  if (validObject(pool1) && validObject(pool2)) {
-    combined_pool <- new("item_pool")
-    id        <- c(pool1@id, pool2@id)
-    model     <- c(pool1@model, pool2@model)
-    NCAT      <- c(pool1@NCAT, pool2@NCAT)
-    parms     <- c(pool1@parms, pool2@parms)
-
-    nfield1   <- dim(pool1@ipar)[2]
-    nfield2   <- dim(pool2@ipar)[2]
-    nfield    <- max(nfield1, nfield2)
-
-    ipar1              <- matrix(NA, dim(pool1@ipar)[1], nfield)
-    ipar1[, 1:nfield1] <- pool1@ipar
-    ipar2              <- matrix(NA, dim(pool2@ipar)[1], nfield)
-    ipar2[, 1:nfield2] <- pool2@ipar
-    ipar               <- rbind(ipar1, ipar2)
-
-    se1                <- matrix(NA, dim(pool1@se)[1], nfield)
-    se1[, 1:nfield1]   <- pool1@se
-    se2                <- matrix(NA, dim(pool2@se)[1], nfield)
-    se2[, 1:nfield2]   <- pool2@se
-    se                 <- rbind(se1, se2)
-
-    is_unique <- which(!duplicated(id))
-
-    combined_pool@ni      <- length(is_unique)
-    combined_pool@max_cat <- max(NCAT[is_unique])
-    combined_pool@index   <- 1:combined_pool@ni
-    combined_pool@id      <- id[is_unique]
-    combined_pool@model   <- model[is_unique]
-    combined_pool@NCAT    <- NCAT[is_unique]
-    combined_pool@parms   <- parms[is_unique]
-    combined_pool@ipar    <- ipar[is_unique, , drop = FALSE]
-    combined_pool@se      <- se[is_unique, , drop = FALSE]
-
-    if (sum(duplicated(id)) > 0) {
-      warning("duplicate items were found and removed")
-      warning("duplicate ids: %s", paste0(id[duplicated(id)], collapse = ", "))
-    }
-    return(combined_pool)
-  } else {
-    stop("invlid pool(s) submitted")
-  }
-}
-
-#' @description \code{pool1 - pool2} excludes the items in the second item pool from the first. The two \code{\linkS4class{item_pool}} objects must overlap for this to be performed.
-#'
-#' @examples
-#' subitempool <- subsetItemPool(itempool_science, 1:500)
-#' itempool <- itempool_science - subitempool
-#'
-#' @rdname item_pool.operators
-#' @export
-
-`-.item_pool` <- function(pool1, pool2) {
-  if (class(pool1) != "item_pool" || class(pool2) != "item_pool") stop("operarands must be of class \"item_pool\" ")
-  if (any(pool2@id %in% pool1@id)) {
-    left <- which(!(pool1@id %in% pool2@id))
-    if (length(left) > 0) {
-      pool1@ni      <- length(left)
-      pool1@max_cat <- max(pool1@NCAT[left])
-      pool1@index   <- 1:length(left)
-      pool1@id      <- pool1@id[left]
-      pool1@model   <- pool1@model[left]
-      pool1@NCAT    <- pool1@NCAT[left]
-      pool1@parms   <- pool1@parms[left]
-      pool1@ipar    <- pool1@ipar[left, , drop = FALSE]
-      pool1@se      <- pool1@se[left, , drop = FALSE]
-    } else {
-      return("item pool is empty")
-    }
-  }
-  return(pool1)
-}
-
-#' @description \code{pool1 == pool2} tests equality of the two item_pool objects.
-#' @examples
-#' itempool <- subsetItemPool(itempool_science, 1:500)
-#' subitempool1 <- itempool_science - itempool
-#' subitempool2 <- subsetItemPool(itempool_science, 501:1000)
-#' subitempool1 == subitempool2  ## TRUE
-#'
-#' @rdname item_pool.operators
-#' @export
-
-`==.item_pool` <- function(pool1, pool2) {
-  if (class(pool1) != "item_pool" || class(pool2) != "item_pool") stop("operarands must be of class \"item_pool\" ")
-  return(identical(pool1, pool2))
-}
-
 #' @description \code{pool_cluster1 == pool_cluster2} tests equality of the two pool_cluster objects.
 #'
 #' @param pool_cluster1 A \code{\linkS4class{pool_cluster}} object.
@@ -796,7 +70,7 @@ setMethod(
 #' @export
 
 `==.pool_cluster` <- function(pool_cluster1, pool_cluster2) {
-  if (class(pool_cluster1) != "pool_cluster" || class(pool_cluster2) != "pool_cluster") stop("operarands must be of class \"pool_cluster\" ")
+  if (class(pool_cluster1) != "pool_cluster" || class(pool_cluster2) != "pool_cluster") stop("Operands must be 'pool_cluster' objects.")
   return(identical(pool_cluster1, pool_cluster2))
 }
 
@@ -837,80 +111,6 @@ setMethod(
   }
 )
 
-#' @name extract-methods
-#' @aliases [,item_pool,ANY,ANY,ANY-method
-#' @docType methods
-
-setMethod(
-  f = "[",
-  signature = "item_pool",
-  definition = function(x, i, j, ...) {
-    if (i == "ni") {
-      return(x@ni)
-    }
-    if (i == "max_cat") {
-      return(x@max_cat)
-    }
-    if (i == "index") {
-      return(x@index)
-    }
-    if (i == "id") {
-      return(x@id)
-    }
-    if (i == "model") {
-      return(x@model)
-    }
-    if (i == "NCAT") {
-      return(x@NCAT)
-    }
-    if (i == "parms") {
-      return(x@parms)
-    }
-    if (i == "ipar") {
-      return(x@ipar)
-    }
-    if (i == "se") {
-      return(x@se)
-    }
-  }
-)
-
-#' Create a subset of an item pool object
-#'
-#' Create a subset of an \code{\linkS4class{item_pool}} object.
-#'
-#' @param pool An \code{\linkS4class{item_pool}} object.
-#' @param select A vector of indices identifying the items to subset.
-#'
-#' @examples
-#' subitempool <- subsetItemPool(itempool_science, 1:100)
-#' @export
-
-subsetItemPool <- function(pool, select = NULL) {
-  if (class(pool) != "item_pool") {
-    stop("pool must be of class \"item_pool\"")
-  }
-  if (is.null(select)) {
-    return(pool)
-  } else if (all(select %in% 1:pool@ni)) {
-    select           <- unique(select)
-    n_select         <- length(select)
-    sub_pool         <- new("item_pool")
-    sub_pool@ni      <- n_select
-    sub_pool@index   <- 1:n_select
-    sub_pool@id      <- pool@id[select]
-    sub_pool@model   <- pool@model[select]
-    sub_pool@NCAT    <- pool@NCAT[select]
-    sub_pool@parms   <- pool@parms[select]
-    sub_pool@max_cat <- max(sub_pool@NCAT)
-    sub_pool@ipar    <- pool@ipar[select, , drop = FALSE]
-    sub_pool@se      <- pool@se[select, , drop = FALSE]
-    return(sub_pool)
-  } else {
-    stop("select contains invalid item indices")
-  }
-}
-
 #' Create a subset of a test object
 #'
 #' Create a subset of a test object.
@@ -925,7 +125,7 @@ subsetItemPool <- function(pool, select = NULL) {
 
 subsetTest <- function(test, select = NULL) {
   if (class(test) != "test") {
-    stop("test must be of class \"test\"")
+    stop("'test' must be a 'test' object.")
   }
   if (is.null(select)) {
     return(test)
@@ -940,7 +140,7 @@ subsetTest <- function(test, select = NULL) {
     sub_test@data       <- test@data[, select, drop = FALSE]
     return(sub_test)
   } else {
-    stop("select contains invalid values")
+    stop("'select' contains invalid values.")
   }
 }
 
@@ -979,12 +179,12 @@ setMethod(
     if (toupper(info_type) == "FISHER") {
       info <- calcFisher(object, theta)
     } else {
-      stop("Invalid info_type specified")
+      stop("'info_type' must be FISHER.")
     }
     if (!is.null(true_theta)) {
       data <- simResp(object, true_theta)
     } else {
-      data <- NULL ## this is provision for cases where data is imported from elsewhere
+      data <- NULL ## this is a provision for cases where data is imported from elsewhere
     }
     return(new("test", pool = object, theta = theta, prob = prob, info = info, true_theta = true_theta, data = data))
   }
@@ -1085,32 +285,32 @@ setMethod(
       nj <- nrow(resp)
       resp <- as.matrix(resp)
     } else {
-      stop("resp must be of class vector, matrix, or data.frame")
+      stop("'resp' must be a vector, a matrix, or a data.frame.")
     }
     if (!is.null(select)) {
       if (length(resp) != length(select)) {
-        stop("resp and select must be equal in length when select is not NULL")
+        stop("'resp' and 'select' must have equal length when 'select' is supplied.")
       }
       if (anyDuplicated(select) > 0) {
-        warning("select contains duplicated indices")
+        warning("'select' contains duplicate indices.")
         select <- select[-duplicated(select)]
       }
       if (!all(select %in% 1:ni)) {
-        stop("select contains invalid indices")
+        stop("'select' contains invalid indices.")
       }
       items <- select
     } else {
       items <- 1:ni
     }
     if (ncol(resp) != length(items)) {
-      stop("resp must be of length ni or match the length of select")
+      stop("'resp' must be of length ni or match the length of select")
     }
     if (is.null(start_theta)) {
       start_theta <- eap(object, theta, rep(1 / nq, nq), resp, select = select)$th
     } else if (length(start_theta) == 1) {
       start_theta <- rep(start_theta, nj)
     } else if (length(start_theta) != nj) {
-      stop("start_theta must be of length 1 or the number of examinees")
+      stop("'start_theta' must be a single value or have a value for each examinee.")
     }
 
     th    <- numeric(nj)
@@ -1534,17 +734,16 @@ makeItemPoolCluster <- function(pools, names = NULL) {
 }
 
 
-#' Run computerized adaptive testing with generalized shadow-test approach
+#' Run adaptive test assembly.
 #'
-#' Run computerized adaptive testing with generalized shadow-test approach.
+#' Perform adaptive test assembly based on generalized shadow-test approach, with specified configurations.
 #'
-#' @param object An \code{\linkS4class{item_pool}} object. Use \code{\link{loadItemPool}} for this.
 #' @param config A \code{\linkS4class{config_Shadow}} object.
-#' @param true_theta Numeric. A vector of true theta values to be used in simulation.
 #' @param constraints A list representing optimization constraints. Use \code{\link{loadConstraints}} for this.
+#' @param true_theta Numeric. A vector of true theta values to be used in simulation.
+#' @param data Numeric. A matrix containing item response data.
 #' @param prior Numeric. A matrix or a vector containing priors.
 #' @param prior_par Numeric. A vector of parameters for prior distribution.
-#' @param data Numeric. A matrix containing item response data.
 #' @param session Used to communicate with a Shiny session.
 #'
 #' @references{
@@ -1559,16 +758,15 @@ makeItemPoolCluster <- function(pools, names = NULL) {
 #' @rdname Shadow-methods
 #'
 #' @examples
-#' object <- itempool_science
 #' config <- createShadowTestConfig()
 #' true_theta <- rnorm(1)
-#' solution <- Shadow(itempool_science, config, true_theta, constraints_science)
+#' solution <- Shadow(config, constraints_science, true_theta)
 #' solution$output
 #' @export
 
 setGeneric(
   name = "Shadow",
-  def = function(object, config, true_theta = NULL, constraints = NULL, prior = NULL, prior_par = NULL, data = NULL, session = NULL) {
+  def = function(config, constraints = NULL, true_theta = NULL, data = NULL, prior = NULL, prior_par = NULL, session = NULL) {
     standardGeneric("Shadow")
   }
 )
@@ -1578,22 +776,23 @@ setGeneric(
 
 setMethod(
   f = "Shadow",
-  signature = "item_pool",
-  definition = function(object, config, true_theta, constraints, prior, prior_par, data, session) {
+  signature = "config_Shadow",
+  definition = function(config, constraints, true_theta, data, prior, prior_par, session) {
 
     if (!validObject(config)) {
       stop("invalid configuration options specified")
     }
 
     if (!is.null(constraints)) {
-      ni <- constraints$ni
-      ns <- constraints$ns
-      nv <- constraints$nv
+      ni <- constraints@ni
+      ns <- constraints@ns
+      nv <- constraints@nv
+      pool <- constraints@pool
     } else {
-      ni <- object@ni
+      stop("'constraints' must be supplied.")
     }
 
-    model <- object@model
+    model <- pool@model
     model[which(model == "item_1PL")] <- 1
     model[which(model == "item_2PL")] <- 2
     model[which(model == "item_3PL")] <- 3
@@ -1614,23 +813,28 @@ setMethod(
     min_theta <- min(config@theta_grid)
     max_theta <- max(config@theta_grid)
 
-    exposure_control <- toupper(config@exposure_control$method)
-    refresh_policy   <- toupper(config@refresh_policy$method)
+    exposure_control  <- toupper(config@exposure_control$method)
+    refresh_policy    <- toupper(config@refresh_policy$method)
+    content_balancing <- toupper(config@content_balancing$method)
 
-    if (toupper(config@content_balancing$method %in% c("STA", "SHADOW", "SHADOWTEST", "SHADOW TEST"))) {
+    #####
+    ###    Switch per content balancing method
+    #####
+
+    if (content_balancing %in% c("STA", "SHADOW", "SHADOWTEST", "SHADOW TEST")) {
 
       if (is.null(constraints)) {
-        stop("constraints must not be NULL for STA")
+        stop("'constraints' must be supplied when config@content_balancing$method is STA")
       }
 
-      sta <- TRUE
-      set_based    <- constraints$set_based
-      test_length  <- constraints$test_length
-      min_ni       <- constraints$test_length
-      max_ni       <- constraints$test_length
+      sta          <- TRUE
+      set_based    <- constraints@set_based
+      test_length  <- constraints@test_length
+      min_ni       <- constraints@test_length
+      max_ni       <- constraints@test_length
 
       #####
-      ###    Mark refresh points
+      ###    Mark refresh positions
       #####
 
       refresh_shadow <- rep(FALSE, test_length)
@@ -1658,7 +862,7 @@ setMethod(
       } else if (refresh_policy %in% c("STIMULUS", "SET", "PASSAGE")) {
 
         if (!set_based) {
-          stop("constraints$set_based must be TRUE when config@refresh_policy$method is 'STIMULUS'")
+          stop("constraints@set_based must be TRUE when config@refresh_policy$method is 'STIMULUS'")
         }
 
       }
@@ -1669,9 +873,9 @@ setMethod(
 
       sta <- FALSE
       set_based <- FALSE
-      min_ni <- config@stopping_criterion$min_ni
-      max_ni <- config@stopping_criterion$max_ni
-      max_se <- config@stopping_criterion$se_threshold
+      min_ni    <- config@stopping_criterion$min_ni
+      max_ni    <- config@stopping_criterion$max_ni
+      max_se    <- config@stopping_criterion$se_threshold
 
     }
 
@@ -1680,17 +884,17 @@ setMethod(
     #####
 
     if (!is.null(data)) {
-      test <- makeTest(object, config@theta_grid, info_type = "FISHER", true_theta = NULL)
+      test <- makeTest(pool, config@theta_grid, info_type = "FISHER", true_theta = NULL)
       data <- as.matrix(data)
       for (i in 1:ni) {
-        invalid_resp <- !(data[, i] %in% 0:(object@NCAT[i] - 1))
+        invalid_resp <- !(data[, i] %in% 0:(pool@NCAT[i] - 1))
         data[invalid_resp, i] <- NA
       }
       test@data <- data
     } else if (!is.null(true_theta)) {
-      test <- makeTest(object, config@theta_grid, info_type = "FISHER", true_theta)
+      test <- makeTest(pool, config@theta_grid, info_type = "FISHER", true_theta)
     } else {
-      stop("both data and true_theta cannot be NULL")
+      stop("either 'data' or 'true_theta' must be supplied")
     }
 
     max_info <- max(test@info)
@@ -1698,6 +902,8 @@ setMethod(
     #####
     ###    Priors
     #####
+
+    # posterior : probability per theta grid
 
     if (is.null(prior)) {
       if (!is.null(prior_par)) {
@@ -1726,18 +932,27 @@ setMethod(
       stop("misspecification for prior or prior_par")
     }
 
-    if (toupper(config@interim_theta$method) %in% c("EB", "FB")) {
+    # Initialize bayesian stuff
+
+    if (toupper(config@interim_theta$method) %in% c("EB", "FB") || toupper(config@final_theta$method) %in% c("EB", "FB")) {
       n_sample <- config@MCMC$burn_in + config@MCMC$post_burn_in
-      if (toupper(config@interim_theta$method) == "FB" || toupper(config@final_theta$method) == "FB") {
-        ipar_list <- iparPosteriorSample(object, n_sample)
-      }
     }
+    if (toupper(config@interim_theta$method) == "FB" || toupper(config@final_theta$method) == "FB") {
+      ipar_list <- iparPosteriorSample(pool, n_sample)
+    }
+
+    # Get initial theta estimate
 
     if (!is.null(config@item_selection$initial_theta)) {
       initial_theta <- rep(config@item_selection$initial_theta, nj)
     } else {
       initial_theta <- as.vector(posterior %*% matrix(config@theta_grid, ncol = 1))
     }
+
+
+    #####
+    ###    Initialize exposure rate control
+    #####
 
     items_administered <- matrix(FALSE, nj, ni)
     output_list <- vector(mode = "list", length = nj)
@@ -1775,6 +990,8 @@ setMethod(
         rho_sjk   <- NULL
       }
 
+      # Initialize diagnostic stats
+
       if (config@exposure_control$diagnostic_stats) {
 
         alpha_g_i   <- matrix(0, nrow = nj, ncol = n_segment * ni)
@@ -1794,6 +1011,8 @@ setMethod(
           }
         }
       }
+
+      # Initialize eligibility parameters
 
       if (!is.null(config@exposure_control$initial_eligibility_stats)) {
         n_jk      <- config@exposure_control$initial_eligibility_stats$n_jk
@@ -1833,6 +1052,8 @@ setMethod(
 
     }
 
+    # Use a fixed theta value throughout selection, if supplied
+
     if (!is.null(config@item_selection$fixed_theta)) {
       if (length(config@item_selection$fixed_theta) == 1) {
         info_fixed_theta <- vector(mode = "list", length = nj)
@@ -1840,7 +1061,7 @@ setMethod(
         config@item_selection$fixed_theta <- rep(config@item_selection$fixed_theta, nj)
         select_at_fixed_theta <- TRUE
       } else if (length(config@item_selection$fixed_theta) == nj) {
-        info_fixed_theta <- lapply(seq_len(nj), function(j) calc_info(config@item_selection$fixed_theta[j], object@ipar, object@NCAT, model))
+        info_fixed_theta <- lapply(seq_len(nj), function(j) calc_info(config@item_selection$fixed_theta[j], pool@ipar, pool@NCAT, model))
         select_at_fixed_theta <- TRUE
       } else {
         stop("length of config@item_selection$fixed_theta must be either 1 or nj")
@@ -1849,11 +1070,17 @@ setMethod(
       select_at_fixed_theta <- FALSE
     }
 
+    # Initialize usage matrix
+
     if (set_based) {
       usage_matrix <- matrix(FALSE, nrow = nj, ncol = nv)
     } else {
       usage_matrix <- matrix(FALSE, nrow = nj, ncol = ni)
     }
+
+    #####
+    ###    Get info
+    #####
 
     getInfo <- function() {
       if (select_at_fixed_theta) {
@@ -1861,14 +1088,14 @@ setMethod(
       } else if (config@item_selection$method == "MPWI") {
         info <- as.vector(matrix(posterior[j, ], nrow = 1) %*% test@info)
       } else if (config@item_selection$method == "MFI") {
-        info <- calc_info(current_theta, object@ipar, object@NCAT, model)
+        info <- calc_info(current_theta, pool@ipar, pool@NCAT, model)
       } else if (config@item_selection$method == "EB") {
-        info <- calc_info_EB(output@posterior_sample, object@ipar, object@NCAT, model)
+        info <- calc_info_EB(output@posterior_sample, pool@ipar, pool@NCAT, model)
       } else if (config@item_selection$method == "FB") {
         if (config@item_selection$info_type == "FISHER") {
-          info <- calc_info_FB(output@posterior_sample, ipar_list, object@NCAT, model)
+          info <- calc_info_FB(output@posterior_sample, ipar_list, pool@NCAT, model)
         } else if (config@item_selection$info_type %in% c("MI", "MUTUAL")) {
-          info <- calc_MI_FB(output@posterior_sample, ipar_list, object@NCAT, model)
+          info <- calc_MI_FB(output@posterior_sample, ipar_list, pool@NCAT, model)
         }
       }
       return(info)
@@ -1894,6 +1121,10 @@ setMethod(
       return(item_selected)
     }
 
+    #####
+    ###    select a non-administered item with the largest information
+    #####
+
     selectItemShadowTest <- function() {
 
       n_remaining <- test_length - position
@@ -1911,36 +1142,68 @@ setMethod(
         if (set_based) {
           stimulus_selected <- optimal$shadow_test[["STINDEX"]][1]
           new_stimulus_selected <- TRUE
-          if (sum(optimal$shadow_test[["STINDEX"]] == stimulus_selected) == 1) {
-            stimulus_finished <- TRUE
-          } else {
-            stimulus_finished <- FALSE
-          }
-        }
 
-      } else {
-        remaining <- which(!optimal$shadow_test[["INDEX"]] %in% output@administered_item_index[1:(position - 1)])
-        if (!set_based) {
-          selected <- remaining[1]
-        } else {
-          last_stimulus_index <- output@administered_stimulus_index[position - 1]
-          if (any(optimal$shadow_test[["STINDEX"]][remaining] == last_stimulus_index)) {
-            remaining_in_stimulus <- remaining[which(optimal$shadow_test[["STINDEX"]][remaining] == last_stimulus_index)]
-            selected <- remaining_in_stimulus[1]
-          } else {
-            selected <- remaining[1]
-          }
-          stimulus_selected <- optimal$shadow_test[["STINDEX"]][selected]
-          if (last_stimulus_index != stimulus_selected) {
-            new_stimulus_selected <- TRUE
-          }
-          if (n_remaining == 0) {
-            stimulus_finished <- TRUE
-          } else {
-            if (sum(optimal$shadow_test[["STINDEX"]][remaining] == stimulus_selected) == 1) {
+          if (!is.na(stimulus_selected)) {
+            # If the selected item is not a discrete item
+            if (sum(optimal$shadow_test[["STINDEX"]] == stimulus_selected, na.rm = TRUE) == 1) {
               stimulus_finished <- TRUE
             } else {
               stimulus_finished <- FALSE
+            }
+          } else {
+            # If the selected item is a discrete item, mark it as the last item of its belonging stimulus
+            stimulus_finished <- TRUE
+          }
+
+        }
+
+      } else {
+
+        remaining <- which(!optimal$shadow_test[["INDEX"]] %in% output@administered_item_index[1:(position - 1)])
+
+        if (!set_based) {
+
+          selected <- remaining[1]
+
+        } else {
+
+          last_stimulus_index <- output@administered_stimulus_index[position - 1]
+
+          if (!is.na(last_stimulus_index)) {
+            # If the previous item was not a discrete item
+
+            # If there are any items left within the stimulus
+            if (any(optimal$shadow_test[["STINDEX"]][remaining] == last_stimulus_index, na.rm = TRUE)) {
+              remaining_in_stimulus <- remaining[which(optimal$shadow_test[["STINDEX"]][remaining] == last_stimulus_index)]
+              selected <- remaining_in_stimulus[1]
+            } else {
+              selected <- remaining[1]
+            }
+          } else {
+            # If the previous item was a discrete item
+            selected <- remaining[1]
+          }
+
+          stimulus_selected <- optimal$shadow_test[["STINDEX"]][selected]
+
+          if (last_stimulus_index != stimulus_selected | is.na(last_stimulus_index != stimulus_selected)) {
+            new_stimulus_selected <- TRUE
+          }
+
+          if (n_remaining == 0) {
+            stimulus_finished <- TRUE
+          } else {
+
+            if (!is.na(stimulus_selected)) {
+
+              # If the selected item is not a discrete item
+              if (sum(optimal$shadow_test[["STINDEX"]][remaining] == stimulus_selected, na.rm = TRUE) == 1) {
+                stimulus_finished <- TRUE
+              } else {
+                stimulus_finished <- FALSE
+              }
+            } else {
+              stimulus_finished <- TRUE
             }
           }
         }
@@ -1960,6 +1223,10 @@ setMethod(
       )
 
     }
+
+    #####
+    ###    plot audit trail
+    #####
 
     plotAuditTrail <- function() {
 
@@ -1996,11 +1263,11 @@ setMethod(
 
     }
 
-    pb <- txtProgressBar(0, nj, char = "|", style = 3)
+    #####
+    ###    Loop over nj simulees
+    #####
 
-    #####
-    ###    Loop over simulees
-    #####
+    pb <- txtProgressBar(0, nj, char = "|", style = 3)
 
     for (j in 1:nj) {
 
@@ -2022,6 +1289,8 @@ setMethod(
       output@administered_stimulus_index <- NaN
       output@shadow_test <- vector(mode = "list", length = max_ni)
 
+      # Set initial theta estimate
+
       if (config@interim_theta$method %in% c("EAP", "MLE")) {
         current_theta <- initial_theta[j]
       } else if (toupper(config@interim_theta$method) %in% c("EB", "FB")) {
@@ -2038,12 +1307,16 @@ setMethod(
         current_se <- sd(output@posterior_sample) * config@MCMC$jump_factor
       }
 
+      # Initialize stimulus tracking
+
       if (set_based) {
         output@administered_stimulus_index <- numeric(max_ni)
         end_set <- TRUE
         finished_stimulus_index      <- NULL
         finished_stimulus_item_count <- NULL
       }
+
+      # Initialize shadow test stuff
 
       if (sta) {
         output@shadow_test_feasible  <- logical(test_length)
@@ -2064,14 +1337,18 @@ setMethod(
       position     <- 0
 
       #####
-      ###    Get which items are eligible
+      ###    Flag ineligibile items
       #####
 
       if (exposure_control %in% c("ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
 
+        # Randomly flag items in each segment to be ineligible
+
         ineligible_i <- matrix(0, n_segment, ni)
         prob_random  <- matrix(runif(n_segment * ni), n_segment, ni)
         ineligible_i[prob_random >= pe_i] <- 1
+
+        # Randomly flag stimuli in each segment to be ineligible
 
         if (set_based) {
           ineligible_s <- matrix(0, n_segment, ns)
@@ -2080,10 +1357,10 @@ setMethod(
 
           for (k in 1:n_segment) {
             for (s in which(ineligible_s[k, ] == 1)) {
-              ineligible_i[k, constraints$item_index_by_stimulus[[s]]] <- 1
+              ineligible_i[k, constraints@item_index_by_stimulus[[s]]] <- 1
             }
             for (s in which(ineligible_s[k, ] == 0)) {
-              ineligible_i[k, constraints$item_index_by_stimulus[[s]]] <- 0
+              ineligible_i[k, constraints@item_index_by_stimulus[[s]]] <- 0
             }
           }
 
@@ -2101,19 +1378,26 @@ setMethod(
       ###    Administer (test_length) items
       #####
 
+      position = 0
+
       while (!done) {
 
         position <- position + 1
         info     <- getInfo()
 
+        # Do shadow test stuff
+
         if (sta) {
 
           if (exposure_control %in% c("ELIGIBILITY", "BIGM")) {
+
+            # Get which theta segment are we on
             if (!is.null(config@exposure_control$first_segment) && length(config@exposure_control$first_segment) >= position && all(config@exposure_control$first_segment >= 1) && all(config@exposure_control$first_segment <= n_segment)) {
               output@theta_segment_index[position] <- config@exposure_control$first_segment[position]
             } else {
               output@theta_segment_index[position] <- find_segment(segment_cut, current_theta)
             }
+
           } else if (exposure_control %in% c("BIGM-BAYESIAN")) {
             sample_segment <- find_segment(segment_cut, output@posterior_sample)
             segment_distribution <- table(sample_segment) / length(sample_segment)
@@ -2122,6 +1406,8 @@ setMethod(
             segment_prob[segment_classified] <- segment_distribution
             output@theta_segment_index[position] <- which.max(segment_prob)
           }
+
+          # Refresh shadow test
 
           if (position == 1 ||
             (refresh_policy == "ALWAYS") ||
@@ -2133,6 +1419,9 @@ setMethod(
             output@shadow_test_refreshed[position] <- TRUE
 
             if (position > 1) {
+
+              # Include administered items in selection
+
               imat <- matrix(0, nrow = position - 1, ncol = nv)
 
               for (p in 1:(position - 1)) {
@@ -2142,19 +1431,28 @@ setMethod(
               idir <- rep("==", position - 1)
               irhs <- rep(1, position - 1)
 
+              # Include administered stimulus in selection
+
               if (set_based) {
-                if (sum(output@administered_stimulus_index[1:(position - 1)] > 0) > 0) {
-                  administered_stimulus_index <- unique(output@administered_stimulus_index[1:(position - 1)])
+
+                if (sum(!is.na(output@administered_stimulus_index[1:(position - 1)])) > 0) {
+
+                  administered_stimulus_index <- na.omit(unique(output@administered_stimulus_index[1:(position - 1)]))
                   administered_stimulus_index <- administered_stimulus_index[administered_stimulus_index > 0]
+
                   smat <- matrix(0, nrow = length(administered_stimulus_index), ncol = nv)
+
                   for (s in 1:length(administered_stimulus_index)) {
                     smat[s, ni + administered_stimulus_index[s]] <- 1
                   }
+
                   sdir <- rep("==", length(administered_stimulus_index))
                   srhs <- rep(1, length(administered_stimulus_index))
+
                   imat <- rbind(imat, smat)
                   idir <- c(idir, sdir)
                   irhs <- c(irhs, srhs)
+
                   if (refresh_policy %in% c("STIMULUS", "SET", "PASSAGE") && set_based && end_set) {
 
                     n_administered_stimulus <- length(administered_stimulus_index)
@@ -2163,7 +1461,7 @@ setMethod(
                       sdir <- rep("==", n_administered_stimulus)
                       srhs <- numeric(n_administered_stimulus)
                       for (s in 1:n_administered_stimulus) {
-                        smat[s, constraints$item_index_by_stimulus[[administered_stimulus_index[s]]]] <- 1
+                        smat[s, constraints@item_index_by_stimulus[[administered_stimulus_index[s]]]] <- 1
                         srhs[s] <- sum(output@administered_stimulus_index[1:(position - 1)] == administered_stimulus_index[s])
                       }
                       imat <- rbind(imat, smat)
@@ -2180,7 +1478,9 @@ setMethod(
                       sdir <- rep("==", n_finished_stimulus)
                       srhs <- finished_stimulus_item_count
                       for (s in 1:n_finished_stimulus) {
-                        smat[s, constraints$item_index_by_stimulus[[finished_stimulus_index[s]]]] <- 1
+                        if (finished_stimulus_index[s] > 0) {
+                          smat[s, constraints@item_index_by_stimulus[[finished_stimulus_index[s]]]] <- 1
+                        }
                       }
                       imat <- rbind(imat, smat)
                       idir <- c(idir, sdir)
@@ -2192,7 +1492,12 @@ setMethod(
               }
             }
 
+            # Do exposure control stuff
+
             if (item_eligibility_control) {
+
+              # Get ineligibile items in the current theta segment
+
               item_ineligible <- ineligible_i[output@theta_segment_index[position], ]
               if (set_based) {
                 stimulus_ineligible <- ineligible_s[output@theta_segment_index[position], ]
@@ -2201,7 +1506,7 @@ setMethod(
               if (position > 1) {
                 item_ineligible[output@administered_item_index[1:(position - 1)]] <- 0
                 if (set_based) {
-                  stimulus_ineligible[unique(output@administered_stimulus_index[1:(position - 1)])] <- 0
+                  stimulus_ineligible[output@administered_stimulus_index[1:(position - 1)]] <- 0
                 }
               }
 
@@ -2216,27 +1521,32 @@ setMethod(
                     if (any(stimulus_ineligible == 1)) {
                       xmat[(ni + 1):nv] <- stimulus_ineligible
                       for (s in which(stimulus_ineligible == 1)) {
-                        xmat[constraints$item_index_by_stimulus[[s]]] <- 1
+                        xmat[constraints@item_index_by_stimulus[[s]]] <- 1
                       }
                       for (s in which(stimulus_ineligible == 0)) {
-                        xmat[constraints$item_index_by_stimulus[[s]]] <- 0
+                        xmat[constraints@item_index_by_stimulus[[s]]] <- 0
                       }
                     }
                   }
                 }
 
-                optimal <- STA(constraints, info, xmat = rbind(xmat, imat), xdir = c(xdir, idir), xrhs = c(xrhs, irhs),
-                  maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$time_limit,
-                  gap_limit = config@MIP$gap_limit, gap_limit_abs = config@MIP$gap_limit_abs, solver = config@MIP$solver)
+                xdata = list(xmat = rbind(xmat, imat),
+                             xdir = c(xdir, idir),
+                             xrhs = c(xrhs, irhs))
+                optimal <- runAssembly(config, constraints, xdata = xdata, objective = info)
 
                 is_optimal <- isOptimal(optimal$status, config@MIP$solver)
-                if (!is_optimal) {
-                  output@shadow_test_feasible[position] <- FALSE
-                  optimal <- STA(constraints, info, xmat = imat, xdir = idir, xrhs = irhs,
-                    maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$time_limit,
-                    gap_limit = config@MIP$gap_limit, gap_limit_abs = config@MIP$gap_limit_abs, solver = config@MIP$solver)
-                } else {
+
+                # If not optimal, retry without xmat
+                if (is_optimal) {
                   output@shadow_test_feasible[position] <- TRUE
+                } else {
+                  output@shadow_test_feasible[position] <- FALSE
+
+                  xdata = list(xmat = imat,
+                               xdir = idir,
+                               xrhs = irhs)
+                  optimal <- runAssembly(config, constraints, xdata = xdata, objective = info)
                 }
 
               } else if (exposure_control %in% c("BIGM", "BIGM-BAYESIAN")) {
@@ -2246,17 +1556,22 @@ setMethod(
                 } else {
                   info[item_ineligible == 1] <- -1 * max_info - 1
                 }
-                optimal <- STA(constraints, info, xmat = imat, xdir = idir, xrhs = irhs,
-                  maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$time_limit,
-                  gap_limit = config@MIP$gap_limit, gap_limit_abs = config@MIP$gap_limit_abs, solver = config@MIP$solver)
+
+                xdata = list(xmat = imat,
+                             xdir = idir,
+                             xrhs = irhs)
+                optimal <- runAssembly(config, constraints, xdata = xdata, objective = info)
                 output@shadow_test_feasible[position] <- TRUE
 
               }
             } else {
-              optimal <- STA(constraints, info, xmat = imat, xdir = idir, xrhs = irhs,
-                maximize = TRUE, mps = FALSE, lp = FALSE, verbosity = config@MIP$verbosity, time_limit = config@MIP$time_limit,
-                gap_limit = config@MIP$gap_limit, gap_limit_abs = config@MIP$gap_limit_abs, solver = config@MIP$solver)
+
+              xdata = list(xmat = imat,
+                           xdir = idir,
+                           xrhs = irhs)
+              optimal <- runAssembly(config, constraints, xdata = xdata, objective = info)
               output@shadow_test_feasible[position] <- TRUE
+
             }
 
             is_optimal <- isOptimal(optimal$status, config@MIP$solver)
@@ -2272,13 +1587,19 @@ setMethod(
             output@shadow_test_feasible[position]  <- TRUE
           }
 
+          # Select an item from shadow test
+
           selection <- selectItemShadowTest()
           output@administered_item_index[position] <- selection$item_selected
           output@shadow_test[[position]]           <- optimal$shadow_test[["INDEX"]]
 
         } else {
+
           output@administered_item_index[position] <- selectItem()
+
         }
+
+        # Do stimulus tracking
 
         if (set_based) {
           output@administered_stimulus_index[position] <- selection$stimulus_selected
@@ -2287,17 +1608,27 @@ setMethod(
           } else {
             end_set <- FALSE
           }
-          if (selection$new_stimulus_selected && selection$last_stimulus_index != 0) {
-            finished_stimulus_index      <- c(finished_stimulus_index, selection$last_stimulus_index)
-            finished_stimulus_item_count <- c(finished_stimulus_item_count, sum(output@administered_stimulus_index[1:(position - 1)] == selection$last_stimulus_index))
+
+          if (!is.na(selection$last_stimulus_index)) {
+            if (selection$new_stimulus_selected && selection$last_stimulus_index > 0) {
+              finished_stimulus_index      <- c(finished_stimulus_index, selection$last_stimulus_index)
+              finished_stimulus_item_count <- c(finished_stimulus_item_count, sum(output@administered_stimulus_index[1:(position - 1)] == selection$last_stimulus_index, na.rm = TRUE))
+            }
           }
+
         }
 
+        # Record which item was administered, update posterior and likelihood
+
         output@administered_item_resp[position] <- test@data[j, output@administered_item_index[position]]
+        output@administered_item_ncat[position] <- pool@NCAT[output@administered_item_index[position]]
+
         items_administered[j, output@administered_item_index[position]] <- TRUE
         prob_resp      <- test@prob[[output@administered_item_index[position]]][, output@administered_item_resp[position] + 1]
         posterior[j, ] <- posterior[j, ] * prob_resp
-        likelihood     <- likelihood * prob_resp
+        likelihood     <- likelihood     * prob_resp
+
+        # Estimate theta
 
         if (toupper(config@interim_theta$method) == "EAP") {
           output@interim_theta_est[position] <- sum(posterior[j, ] * test@theta) / sum(posterior[j, ])
@@ -2310,7 +1641,7 @@ setMethod(
           }
         } else if (toupper(config@interim_theta$method) == "MLE") {
           interim_EAP <- sum(posterior[j, ] * test@theta) / sum(posterior[j, ])
-          interim_MLE <- mle(object, output@administered_item_resp[1:position], start_theta = interim_EAP, theta_range = config@interim_theta$bound_ml, max_iter = config@interim_theta$max_iter, crit = config@interim_theta$crit, select = output@administered_item_index[1:position])
+          interim_MLE <- mle(pool, output@administered_item_resp[1:position], start_theta = interim_EAP, theta_range = config@interim_theta$bound_ml, max_iter = config@interim_theta$max_iter, crit = config@interim_theta$crit, select = output@administered_item_index[1:position])
           output@interim_theta_est[position] <- interim_MLE$th
           output@interim_se_est[position]    <- interim_MLE$se
         } else if (toupper(config@interim_theta$method) %in% c("EB", "FB")) {
@@ -2318,23 +1649,21 @@ setMethod(
           if (toupper(config@interim_theta$method == "EB")) {
             output@posterior_sample <- theta_EB_single(
               n_sample, current_theta, current_se,
-              object@ipar[current_item, ],
-              output@administered_item_resp[position], object@NCAT[current_item],
+              pool@ipar[current_item, ],
+              output@administered_item_resp[position], pool@NCAT[current_item],
               model[current_item], 1, c(current_theta, current_se)
             )
           } else {
             output@posterior_sample <- theta_FB_single(
               n_sample, current_theta, current_se, ipar_list[[current_item]],
-              object@ipar[current_item, ],
-              output@administered_item_resp[position], object@NCAT[current_item],
+              pool@ipar[current_item, ],
+              output@administered_item_resp[position], pool@NCAT[current_item],
               model[current_item], 1, c(current_theta, current_se)
             )
           }
           output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = n_sample, by = config@MCMC$thin)]
           output@interim_theta_est[position] <- mean(output@posterior_sample)
           output@interim_se_est[position] <- sd(output@posterior_sample)
-        } else {
-          stop("invalid interim_theta@method specified")
         }
 
         theta_change  <- output@interim_theta_est[position] - current_theta
@@ -2342,15 +1671,15 @@ setMethod(
         current_se    <- output@interim_se_est[position]
 
 
-        #####
-        ###    Refresh shadow test if conditions are met
-        #####
+        # Trigger shadow test refresh if theta change is sufficient
 
         if (refresh_policy == "THRESHOLD") {
           if ((abs(theta_change) > config@refresh_policy$threshold) && (position < test_length)) {
             refresh_shadow[position + 1] <- TRUE
           }
         }
+
+        # Prepare for the next item
 
         if (position == max_ni) {
           done <- TRUE
@@ -2376,7 +1705,7 @@ setMethod(
         output@posterior       <- output@likelihood * final_prior
         output@final_theta_est <- sum(output@posterior * config@theta_grid) / sum(output@posterior)
         output@final_se_est    <- sqrt(sum(output@posterior * (config@theta_grid - output@final_theta_est)^2) / sum(output@posterior))
-        if (toupper(config@final_theta$prior_dist) == "NORMAL" && config@final_theta$shrinkageCorrection) {
+        if (toupper(config@final_theta$prior_dist) == "NORMAL" && config@final_theta$shrinkage_correction) {
           output@final_theta_est <- output@final_theta_est * (1 + output@final_se_est^2)
           if (output@final_se_est < config@final_theta$prior_par[2]) {
             output@final_se_est <- 1 / sqrt(1 / output@final_se_est^2 - 1 / config@final_theta$prior_par[2]^2)
@@ -2384,37 +1713,53 @@ setMethod(
         }
 
       } else if (toupper(config@final_theta$method) == "MLE") {
-        final_MLE <- mle(object, output@administered_item_resp[1:max_ni], start_theta = output@interim_theta_est[max_ni], theta_range = config@final_theta$bound_ml, max_iter = config@final_theta$max_iter, crit = config@final_theta$crit, select = output@administered_item_index[1:max_ni], truncate = config@final_theta$truncateML)
+        final_MLE <- mle(pool, output@administered_item_resp[1:max_ni], start_theta = output@interim_theta_est[max_ni], theta_range = config@final_theta$bound_ml, max_iter = config@final_theta$max_iter, crit = config@final_theta$crit, select = output@administered_item_index[1:max_ni], truncate = config@final_theta$truncateML)
         output@final_theta_est <- final_MLE$th
         output@final_se_est    <- final_MLE$se
       } else if (toupper(config@final_theta$method) %in% c("EB", "FB")) {
 
         if (toupper(config@interim_theta$method) == toupper(config@final_theta$method) && identical(config@interim_theta$prior_par, config@final_theta$prior_par)) {
+
           output@final_theta_est <- output@interim_theta_est[position]
           output@final_se_est    <- output@interim_se_est[position]
+
         } else {
+
+          if (toupper(config@final_theta$method) %in% c("EB", "FB")) {
+            if (is.vector(prior_par) && length(prior_par) == 2) {
+              output@prior_par <- prior_par
+            } else if (is.matrix(prior_par) && all(dim(prior_par) == c(nj, 2))) {
+              output@prior_par <- prior_par[j, ]
+            } else {
+              output@prior_par <- config@final_theta$prior_par
+            }
+          }
+
           output@posterior_sample <- rnorm(n_sample, mean = output@prior_par[1], sd = output@prior_par[2])
           output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = n_sample, by = config@MCMC$thin)]
           current_theta <- mean(output@posterior_sample)
           current_se    <- sd(output@posterior_sample) * config@MCMC$jump_factor
+
           if (toupper(config@final_theta$method == "EB")) {
             output@posterior_sample <- theta_EB(
               n_sample, current_theta, current_se,
-              object@ipar[output@administered_item_index[1:position], ],
-              output@administered_item_resp[1:position], object@NCAT[output@administered_item_index[1:position]],
+              pool@ipar[output@administered_item_index[1:position], ],
+              output@administered_item_resp[1:position], pool@NCAT[output@administered_item_index[1:position]],
               model[output@administered_item_index[1:position]], 1, c(current_theta, current_se)
             )
           } else {
             output@posterior_sample <- theta_FB(
               n_sample, current_theta, current_se, ipar_list[output@administered_item_index[1:position]],
-              object@ipar[output@administered_item_index[1:position], ],
-              output@administered_item_resp[1:position], object@NCAT[output@administered_item_index[1:position]],
+              pool@ipar[output@administered_item_index[1:position], ],
+              output@administered_item_resp[1:position], pool@NCAT[output@administered_item_index[1:position]],
               model[output@administered_item_index[1:position]], 1, c(current_theta, current_se)
             )
           }
+
           output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = n_sample, by = config@MCMC$thin)]
           output@final_theta_est  <- mean(output@posterior_sample)
           output@final_se_est     <- sd(output@posterior_sample)
+
         }
 
       }
@@ -2442,10 +1787,15 @@ setMethod(
         segment_visited <- sort(unique(output@theta_segment_index))
         segment_other   <- segment_visited[segment_visited != segment_final]
 
+        if (set_based) {
+          eligible_set_in_final_segment <- ineligible_s[segment_final, ] == 0
+        }
+
         if (exposure_control %in% c("ELIGIBILITY")) {
           n_jk[segment_final] <- fading_factor * n_jk[segment_final] + 1
           alpha_ijk[segment_final, ] <- fading_factor * alpha_ijk[segment_final, ]
           alpha_ijk[segment_final, output@administered_item_index] <- alpha_ijk[segment_final, output@administered_item_index] + 1
+
           if (length(segment_other) > 0) {
             if (any(!eligible_in_final_segment[output@administered_item_index])) {
               for (k in segment_other) {
@@ -2457,6 +1807,7 @@ setMethod(
               }
             }
           }
+
           if (fading_factor != 1) {
             no_fading_n_jk[segment_final] <- no_fading_n_jk[segment_final] + 1
             no_fading_alpha_ijk[segment_final, output@administered_item_index] <- no_fading_alpha_ijk[segment_final, output@administered_item_index] + 1
@@ -2506,10 +1857,24 @@ setMethod(
 
           if (set_based) {
             alpha_sjk[segment_final, ] <- fading_factor * alpha_sjk[segment_final, ]
-            alpha_sjk[segment_final, output@administered_stimulus_index] <- alpha_sjk[segment_final, output@administered_stimulus_index] + 1
-            eligible_set_in_final_segment <- ineligible_s[segment_final, ] == 0
+            alpha_sjk[segment_final, na.omit(output@administered_stimulus_index)] <-
+              alpha_sjk[segment_final, na.omit(output@administered_stimulus_index)] + 1
+
+            if (length(segment_other) > 0) {
+              if (any(!eligible_set_in_final_segment[administered_stimulus_index])) {
+                for (k in segment_other) {
+                  for (s in unique(output@administered_stimulus_index[output@theta_segment_index == k & output@administered_stimulus_index %in% administered_stimulus_index])) {
+                    if (!eligible_set_in_final_segment[s]) {
+                      alpha_sjk[k, s] <- alpha_sjk[k, s] + 1
+                    }
+                  }
+                }
+              }
+            }
+
             if (fading_factor != 1) {
-              no_fading_alpha_sjk[segment_final, output@administered_stimulus_index] <- no_fading_alpha_sjk[segment_final, output@administered_stimulus_index] + 1
+              no_fading_alpha_sjk[segment_final, na.omit(output@administered_stimulus_index)] <-
+                no_fading_alpha_sjk[segment_final, na.omit(output@administered_stimulus_index)] + 1
             }
             rho_sjk[segment_final, ] <- fading_factor * rho_sjk[segment_final, ]
             if (segment_final %in% segment_feasible) {
@@ -2600,9 +1965,20 @@ setMethod(
           if (set_based) {
             alpha_sjk[segment_final, ] <- fading_factor * alpha_sjk[segment_final, ]
             alpha_sjk[segment_final, output@administered_stimulus_index] <- alpha_sjk[segment_final, output@administered_stimulus_index] + 1
-            eligible_set_in_final_segment <- ineligible_s[segment_final, ] == 0
             rho_sjk[segment_final, ] <- fading_factor * rho_sjk[segment_final ]
             rho_sjk[segment_final, eligible_set_in_final_segment] <- rho_sjk[segment_final, eligible_set_in_final_segment] + 1
+
+            if (length(segment_other) > 0) {
+              if (any(!eligible_set_in_final_segment[administered_stimulus_index])) {
+                for (k in segment_other) {
+                  for (s in unique(output@administered_stimulus_index[output@theta_segment_index == k & output@administered_stimulus_index %in% administered_stimulus_index])) {
+                    if (!eligible_set_in_final_segment[s]) {
+                      alpha_sjk[k, s] <- alpha_sjk[k, s] + 1
+                    }
+                  }
+                }
+              }
+            }
 
             if (fading_factor != 1) {
               no_fading_alpha_sjk[segment_final, output@administered_stimulus_index] <- no_fading_alpha_sjk[segment_final, output@administered_stimulus_index] + 1
@@ -2692,10 +2068,24 @@ setMethod(
 
           pe_i[is.na(pe_i) | alpha_ijk == 0] <- 1
           pe_i[pe_i > 1] <- 1
+
           if (set_based) {
             alpha_sjk <- fading_factor * alpha_sjk
             rho_sjk   <- fading_factor * rho_sjk
             alpha_sjk[, output@administered_stimulus_index] <- alpha_sjk[, output@administered_stimulus_index] + segment_prob
+
+            if (length(segment_other) > 0) {
+              if (any(!eligible_set_in_final_segment[administered_stimulus_index])) {
+                for (k in segment_other) {
+                  for (s in unique(output@administered_stimulus_index[output@theta_segment_index == k & output@administered_stimulus_index %in% administered_stimulus_index])) {
+                    if (!eligible_set_in_final_segment[s]) {
+                      alpha_sjk[k, s] <- alpha_sjk[k, s] + segment_prob[k]
+                    }
+                  }
+                }
+              }
+            }
+
             for (segment in 1:n_segment) {
               rho_sjk[segment, ineligible_s[segment, ] == 0] <- rho_sjk[segment, ineligible_s[segment, ] == 0] + segment_prob[segment]
             }
@@ -2770,10 +2160,25 @@ setMethod(
     final_se_est    <- unlist(lapply(1:nj, function(j) output_list[[j]]@final_se_est))
 
     #####
-    ###    DO EXPOSURE CONTROL
+    ###    Get exposure rates
     #####
 
-    exposure_rate <- colSums(usage_matrix) / nj
+    if (!set_based) {
+      exposure_rate <- matrix(NA, ni, 2)
+      colnames(exposure_rate) <- c('Item', 'Item ER')
+      exposure_rate[, 1] <- 1:ni
+      exposure_rate[, 2] <- colSums(usage_matrix) / nj
+    } else {
+      exposure_rate <- matrix(NA, ni, 4)
+      colnames(exposure_rate) <- c('Item', 'Stimulus', 'Item ER', 'Stimulus ER')
+      exposure_rate_raw <- colSums(usage_matrix) / nj
+      exposure_rate[, 1] <- 1:ni
+      constraints@stimulus_index_by_item
+      exposure_rate[, 2] <- constraints@stimulus_index_by_item
+      exposure_rate[, 3] <- exposure_rate_raw[1:ni]
+      exposure_rate[, 4] <- exposure_rate_raw[(ni + 1):nv][constraints@stimulus_index_by_item]
+
+    }
 
     eligibility_stats           <- NULL
     check_eligibility_stats     <- NULL
@@ -2822,7 +2227,7 @@ setMethod(
 
     return(
       list(
-        output = output_list, pool = object, config = config, true_theta = true_theta, constraints = constraints,
+        output = output_list, pool = pool, config = config, true_theta = true_theta, constraints = constraints,
         prior = prior, prior_par = prior_par, data = test@data, final_theta_est = final_theta_est, final_se_est = final_se_est,
         exposure_rate = exposure_rate, usage_matrix = usage_matrix, true_segment_count = true_segment_count, est_segment_count = est_segment_count,
         eligibility_stats = eligibility_stats, check_eligibility_stats = check_eligibility_stats, no_fading_eligibility_stats = no_fading_eligibility_stats,
@@ -2986,22 +2391,23 @@ RE <- function(RMSE_foc, RMSE_ref) {
 #'
 #' Check the consistency of constraints and item usage.
 #'
-#' @param constraints A list constraints generated by \code{\link{loadConstraints}}.
+#' @param constraints A \code{\linkS4class{constraints}} object generated by \code{\link{loadConstraints}}.
 #' @param usage_matrix A matrix of item usage data from \code{\link{Shadow}}.
 #' @param true_theta A vector of true theta values.
 
 checkConstraints <- function(constraints, usage_matrix, true_theta = NULL) {
 
-  constraints      <- constraints$constraints
-  list_constraints <- constraints$listConstraints
 
-  nc <- nrow(constraints)
+  raw_constraints <- constraints@constraints
+  list_constraints <- constraints@list_constraints
+
+  nc <- nrow(raw_constraints)
   nj <- nrow(usage_matrix)
   ni <- ncol(usage_matrix)
 
   MET <- matrix(FALSE, nrow = nj, ncol = nc)
   COUNT <- matrix(NA, nrow = nj, ncol = nc)
-  if (ni != constraints$ni) {
+  if (ni != constraints@ni) {
     stop("unequal number of items in constraints and usage_matrix ")
   }
   byTheta <- FALSE
@@ -3016,30 +2422,30 @@ checkConstraints <- function(constraints, usage_matrix, true_theta = NULL) {
     }
     byTheta <- TRUE
     groupMEAN <- matrix(NA, nrow = nc, ncol = length(unique(true_theta)))
-    groupSD <- matrix(NA, nrow = nc, ncol = length(unique(true_theta)))
-    groupMIN <- matrix(NA, nrow = nc, ncol = length(unique(true_theta)))
-    groupMAX <- matrix(NA, nrow = nc, ncol = length(unique(true_theta)))
-    groupHIT <- matrix(NA, nrow = nc, ncol = length(unique(true_theta)))
+    groupSD   <- matrix(NA, nrow = nc, ncol = length(unique(true_theta)))
+    groupMIN  <- matrix(NA, nrow = nc, ncol = length(unique(true_theta)))
+    groupMAX  <- matrix(NA, nrow = nc, ncol = length(unique(true_theta)))
+    groupHIT  <- matrix(NA, nrow = nc, ncol = length(unique(true_theta)))
   } else {
     groupMEAN <- NULL
-    groupSD <- NULL
-    groupMIN <- NULL
-    groupMAX <- NULL
-    groupHIT <- NULL
+    groupSD   <- NULL
+    groupMIN  <- NULL
+    groupMAX  <- NULL
+    groupHIT  <- NULL
   }
-  nEnemy <- sum(constraints$TYPE == "ENEMY")
+  nEnemy <- sum(raw_constraints$TYPE == "ENEMY")
   if (nEnemy > 0) {
-    enemyIndex <- which(constraints$TYPE == "ENEMY")
-    constraints$LB[enemyIndex] <- 0
-    constraints$UB[enemyIndex] <- 1
+    enemyIndex <- which(raw_constraints$TYPE == "ENEMY")
+    raw_constraints$LB[enemyIndex] <- 0
+    raw_constraints$UB[enemyIndex] <- 1
   }
-  numberIndex <- which(constraints$TYPE == "NUMBER")
+  numberIndex <- which(raw_constraints$TYPE == "NUMBER")
   for (index in 1:nc) {
-    if (constraints$WHAT[index] == "ITEM") {
-      if (constraints$TYPE[index] %in% c("NUMBER", "ENEMY")) {
+    if (raw_constraints$WHAT[index] == "ITEM") {
+      if (raw_constraints$TYPE[index] %in% c("NUMBER", "ENEMY")) {
         items <- which(list_constraints[[index]]@mat[1, ] == 1)
         COUNT[, index] <- rowSums(usage_matrix[, items])
-        MET[, index] <- COUNT[, index] >= constraints$LB[index] & COUNT[, index] <= constraints$UB[index]
+        MET[, index] <- COUNT[, index] >= raw_constraints$LB[index] & COUNT[, index] <= raw_constraints$UB[index]
         if (byTheta) {
           groupMEAN[index, ] <- round(tapply(COUNT[, index], true_theta, mean), 3)
           groupSD[index, ] <- round(tapply(COUNT[, index], true_theta, sd), 3)
@@ -3059,8 +2465,13 @@ checkConstraints <- function(constraints, usage_matrix, true_theta = NULL) {
   if (nEnemy > 0) {
     LD <- rowSums(COUNT[, enemyIndex] > 1)
   }
-  Check <- data.frame(constraints, MEAN = MEAN, SD = SD, MIN = MIN, MAX = MAX, HIT = HIT)
-  return(list(Check = Check[constraints[["TYPE"]] == "NUMBER", ], LD = LD, groupMEAN = groupMEAN[numberIndex, ], groupSD = groupSD[numberIndex, ], groupMIN = groupMIN[numberIndex, ], groupMAX = groupMAX[numberIndex, ], groupHIT = groupHIT[numberIndex, ]))
+  Check <- data.frame(raw_constraints, MEAN = MEAN, SD = SD, MIN = MIN, MAX = MAX, HIT = HIT)
+  return(list(
+    Check = Check[raw_constraints[["TYPE"]] == "NUMBER", ],
+    LD = LD,
+    groupMEAN = groupMEAN[numberIndex, ], groupSD = groupSD[numberIndex, ],
+    groupMIN = groupMIN[numberIndex, ], groupMAX = groupMAX[numberIndex, ],
+    groupHIT = groupHIT[numberIndex, ]))
 }
 
 #' Draw RMSE plots
@@ -3114,24 +2525,46 @@ plotRMSE <- function(..., title = NULL, legend_title = NULL, legend_labels = NUL
 
 #' @noRd
 
-plotER <- function(ni, exposure_rate, exposure_rate_final = NULL, max_rate = max_rate, title = NULL, color = "blue", color_final = "yellow", simple = FALSE) {
-  idx_sort <- order(exposure_rate, decreasing = TRUE)
-  exposure_rate_ordered <- exposure_rate[idx_sort]
+plotER <- function(
+  item_exposure_rate, item_exposure_rate_final = NULL,
+  stim_exposure_rate = NULL, stim_index = NULL,
+  max_rate = max_rate, title = NULL, color = "blue", color_final = "yellow", color_stim = "red", color_threshold = "dark gray", simple = FALSE) {
 
-  if (!simple) {
-    plot(1:ni, exposure_rate_ordered, type = "n", lwd = 2, ylim = c(0, 1), xlab = "Item", ylab = "Exposure Rate", main = title)
-    lines(1:ni, exposure_rate_ordered, type = "l", lty = 1, lwd = 2, col = color)
-    points(1:ni, exposure_rate_ordered, type = "h", lwd = 1, col = color)
-    abline(h = max_rate, col = "gray")
+  if (!is.null(stim_index)) {
+    idx_sort <- order(stim_exposure_rate, stim_index, item_exposure_rate, decreasing = TRUE)
+    item_exposure_rate_ordered <- item_exposure_rate[idx_sort]
+    stim_exposure_rate_ordered <- stim_exposure_rate[idx_sort]
+    stim_index_ordered         <- stim_index[idx_sort]
   } else {
-    plot(1:ni, exposure_rate_ordered, type = "n", lwd = 2, ylim = c(0, 1), xlab = "", ylab = "", main = title)
-    points(1:ni, exposure_rate_ordered, type = "h", lwd = 1, col = color)
-    abline(h = max_rate, col = "dark gray", lty = 2)
+    idx_sort <- order(item_exposure_rate, decreasing = TRUE)
+    item_exposure_rate_ordered <- item_exposure_rate[idx_sort]
   }
 
-  if (!is.null(exposure_rate_final)) {
-    exposure_rate_final_ordered <- exposure_rate_final[idx_sort]
-    points(1:ni, exposure_rate_final_ordered, type = "h", lwd = 1, lty = 1, col = color_final)
+  ni <- length(item_exposure_rate)
+
+  if (!simple) {
+    xlab = "Item"
+    ylab = "Exposure Rate"
+  } else {
+    xlab = ""
+    ylab = ""
+  }
+
+  plot(1:ni, item_exposure_rate_ordered, type = "n", lwd = 2, ylim = c(0, 1), xlab = "Item", ylab = "Exposure Rate", main = title)
+  points(1:ni, item_exposure_rate_ordered, type = "h", lwd = 1, col = color)
+  if (!is.null(stim_exposure_rate)) {
+    lines(1:ni, stim_exposure_rate_ordered, col = color_stim, type = "s")
+    for (stim_id in unique(stim_index_ordered)) {
+      x <- mean((1:ni)[which(stim_index_ordered == stim_id)])
+      y <- stim_exposure_rate_ordered[which(stim_index_ordered == stim_id)][1]
+      points(x, y, col = color_stim, pch = 21, bg = 'white', cex = .75)
+    }
+  }
+  abline(h = max_rate, col = color_threshold, lty = 2)
+
+  if (!is.null(item_exposure_rate_final)) {
+    item_exposure_rate_final_ordered <- item_exposure_rate_final[idx_sort]
+    points(1:ni, item_exposure_rate_final_ordered, type = "h", lwd = 1, lty = 1, col = color_final)
   }
 }
 
@@ -3149,8 +2582,11 @@ plotER <- function(ni, exposure_rate, exposure_rate_final = NULL, max_rate = max
 
 plotExposureRateBySegment <- function(object, config, max_rate = 0.25, file_pdf = NULL, width = 7, height = 6, mfrow = c(2, 4)) {
 
+  ## FIX THIS: WHAT IF TRUE_THETA IS NOT AVAILABLE
+  ## FIX THIS: WHAT IF TRUE_THETA IS NOT AVAILABLE
+
   nj <- length(object$true_theta)
-  ni <- ncol(object$usage_matrix)
+  ni <- object$pool@ni
   segment_cut <- config@exposure_control$segment_cut
   n_segment   <- config@exposure_control$n_segment
   cut_lower   <- segment_cut[1:n_segment]
@@ -3167,12 +2603,17 @@ plotExposureRateBySegment <- function(object, config, max_rate = 0.25, file_pdf 
 
   exposure_rate <- colSums(object$usage_matrix) / nj
   exposure_rate_segment <- vector("list", n_segment)
+
+  item_exposure_rate <- exposure_rate[1:ni]
+  item_exposure_rate_segment <- vector("list", n_segment)
   names(exposure_rate_segment) <- segment_label
+
   for (k in 1:n_segment) {
     if (object$eligibility_stats$n_jk[k] == 0) {
       exposure_rate_segment[[k]] <- numeric(ni)
     } else {
       exposure_rate_segment[[k]] <- object$eligibility_stats$alpha_ijk[k, ] / object$eligibility_stats$n_jk[k]
+      item_exposure_rate_segment[[k]] <- exposure_rate_segment[[k]][1:ni]
     }
   }
 
@@ -3184,10 +2625,14 @@ plotExposureRateBySegment <- function(object, config, max_rate = 0.25, file_pdf 
   on.exit(par(mfrow = old_mfrow))
   par(mfrow = mfrow)
 
-  plotER(ni, exposure_rate, NULL, max_rate = max_rate, title = paste0("Overall (N = ", nj, ")"), color = "blue")
+  ## FIX THIS: split EXPOSURE_RATE into ITEM_EXPOSURE_RATE and STIM_EXPOSURE_RATE
+  ## FIX THIS: split EXPOSURE_RATE into ITEM_EXPOSURE_RATE and STIM_EXPOSURE_RATE
+
+  plotER(exposure_rate, max_rate = max_rate, title = paste0("Overall (N = ", nj, ")"), color = "blue")
+
   for (k in 1:config@exposure_control$n_segment) {
     plotER(
-      ni, exposure_rate_segment[[k]], NULL, max_rate = max_rate,
+      exposure_rate_segment[[k]], NULL, max_rate = max_rate,
       title = paste0(segment_label[k], " (n = ", round(object$eligibility_stats$n_jk[k], 1), ")"),
       color = "blue"
     )
@@ -3206,7 +2651,7 @@ plotExposureRateBySegment <- function(object, config, max_rate = 0.25, file_pdf 
 #' @param object An output object generated by \code{\link{Shadow}}.
 #' @param config A \code{\linkS4class{config_Shadow}} object.
 #' @param max_rate A target item exposure rate.
-#' @param theta By which theta to generate the plots, either "Estimated" or "True".
+#' @param theta By which theta to base the segments, either "Estimated" or "True".
 #' @param segment_cut A vector of cut values defining theta segments.
 #' @param color A vector of colors.
 #' @param file_pdf If supplied a filename, save as a PDF file.
@@ -3225,22 +2670,27 @@ plotExposureRateBySegment <- function(object, config, max_rate = 0.25, file_pdf 
 #'   MIP = list(solver = "LPSOLVE"),
 #'   exposure_control = list(method = "ELIGIBILITY")
 #' )
-#' solution <- Shadow(itempool_science, config_science,
-#'   true_theta, constraints_science2, data = resp_science)
+#' solution <- Shadow(config_science, constraints_science2, true_theta, data = resp_science)
 #' p <- plotExposureRateFinal(solution, config_science, 0.25)
 #' }
 #' @export
 plotExposureRateFinal <- function(object, config = NULL, max_rate = 0.25, theta = "Estimated", segment_cut = NULL, color = "red", file_pdf = NULL, width = 7, height = 6, mfrow = c(2, 4), burn = 0, retain = NULL) {
 
-  true_theta <- object$true_theta
-  est_theta  <- object$final_theta_est
-  nj         <- length(true_theta)
+  if (toupper(theta) == "TRUE") {
+    theta_values <- object$true_theta
+    nj           <- length(theta_values)
+  } else if (toupper(theta) == "ESTIMATED") {
+    theta_values <- object$final_theta_est
+    nj           <- length(theta_values)
+  } else {
+    stop(sprintf("unknown theta_segment '%s' specified: must be 'True' or 'Estimated'", theta))
+  }
 
   if (burn > 0) {
     if (toupper(theta) == "TRUE") {
-      retained <- object$true_segment_count > burn
+      retained <- object$true_segment_count > burn  ## CHECK THIS IF THIS IS WORKING AS INTENDED
     } else {
-      retained <- object$est_segment_count > burn
+      retained <- object$est_segment_count > burn   ## CHECK THIS IF THIS IS WORKING AS INTENDED
     }
   } else if (!is.null(retain)) {
     retained <- (1:nj) %in% retain
@@ -3263,16 +2713,12 @@ plotExposureRateFinal <- function(object, config = NULL, max_rate = 0.25, theta 
   cut_upper <- segment_cut[2:(n_segment + 1)]
   segment_label <- character(n_segment)
   theta_segment_index <- numeric(sum(retained))
-  if (toupper(theta) == "TRUE") {
-    theta_segment_index <- find_segment(segment_cut, true_theta[retained])
-  } else {
-    theta_segment_index <- find_segment(segment_cut, est_theta[retained])
-  }
+  theta_segment_index <- find_segment(segment_cut, theta_values[retained])
 
   segment_n    <- numeric(n_segment)
   segment_dist <- table(theta_segment_index)
   segment_n[as.numeric(names(segment_dist))] <- segment_dist
-  segment_index_table <- matrix(NA, n_retained, object$constraints$test_length)
+  segment_index_table <- matrix(NA, n_retained, object$constraints@test_length)
   for (k in 1:n_segment) {
     if (k < n_segment) {
       segment_label[k] <- paste0("(", cut_lower[k], ",", cut_upper[k], "]")
@@ -3293,7 +2739,7 @@ plotExposureRateFinal <- function(object, config = NULL, max_rate = 0.25, theta 
   }
 
   segment_freq <- matrix(0, n_segment, n_segment)
-  for (i in 1:object$constraints$test_length) {
+  for (i in 1:object$constraints@test_length) {
     factor(segment_index_table[, i], levels = 1:n_segment)
     segment_table <- tapply(factor(segment_index_table[, i], levels = 1:n_segment), theta_segment_index, table)
     for (s in 1:length(segment_table)) {
@@ -3345,10 +2791,10 @@ plotExposureRateFinal <- function(object, config = NULL, max_rate = 0.25, theta 
   on.exit(par(mfrow = old_mfrow))
   par(mfrow = mfrow)
 
-  plotER(ni, exposure_rate, exposure_rate_final, max_rate = max_rate, title = paste0("Overall (N = ", n_retained, ")"), color = color)
+  plotER(exposure_rate, exposure_rate_final, max_rate = max_rate, title = paste0("Overall (N = ", n_retained, ")"), color = color)
   for (k in 1:n_segment) {
     plotER(
-      ni, exposure_rate_segment[[k]], exposure_rate_segment_final[[k]],
+      exposure_rate_segment[[k]], exposure_rate_segment_final[[k]],
       max_rate = max_rate, title = paste0(segment_label[k], " (n = ", segment_n[k], ")"),
       color = color)
   }
@@ -3426,54 +2872,6 @@ plotExposureRateFinalFlag <- function(object, pool, theta = seq(-3, 3, .1), flag
   }
 
   return(items_flagged_segment)
-}
-
-#' Draw item information plots
-#'
-#' Draw item information plots.
-#'
-#' @param object An \code{\linkS4class{item_pool}} object.
-#' @param theta A theta grid. Default is \code{seq(-3, 3, .1)}.
-#' @param info_type Type of information.
-#' @param select A vector of indices identifying the items to subset.
-#' @param file_pdf If supplied a filename, save as a PDF file.
-#' @param color Plotting color.
-#' @param width Width of graphics device.
-#' @param height Width of graphics device.
-#' @param mfrow Number of multiple figures defined as c(nrow, ncol).
-#'
-#' @examples
-#' subitempool <- subsetItemPool(itempool_science, 1:8)
-#' plotInfo(subitempool)
-#'
-#' @export
-
-plotInfo <- function(object, theta = seq(-3, 3, .1), info_type = "FISHER", select = NULL, file_pdf = NULL, color = "blue", width = 7, height = 6, mfrow = c(2, 4)) {
-  if (toupper(info_type) == "FISHER") {
-    info <- calcFisher(object, theta)
-  } else {
-    stop("Invalid info_type specified")
-  }
-
-  if (!is.null(file_pdf)) {
-    pdf(file = file_pdf, width = width, height = height)
-  }
-
-  old_mfrow <- par()$mfrow
-  on.exit(par(mfrow = old_mfrow))
-  par(mfrow = mfrow)
-
-  items <- 1:object@ni
-  if (!is.null(select) && all(select %in% items)) {
-    items <- select
-  }
-  for (i in items) {
-    plot(theta, info[, i], xlab = "Theta", ylab = "Info", main = object@id[i], type = "l", col = color, ylim = c(0, max(info)))
-  }
-
-  if (!is.null(file_pdf)) {
-    dev.off()
-  }
 }
 
 #' Overlay item information plots
@@ -3635,43 +3033,583 @@ iparPosteriorSample <- function(pool, n_sample = 500) {
   return(ipar_list)
 }
 
-#' Draw a plot of maximum attainable information given the imposed constraints
+
+#' Save or print audit trails
 #'
-#' Draw a plot of maximum attainable information given the imposed constraints.
+#' Save or print audit trails for all simulees.
 #'
-#' @param pool An \code{\linkS4class{item_pool}} object.
-#' @param constraints A list constraints generated by \code{\link{loadConstraints}}.
-#' @param theta A theta grid.
+#' @param object_list A list of output objects generated from \code{STA}.
+#' @param file An optional file name as a character string to save the output.
+#'
+#' @return None
+saveOutput <- function(object_list, file = NULL) {
+  nj <- length(object_list)
+  for (j in 1:nj) {
+    object <- object_list[[j]]
+    output <- data.frame(
+      simulee = object@simulee_id,
+      true_theta = object@true_theta,
+      true_theta_segment = object@true_theta_segment,
+      stage = 1:length(object@administered_item_index),
+      stimulus_index = ifelse(is.nan(object@administered_stimulus_index), rep(NA, length(object@administered_item_index)), object@administered_stimulus_index),
+      item_index = object@administered_item_index,
+      item_resp = object@administered_item_resp,
+      interim_theta = object@interim_theta_est,
+      interim_se = object@interim_se_est,
+      interim_theta_segment = object@theta_segment_index
+    )
+    if (!is.null(file)) {
+      write.table(output, file = file, append = j > 1, row.names = FALSE, col.names = j == 1, sep = ",")
+    } else {
+      print(output)
+    }
+  }
+}
+
+#' Draw a shadow test chart
+#'
+#' Draw a chart of shadow tests constructed for each simulee. The index of a column represents the position of item administration process, and each column represents the item pool.
+#'
+#' @param object An output from \code{\link{Shadow}} function.
+#' @param examinee_id Numeric ID of the examinee to draw the plot.
+#' @param sort_by_difficulty Sort the items by difficulty. (not implemented)
+#' @param file_pdf If supplied a filename, save as a PDF file.
+#' @param simple If \code{TRUE}, simplity the chart by hiding unused items.
+#' @param ... Additional options to be passed on to \code{pdf()}.
 #'
 #' @examples
-#' p <- plotMaxInfo(itempool_science, constraints_science)
+#' config <- createShadowTestConfig()
+#' true_theta <- rnorm(1)
+#' solution <- Shadow(config, constraints_science, true_theta)
+#' plotShadow(solution, 1)
+#' plotShadow(solution, 1, simple = TRUE)
 #'
+#' @docType methods
+#' @rdname plotShadow-methods
 #' @export
-plotMaxInfo <- function(pool, constraints, theta = seq(-3, 3, .5)) {
-  idx_n_items <- which(toupper(constraints$constraints[["WHAT"]]) == "ITEM" &
-    toupper(constraints$constraints[["CONDITION"]]) == "")
-  n_items <- constraints$constraints[idx_n_items, ]["LB"][1, 1]
-  max_info <- theta * 0
-  min_info <- theta * 0
-  for (i in 1:length(theta)) {
-    max_info[i] <- sum(sort(calcFisher(pool, theta[i]), TRUE)[1:n_items])
-    min_info[i] <- sum(sort(calcFisher(pool, theta[i]), FALSE)[1:n_items])
+setGeneric(
+  name = "plotShadow",
+  def = function(object, examinee_id = 1, sort_by_difficulty = FALSE, file_pdf = NULL, simple = FALSE, ...) {
+    standardGeneric("plotShadow")
   }
+)
 
-  pdf(NULL, bg = "white")
-  dev.control(displaylist = "enable")
+#' @docType methods
+#' @rdname plotShadow-methods
+#' @export
+setMethod(
+  f = "plotShadow",
+  signature = "list",
+  definition = function(object, examinee_id = 1, sort_by_difficulty = FALSE, file_pdf = NULL, simple = FALSE, ...) {
 
-  plot(0, 0,
-    type = "n", xlim = c(-3, 3), ylim = c(0, max(max_info)),
-    xlab = "Theta", ylab = "Information", main = "Range of attainable information based on the number of items"
-  )
-  lines(theta, max_info, lty = 2, lwd = 2)
-  lines(theta, min_info, lty = 2, lwd = 2)
-  grid()
+    if (!is.null(file_pdf)) {
+      pdf(file = file_pdf, bg = "white")
+    }
 
-  p <- recordPlot()
-  plot.new()
-  dev.off()
+    constraints <- object$constraints
 
-  return(p)
-}
+    for (id in examinee_id) {
+
+      examinee_output <- object$output[[id]]
+
+      max_ni <- constraints@test_length
+      ni     <- constraints@ni
+
+      old_mar   <- par()$mar
+      old_mfrow <- par()$mfrow
+      on.exit(par(mar = old_mar, mfrow = old_mfrow))
+      par(mar = c(2, 3, 1, 1) + 0.1, mfrow = c(1, 1))
+
+      n_points <- sum(!is.na(examinee_output@administered_item_resp)) # this should be equal to constraints@test_length
+      item_id <- constraints@item_attrib@data[["ID"]][examinee_output@administered_item_index]
+      item_sequence <- examinee_output@administered_item_index
+      responses     <- examinee_output@administered_item_resp
+      item_ncat     <- examinee_output@administered_item_ncat
+
+      if (simple) {
+
+        items_used <- sort(unique(do.call(c, examinee_output@shadow_test)))
+        new_y <- 1:length(items_used)
+
+        y_map <- rep(1, items_used[1] - 1)
+
+        for (i in 1:(length(items_used) - 1)) {
+          y_map <- c(y_map, rep(new_y[i], items_used[i + 1] - items_used[i]))
+        }
+
+        y_map <- c(y_map, rep(new_y[i + 1], ni - items_used[i + 1] + 1))
+
+      } else {
+        items_used <- 1:ni
+        y_map <- 1:ni
+      }
+
+      plot(c(0.5, max_ni + 0.5), c(0.5, y_map[ni] + 0.5), type = "n", las = 1, xlim = c(0, max_ni), xaxt = "n", yaxt = "n", ylab = "")
+
+      y_adj_3 <- (strheight("S") / 3)
+
+      usr <- par("usr")
+      text(max_ni / 2, (usr[3] / 2), "Position", adj = c(0.5, 0), cex = 1.0)
+      if (sort_by_difficulty) {
+        axis(2, at = y_map[ni] / 2, labels = "Easier <-  Items  -> Harder", cex.axis = 1.5, tick = FALSE, line = 0)
+      } else {
+        axis(2, at = y_map[ni] / 2, labels = "Items", cex.axis = 1.5, tick = FALSE, line = 0)
+      }
+
+      text(max_ni / 2, mean(c(usr[4], y_map[ni])), paste0("Examinee ID: ", examinee_output@simulee_id), adj = c(0.5, 0.5), cex = 1)
+
+      axis(1, at = 1:max_ni, tick = TRUE, labels = 1:max_ni, cex.axis = 0.7)
+
+      if (!simple) {
+        text(0, seq(10, y_map[ni], 10), seq(10, y_map[ni], 10), adj = c(0.5, 0.5), cex = 0.7)
+      } else {
+        text(0, new_y, items_used, adj = c(0.5, 0.5), cex = 0.7)
+      }
+
+      for (i in 1:n_points) {
+        y_dupecheck <- numeric(ni)
+        for (j in 1:ni) {
+          if (y_dupecheck[y_map[j]] == FALSE) {
+            y_dupecheck[y_map[j]] <- TRUE
+            rect(i - 0.25, y_map[j] - 0.25, i + 0.25, y_map[j] + 0.25, border = "gray88", lwd = 0.3)
+          }
+        }
+        if (examinee_output@shadow_test_refreshed[i]) {
+          mtext("S", at = i, side = 1, line = 0.3, col = "red", adj = c(0.5, 0.5), cex = 0.7)
+        }
+      }
+
+      if (constraints@set_based) {
+        for (p in 1:constraints@ns) {
+          tmp = constraints@item_index_by_stimulus[[p]]
+          if (!is.null(tmp)) {
+            tmp = tmp[tmp %in% items_used]
+            if (length(tmp) > 0) {
+              for (i in 1:n_points) {
+                rect(i - 0.35, y_map[min(tmp)] - 0.5,
+                     i + 0.35, y_map[max(tmp)] + 0.5, border = "gray88", lwd = 0.5)
+              }
+            }
+          }
+        }
+      }
+
+      shadow_tests <- examinee_output@shadow_test
+
+      if (constraints@set_based) {
+
+        item_table <- merge(constraints@item_attrib@data, constraints@st_attrib@data[c("STID", "STINDEX")], by = "STID", all.x = TRUE, sort = FALSE)
+
+        for (k in 1:n_points) {
+
+          items <- shadow_tests[[k]]
+          current_item <- examinee_output@administered_item_index[k]
+          passages <- unique(item_table[["STINDEX"]][which(item_table[["INDEX"]] %in% items)])
+          current_passage <- item_table[["STINDEX"]][which(item_table[["INDEX"]] == current_item)]
+
+          for (p in 1:length(passages)) {
+
+            if (!is.na(passages[p])) {
+
+              sub_items <- constraints@item_index_by_stimulus[[passages[p]]]
+              sub_items <- sub_items[sub_items %in% items_used]
+
+              if (!is.na(current_passage)) {
+                if (passages[p] == current_passage) {
+                  rect(k - 0.35, y_map[min(sub_items)] - 0.5,
+                       k + 0.35, y_map[max(sub_items)] + 0.5, border = "blue", col = "khaki", lwd = 0.5)
+                } else {
+                  rect(k - 0.35, y_map[min(sub_items)] - 0.5,
+                       k + 0.35, y_map[max(sub_items)] + 0.5, border = "blue", col = "gray50", lwd = 0.5)
+                }
+              } else {
+                rect(k - 0.35, y_map[min(sub_items)] - 0.5,
+                     k + 0.35, y_map[max(sub_items)] + 0.5, border = "blue", col = "gray50", lwd = 0.5)
+              }
+
+            } else {
+
+              sub_items <- item_table[["INDEX"]][which(is.na(item_table[["STINDEX"]]) & item_table[["INDEX"]] %in% items)]
+
+              for (i in 1:length(sub_items)) {
+                if (sub_items[i] == current_item) {
+                  rect(k - 0.35, y_map[sub_items[i]] - 0.5,
+                       k + 0.35, y_map[sub_items[i]] + 0.5, border = "blue", col = "khaki", lwd = 0.5)
+                } else {
+                  rect(k - 0.35, y_map[sub_items[i]] - 0.5,
+                       k + 0.35, y_map[sub_items[i]] + 0.5, border = "blue", col = "gray50", lwd = 0.5)
+                }
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+
+      for (k in 1:n_points) {
+        items <- shadow_tests[[k]]
+        current_item <- examinee_output@administered_item_index[k]
+        for (i in 1:length(items)) {
+          if (items[i] != current_item) {
+            rect(k - 0.25, y_map[items[i]] - 0.25,
+                 k + 0.25, y_map[items[i]] + 0.25, border = "black", lwd = 0.3)
+          }
+        }
+      }
+
+      for (k in 1:n_points) {
+        items <- shadow_tests[[k]]
+        current_item <- examinee_output@administered_item_index[k]
+        for (i in 1:length(items)) {
+          if (items[i] == current_item) {
+            for (kk in k:n_points) {
+              rect(kk - 0.25, y_map[items[i]] - 0.25,
+                   kk + 0.25, y_map[items[i]] + 0.25, border = "gray33", col = "gray33", lwd = 0.3)
+            }
+            if (item_ncat[k] == 2) {
+              if (responses[k] == 0) {
+                rect_col = "red"
+              } else if (responses[k] == 1) {
+                rect_col = "lime green"
+              }
+            } else {
+              rect_col = "cyan2"
+            }
+
+            rect(k - 0.25, y_map[items[i]] - 0.25,
+                 k + 0.25, y_map[items[i]] + 0.25, border = rect_col, col = rect_col, lwd = 0.3)
+
+          }
+        }
+      }
+
+    }
+
+    if (!is.null(file_pdf)) {
+      dev.off()
+    } else {
+      p <- recordPlot()
+      return(p)
+    }
+  }
+)
+
+#' Draw an audit trail plot
+#'
+#' Draw an audit trail plot.
+#'
+#' @param object An output object generated by \code{\link{Shadow}}.
+#' @param examinee_id Numeric ID of the examinee to draw the plot.
+#' @param min_theta A lower bound of theta.
+#' @param max_theta An upper bound of theta.
+#' @param min_score A minimum item score.
+#' @param max_score A maximum item score.
+#' @param z_ci A quantile of the normal distribution for confidence intervals.
+#' @param file_pdf If supplied a filename, save as a PDF file.
+#' @param ... Additional options to be passed on to \code{pdf()}.
+#'
+#' @examples
+#' config <- createShadowTestConfig()
+#' true_theta <- rnorm(1)
+#' solution <- Shadow(config, constraints_science, true_theta)
+#' plotCAT(solution, 1)
+#'
+#' @docType methods
+#' @rdname plotCAT-methods
+#' @export
+setGeneric(
+  name = "plotCAT",
+  def = function(object, examinee_id = 1, min_theta = -5, max_theta = 5, min_score = 0, max_score = 1, z_ci = 1.96, file_pdf = NULL, ...) {
+    standardGeneric("plotCAT")
+  }
+)
+
+#' @docType methods
+#' @rdname plotCAT-methods
+#' @export
+setMethod(
+  f = "plotCAT",
+  signature = "list",
+  definition = function(object, examinee_id = 1, min_theta = -5, max_theta = 5, min_score = 0, max_score = 1, z_ci = 1.96, file_pdf = NULL, ...) {
+    if (!is.null(file_pdf)) {
+      pdf(file = file_pdf, bg = "white")
+    }
+    for (i in examinee_id) {
+      plotCAT(
+        object$output[[i]], examinee_id,
+        min_theta = min_theta, max_theta = max_theta,
+        min_score = min_score, max_score = object$pool@max_cat - 1,
+        z_ci = z_ci, file_pdf = NULL, ...)
+    }
+    if (!is.null(file_pdf)) {
+      dev.off()
+    } else {
+      p <- recordPlot()
+      return(p)
+    }
+  }
+)
+
+#' @docType methods
+#' @rdname plotCAT-methods
+#' @export
+setMethod(
+  f = "plotCAT",
+  signature = "output_Shadow",
+  definition = function(object, examinee_id = 1, min_theta = -5, max_theta = 5, min_score = 0, max_score = 1, z_ci = 1.96, file_pdf = NULL, ...) {
+    n_items <- length(object@administered_item_index)
+    if (n_items > 0) {
+
+      old_mar <- par()$mar
+      on.exit(par(mar = old_mar))
+      par(mar = c(2, 3, 1, 1) + 0.1)
+
+      layout(rbind(c(1, 1), c(1, 1), c(1, 1), c(1, 1), c(2, 2)))
+      plot(1:n_items, seq(min_theta, max_theta, length = n_items), ylab = "Theta", type = "n", las = 1, xlim = c(0, n_items), xaxt = "n", yaxt = "n")
+      grid()
+      text(n_items / 2, max_theta, paste0("Examinee ID: ", object@simulee_id), adj = c(0.5, 0.5), cex = 2)
+      axis(1, at = 0:n_items, tick = TRUE, labels = 0:n_items, cex.axis = 1.5)
+      axis(2, at = min_theta:max_theta, labels = min_theta:max_theta, cex.axis = 1.5)
+      text(0.5, min_theta + 1.0, paste("Final Theta: ", round(object@final_theta_est, digits = 2), " SE: ", round(object@final_se_est, digits = 2)), cex = 1.5, adj = 0)
+      for (i in 1:n_items) {
+        lines(rep(i, 2), c(object@interim_theta_est[i] - z_ci * object@interim_se_est[i], object@interim_theta_est[i] + z_ci * object@interim_se_est[i]), col = "purple4")
+        lines(c(i - 0.25, i + 0.25), c(object@interim_theta_est[i] - z_ci * object@interim_se_est[i], object@interim_theta_est[i] - z_ci * object@interim_se_est[i]), col = "purple4")
+        lines(c(i - 0.25, i + 0.25), c(object@interim_theta_est[i] + z_ci * object@interim_se_est[i], object@interim_theta_est[i] + z_ci * object@interim_se_est[i]), col = "purple4")
+      }
+      lines(1:n_items, object@interim_theta_est, lty = 3, col = "blue", lwd = 1.5)
+      points(1:n_items, object@interim_theta_est, pch = 16, cex = 2.5, col = "blue")
+      points(1:n_items, object@interim_theta_est, pch = 1, cex = 2.5, col = "purple4")
+      if (!is.null(object@true_theta)) {
+        abline(h = object@true_theta, lty = 1, col = "red")
+      }
+      for (i in 1:n_items) {
+        if (object@shadow_test_refreshed[i]) {
+          text(i, min_theta, "S", col = "red", cex = 1.5)
+        }
+      }
+      plot(1:n_items, seq(min_score, max_score, length.out = n_items), type = "n", xaxt = "n", ylim = c(min_score - 1, max_score + 1), xlim = c(0, n_items), yaxt = "n", ylab = "")
+      mtext("Position", side = 1, line = 1, outer = FALSE, cex = 1.5)
+      axis(2, at = (min_score + max_score) / 2, labels = "Response", cex.axis = 2, tick = FALSE)
+      for (i in 1:n_items) {
+        x <- i
+        y <- object@administered_item_resp[i]
+        if (!is.na(y)) {
+          if (object@administered_item_ncat[i] == 2) {
+            if (object@administered_item_resp[i] == min_score) {
+              rect_col = "red"
+            } else {
+              rect_col = "lime green"
+            }
+          } else {
+            rect_col = "cyan2"
+          }
+          rect(x - 0.25, min_score - 1, x + 0.25, y, col = rect_col, border = "black")
+        }
+      }
+    } else {
+      cat("output_Shadow is empty\n")
+    }
+  }
+)
+
+#' Draw an item exposure plot
+#'
+#' Draw a plot of item exposure rates
+#'
+#' @param object An output object generated by \code{\link{Shadow}}.
+#' @param max_rate A target exposure rate.
+#' @param theta_segment True or Estimated theta used to create segments ("Estimated" or "True").
+#' @param color Color of item-wise exposure rates.
+#' @param color_final Color of item-wise exposure rates, only counting the items while in the final theta segment as exposed.
+#' @param file_pdf If supplied a filename, save as a PDF file.
+#' @param ... Additional options to be passed on to \code{pdf()}.
+#'
+#' @examples
+#' \donttest{
+#' true_theta <- runif(10, min = -3.5, max = 3.5)
+#' resp_science <- makeTest(itempool_science, info_type = "FISHER", true_theta = true_theta)@data
+#' constraints_science2 <- updateConstraints(constraints_science, off = c(14:20, 32:36))
+#' config_science <- createShadowTestConfig(
+#'   MIP = list(solver = "lpSolve"),
+#'   exposure_control = list(method = "ELIGIBILITY")
+#' )
+#' solution <- Shadow(config_science, constraints_science2, true_theta, data = resp_science)
+#' p <- plotExposure(solution)
+#' }
+#' @docType methods
+#' @rdname plotExposure-methods
+#' @export
+setGeneric(
+  name = "plotExposure",
+  def = function(object, max_rate = 0.25, theta_segment = "Estimated", color = "blue", color_final = "blue", file_pdf = NULL, ...) {
+    standardGeneric("plotExposure")
+  }
+)
+
+#' @docType methods
+#' @rdname plotExposure-methods
+#' @export
+
+setMethod(
+  f = "plotExposure",
+  signature = "list",
+  definition = function(object, max_rate = 0.25, theta_segment = "estimated", color = "blue", color_final = "blue", file_pdf = NULL, ...) {
+
+    if (toupper(theta_segment) == "TRUE") {
+      theta_value <- object$true_theta
+      nj          <- length(theta_value)
+    } else if (toupper(theta_segment) == "ESTIMATED") {
+      theta_value <- object$final_theta_est
+      nj          <- length(theta_value)
+    } else {
+      stop("'theta_segment' must be 'true' or 'estimated'.")
+    }
+
+    ni <- object$pool@ni
+    nv <- ncol(object$usage_matrix)
+    segment_cut   <- object$config@exposure_control$segment_cut
+    n_segment     <- object$config@exposure_control$n_segment
+    cut_lower     <- segment_cut[1:n_segment]
+    cut_upper     <- segment_cut[2:(n_segment + 1)]
+    segment_label <- character(n_segment)
+    for (k in 1:n_segment) {
+      if (k < n_segment) {
+        segment_label[k] <- paste0("(", cut_lower[k], ",", cut_upper[k], "]")
+      } else {
+        segment_label[k] <- paste0("(", cut_lower[k], ",", cut_upper[k], ")")
+      }
+    }
+
+    theta_segment_index <- numeric(nj)
+    theta_segment_index <- find_segment(segment_cut, theta_value)
+
+    segment_n    <- numeric(n_segment)
+    segment_dist <- table(theta_segment_index)
+    segment_n[as.numeric(names(segment_dist))] <- segment_dist
+    segment_index_table <- matrix(NA, nj, object$constraints@test_length)
+
+    usage_matrix       <- object$usage_matrix
+    usage_matrix_final <- object$usage_matrix
+    for (j in 1:nj) {
+      usage_matrix_final[j, object$output[[j]]@administered_item_index[object$output[[j]]@theta_segment_index != theta_segment_index[j]]] <- FALSE
+      segment_index_table[j, ] <- object$output[[j]]@theta_segment_index
+    }
+
+    segment_freq <- matrix(0, n_segment, n_segment)
+    for (i in 1:object$constraints@test_length) {
+      factor(segment_index_table[, i], levels = 1:n_segment)
+      segment_table <- tapply(factor(segment_index_table[, i], levels = 1:n_segment), theta_segment_index, table)
+      for (s in 1:length(segment_table)) {
+        idx_r <- as.numeric(names(segment_table)[s])
+        idx_c <- as.numeric(names(segment_table[[s]]))
+        segment_freq[idx_r, idx_c] <- segment_freq[idx_r, idx_c] + segment_table[[s]]
+      }
+    }
+
+    segment_rate                <- segment_freq / segment_n
+    segment_rate_table          <- data.frame(
+      segment_class = factor(rep(segment_label, rep(n_segment, n_segment)), levels = segment_label),
+      segment = rep(1:n_segment, n_segment),
+      avg_visit = matrix(t(segment_rate),
+                         nrow = n_segment^2, ncol = 1)
+    )
+
+    exposure_rate               <- colSums(usage_matrix) / nj
+    exposure_rate_final         <- colSums(usage_matrix_final) / nj
+
+    item_exposure_rate          <- exposure_rate[1:ni]
+    item_exposure_rate_final    <- exposure_rate_final[1:ni]
+
+    if (object$constraints@set_based) {
+      stim_exposure_rate        <- exposure_rate[(ni + 1):nv][object$constraints@stimulus_index_by_item]
+      stim_exposure_rate_final  <- exposure_rate_final[(ni + 1):nv][object$constraints@stimulus_index_by_item]
+    } else {
+      stim_exposure_rate        <- NULL
+      stim_exposure_rate_final  <- NULL
+    }
+
+    exposure_rate_segment       <- vector("list", n_segment)
+    exposure_rate_segment_final <- vector("list", n_segment)
+    names(exposure_rate_segment)       <- segment_label
+    names(exposure_rate_segment_final) <- segment_label
+
+    for (k in 1:n_segment) {
+      if (segment_n[k] > 2) {
+        exposure_rate_segment[[k]]       <- colMeans(usage_matrix[theta_segment_index == k, ])
+        exposure_rate_segment_final[[k]] <- colMeans(usage_matrix_final[theta_segment_index == k, ])
+      }
+      if (is.null(exposure_rate_segment[[k]])) {
+        exposure_rate_segment[[k]] <- numeric(nv)
+      } else if (any(is.nan(exposure_rate_segment[[k]]))) {
+        exposure_rate_segment[[k]][is.nan(exposure_rate_segment[[k]])] <- 0
+      }
+      if (is.null(exposure_rate_segment_final[[k]])) {
+        exposure_rate_segment_final[[k]] <- numeric(nv)
+      } else if (any(is.nan(exposure_rate_segment_final[[k]]))) {
+        exposure_rate_segment_final[[k]][is.nan(exposure_rate_segment_final[[k]])] <- 0
+      }
+    }
+
+    item_exposure_rate_segment       <- exposure_rate_segment
+    item_exposure_rate_segment_final <- exposure_rate_segment_final
+
+    for (k in 1:n_segment) {
+      item_exposure_rate_segment[[k]]       <- item_exposure_rate_segment[[k]][1:ni]
+      item_exposure_rate_segment_final[[k]] <- item_exposure_rate_segment_final[[k]][1:ni]
+    }
+
+    if (object$constraints@set_based) {
+      stim_exposure_rate_segment       <- exposure_rate_segment
+      stim_exposure_rate_segment_final <- exposure_rate_segment_final
+      for (k in 1:n_segment) {
+        stim_exposure_rate_segment[[k]]       <- stim_exposure_rate_segment[[k]][(ni + 1):nv][object$constraints@stimulus_index_by_item]
+        stim_exposure_rate_segment_final[[k]] <- stim_exposure_rate_segment_final[[k]][(ni + 1):nv][object$constraints@stimulus_index_by_item]
+      }
+    } else {
+      stim_exposure_rate_segment       <- NULL
+      stim_exposure_rate_segment_final <- NULL
+    }
+
+    if (!is.null(file_pdf)) {
+      pdf(file = file_pdf, ...)
+    }
+
+    old_oma <- par()$oma
+    old_mar <- par()$mar
+    on.exit(par(oma = old_oma, mar = old_mar))
+    par(oma = c(3, 3, 0, 0), mar = c(3, 3, 2, 2))
+
+    plotER(
+      item_exposure_rate, item_exposure_rate_final, stim_exposure_rate, object$constraints@stimulus_index_by_item,
+      max_rate = max_rate, title = "Overall", color = color, color_final = color_final, simple = TRUE)
+
+    for (k in 1:n_segment) {
+      plotER(
+        item_exposure_rate_segment[[k]], item_exposure_rate_segment_final[[k]], stim_exposure_rate_segment[[k]], object$constraints@stimulus_index_by_item,
+        max_rate = max_rate, title = segment_label[k], color = color, color_final = color_final, simple = TRUE)
+    }
+    mtext(text = "Item", side = 1, line = 0, outer = T)
+    mtext(text = "Exposure Rate", side = 2, line = 0, outer = T)
+    if (!is.null(file_pdf)) {
+      dev.off()
+    }
+    return(
+      list(
+        item_exposure_rate               = item_exposure_rate,
+        item_exposure_rate_segment       = item_exposure_rate_segment,
+        item_exposure_rate_segment_final = item_exposure_rate_segment_final,
+        stim_exposure_rate               = stim_exposure_rate,
+        stim_exposure_rate_segment       = stim_exposure_rate_segment,
+        stim_exposure_rate_segment_final = stim_exposure_rate_segment_final,
+        segment_rate_table = segment_rate_table,
+        n_segment = n_segment,
+        segment_n = segment_n,
+        segment_cut = segment_cut,
+        segment_label = segment_label
+      )
+    )
+  }
+)
