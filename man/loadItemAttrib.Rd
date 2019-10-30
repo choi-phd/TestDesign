@@ -12,7 +12,7 @@ loadItemAttrib(file, pool)
 \item{pool}{An \code{\linkS4class{item_pool}} object. Use \code{\link{loadItemPool}} for this.}
 }
 \value{
-A \code{data.frame} containing parsed dataset.
+An \code{\linkS4class{item_attrib}} object.
 }
 \description{
 Read item attributes from specified file.
