@@ -127,7 +127,7 @@ setMethod(
     if (length(theta) > 0 && all(!is.na(theta))) {
       prob <- lapply(object@parms, calcProb, theta)
     } else {
-      stop("Argument 'theta' is empty, or contains missing values.")
+      stop("'theta' is empty, or contains missing values.")
     }
     return(prob)
   }
@@ -253,7 +253,7 @@ setMethod(
     if (length(theta) > 0 && all(!is.na(theta))) {
       expected_score <- as.vector(Reduce("+", lapply(object@parms, calcEscore, theta)))
     } else {
-      stop("Argument 'theta' is empty, or contains missing values.")
+      stop("'theta' is empty, or contains missing values.")
     }
     return(expected_score)
   }
@@ -381,7 +381,7 @@ setMethod(
         info_Fisher[, i] <- calcFisher(object@parms[[i]], theta)
       }
     } else {
-      stop("Argument 'theta' is empty, or contains missing values.")
+      stop("'theta' is empty, or contains missing values.")
     }
     return(info_Fisher)
   }
@@ -396,7 +396,7 @@ setMethod(
     if (length(theta) > 0 && all(!is.na(theta))) {
       prob <- lapply(object@pools, calcProb, theta)
     } else {
-      stop("Argument 'theta' is empty, or contains missing values.")
+      stop("'theta' is empty, or contains missing values.")
     }
     return(prob)
   }
@@ -411,7 +411,7 @@ setMethod(
     if (length(theta) > 0 && all(!is.na(theta))) {
       expected_score <- lapply(object@pools, calcEscore, theta)
     } else {
-      stop("Argument 'theta' is empty, or contains missing values.")
+      stop("'theta' is empty, or contains missing values.")
     }
     return(expected_score)
   }
@@ -430,7 +430,7 @@ setMethod(
         info_Fisher[[i]] <- calcFisher(object@pools[[i]], theta)
       }
     } else {
-      stop("Argument 'theta' is empty, or contains missing values.")
+      stop("'theta' is empty, or contains missing values.")
     }
     return(info_Fisher)
   }
@@ -710,7 +710,7 @@ setMethod(
         derivative[, i] <- calcDerivative(object@parms[[i]], theta)
       }
     } else {
-      stop("Argument 'theta' is empty, or contains missing values.")
+      stop("'theta' is empty, or contains missing values.")
     }
     return(derivative)
   }
@@ -728,7 +728,7 @@ setMethod(
         derivative[[i]] <- calcFisher(object@pools[[i]], theta)
       }
     } else {
-      stop("Argument 'theta' is empty, or contains missing values.")
+      stop("'theta' is empty, or contains missing values.")
     }
     return(derivative)
   }
@@ -880,7 +880,7 @@ setMethod(
         derivative2[, i] <- calcDerivative(object@parms[[i]], theta)
       }
     } else {
-      stop("Argument 'theta' is empty, or contains missing values.")
+      stop("'theta' is empty, or contains missing values.")
     }
     return(derivative2)
   }
@@ -898,7 +898,7 @@ setMethod(
         derivative2[[i]] <- calcFisher(object@pools[[i]], theta)
       }
     } else {
-      stop("Argument 'theta' is empty, or contains missing values.")
+      stop("'theta' is empty, or contains missing values.")
     }
     return(derivative2)
   }
@@ -1048,7 +1048,7 @@ setMethod(
         mat_Jacobian[, i] <- calcJacobian(object@parms[[i]], theta, resp[i])
       }
     } else {
-      stop("Argument 'theta' is empty, or contains missing values.")
+      stop("'theta' is empty, or contains missing values.")
     }
     return(mat_Jacobian)
   }
@@ -1066,7 +1066,7 @@ setMethod(
         mat_Jacobian[[i]] <- calcJacobian(object@pools[[i]], theta, resp[[i]])
       }
     } else {
-      stop("Argument 'theta' is empty, or contains missing values.")
+      stop("'theta' is empty, or contains missing values.")
     }
     return(mat_Jacobian)
   }
@@ -1219,7 +1219,7 @@ setMethod(
         mat_Hessian[, i] <- calcHessian(object@parms[[i]], theta, resp[i])
       }
     } else {
-      stop("Argument 'theta' is empty, or contains missing values.")
+      stop("'theta' is empty, or contains missing values.")
     }
     return(mat_Hessian)
   }
@@ -1237,7 +1237,7 @@ setMethod(
         mat_Hessian[[i]] <- calcHessian(object@pools[[i]], theta, resp[[i]])
       }
     } else {
-      stop("Argument 'theta' is empty, or contains missing values.")
+      stop("'theta' is empty, or contains missing values.")
     }
     return(mat_Hessian)
   }
@@ -1397,7 +1397,7 @@ setMethod(
       }
       return(data)
     } else {
-      stop("invalid values in theta")
+      stop("'theta' is empty, or contains missing values.")
     }
   }
 )
@@ -1415,7 +1415,7 @@ setMethod(
       }
       return(data)
     } else {
-      stop("invalid values in theta")
+      stop("'theta' is empty, or contains missing values.")
     }
   }
 )
@@ -1437,7 +1437,7 @@ setMethod(
       }
       return(data)
     } else {
-      stop("length of theta not equal to np")
+      stop("length of 'theta' must match object@np.")
     }
   }
 )
