@@ -44,3 +44,9 @@ NULL
     packageStartupMessage(status, " ", s, paste0(rep(" ", 10 - nchar(s)), collapse = ""), white(v))
   }
 }
+
+setClassUnion("dataframe_or_null", c("data.frame", "NULL"))
+setClassUnion("character_or_null", c("character" , "NULL"))
+setClassUnion("numeric_or_null"  , c("numeric"   , "NULL"))
+setClassUnion("matrix_or_null"   , c("matrix"    , "NULL"))
+setClassUnion("list_or_null"     , c("list"      , "NULL"))
