@@ -4,28 +4,24 @@
 \name{plotShadow}
 \alias{plotShadow}
 \alias{plotShadow,list-method}
-\alias{plotShadow,output_Shadow-method}
 \title{Draw a shadow test chart}
 \usage{
-plotShadow(object, constraints, examinee_id = 1,
-  sort_by_difficulty = FALSE, file_pdf = NULL, ...)
+plotShadow(object, examinee_id = 1, sort_by_difficulty = FALSE,
+  file_pdf = NULL, simple = FALSE, ...)
 
-\S4method{plotShadow}{list}(object, constraints, examinee_id = 1,
-  sort_by_difficulty = FALSE, file_pdf = NULL, ...)
-
-\S4method{plotShadow}{output_Shadow}(object, constraints,
-  examinee_id = 1, sort_by_difficulty = FALSE, file_pdf = NULL, ...)
+\S4method{plotShadow}{list}(object, examinee_id = 1,
+  sort_by_difficulty = FALSE, file_pdf = NULL, simple = FALSE, ...)
 }
 \arguments{
 \item{object}{An output from \code{\link{Shadow}} function.}
 
-\item{constraints}{The constraint object used in obtaining the output.}
-
 \item{examinee_id}{Numeric ID of the examinee to draw the plot.}
 
-\item{sort_by_difficulty}{Sort the items by difficulty.}
+\item{sort_by_difficulty}{Sort the items by difficulty. (not implemented)}
 
 \item{file_pdf}{If supplied a filename, save as a PDF file.}
+
+\item{simple}{If \code{TRUE}, simplity the chart by hiding unused items.}
 
 \item{...}{Additional options to be passed on to \code{pdf()}.}
 }
@@ -33,10 +29,10 @@ plotShadow(object, constraints, examinee_id = 1,
 Draw a chart of shadow tests constructed for each simulee. The index of a column represents the position of item administration process, and each column represents the item pool.
 }
 \examples{
-object <- itempool_science
 config <- createShadowTestConfig()
 true_theta <- rnorm(1)
-solution <- Shadow(itempool_science, config, true_theta, constraints_science)
-plotShadow(solution, constraints_science, 1)
+solution <- Shadow(config, constraints_science, true_theta)
+plotShadow(solution, 1)
+plotShadow(solution, 1, simple = TRUE)
 
 }

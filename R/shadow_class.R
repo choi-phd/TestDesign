@@ -1,44 +1,5 @@
-#' @include solver_functions.R
+#' @include static_class.R
 NULL
-
-#' An S4 class to represent a set of constraints
-#'
-#' An S4 class to represent a set of constraints.
-#'
-#' @slot constraint Character. The index of the constraint set.
-#' @slot mat A matrix representing the left-hand side weights. Has nc rows.
-#' @slot dir A vector of length nc. Each entry represents a logical operator relating the left-hand side to the right-hand side.
-#' @slot rhs A vector of length nc. Each entry represents the right-hand side of the constraint.
-#' @slot nc Numeric. The number of constraints represented in the constraint set.
-#' @slot suspend \code{TRUE} if the constraint is to be turned off.
-#'
-#' @export
-setClass("constraint",
-  slots = c(
-    constraint = "character",
-    mat = "matrix",
-    dir = "character",
-    rhs = "numeric",
-    nc = "numeric",
-    suspend = "logical"
-  ),
-  prototype = list(
-    constraint = character(0),
-    mat = matrix(NA, 0, 0),
-    dir = character(0),
-    rhs = numeric(0),
-    nc = 0,
-    suspend = FALSE
-  ),
-  validity = function(object) {
-    # add validity checks
-    return(TRUE)
-  }
-)
-
-
-setClassUnion("numeric_or_null", c("numeric", "NULL"))
-setClassUnion("matrix_or_null", c("matrix", "NULL"))
 
 
 #' An S4 class to represent a test
@@ -73,13 +34,13 @@ setClass("test",
          validity = function(object) {
            errors <- NULL
            if (length(object@prob) != object@pool@ni) {
-             errors <- c(errors, "length(prob) is not equal to pool@ni")
+             errors <- c(errors, "length(@prob) must match @pool@ni.")
            }
            if (ncol(object@info) != object@pool@ni) {
-             errors <- c(errors, "ncol(info) is not equal to pool@ni")
+             errors <- c(errors, "ncol(@info) must match @pool@ni.")
            }
            if (nrow(object@info) != length(object@theta)) {
-             errors <- c(errors, "nrow(info) is not equal to length(theta)")
+             errors <- c(errors, "nrow(@info) must match length(@theta).")
            }
            if (length(errors) == 0) {
              return(TRUE)
@@ -114,10 +75,10 @@ setClass("test_cluster",
          validity = function(object) {
            errors <- NULL
            if (length(object@tests) != object@nt) {
-             errors <- c(errors, "length(tests) is not equal to nt")
+             errors <- c(errors, "@nt must match length(@tests).")
            }
            if (length(object@names) != object@nt) {
-             errors <- c(errors, "length(names) is not equal to nt")
+             errors <- c(errors, "@nt must match length(@names).")
            }
            if (length(errors) == 0) {
              return(TRUE)
@@ -219,47 +180,47 @@ setClass("config_Shadow",
   ),
   validity = function(object) {
     errors <- NULL
-    if (!toupper(object@MIP$solver) %in% c("SYMPHONY", "GUROBI", "GLPK", "LPSOLVE")) {
-      errors <- c(errors, "invalid option for MIP$solver")
+    if (!toupper(object@MIP$solver) %in% c("LPSYMPHONY", "RSYMPHONY", "LPSOLVE", "GUROBI", "RGLPK")) {
+      errors <- c(errors, "@MIP$solver must be one of lpsymphony, Rsymphony, lpSolve, gurobi, or Rglpk.")
     }
     if (toupper(object@MIP$solver) == "GUROBI") {
       if (!requireNamespace("gurobi", quietly = TRUE)) {
         errors <- c(errors, "GUROBI was specified but is not installed.")
       }
     }
-    if (toupper(object@MIP$solver) == "SYMPHONY") {
+    if (toupper(object@MIP$solver) == "RSYMPHONY") {
       if (!requireNamespace("Rsymphony", quietly = TRUE)) {
-        errors <- c(errors, "SYMPHONY was specified but is not installed.")
+        errors <- c(errors, "RSYMPHONY was specified but is not installed.")
       }
     }
     if (!object@item_selection$method %in% c("MFI", "MPWI", "EB", "FB")) {
-      errors <- c(errors, "invalid option for item_selection$method: accepts MFI, MPWI, EB, or FB")
+      errors <- c(errors, "@item_selection$method must be one of MFI, MPWI, EB, or FB")
     }
 
     if (!object@content_balancing$method %in% c("NONE", "STA")) {
-      errors <- c(errors, "invalid option for content_balancing$method: accepts NONE or STA")
+      errors <- c(errors, "@content_balancing$method must be one of NONE or STA")
     }
     if (!object@refresh_policy$method %in%
       c("ALWAYS", "POSITION", "INTERVAL", "THRESHOLD", "INTERVAL-THRESHOLD", "STIMULUS", "SET", "PASSAGE")) {
-      errors <- c(errors, "invalid option for refresh_policy$method")
+      errors <- c(errors, "@refresh_policy$method is not valid.")
     }
     if (!object@exposure_control$method %in% c("NONE", "ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
-      errors <- c(errors, "invalid option for exposure_control$method")
+      errors <- c(errors, "@exposure_control$method is not valid.")
     }
     if (object@exposure_control$n_segment != length(object@exposure_control$segment_cut) - 1) {
-      errors <- c(errors, "n_segment and segment_cut are inconsistent")
+      errors <- c(errors, "@exposure_control$n_segment must match @exposure_control$segment_cut.")
     }
     if (!object@stopping_criterion$method %in% c("FIXED")) {
-      errors <- c(errors, "invalid option for stopping_criterion.")
+      errors <- c(errors, "@stopping_criterion$method must be FIXED.")
     }
     if (!object@interim_theta$method %in% c("EAP", "MLE", "EB", "FB")) {
-      errors <- c(errors, "invalid option for interim_theta.")
+      errors <- c(errors, "@interim_theta$method must be one of EAP, MLE, EB, or FB.")
     }
     if (!object@final_theta$method %in% c("EAP", "MLE", "EB", "FB")) {
-      errors <- c(errors, "invalid option for final_theta.")
+      errors <- c(errors, "@final_theta$method must be one of EAP, MLE, EB, or FB.")
     }
     if (object@exposure_control$method %in% c("BIGM-BAYESIAN") && !object@interim_theta$method %in% c("EB", "FB")) {
-      errors <- c(errors, "BIGM-BAYESIAN exposure control requires interim_theta of EB or FB.")
+      errors <- c(errors, "'BIGM-BAYESIAN' exposure_control$method requires interim_theta$method of EB or FB.")
     }
     if (length(errors) == 0) {
       return(TRUE)
@@ -286,11 +247,11 @@ setClass("config_Shadow",
 #' }
 #' @param MIP A list containing solver options.
 #' \itemize{
-#'   \item{\code{solver}} The type of solver. Accepts one of \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.
+#'   \item{\code{solver}} The type of solver. Accepts one of \code{lpsymphony, Rsymphony, gurobi, lpSolve, Rglpk}.
 #'   \item{\code{verbosity}} Verbosity level.
-#'   \item{\code{time_limit}} Time limit to be passed onto solver. Used in solvers \code{SYMPHONY, GUROBI, GLPK}.
-#'   \item{\code{gap_limit}} Gap limit (relative) to be passed onto solver. Used in solver \code{GUROBI}. Uses the solver default when \code{NULL}.
-#'   \item{\code{gap_limit_abs}} Gap limit (absolute) to be passed onto solver. Used in solver \code{SYMPHONY}. Uses the solver default when \code{NULL}.
+#'   \item{\code{time_limit}} Time limit to be passed onto solver. Used in solvers \code{lpsymphony, Rsymphony, gurobi, Rglpk}.
+#'   \item{\code{gap_limit}} Gap limit (relative) to be passed onto solver. Used in solver \code{gurobi}. Uses the solver default when \code{NULL}.
+#'   \item{\code{gap_limit_abs}} Gap limit (absolute) to be passed onto solver. Used in solver \code{lpsymphony, Rsymphony}. Uses the solver default when \code{NULL}.
 #' }
 #' @param MCMC A list containing Markov-chain Monte Carlo configurations.
 #' \itemize{
@@ -483,7 +444,8 @@ setMethod("show", "config_Shadow", function(object) {
 #' @slot final_theta_est Numeric. The estimated theta after the last administered item.
 #' @slot final_se_est Numeric. The standard error of estimation after the last administered item.
 #' @slot administered_item_index Numeric. A vector of item indices administered at each position.
-#' @slot administered_item_resp Numeric. A vector of responses at each position.
+#' @slot administered_item_resp Numeric. A vector of item responses at each position.
+#' @slot administered_item_ncat Numeric. A vector containing the number of categories for each administered item.
 #' @slot administered_stimulus_index Numeric. A vector of stimulus indices administered at each position.
 #' @slot shadow_test_refreshed Logical. A vector of logical values indicating whether the shadow test was refreshed before administering an item at each position.
 #' @slot shadow_test_feasible Logical. A vector of logical values indicating whether a feasible solution to the shadow test was available in each position.
@@ -505,15 +467,16 @@ setClass("output_Shadow",
     true_theta = "numeric_or_null",
     true_theta_segment = "numeric_or_null",
     final_theta_est = "numeric",
-    final_se_est = "numeric",
+    final_se_est    = "numeric",
     administered_item_index = "numeric",
     administered_item_resp = "numeric",
+    administered_item_ncat = "numeric",
     administered_stimulus_index = "numeric",
     shadow_test_refreshed = "logical",
     shadow_test_feasible = "logical",
     solve_time = "numeric",
     interim_theta_est = "numeric",
-    interim_se_est = "numeric",
+    interim_se_est    = "numeric",
     theta_segment_index = "numeric",
     prior = "numeric",
     prior_par = "numeric",
@@ -530,6 +493,7 @@ setClass("output_Shadow",
     final_se_est = numeric(0),
     administered_item_index = numeric(0),
     administered_item_resp = numeric(0),
+    administered_item_ncat = numeric(0),
     administered_stimulus_index = numeric(0),
     shadow_test_refreshed = logical(0),
     shadow_test_feasible = logical(0),
@@ -564,13 +528,14 @@ setMethod("show", "output_Shadow", function(object) {
       stimulus_index = ifelse(is.nan(object@administered_stimulus_index), rep(NA, length(object@administered_item_index)), object@administered_stimulus_index),
       item_index = object@administered_item_index,
       item_resp = object@administered_item_resp,
+      item_ncat = object@administered_item_ncat,
       interim_theta = object@interim_theta_est,
       interim_se = object@interim_se_est,
       theta_segment = object@theta_segment_index
     )
     print(output)
   } else {
-    cat("empty object of class output_Shadow\n")
+    cat("The 'output_Shadow' object is empty.")
   }
   cat("\n")
 })
