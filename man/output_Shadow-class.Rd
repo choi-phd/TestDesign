@@ -22,7 +22,9 @@ output_Shadow
 
 \item{\code{administered_item_index}}{Numeric. A vector of item indices administered at each position.}
 
-\item{\code{administered_item_resp}}{Numeric. A vector of responses at each position.}
+\item{\code{administered_item_resp}}{Numeric. A vector of item responses at each position.}
+
+\item{\code{administered_item_ncat}}{Numeric. A vector containing the number of categories for each administered item.}
 
 \item{\code{administered_stimulus_index}}{Numeric. A vector of stimulus indices administered at each position.}
 

@@ -28,11 +28,11 @@ createShadowTestConfig(item_selection = NULL, content_balancing = NULL,
 
 \item{MIP}{A list containing solver options.
 \itemize{
-  \item{\code{solver}} The type of solver. Accepts one of \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.
+  \item{\code{solver}} The type of solver. Accepts one of \code{lpsymphony, Rsymphony, gurobi, lpSolve, Rglpk}.
   \item{\code{verbosity}} Verbosity level.
-  \item{\code{time_limit}} Time limit to be passed onto solver. Used in solvers \code{SYMPHONY, GUROBI, GLPK}.
-  \item{\code{gap_limit}} Gap limit (relative) to be passed onto solver. Used in solver \code{GUROBI}. Uses the solver default when \code{NULL}.
-  \item{\code{gap_limit_abs}} Gap limit (absolute) to be passed onto solver. Used in solver \code{SYMPHONY}. Uses the solver default when \code{NULL}.
+  \item{\code{time_limit}} Time limit to be passed onto solver. Used in solvers \code{lpsymphony, Rsymphony, gurobi, Rglpk}.
+  \item{\code{gap_limit}} Gap limit (relative) to be passed onto solver. Used in solver \code{gurobi}. Uses the solver default when \code{NULL}.
+  \item{\code{gap_limit_abs}} Gap limit (absolute) to be passed onto solver. Used in solver \code{lpsymphony, Rsymphony}. Uses the solver default when \code{NULL}.
 }}
 
 \item{MCMC}{A list containing Markov-chain Monte Carlo configurations.
