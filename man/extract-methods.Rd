@@ -10,8 +10,6 @@
 \S4method{[}{item_pool,ANY,ANY,ANY}(x, i, j, ..., drop = TRUE)
 
 \S4method{[}{test,ANY,ANY,ANY}(x, i, j, ..., drop = TRUE)
-
-\S4method{[}{item_pool,ANY,ANY,ANY}(x, i, j, ..., drop = TRUE)
 }
 \arguments{
 \item{x}{x}

@@ -16,7 +16,7 @@ plotExposureRateFinal(object, config = NULL, max_rate = 0.25,
 
 \item{max_rate}{A target item exposure rate.}
 
-\item{theta}{By which theta to generate the plots, either "Estimated" or "True".}
+\item{theta}{By which theta to base the segments, either "Estimated" or "True".}
 
 \item{segment_cut}{A vector of cut values defining theta segments.}
 
@@ -46,8 +46,7 @@ config_science <- createShadowTestConfig(
   MIP = list(solver = "LPSOLVE"),
   exposure_control = list(method = "ELIGIBILITY")
 )
-solution <- Shadow(itempool_science, config_science,
-  true_theta, constraints_science2, data = resp_science)
+solution <- Shadow(config_science, constraints_science2, true_theta, data = resp_science)
 p <- plotExposureRateFinal(solution, config_science, 0.25)
 }
 }
