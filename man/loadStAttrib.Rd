@@ -7,12 +7,12 @@
 loadStAttrib(file, item_attrib)
 }
 \arguments{
-\item{file}{Character. The name of the file containing item attributes.}
+\item{file}{Character. The name of the file containing stimulus attributes.}
 
-\item{item_attrib}{A \code{data.frame} containing item attributes. Use \code{\link{loadItemAttrib}} for this.}
+\item{item_attrib}{An \code{\linkS4class{item_attrib}} object containing item attributes. Use \code{\link{loadItemAttrib}} for this.}
 }
 \value{
-A \code{data.frame} containing stimulus attributes.
+A \code{\linkS4class{st_attrib}} object containing stimulus attributes.
 }
 \description{
 Read set, stimulus, or passage attributes from specified file.

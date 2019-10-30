@@ -11,18 +11,18 @@ loadConstraints(file, pool, item_attrib, st_attrib = NULL)
 
 \item{pool}{An \code{item_pool} object.}
 
-\item{item_attrib}{A \code{data.frame} containing item attributes. Use \code{\link{loadItemAttrib}} for this.}
+\item{item_attrib}{An \code{item_attrib} object containing item attributes. Use \code{\link{loadItemAttrib}} for this.}
 
-\item{st_attrib}{(Optional) A \code{data.frame} containing stimulus attributes. Use \code{\link{loadStAttrib}} for this.}
+\item{st_attrib}{(Optional) An \code{st_attrib} object containing stimulus attributes. Use \code{\link{loadStAttrib}} for this.}
 }
 \value{
-A list containing the parsed constraints, to be used in \code{\link{ATA}} and \code{\link{Shadow}}.
+A list containing the parsed constraints, to be used in \code{\link{Static}} and \code{\link{Shadow}}.
 }
 \description{
 Read constraints from specified file.
 }
 \details{
-Use \code{vignette("constraints")} for instructions on how to create a constraint set object.
+Use \code{vignette("constraints")} for instructions on how to create the constraint file.
 }
 \examples{
 ## Write to tempdir() and clean afterwards

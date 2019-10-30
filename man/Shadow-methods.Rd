@@ -3,41 +3,38 @@
 \docType{methods}
 \name{Shadow}
 \alias{Shadow}
-\alias{Shadow,item_pool-method}
-\title{Run computerized adaptive testing with generalized shadow-test approach}
+\alias{Shadow,config_Shadow-method}
+\title{Run adaptive test assembly.}
 \usage{
-Shadow(object, config, true_theta = NULL, constraints = NULL,
-  prior = NULL, prior_par = NULL, data = NULL, session = NULL)
+Shadow(config, constraints = NULL, true_theta = NULL, data = NULL,
+  prior = NULL, prior_par = NULL, session = NULL)
 
-\S4method{Shadow}{item_pool}(object, config, true_theta = NULL,
-  constraints = NULL, prior = NULL, prior_par = NULL, data = NULL,
+\S4method{Shadow}{config_Shadow}(config, constraints = NULL,
+  true_theta = NULL, data = NULL, prior = NULL, prior_par = NULL,
   session = NULL)
 }
 \arguments{
-\item{object}{An \code{\linkS4class{item_pool}} object. Use \code{\link{loadItemPool}} for this.}
-
 \item{config}{A \code{\linkS4class{config_Shadow}} object.}
+
+\item{constraints}{A list representing optimization constraints. Use \code{\link{loadConstraints}} for this.}
 
 \item{true_theta}{Numeric. A vector of true theta values to be used in simulation.}
 
-\item{constraints}{A list representing optimization constraints. Use \code{\link{loadConstraints}} for this.}
+\item{data}{Numeric. A matrix containing item response data.}
 
 \item{prior}{Numeric. A matrix or a vector containing priors.}
 
 \item{prior_par}{Numeric. A vector of parameters for prior distribution.}
 
-\item{data}{Numeric. A matrix containing item response data.}
-
 \item{session}{Used to communicate with a Shiny session.}
 }
 \description{
-Run computerized adaptive testing with generalized shadow-test approach.
+Perform adaptive test assembly based on generalized shadow-test approach, with specified configurations.
 }
 \examples{
-object <- itempool_science
 config <- createShadowTestConfig()
 true_theta <- rnorm(1)
-solution <- Shadow(itempool_science, config, true_theta, constraints_science)
+solution <- Shadow(config, constraints_science, true_theta)
 solution$output
 }
 \references{

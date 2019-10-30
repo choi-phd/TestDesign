@@ -7,17 +7,17 @@
 updateConstraints(object, on = NULL, off = NULL)
 }
 \arguments{
-\item{object}{a list object returned from \code{\link{loadConstraints}}}
+\item{object}{A \code{\linkS4class{constraints}} object from \code{\link{loadConstraints}}.}
 
 \item{on}{a vector of constraints index to turn on.}
 
 \item{off}{a vector of constraints index to turn off.}
 }
 \value{
-An updated list of constraints to be used in \code{\link{ATA}} and \code{\link{Shadow}}.
+An updated \code{\linkS4class{constraints}} object, to be used in \code{\link{Static}} and \code{\link{Shadow}}.
 }
 \description{
-Update the onstraints list
+Update the constraints list
 }
 \examples{
 constraints_science2 <- updateConstraints(constraints_science, off = 32:36)

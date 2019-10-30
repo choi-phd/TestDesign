@@ -1,0 +1,16 @@
+citHeader("To cite TestDesign in publications, use:")
+
+year <- sub("-.*", "", meta$Date)
+note <- sprintf("R package version %s", meta$Version)
+
+bibentry(bibtype = "Manual",
+         title = "{TestDesign}: Optimal Test Design Approach to Fixed and Adaptive Test Construction",
+         author = c(person("Seung W.", "Choi", role = c("aut", "cre")),
+                    person("Sangdon", "Lim", role = c("aut"))),
+         year = year,
+         note = note,
+         url = "https://CRAN.R-project.org/package=TestDesign",
+         textVersion =
+         paste0("Choi, S. & Lim, S. (", year, "). ",
+               "TestDesign: Optimal Test Design Approach to Fixed and Adaptive Test Construction. ",
+               "URL: https://CRAN.R-project.org/package=TestDesign"))
