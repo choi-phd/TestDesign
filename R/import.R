@@ -10,6 +10,15 @@
 # Use snake_case for global objects (example datasets).
 # Use snake_case for S3 list slot names and S4 class slot names.
 
+# Error message conventions
+# Use sentence case. (capitalize the first letter and end with a period.)
+# Use single quotes for all non-slot references.
+# Retain original capitalizations of references (e.g. (x) "'Theta'", (o) "'theta'").
+# # Prioritize this when beginning a sentence with reference.
+# Use appropriate slot operators (@, $) for slot references. Do not encapsulate with quotes.
+# Do not disambiguate references. (e.g. (x) "Argument 'x' must be blah.", (o) "'x' must be blah.")
+# Always give full names for slot references. (e.g. "@foo$bar")
+
 #' @import Matrix
 #' @import lpSolve
 #' @import Rcpp methods
