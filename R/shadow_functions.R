@@ -1703,7 +1703,7 @@ setMethod(
         output@posterior       <- output@likelihood * final_prior
         output@final_theta_est <- sum(output@posterior * config@theta_grid) / sum(output@posterior)
         output@final_se_est    <- sqrt(sum(output@posterior * (config@theta_grid - output@final_theta_est)^2) / sum(output@posterior))
-        if (toupper(config@final_theta$prior_dist) == "NORMAL" && config@final_theta$shrinkageCorrection) {
+        if (toupper(config@final_theta$prior_dist) == "NORMAL" && config@final_theta$shrinkage_correction) {
           output@final_theta_est <- output@final_theta_est * (1 + output@final_se_est^2)
           if (output@final_se_est < config@final_theta$prior_par[2]) {
             output@final_se_est <- 1 / sqrt(1 / output@final_se_est^2 - 1 / config@final_theta$prior_par[2]^2)
