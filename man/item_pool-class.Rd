@@ -27,5 +27,7 @@ An S4 class to represent an item pool.
 \item{\code{ipar}}{A matrix of item parameters in the pool.}
 
 \item{\code{se}}{A matrix representing standard errors of the item parameters.}
+
+\item{\code{raw}}{A data.frame containing raw input data.}
 }}
 
