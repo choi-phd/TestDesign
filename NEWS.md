@@ -33,6 +33,7 @@ TestDesign 1.0.0 is a major release that provides structural changes to better s
 ## Bug fixes
 
 * Fixes where `plotExposure()` was incorrectly plotting stimulus-level exposure rates along with item-level exposure rates.
+* Fixes where using Bayesian methods would trigger an error in `Shadow()`.
 
 # TestDesign 0.2.5
 

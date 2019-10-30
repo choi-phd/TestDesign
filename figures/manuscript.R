@@ -65,7 +65,7 @@ if (FALSE) {
   setEPS()
   postscript("figures/science_shadowplot.eps", width = 8, height = 7)
   p <- plotShadow(solution, examinee_id = 1, simple = TRUE)
-  p
+  print(p)
   dev.off()
 
 
@@ -142,7 +142,7 @@ if (FALSE) {
   setEPS()
   postscript("figures/reading_shadowplot.eps", width = 8, height = 7)
   p <- plotShadow(solution, 1, simple = TRUE)
-  p
+  print(p)
   dev.off()
 
 

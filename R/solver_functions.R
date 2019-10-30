@@ -91,8 +91,6 @@ runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
 
     obj[1:length(objective)] <- objective
 
-    browser()
-
     maximize     <- TRUE
     sort_by_info <- TRUE
 
