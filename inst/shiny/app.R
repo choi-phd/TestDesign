@@ -417,7 +417,7 @@ server <- function(input, output, session) {
             sprintf("shiny_audit_plot_%i", v$simulee_id),
             sprintf("Audit trail plot for simulee %i", v$simulee_id)
           )
-          v$shadow_chart <- plotShadow(v$fit, v$simulee_id)
+          v$shadow_chart <- plotShadow(v$fit, v$simulee_id, simple = TRUE)
           assignObject(v$shadow_chart,
             sprintf("shiny_shadow_chart_%i", v$simulee_id),
             sprintf("Shadow test chart for simulee %i", v$simulee_id)
@@ -643,6 +643,12 @@ server <- function(input, output, session) {
         if (conf@item_selection$method == "FB") {
           if (conf@interim_theta$method != "FB") {
             v <- updateLogs(v, "FB item selection method requires FB interim method.")
+            break
+          }
+        }
+        if (conf@item_selection$method == "EB") {
+          if (conf@interim_theta$method != "EB") {
+            v <- updateLogs(v, "EB item selection method requires EB interim method.")
             break
           }
         }

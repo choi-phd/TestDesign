@@ -3167,8 +3167,12 @@ setMethod(
       }
 
       for (i in 1:n_points) {
+        y_dupecheck <- numeric(ni)
         for (j in 1:ni) {
-          rect(i - 0.25, y_map[j] - 0.25, i + 0.25, y_map[j] + 0.25, border = "gray88", lwd = 0.3)
+          if (y_dupecheck[y_map[j]] == FALSE) {
+            y_dupecheck[y_map[j]] <- TRUE
+            rect(i - 0.25, y_map[j] - 0.25, i + 0.25, y_map[j] + 0.25, border = "gray88", lwd = 0.3)
+          }
         }
         if (examinee_output@shadow_test_refreshed[i]) {
           mtext("S", at = i, side = 1, line = 0.3, col = "red", adj = c(0.5, 0.5), cex = 0.7)
