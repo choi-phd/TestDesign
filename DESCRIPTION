@@ -43,15 +43,15 @@ LazyData: true
 RdMacros: Rdpack
 VignetteBuilder: knitr
 Collate:
-    'import.R'
     'RcppExports.R'
+    'import.R'
     'item_class.R'
     'item_functions.R'
     'loading_functions.R'
-    'ATA_class.R'
-    'ATA_functions.R'
-    'solver_functions.R'
+    'static_class.R'
     'shadow_class.R'
+    'static_functions.R'
     'shadow_functions.R'
     'datasets.R'
     'runshiny.R'
+    'solver_functions.R'
