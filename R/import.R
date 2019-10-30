@@ -39,7 +39,7 @@ NULL
   packageStartupMessage(white(bold("  Solver packages:")))
   packageStartupMessage(" ")
 
-  solver_names <- c("lpSolve", "Rsymphony", "gurobi", "Rglpk")
+  solver_names <- c("lpsymphony", "Rsymphony", "gurobi", "lpSolve", "Rglpk")
 
   for (s in solver_names) {
     x <- find.package(s, quiet = TRUE)
@@ -50,7 +50,7 @@ NULL
       status <- red("x")
       v <- ""
     }
-    packageStartupMessage(status, " ", s, paste0(rep(" ", 10 - nchar(s)), collapse = ""), white(v))
+    packageStartupMessage(status, " ", s, paste0(rep(" ", 11 - nchar(s)), collapse = ""), white(v))
   }
 }
 
