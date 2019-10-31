@@ -1,11 +1,11 @@
 # TestDesign 1.0.0
 
-TestDesign 1.0.0 is a major release that provides structural changes to better streamline the usage of the functions.
+TestDesign 1.0.0 is a major release that provides structural changes to better streamline the usage of the functions, and also achieve more structured abstraction.
 
 ## User-visible structural changes
 
 * The function for fixed-length assembly `ATA()` is now named `Static()` to match with `Shadow()` for adaptive assembly.
-* `Shadow()` now uses fewer arguments to match with `Static()` and to not expect redundant information in the arguments.
+* `Shadow()` now uses fewer arguments to match with `Static()` and to reduce redundant information in the arguments.
 * `plotMaxInfo()` is removed. The functionality is merged to `plotInfo()`, which can be used by supplying a `constriants` class object to the function.
 * `Static()` now does not return the plot by itself. The plotting should be done with `plotInfo()`.
 * `plotInfo()` is now a S4 method.
@@ -18,7 +18,7 @@ TestDesign 1.0.0 is a major release that provides structural changes to better s
 
 * Now uses S4 classes for item attributes (`item_attrib`), set attributes (`st_attrib`), and constraints (`constraints`).
 * `ATA()` and `STA()` are merged into a single core function `runAssembly()`. The function translates high-level user data to low-level solver data.
-* `ATA()` and `STA()` are removed. Deprecating the functions were not feasible because of the structural changes.
+* `ATA()` and `STA()` are removed. Deprecating the functions was not feasible because of the structural changes.
 
 ## New features
 
