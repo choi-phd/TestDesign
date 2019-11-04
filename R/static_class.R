@@ -5,7 +5,7 @@ NULL
 #'
 #' @rdname createStaticTestConfig
 
-setClass("config_ATA",
+setClass("config_Static",
   slots = c(
     item_selection = "list",
     MIP = "list"
@@ -30,18 +30,18 @@ setClass("config_ATA",
   validity = function(object) {
     errors <- NULL
     if (!toupper(object@item_selection$method) %in% c("MAXINFO", "TIF", "TCC")) {
-      errors <- c(errors, "invalid option for item_selection$method: accepts MaxInfo, TIF, or TCC.")
+      errors <- c(errors, "@item_selection$method only accepts one of MAXINFO, TIF, or TCC.")
     }
     if (toupper(object@item_selection$method) == "MAXINFO") {
       if (!is.null(object@item_selection$target_value)) {
-        errors <- c(errors, "target_value must be left blank when MaxInfo method is specified.")
+        errors <- c(errors, "@item_selection$target_value must be empty when @item_selection$method is MAXINFO.")
       }
       target_lengths <- unique(c(
         length(object@item_selection$target_location),
         length(object@item_selection$target_weight)
       ))
       if (length(target_lengths) != 1) {
-        errors <- c(errors, "item_selection$target_location, item_selection$target_weight have different lengths. They must have the same length.")
+        errors <- c(errors, "@item_selection$target_location and @item_selection$target_weight must have the same length.")
       }
     }
     if (toupper(object@item_selection$method) != "MAXINFO") {
@@ -51,14 +51,14 @@ setClass("config_ATA",
         length(object@item_selection$target_weight)
       ))
       if (length(target_lengths) != 1) {
-        errors <- c(errors, "item_selection$target_location, item_selection$target_value, item_selection$target_weight have different lengths. They must have the same length.")
+        errors <- c(errors, "@item_selection$target_location, @item_selection$target_value, and @item_selection$target_weight must have the same length.")
       }
     }
     if (toupper(object@item_selection$info_type) != "FISHER") {
-      errors <- c(errors, "invalid option ", object@item_selection$info_type, " for item_selection$info_type: accepts Fisher.")
+      errors <- c(errors, "@item_selection$info_type only accepts FISHER.")
     }
-    if (!toupper(object@MIP$solver) %in% c("SYMPHONY", "GUROBI", "GLPK", "LPSOLVE")) {
-      errors <- c(errors, "invalid option ", object@MIP$solver, " for MIP$solver: accepts Symphony, Gurobi, GLPK, or LpSolve.")
+    if (!toupper(object@MIP$solver) %in% c("LPSYMPHONY", "RSYMPHONY", "GUROBI", "LPSOLVE", "RGLPK")) {
+      errors <- c(errors, "@MIP$solver only accepts one of lpsymphony, Rsymphony, gurobi, lpSolve, or Rglpk.")
     }
 
     if (length(errors) == 0) {
@@ -69,9 +69,12 @@ setClass("config_ATA",
   }
 )
 
-#' Create an config_ATA object
+#' @noRd
+setClassUnion("config_ATA", c("config_Static"))
+
+#' Create a config_Static object
 #'
-#' Create an \code{\linkS4class{config_ATA}} object for Automated Test Assembly (ATA).
+#' Create a \code{\linkS4class{config_Static}} object for Static (fixed-form) test assembly.
 #'
 #' @param item_selection A list containing item selection criteria. This should have the following entries:
 #' \itemize{
@@ -83,11 +86,11 @@ setClass("config_ATA",
 #' }
 #' @param MIP A list containing solver options. This should have the following entries:
 #' \itemize{
-#'   \item{\code{solver}} The type of solver. Accepts \code{SYMPHONY, GUROBI, GLPK, LPSOLVE}.
+#'   \item{\code{solver}} The type of solver. Accepts \code{lpsymphony, Rsymphony, gurobi, lpSolve, Rglpk}.
 #'   \item{\code{verbosity}} Verbosity level of the solver. Defaults to -2.
-#'   \item{\code{time_limit}} Time limit in seconds passed onto the solver. Defaults to 60. Used in solvers \code{SYMPHONY, GUROBI, GLPK}.
-#'   \item{\code{gap_limit}} Termination criterion. Gap limit in relative scale passed onto the solver. Defaults to .05. Used in solver \code{GUROBI}.
-#'   \item{\code{gap_limit_abs}} Termination criterion. Gap limit in absolute scale passed onto the solver. Defaults to .05. Used in solver \code{SYMPHONY}.
+#'   \item{\code{time_limit}} Time limit in seconds passed onto the solver. Defaults to 60. Used in solvers \code{lpsymphony, Rsymphony, gurobi, Rglpk}.
+#'   \item{\code{gap_limit}} Termination criterion. Gap limit in relative scale passed onto the solver. Defaults to .05. Used in solver \code{gurobi}.
+#'   \item{\code{gap_limit_abs}} Termination criterion. Gap limit in absolute scale passed onto the solver. Defaults to .05. Used in solver \code{lpsymphony, Rsymphony}.
 #'   \item{\code{obj_tol}} Termination criterion. Tolerance on target objective value in absolute difference scale. Defaults to .05. Ignored if method is \code{MAXINFO}.
 #' }
 #'
@@ -124,7 +127,7 @@ setClass("config_ATA",
 #'
 #' @export
 createStaticTestConfig <- function(item_selection = NULL, MIP = NULL) {
-  cfg <- new("config_ATA")
+  cfg <- new("config_Static")
   arg_names <- c("item_selection", "MIP")
   obj_names <- c()
   for (arg in arg_names) {
@@ -155,11 +158,11 @@ createStaticTestConfig <- function(item_selection = NULL, MIP = NULL) {
 }
 
 #' @name show-method
-#' @aliases show,config_ATA-method
+#' @aliases show,config_Static-method
 #' @docType methods
 #' @noRd
-setMethod("show", "config_ATA", function(object) {
-  cat("ATA Configuration Settings \n\n")
+setMethod("show", "config_Static", function(object) {
+  cat("Static Assembly Configurations \n\n")
   cat("  Item selection criterion \n")
   cat("    Method         :", object@item_selection$method, "\n")
   cat("    Info type      :", object@item_selection$info_type, "\n")
