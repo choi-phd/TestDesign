@@ -78,7 +78,7 @@ ui <- fluidPage(
       ),
       radioGroupButtons(
         inputId = "solvertype", justified = TRUE,
-        choices = c("lpSolve", "Symphony", "Gurobi", "GLPK"), checkIcon = list(yes = icon("drafting-compass"), no = icon("drafting-compass"))
+        choices = c("lpsymphony", "Rsymphony", "lpSolve", "gurobi", "Rglpk"), checkIcon = list(yes = icon("drafting-compass"), no = icon("drafting-compass"))
       ),
       radioGroupButtons(
         inputId = "objtype", justified = TRUE, label = h3("Objective type:"),
@@ -251,7 +251,7 @@ server <- function(input, output, session) {
 
   observeEvent(input$itemse_file, {
     if (!is.null(input$itemse_file) & v$itempool_exists) {
-      v$itempool <- try(loadItemPool(input$itempool_file$datapath, se.file.csv = input$itemse_file$datapath))
+      v$itempool <- try(loadItemPool(input$itempool_file$datapath, se_file = input$itemse_file$datapath))
       if (class(v$itempool) == "item_pool") {
         v$itemse_exists <- TRUE
         v <- updateLogs(v, "Item standard error file: OK")
@@ -268,7 +268,7 @@ server <- function(input, output, session) {
   observeEvent(input$itemattrib_file, {
     if (!is.null(input$itemattrib_file) & v$itempool_exists) {
       v$itemattrib <- try(loadItemAttrib(input$itemattrib_file$datapath, v$itempool))
-      if (class(v$itemattrib) == "data.frame") {
+      if (class(v$itemattrib) == "item_attrib") {
         v$itemattrib_exists <- TRUE
         v <- updateLogs(v, "Step 2. Item attributes: OK")
         assignObject(v$itemattrib,
@@ -284,7 +284,7 @@ server <- function(input, output, session) {
   observeEvent(input$stimattrib_file, {
     if (!is.null(input$stimattrib_file) & v$itempool_exists & v$itemattrib_exists) {
       v$stimattrib <- try(loadStAttrib(input$stimattrib_file$datapath, v$itemattrib))
-      if (class(v$stimattrib) == "data.frame") {
+      if (class(v$stimattrib) == "st_attrib") {
         v$stimattrib_exists <- TRUE
         v <- updateLogs(v, "Stimulus attributes: OK")
         assignObject(v$stimattrib,
@@ -304,16 +304,16 @@ server <- function(input, output, session) {
       } else {
         v$const <- try(loadConstraints(input$const_file$datapath, v$itempool, v$itemattrib))
       }
-      if (class(v$const) == "list") {
+      if (class(v$const) == "constraints") {
         v$const_exists <- TRUE
         v <- updateLogs(v, "Step 3. Constraints: OK. Press the button to run solver.")
-        v$constraints <- v$const$constraints
+        v$constraints <- v$const@constraints
         assignObject(v$const,
           "shiny_const",
           "Constraints (full object)")
         assignObject(v$constraints,
           "shiny_constraints",
-          "Constraints (data.frame)")
+          "Constraints (raw data.frame)")
       } else {
         v$const_exists <- FALSE
         v <- updateLogs(v, "Error: Constraints are not in the expected format. See ?dataset_science for details.")
@@ -351,6 +351,7 @@ server <- function(input, output, session) {
     v$const      <- NULL
     v$content    <- NULL
     v$itempool_exists   <- FALSE
+    v$itemse_exists     <- FALSE
     v$itemattrib_exists <- FALSE
     v$stimattrib_exists <- FALSE
     v$const_exists      <- FALSE
@@ -416,7 +417,7 @@ server <- function(input, output, session) {
             sprintf("shiny_audit_plot_%i", v$simulee_id),
             sprintf("Audit trail plot for simulee %i", v$simulee_id)
           )
-          v$shadow_chart <- plotShadow(v$fit, v$const, v$simulee_id)
+          v$shadow_chart <- plotShadow(v$fit, v$simulee_id, simple = TRUE)
           assignObject(v$shadow_chart,
             sprintf("shiny_shadow_chart_%i", v$simulee_id),
             sprintf("Shadow test chart for simulee %i", v$simulee_id)
@@ -428,7 +429,7 @@ server <- function(input, output, session) {
 
   observeEvent(input$maxinfo_button, {
     if (v$itempool_exists & v$const_exists) {
-      v$info_range_plot <- plotMaxInfo(v$itempool, v$const)
+      v$info_range_plot <- plotInfo(v$const)
       v$plot_output <- v$info_range_plot
       assignObject(v$info_range_plot,
         "shiny_info_range_plot",
@@ -451,7 +452,7 @@ server <- function(input, output, session) {
       if (input$problemtype == 1 & v$const_exists) {
         v$problemtype <- 1
 
-        conf <- new("config_ATA")
+        conf <- new("config_Static")
         conf@MIP$solver <- input$solvertype
 
         if (parseText(input$thetas)) {
@@ -477,8 +478,8 @@ server <- function(input, output, session) {
         conf@item_selection$target_weight <- rep(1, length(conf@item_selection$target_location))
 
         assignObject(conf,
-          "shiny_config_ATA",
-          "config_ATA object"
+          "shiny_config_Static",
+          "config_Static object"
         )
 
         progress <- Progress$new(session)
@@ -488,23 +489,23 @@ server <- function(input, output, session) {
           detail = 'This may take a while.'
         )
 
-        v$fit <- ATA(conf, v$const, T)
+        v$fit <- Static(conf, v$const)
         assignObject(v$fit,
-          "shiny_ATA",
-          "ATA solution object"
+          "shiny_Static",
+          "Static() solution object"
         )
 
         if (is.null(v$fit$MIP)) {
           v <- updateLogs(v, "Solver did not find a solution. Try relaxing the target values.")
         } else {
-          v$plot_output <- v$fit$plot
+          v$plot_output <- plotInfo(v$fit)
 
-          v <- updateLogs(v, sprintf("%-10s: solved in %3.3fs", conf@MIP$solver, v$fit$solve_time[3]))
+          v <- updateLogs(v, sprintf("%-10s: solved in %3.3fs", conf@MIP$solver, v$fit$solve_time))
           v$selected_index <- which(v$fit$MIP$solution == 1)
           v$selected_index <- v$selected_index[v$selected_index <= v$itempool@ni]
 
-          v$selected_item_names <- v$itemattrib[v$selected_index, ][["ID"]]
-          v$selected_item_attribs <- v$itemattrib[v$selected_index, ]
+          v$selected_item_names <- v$itemattrib@data[v$selected_index, ][["ID"]]
+          v$selected_item_attribs <- v$itemattrib@data[v$selected_index, ]
           assignObject(v$selected_item_attribs,
             "shiny_selected_item_attribs",
             "Selected item attributes"
@@ -612,6 +613,11 @@ server <- function(input, output, session) {
           v <- updateLogs(v, "FB interim method requires the standard errors to be supplied.")
           break
         }
+        if (conf@final_theta$method == "FB" & v$itemse_exists == F) {
+          v <- updateLogs(v, "FB final method requires the standard errors to be supplied.")
+          break
+        }
+
         if (parseText(input$interim_prior_par)) {
           eval(parse(text = sprintf("conf@interim_theta$prior_par = c(%s)", input$interim_prior_par)))
           if (length(conf@interim_theta$prior_par) != 2) {
@@ -640,12 +646,18 @@ server <- function(input, output, session) {
             break
           }
         }
+        if (conf@item_selection$method == "EB") {
+          if (conf@interim_theta$method != "EB") {
+            v <- updateLogs(v, "EB item selection method requires EB interim method.")
+            break
+          }
+        }
 
         # parse refresh policy settings
 
         conf@refresh_policy$method <- input$refresh_policy
 
-        if (conf@refresh_policy$method == "SET" && v$const$set_based == FALSE) {
+        if (conf@refresh_policy$method == "SET" && v$const@set_based == FALSE) {
           v <- updateLogs(v, "Set-based refresh policy is only applicable for set-based item pools.")
           break
         }
@@ -691,7 +703,7 @@ server <- function(input, output, session) {
         )
 
         v$time <- Sys.time()
-        v$fit <- Shadow(v$itempool, conf, true_theta, constraints = v$const, prior = NULL, prior_par = c(0, 1), data = resp_data, session = session)
+        v$fit <- Shadow(conf, v$const, true_theta, resp_data, prior = NULL, prior_par = c(0, 1), session = session)
         message("\n")
         assignObject(v$fit,
           "shiny_Shadow",
@@ -716,8 +728,8 @@ server <- function(input, output, session) {
   })
 
   output$table_itempool    <- renderDT(parseObject(v$ipar), options = list(pageLength = 100))
-  output$table_itemattrib  <- renderDT(parseObject(v$itemattrib), options = list(pageLength = 100))
-  output$table_stimattrib  <- renderDT(parseObject(v$stimattrib), options = list(pageLength = 100))
+  output$table_itemattrib  <- renderDT(parseObject(if(!is.null(v$itemattrib)) v$itemattrib@data else NULL), options = list(pageLength = 100))
+  output$table_stimattrib  <- renderDT(parseObject(if(!is.null(v$stimattrib)) v$stimattrib@data else NULL), options = list(pageLength = 100))
   output$table_constraints <- renderDT(parseObject(v$constraints), options = list(pageLength = 100))
   output$results      <- renderDT(parseObject(v$results), options = list(pageLength = 100))
   output$text_output  <- renderText(parseObject(v$logs_text))
@@ -732,20 +744,20 @@ server <- function(input, output, session) {
 
       fs <- c()
 
-      if (!is.null(v$ipar)) {
+      if (!is.null(v$itempool)) {
         path <- getTempFilePath("raw_data_item_params.csv")
         fs <- c(fs, path)
-        write.csv(v$ipar, path, row.names = F)
+        write.csv(v$itempool@raw, path, row.names = F)
       }
       if (!is.null(v$itemattrib)) {
         path <- getTempFilePath("raw_data_item_attribs.csv")
         fs <- c(fs, path)
-        write.csv(v$itemattrib, path, row.names = F)
+        write.csv(v$itemattrib@data, path, row.names = F)
       }
       if (!is.null(v$stimattrib)) {
         path <- getTempFilePath("raw_data_stim_attribs.csv")
         fs <- c(fs, path)
-        write.csv(v$stimattrib, path, row.names = F)
+        write.csv(v$stimattrib@data, path, row.names = F)
       }
       if (!is.null(v$constraints)) {
         path <- getTempFilePath("raw_data_constraints.csv")

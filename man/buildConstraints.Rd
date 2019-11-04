@@ -17,7 +17,7 @@ buildConstraints(pool, file_constraints, file_item_attrib,
 \item{file_st_attrib}{(Optional) Character. The name of the file containing set attributes.}
 }
 \value{
-A list containing the parsed constraints, to be used in \code{\link{ATA}} and \code{\link{Shadow}}.
+A list containing the parsed constraints, to be used in \code{\link{Static}} and \code{\link{Shadow}}.
 }
 \description{
 Read constraints from specified files.
