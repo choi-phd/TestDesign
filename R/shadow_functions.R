@@ -969,7 +969,7 @@ setMethod(
       acceleration_factor <- config@exposure_control$acceleration_factor
 
       n_segment <- config@exposure_control$n_segment
-      if (!length(max_exposure_rate) %in% c(1, n_segment)) {
+      if (length(max_exposure_rate) %not in% c(1, n_segment)) {
         stop("length(max_exposure_rate) must be 1 or n_segment")
       }
 
@@ -1159,7 +1159,7 @@ setMethod(
 
       } else {
 
-        remaining <- which(!optimal$shadow_test[["INDEX"]] %in% output@administered_item_index[1:(position - 1)])
+        remaining <- which(optimal$shadow_test[["INDEX"]] %not in% output@administered_item_index[1:(position - 1)])
 
         if (!set_based) {
 

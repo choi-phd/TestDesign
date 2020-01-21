@@ -180,7 +180,7 @@ setClass("config_Shadow",
   ),
   validity = function(object) {
     errors <- NULL
-    if (!toupper(object@MIP$solver) %in% c("LPSYMPHONY", "RSYMPHONY", "LPSOLVE", "GUROBI", "RGLPK")) {
+    if (toupper(object@MIP$solver) %not in% c("LPSYMPHONY", "RSYMPHONY", "LPSOLVE", "GUROBI", "RGLPK")) {
       errors <- c(errors, "@MIP$solver must be one of lpsymphony, Rsymphony, lpSolve, gurobi, or Rglpk.")
     }
     if (toupper(object@MIP$solver) == "GUROBI") {
@@ -193,33 +193,33 @@ setClass("config_Shadow",
         errors <- c(errors, "RSYMPHONY was specified but is not installed.")
       }
     }
-    if (!object@item_selection$method %in% c("MFI", "MPWI", "EB", "FB")) {
+    if (toupper(object@item_selection$method) %not in% c("MFI", "MPWI", "EB", "FB")) {
       errors <- c(errors, "@item_selection$method must be one of MFI, MPWI, EB, or FB")
     }
 
-    if (!object@content_balancing$method %in% c("NONE", "STA")) {
+    if (object@content_balancing$method %not in% c("NONE", "STA")) {
       errors <- c(errors, "@content_balancing$method must be one of NONE or STA")
     }
-    if (!object@refresh_policy$method %in%
+    if (object@refresh_policy$method %not in%
       c("ALWAYS", "POSITION", "INTERVAL", "THRESHOLD", "INTERVAL-THRESHOLD", "STIMULUS", "SET", "PASSAGE")) {
       errors <- c(errors, "@refresh_policy$method is not valid.")
     }
-    if (!object@exposure_control$method %in% c("NONE", "ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
+    if (object@exposure_control$method %not in% c("NONE", "ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
       errors <- c(errors, "@exposure_control$method is not valid.")
     }
     if (object@exposure_control$n_segment != length(object@exposure_control$segment_cut) - 1) {
       errors <- c(errors, "@exposure_control$n_segment must match @exposure_control$segment_cut.")
     }
-    if (!object@stopping_criterion$method %in% c("FIXED")) {
+    if (object@stopping_criterion$method %not in% c("FIXED")) {
       errors <- c(errors, "@stopping_criterion$method must be FIXED.")
     }
-    if (!object@interim_theta$method %in% c("EAP", "MLE", "EB", "FB")) {
+    if (object@interim_theta$method %not in% c("EAP", "MLE", "EB", "FB")) {
       errors <- c(errors, "@interim_theta$method must be one of EAP, MLE, EB, or FB.")
     }
-    if (!object@final_theta$method %in% c("EAP", "MLE", "EB", "FB")) {
+    if (object@final_theta$method %not in% c("EAP", "MLE", "EB", "FB")) {
       errors <- c(errors, "@final_theta$method must be one of EAP, MLE, EB, or FB.")
     }
-    if (object@exposure_control$method %in% c("BIGM-BAYESIAN") && !object@interim_theta$method %in% c("EB", "FB")) {
+    if (object@exposure_control$method %in% c("BIGM-BAYESIAN") && object@interim_theta$method %not in% c("EB", "FB")) {
       errors <- c(errors, "'BIGM-BAYESIAN' exposure_control$method requires interim_theta$method of EB or FB.")
     }
     if (length(errors) == 0) {

@@ -60,3 +60,4 @@ setClassUnion("numeric_or_null"  , c("numeric"   , "NULL"))
 setClassUnion("matrix_or_null"   , c("matrix"    , "NULL"))
 setClassUnion("list_or_null"     , c("list"      , "NULL"))
 
+`%not in%` <- Negate(`%in%`)
