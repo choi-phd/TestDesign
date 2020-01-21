@@ -6,8 +6,8 @@ NULL
 #'
 #' Read item parameters from a .csv file or a data.frame and create an \linkS4class{item_pool} class.
 #'
-#' @param file File path of a .csv file containing item parameters. The file content should not have column names.
-#' @param ipar A data.frame created from a .csv file.
+#' @param file File path of a .csv file containing item parameters. The file content should at least include columns 'ID' and 'MODEL'.
+#' @param ipar A data.frame containing the item parameters. If supplied, this argument is used over 'file'.
 #' @param se_file File path of a .csv file containing standard errors.
 #' @return An \linkS4class{item_pool} object.
 #'
@@ -170,6 +170,9 @@ setClass("item_attrib",
     if (length(unique(object@data[["ID"]])) != nrow(object@data)) {
       stop("The 'ID' column in must not have any duplicate values.")
     }
+    if (!identical(object@data[["INDEX"]], 1:length(object@data[["INDEX"]]))) {
+      stop(sprintf("The 'INDEX' column must be equal to 1:%s.", length(object@data[["INDEX"]])))
+    }
     return(TRUE)
   }
 )
@@ -218,9 +221,10 @@ loadItemAttrib <- function(file, pool) {
     item_attrib <- merge(data.frame(ID = pool@id), item_attrib, by = "ID")[, names(item_attrib)] # re-ordering cols in attrib
   }
 
-  if (!("INDEX" %in% names(item_attrib))) {
-    item_attrib <- data.frame(cbind(INDEX = 1:nrow(item_attrib), item_attrib))
+  if ("INDEX" %in% names(item_attrib)) {
+    warning("The 'INDEX' column was ignored and replaced with valid values.")
   }
+  item_attrib <- data.frame(cbind(INDEX = 1:nrow(item_attrib), item_attrib))
 
   if (nrow(item_attrib) != pool@ni) {
     stop("The number of rows of 'file' content must match pool@ni.")
@@ -266,6 +270,9 @@ setClass("st_attrib",
     }
     if (length(unique(object@data[["STID"]])) != nrow(object@data)) {
       stop("The 'STID' column in must not have any duplicate values.")
+    }
+    if (!identical(object@data[["STINDEX"]], 1:length(object@data[["STINDEX"]]))) {
+      stop(sprintf("The 'STINDEX' column must be equal to 1:%s.", length(object@data[["STINDEX"]])))
     }
     return(TRUE)
   }
@@ -316,9 +323,11 @@ loadStAttrib <- function(file, item_attrib) {
   if (is.numeric(st_attrib[["STID"]])) {
     st_attrib[["STID"]] <- as.character(st_attrib[["STID"]])
   }
-  if (!("STINDEX" %in% names(st_attrib))) {
-    st_attrib <- data.frame(cbind(STINDEX = 1:nrow(st_attrib), st_attrib))
+  if ("STINDEX" %in% names(st_attrib)) {
+    warning("The 'STINDEX' column was ignored and replaced with valid values.")
   }
+  st_attrib <- data.frame(cbind(STINDEX = 1:nrow(st_attrib), st_attrib))
+
   if (!("STID" %in% names(item_attrib@data))) {
     stop("'item_attrib' must have 'STID' column.")
   }
@@ -452,7 +461,7 @@ setClass("constraints",
 #' @param item_attrib An \code{item_attrib} object containing item attributes. Use \code{\link{loadItemAttrib}} for this.
 #' @param st_attrib (Optional) An \code{st_attrib} object containing stimulus attributes. Use \code{\link{loadStAttrib}} for this.
 #'
-#' @return A list containing the parsed constraints, to be used in \code{\link{Static}} and \code{\link{Shadow}}.
+#' @return A \code{constraints} object containing the parsed constraints, to be used in \code{\link{Static}} and \code{\link{Shadow}}.
 #'
 #' @examples
 #' ## Write to tempdir() and clean afterwards
@@ -512,6 +521,14 @@ loadConstraints <- function(file, pool, item_attrib, st_attrib = NULL) {
   constraints[["TYPE"]]  <- toupper(constraints[["TYPE"]])
   constraints[["WHAT"]]  <- toupper(constraints[["WHAT"]])
   constraints[["COUNT"]] <- NA
+
+  if ("CONSTRAINT" %in% names(constraints)) {
+    if (any(constraints[["CONSTRAINT"]] != as.character(1:dim(constraints)[1]))) {
+      constraints[["CONSTRAINT"]] <- as.character(1:dim(constraints)[1])
+      warning("The 'CONSTRAINT' column was ignored and replaced with valid values.")
+    }
+  }
+
 
   # Validation: Pool
   ni <- pool@ni

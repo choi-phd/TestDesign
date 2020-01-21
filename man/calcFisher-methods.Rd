@@ -7,21 +7,6 @@
 \alias{calcFisher,item_2PL,numeric-method}
 \alias{calcFisher,item_3PL,numeric-method}
 \alias{calcFisher,item_PC,numeric-method}
-\alias{item_4}
-\alias{<-}
-\alias{new("item_PC",}
-\alias{threshold}
-\alias{=}
-\alias{c(-1,}
-\alias{0,}
-\alias{1),}
-\alias{ncat}
-\alias{4)}
-\alias{info_item_4}
-\alias{calcFisher(item_4,}
-\alias{seq(-3,}
-\alias{3,}
-\alias{1))}
 \alias{calcFisher,item_GPC,numeric-method}
 \alias{calcFisher,item_GR,numeric-method}
 \alias{calcFisher,item_pool,numeric-method}
@@ -64,6 +49,8 @@ item_2      <- new("item_2PL", slope = 1.0, difficulty = 0.5)
 info_item_2 <- calcFisher(item_2, seq(-3, 3, 1))
 item_3      <- new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 info_item_3 <- calcFisher(item_3, seq(-3, 3, 1))
+item_4      <- new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
+info_item_4 <- calcFisher(item_4, seq(-3, 3, 1))
 item_5      <- new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 info_item_5 <- calcFisher(item_5, seq(-3, 3, 1))
 item_6      <- new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)

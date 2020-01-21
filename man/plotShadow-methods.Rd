@@ -6,11 +6,23 @@
 \alias{plotShadow,list-method}
 \title{Draw a shadow test chart}
 \usage{
-plotShadow(object, examinee_id = 1, sort_by_difficulty = FALSE,
-  file_pdf = NULL, simple = FALSE, ...)
+plotShadow(
+  object,
+  examinee_id = 1,
+  sort_by_difficulty = FALSE,
+  file_pdf = NULL,
+  simple = FALSE,
+  ...
+)
 
-\S4method{plotShadow}{list}(object, examinee_id = 1,
-  sort_by_difficulty = FALSE, file_pdf = NULL, simple = FALSE, ...)
+\S4method{plotShadow}{list}(
+  object,
+  examinee_id = 1,
+  sort_by_difficulty = FALSE,
+  file_pdf = NULL,
+  simple = FALSE,
+  ...
+)
 }
 \arguments{
 \item{object}{An output from \code{\link{Shadow}} function.}
