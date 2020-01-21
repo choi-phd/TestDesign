@@ -7,9 +7,9 @@
 loadItemPool(file, ipar = NULL, se_file = NULL)
 }
 \arguments{
-\item{file}{File path of a .csv file containing item parameters. The file content should not have column names.}
+\item{file}{File path of a .csv file containing item parameters. The file content should at least include columns 'ID' and 'MODEL'.}
 
-\item{ipar}{A data.frame created from a .csv file.}
+\item{ipar}{A data.frame containing the item parameters. If supplied, this argument is used over 'file'.}
 
 \item{se_file}{File path of a .csv file containing standard errors.}
 }
