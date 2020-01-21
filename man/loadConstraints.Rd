@@ -16,7 +16,7 @@ loadConstraints(file, pool, item_attrib, st_attrib = NULL)
 \item{st_attrib}{(Optional) An \code{st_attrib} object containing stimulus attributes. Use \code{\link{loadStAttrib}} for this.}
 }
 \value{
-A list containing the parsed constraints, to be used in \code{\link{Static}} and \code{\link{Shadow}}.
+A \code{constraints} object containing the parsed constraints, to be used in \code{\link{Static}} and \code{\link{Shadow}}.
 }
 \description{
 Read constraints from specified file.

@@ -20,7 +20,7 @@
 # Always give full names for slot references. (e.g. "@foo$bar")
 
 #' @import Matrix
-#' @import lpSolve
+#' @import lpsymphony
 #' @import Rcpp methods
 #' @import foreach
 #' @import crayon
@@ -29,16 +29,13 @@
 #' @importFrom logitnorm logit rlogitnorm
 #' @importFrom grDevices col2rgb dev.control dev.new dev.off pdf recordPlot
 #' @importFrom stats runif dnorm rlnorm rnorm sd na.omit
-#' @importFrom utils capture.output read.csv setTxtProgressBar txtProgressBar write.table packageVersion
+#' @importFrom utils capture.output read.csv setTxtProgressBar txtProgressBar write.table packageVersion packageDescription
 #' @importFrom graphics plot abline lines axis grid layout legend mtext par plot.new points rect text strheight box
 #' @useDynLib TestDesign
 NULL
 
 #' @noRd
 .onAttach <- function(libname, pkgname) {
-  packageStartupMessage(white(bold("  Solver packages:")))
-  packageStartupMessage(" ")
-
   solver_names <- c("lpsymphony", "Rsymphony", "gurobi", "lpSolve", "Rglpk")
 
   for (s in solver_names) {
@@ -52,11 +49,20 @@ NULL
     }
     packageStartupMessage(status, " ", s, paste0(rep(" ", 11 - nchar(s)), collapse = ""), white(v))
   }
+
+  s <- "TestDesign"
+  v <- packageVersion(s)
+
+  packageStartupMessage(cyan(">"), " ", cyan(s), paste0(rep(" ", 11 - nchar(s)), collapse = ""), cyan(packageVersion('TestDesign')))
+
+  packageStartupMessage(cyan("  Please report any issues to:"))
+  packageStartupMessage(cyan(paste0("  ", packageDescription('TestDesign')$BugReports)))
 }
 
 setClassUnion("dataframe_or_null", c("data.frame", "NULL"))
 setClassUnion("character_or_null", c("character",  "NULL"))
 setClassUnion("numeric_or_null",   c("numeric",    "NULL"))
 setClassUnion("matrix_or_null",    c("matrix",     "NULL"))
-setClassUnion("list_or_null",      c("list",     "NULL"))
+setClassUnion("list_or_null",      c("list",       "NULL"))
 
+`%not in%` <- Negate(`%in%`)

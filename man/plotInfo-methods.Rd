@@ -8,24 +8,57 @@
 \alias{plotInfo,constraints-method}
 \title{Draw item information plots}
 \usage{
-plotInfo(object, theta = seq(-3, 3, 0.1), info_type = "FISHER",
-  plot_sum = TRUE, select = NULL, color = "blue", file_pdf = NULL,
-  width = 7, height = 6, mfrow = c(2, 4))
+plotInfo(
+  object,
+  theta = seq(-3, 3, 0.1),
+  info_type = "FISHER",
+  plot_sum = TRUE,
+  select = NULL,
+  color = "blue",
+  file_pdf = NULL,
+  width = 7,
+  height = 6,
+  mfrow = c(2, 4)
+)
 
-\S4method{plotInfo}{list}(object, theta = seq(-3, 3, 0.1),
-  info_type = "FISHER", plot_sum = TRUE, select = NULL,
-  color = "blue", file_pdf = NULL, width = 7, height = 6,
-  mfrow = c(2, 4))
+\S4method{plotInfo}{list}(
+  object,
+  theta = seq(-3, 3, 0.1),
+  info_type = "FISHER",
+  plot_sum = TRUE,
+  select = NULL,
+  color = "blue",
+  file_pdf = NULL,
+  width = 7,
+  height = 6,
+  mfrow = c(2, 4)
+)
 
-\S4method{plotInfo}{item_pool}(object, theta = seq(-3, 3, 0.1),
-  info_type = "FISHER", plot_sum = TRUE, select = NULL,
-  color = "blue", file_pdf = NULL, width = 7, height = 6,
-  mfrow = c(1, 1))
+\S4method{plotInfo}{item_pool}(
+  object,
+  theta = seq(-3, 3, 0.1),
+  info_type = "FISHER",
+  plot_sum = TRUE,
+  select = NULL,
+  color = "blue",
+  file_pdf = NULL,
+  width = 7,
+  height = 6,
+  mfrow = c(1, 1)
+)
 
-\S4method{plotInfo}{constraints}(object, theta = seq(-3, 3, 0.1),
-  info_type = "FISHER", plot_sum = TRUE, select = NULL,
-  color = "black", file_pdf = NULL, width = 7, height = 6,
-  mfrow = c(1, 1))
+\S4method{plotInfo}{constraints}(
+  object,
+  theta = seq(-3, 3, 0.1),
+  info_type = "FISHER",
+  plot_sum = TRUE,
+  select = NULL,
+  color = "black",
+  file_pdf = NULL,
+  width = 7,
+  height = 6,
+  mfrow = c(1, 1)
+)
 }
 \arguments{
 \item{object}{An \code{\linkS4class{item_pool}} object to draw pool-level or item-level information, or a list from \code{\link{Static}} to draw test-level information.}

@@ -1,0 +1,143 @@
+:focus {
+    outline: -webkit-focus-ring-color auto 0px;
+}
+
+h2 {
+    font-size: 170%;
+}
+
+h3 {
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #555555;
+}
+
+.form-control {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #555555;
+}
+
+i {
+    display: inline-block;
+    margin-right: 0.2em;
+}
+
+label, .form-group, .progress {
+    margin-bottom: 0px;
+}
+
+select {
+    min-width: 100%;
+    max-width: 100%;
+}
+
+.span4 {
+    min-width: 100%;
+    max-width: 100%;
+}
+
+.well {
+    min-width: 100%;
+    max-width: 100%;
+}
+
+#text_output {
+    background-color: rgba(64,64,64,1);
+    color: cyan;
+    overflow-y:auto;
+    height: 64px;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.shiny-notification {
+    font-size: 20px;
+    background-color: #404040;
+    color: #fff;
+}
+
+#shiny-notification-panel {
+    width: 500px;
+}
+
+.progress {
+    margin-top: -10px;
+    margin-bottom: 15px;
+}
+
+.progress.shiny-file-input-progress {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.progress-number {
+    font-size: 0px;
+}
+
+.progress-bar {
+    line-height: 1.5em;
+    -webkit-box-shadow: inset 0 0px 0 rgba(0,0,0,0.15);
+    box-shadow: inset 0 0px 0 rgba(0,0,0,0.15);
+}
+
+.btn {
+    width: 100%;
+    border-width: 1px;
+    padding: 7px 12px;
+}
+
+.btn:hover {
+    border-width: 1px;
+    margin-top: 0px;
+}
+
+.well {
+    -webkit-box-shadow: inset 0 0px 0 rgba(0,0,0,0.05);
+    box-shadow: inset 0 0px 0 rgba(0,0,0,0.05);
+}
+
+.form-control {
+    -webkit-box-shadow: inset 0 0px 0 rgba(0,0,0,0.075);
+    box-shadow: inset 0 0px 0 rgba(0,0,0,0.075);
+}
+
+.form-control[readonly] {
+    background-color: transparent;
+    height: auto;
+}
+
+.form-control[disabled] {
+    background-color: #ffffff;
+    opacity: 0.2;
+}
+
+.progress {
+    -webkit-box-shadow: inset 0 2px 0 rgba(0,0,0,0.1);
+    box-shadow: inset 0 0px 0 rgba(0,0,0,0.1);
+}
+
+button {
+    overflow: hidden;
+}
+
+.btn.disabled {
+    opacity: 0.2;
+}
+
+html {
+    overflow:scroll;
+    overflow-x:hidden;
+}
+
+::-webkit-scrollbar {
+    width:0;
+    background:transparent;
+}
+
+label {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 12px;
+}
