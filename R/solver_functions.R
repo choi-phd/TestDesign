@@ -285,9 +285,9 @@ runMIP <- function(solver, obj, mat, dir, rhs, maximize, types,
 isOptimal <- function(status, solver) {
   is_optimal <- FALSE
   if (toupper(solver) == "LPSYMPHONY") {
-    is_optimal <- names(status) %in% c("TM_OPTIMAL_SOLUTION_FOUND", "PREP_OPTIMAL_SOLUTION_FOUND")
+    is_optimal <- names(status) %in% c("TM_OPTIMAL_SOLUTION_FOUND", "PREP_OPTIMAL_SOLUTION_FOUND", "TM_TARGET_GAP_ACHIEVED")
   } else if (toupper(solver) == "RSYMPHONY") {
-    is_optimal <- names(status) %in% c("TM_OPTIMAL_SOLUTION_FOUND", "PREP_OPTIMAL_SOLUTION_FOUND")
+    is_optimal <- names(status) %in% c("TM_OPTIMAL_SOLUTION_FOUND", "PREP_OPTIMAL_SOLUTION_FOUND", "TM_TARGET_GAP_ACHIEVED")
   } else if (toupper(solver) == "GUROBI") {
     is_optimal <- status %in% c("OPTIMAL")
   } else if (toupper(solver) == "LPSOLVE") {
