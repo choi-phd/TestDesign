@@ -1281,11 +1281,11 @@ setMethod(
       }
 
       output@prior <- posterior[j, ]
-      output@administered_item_index <- numeric(max_ni)
-      output@administered_item_resp  <- numeric(max_ni)
-      output@theta_segment_index     <- numeric(max_ni)
-      output@interim_theta_est       <- numeric(max_ni)
-      output@interim_se_est          <- numeric(max_ni)
+      output@administered_item_index <- rep(NA_real_, max_ni)
+      output@administered_item_resp  <- rep(NA_real_, max_ni)
+      output@theta_segment_index     <- rep(NA_real_, max_ni)
+      output@interim_theta_est       <- rep(NA_real_, max_ni)
+      output@interim_se_est          <- rep(NA_real_, max_ni)
       output@administered_stimulus_index <- NaN
       output@shadow_test <- vector(mode = "list", length = max_ni)
 
@@ -1310,7 +1310,7 @@ setMethod(
       # Initialize stimulus tracking
 
       if (set_based) {
-        output@administered_stimulus_index <- numeric(max_ni)
+        output@administered_stimulus_index <- rep(NA_real_, max_ni)
         end_set <- TRUE
         finished_stimulus_index      <- NULL
         finished_stimulus_item_count <- NULL
@@ -1418,6 +1418,8 @@ setMethod(
 
             output@shadow_test_refreshed[position] <- TRUE
 
+            administered_stimulus_index <- na.omit(unique(output@administered_stimulus_index))
+
             if (position > 1) {
 
               # Include administered items in selection
@@ -1435,10 +1437,7 @@ setMethod(
 
               if (set_based) {
 
-                if (sum(!is.na(output@administered_stimulus_index[1:(position - 1)])) > 0) {
-
-                  administered_stimulus_index <- na.omit(unique(output@administered_stimulus_index[1:(position - 1)]))
-                  administered_stimulus_index <- administered_stimulus_index[administered_stimulus_index > 0]
+                if (length(administered_stimulus_index) > 0) {
 
                   smat <- matrix(0, nrow = length(administered_stimulus_index), ncol = nv)
 
@@ -1462,7 +1461,7 @@ setMethod(
                       srhs <- numeric(n_administered_stimulus)
                       for (s in 1:n_administered_stimulus) {
                         smat[s, constraints@item_index_by_stimulus[[administered_stimulus_index[s]]]] <- 1
-                        srhs[s] <- sum(output@administered_stimulus_index[1:(position - 1)] == administered_stimulus_index[s])
+                        srhs[s] <- sum(output@administered_stimulus_index[1:(position - 1)] == administered_stimulus_index[s], na.rm = TRUE)
                       }
                       imat <- rbind(imat, smat)
                       idir <- c(idir, sdir)
@@ -1478,9 +1477,7 @@ setMethod(
                       sdir <- rep("==", n_finished_stimulus)
                       srhs <- finished_stimulus_item_count
                       for (s in 1:n_finished_stimulus) {
-                        if (finished_stimulus_index[s] > 0) {
-                          smat[s, constraints@item_index_by_stimulus[[finished_stimulus_index[s]]]] <- 1
-                        }
+                        smat[s, constraints@item_index_by_stimulus[[finished_stimulus_index[s]]]] <- 1
                       }
                       imat <- rbind(imat, smat)
                       idir <- c(idir, sdir)
@@ -1964,12 +1961,12 @@ setMethod(
 
           if (set_based) {
             alpha_sjk[segment_final, ] <- fading_factor * alpha_sjk[segment_final, ]
-            alpha_sjk[segment_final, output@administered_stimulus_index] <- alpha_sjk[segment_final, output@administered_stimulus_index] + 1
+            alpha_sjk[segment_final, na.omit(output@administered_stimulus_index)] <- alpha_sjk[segment_final, na.omit(output@administered_stimulus_index)] + 1
             rho_sjk[segment_final, ] <- fading_factor * rho_sjk[segment_final ]
             rho_sjk[segment_final, eligible_set_in_final_segment] <- rho_sjk[segment_final, eligible_set_in_final_segment] + 1
 
             if (length(segment_other) > 0) {
-              if (any(!eligible_set_in_final_segment[administered_stimulus_index])) {
+              if (any(!eligible_set_in_final_segment[administered_stimulus_index], na.rm = T)) {
                 for (k in segment_other) {
                   for (s in unique(output@administered_stimulus_index[output@theta_segment_index == k & output@administered_stimulus_index %in% administered_stimulus_index])) {
                     if (!eligible_set_in_final_segment[s]) {
@@ -1981,7 +1978,7 @@ setMethod(
             }
 
             if (fading_factor != 1) {
-              no_fading_alpha_sjk[segment_final, output@administered_stimulus_index] <- no_fading_alpha_sjk[segment_final, output@administered_stimulus_index] + 1
+              no_fading_alpha_sjk[segment_final, na.omit(output@administered_stimulus_index)] <- no_fading_alpha_sjk[segment_final, na.omit(output@administered_stimulus_index)] + 1
               no_fading_rho_sjk[segment_final, eligible_set_in_final_segment] <- no_fading_rho_sjk[segment_final, eligible_set_in_final_segment] + 1
             }
 
