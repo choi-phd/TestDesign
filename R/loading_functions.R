@@ -6,8 +6,8 @@ NULL
 #'
 #' Read item parameters from a .csv file or a data.frame and create an \linkS4class{item_pool} class.
 #'
-#' @param file File path of a .csv file containing item parameters. The file content should not have column names.
-#' @param ipar A data.frame created from a .csv file.
+#' @param file File path of a .csv file containing item parameters. The file content should at least include columns 'ID' and 'MODEL'.
+#' @param ipar A data.frame containing the item parameters. If supplied, this argument is used over 'file'.
 #' @param se_file File path of a .csv file containing standard errors.
 #' @return An \linkS4class{item_pool} object.
 #'
@@ -461,7 +461,7 @@ setClass("constraints",
 #' @param item_attrib An \code{item_attrib} object containing item attributes. Use \code{\link{loadItemAttrib}} for this.
 #' @param st_attrib (Optional) An \code{st_attrib} object containing stimulus attributes. Use \code{\link{loadStAttrib}} for this.
 #'
-#' @return A list containing the parsed constraints, to be used in \code{\link{Static}} and \code{\link{Shadow}}.
+#' @return A \code{constraints} object containing the parsed constraints, to be used in \code{\link{Static}} and \code{\link{Shadow}}.
 #'
 #' @examples
 #' ## Write to tempdir() and clean afterwards
