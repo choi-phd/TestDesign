@@ -55,5 +55,6 @@ Collate:
     'static_functions.R'
     'shadow_functions.R'
     'datasets.R'
-    'runshiny.R'
     'solver_functions.R'
+    'helper_functions.R'
+    'runshiny.R'
