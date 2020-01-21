@@ -1695,8 +1695,6 @@ setMethod(
           final_prior <- dnorm(config@theta_grid, mean = config@final_theta$prior_par[1], sd = config@final_theta$prior_par[2])
         } else if (toupper(config@final_theta$prior_dist) == "UNIFORM") {
           final_prior <- rep(1, nq)
-        } else {
-          stop("invalid configuration option for final_theta$prior_dist")
         }
 
         output@posterior       <- output@likelihood * final_prior
@@ -1744,7 +1742,7 @@ setMethod(
               output@administered_item_resp[1:position], pool@NCAT[output@administered_item_index[1:position]],
               model[output@administered_item_index[1:position]], 1, c(current_theta, current_se)
             )
-          } else {
+          } else if (toupper(config@final_theta$method == "FB")) {
             output@posterior_sample <- theta_FB(
               n_sample, current_theta, current_se, ipar_list[output@administered_item_index[1:position]],
               pool@ipar[output@administered_item_index[1:position], ],
