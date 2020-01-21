@@ -1,3 +1,21 @@
+# TestDesign 1.0.1
+
+## Default solver
+
+* `lpsymphony` is now the default solver. `lpsymphony` allows faster solving of set-based assembly tasks, and is easily installable on various platforms.
+
+## New helper functions
+
+* `getSolution()` prints the indexes of the selected items from the results of `Static()` or `Shadow()`.
+* `showConstraints()` returns the constraints table from a `constraints` object. This is a shortcut to access `@constraints` slot.
+
+## Bug fixes
+
+* Now recognizes `TM_TARGET_GAP_ACHIEVED` as valid status message in `lpsymphony` and `Rsymphony` solvers.
+* `loadItemAttrib()` now ignores malformatted values in 'INDEX' column and regenerates correct indexes.
+* `loadStAttrib()` now ignores malformatted values in 'STINDEX' column and regenerates correct indexes.
+* `config_Static` object now shows objective tolerance value in slot `@MIP$obj_tol`.
+
 # TestDesign 1.0.0
 
 TestDesign 1.0.0 is a major release that provides structural changes to better streamline the usage of the functions and also achieve more structured abstraction.
