@@ -780,7 +780,10 @@ setMethod(
   definition = function(config, constraints, true_theta, data, prior, prior_par, session) {
 
     if (!validObject(config)) {
-      stop("invalid configuration options specified")
+      stop(sprintf(
+        "invalid S4 object in 'config' argument: %s",
+        deparse(substitute(config))
+      ))
     }
 
     if (!is.null(constraints)) {
@@ -789,24 +792,23 @@ setMethod(
       nv <- constraints@nv
       pool <- constraints@pool
     } else {
-      stop("'constraints' must be supplied.")
+      stop("'constraints' must be supplied")
     }
 
-    model <- pool@model
-    model[which(model == "item_1PL")] <- 1
-    model[which(model == "item_2PL")] <- 2
-    model[which(model == "item_3PL")] <- 3
-    model[which(model == "item_PC")]  <- 4
-    model[which(model == "item_GPC")] <- 5
-    model[which(model == "item_GR")]  <- 6
-    model <- as.numeric(model)
+    model <- rep(NA, pool@ni)
+    model[which(pool@model == "item_1PL")] <- 1
+    model[which(pool@model == "item_2PL")] <- 2
+    model[which(pool@model == "item_3PL")] <- 3
+    model[which(pool@model == "item_PC")]  <- 4
+    model[which(pool@model == "item_GPC")] <- 5
+    model[which(pool@model == "item_GR")]  <- 6
 
     if (!is.null(true_theta)) {
       nj <- length(true_theta)
     } else if (!is.null(data)) {
       nj <- nrow(data)
     } else {
-      stop("either true_theta or data must be supplied")
+      stop("either 'true_theta' or 'data' must be supplied")
     }
 
     nq        <- length(config@theta_grid)
