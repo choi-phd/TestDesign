@@ -8,8 +8,7 @@
 \usage{
 getSolution(object, examinee = NA, position = NA, index_only = TRUE)
 
-\S4method{getSolution}{list}(object, examinee = NA, position = NA,
-  index_only = TRUE)
+\S4method{getSolution}{list}(object, examinee = NA, position = NA, index_only = TRUE)
 }
 \arguments{
 \item{object}{Output from \code{\link{Static}} or \code{\link{Shadow}}.}

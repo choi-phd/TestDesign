@@ -6,13 +6,31 @@
 \alias{mle,item_pool-method}
 \title{Generate maximum likelihood estimates of theta}
 \usage{
-mle(object, resp, start_theta = NULL, max_iter = 100, crit = 0.001,
-  select = NULL, theta_range = c(-4, 4), truncate = FALSE,
-  max_change = 1, do_Fisher = TRUE)
+mle(
+  object,
+  resp,
+  start_theta = NULL,
+  max_iter = 100,
+  crit = 0.001,
+  select = NULL,
+  theta_range = c(-4, 4),
+  truncate = FALSE,
+  max_change = 1,
+  do_Fisher = TRUE
+)
 
-\S4method{mle}{item_pool}(object, resp, start_theta = NULL,
-  max_iter = 50, crit = 0.005, select = NULL, theta_range = c(-4,
-  4), truncate = FALSE, max_change = 1, do_Fisher = TRUE)
+\S4method{mle}{item_pool}(
+  object,
+  resp,
+  start_theta = NULL,
+  max_iter = 50,
+  crit = 0.005,
+  select = NULL,
+  theta_range = c(-4, 4),
+  truncate = FALSE,
+  max_change = 1,
+  do_Fisher = TRUE
+)
 }
 \arguments{
 \item{object}{A \code{\linkS4class{item_pool}} object.}

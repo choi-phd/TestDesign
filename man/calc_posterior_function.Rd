@@ -4,8 +4,15 @@
 \alias{calc_posterior_function}
 \title{Calculate a posterior distribution of theta}
 \usage{
-calc_posterior_function(theta_grid, item_parm, resp, ncat, model, prior,
-  prior_parm)
+calc_posterior_function(
+  theta_grid,
+  item_parm,
+  resp,
+  ncat,
+  model,
+  prior,
+  prior_parm
+)
 }
 \arguments{
 \item{theta_grid}{An equi-spaced grid of theta values.}
