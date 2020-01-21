@@ -114,7 +114,7 @@ setClass("config_Shadow",
     ),
     content_balancing = list(method = "STA"),
     MIP = list(
-      solver = "LPSOLVE",
+      solver = "LPSYMPHONY",
       verbosity = -2,
       time_limit = 60,
       gap_limit = .05,

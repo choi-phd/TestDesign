@@ -20,7 +20,7 @@
 # Always give full names for slot references. (e.g. "@foo$bar")
 
 #' @import Matrix
-#' @import lpSolve
+#' @import lpsymphony
 #' @import Rcpp methods
 #' @import foreach
 #' @import crayon
