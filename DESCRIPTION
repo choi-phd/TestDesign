@@ -23,11 +23,11 @@ BugReports: https://github.com/choi-phd/TestDesign/issues
 License: GPL (>= 2)
 Depends: R (>= 2.10)
 biocViews:
-Imports: Rcpp (>= 1.0.0), methods, Matrix, lpSolve, foreach, logitnorm, Rdpack, crayon
+Imports: Rcpp (>= 1.0.0), methods, Matrix, lpsymphony, foreach, logitnorm, Rdpack, crayon
 Suggests:
-    lpsymphony,
     Rsymphony,
     gurobi,
+    lpSolve,
     Rglpk,
     shiny,
     shinythemes,
