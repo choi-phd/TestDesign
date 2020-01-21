@@ -9,11 +9,9 @@
 \usage{
 makeTestCluster(object, theta, true_theta)
 
-\S4method{makeTestCluster}{pool_cluster,numeric,numeric}(object, theta,
-  true_theta)
+\S4method{makeTestCluster}{pool_cluster,numeric,numeric}(object, theta, true_theta)
 
-\S4method{makeTestCluster}{pool_cluster,numeric,list}(object, theta,
-  true_theta)
+\S4method{makeTestCluster}{pool_cluster,numeric,list}(object, theta, true_theta)
 }
 \arguments{
 \item{object}{An \code{\linkS4class{pool_cluster}} object}

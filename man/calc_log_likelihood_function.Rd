@@ -4,8 +4,15 @@
 \alias{calc_log_likelihood_function}
 \title{Calculate a log-likelihood function of theta}
 \usage{
-calc_log_likelihood_function(theta_grid, item_parm, resp, ncat, model,
-  prior, prior_parm)
+calc_log_likelihood_function(
+  theta_grid,
+  item_parm,
+  resp,
+  ncat,
+  model,
+  prior,
+  prior_parm
+)
 }
 \arguments{
 \item{theta_grid}{An equi-spaced grid of theta values.}

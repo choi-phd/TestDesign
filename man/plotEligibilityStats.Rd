@@ -4,9 +4,18 @@
 \alias{plotEligibilityStats}
 \title{Draw item eligibility statistics plots}
 \usage{
-plotEligibilityStats(config, object = NULL, object_no_fading = NULL,
-  file = NULL, file_no_fading = NULL, segment = 1, items = c(1),
-  file_pdf = NULL, max_rate = 0.25, discard_first = NULL)
+plotEligibilityStats(
+  config,
+  object = NULL,
+  object_no_fading = NULL,
+  file = NULL,
+  file_no_fading = NULL,
+  segment = 1,
+  items = c(1),
+  file_pdf = NULL,
+  max_rate = 0.25,
+  discard_first = NULL
+)
 }
 \arguments{
 \item{config}{A \code{\linkS4class{config_Shadow}} object.}

@@ -1,6 +1,6 @@
 test_that("Static", {
-  package_names <- c("lpSolve")
-  solver_names <- c("lpSolve")
+  package_names <- c("lpsymphony")
+  solver_names <- c("lpsymphony")
 
   for (i in 1:1) {
     if (length(find.package(package_names[i], quiet = TRUE)) > 0) {

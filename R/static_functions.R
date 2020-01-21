@@ -261,17 +261,9 @@ setMethod(
       max_info[i] <- sum(sort(calcFisher(object@pool, theta[i]), TRUE)[1:n_items])
     }
 
-    mean_info <- numeric(length(theta))
-
-    n_trials <- 1000
-    for (i in 1:length(theta)) {
-      info_vec <- sort(calcFisher(object@pool, theta[i]), T)
-      tmp_k    <- numeric(n_trials)
-      for (k in 1:n_trials) {
-        tmp_k[k] <- sum(sample(info_vec, n_items))
-      }
-      mean_info[i] <- mean(tmp_k)
-    }
+    mean_info <- calcFisher(object@pool, theta)
+    mean_info <- apply(mean_info, 1, mean)
+    mean_info <- mean_info * n_items
 
     pdf(NULL, bg = "white")
     dev.control(displaylist = "enable")
@@ -284,8 +276,8 @@ setMethod(
     )
     grid()
 
-    lines(theta, max_info, lty = 1, lwd = 1)
-    lines(theta, mean_info, lty = 2, lwd = 1)
+    lines(theta, max_info,  lty = 1, lwd = 1, col = 'blue')
+    lines(theta, mean_info, lty = 2, lwd = 1, col = 'blue')
 
     p <- recordPlot()
     plot.new()

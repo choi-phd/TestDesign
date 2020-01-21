@@ -7,16 +7,31 @@
 \alias{MLE,test_cluster-method}
 \title{Generate maximum likelihood estimates of theta}
 \usage{
-MLE(object, start_theta = NULL, max_iter = 100, crit = 0.001,
-  select = NULL, theta_range = c(-4, 4), truncate = FALSE,
-  max_change = 1, do_Fisher = TRUE)
+MLE(
+  object,
+  start_theta = NULL,
+  max_iter = 100,
+  crit = 0.001,
+  select = NULL,
+  theta_range = c(-4, 4),
+  truncate = FALSE,
+  max_change = 1,
+  do_Fisher = TRUE
+)
 
-\S4method{MLE}{test}(object, start_theta = NULL, max_iter = 100,
-  crit = 0.001, select = NULL, theta_range = c(-4, 4),
-  truncate = FALSE, max_change = 1, do_Fisher = TRUE)
+\S4method{MLE}{test}(
+  object,
+  start_theta = NULL,
+  max_iter = 100,
+  crit = 0.001,
+  select = NULL,
+  theta_range = c(-4, 4),
+  truncate = FALSE,
+  max_change = 1,
+  do_Fisher = TRUE
+)
 
-\S4method{MLE}{test_cluster}(object, start_theta = NULL,
-  max_iter = 100, crit = 0.001, select = NULL)
+\S4method{MLE}{test_cluster}(object, start_theta = NULL, max_iter = 100, crit = 0.001, select = NULL)
 }
 \arguments{
 \item{object}{A \code{\linkS4class{test}} object.}

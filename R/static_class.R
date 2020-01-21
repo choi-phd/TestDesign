@@ -19,7 +19,7 @@ setClass("config_Static",
       target_weight = c(1, 1, 1)
     ),
     MIP = list(
-      solver = "LPSOLVE",
+      solver = "LPSYMPHONY",
       verbosity = -2,
       time_limit = 60,
       gap_limit = 0.05,
@@ -175,5 +175,6 @@ setMethod("show", "config_Static", function(object) {
   cat("    Time limit     :", object@MIP$time_limit, "\n")
   cat("    Gap limit      \n")
   cat("      Relative     :", object@MIP$gap_limit, "\n")
-  cat("      Absolute     :", object@MIP$gap_limit_abs, "\n\n")
+  cat("      Absolute     :", object@MIP$gap_limit_abs, "\n")
+  cat("    Obj. tolerance :", object@MIP$obj_tol, "\n\n")
 })

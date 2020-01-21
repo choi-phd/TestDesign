@@ -325,6 +325,7 @@ setMethod(
 
 #' @rdname calcFisher-methods
 #' @aliases calcFisher,item_PC,numeric-method
+#' @examples
 #' item_4      <- new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
 #' info_item_4 <- calcFisher(item_4, seq(-3, 3, 1))
 #' @template pc-ref

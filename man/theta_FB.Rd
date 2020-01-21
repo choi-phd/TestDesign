@@ -4,8 +4,18 @@
 \alias{theta_FB}
 \title{Calculate a fully Bayesian estimate of theta for an examinee}
 \usage{
-theta_FB(nx, theta_init, theta_prop, items_list, item_init, resp, ncat,
-  model, prior, prior_parm)
+theta_FB(
+  nx,
+  theta_init,
+  theta_prop,
+  items_list,
+  item_init,
+  resp,
+  ncat,
+  model,
+  prior,
+  prior_parm
+)
 }
 \arguments{
 \item{nx}{The number of MCMC draws.}

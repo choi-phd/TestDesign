@@ -4,8 +4,16 @@
 \alias{plotInfoOverlay}
 \title{Overlay item information plots}
 \usage{
-plotInfoOverlay(object, theta, info_type = "FISHER", select = NULL,
-  file_pdf = NULL, color = "red", width = 7, height = 6)
+plotInfoOverlay(
+  object,
+  theta,
+  info_type = "FISHER",
+  select = NULL,
+  file_pdf = NULL,
+  color = "red",
+  width = 7,
+  height = 6
+)
 }
 \arguments{
 \item{object}{An \code{\linkS4class{item_pool}} object.}

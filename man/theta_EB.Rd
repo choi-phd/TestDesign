@@ -4,8 +4,17 @@
 \alias{theta_EB}
 \title{Calculate an empirical Bayes estimate of theta for one examinee}
 \usage{
-theta_EB(nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior,
-  prior_parm)
+theta_EB(
+  nx,
+  theta_init,
+  theta_prop,
+  item_parm,
+  resp,
+  ncat,
+  model,
+  prior,
+  prior_parm
+)
 }
 \arguments{
 \item{nx}{The number of MCMC draws.}

@@ -4,8 +4,12 @@
 \alias{buildConstraints}
 \title{Build constraints}
 \usage{
-buildConstraints(pool, file_constraints, file_item_attrib,
-  file_st_attrib = NULL)
+buildConstraints(
+  pool,
+  file_constraints,
+  file_item_attrib,
+  file_st_attrib = NULL
+)
 }
 \arguments{
 \item{pool}{An \code{item_pool} object. Use \code{\link{loadItemPool}} for this.}
