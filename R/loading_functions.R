@@ -170,6 +170,9 @@ setClass("item_attrib",
     if (length(unique(object@data[["ID"]])) != nrow(object@data)) {
       stop("The 'ID' column in must not have any duplicate values.")
     }
+    if (!identical(object@data[["INDEX"]], 1:length(object@data[["INDEX"]]))) {
+      stop(sprintf("The 'INDEX' column must be equal to 1:%s.", length(object@data[["INDEX"]])))
+    }
     return(TRUE)
   }
 )
@@ -218,9 +221,10 @@ loadItemAttrib <- function(file, pool) {
     item_attrib <- merge(data.frame(ID = pool@id), item_attrib, by = "ID")[, names(item_attrib)] # re-ordering cols in attrib
   }
 
-  if (!("INDEX" %in% names(item_attrib))) {
-    item_attrib <- data.frame(cbind(INDEX = 1:nrow(item_attrib), item_attrib))
+  if ("INDEX" %in% names(item_attrib)) {
+    warning("The 'INDEX' column was ignored and replaced with valid values.")
   }
+  item_attrib <- data.frame(cbind(INDEX = 1:nrow(item_attrib), item_attrib))
 
   if (nrow(item_attrib) != pool@ni) {
     stop("The number of rows of 'file' content must match pool@ni.")
@@ -266,6 +270,9 @@ setClass("st_attrib",
     }
     if (length(unique(object@data[["STID"]])) != nrow(object@data)) {
       stop("The 'STID' column in must not have any duplicate values.")
+    }
+    if (!identical(object@data[["STINDEX"]], 1:length(object@data[["STINDEX"]]))) {
+      stop(sprintf("The 'STINDEX' column must be equal to 1:%s.", length(object@data[["STINDEX"]])))
     }
     return(TRUE)
   }
@@ -316,9 +323,11 @@ loadStAttrib <- function(file, item_attrib) {
   if (is.numeric(st_attrib[["STID"]])) {
     st_attrib[["STID"]] <- as.character(st_attrib[["STID"]])
   }
-  if (!("STINDEX" %in% names(st_attrib))) {
-    st_attrib <- data.frame(cbind(STINDEX = 1:nrow(st_attrib), st_attrib))
+  if ("STINDEX" %in% names(st_attrib)) {
+    warning("The 'STINDEX' column was ignored and replaced with valid values.")
   }
+  st_attrib <- data.frame(cbind(STINDEX = 1:nrow(st_attrib), st_attrib))
+
   if (!("STID" %in% names(item_attrib@data))) {
     stop("'item_attrib' must have 'STID' column.")
   }
@@ -512,6 +521,14 @@ loadConstraints <- function(file, pool, item_attrib, st_attrib = NULL) {
   constraints[["TYPE"]]  <- toupper(constraints[["TYPE"]])
   constraints[["WHAT"]]  <- toupper(constraints[["WHAT"]])
   constraints[["COUNT"]] <- NA
+
+  if ("CONSTRAINT" %in% names(constraints)) {
+    if (any(constraints[["CONSTRAINT"]] != as.character(1:dim(constraints)[1]))) {
+      constraints[["CONSTRAINT"]] <- as.character(1:dim(constraints)[1])
+      warning("The 'CONSTRAINT' column was ignored and replaced with valid values.")
+    }
+  }
+
 
   # Validation: Pool
   ni <- pool@ni
