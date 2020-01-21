@@ -181,14 +181,14 @@ runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
   if (sort_by_info) {
     shadow_test <- shadow_test[order(shadow_test[["info"]], decreasing = TRUE), ]
   }
-  if (!is.null(constraints@item_order_by)) {
-    shadow_test <- shadow_test[order(shadow_test[[constraints@item_order_by]]), ]
-  }
   if (constraints@set_based) {
     shadow_test <- shadow_test[order(shadow_test[["STID"]]), ]
   }
   if (constraints@set_based & sort_by_info) {
     shadow_test <- shadow_test[order(shadow_test[["meanInfo"]], decreasing = TRUE), ]
+  }
+  if (!is.null(constraints@item_order_by)) {
+    shadow_test <- shadow_test[order(shadow_test[[constraints@item_order_by]]), ]
   }
   if (!is.null(constraints@stim_order_by)) {
     shadow_test <- shadow_test[order(shadow_test[[constraints@stim_order_by]]), ]
