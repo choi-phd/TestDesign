@@ -1,8 +1,8 @@
-# TestDesign v1.0.0
+# TestDesign v1.0.1
 
 ## Test environments
 
-* Local: macOS (R 3.6.1), Windows 10 (R 3.6.1)
+* Local: macOS (R 3.6.2), Windows 10 (R 3.6.2)
 * Travis-CI: Ubuntu Linux 16.04 (R-release, R-devel)
 
 ## R CMD check results
@@ -20,4 +20,4 @@ Information on obtaining 'gurobi' is described in `DESCRIPTON`.
 
 ## Downstream dependencies
 
-There are no downstream dependencies of the previous version of 'TestDesign' v0.2.5.
+There are no downstream dependencies of the previous version of 'TestDesign' v1.0.0.
