@@ -49,7 +49,7 @@ ui <- fluidPage(
       ),
       radioGroupButtons(
         inputId = "solvertype", justified = TRUE,
-        choices = c("lpsymphony", "Rsymphony", "lpSolve", "gurobi", "Rglpk"), checkIcon = list(yes = icon("drafting-compass"), no = icon("drafting-compass"))
+        choices = c("lpSolve", "Rsymphony", "lpsymphony", "gurobi", "Rglpk"), checkIcon = list(yes = icon("drafting-compass"), no = icon("drafting-compass"))
       ),
       radioGroupButtons(
         inputId = "objtype", justified = TRUE, label = h3("Objective type:"),
