@@ -19,7 +19,7 @@ setClass("config_Static",
       target_weight = c(1, 1, 1)
     ),
     MIP = list(
-      solver = "LPSYMPHONY",
+      solver = "LPSOLVE",
       verbosity = -2,
       time_limit = 60,
       gap_limit = 0.05,

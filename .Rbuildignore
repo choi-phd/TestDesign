@@ -3,7 +3,6 @@
 ^figures$
 ^data-raw$
 ^man-roxygen$
-
 ^\.vscode$
 ^.*\.Rproj$
 ^\.Rproj\.user$

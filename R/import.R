@@ -20,7 +20,7 @@
 # Always give full names for slot references. (e.g. "@foo$bar")
 
 #' @import Matrix
-#' @import lpsymphony
+#' @import lpSolve
 #' @import Rcpp methods
 #' @import foreach
 #' @import crayon
@@ -36,7 +36,7 @@ NULL
 
 #' @noRd
 .onAttach <- function(libname, pkgname) {
-  solver_names <- c("lpsymphony", "Rsymphony", "gurobi", "lpSolve", "Rglpk")
+  solver_names <- c("lpSolve", "Rsymphony", "lpsymphony", "gurobi", "Rglpk")
 
   for (s in solver_names) {
     x <- find.package(s, quiet = TRUE)
