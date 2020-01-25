@@ -1003,11 +1003,11 @@ setMethod(
         }
 
         if (fading_factor != 1) {
-          noFading_alpha_g_i   <- matrix(0, nrow = nj, ncol = n_segment * ni)
-          noFading_epsilon_g_i <- matrix(0, nrow = nj, ncol = n_segment * ni)
+          no_fading_alpha_g_i   <- matrix(0, nrow = nj, ncol = n_segment * ni)
+          no_fading_epsilon_g_i <- matrix(0, nrow = nj, ncol = n_segment * ni)
           if (set_based) {
-            noFading_alpha_g_s   <- matrix(0, nrow = nj, ncol = n_segment * ns)
-            noFading_epsilon_g_s <- matrix(0, nrow = nj, ncol = n_segment * ns)
+            no_fading_alpha_g_s   <- matrix(0, nrow = nj, ncol = n_segment * ns)
+            no_fading_epsilon_g_s <- matrix(0, nrow = nj, ncol = n_segment * ns)
           }
         }
       }
@@ -2267,10 +2267,10 @@ setMethod(
         }
 
         if (fading_factor != 1) {
-          no_fading_eligibility_stats <- as.data.frame(cbind(1:nj, true_theta, find_segment(segment_cut, true_theta), true_segment_count, noFading_alpha_g_i, noFading_epsilon_g_i), row.names = NULL)
+          no_fading_eligibility_stats <- as.data.frame(cbind(1:nj, true_theta, find_segment(segment_cut, true_theta), true_segment_count, no_fading_alpha_g_i, no_fading_epsilon_g_i), row.names = NULL)
           names(no_fading_eligibility_stats) <- c("Examinee", "TrueTheta", "TrueSegment", "TrueSegmentCount", paste("a", "g", rep(1:n_segment, rep(ni, n_segment)), "i", rep(1:ni, n_segment), sep = "_"), paste("e", "g", rep(1:n_segment, rep(ni, n_segment)), "i", rep(1:ni, n_segment), sep = "_"))
           if (set_based) {
-            no_fading_eligibility_stats_stimulus <- as.data.frame(cbind(noFading_alpha_g_s, noFading_epsilon_g_s), row.names = NULL)
+            no_fading_eligibility_stats_stimulus <- as.data.frame(cbind(no_fading_alpha_g_s, no_fading_epsilon_g_s), row.names = NULL)
             names(no_fading_eligibility_stats_stimulus) <- c(paste("a", "g", rep(1:n_segment, rep(ns, n_segment)), "s", rep(1:ns, n_segment), sep = "_"), paste("e", "g", rep(1:n_segment, rep(ns, n_segment)), "s", rep(1:ns, n_segment), sep = "_"))
             no_fading_eligibility_stats <- cbind(no_fading_eligibility_stats, no_fading_eligibility_stats_stimulus)
           }
