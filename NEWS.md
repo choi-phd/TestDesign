@@ -1,3 +1,14 @@
+# TestDesign 1.0.2
+
+## Default solver
+
+* Reverted the default solver to `lpSolve` to address `lpsymphony` being unavailable on Solaris.
+
+## Bug fixes
+
+* Fixed where using diagnostic stats was preventing `Shadow()` to run.
+* Fixed an error affecting `BIGM` exposure control method on set-based items.
+
 # TestDesign 1.0.1
 
 ## Default solver
@@ -50,35 +61,35 @@ TestDesign 1.0.0 is a major release that provides structural changes to better s
 
 ## Bug fixes
 
-* Fixes where `plotExposure()` was incorrectly plotting stimulus-level exposure rates along with item-level exposure rates.
-* Fixes where using Bayesian methods would trigger an error in `Shadow()`.
+* Fixed where `plotExposure()` was incorrectly plotting stimulus-level exposure rates along with item-level exposure rates.
+* Fixed where using Bayesian methods would trigger an error in `Shadow()`.
 
 # TestDesign 0.2.5
 
 ## Bug fixes
 
-* Fixes where `gap_limit` was incorrectly passed onto `SYMPHONY` in `ATA()` and `Shadow()`, instead of `gap_limit_abs`.
-* Fixes where `gap_limit` was not being passed onto `GUROBI` in `ATA()` and `Shadow()`.
-* Fixes where `time_limit` was not being passed onto `GUROBI` in `Shadow()`.
-* Fixes where `time_limit` was incorrectly passed in microseconds to `GLPK` in `Shadow()`.
-* Fixes where a valid interval-based refresh policy triggered an error in `Shadow()`.
+* Fixed where `gap_limit` was incorrectly passed onto `SYMPHONY` in `ATA()` and `Shadow()`, instead of `gap_limit_abs`.
+* Fixed where `gap_limit` was not being passed onto `GUROBI` in `ATA()` and `Shadow()`.
+* Fixed where `time_limit` was not being passed onto `GUROBI` in `Shadow()`.
+* Fixed where `time_limit` was incorrectly passed in microseconds to `GLPK` in `Shadow()`.
+* Fixed where a valid interval-based refresh policy triggered an error in `Shadow()`.
 * Now prints an error message instead of crashing, when requesting adaptive assembly with set-based refresh policy on non-set-based item pools.
 
 ## Others
 
-* Explicitly adds `obj_tol` in `config_ATA@MIP` to allow for controlling objective value tolerance.
+* `config_ATA@MIP` now has `$obj_tol` for controlling objective value tolerance.
 
 # TestDesign 0.2.3
 
 ## Bug fixes
 
-* Fixes where `ATA()` and `Shadow()` were returning incorrect solutions with set-based item pools in some cases.
-* Fixes where `ATA()` and `Shadow()` were returning fewer than specified number of items, due to solution vectors being not strictly binary in some cases.
-* `vignette('constraints')` is improved.
+* Fixed where `ATA()` and `Shadow()` were returning incorrect solutions with set-based item pools in some cases.
+* Fixed where `ATA()` and `Shadow()` were returning fewer than specified number of items, due to solution vectors being not strictly binary in some cases.
 
 ## Others
 
-* Add `URL` and `BugReports` fields to `DESCRIPTION` file.
+* Improved `vignette('constraints')`.
+* Added `URL` and `BugReports` fields to `DESCRIPTION` file.
 
 # TestDesign 0.2.2
 
