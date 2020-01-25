@@ -16,7 +16,7 @@ Suggests or Enhances not in mainstream repositories:
 
 NOTE is being raised from 'gurobi' not being available from CRAN. This cannot be fixed while making 'gurobi' available to 'TestDesign'. We tried not declaring 'gurobi' in `suggests:` which produces a WARNING, escalating the severity of the message. Other means of making 'gurobi' available seems to be against CRAN policy.
 
-Information on obtaining 'gurobi' is described in `DESCRIPTON`.
+Information on obtaining 'gurobi' is described in `DESCRIPTION`.
 
 ## Downstream dependencies
 
