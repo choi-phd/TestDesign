@@ -4,6 +4,7 @@
 
 * Local: macOS (R 3.6.2), Windows 10 (R 3.6.2)
 * Travis-CI: Ubuntu Linux 16.04 (R-release, R-devel)
+* r-hub: Oracle Solaris 10 (R-patched)
 
 ## R CMD check results
 
@@ -16,8 +17,8 @@ Suggests or Enhances not in mainstream repositories:
 
 NOTE is being raised from 'gurobi' not being available from CRAN. This cannot be fixed while making 'gurobi' available to 'TestDesign'. We tried not declaring 'gurobi' in `suggests:` which produces a WARNING, escalating the severity of the message. Other means of making 'gurobi' available seems to be against CRAN policy.
 
-Information on obtaining 'gurobi' is described in `DESCRIPTON`.
+Information on obtaining 'gurobi' is described in `DESCRIPTION`.
 
 ## Downstream dependencies
 
-There are no downstream dependencies of the previous version of 'TestDesign' v1.0.0.
+There are no downstream dependencies of the previous version of 'TestDesign' v1.0.1.
