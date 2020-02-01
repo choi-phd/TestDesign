@@ -15,39 +15,39 @@ NULL
 #'
 #' @export
 setClass("test",
-         slots = c(
-           pool = "item_pool",
-           theta = "numeric",
-           prob = "list",
-           info = "matrix",
-           true_theta = "numeric_or_null",
-           data = "matrix_or_null"
-         ),
-         prototype = list(
-           pool = new("item_pool"),
-           theta = numeric(0),
-           prob = list(0),
-           info = matrix(0),
-           true_theta = numeric(0),
-           data = matrix(NA, 0, 0)
-         ),
-         validity = function(object) {
-           errors <- NULL
-           if (length(object@prob) != object@pool@ni) {
-             errors <- c(errors, "length(@prob) must match @pool@ni.")
-           }
-           if (ncol(object@info) != object@pool@ni) {
-             errors <- c(errors, "ncol(@info) must match @pool@ni.")
-           }
-           if (nrow(object@info) != length(object@theta)) {
-             errors <- c(errors, "nrow(@info) must match length(@theta).")
-           }
-           if (length(errors) == 0) {
-             return(TRUE)
-           } else {
-             return(errors)
-           }
-         }
+  slots = c(
+    pool = "item_pool",
+    theta = "numeric",
+    prob = "list",
+    info = "matrix",
+    true_theta = "numeric_or_null",
+    data = "matrix_or_null"
+  ),
+  prototype = list(
+    pool = new("item_pool"),
+    theta = numeric(0),
+    prob = list(0),
+    info = matrix(0),
+    true_theta = numeric(0),
+    data = matrix(NA, 0, 0)
+  ),
+  validity = function(object) {
+    errors <- NULL
+    if (length(object@prob) != object@pool@ni) {
+      errors <- c(errors, "length(@prob) must match @pool@ni.")
+    }
+    if (ncol(object@info) != object@pool@ni) {
+      errors <- c(errors, "ncol(@info) must match @pool@ni.")
+    }
+    if (nrow(object@info) != length(object@theta)) {
+      errors <- c(errors, "nrow(@info) must match length(@theta).")
+    }
+    if (length(errors) == 0) {
+      return(TRUE)
+    } else {
+      return(errors)
+    }
+  }
 )
 
 
@@ -62,30 +62,30 @@ setClass("test",
 #' @export
 
 setClass("test_cluster",
-         slots = c(
-           nt = "numeric",
-           tests = "list",
-           names = "character"
-         ),
-         prototype = list(
-           nt = numeric(0),
-           tests = list(0),
-           names = character(0)
-         ),
-         validity = function(object) {
-           errors <- NULL
-           if (length(object@tests) != object@nt) {
-             errors <- c(errors, "@nt must match length(@tests).")
-           }
-           if (length(object@names) != object@nt) {
-             errors <- c(errors, "@nt must match length(@names).")
-           }
-           if (length(errors) == 0) {
-             return(TRUE)
-           } else {
-             return(errors)
-           }
-         }
+  slots = c(
+    nt = "numeric",
+    tests = "list",
+    names = "character"
+  ),
+  prototype = list(
+    nt = numeric(0),
+    tests = list(0),
+    names = character(0)
+  ),
+  validity = function(object) {
+    errors <- NULL
+    if (length(object@tests) != object@nt) {
+      errors <- c(errors, "@nt must match length(@tests).")
+    }
+    if (length(object@names) != object@nt) {
+      errors <- c(errors, "@nt must match length(@names).")
+    }
+    if (length(errors) == 0) {
+      return(TRUE)
+    } else {
+      return(errors)
+    }
+  }
 )
 
 #' createShadowTestConfig
@@ -180,7 +180,7 @@ setClass("config_Shadow",
   ),
   validity = function(object) {
     errors <- NULL
-    if (toupper(object@MIP$solver) %not in% c("LPSYMPHONY", "RSYMPHONY", "LPSOLVE", "GUROBI", "RGLPK")) {
+    if (!toupper(object@MIP$solver) %in% c("LPSYMPHONY", "RSYMPHONY", "LPSOLVE", "GUROBI", "RGLPK")) {
       msg <- sprintf("Unrecognized option in @MIP$solver : %s", object@MIP$solver)
       errors <- c(errors, msg)
     }
@@ -194,21 +194,21 @@ setClass("config_Shadow",
       }
     }
 
-    if (toupper(object@item_selection$method) %not in% c("MFI", "MPWI", "EB", "FB")) {
+    if (!toupper(object@item_selection$method) %in% c("MFI", "MPWI", "EB", "FB")) {
       msg <- sprintf("Unrecognized option in @item_selection$method : %s", object@item_selection$method)
       errors <- c(errors, msg)
     }
 
-    if (object@content_balancing$method %not in% c("NONE", "STA")) {
+    if (!object@content_balancing$method %in% c("NONE", "STA")) {
       msg <- sprintf("Unrecognized option in @content_balancing$method : %s", object@content_balancing$method)
       errors <- c(errors, msg)
     }
-    if (object@refresh_policy$method %not in%
+    if (!object@refresh_policy$method %in%
       c("ALWAYS", "POSITION", "INTERVAL", "THRESHOLD", "INTERVAL-THRESHOLD", "STIMULUS", "SET", "PASSAGE")) {
       msg <- sprintf("Unrecognized option in @refresh_policy$method : %s", object@refresh_policy$method)
       errors <- c(errors, msg)
     }
-    if (object@exposure_control$method %not in% c("NONE", "ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
+    if (!object@exposure_control$method %in% c("NONE", "ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
       msg <- sprintf("Unrecognized option in @exposure_control$method : %s", object@exposure_control$method)
       errors <- c(errors, msg)
     }
@@ -216,27 +216,27 @@ setClass("config_Shadow",
       msg <- "@exposure_control$n_segment must match @exposure_control$segment_cut."
       errors <- c(errors, msg)
     }
-    if (object@stopping_criterion$method %not in% c("FIXED")) {
+    if (!object@stopping_criterion$method %in% c("FIXED")) {
       msg <- sprintf("Unrecognized option in @stopping_criterion$method : %s", object@stopping_criterion$method)
       errors <- c(errors, msg)
     }
-    if (object@interim_theta$method %not in% c("EAP", "MLE", "EB", "FB")) {
+    if (!object@interim_theta$method %in% c("EAP", "MLE", "EB", "FB")) {
       msg <- sprintf("Unrecognized option in @interim_theta$method : %s (must be one of EAP, MLE, EB, or FB)", object@interim_theta$method)
       errors <- c(errors, msg)
     }
-    if (object@final_theta$method %not in% c("EAP", "MLE", "EB", "FB")) {
+    if (!object@final_theta$method %in% c("EAP", "MLE", "EB", "FB")) {
       msg <- sprintf("Unrecognized option in @final_theta$method : %s (must be one of EAP, MLE, EB, or FB)", object@final_theta$method)
       errors <- c(errors, msg)
     }
     if (toupper(object@final_theta$method) == "EAP") {
-      if (toupper(object@final_theta$prior_dist) %not in% c("NORMAL", "UNIFORM")) {
+      if (!toupper(object@final_theta$prior_dist) %in% c("NORMAL", "UNIFORM")) {
         msg <- sprintf("Unrecognized option in @final_theta$prior_dist : %s (must be one of NORMAL or UNIFORM when @final_theta$method is EAP)", object@final_theta$prior_dist)
         errors <- c(errors, msg)
       }
     }
 
     if ((object@exposure_control$method == c("BIGM-BAYESIAN")) &&
-      (object@interim_theta$method %not in% c("EB", "FB"))) {
+      (!object@interim_theta$method %in% c("EB", "FB"))) {
       errors <- c(errors, "exposure_control$method == 'BIGM-BAYESIAN' requires interim_theta$method to be EB or FB.")
     }
     if (length(errors) == 0) {

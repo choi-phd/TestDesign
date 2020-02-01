@@ -969,7 +969,7 @@ setMethod(
       acceleration_factor <- config@exposure_control$acceleration_factor
 
       n_segment <- config@exposure_control$n_segment
-      if (length(max_exposure_rate) %not in% c(1, n_segment)) {
+      if (!length(max_exposure_rate) %in% c(1, n_segment)) {
         stop("length(max_exposure_rate) must be 1 or n_segment")
       }
 
@@ -1003,11 +1003,11 @@ setMethod(
         }
 
         if (fading_factor != 1) {
-          noFading_alpha_g_i   <- matrix(0, nrow = nj, ncol = n_segment * ni)
-          noFading_epsilon_g_i <- matrix(0, nrow = nj, ncol = n_segment * ni)
+          no_fading_alpha_g_i   <- matrix(0, nrow = nj, ncol = n_segment * ni)
+          no_fading_epsilon_g_i <- matrix(0, nrow = nj, ncol = n_segment * ni)
           if (set_based) {
-            noFading_alpha_g_s   <- matrix(0, nrow = nj, ncol = n_segment * ns)
-            noFading_epsilon_g_s <- matrix(0, nrow = nj, ncol = n_segment * ns)
+            no_fading_alpha_g_s   <- matrix(0, nrow = nj, ncol = n_segment * ns)
+            no_fading_epsilon_g_s <- matrix(0, nrow = nj, ncol = n_segment * ns)
           }
         }
       }
@@ -1163,7 +1163,7 @@ setMethod(
 
       } else {
 
-        remaining <- which(optimal$shadow_test[["INDEX"]] %not in% output@administered_item_index[1:(position - 1)])
+        remaining <- which(!optimal$shadow_test[["INDEX"]] %in% output@administered_item_index[1:(position - 1)])
 
         if (!set_based) {
 
@@ -1403,7 +1403,10 @@ setMethod(
 
             # Item position / simulee: get which theta segment are we on
 
-            if (!is.null(config@exposure_control$first_segment) && length(config@exposure_control$first_segment) >= position && all(config@exposure_control$first_segment >= 1) && all(config@exposure_control$first_segment <= n_segment)) {
+            if (!is.null(config@exposure_control$first_segment) &&
+              length(config@exposure_control$first_segment) >= position &&
+              all(config@exposure_control$first_segment >= 1) &&
+              all(config@exposure_control$first_segment <= n_segment)) {
               output@theta_segment_index[position] <- config@exposure_control$first_segment[position]
             } else {
               output@theta_segment_index[position] <- find_segment(segment_cut, current_theta)
@@ -1628,6 +1631,8 @@ setMethod(
 
         } else {
 
+          # If not doing shadow
+
           output@administered_item_index[position] <- selectItem()
 
         }
@@ -1642,6 +1647,8 @@ setMethod(
             end_set <- FALSE
           }
 
+          # TODO: why is selection$last_stimulus_index == 0 at position 1?
+
           if (!is.na(selection$last_stimulus_index)) {
             if (selection$new_stimulus_selected && selection$last_stimulus_index > 0) {
               finished_stimulus_index      <- c(finished_stimulus_index, selection$last_stimulus_index)
@@ -1651,12 +1658,13 @@ setMethod(
 
         }
 
-        # Item position / simulee: record which item was administered, update posterior and likelihood
+        # Item position / simulee: record which item was administered
 
         output@administered_item_resp[position] <- test@data[j, output@administered_item_index[position]]
         output@administered_item_ncat[position] <- pool@NCAT[output@administered_item_index[position]]
-
         items_administered[j, output@administered_item_index[position]] <- TRUE
+
+        # Item position / simulee: update posterior and likelihood
         prob_resp      <- test@prob[[output@administered_item_index[position]]][, output@administered_item_resp[position] + 1]
         posterior[j, ] <- posterior[j, ] * prob_resp
         likelihood     <- likelihood     * prob_resp
@@ -1811,9 +1819,8 @@ setMethod(
       ##
 
       usage_matrix[j, output@administered_item_index] <- TRUE
-
       if (set_based) {
-        usage_matrix[j, ni + unique(output@administered_stimulus_index)] <- TRUE
+        usage_matrix[j, ni + output@administered_stimulus_index] <- TRUE
       }
 
       output_list[[j]] <- output
@@ -1834,6 +1841,7 @@ setMethod(
         est_segment_freq[segment_final] <- est_segment_freq[segment_final] + 1
         est_segment_count[j]            <- est_segment_freq[segment_final]
 
+        # TODO: Why are we sorting segment_visited? might be better to not sort
         segment_visited <- sort(unique(output@theta_segment_index))
         segment_other   <- segment_visited[segment_visited != segment_final]
 
@@ -1844,7 +1852,8 @@ setMethod(
         if (exposure_control %in% c("ELIGIBILITY")) {
           n_jk[segment_final] <- fading_factor * n_jk[segment_final] + 1
           alpha_ijk[segment_final, ] <- fading_factor * alpha_ijk[segment_final, ]
-          alpha_ijk[segment_final, output@administered_item_index] <- alpha_ijk[segment_final, output@administered_item_index] + 1
+          alpha_ijk[segment_final, output@administered_item_index] <-
+          alpha_ijk[segment_final, output@administered_item_index] + 1
 
           if (length(segment_other) > 0) {
             if (any(!eligible_in_final_segment[output@administered_item_index])) {
@@ -1860,7 +1869,8 @@ setMethod(
 
           if (fading_factor != 1) {
             no_fading_n_jk[segment_final] <- no_fading_n_jk[segment_final] + 1
-            no_fading_alpha_ijk[segment_final, output@administered_item_index] <- no_fading_alpha_ijk[segment_final, output@administered_item_index] + 1
+            no_fading_alpha_ijk[segment_final, output@administered_item_index] <-
+            no_fading_alpha_ijk[segment_final, output@administered_item_index] + 1
           }
 
           segment_feasible   <- unique(output@theta_segment_index[output@shadow_test_feasible == TRUE])
@@ -1870,14 +1880,17 @@ setMethod(
 
           if (segment_final %in% segment_feasible) {
             phi_jk[segment_final] <- phi_jk[segment_final] + 1
-            rho_ijk[segment_final, eligible_in_final_segment] <- rho_ijk[segment_final, eligible_in_final_segment] + 1
+            rho_ijk[segment_final, eligible_in_final_segment] <-
+            rho_ijk[segment_final, eligible_in_final_segment] + 1
             if (fading_factor != 1) {
-              no_fading_rho_ijk[segment_final, eligible_in_final_segment] <- no_fading_rho_ijk[segment_final, eligible_in_final_segment] + 1
+              no_fading_rho_ijk[segment_final, eligible_in_final_segment] <-
+              no_fading_rho_ijk[segment_final, eligible_in_final_segment] + 1
             }
           } else {
             rho_ijk[segment_final, ] <- rho_ijk[segment_final, ] + 1
             if (fading_factor != 1) {
-              no_fading_rho_ijk[segment_final, ] <- no_fading_rho_ijk[segment_final, ] + 1
+              no_fading_rho_ijk[segment_final, ] <-
+              no_fading_rho_ijk[segment_final, ] + 1
             }
           }
 
@@ -1891,11 +1904,11 @@ setMethod(
             flag_alpha_ijk <- p_alpha_ijk > max_exposure_rate
             if (length(max_exposure_rate) == n_segment) {
               for (k in 1:n_segment) {
-                pe_i[k,  flag_alpha_ijk[k, ]] <- 1 - nf_ijk[k, flag_alpha_ijk[k, ]] + (max_exposure_rate[k] / p_alpha_ijk[k, flag_alpha_ijk[k, ]])^acceleration_factor * nf_ijk[k, flag_alpha_ijk[k, ]] * p_rho_ijk[k, flag_alpha_ijk[k, ]]
+                pe_i[k,  flag_alpha_ijk[k, ]] <- 1 - nf_ijk[k,  flag_alpha_ijk[k, ]] + (max_exposure_rate[k] / p_alpha_ijk[k, flag_alpha_ijk[k, ]])^acceleration_factor * nf_ijk[k, flag_alpha_ijk[k, ]] * p_rho_ijk[k, flag_alpha_ijk[k, ]]
                 pe_i[k, !flag_alpha_ijk[k, ]] <- 1 - nf_ijk[k, !flag_alpha_ijk[k, ]] + max_exposure_rate[k] * nf_ijk[k, !flag_alpha_ijk[k, ]] * rho_ijk[k, !flag_alpha_ijk[k, ]] / alpha_ijk[k, !flag_alpha_ijk[k, ]]
               }
             } else {
-              pe_i[ flag_alpha_ijk]  <- 1 - nf_ijk[ flag_alpha_ijk] + (max_exposure_rate / p_alpha_ijk[flag_alpha_ijk])^acceleration_factor * nf_ijk[flag_alpha_ijk] * p_rho_ijk[flag_alpha_ijk]
+              pe_i[ flag_alpha_ijk] <- 1 - nf_ijk[ flag_alpha_ijk] + (max_exposure_rate / p_alpha_ijk[flag_alpha_ijk])^acceleration_factor * nf_ijk[flag_alpha_ijk] * p_rho_ijk[flag_alpha_ijk]
               pe_i[!flag_alpha_ijk] <- 1 - nf_ijk[!flag_alpha_ijk] + max_exposure_rate * nf_ijk[!flag_alpha_ijk] * rho_ijk[!flag_alpha_ijk] / alpha_ijk[!flag_alpha_ijk]
             }
           } else {
@@ -1908,7 +1921,7 @@ setMethod(
           if (set_based) {
             alpha_sjk[segment_final, ] <- fading_factor * alpha_sjk[segment_final, ]
             alpha_sjk[segment_final, na.omit(output@administered_stimulus_index)] <-
-              alpha_sjk[segment_final, na.omit(output@administered_stimulus_index)] + 1
+            alpha_sjk[segment_final, na.omit(output@administered_stimulus_index)] + 1
 
             if (length(segment_other) > 0) {
               if (any(!eligible_set_in_final_segment[administered_stimulus_index])) {
@@ -1924,13 +1937,15 @@ setMethod(
 
             if (fading_factor != 1) {
               no_fading_alpha_sjk[segment_final, na.omit(output@administered_stimulus_index)] <-
-                no_fading_alpha_sjk[segment_final, na.omit(output@administered_stimulus_index)] + 1
+              no_fading_alpha_sjk[segment_final, na.omit(output@administered_stimulus_index)] + 1
             }
             rho_sjk[segment_final, ] <- fading_factor * rho_sjk[segment_final, ]
             if (segment_final %in% segment_feasible) {
-              rho_sjk[segment_final, eligible_set_in_final_segment] <- rho_sjk[segment_final, eligible_set_in_final_segment] + 1
+              rho_sjk[segment_final, eligible_set_in_final_segment] <-
+              rho_sjk[segment_final, eligible_set_in_final_segment] + 1
               if (fading_factor != 1) {
-                no_fading_rho_sjk[segment_final, eligible_set_in_final_segment] <- no_fading_rho_sjk[segment_final, eligible_set_in_final_segment] + 1
+                no_fading_rho_sjk[segment_final, eligible_set_in_final_segment] <-
+                no_fading_rho_sjk[segment_final, eligible_set_in_final_segment] + 1
               }
             } else {
               rho_sjk[segment_final, ] <- rho_sjk[segment_final, ] + 1
@@ -1967,8 +1982,10 @@ setMethod(
 
           n_jk[segment_final] <- fading_factor * n_jk[segment_final] + 1
           alpha_ijk[segment_final, ] <- fading_factor * alpha_ijk[segment_final, ]
-          alpha_ijk[segment_final, output@administered_item_index] <- alpha_ijk[segment_final, output@administered_item_index] + 1
+          alpha_ijk[segment_final, output@administered_item_index] <-
+          alpha_ijk[segment_final, output@administered_item_index] + 1
 
+          # Visited segments that are not the final segment
           if (length(segment_other) > 0) {
             if (any(!eligible_in_final_segment[output@administered_item_index])) {
               for (k in segment_other) {
@@ -1982,18 +1999,21 @@ setMethod(
           }
 
           rho_ijk[segment_final, ] <- fading_factor * rho_ijk[segment_final, ]
-          rho_ijk[segment_final, eligible_in_final_segment] <- rho_ijk[segment_final, eligible_in_final_segment] + 1
+          rho_ijk[segment_final, eligible_in_final_segment] <-
+          rho_ijk[segment_final, eligible_in_final_segment] + 1
 
           if (fading_factor != 1) {
             no_fading_n_jk[segment_final] <- no_fading_n_jk[segment_final] + 1
-            no_fading_alpha_ijk[segment_final, output@administered_item_index] <- no_fading_alpha_ijk[segment_final, output@administered_item_index] + 1
-            no_fading_rho_ijk[segment_final, eligible_in_final_segment] <- no_fading_rho_ijk[segment_final, eligible_in_final_segment] + 1
+            no_fading_alpha_ijk[segment_final, output@administered_item_index] <-
+            no_fading_alpha_ijk[segment_final, output@administered_item_index] + 1
+            no_fading_rho_ijk[segment_final, eligible_in_final_segment] <-
+            no_fading_rho_ijk[segment_final, eligible_in_final_segment] + 1
           }
 
           if (acceleration_factor > 1) {
 
             p_alpha_ijk <- alpha_ijk / matrix(n_jk, n_segment, ni)
-            p_rho_ijk   <- rho_ijk / matrix(n_jk, n_segment, ni)
+            p_rho_ijk   <- rho_ijk   / matrix(n_jk, n_segment, ni)
             p_alpha_ijk[is.na(p_alpha_ijk)] <- 0
             p_rho_ijk[is.na(p_rho_ijk)]     <- 1
             flag_alpha_ijk <- p_alpha_ijk > max_exposure_rate
@@ -2016,9 +2036,11 @@ setMethod(
 
           if (set_based) {
             alpha_sjk[segment_final, ] <- fading_factor * alpha_sjk[segment_final, ]
-            alpha_sjk[segment_final, na.omit(output@administered_stimulus_index)] <- alpha_sjk[segment_final, na.omit(output@administered_stimulus_index)] + 1
-            rho_sjk[segment_final, ] <- fading_factor * rho_sjk[segment_final ]
-            rho_sjk[segment_final, eligible_set_in_final_segment] <- rho_sjk[segment_final, eligible_set_in_final_segment] + 1
+            alpha_sjk[segment_final, na.omit(output@administered_stimulus_index)] <-
+            alpha_sjk[segment_final, na.omit(output@administered_stimulus_index)] + 1
+            rho_sjk[segment_final, ] <- fading_factor * rho_sjk[segment_final, ]
+            rho_sjk[segment_final, eligible_set_in_final_segment] <-
+            rho_sjk[segment_final, eligible_set_in_final_segment] + 1
 
             if (length(segment_other) > 0) {
               if (any(!eligible_set_in_final_segment[administered_stimulus_index], na.rm = T)) {
@@ -2033,8 +2055,10 @@ setMethod(
             }
 
             if (fading_factor != 1) {
-              no_fading_alpha_sjk[segment_final, na.omit(output@administered_stimulus_index)] <- no_fading_alpha_sjk[segment_final, na.omit(output@administered_stimulus_index)] + 1
-              no_fading_rho_sjk[segment_final, eligible_set_in_final_segment] <- no_fading_rho_sjk[segment_final, eligible_set_in_final_segment] + 1
+              no_fading_alpha_sjk[segment_final, na.omit(output@administered_stimulus_index)] <-
+              no_fading_alpha_sjk[segment_final, na.omit(output@administered_stimulus_index)] + 1
+              no_fading_rho_sjk[segment_final, eligible_set_in_final_segment] <-
+              no_fading_rho_sjk[segment_final, eligible_set_in_final_segment] + 1
             }
 
             if (acceleration_factor > 1) {
@@ -2267,10 +2291,10 @@ setMethod(
         }
 
         if (fading_factor != 1) {
-          no_fading_eligibility_stats <- as.data.frame(cbind(1:nj, true_theta, find_segment(segment_cut, true_theta), true_segment_count, noFading_alpha_g_i, noFading_epsilon_g_i), row.names = NULL)
+          no_fading_eligibility_stats <- as.data.frame(cbind(1:nj, true_theta, find_segment(segment_cut, true_theta), true_segment_count, no_fading_alpha_g_i, no_fading_epsilon_g_i), row.names = NULL)
           names(no_fading_eligibility_stats) <- c("Examinee", "TrueTheta", "TrueSegment", "TrueSegmentCount", paste("a", "g", rep(1:n_segment, rep(ni, n_segment)), "i", rep(1:ni, n_segment), sep = "_"), paste("e", "g", rep(1:n_segment, rep(ni, n_segment)), "i", rep(1:ni, n_segment), sep = "_"))
           if (set_based) {
-            no_fading_eligibility_stats_stimulus <- as.data.frame(cbind(noFading_alpha_g_s, noFading_epsilon_g_s), row.names = NULL)
+            no_fading_eligibility_stats_stimulus <- as.data.frame(cbind(no_fading_alpha_g_s, no_fading_epsilon_g_s), row.names = NULL)
             names(no_fading_eligibility_stats_stimulus) <- c(paste("a", "g", rep(1:n_segment, rep(ns, n_segment)), "s", rep(1:ns, n_segment), sep = "_"), paste("e", "g", rep(1:n_segment, rep(ns, n_segment)), "s", rep(1:ns, n_segment), sep = "_"))
             no_fading_eligibility_stats <- cbind(no_fading_eligibility_stats, no_fading_eligibility_stats_stimulus)
           }
@@ -3573,8 +3597,9 @@ setMethod(
     segment_rate_table          <- data.frame(
       segment_class = factor(rep(segment_label, rep(n_segment, n_segment)), levels = segment_label),
       segment = rep(1:n_segment, n_segment),
-      avg_visit = matrix(t(segment_rate),
-                         nrow = n_segment^2, ncol = 1)
+      avg_visit = matrix(
+        t(segment_rate),
+        nrow = n_segment^2, ncol = 1)
     )
 
     exposure_rate               <- colSums(usage_matrix) / nj
