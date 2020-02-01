@@ -1,3 +1,9 @@
+# TestDesign 1.0.2
+
+## Default solver
+
+* Reverted the default solver to `lpSolve` to address `lpsymphony` being unavailable on Solaris.
+
 # TestDesign 1.0.1
 
 ## Default solver
