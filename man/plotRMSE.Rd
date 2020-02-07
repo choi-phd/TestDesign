@@ -4,9 +4,15 @@
 \alias{plotRMSE}
 \title{Draw RMSE plots}
 \usage{
-plotRMSE(..., title = NULL, legend_title = NULL,
-  legend_labels = NULL, lty_set = NULL, col_set = NULL,
-  theta = seq(-2, 2, 1))
+plotRMSE(
+  ...,
+  title = NULL,
+  legend_title = NULL,
+  legend_labels = NULL,
+  lty_set = NULL,
+  col_set = NULL,
+  theta = seq(-2, 2, 1)
+)
 }
 \arguments{
 \item{...}{A series of RMSE values.}

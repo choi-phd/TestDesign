@@ -4,8 +4,18 @@
 \alias{theta_FB_single}
 \title{Calculate a fully Bayesian estimate of theta for a single item}
 \usage{
-theta_FB_single(nx, theta_init, theta_prop, item_mcmc, item_init, resp,
-  ncat, model, prior, prior_parm)
+theta_FB_single(
+  nx,
+  theta_init,
+  theta_prop,
+  item_mcmc,
+  item_init,
+  resp,
+  ncat,
+  model,
+  prior,
+  prior_parm
+)
 }
 \arguments{
 \item{nx}{The number of MCMC draws.}

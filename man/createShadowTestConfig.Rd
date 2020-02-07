@@ -6,11 +6,19 @@
 \alias{createShadowTestConfig}
 \title{createShadowTestConfig}
 \usage{
-createShadowTestConfig(item_selection = NULL, content_balancing = NULL,
-  MIP = NULL, MCMC = NULL, refresh_policy = NULL,
-  exposure_control = NULL, stopping_criterion = NULL,
-  interim_theta = NULL, final_theta = NULL, theta_grid = seq(-4, 4,
-  0.1), audit_trail = F)
+createShadowTestConfig(
+  item_selection = NULL,
+  content_balancing = NULL,
+  MIP = NULL,
+  MCMC = NULL,
+  refresh_policy = NULL,
+  exposure_control = NULL,
+  stopping_criterion = NULL,
+  interim_theta = NULL,
+  final_theta = NULL,
+  theta_grid = seq(-4, 4, 0.1),
+  audit_trail = F
+)
 }
 \arguments{
 \item{item_selection}{A list containing item selection criteria.

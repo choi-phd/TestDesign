@@ -11,8 +11,7 @@ EAP(object, prior, select = NULL, reset_prior = FALSE)
 
 \S4method{EAP}{test}(object, prior, select = NULL, reset_prior = FALSE)
 
-\S4method{EAP}{test_cluster}(object, prior, select = NULL,
-  reset_prior = FALSE)
+\S4method{EAP}{test_cluster}(object, prior, select = NULL, reset_prior = FALSE)
 }
 \arguments{
 \item{object}{A \code{\linkS4class{test}} or a \code{\linkS4class{test_cluster}} object.}

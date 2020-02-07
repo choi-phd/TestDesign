@@ -175,5 +175,6 @@ setMethod("show", "config_Static", function(object) {
   cat("    Time limit     :", object@MIP$time_limit, "\n")
   cat("    Gap limit      \n")
   cat("      Relative     :", object@MIP$gap_limit, "\n")
-  cat("      Absolute     :", object@MIP$gap_limit_abs, "\n\n")
+  cat("      Absolute     :", object@MIP$gap_limit_abs, "\n")
+  cat("    Obj. tolerance :", object@MIP$obj_tol, "\n\n")
 })

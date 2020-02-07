@@ -4,8 +4,7 @@
 \alias{calcRP}
 \title{Find matching theta to supplied probability}
 \usage{
-calcRP(object, rp = 0.5, max_iter = 100, conv = 1e-04,
-  start_theta = 0)
+calcRP(object, rp = 0.5, max_iter = 100, conv = 1e-04, start_theta = 0)
 }
 \arguments{
 \item{object}{An \code{\linkS4class{item_pool}} object.}
