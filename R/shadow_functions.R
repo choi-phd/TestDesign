@@ -1584,7 +1584,8 @@ setMethod(
 
             is_optimal <- isOptimal(optimal$status, config@MIP$solver)
             if (!is_optimal) {
-              stop(sprintf("MIP returned non-zero status: Examinee %i at position %i", j, position))
+              warning(notOptimal(optimal$status, config@MIP$solver))
+              stop(sprintf("MIP solver returned non-zero status at examinee %i position %i", j, position))
             }
 
             output@solve_time[position] <- optimal$solve_time
