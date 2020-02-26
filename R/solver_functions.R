@@ -119,7 +119,6 @@ runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
                 gap_limit_abs, gap_limit)
 
   if (!isOptimal(MIP$status, solver)) {
-    warning(notOptimal(MIP$status, solver))
     return(list(status = MIP$status, MIP = MIP, selected = NULL))
   }
 
