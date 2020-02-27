@@ -79,11 +79,6 @@ setMethod(
 
     results <- runAssembly(config, constraints, objective = objective)
 
-    is_optimal <- isOptimal(results$status, config@MIP$solver)
-    if (!is_optimal) {
-      warning(notOptimal(results$MIP$status, config@MIP$solver))
-    }
-
     return(list(
       MIP = results$MIP,
       selected = results$shadow_test, obj_value = results$obj_value,
@@ -212,11 +207,19 @@ setMethod(
 
     if (toupper(info_type) == "FISHER") {
       info <- calcFisher(object, theta)
-      if (plot_sum) {
-        info <- rowSums(info)
-      }
     } else {
       stop("Invalid info_type specified")
+    }
+
+    items <- 1:object@ni
+    if (!is.null(select) && all(select %in% items)) {
+      items <- select
+    }
+
+    info <- info[, items]
+
+    if (plot_sum) {
+      info <- rowSums(info)
     }
 
     if (!is.null(file_pdf)) {
@@ -227,21 +230,21 @@ setMethod(
     on.exit(par(mfrow = old_mfrow))
     par(mfrow = mfrow)
 
-    items <- 1:object@ni
-    if (!is.null(select) && all(select %in% items)) {
-      items <- select
-    }
-
     if (plot_sum) {
-      plot(theta, info, xlab = "Theta", ylab = "Info", main = sprintf("Information from all %i items", object@ni), type = "l", col = color, ylim = c(0, max(info)))
+      plot(theta, info, xlab = "Theta", ylab = "Info", main = sprintf("Information from all %i items", length(items)), type = "l", col = color, ylim = c(0, max(info)))
     } else {
-      for (i in items) {
-        plot(theta, info[, i], xlab = "Theta", ylab = "Info", main = object@id[i], type = "l", col = color, ylim = c(0, max(info)))
+      for (i in 1:length(items)) {
+        plot(theta, info[, i], xlab = "Theta", ylab = "Info", main = object@id[items[i]], type = "l", col = color, ylim = c(0, max(info)))
       }
     }
 
     if (!is.null(file_pdf)) {
       dev.off()
+    } else if (plot_sum) {
+      p <- recordPlot()
+      plot.new()
+      dev.off()
+      return(p)
     }
 
   }
