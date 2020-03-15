@@ -40,7 +40,7 @@ runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
   obj   <- numeric(nv)
   types <- rep("B", nv)
 
-  if (class(config) == "config_Static") {
+  if (inherits(config, "config_Static")) {
 
     sort_by_info <- FALSE
 
@@ -81,7 +81,7 @@ runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
 
   }
 
-  if (class(config) == "config_Shadow") {
+  if (inherits(config, "config_Shadow")) {
 
     if (all(length(objective) != nv, length(objective) != ni)) {
       stop(sprintf("length of 'objective' must be %s or %s", nv, ni))
