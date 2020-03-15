@@ -67,7 +67,7 @@ setMethod(
 #' @rdname item_pool.operators
 #' @export
 `==.pool_cluster` <- function(pool_cluster1, pool_cluster2) {
-  if (class(pool_cluster1) != "pool_cluster" || class(pool_cluster2) != "pool_cluster") stop("Operands must be 'pool_cluster' objects.")
+  if (!inherits(pool_cluster1, "pool_cluster") || !inherits(pool_cluster2, "pool_cluster")) stop("Operands must be 'pool_cluster' objects.")
   return(identical(pool_cluster1, pool_cluster2))
 }
 
@@ -119,7 +119,7 @@ setMethod(
 #' subtest <- subsetTest(test, 1:100)
 #' @export
 subsetTest <- function(test, select = NULL) {
-  if (class(test) != "test") {
+  if (!inherits(test, "test")) {
     stop("'test' must be a 'test' object.")
   }
   if (is.null(select)) {
@@ -705,7 +705,9 @@ makeItemPoolCluster <- function(pools, names = NULL) {
   pool_cluster@pools <- vector(mode = "list", length = np)
   pool_cluster@names <- names
   for (i in 1:np) {
-    if (class(pools[[i]]) != "item_pool") stop(paste0("pool.list[[", i, "]] is not of class \"item_pool\""))
+    if (!inherits(pools[[i]], "item_pool")) {
+      stop(paste0("pool.list[[", i, "]] is not of class \"item_pool\""))
+    }
     pool_cluster@pools[[i]] <- pools[[i]]
   }
   if (validObject(pool_cluster)) {
