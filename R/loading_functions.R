@@ -204,7 +204,7 @@ setClass("item_attrib",
 
 loadItemAttrib <- function(file, pool) {
 
-  if (is.null(pool) || class(pool) != "item_pool") {
+  if (is.null(pool) || !inherits(pool, "item_pool")) {
     stop("'pool' is missing or is not an 'item_pool' object.")
   }
 
@@ -487,7 +487,7 @@ setClass("constraints",
 
 loadConstraints <- function(file, pool, item_attrib, st_attrib = NULL) {
 
-  if (class(pool) != "item_pool") {
+  if (!inherits(pool, "item_pool")) {
     stop("'pool' must be an 'item_pool' object.")
   }
 

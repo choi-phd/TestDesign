@@ -29,7 +29,7 @@ setMethod(
   signature = "list",
   definition = function(object, examinee = NA, position = NA, index_only = TRUE) {
 
-    if (class(object$config) == 'config_Static') {
+    if (inherits(object$config, "config_Static")) {
       cat("Static Assembly : Selected items\n\n")
       tmp <- object$selected
       if (index_only) {
@@ -37,7 +37,7 @@ setMethod(
       }
       return(tmp)
     }
-    if (class(object$config) == 'config_Shadow') {
+    if (inherits(object$config, "config_Shadow")) {
       if (!is.na(examinee)) {
         if (is.na(position)) {
           cat(sprintf("Shadow Assembly : Administered items for examinee %i \n\n", examinee))
