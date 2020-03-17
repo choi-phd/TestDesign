@@ -3,27 +3,52 @@ NULL
 
 #' Load item paramaters
 #'
-#' Read item parameters from a .csv file or a data.frame and create an \linkS4class{item_pool} class.
+#' \code{\link{loadItemPool}} is a data loading function to create an \linkS4class{item_pool} class.
+#' \code{\link{loadItemPool}} can read item parameters and standard errors from a data.frame or a .csv file.
 #'
-#' @param file File path of a .csv file containing item parameters. The file content should at least include columns 'ID' and 'MODEL'.
-#' @param ipar A data.frame containing the item parameters. If supplied, this argument is used over 'file'.
-#' @param se_file File path of a .csv file containing standard errors.
-#' @return An \linkS4class{item_pool} object.
+#' @param ipar Item parameters. Can be a data.frame or the file path of a .csv file. The content should at least include columns 'ID' and 'MODEL'.
+#' @param ipar_se (Optional) Standard errors. Can be a data.frame or file path of a .csv file.
+#' @param file (Deprecated) Use 'ipar' above.
+#' @param se_file (Deprecated) Use 'ipar_se' above.
+#'
+#' @return An \code{\linkS4class{item_pool}} object.
 #'
 #' @examples
-#' ## Write to tempdir() and clean afterwards
+#' ## Read from data.frame:
+#' itempool_science <- loadItemPool(itempool_science_data)
+#'
+#' ## Read from file: write to tempdir() for illustration and clean afterwards
 #' f <- file.path(tempdir(), "itempool_science.csv")
 #' write.csv(itempool_science_data, f, row.names = FALSE)
 #' itempool_science <- loadItemPool(f)
 #' file.remove(f)
 #'
+#' ## TestDesign 1.1.0 - Deprecated arguments
+#' \dontrun{
+#' loadItemPool(ipar = "ipar.csv", ipar_se = "se.csv") # is equivalent to
+#' loadItemPool(file = "ipar.csv", se_file = "se.csv") # pre 1.1.0
+#' }
+#'
 #' @seealso \link{dataset_science} for example usage.
 #'
 #' @export
-loadItemPool <- function(file, ipar = NULL, se_file = NULL) {
+loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL) {
 
-  if (is.null(ipar)) {
-    ipar <- read.csv(file, header = TRUE, as.is = TRUE)
+  if (!missing("se_file")){
+    warning("Argument deprecated. Use 'ipar_se' instead.")
+    ipar_se <- se_file
+  }
+  if (!missing("file")){
+    warning("Argument deprecated. Use 'ipar' instead.")
+    ipar <- file
+  }
+
+  if (!is.null(ipar)) {
+    if (inherits(ipar, "data.frame")) {
+      ipar <- ipar
+    } else if (inherits(ipar, "character")) {
+      ipar <- read.csv(ipar, header = TRUE, as.is = TRUE)
+    }
   }
 
   pool       <- new("item_pool")
@@ -38,12 +63,19 @@ loadItemPool <- function(file, ipar = NULL, se_file = NULL) {
   valid      <- logical(ni)
   pool@ipar  <- matrix(NA, nrow = ni, ncol = max(nfields) - 2)
 
-  if (!is.null(se_file)) {
-    ipar_se  <- read.csv(se_file, header = TRUE, as.is = TRUE)
-    load_se  <- TRUE
-    se      <- matrix(NA, nrow = ni, ncol = max(nfields) - 2)
-  } else {
-    load_se <- FALSE
+  load_se <- FALSE
+
+  if (!is.null(ipar_se)) {
+    if (inherits(ipar_se, "data.frame")) {
+      ipar_se <- ipar_se
+      load_se <- TRUE
+    } else if (inherits(ipar_se, "character")) {
+      ipar_se <- read.csv(ipar_se, header = TRUE, as.is = TRUE)
+    }
+  }
+
+  if (load_se) {
+    se <- matrix(NA, nrow = ni, ncol = max(nfields) - 2)
   }
 
   for (i in 1:ni) {
