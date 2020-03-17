@@ -177,3 +177,30 @@ setMethod("show", "config_Static", function(object) {
   cat("      Absolute     :", object@MIP$gap_limit_abs, "\n")
   cat("    Obj. tolerance :", object@MIP$obj_tol, "\n\n")
 })
+
+#' An S4 class to represent the output from Static()
+#'
+#' @rdname Static
+setClass("output_Static",
+  slots = c(
+    MIP         = "list_or_null",
+    selected    = "dataframe_or_null",
+    obj_value   = "numeric_or_null",
+    solve_time  = "numeric_or_null",
+    pool        = "item_pool",
+    config      = "config_Static",
+    constraints = "constraints"
+  ),
+  prototype = list(
+    MIP         = NULL,
+    selected    = NULL,
+    obj_value   = -1,
+    solve_time  = -1,
+    pool        = new("item_pool"),
+    config      = new("config_Static"),
+    constraints = new("constraints")
+  ),
+  validity = function(object) {
+    return(TRUE)
+  }
+)
