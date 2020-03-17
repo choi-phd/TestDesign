@@ -332,10 +332,7 @@ setMethod("summary", "item_attrib", function(object) {
 
 })
 
-#' An S4 class to represent a set of constraints.
-#'
-#' @slot slope Numeric. A slope parameter value.
-#' @slot difficulty Numeric. A difficulty parameter value.
+#' @rdname loadStAttrib
 
 setClass("st_attrib",
   slots = c(
@@ -367,40 +364,47 @@ setClassUnion("stattrib_or_null", c("st_attrib", "NULL"))
 #'
 #' Read set, stimulus, or passage attributes from specified file.
 #'
-#' @param file Character. The name of the file containing stimulus attributes.
+#' @param object Set attributes. Can be a file path of a .csv file, or a data.frame. The content should at least include the column 'STID' referring to the same column in item attributes.
 #' @param item_attrib An \code{\linkS4class{item_attrib}} object containing item attributes. Use \code{\link{loadItemAttrib}} for this.
+#' @param file (Deprecated) Use 'object' above.
 #'
 #' @return A \code{\linkS4class{st_attrib}} object containing stimulus attributes.
 #'
 #' @examples
-#' ## Write to tempdir() and clean afterwards
-#' f <- file.path(tempdir(), "itempool_reading.csv")
-#' write.csv(itempool_reading_raw, f, row.names = FALSE)
-#' itempool_reading <- loadItemPool(f)
-#' file.remove(f)
+#' ## Read from data.frame:
+#' itempool_reading   <- loadItemPool(itempool_reading_raw)
+#' itemattrib_reading <- loadItemAttrib(itemattrib_reading_raw, itempool_reading)
+#' stimattrib_reading <- loadStAttrib(stimattrib_reading_raw, itemattrib_reading)
 #'
-#' f <- file.path(tempdir(), "itemattrib_reading.csv")
-#' write.csv(itemattrib_reading_raw, f, row.names = FALSE)
-#' itemattrib_reading <- loadItemAttrib(f, itempool_reading)
-#' file.remove(f)
-#'
+#' ## Read from file: write to tempdir() for illustration and clean afterwards
 #' f <- file.path(tempdir(), "stimattrib_reading.csv")
 #' write.csv(stimattrib_reading_raw, f, row.names = FALSE)
 #' stimattrib_reading <- loadStAttrib(f, itemattrib_reading)
-#' file.remove(f)
-#'
-#' f <- file.path(tempdir(), "constraints_reading.csv")
-#' write.csv(constraints_reading_raw, f, row.names = FALSE)
-#' constraints_reading <- loadConstraints(f,
-#'   itempool_reading, itemattrib_reading, stimattrib_reading)
 #' file.remove(f)
 #'
 #' @seealso \link{dataset_reading} for example usage.
 #'
 #' @export
 
-loadStAttrib <- function(file, item_attrib) {
-  st_attrib <- read.csv(file, header = TRUE, as.is = TRUE)
+loadStAttrib <- function(object, item_attrib, file = NULL) {
+
+  if (is.null(item_attrib) || !inherits(item_attrib, "item_attrib")) {
+    stop("'item_attrib' is missing or is not an 'item_attrib' object.")
+  }
+
+  if (!missing("file")){
+    warning("Argument deprecated. Use 'object' instead.")
+    object <- file
+  }
+
+  if (!is.null(object)) {
+    if (inherits(object, "data.frame")) {
+      st_attrib <- object
+    } else if (inherits(object, "character")) {
+      st_attrib <- read.csv(object, header = TRUE, as.is = TRUE)
+    }
+  }
+
   names(st_attrib) <- toupper(names(st_attrib))
 
   if (is.numeric(st_attrib[["STID"]])) {
@@ -415,7 +419,7 @@ loadStAttrib <- function(file, item_attrib) {
     stop("'item_attrib' must have 'STID' column.")
   }
   if (!all(unique(na.omit(item_attrib@data[["STID"]])) %in% st_attrib[["STID"]])) {
-    stop("'file' content must include all 'STID' entries used in 'STID' column of 'item_attrib' content.")
+    stop("The 'STID' column in 'st_attrib' content must have all unique values in the 'STID' column of 'item_attrib' content.")
   }
 
   out <- new("st_attrib")
