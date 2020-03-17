@@ -4,21 +4,16 @@
 \alias{buildConstraints}
 \title{Build constraints}
 \usage{
-buildConstraints(
-  pool,
-  file_constraints,
-  file_item_attrib,
-  file_st_attrib = NULL
-)
+buildConstraints(pool, constraints, item_attrib, st_attrib = NULL)
 }
 \arguments{
 \item{pool}{An \code{item_pool} object. Use \code{\link{loadItemPool}} for this.}
 
-\item{file_constraints}{Character. The name of the file containing constraint specifications.}
+\item{constraints}{Constraint specifications. Can be a file path of a .csv file, or a data.frame.}
 
-\item{file_item_attrib}{Character. The name of the file containing item attributes.}
+\item{item_attrib}{Item attributes. Can be a file path of a .csv file, or a data.frame. The content should at least include the column 'ID' matching to the item pool.}
 
-\item{file_st_attrib}{(Optional) Character. The name of the file containing set attributes.}
+\item{st_attrib}{(Optional) Set attributes. Can be a file path of a .csv file, or a data.frame. The content should at least include the column 'STID' referring to the same column in item attributes.}
 }
 \value{
 A list containing the parsed constraints, to be used in \code{\link{Static}} and \code{\link{Shadow}}.

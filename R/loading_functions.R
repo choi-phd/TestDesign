@@ -1297,9 +1297,9 @@ updateConstraints <- function(object, on = NULL, off = NULL) {
 #' Read constraints from specified files.
 #'
 #' @param pool An \code{item_pool} object. Use \code{\link{loadItemPool}} for this.
-#' @param file_constraints Character. The name of the file containing constraint specifications.
-#' @param file_item_attrib Character. The name of the file containing item attributes.
-#' @param file_st_attrib (Optional) Character. The name of the file containing set attributes.
+#' @param constraints Constraint specifications. Can be a file path of a .csv file, or a data.frame.
+#' @param item_attrib Item attributes. Can be a file path of a .csv file, or a data.frame. The content should at least include the column 'ID' matching to the item pool.
+#' @param st_attrib (Optional) Set attributes. Can be a file path of a .csv file, or a data.frame. The content should at least include the column 'STID' referring to the same column in item attributes.
 #'
 #' @return A list containing the parsed constraints, to be used in \code{\link{Static}} and \code{\link{Shadow}}.
 #'
@@ -1317,13 +1317,13 @@ updateConstraints <- function(object, on = NULL, off = NULL) {
 #'
 #' @export
 
-buildConstraints <- function(pool, file_constraints, file_item_attrib, file_st_attrib = NULL) {
-  item_attrib <- loadItemAttrib(file_item_attrib, pool)
-  if (!is.null(file_st_attrib)) {
-    st_attrib <- loadStAttrib(file_st_attrib, item_attrib)
+buildConstraints <- function(pool, constraints, item_attrib, st_attrib = NULL) {
+  item_attrib <- loadItemAttrib(item_attrib, pool)
+  if (!is.null(st_attrib)) {
+    st_attrib <- loadStAttrib(st_attrib, item_attrib)
   } else {
     st_attrib <- NULL
   }
-  constraints <- loadConstraints(file_constraints, pool, item_attrib, st_attrib)
+  constraints <- loadConstraints(constraints, pool, item_attrib, st_attrib)
   return(constraints)
 }
