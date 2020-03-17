@@ -4,23 +4,28 @@
 \alias{loadItemPool}
 \title{Load item paramaters}
 \usage{
-loadItemPool(file, ipar = NULL, se_file = NULL)
+loadItemPool(ipar, ipar_se = NULL, file = NULL, se_file = NULL)
 }
 \arguments{
-\item{file}{File path of a .csv file containing item parameters. The file content should at least include columns 'ID' and 'MODEL'.}
+\item{ipar}{Item parameters. Can be a file path of a .csv file, or a data.frame. The content should at least include columns 'ID' and 'MODEL'.}
 
-\item{ipar}{A data.frame containing the item parameters. If supplied, this argument is used over 'file'.}
+\item{ipar_se}{(Optional) Standard errors. Can be a file path of a .csv file, or a data.frame.}
 
-\item{se_file}{File path of a .csv file containing standard errors.}
+\item{file}{(Deprecated) Use 'ipar' above.}
+
+\item{se_file}{(Deprecated) Use 'ipar_se' above.}
 }
 \value{
 An \linkS4class{item_pool} object.
 }
 \description{
-Read item parameters from a .csv file or a data.frame and create an \linkS4class{item_pool} class.
+Read item parameters from a data.frame or a .csv file and create an \linkS4class{item_pool} class.
 }
 \examples{
-## Write to tempdir() and clean afterwards
+## Read from data.frame:
+itempool_science <- loadItemPool(itempool_science_raw)
+
+## Read from file: write to tempdir() for illustration and clean afterwards
 f <- file.path(tempdir(), "itempool_science.csv")
 write.csv(itempool_science_raw, f, row.names = FALSE)
 itempool_science <- loadItemPool(f)
