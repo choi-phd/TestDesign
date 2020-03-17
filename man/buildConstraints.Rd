@@ -2,40 +2,60 @@
 % Please edit documentation in R/loading_functions.R
 \name{buildConstraints}
 \alias{buildConstraints}
-\title{Build constraints}
+\title{Build constraints (shortcut to other loading functions)}
 \usage{
 buildConstraints(
-  pool,
-  file_constraints,
-  file_item_attrib,
-  file_st_attrib = NULL
+  object,
+  item_pool,
+  item_attrib,
+  st_attrib = NULL,
+  pool = NULL,
+  constraints = NULL
 )
 }
 \arguments{
-\item{pool}{An \code{item_pool} object. Use \code{\link{loadItemPool}} for this.}
+\item{object}{constraint specifications. Can be a data.frame or the file path of a .csv file. See the vignette for the expected format.}
 
-\item{file_constraints}{Character. The name of the file containing constraint specifications.}
+\item{item_pool}{item parameters. Can be a \code{\linkS4class{item_pool}} object, a data.frame or the file path of a .csv file.}
 
-\item{file_item_attrib}{Character. The name of the file containing item attributes.}
+\item{item_attrib}{item attributes. Can be an \code{\linkS4class{item_attrib}} object, a data.frame or the file path of a .csv file.}
 
-\item{file_st_attrib}{(Optional) Character. The name of the file containing set attributes.}
+\item{st_attrib}{(optional) stimulus attributes. Can be an \code{\linkS4class{st_attrib}} object, a data.frame or the file path of a .csv file.}
+
+\item{pool}{(deprecated) use \code{item_pool} argument instead.}
+
+\item{constraints}{(deprecated) use \code{object} argument instead.}
 }
 \value{
-A list containing the parsed constraints, to be used in \code{\link{Static}} and \code{\link{Shadow}}.
+\code{\link{buildConstraints}} returns a \code{\linkS4class{constraints}} object. This object is used in \code{\link{Static}} and \code{\link{Shadow}}.
 }
 \description{
-Read constraints from specified files.
+\code{\link{buildConstraints}} is a data loading function to create a \code{\linkS4class{constraints}} object.
+\code{\link{buildConstraints}} is a shortcut that calls other data loading functions.
+The constraints must be in the expected format; see the vignette in \code{vignette("constraints")}.
 }
 \examples{
-## Write to tempdir() and clean afterwards
+## Read from objects:
+constraints_science <- buildConstraints(constraints_science_data,
+  itempool_science, itemattrib_science)
+constraints_reading <- buildConstraints(constraints_reading_data,
+  itempool_reading, itemattrib_reading, stimattrib_reading)
+
+## Read from data.frame:
+constraints_science <- buildConstraints(constraints_science_data,
+  itempool_science_data, itemattrib_science_data)
+constraints_reading <- buildConstraints(constraints_reading_data,
+  itempool_reading_data, itemattrib_reading_data, stimattrib_reading_data)
+
+## Read from file: write to tempdir() for illustration and clean afterwards
 f1 <- file.path(tempdir(), "constraints_science.csv")
+f2 <- file.path(tempdir(), "itempool_science.csv")
+f3 <- file.path(tempdir(), "itemattrib_science.csv")
 write.csv(constraints_science_data, f1, row.names = FALSE)
-f2 <- file.path(tempdir(), "itemattrib_science.csv")
-write.csv(itemattrib_science_data, f2, row.names = FALSE)
-
-constraints <- buildConstraints(itempool_science, f1, f2)
-
+write.csv(itempool_science_data   , f2, row.names = FALSE)
+write.csv(itemattrib_science_data , f3, row.names = FALSE)
+constraints_science <- buildConstraints(f1, f2, f3)
 file.remove(f1)
 file.remove(f2)
-
+file.remove(f3)
 }
