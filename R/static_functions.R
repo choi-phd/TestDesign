@@ -79,12 +79,16 @@ setMethod(
 
     results <- runAssembly(config, constraints, objective = objective)
 
-    return(list(
-      MIP = results$MIP,
-      selected = results$shadow_test, obj_value = results$obj_value,
-      solve_time = results$solve_time,
-      pool = pool, config = config, constraints = constraints
-    ))
+    out             <- new("output_Static")
+    out@MIP         <- list(results$MIP)
+    out@selected    <- results$shadow_test
+    out@obj_value   <- results$obj_value
+    out@solve_time  <- results$solve_time
+    out@pool        <- pool
+    out@config      <- config
+    out@constraints <- constraints
+
+    return(out)
 
   }
 )
