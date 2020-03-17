@@ -198,10 +198,7 @@ setMethod("summary", "item_pool", function(object) {
 
 })
 
-#' An S4 class to represent a set of constraints.
-#'
-#' @slot slope Numeric. A slope parameter value.
-#' @slot difficulty Numeric. A difficulty parameter value.
+#' @rdname loadItemAttrib
 
 setClass("item_attrib",
   slots = c(
@@ -231,18 +228,18 @@ setClass("item_attrib",
 #'
 #' Read item attributes from specified file.
 #'
-#' @param file Character. The name of the file containing item attributes.
+#' @param object Item attributes. Can be a file path of a .csv file, or a data.frame. The content should at least include the column 'ID' matching to the item pool.
 #' @param pool An \code{\linkS4class{item_pool}} object. Use \code{\link{loadItemPool}} for this.
+#' @param file (Deprecated) Use 'object' above.
 #'
 #' @return An \code{\linkS4class{item_attrib}} object.
 #'
 #' @examples
-#' ## Write to tempdir() and clean afterwards
-#' f <- file.path(tempdir(), "itempool_science.csv")
-#' write.csv(itempool_science_raw, f, row.names = FALSE)
-#' itempool_science <- loadItemPool(f)
-#' file.remove(f)
+#' ## Read from data.frame:
+#' itempool_science   <- loadItemPool(itempool_science_raw)
+#' itemattrib_science <- loadItemAttrib(itemattrib_science_raw, itempool_science)
 #'
+#' ## Read from file: write to tempdir() for illustration and clean afterwards
 #' f <- file.path(tempdir(), "itemattrib_science.csv")
 #' write.csv(itemattrib_science_raw, f, row.names = FALSE)
 #' itemattrib_science <- loadItemAttrib(f, itempool_science)
@@ -252,13 +249,24 @@ setClass("item_attrib",
 #'
 #' @export
 
-loadItemAttrib <- function(file, pool) {
+loadItemAttrib <- function(object, pool, file = NULL) {
 
   if (is.null(pool) || !inherits(pool, "item_pool")) {
     stop("'pool' is missing or is not an 'item_pool' object.")
   }
 
-  item_attrib <- read.csv(file, header = TRUE, as.is = TRUE)
+  if (!missing("file")){
+    warning("Argument deprecated. Use 'object' instead.")
+    object <- file
+  }
+  if (!is.null(object)) {
+    if (inherits(object, "data.frame")) {
+      item_attrib <- object
+    } else if (inherits(object, "character")) {
+      item_attrib <- read.csv(object, header = TRUE, as.is = TRUE)
+    }
+  }
+
   names(item_attrib) <- toupper(names(item_attrib))
 
   if (is.numeric(item_attrib[["ID"]])) {
@@ -266,7 +274,7 @@ loadItemAttrib <- function(file, pool) {
   }
 
   if (!all(sort(pool@id) == sort(item_attrib[["ID"]]))) {
-    stop("The 'ID' values in 'file' content must match pool@id.")
+    stop("The 'ID' values must match pool@id.")
   } else if (!all(pool@id == item_attrib[["ID"]])) {
     item_attrib <- merge(data.frame(ID = pool@id), item_attrib, by = "ID")[, names(item_attrib)] # re-ordering cols in attrib
   }
@@ -277,7 +285,7 @@ loadItemAttrib <- function(file, pool) {
   item_attrib <- data.frame(cbind(INDEX = 1:nrow(item_attrib), item_attrib))
 
   if (nrow(item_attrib) != pool@ni) {
-    stop("The number of rows of 'file' content must match pool@ni.")
+    stop("The number of rows must match pool@ni.")
   }
 
   if ("STID" %in% names(item_attrib)) {
