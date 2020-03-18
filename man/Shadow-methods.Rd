@@ -47,7 +47,7 @@ Perform adaptive test assembly based on generalized shadow-test approach, with s
 config <- createShadowTestConfig()
 true_theta <- rnorm(1)
 solution <- Shadow(config, constraints_science, true_theta)
-solution$output
+solution@output
 }
 \references{
 {

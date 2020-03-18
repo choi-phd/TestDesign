@@ -765,7 +765,7 @@ makeItemPoolCluster <- function(pools, names = NULL) {
 #' config <- createShadowTestConfig()
 #' true_theta <- rnorm(1)
 #' solution <- Shadow(config, constraints_science, true_theta)
-#' solution$output
+#' solution@output
 #' @export
 
 setGeneric(
@@ -2312,15 +2312,27 @@ setMethod(
       freq_infeasible <- NULL
     }
 
-    return(
-      list(
-        output = output_list, pool = pool, config = config, true_theta = true_theta, constraints = constraints,
-        prior = prior, prior_par = prior_par, data = test@data, final_theta_est = final_theta_est, final_se_est = final_se_est,
-        exposure_rate = exposure_rate, usage_matrix = usage_matrix, true_segment_count = true_segment_count, est_segment_count = est_segment_count,
-        eligibility_stats = eligibility_stats, check_eligibility_stats = check_eligibility_stats, no_fading_eligibility_stats = no_fading_eligibility_stats,
-        freq_infeasible = freq_infeasible
-      )
-    )
+    out                             <- new("output_Shadow_all")
+    out@output                      <- output_list
+    out@pool                        <- pool
+    out@config                      <- config
+    out@true_theta                  <- true_theta
+    out@constraints                 <- constraints
+    out@prior                       <- prior
+    out@prior_par                   <- prior_par
+    out@data                        <- test@data
+    out@final_theta_est             <- final_theta_est
+    out@final_se_est                <- final_se_est
+    out@exposure_rate               <- exposure_rate
+    out@usage_matrix                <- usage_matrix
+    out@true_segment_count          <- true_segment_count
+    out@est_segment_count           <- est_segment_count
+    out@eligibility_stats           <- eligibility_stats
+    out@check_eligibility_stats     <- check_eligibility_stats
+    out@no_fading_eligibility_stats <- no_fading_eligibility_stats
+    out@freq_infeasible             <- freq_infeasible
+
+    return(out)
   }
 )
 
@@ -3186,18 +3198,18 @@ setGeneric(
 #' @export
 setMethod(
   f = "plotShadow",
-  signature = "list",
+  signature = "output_Shadow_all",
   definition = function(object, examinee_id = 1, sort_by_difficulty = FALSE, file_pdf = NULL, simple = FALSE, ...) {
 
     if (!is.null(file_pdf)) {
       pdf(file = file_pdf, bg = "white")
     }
 
-    constraints <- object$constraints
+    constraints <- object@constraints
 
     for (id in examinee_id) {
 
-      examinee_output <- object$output[[id]]
+      examinee_output <- object@output[[id]]
 
       max_ni <- constraints@test_length
       ni     <- constraints@ni
@@ -3419,16 +3431,16 @@ setGeneric(
 #' @export
 setMethod(
   f = "plotCAT",
-  signature = "list",
+  signature = "output_Shadow_all",
   definition = function(object, examinee_id = 1, min_theta = -5, max_theta = 5, min_score = 0, max_score = 1, z_ci = 1.96, file_pdf = NULL, ...) {
     if (!is.null(file_pdf)) {
       pdf(file = file_pdf, bg = "white")
     }
     for (i in examinee_id) {
       plotCAT(
-        object$output[[i]], examinee_id,
+        object@output[[i]], examinee_id,
         min_theta = min_theta, max_theta = max_theta,
-        min_score = min_score, max_score = object$pool@max_cat - 1,
+        min_score = min_score, max_score = object@pool@max_cat - 1,
         z_ci = z_ci, file_pdf = NULL, ...)
     }
     if (!is.null(file_pdf)) {

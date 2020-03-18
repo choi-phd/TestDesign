@@ -454,6 +454,55 @@ setMethod("show", "config_Shadow", function(object) {
   cat("\n  audit_trail : ", object@audit_trail, "\n")
 })
 
+#' An S4 class to represent the output from Shadow()
+#'
+#' @noRd
+setClass("output_Shadow_all",
+  slots = c(
+    output = "list_or_null",
+    pool = "item_pool",
+    config = "config_Shadow",
+    true_theta = "numeric_or_null",
+    constraints = "constraints",
+    prior = "numeric_or_null",
+    prior_par = "numeric_or_null",
+    data = "matrix_or_null",
+    final_theta_est = "numeric_or_null",
+    final_se_est = "numeric_or_null",
+    exposure_rate = "matrix_or_null",
+    usage_matrix = "matrix_or_null",
+    true_segment_count = "numeric_or_null",
+    est_segment_count = "numeric_or_null",
+    eligibility_stats = "list_or_null",
+    check_eligibility_stats = "list_or_null",
+    no_fading_eligibility_stats = "list_or_null",
+    freq_infeasible = "table"
+  ),
+  prototype = list(
+    output = NULL,
+    pool = new("item_pool"),
+    config = new("config_Shadow"),
+    true_theta = NULL,
+    constraints = new("constraints"),
+    prior = NULL,
+    prior_par = NULL,
+    data = NULL,
+    final_theta_est = NULL,
+    final_se_est = NULL,
+    exposure_rate = NULL,
+    usage_matrix = NULL,
+    true_segment_count = NULL,
+    est_segment_count = NULL,
+    eligibility_stats = NULL,
+    check_eligibility_stats = NULL,
+    no_fading_eligibility_stats = NULL,
+    freq_infeasible = new("table")
+  ),
+  validity = function(object) {
+    return(TRUE)
+  }
+)
+
 #' output_Shadow
 #'
 #' @slot simulee_id Numeric. The index of the simulee.
