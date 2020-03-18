@@ -57,5 +57,5 @@ mle(
 Generate maximum likelihood estimates of theta.
 }
 \examples{
-mle(itempool_fatigue, resp_fatigue_raw[10,])
+mle(itempool_fatigue, resp_fatigue_data[10,])
 }
