@@ -134,15 +134,15 @@ setGeneric(
 
 setMethod(
   f = "plotInfo",
-  signature = "list",
+  signature = "output_Static",
   definition = function(object, theta = seq(-3, 3, .1), info_type = "FISHER", plot_sum = TRUE, select = NULL, color = "blue", file_pdf = NULL, width = 7, height = 6, mfrow = c(2, 4)) {
 
-    config      <- object$config
-    constraints <- object$constraints
+    config      <- object@config
+    constraints <- object@constraints
     continuum   <- theta
     continuum   <- sort(c(continuum, config@item_selection$target_location))
 
-    idx <- which(object$MIP$solution[1:constraints@ni] == 1)
+    idx <- which(object@MIP[[1]]$solution[1:constraints@ni] == 1)
 
     if (toupper(config@item_selection$method) == "MAXINFO") {
       mat_sub <- calcFisher(constraints@pool, continuum)[, idx]
