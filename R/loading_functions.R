@@ -21,6 +21,7 @@ NULL
 #' @seealso \link{dataset_science} for example usage.
 #'
 #' @export
+
 loadItemPool <- function(file, ipar = NULL, se_file = NULL) {
 
   if (is.null(ipar)) {
@@ -148,6 +149,29 @@ loadItemPool <- function(file, ipar = NULL, se_file = NULL) {
   }
 }
 
+#' summary
+#'
+#' @param object An \linkS4class{item_pool} object.
+#'
+#' @name summary-method
+#' @aliases summary,item_pool-method
+#' @docType methods
+#' @export
+
+setMethod("summary", "item_pool", function(object) {
+
+  n_digits = max(floor(log(object@ni, 10)) + 2, 5)
+
+  cat("Item pool\n")
+  cat(sprintf("  # of items :% *i\n", n_digits, object@ni))
+
+  tmp <- table(object@model)
+  for (i in 1:length(tmp)) {
+    cat(sprintf(" %11s :% *i\n", row.names(tmp)[i], n_digits, tmp[i]))
+  }
+
+})
+
 #' An S4 class to represent a set of constraints.
 #'
 #' @slot slope Numeric. A slope parameter value.
@@ -248,6 +272,31 @@ loadItemAttrib <- function(file, pool) {
   }
 }
 
+#' summary
+#'
+#' @name summary-method
+#' @aliases summary,item_attrib-method
+#' @docType methods
+#' @export
+
+setMethod("summary", "item_attrib", function(object) {
+
+  attribs <- names(object@data)
+
+  cat("Item attributes\n")
+  cat(sprintf("  # of attributes : %i\n", length(attribs)))
+
+  for (a in attribs) {
+    lvls <- sort(unique(object@data[[a]]))
+    if (length(lvls) <= 10) {
+      lvl_txt <- paste0(lvls, collapse = " ")
+    } else {
+      lvl_txt <- sprintf("(%i levels)", length(lvls))
+    }
+    cat(sprintf(" %16s : %s\n", a, lvl_txt))
+  }
+
+})
 
 #' An S4 class to represent a set of constraints.
 #'
