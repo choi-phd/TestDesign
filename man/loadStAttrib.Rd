@@ -20,22 +20,22 @@ Read set, stimulus, or passage attributes from specified file.
 \examples{
 ## Write to tempdir() and clean afterwards
 f <- file.path(tempdir(), "itempool_reading.csv")
-write.csv(itempool_reading_raw, f, row.names = FALSE)
+write.csv(itempool_reading_data, f, row.names = FALSE)
 itempool_reading <- loadItemPool(f)
 file.remove(f)
 
 f <- file.path(tempdir(), "itemattrib_reading.csv")
-write.csv(itemattrib_reading_raw, f, row.names = FALSE)
+write.csv(itemattrib_reading_data, f, row.names = FALSE)
 itemattrib_reading <- loadItemAttrib(f, itempool_reading)
 file.remove(f)
 
 f <- file.path(tempdir(), "stimattrib_reading.csv")
-write.csv(stimattrib_reading_raw, f, row.names = FALSE)
+write.csv(stimattrib_reading_data, f, row.names = FALSE)
 stimattrib_reading <- loadStAttrib(f, itemattrib_reading)
 file.remove(f)
 
 f <- file.path(tempdir(), "constraints_reading.csv")
-write.csv(constraints_reading_raw, f, row.names = FALSE)
+write.csv(constraints_reading_data, f, row.names = FALSE)
 constraints_reading <- loadConstraints(f,
   itempool_reading, itemattrib_reading, stimattrib_reading)
 file.remove(f)

@@ -3,11 +3,11 @@
 \docType{data}
 \name{dataset_fatigue}
 \alias{dataset_fatigue}
-\alias{itempool_fatigue_raw}
-\alias{itemattrib_fatigue_raw}
-\alias{itemcontent_fatigue_raw}
-\alias{constraints_fatigue_raw}
-\alias{resp_fatigue_raw}
+\alias{itempool_fatigue_data}
+\alias{itemattrib_fatigue_data}
+\alias{itemcontent_fatigue_data}
+\alias{constraints_fatigue_data}
+\alias{resp_fatigue_data}
 \alias{itempool_fatigue}
 \alias{itemattrib_fatigue}
 \alias{constraints_fatigue}
@@ -25,39 +25,39 @@ This pool is associated with the following objects:
 
 Also, the following datasets are intended for illustrating expected data structures. See examples below.
 \itemize{
-  \item \code{itempool_fatigue_raw} Item parameters.
-  \item \code{itemattrib_fatigue_raw} Item attributes.
-  \item \code{itemcontent_fatigue_raw} Item contents.
-  \item \code{constraints_fatigue_raw} Constraints.
-  \item \code{resp_fatigue_raw} Raw response data.
+  \item \code{itempool_fatigue_data} Item parameters.
+  \item \code{itemattrib_fatigue_data} Item attributes.
+  \item \code{itemcontent_fatigue_data} Item contents.
+  \item \code{constraints_fatigue_data} Constraints.
+  \item \code{resp_fatigue_data} Raw response data.
 }
 }
 \examples{
 ## Write to tempdir() and clean afterwards
 f <- file.path(tempdir(), "itempool_fatigue.csv")
-write.csv(itempool_fatigue_raw, f, row.names = FALSE)
+write.csv(itempool_fatigue_data, f, row.names = FALSE)
 itempool_fatigue <- loadItemPool(f)
 file.remove(f)
 
 f <- file.path(tempdir(), "itemattrib_fatigue.csv")
-write.csv(itemattrib_fatigue_raw, f, row.names = FALSE)
+write.csv(itemattrib_fatigue_data, f, row.names = FALSE)
 itemattrib_fatigue <- loadItemAttrib(f, itempool_fatigue)
 file.remove(f)
 
 f <- file.path(tempdir(), "constraints_fatigue.csv")
-write.csv(constraints_fatigue_raw, f, row.names = FALSE)
+write.csv(constraints_fatigue_data, f, row.names = FALSE)
 constraints_fatigue <- loadConstraints(f,
   itempool_fatigue, itemattrib_fatigue)
 file.remove(f)
 
 ## Item contents for use in shiny app
 f <- file.path(tempdir(), "itemcontent_fatigue.csv")
-write.csv(itemcontent_fatigue_raw, f, row.names = FALSE)
+write.csv(itemcontent_fatigue_data, f, row.names = FALSE)
 file.remove(f)
 
 ## Raw item responses for reference
 f <- file.path(tempdir(), "resp_fatigue.csv")
-write.table(resp_fatigue_raw, f, row.names = FALSE, col.names = FALSE, sep = ",")
+write.table(resp_fatigue_data, f, row.names = FALSE, col.names = FALSE, sep = ",")
 file.remove(f)
 
 }

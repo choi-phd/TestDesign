@@ -3,9 +3,9 @@
 \docType{data}
 \name{dataset_science}
 \alias{dataset_science}
-\alias{itempool_science_raw}
-\alias{itemattrib_science_raw}
-\alias{constraints_science_raw}
+\alias{itempool_science_data}
+\alias{itemattrib_science_data}
+\alias{constraints_science_data}
 \alias{itempool_science}
 \alias{itemattrib_science}
 \alias{constraints_science}
@@ -23,25 +23,25 @@ This pool is associated with the following objects:
 
 Also, the following datasets are intended for illustrating expected data structures. See examples below.
 \itemize{
-  \item \code{itempool_science_raw} Item parameters.
-  \item \code{itemattrib_science_raw} Item attributes.
-  \item \code{constraints_science_raw} Constraints.
+  \item \code{itempool_science_data} Item parameters.
+  \item \code{itemattrib_science_data} Item attributes.
+  \item \code{constraints_science_data} Constraints.
 }
 }
 \examples{
 ## Write to tempdir() and clean afterwards
 f <- file.path(tempdir(), "itempool_science.csv")
-write.csv(itempool_science_raw, f, row.names = FALSE)
+write.csv(itempool_science_data, f, row.names = FALSE)
 itempool_science <- loadItemPool(f)
 file.remove(f)
 
 f <- file.path(tempdir(), "itemattrib_science.csv")
-write.csv(itemattrib_science_raw, f, row.names = FALSE)
+write.csv(itemattrib_science_data, f, row.names = FALSE)
 itemattrib_science <- loadItemAttrib(f, itempool_science)
 file.remove(f)
 
 f <- file.path(tempdir(), "constraints_science.csv")
-write.csv(constraints_science_raw, f, row.names = FALSE)
+write.csv(constraints_science_data, f, row.names = FALSE)
 constraints_science <- loadConstraints(f,
   itempool_science, itemattrib_science)
 file.remove(f)
