@@ -40,6 +40,9 @@ Shadow(
 
 \item{session}{Used to communicate with a Shiny session.}
 }
+\value{
+An \code{\linkS4class{output_Shadow_all}} object containing results.
+}
 \description{
 Perform adaptive test assembly based on generalized shadow-test approach, with specified configurations.
 }
@@ -47,7 +50,7 @@ Perform adaptive test assembly based on generalized shadow-test approach, with s
 config <- createShadowTestConfig()
 true_theta <- rnorm(1)
 solution <- Shadow(config, constraints_science, true_theta)
-solution$output
+solution@output
 }
 \references{
 {
