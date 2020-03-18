@@ -543,25 +543,22 @@ setClass("constraints",
 #'
 #' Use \code{vignette("constraints")} for instructions on how to create the constraint file.
 #'
-#' @param file Character. The name of the file containing specifications for constraints.
-#' @param pool An \code{item_pool} object.
+#' @param object Constraint specifications. Can be a file path of a .csv file, or a data.frame. See vignette for the expected format.
+#' @param pool An \code{item_pool} object. Use \code{\link{loadItemPool}} for this.
 #' @param item_attrib An \code{item_attrib} object containing item attributes. Use \code{\link{loadItemAttrib}} for this.
 #' @param st_attrib (Optional) An \code{st_attrib} object containing stimulus attributes. Use \code{\link{loadStAttrib}} for this.
+#' @param file (Deprecated) Use 'object' above.
 #'
 #' @return A \code{constraints} object containing the parsed constraints, to be used in \code{\link{Static}} and \code{\link{Shadow}}.
 #'
 #' @examples
-#' ## Write to tempdir() and clean afterwards
-#' f <- file.path(tempdir(), "itempool_science.csv")
-#' write.csv(itempool_science_raw, f, row.names = FALSE)
-#' itempool_science <- loadItemPool(f)
-#' file.remove(f)
+#' ## Read from data.frame:
+#' itempool_science    <- loadItemPool(itempool_science_raw)
+#' itemattrib_science  <- loadItemAttrib(itemattrib_science_raw, itempool_science)
+#' constraints_science <- loadConstraints(constraints_science_raw,
+#'   itempool_science, itemattrib_science)
 #'
-#' f <- file.path(tempdir(), "itemattrib_science.csv")
-#' write.csv(itemattrib_science_raw, f, row.names = FALSE)
-#' itemattrib_science <- loadItemAttrib(f, itempool_science)
-#' file.remove(f)
-#'
+#' ## Read from file: write to tempdir() for illustration and clean afterwards
 #' f <- file.path(tempdir(), "constraints_science.csv")
 #' write.csv(constraints_science_raw, f, row.names = FALSE)
 #' constraints_science <- loadConstraints(f,
@@ -572,45 +569,51 @@ setClass("constraints",
 #'
 #' @export
 
-loadConstraints <- function(file, pool, item_attrib, st_attrib = NULL) {
+loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = NULL) {
 
   if (!inherits(pool, "item_pool")) {
     stop("'pool' must be an 'item_pool' object.")
   }
+  if (!inherits(item_attrib, "item_attrib")) {
+    stop("'item_attrib' must be an 'item_attrib' object.")
+  }
+  if (!is.null(st_attrib)) {
+    if (!inherits(st_attrib, "st_attrib")) {
+      stop("'st_attrib' must be a 'st_attrib' object.")
+    }
+  }
 
-  # Read file ------------------------------------------------------------
-  constraints <- read.csv(file, header = TRUE)
-  if ("ONOFF" %in% toupper(names(constraints))) {
-    ONOFF <- TRUE
-    constraints <- read.csv(file,
-      header = TRUE,
-      as.is = TRUE, colClasses = c(
-        "character", "character", "character", "character",
-        "numeric", "numeric", "character"
-      ),
-      stringsAsFactors = FALSE
-    )
-    constraints[["ONOFF"]] <- toupper(constraints[["ONOFF"]])
-    constraints[["ONOFF"]][is.na(constraints[["ONOFF"]])] <- ""
-  } else {
-    ONOFF <- FALSE
-    constraints <- read.csv(file,
-      header = TRUE,
-      as.is = TRUE, colClasses = c(
-        "character", "character", "character", "character",
-        "numeric", "numeric"
-      ),
-      stringsAsFactors = FALSE
-    )
+  if (!missing("file")){
+    warning("Argument deprecated. Use 'object' instead.")
+    object <- file
+  }
+
+  if (!is.null(object)) {
+    if (inherits(object, "data.frame")) {
+      constraints <- object
+    } else if (inherits(object, "character")) {
+      constraints <- read.csv(object,
+        header = TRUE, as.is = TRUE,
+        colClasses = c(
+          "character", "character", "character", "character",
+          "numeric", "numeric", "character"
+        ),
+        stringsAsFactors = FALSE
+      )
+    }
   }
 
   names(constraints)     <- toupper(names(constraints))
   constraints[["TYPE"]]  <- toupper(constraints[["TYPE"]])
   constraints[["WHAT"]]  <- toupper(constraints[["WHAT"]])
   constraints[["COUNT"]] <- NA
+  constraints[["ONOFF"]] <- toupper(constraints[["ONOFF"]])
+  constraints[["ONOFF"]][is.na(constraints[["ONOFF"]])] <- ""
+  ONOFF <- TRUE
 
   if ("CONSTRAINT" %in% names(constraints)) {
-    if (any(constraints[["CONSTRAINT"]] != as.character(1:dim(constraints)[1]))) {
+    if (any(constraints[["CONSTRAINT"]] != as.character(1:dim(constraints)[1])) |
+      !inherits(constraints[["CONSTRAINT"]], "character")) {
       constraints[["CONSTRAINT"]] <- as.character(1:dim(constraints)[1])
       warning("The 'CONSTRAINT' column was ignored and replaced with valid values.")
     }

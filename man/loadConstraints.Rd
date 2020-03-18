@@ -4,16 +4,18 @@
 \alias{loadConstraints}
 \title{Load constraints}
 \usage{
-loadConstraints(file, pool, item_attrib, st_attrib = NULL)
+loadConstraints(object, pool, item_attrib, st_attrib = NULL, file = NULL)
 }
 \arguments{
-\item{file}{Character. The name of the file containing specifications for constraints.}
+\item{object}{Constraint specifications. Can be a file path of a .csv file, or a data.frame. See vignette for the expected format.}
 
-\item{pool}{An \code{item_pool} object.}
+\item{pool}{An \code{item_pool} object. Use \code{\link{loadItemPool}} for this.}
 
 \item{item_attrib}{An \code{item_attrib} object containing item attributes. Use \code{\link{loadItemAttrib}} for this.}
 
 \item{st_attrib}{(Optional) An \code{st_attrib} object containing stimulus attributes. Use \code{\link{loadStAttrib}} for this.}
+
+\item{file}{(Deprecated) Use 'object' above.}
 }
 \value{
 A \code{constraints} object containing the parsed constraints, to be used in \code{\link{Static}} and \code{\link{Shadow}}.
@@ -25,17 +27,13 @@ Read constraints from specified file.
 Use \code{vignette("constraints")} for instructions on how to create the constraint file.
 }
 \examples{
-## Write to tempdir() and clean afterwards
-f <- file.path(tempdir(), "itempool_science.csv")
-write.csv(itempool_science_raw, f, row.names = FALSE)
-itempool_science <- loadItemPool(f)
-file.remove(f)
+## Read from data.frame:
+itempool_science    <- loadItemPool(itempool_science_raw)
+itemattrib_science  <- loadItemAttrib(itemattrib_science_raw, itempool_science)
+constraints_science <- loadConstraints(constraints_science_raw,
+  itempool_science, itemattrib_science)
 
-f <- file.path(tempdir(), "itemattrib_science.csv")
-write.csv(itemattrib_science_raw, f, row.names = FALSE)
-itemattrib_science <- loadItemAttrib(f, itempool_science)
-file.remove(f)
-
+## Read from file: write to tempdir() for illustration and clean afterwards
 f <- file.path(tempdir(), "constraints_science.csv")
 write.csv(constraints_science_raw, f, row.names = FALSE)
 constraints_science <- loadConstraints(f,
