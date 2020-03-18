@@ -2682,7 +2682,6 @@ plotER <- function(
 plotExposureRateBySegment <- function(object, config, max_rate = 0.25, file_pdf = NULL, width = 7, height = 6, mfrow = c(2, 4)) {
 
   ## FIX THIS: WHAT IF TRUE_THETA IS NOT AVAILABLE
-  ## FIX THIS: WHAT IF TRUE_THETA IS NOT AVAILABLE
 
   nj <- length(object$true_theta)
   ni <- object$pool@ni
@@ -2724,7 +2723,6 @@ plotExposureRateBySegment <- function(object, config, max_rate = 0.25, file_pdf 
   on.exit(par(mfrow = old_mfrow))
   par(mfrow = mfrow)
 
-  ## FIX THIS: split EXPOSURE_RATE into ITEM_EXPOSURE_RATE and STIM_EXPOSURE_RATE
   ## FIX THIS: split EXPOSURE_RATE into ITEM_EXPOSURE_RATE and STIM_EXPOSURE_RATE
 
   plotER(exposure_rate, max_rate = max_rate, title = paste0("Overall (N = ", nj, ")"), color = "blue")
@@ -3198,207 +3196,554 @@ setGeneric(
 #' @export
 setMethod(
   f = "plotShadow",
+  signature = "list",
+  definition = function(object, examinee_id = 1, sort_by_difficulty = FALSE, file_pdf = NULL, simple = FALSE, ...) {
+    .Deprecated("plot", msg = "plotShadow() is deprecated. Use plot() instead.")
+    new_object <- new("output_Shadow_all")
+    for (n in names(object)) {
+      slot(new_object, n) <- object[[n]]
+    }
+    p <- plot(
+      new_object,
+      type = "shadow",
+      examinee_id = examinee_id,
+      sort_by_difficulty = sort_by_difficulty,
+      file_pdf = file_pdf,
+      simple = simple,
+      ...
+    )
+  }
+)
+
+#' @docType methods
+#' @rdname plotShadow-methods
+#' @export
+setMethod(
+  f = "plotShadow",
   signature = "output_Shadow_all",
   definition = function(object, examinee_id = 1, sort_by_difficulty = FALSE, file_pdf = NULL, simple = FALSE, ...) {
-
-    if (!is.null(file_pdf)) {
-      pdf(file = file_pdf, bg = "white")
-    }
-
-    constraints <- object@constraints
-
-    for (id in examinee_id) {
-
-      examinee_output <- object@output[[id]]
-
-      max_ni <- constraints@test_length
-      ni     <- constraints@ni
-
-      old_mar   <- par()$mar
-      old_mfrow <- par()$mfrow
-      on.exit(par(mar = old_mar, mfrow = old_mfrow))
-      par(mar = c(2, 3, 1, 1) + 0.1, mfrow = c(1, 1))
-
-      n_points <- sum(!is.na(examinee_output@administered_item_resp)) # this should be equal to constraints@test_length
-      item_id <- constraints@item_attrib@data[["ID"]][examinee_output@administered_item_index]
-      item_sequence <- examinee_output@administered_item_index
-      responses     <- examinee_output@administered_item_resp
-      item_ncat     <- examinee_output@administered_item_ncat
-
-      if (simple) {
-
-        items_used <- sort(unique(do.call(c, examinee_output@shadow_test)))
-        new_y <- 1:length(items_used)
-
-        y_map <- rep(1, items_used[1] - 1)
-
-        for (i in 1:(length(items_used) - 1)) {
-          y_map <- c(y_map, rep(new_y[i], items_used[i + 1] - items_used[i]))
-        }
-
-        y_map <- c(y_map, rep(new_y[i + 1], ni - items_used[i + 1] + 1))
-
-      } else {
-        items_used <- 1:ni
-        y_map <- 1:ni
-      }
-
-      plot(c(0.5, max_ni + 0.5), c(0.5, y_map[ni] + 0.5), type = "n", las = 1, xlim = c(0, max_ni), xaxt = "n", yaxt = "n", ylab = "")
-
-      y_adj_3 <- (strheight("S") / 3)
-
-      usr <- par("usr")
-      text(max_ni / 2, (usr[3] / 2), "Position", adj = c(0.5, 0), cex = 1.0)
-      if (sort_by_difficulty) {
-        axis(2, at = y_map[ni] / 2, labels = "Easier <-  Items  -> Harder", cex.axis = 1.5, tick = FALSE, line = 0)
-      } else {
-        axis(2, at = y_map[ni] / 2, labels = "Items", cex.axis = 1.5, tick = FALSE, line = 0)
-      }
-
-      text(max_ni / 2, mean(c(usr[4], y_map[ni])), paste0("Examinee ID: ", examinee_output@simulee_id), adj = c(0.5, 0.5), cex = 1)
-
-      axis(1, at = 1:max_ni, tick = TRUE, labels = 1:max_ni, cex.axis = 0.7)
-
-      if (!simple) {
-        text(0, seq(10, y_map[ni], 10), seq(10, y_map[ni], 10), adj = c(0.5, 0.5), cex = 0.7)
-      } else {
-        text(0, new_y, items_used, adj = c(0.5, 0.5), cex = 0.7)
-      }
-
-      for (i in 1:n_points) {
-        y_dupecheck <- numeric(ni)
-        for (j in 1:ni) {
-          if (y_dupecheck[y_map[j]] == FALSE) {
-            y_dupecheck[y_map[j]] <- TRUE
-            rect(i - 0.25, y_map[j] - 0.25, i + 0.25, y_map[j] + 0.25, border = "gray88", lwd = 0.3)
-          }
-        }
-        if (examinee_output@shadow_test_refreshed[i]) {
-          mtext("S", at = i, side = 1, line = 0.3, col = "red", adj = c(0.5, 0.5), cex = 0.7)
-        }
-      }
-
-      if (constraints@set_based) {
-        for (p in 1:constraints@ns) {
-          tmp = constraints@item_index_by_stimulus[[p]]
-          if (!is.null(tmp)) {
-            tmp = tmp[tmp %in% items_used]
-            if (length(tmp) > 0) {
-              for (i in 1:n_points) {
-                rect(i - 0.35, y_map[min(tmp)] - 0.5,
-                     i + 0.35, y_map[max(tmp)] + 0.5, border = "gray88", lwd = 0.5)
-              }
-            }
-          }
-        }
-      }
-
-      shadow_tests <- examinee_output@shadow_test
-
-      if (constraints@set_based) {
-
-        item_table <- merge(constraints@item_attrib@data, constraints@st_attrib@data[c("STID", "STINDEX")], by = "STID", all.x = TRUE, sort = FALSE)
-
-        for (k in 1:n_points) {
-
-          items <- shadow_tests[[k]]
-          current_item <- examinee_output@administered_item_index[k]
-          passages <- unique(item_table[["STINDEX"]][which(item_table[["INDEX"]] %in% items)])
-          current_passage <- item_table[["STINDEX"]][which(item_table[["INDEX"]] == current_item)]
-
-          for (p in 1:length(passages)) {
-
-            if (!is.na(passages[p])) {
-
-              sub_items <- constraints@item_index_by_stimulus[[passages[p]]]
-              sub_items <- sub_items[sub_items %in% items_used]
-
-              if (!is.na(current_passage)) {
-                if (passages[p] == current_passage) {
-                  rect(k - 0.35, y_map[min(sub_items)] - 0.5,
-                       k + 0.35, y_map[max(sub_items)] + 0.5, border = "blue", col = "khaki", lwd = 0.5)
-                } else {
-                  rect(k - 0.35, y_map[min(sub_items)] - 0.5,
-                       k + 0.35, y_map[max(sub_items)] + 0.5, border = "blue", col = "gray50", lwd = 0.5)
-                }
-              } else {
-                rect(k - 0.35, y_map[min(sub_items)] - 0.5,
-                     k + 0.35, y_map[max(sub_items)] + 0.5, border = "blue", col = "gray50", lwd = 0.5)
-              }
-
-            } else {
-
-              sub_items <- item_table[["INDEX"]][which(is.na(item_table[["STINDEX"]]) & item_table[["INDEX"]] %in% items)]
-
-              for (i in 1:length(sub_items)) {
-                if (sub_items[i] == current_item) {
-                  rect(k - 0.35, y_map[sub_items[i]] - 0.5,
-                       k + 0.35, y_map[sub_items[i]] + 0.5, border = "blue", col = "khaki", lwd = 0.5)
-                } else {
-                  rect(k - 0.35, y_map[sub_items[i]] - 0.5,
-                       k + 0.35, y_map[sub_items[i]] + 0.5, border = "blue", col = "gray50", lwd = 0.5)
-                }
-              }
-
-            }
-
-          }
-
-        }
-
-      }
-
-      for (k in 1:n_points) {
-        items <- shadow_tests[[k]]
-        current_item <- examinee_output@administered_item_index[k]
-        for (i in 1:length(items)) {
-          if (items[i] != current_item) {
-            rect(k - 0.25, y_map[items[i]] - 0.25,
-                 k + 0.25, y_map[items[i]] + 0.25, border = "black", lwd = 0.3)
-          }
-        }
-      }
-
-      for (k in 1:n_points) {
-        items <- shadow_tests[[k]]
-        current_item <- examinee_output@administered_item_index[k]
-        for (i in 1:length(items)) {
-          if (items[i] == current_item) {
-            for (kk in k:n_points) {
-              rect(kk - 0.25, y_map[items[i]] - 0.25,
-                   kk + 0.25, y_map[items[i]] + 0.25, border = "gray33", col = "gray33", lwd = 0.3)
-            }
-            if (item_ncat[k] == 2) {
-              if (responses[k] == 0) {
-                rect_col = "red"
-              } else if (responses[k] == 1) {
-                rect_col = "lime green"
-              }
-            } else {
-              rect_col = "cyan2"
-            }
-
-            rect(k - 0.25, y_map[items[i]] - 0.25,
-                 k + 0.25, y_map[items[i]] + 0.25, border = rect_col, col = rect_col, lwd = 0.3)
-
-          }
-        }
-      }
-
-    }
-
-    if (!is.null(file_pdf)) {
-      dev.off()
-    } else {
-      p <- recordPlot()
-      return(p)
-    }
+    .Deprecated("plot", msg = "plotShadow() is deprecated. Use plot() instead.")
+    p <- plot(
+      object,
+      type = "shadow",
+      examinee_id = examinee_id,
+      sort_by_difficulty = sort_by_difficulty,
+      file_pdf = file_pdf,
+      simple = simple,
+      ...
+    )
   }
 )
 
 #' Draw an audit trail plot
 #'
 #' Draw an audit trail plot.
+#'
+#' @param x An output object generated by \code{\link{Shadow}}.
+#' @param y Unused argument, exists for compatibility with \code{\link{plot}} in the base R package.
+#' @param examinee_id Numeric ID of the examinee to draw the plot.
+#' @param type If 'audit', draw an audit trail plot. If 'shadow', draw a shadow chart. If 'exposure', draw exposure rate plots.
+#' @param min_theta For type 'audit', the lower bound of theta range to plot.
+#' @param max_theta For type 'audit', the upper bound of theta range to plot.
+#' @param min_score For type 'audit', the minimum item score.
+#' @param max_score For type 'audit', the maximum item score.
+#' @param z_ci For type 'audit', the quantile of the normal distribution for confidence intervals.
+#' @param simple For type 'shadow', if \code{TRUE}, simplity the chart by hiding unused items.
+#' @param sort_by_difficulty For type 'shadow', sort the items by difficulty. (not implemented)
+#' @param theta_segment For type 'exposure', True or Estimated theta used to create segments ("Estimated" or "True").
+#' @param color For type 'exposure', color of item-wise exposure rates.
+#' @param color_final For type 'exposure', color of item-wise exposure rates, only counting the items while in the final theta segment as exposed.
+#' @param file_pdf If supplied a filename, save as a PDF file.
+#' @param ... Additional options to be passed on to \code{pdf()}.
+#'
+#' @examples
+#' config <- createShadowTestConfig()
+#' true_theta <- rnorm(1)
+#' solution <- Shadow(config, constraints_science, true_theta)
+#' plot(solution, type = 'audit' , examinee_id = 1)
+#' plot(solution, type = 'shadow', examinee_id = 1)
+#' plot(solution, type = 'exposure')
+#'
+#' @docType methods
+#' @rdname plot-output_Shadow
+#' @export
+
+setMethod(
+  f = "plot",
+  signature = "output_Shadow_all",
+  definition = function(x, y, examinee_id = 1, type = "audit",
+    min_theta = -5, max_theta = 5, min_score = 0, max_score = 1, z_ci = 1.96,
+    simple = FALSE, sort_by_difficulty = FALSE,
+    theta_segment = "Estimated", color = "blue", color_final = "blue",
+    file_pdf = NULL, ...) {
+
+    if (!type %in% c('audit', 'shadow', 'exposure')) {
+      stop("'type' must be audit, shadow, or exposure")
+    }
+
+    if (type == "audit") {
+      if (!all(examinee_id %in% 1:length(x@output))) {
+        stop("'examinee_id' out of bounds")
+      }
+      if (!is.null(file_pdf)) {
+        pdf(file = file_pdf, bg = "white")
+      }
+      for (id in examinee_id) {
+        plot(x@output[[id]],
+          type = "audit",
+          examinee_id = examinee_id,
+          min_theta = min_theta,
+          max_theta = max_theta,
+          min_score = min_score,
+          max_score = max_score,
+          z_ci = z_ci,
+          ...
+        )
+      }
+      if (!is.null(file_pdf)) {
+        dev.off()
+      } else {
+        p <- recordPlot()
+        return(p)
+      }
+    } else if (type == "shadow") {
+
+      if (!is.null(file_pdf)) {
+        pdf(file = file_pdf, bg = "white")
+      }
+
+      constraints <- x@constraints
+
+      for (id in examinee_id) {
+
+        examinee_output <- x@output[[id]]
+
+        max_ni <- constraints@test_length
+        ni     <- constraints@ni
+
+        old_mar   <- par()$mar
+        old_mfrow <- par()$mfrow
+        on.exit(par(mar = old_mar, mfrow = old_mfrow))
+        par(mar = c(2, 3, 1, 1) + 0.1, mfrow = c(1, 1))
+
+        n_points <- sum(!is.na(examinee_output@administered_item_resp)) # this should be equal to constraints@test_length
+        item_id <- constraints@item_attrib@data[["ID"]][examinee_output@administered_item_index]
+        item_sequence <- examinee_output@administered_item_index
+        responses     <- examinee_output@administered_item_resp
+        item_ncat     <- examinee_output@administered_item_ncat
+
+        if (simple) {
+
+          items_used <- sort(unique(do.call(c, examinee_output@shadow_test)))
+          new_y <- 1:length(items_used)
+
+          y_map <- rep(1, items_used[1] - 1)
+
+          for (i in 1:(length(items_used) - 1)) {
+            y_map <- c(y_map, rep(new_y[i], items_used[i + 1] - items_used[i]))
+          }
+
+          y_map <- c(y_map, rep(new_y[i + 1], ni - items_used[i + 1] + 1))
+
+        } else {
+          items_used <- 1:ni
+          y_map <- 1:ni
+        }
+
+        plot(c(0.5, max_ni + 0.5), c(0.5, y_map[ni] + 0.5), type = "n", las = 1, xlim = c(0, max_ni), xaxt = "n", yaxt = "n", ylab = "")
+
+        y_adj_3 <- (strheight("S") / 3)
+
+        usr <- par("usr")
+        text(max_ni / 2, (usr[3] / 2), "Position", adj = c(0.5, 0), cex = 1.0)
+        if (sort_by_difficulty) {
+          axis(2, at = y_map[ni] / 2, labels = "Easier <-  Items  -> Harder", cex.axis = 1.5, tick = FALSE, line = 0)
+        } else {
+          axis(2, at = y_map[ni] / 2, labels = "Items", cex.axis = 1.5, tick = FALSE, line = 0)
+        }
+
+        text(max_ni / 2, mean(c(usr[4], y_map[ni])), paste0("Examinee ID: ", examinee_output@simulee_id), adj = c(0.5, 0.5), cex = 1)
+
+        axis(1, at = 1:max_ni, tick = TRUE, labels = 1:max_ni, cex.axis = 0.7)
+
+        if (!simple) {
+          text(0, seq(10, y_map[ni], 10), seq(10, y_map[ni], 10), adj = c(0.5, 0.5), cex = 0.7)
+        } else {
+          text(0, new_y, items_used, adj = c(0.5, 0.5), cex = 0.7)
+        }
+
+        for (i in 1:n_points) {
+          y_dupecheck <- numeric(ni)
+          for (j in 1:ni) {
+            if (y_dupecheck[y_map[j]] == FALSE) {
+              y_dupecheck[y_map[j]] <- TRUE
+              rect(i - 0.25, y_map[j] - 0.25, i + 0.25, y_map[j] + 0.25, border = "gray88", lwd = 0.3)
+            }
+          }
+          if (examinee_output@shadow_test_refreshed[i]) {
+            mtext("S", at = i, side = 1, line = 0.3, col = "red", adj = c(0.5, 0.5), cex = 0.7)
+          }
+        }
+
+        if (constraints@set_based) {
+          for (p in 1:constraints@ns) {
+            tmp = constraints@item_index_by_stimulus[[p]]
+            if (!is.null(tmp)) {
+              tmp = tmp[tmp %in% items_used]
+              if (length(tmp) > 0) {
+                for (i in 1:n_points) {
+                  rect(i - 0.35, y_map[min(tmp)] - 0.5,
+                       i + 0.35, y_map[max(tmp)] + 0.5, border = "gray88", lwd = 0.5)
+                }
+              }
+            }
+          }
+        }
+
+        shadow_tests <- examinee_output@shadow_test
+
+        if (constraints@set_based) {
+
+          item_table <- merge(constraints@item_attrib@data, constraints@st_attrib@data[c("STID", "STINDEX")], by = "STID", all.x = TRUE, sort = FALSE)
+
+          for (k in 1:n_points) {
+
+            items <- shadow_tests[[k]]
+            current_item <- examinee_output@administered_item_index[k]
+            passages <- unique(item_table[["STINDEX"]][which(item_table[["INDEX"]] %in% items)])
+            current_passage <- item_table[["STINDEX"]][which(item_table[["INDEX"]] == current_item)]
+
+            for (p in 1:length(passages)) {
+
+              if (!is.na(passages[p])) {
+
+                sub_items <- constraints@item_index_by_stimulus[[passages[p]]]
+                sub_items <- sub_items[sub_items %in% items_used]
+
+                if (!is.na(current_passage)) {
+                  if (passages[p] == current_passage) {
+                    rect(k - 0.35, y_map[min(sub_items)] - 0.5,
+                         k + 0.35, y_map[max(sub_items)] + 0.5, border = "blue", col = "khaki", lwd = 0.5)
+                  } else {
+                    rect(k - 0.35, y_map[min(sub_items)] - 0.5,
+                         k + 0.35, y_map[max(sub_items)] + 0.5, border = "blue", col = "gray50", lwd = 0.5)
+                  }
+                } else {
+                  rect(k - 0.35, y_map[min(sub_items)] - 0.5,
+                       k + 0.35, y_map[max(sub_items)] + 0.5, border = "blue", col = "gray50", lwd = 0.5)
+                }
+
+              } else {
+
+                sub_items <- item_table[["INDEX"]][which(is.na(item_table[["STINDEX"]]) & item_table[["INDEX"]] %in% items)]
+
+                for (i in 1:length(sub_items)) {
+                  if (sub_items[i] == current_item) {
+                    rect(k - 0.35, y_map[sub_items[i]] - 0.5,
+                         k + 0.35, y_map[sub_items[i]] + 0.5, border = "blue", col = "khaki", lwd = 0.5)
+                  } else {
+                    rect(k - 0.35, y_map[sub_items[i]] - 0.5,
+                         k + 0.35, y_map[sub_items[i]] + 0.5, border = "blue", col = "gray50", lwd = 0.5)
+                  }
+                }
+
+              }
+
+            }
+
+          }
+
+        }
+
+        for (k in 1:n_points) {
+          items <- shadow_tests[[k]]
+          current_item <- examinee_output@administered_item_index[k]
+          for (i in 1:length(items)) {
+            if (items[i] != current_item) {
+              rect(k - 0.25, y_map[items[i]] - 0.25,
+                   k + 0.25, y_map[items[i]] + 0.25, border = "black", lwd = 0.3)
+            }
+          }
+        }
+
+        for (k in 1:n_points) {
+          items <- shadow_tests[[k]]
+          current_item <- examinee_output@administered_item_index[k]
+          for (i in 1:length(items)) {
+            if (items[i] == current_item) {
+              for (kk in k:n_points) {
+                rect(kk - 0.25, y_map[items[i]] - 0.25,
+                     kk + 0.25, y_map[items[i]] + 0.25, border = "gray33", col = "gray33", lwd = 0.3)
+              }
+              if (item_ncat[k] == 2) {
+                if (responses[k] == 0) {
+                  rect_col = "red"
+                } else if (responses[k] == 1) {
+                  rect_col = "lime green"
+                }
+              } else {
+                rect_col = "cyan2"
+              }
+
+              rect(k - 0.25, y_map[items[i]] - 0.25,
+                   k + 0.25, y_map[items[i]] + 0.25, border = rect_col, col = rect_col, lwd = 0.3)
+
+            }
+          }
+        }
+
+      }
+
+      if (!is.null(file_pdf)) {
+        dev.off()
+      } else {
+        p <- recordPlot()
+        return(p)
+      }
+
+    } else if (type == "exposure") {
+
+      if (toupper(theta_segment) == "TRUE") {
+        theta_value <- x@true_theta
+        nj          <- length(theta_value)
+      } else if (toupper(theta_segment) == "ESTIMATED") {
+        theta_value <- x@final_theta_est
+        nj          <- length(theta_value)
+      } else {
+        stop("'theta_segment' must be 'true' or 'estimated'.")
+      }
+
+      ni <- x@pool@ni
+      nv <- ncol(x@usage_matrix)
+      max_rate      <- x@config@exposure_control$max_exposure_rate
+      segment_cut   <- x@config@exposure_control$segment_cut
+      n_segment     <- x@config@exposure_control$n_segment
+      cut_lower     <- segment_cut[1:n_segment]
+      cut_upper     <- segment_cut[2:(n_segment + 1)]
+      segment_label <- character(n_segment)
+      for (k in 1:n_segment) {
+        if (k < n_segment) {
+          segment_label[k] <- sprintf("(%s,%s]", cut_lower[k], cut_upper[k])
+        } else {
+          segment_label[k] <- sprintf("(%s,%s)", cut_lower[k], cut_upper[k])
+        }
+      }
+
+      theta_segment_index <- numeric(nj)
+      theta_segment_index <- find_segment(segment_cut, theta_value)
+
+      segment_n    <- numeric(n_segment)
+      segment_dist <- table(theta_segment_index)
+      segment_n[as.numeric(names(segment_dist))] <- segment_dist
+      segment_index_table <- matrix(NA, nj, x@constraints@test_length)
+
+      usage_matrix       <- x@usage_matrix
+      usage_matrix_final <- x@usage_matrix
+      for (j in 1:nj) {
+        administered_items <- x@output[[j]]@administered_item_index
+        pos_item_outside_of_segment <- x@output[[j]]@theta_segment_index != theta_segment_index[j]
+        idx_item_outside_of_segment <- administered_items[pos_item_outside_of_segment]
+        usage_matrix_final[j, idx_item_outside_of_segment] <- FALSE
+        segment_index_table[j, ] <- x@output[[j]]@theta_segment_index
+      }
+
+      ## visited segments across item positions and each examinee
+      segment_freq <- matrix(0, n_segment, n_segment)
+      for (i in 1:x@constraints@test_length) {
+        interim_segment_dist <- factor(segment_index_table[, i], levels = 1:n_segment)
+        segment_table <- tapply(interim_segment_dist, theta_segment_index, table)
+        for (s in 1:length(segment_table)) {
+          idx_r <- as.numeric(names(segment_table)[s])
+          idx_c <- as.numeric(names(segment_table[[s]]))
+          segment_freq[idx_r, idx_c] <- segment_freq[idx_r, idx_c] + segment_table[[s]]
+        }
+      }
+
+      segment_rate                <- segment_freq / segment_n
+      segment_rate_table          <- data.frame(
+        segment_class = factor(rep(segment_label, rep(n_segment, n_segment)), levels = segment_label),
+        segment = rep(1:n_segment, n_segment),
+        avg_visit = matrix(
+          t(segment_rate),
+          nrow = n_segment^2, ncol = 1)
+      )
+
+      exposure_rate               <- colSums(usage_matrix) / nj
+      exposure_rate_final         <- colSums(usage_matrix_final) / nj
+      item_exposure_rate          <- exposure_rate[1:ni]
+      item_exposure_rate_final    <- exposure_rate_final[1:ni]
+
+      if (x@constraints@set_based) {
+        stim_exposure_rate        <- exposure_rate[(ni + 1):nv][x@constraints@stimulus_index_by_item]
+        stim_exposure_rate_final  <- exposure_rate_final[(ni + 1):nv][x@constraints@stimulus_index_by_item]
+      } else {
+        stim_exposure_rate        <- NULL
+        stim_exposure_rate_final  <- NULL
+      }
+
+      exposure_rate_segment       <- vector("list", n_segment)
+      exposure_rate_segment_final <- vector("list", n_segment)
+      names(exposure_rate_segment)       <- segment_label
+      names(exposure_rate_segment_final) <- segment_label
+
+      for (k in 1:n_segment) {
+        if (segment_n[k] > 2) {
+          exposure_rate_segment[[k]]       <- colMeans(usage_matrix[theta_segment_index == k, ])
+          exposure_rate_segment_final[[k]] <- colMeans(usage_matrix_final[theta_segment_index == k, ])
+        }
+        if (is.null(exposure_rate_segment[[k]])) {
+          exposure_rate_segment[[k]] <- numeric(nv)
+        } else if (any(is.nan(exposure_rate_segment[[k]]))) {
+          exposure_rate_segment[[k]][is.nan(exposure_rate_segment[[k]])] <- 0
+        }
+        if (is.null(exposure_rate_segment_final[[k]])) {
+          exposure_rate_segment_final[[k]] <- numeric(nv)
+        } else if (any(is.nan(exposure_rate_segment_final[[k]]))) {
+          exposure_rate_segment_final[[k]][is.nan(exposure_rate_segment_final[[k]])] <- 0
+        }
+      }
+
+      item_exposure_rate_segment       <- exposure_rate_segment
+      item_exposure_rate_segment_final <- exposure_rate_segment_final
+
+      for (k in 1:n_segment) {
+        item_exposure_rate_segment[[k]]       <- item_exposure_rate_segment[[k]][1:ni]
+        item_exposure_rate_segment_final[[k]] <- item_exposure_rate_segment_final[[k]][1:ni]
+      }
+
+      if (x@constraints@set_based) {
+        stim_exposure_rate_segment       <- exposure_rate_segment
+        stim_exposure_rate_segment_final <- exposure_rate_segment_final
+        for (k in 1:n_segment) {
+          stim_exposure_rate_segment[[k]]       <- stim_exposure_rate_segment[[k]][(ni + 1):nv][x@constraints@stimulus_index_by_item]
+          stim_exposure_rate_segment_final[[k]] <- stim_exposure_rate_segment_final[[k]][(ni + 1):nv][x@constraints@stimulus_index_by_item]
+        }
+      } else {
+        stim_exposure_rate_segment       <- NULL
+        stim_exposure_rate_segment_final <- NULL
+      }
+
+      if (!is.null(file_pdf)) {
+        pdf(file = file_pdf, ...)
+      }
+
+      old_oma <- par()$oma
+      old_mar <- par()$mar
+      on.exit(par(oma = old_oma, mar = old_mar))
+      par(oma = c(3, 3, 0, 0), mar = c(3, 3, 2, 2))
+
+      plotER(
+        item_exposure_rate, item_exposure_rate_final, stim_exposure_rate, x@constraints@stimulus_index_by_item,
+        max_rate = max_rate, title = "Overall", color = color, color_final = color_final, simple = TRUE)
+
+      for (k in 1:n_segment) {
+        plotER(
+          item_exposure_rate_segment[[k]], item_exposure_rate_segment_final[[k]], stim_exposure_rate_segment[[k]], x@constraints@stimulus_index_by_item,
+          max_rate = max_rate, title = segment_label[k], color = color, color_final = color_final, simple = TRUE)
+      }
+      mtext(text = "Item", side = 1, line = 0, outer = T)
+      mtext(text = "Exposure Rate", side = 2, line = 0, outer = T)
+
+      if (!is.null(file_pdf)) {
+        dev.off()
+      } else {
+        p <- recordPlot()
+      }
+
+
+      return(
+        list(
+          plot = p,
+          item_exposure_rate               = item_exposure_rate,
+          item_exposure_rate_segment       = item_exposure_rate_segment,
+          item_exposure_rate_segment_final = item_exposure_rate_segment_final,
+          stim_exposure_rate               = stim_exposure_rate,
+          stim_exposure_rate_segment       = stim_exposure_rate_segment,
+          stim_exposure_rate_segment_final = stim_exposure_rate_segment_final,
+          segment_rate_table = segment_rate_table,
+          n_segment = n_segment,
+          segment_n = segment_n,
+          segment_cut = segment_cut,
+          segment_label = segment_label
+        )
+      )
+    }
+  }
+)
+
+#' @docType methods
+#' @rdname plot-output_Shadow
+#' @export
+setMethod(
+  f = "plot",
+  signature = "output_Shadow",
+  definition = function(x, y, examinee_id = 1, type = "audit",
+    min_theta = -5, max_theta = 5, min_score = 0, max_score = 1, z_ci = 1.96, ...) {
+
+    if (type == "audit") {
+      n_items <- length(x@administered_item_index)
+
+      if (n_items > 0) {
+
+        old_mar <- par()$mar
+        on.exit(par(mar = old_mar))
+        par(mar = c(2, 3, 1, 1) + 0.1)
+
+        layout(rbind(c(1, 1), c(1, 1), c(1, 1), c(1, 1), c(2, 2)))
+        plot(1:n_items, seq(min_theta, max_theta, length = n_items), ylab = "Theta", type = "n", las = 1, xlim = c(0, n_items), xaxt = "n", yaxt = "n")
+        grid()
+        text(n_items / 2, max_theta, paste0("Examinee ID: ", x@simulee_id), adj = c(0.5, 0.5), cex = 2)
+        axis(1, at = 0:n_items, tick = TRUE, labels = 0:n_items, cex.axis = 1.5)
+        axis(2, at = min_theta:max_theta, labels = min_theta:max_theta, cex.axis = 1.5)
+        text(0.5, min_theta + 1.0, paste("Final Theta: ", round(x@final_theta_est, digits = 2), " SE: ", round(x@final_se_est, digits = 2)), cex = 1.5, adj = 0)
+        for (i in 1:n_items) {
+          ci_lower = x@interim_theta_est[i] - z_ci * x@interim_se_est[i]
+          ci_upper = x@interim_theta_est[i] + z_ci * x@interim_se_est[i]
+          lines(rep(i, 2)            , c(ci_lower, ci_upper), col = "purple4")
+          lines(c(i - 0.25, i + 0.25), c(ci_lower, ci_lower), col = "purple4")
+          lines(c(i - 0.25, i + 0.25), c(ci_upper, ci_upper), col = "purple4")
+        }
+        lines(1:n_items, x@interim_theta_est, lty = 3, col = "blue", lwd = 1.5)
+        points(1:n_items, x@interim_theta_est, pch = 16, cex = 2.5, col = "blue")
+        points(1:n_items, x@interim_theta_est, pch = 1, cex = 2.5, col = "purple4")
+        if (!is.null(x@true_theta)) {
+          abline(h = x@true_theta, lty = 1, col = "red")
+        }
+        for (i in 1:n_items) {
+          if (x@shadow_test_refreshed[i]) {
+            text(i, min_theta, "S", col = "red", cex = 1.5)
+          }
+        }
+        plot(1:n_items, seq(min_score, max_score, length.out = n_items), type = "n", xaxt = "n", ylim = c(min_score - 1, max_score + 1), xlim = c(0, n_items), yaxt = "n", ylab = "")
+        mtext("Position", side = 1, line = 1, outer = FALSE, cex = 1.5)
+        axis(2, at = (min_score + max_score) / 2, labels = "Response", cex.axis = 2, tick = FALSE)
+        for (i in 1:n_items) {
+          rect_x <- i
+          rect_y <- x@administered_item_resp[i]
+          if (!is.na(rect_y)) {
+            if (x@administered_item_ncat[i] == 2) {
+              if (x@administered_item_resp[i] == min_score) {
+                rect_col = "red"
+              } else {
+                rect_col = "lime green"
+              }
+            } else {
+              rect_col = "cyan2"
+            }
+            rect(rect_x - 0.25, min_score - 1, rect_x + 0.25, rect_y, col = rect_col, border = "black")
+          }
+        }
+      } else {
+        cat("output_Shadow is empty\n")
+      }
+    }
+  }
+)
+
+
+#' Draw an audit trail plot
+#'
+#' (Deprecated)
 #'
 #' @param object An output object generated by \code{\link{Shadow}}.
 #' @param examinee_id Numeric ID of the examinee to draw the plot.
@@ -3431,24 +3776,49 @@ setGeneric(
 #' @export
 setMethod(
   f = "plotCAT",
+  signature = "list",
+  definition = function(object, examinee_id = 1, min_theta = -5, max_theta = 5, min_score = 0, max_score = 1, z_ci = 1.96, file_pdf = NULL, ...) {
+    .Deprecated("plot", msg = "plotCAT() is deprecated. Use plot() instead.")
+    message("Consider converting the object to 'output_Shadow_all' class.\n")
+    new_object <- new("output_Shadow_all")
+    for (n in names(object)) {
+      slot(new_object, n) <- object[[n]]
+    }
+    p <- plot(new_object,
+      type = 'audit',
+      examinee_id = examinee_id,
+      min_theta = min_theta,
+      max_theta = max_theta,
+      min_score = min_score,
+      max_score = max_score,
+      z_ci = z_ci,
+      file_pdf = file_pdf,
+      ...
+    )
+    return(p)
+  }
+)
+
+#' @docType methods
+#' @rdname plotCAT-methods
+#' @export
+setMethod(
+  f = "plotCAT",
   signature = "output_Shadow_all",
   definition = function(object, examinee_id = 1, min_theta = -5, max_theta = 5, min_score = 0, max_score = 1, z_ci = 1.96, file_pdf = NULL, ...) {
-    if (!is.null(file_pdf)) {
-      pdf(file = file_pdf, bg = "white")
-    }
-    for (i in examinee_id) {
-      plotCAT(
-        object@output[[i]], examinee_id,
-        min_theta = min_theta, max_theta = max_theta,
-        min_score = min_score, max_score = object@pool@max_cat - 1,
-        z_ci = z_ci, file_pdf = NULL, ...)
-    }
-    if (!is.null(file_pdf)) {
-      dev.off()
-    } else {
-      p <- recordPlot()
-      return(p)
-    }
+    .Deprecated("plot", msg = "plotCAT() is deprecated. Use plot() instead.")
+    p <- plot(object,
+      type = 'audit',
+      examinee_id = examinee_id,
+      min_theta = min_theta,
+      max_theta = max_theta,
+      min_score = min_score,
+      max_score = max_score,
+      z_ci = z_ci,
+      file_pdf = file_pdf,
+      ...
+    )
+    return(p)
   }
 )
 
@@ -3459,64 +3829,24 @@ setMethod(
   f = "plotCAT",
   signature = "output_Shadow",
   definition = function(object, examinee_id = 1, min_theta = -5, max_theta = 5, min_score = 0, max_score = 1, z_ci = 1.96, file_pdf = NULL, ...) {
-    n_items <- length(object@administered_item_index)
-    if (n_items > 0) {
-
-      old_mar <- par()$mar
-      on.exit(par(mar = old_mar))
-      par(mar = c(2, 3, 1, 1) + 0.1)
-
-      layout(rbind(c(1, 1), c(1, 1), c(1, 1), c(1, 1), c(2, 2)))
-      plot(1:n_items, seq(min_theta, max_theta, length = n_items), ylab = "Theta", type = "n", las = 1, xlim = c(0, n_items), xaxt = "n", yaxt = "n")
-      grid()
-      text(n_items / 2, max_theta, paste0("Examinee ID: ", object@simulee_id), adj = c(0.5, 0.5), cex = 2)
-      axis(1, at = 0:n_items, tick = TRUE, labels = 0:n_items, cex.axis = 1.5)
-      axis(2, at = min_theta:max_theta, labels = min_theta:max_theta, cex.axis = 1.5)
-      text(0.5, min_theta + 1.0, paste("Final Theta: ", round(object@final_theta_est, digits = 2), " SE: ", round(object@final_se_est, digits = 2)), cex = 1.5, adj = 0)
-      for (i in 1:n_items) {
-        lines(rep(i, 2), c(object@interim_theta_est[i] - z_ci * object@interim_se_est[i], object@interim_theta_est[i] + z_ci * object@interim_se_est[i]), col = "purple4")
-        lines(c(i - 0.25, i + 0.25), c(object@interim_theta_est[i] - z_ci * object@interim_se_est[i], object@interim_theta_est[i] - z_ci * object@interim_se_est[i]), col = "purple4")
-        lines(c(i - 0.25, i + 0.25), c(object@interim_theta_est[i] + z_ci * object@interim_se_est[i], object@interim_theta_est[i] + z_ci * object@interim_se_est[i]), col = "purple4")
-      }
-      lines(1:n_items, object@interim_theta_est, lty = 3, col = "blue", lwd = 1.5)
-      points(1:n_items, object@interim_theta_est, pch = 16, cex = 2.5, col = "blue")
-      points(1:n_items, object@interim_theta_est, pch = 1, cex = 2.5, col = "purple4")
-      if (!is.null(object@true_theta)) {
-        abline(h = object@true_theta, lty = 1, col = "red")
-      }
-      for (i in 1:n_items) {
-        if (object@shadow_test_refreshed[i]) {
-          text(i, min_theta, "S", col = "red", cex = 1.5)
-        }
-      }
-      plot(1:n_items, seq(min_score, max_score, length.out = n_items), type = "n", xaxt = "n", ylim = c(min_score - 1, max_score + 1), xlim = c(0, n_items), yaxt = "n", ylab = "")
-      mtext("Position", side = 1, line = 1, outer = FALSE, cex = 1.5)
-      axis(2, at = (min_score + max_score) / 2, labels = "Response", cex.axis = 2, tick = FALSE)
-      for (i in 1:n_items) {
-        x <- i
-        y <- object@administered_item_resp[i]
-        if (!is.na(y)) {
-          if (object@administered_item_ncat[i] == 2) {
-            if (object@administered_item_resp[i] == min_score) {
-              rect_col = "red"
-            } else {
-              rect_col = "lime green"
-            }
-          } else {
-            rect_col = "cyan2"
-          }
-          rect(x - 0.25, min_score - 1, x + 0.25, y, col = rect_col, border = "black")
-        }
-      }
-    } else {
-      cat("output_Shadow is empty\n")
-    }
+    .Deprecated("plot", msg = "plotCAT() function is deprecated. Use plot() instead.")
+    plot(object,
+      type = 'audit',
+      examinee_id = examinee_id,
+      min_theta = min_theta,
+      max_theta = max_theta,
+      min_score = min_score,
+      max_score = max_score,
+      z_ci = z_ci,
+      file_pdf = file_pdf,
+      ...
+    )
   }
 )
 
 #' Draw an item exposure plot
 #'
-#' Draw a plot of item exposure rates
+#' (Deprecated) Draw a plot of item exposure rates
 #'
 #' @param object An output object generated by \code{\link{Shadow}}.
 #' @param max_rate A target exposure rate.
@@ -3556,160 +3886,41 @@ setMethod(
   f = "plotExposure",
   signature = "list",
   definition = function(object, max_rate = 0.25, theta_segment = "estimated", color = "blue", color_final = "blue", file_pdf = NULL, ...) {
-
-    if (toupper(theta_segment) == "TRUE") {
-      theta_value <- object$true_theta
-      nj          <- length(theta_value)
-    } else if (toupper(theta_segment) == "ESTIMATED") {
-      theta_value <- object$final_theta_est
-      nj          <- length(theta_value)
-    } else {
-      stop("'theta_segment' must be 'true' or 'estimated'.")
+    .Deprecated("plot", msg = "plotExposure() is deprecated. Use plot() instead.")
+    message("Consider converting the object to 'output_Shadow_all' class.\n")
+    new_object <- new("output_Shadow_all")
+    for (n in names(object)) {
+      slot(new_object, n) <- object[[n]]
     }
-
-    ni <- object$pool@ni
-    nv <- ncol(object$usage_matrix)
-    segment_cut   <- object$config@exposure_control$segment_cut
-    n_segment     <- object$config@exposure_control$n_segment
-    cut_lower     <- segment_cut[1:n_segment]
-    cut_upper     <- segment_cut[2:(n_segment + 1)]
-    segment_label <- character(n_segment)
-    for (k in 1:n_segment) {
-      if (k < n_segment) {
-        segment_label[k] <- paste0("(", cut_lower[k], ",", cut_upper[k], "]")
-      } else {
-        segment_label[k] <- paste0("(", cut_lower[k], ",", cut_upper[k], ")")
-      }
-    }
-
-    theta_segment_index <- numeric(nj)
-    theta_segment_index <- find_segment(segment_cut, theta_value)
-
-    segment_n    <- numeric(n_segment)
-    segment_dist <- table(theta_segment_index)
-    segment_n[as.numeric(names(segment_dist))] <- segment_dist
-    segment_index_table <- matrix(NA, nj, object$constraints@test_length)
-
-    usage_matrix       <- object$usage_matrix
-    usage_matrix_final <- object$usage_matrix
-    for (j in 1:nj) {
-      usage_matrix_final[j, object$output[[j]]@administered_item_index[object$output[[j]]@theta_segment_index != theta_segment_index[j]]] <- FALSE
-      segment_index_table[j, ] <- object$output[[j]]@theta_segment_index
-    }
-
-    segment_freq <- matrix(0, n_segment, n_segment)
-    for (i in 1:object$constraints@test_length) {
-      factor(segment_index_table[, i], levels = 1:n_segment)
-      segment_table <- tapply(factor(segment_index_table[, i], levels = 1:n_segment), theta_segment_index, table)
-      for (s in 1:length(segment_table)) {
-        idx_r <- as.numeric(names(segment_table)[s])
-        idx_c <- as.numeric(names(segment_table[[s]]))
-        segment_freq[idx_r, idx_c] <- segment_freq[idx_r, idx_c] + segment_table[[s]]
-      }
-    }
-
-    segment_rate                <- segment_freq / segment_n
-    segment_rate_table          <- data.frame(
-      segment_class = factor(rep(segment_label, rep(n_segment, n_segment)), levels = segment_label),
-      segment = rep(1:n_segment, n_segment),
-      avg_visit = matrix(
-        t(segment_rate),
-        nrow = n_segment^2, ncol = 1)
+    p <- plot(new_object,
+      type = "exposure",
+      theta_segment = theta_segment,
+      color = color,
+      color_final = color_final,
+      file_pdf = file_pdf,
+      ...
     )
+    return(p)
+  }
+)
 
-    exposure_rate               <- colSums(usage_matrix) / nj
-    exposure_rate_final         <- colSums(usage_matrix_final) / nj
+#' @docType methods
+#' @rdname plotExposure-methods
+#' @export
 
-    item_exposure_rate          <- exposure_rate[1:ni]
-    item_exposure_rate_final    <- exposure_rate_final[1:ni]
-
-    if (object$constraints@set_based) {
-      stim_exposure_rate        <- exposure_rate[(ni + 1):nv][object$constraints@stimulus_index_by_item]
-      stim_exposure_rate_final  <- exposure_rate_final[(ni + 1):nv][object$constraints@stimulus_index_by_item]
-    } else {
-      stim_exposure_rate        <- NULL
-      stim_exposure_rate_final  <- NULL
-    }
-
-    exposure_rate_segment       <- vector("list", n_segment)
-    exposure_rate_segment_final <- vector("list", n_segment)
-    names(exposure_rate_segment)       <- segment_label
-    names(exposure_rate_segment_final) <- segment_label
-
-    for (k in 1:n_segment) {
-      if (segment_n[k] > 2) {
-        exposure_rate_segment[[k]]       <- colMeans(usage_matrix[theta_segment_index == k, ])
-        exposure_rate_segment_final[[k]] <- colMeans(usage_matrix_final[theta_segment_index == k, ])
-      }
-      if (is.null(exposure_rate_segment[[k]])) {
-        exposure_rate_segment[[k]] <- numeric(nv)
-      } else if (any(is.nan(exposure_rate_segment[[k]]))) {
-        exposure_rate_segment[[k]][is.nan(exposure_rate_segment[[k]])] <- 0
-      }
-      if (is.null(exposure_rate_segment_final[[k]])) {
-        exposure_rate_segment_final[[k]] <- numeric(nv)
-      } else if (any(is.nan(exposure_rate_segment_final[[k]]))) {
-        exposure_rate_segment_final[[k]][is.nan(exposure_rate_segment_final[[k]])] <- 0
-      }
-    }
-
-    item_exposure_rate_segment       <- exposure_rate_segment
-    item_exposure_rate_segment_final <- exposure_rate_segment_final
-
-    for (k in 1:n_segment) {
-      item_exposure_rate_segment[[k]]       <- item_exposure_rate_segment[[k]][1:ni]
-      item_exposure_rate_segment_final[[k]] <- item_exposure_rate_segment_final[[k]][1:ni]
-    }
-
-    if (object$constraints@set_based) {
-      stim_exposure_rate_segment       <- exposure_rate_segment
-      stim_exposure_rate_segment_final <- exposure_rate_segment_final
-      for (k in 1:n_segment) {
-        stim_exposure_rate_segment[[k]]       <- stim_exposure_rate_segment[[k]][(ni + 1):nv][object$constraints@stimulus_index_by_item]
-        stim_exposure_rate_segment_final[[k]] <- stim_exposure_rate_segment_final[[k]][(ni + 1):nv][object$constraints@stimulus_index_by_item]
-      }
-    } else {
-      stim_exposure_rate_segment       <- NULL
-      stim_exposure_rate_segment_final <- NULL
-    }
-
-    if (!is.null(file_pdf)) {
-      pdf(file = file_pdf, ...)
-    }
-
-    old_oma <- par()$oma
-    old_mar <- par()$mar
-    on.exit(par(oma = old_oma, mar = old_mar))
-    par(oma = c(3, 3, 0, 0), mar = c(3, 3, 2, 2))
-
-    plotER(
-      item_exposure_rate, item_exposure_rate_final, stim_exposure_rate, object$constraints@stimulus_index_by_item,
-      max_rate = max_rate, title = "Overall", color = color, color_final = color_final, simple = TRUE)
-
-    for (k in 1:n_segment) {
-      plotER(
-        item_exposure_rate_segment[[k]], item_exposure_rate_segment_final[[k]], stim_exposure_rate_segment[[k]], object$constraints@stimulus_index_by_item,
-        max_rate = max_rate, title = segment_label[k], color = color, color_final = color_final, simple = TRUE)
-    }
-    mtext(text = "Item", side = 1, line = 0, outer = T)
-    mtext(text = "Exposure Rate", side = 2, line = 0, outer = T)
-    if (!is.null(file_pdf)) {
-      dev.off()
-    }
-    return(
-      list(
-        item_exposure_rate               = item_exposure_rate,
-        item_exposure_rate_segment       = item_exposure_rate_segment,
-        item_exposure_rate_segment_final = item_exposure_rate_segment_final,
-        stim_exposure_rate               = stim_exposure_rate,
-        stim_exposure_rate_segment       = stim_exposure_rate_segment,
-        stim_exposure_rate_segment_final = stim_exposure_rate_segment_final,
-        segment_rate_table = segment_rate_table,
-        n_segment = n_segment,
-        segment_n = segment_n,
-        segment_cut = segment_cut,
-        segment_label = segment_label
-      )
+setMethod(
+  f = "plotExposure",
+  signature = "output_Shadow_all",
+  definition = function(object, max_rate = 0.25, theta_segment = "estimated", color = "blue", color_final = "blue", file_pdf = NULL, ...) {
+    .Deprecated("plot", msg = "plotExposure() is deprecated. Use plot() instead.")
+    p <- plot(object,
+      type = "exposure",
+      theta_segment = theta_segment,
+      color = color,
+      color_final = color_final,
+      file_pdf = file_pdf,
+      ...
     )
+    return(p)
   }
 )

@@ -3,10 +3,20 @@
 \docType{methods}
 \name{plotShadow}
 \alias{plotShadow}
+\alias{plotShadow,list-method}
 \alias{plotShadow,output_Shadow_all-method}
 \title{Draw a shadow test chart}
 \usage{
 plotShadow(
+  object,
+  examinee_id = 1,
+  sort_by_difficulty = FALSE,
+  file_pdf = NULL,
+  simple = FALSE,
+  ...
+)
+
+\S4method{plotShadow}{list}(
   object,
   examinee_id = 1,
   sort_by_difficulty = FALSE,

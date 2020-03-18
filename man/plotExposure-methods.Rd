@@ -4,6 +4,7 @@
 \name{plotExposure}
 \alias{plotExposure}
 \alias{plotExposure,list-method}
+\alias{plotExposure,output_Shadow_all-method}
 \title{Draw an item exposure plot}
 \usage{
 plotExposure(
@@ -17,6 +18,16 @@ plotExposure(
 )
 
 \S4method{plotExposure}{list}(
+  object,
+  max_rate = 0.25,
+  theta_segment = "estimated",
+  color = "blue",
+  color_final = "blue",
+  file_pdf = NULL,
+  ...
+)
+
+\S4method{plotExposure}{output_Shadow_all}(
   object,
   max_rate = 0.25,
   theta_segment = "estimated",
@@ -42,7 +53,7 @@ plotExposure(
 \item{...}{Additional options to be passed on to \code{pdf()}.}
 }
 \description{
-Draw a plot of item exposure rates
+(Deprecated) Draw a plot of item exposure rates
 }
 \examples{
 \donttest{
