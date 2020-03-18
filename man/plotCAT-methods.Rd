@@ -3,7 +3,7 @@
 \docType{methods}
 \name{plotCAT}
 \alias{plotCAT}
-\alias{plotCAT,list-method}
+\alias{plotCAT,output_Shadow_all-method}
 \alias{plotCAT,output_Shadow-method}
 \title{Draw an audit trail plot}
 \usage{
@@ -19,7 +19,7 @@ plotCAT(
   ...
 )
 
-\S4method{plotCAT}{list}(
+\S4method{plotCAT}{output_Shadow_all}(
   object,
   examinee_id = 1,
   min_theta = -5,
