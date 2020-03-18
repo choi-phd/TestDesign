@@ -246,7 +246,7 @@ setMethod(
 #' @docType methods
 #' @rdname mle-methods
 #' @examples
-#' mle(itempool_fatigue, resp_fatigue_raw[10,])
+#' mle(itempool_fatigue, resp_fatigue_data[10,])
 #' @export
 setGeneric(
   name = "mle",
