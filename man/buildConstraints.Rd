@@ -24,9 +24,9 @@ Read constraints from specified files.
 \examples{
 ## Write to tempdir() and clean afterwards
 f1 <- file.path(tempdir(), "constraints_science.csv")
-write.csv(constraints_science_raw, f1, row.names = FALSE)
+write.csv(constraints_science_data, f1, row.names = FALSE)
 f2 <- file.path(tempdir(), "itemattrib_science.csv")
-write.csv(itemattrib_science_raw, f2, row.names = FALSE)
+write.csv(itemattrib_science_data, f2, row.names = FALSE)
 
 constraints <- buildConstraints(itempool_science, f1, f2)
 

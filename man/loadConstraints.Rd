@@ -28,14 +28,14 @@ Use \code{vignette("constraints")} for instructions on how to create the constra
 }
 \examples{
 ## Read from data.frame:
-itempool_science    <- loadItemPool(itempool_science_raw)
-itemattrib_science  <- loadItemAttrib(itemattrib_science_raw, itempool_science)
-constraints_science <- loadConstraints(constraints_science_raw,
+itempool_science    <- loadItemPool(itempool_science_data)
+itemattrib_science  <- loadItemAttrib(itemattrib_science_data, itempool_science)
+constraints_science <- loadConstraints(constraints_science_data,
   itempool_science, itemattrib_science)
 
 ## Read from file: write to tempdir() for illustration and clean afterwards
 f <- file.path(tempdir(), "constraints_science.csv")
-write.csv(constraints_science_raw, f, row.names = FALSE)
+write.csv(constraints_science_data, f, row.names = FALSE)
 constraints_science <- loadConstraints(f,
   itempool_science, itemattrib_science)
 file.remove(f)

@@ -16,11 +16,11 @@ NULL
 #'
 #' @examples
 #' ## Read from data.frame:
-#' itempool_science <- loadItemPool(itempool_science_raw)
+#' itempool_science <- loadItemPool(itempool_science_data)
 #'
 #' ## Read from file: write to tempdir() for illustration and clean afterwards
 #' f <- file.path(tempdir(), "itempool_science.csv")
-#' write.csv(itempool_science_raw, f, row.names = FALSE)
+#' write.csv(itempool_science_data, f, row.names = FALSE)
 #' itempool_science <- loadItemPool(f)
 #' file.remove(f)
 #'
@@ -236,12 +236,12 @@ setClass("item_attrib",
 #'
 #' @examples
 #' ## Read from data.frame:
-#' itempool_science   <- loadItemPool(itempool_science_raw)
-#' itemattrib_science <- loadItemAttrib(itemattrib_science_raw, itempool_science)
+#' itempool_science   <- loadItemPool(itempool_science_data)
+#' itemattrib_science <- loadItemAttrib(itemattrib_science_data, itempool_science)
 #'
 #' ## Read from file: write to tempdir() for illustration and clean afterwards
 #' f <- file.path(tempdir(), "itemattrib_science.csv")
-#' write.csv(itemattrib_science_raw, f, row.names = FALSE)
+#' write.csv(itemattrib_science_data, f, row.names = FALSE)
 #' itemattrib_science <- loadItemAttrib(f, itempool_science)
 #' file.remove(f)
 #'
@@ -372,13 +372,13 @@ setClassUnion("stattrib_or_null", c("st_attrib", "NULL"))
 #'
 #' @examples
 #' ## Read from data.frame:
-#' itempool_reading   <- loadItemPool(itempool_reading_raw)
-#' itemattrib_reading <- loadItemAttrib(itemattrib_reading_raw, itempool_reading)
-#' stimattrib_reading <- loadStAttrib(stimattrib_reading_raw, itemattrib_reading)
+#' itempool_reading   <- loadItemPool(itempool_reading_data)
+#' itemattrib_reading <- loadItemAttrib(itemattrib_reading_data, itempool_reading)
+#' stimattrib_reading <- loadStAttrib(stimattrib_reading_data, itemattrib_reading)
 #'
 #' ## Read from file: write to tempdir() for illustration and clean afterwards
 #' f <- file.path(tempdir(), "stimattrib_reading.csv")
-#' write.csv(stimattrib_reading_raw, f, row.names = FALSE)
+#' write.csv(stimattrib_reading_data, f, row.names = FALSE)
 #' stimattrib_reading <- loadStAttrib(f, itemattrib_reading)
 #' file.remove(f)
 #'
@@ -553,14 +553,14 @@ setClass("constraints",
 #'
 #' @examples
 #' ## Read from data.frame:
-#' itempool_science    <- loadItemPool(itempool_science_raw)
-#' itemattrib_science  <- loadItemAttrib(itemattrib_science_raw, itempool_science)
-#' constraints_science <- loadConstraints(constraints_science_raw,
+#' itempool_science    <- loadItemPool(itempool_science_data)
+#' itemattrib_science  <- loadItemAttrib(itemattrib_science_data, itempool_science)
+#' constraints_science <- loadConstraints(constraints_science_data,
 #'   itempool_science, itemattrib_science)
 #'
 #' ## Read from file: write to tempdir() for illustration and clean afterwards
 #' f <- file.path(tempdir(), "constraints_science.csv")
-#' write.csv(constraints_science_raw, f, row.names = FALSE)
+#' write.csv(constraints_science_data, f, row.names = FALSE)
 #' constraints_science <- loadConstraints(f,
 #'   itempool_science, itemattrib_science)
 #' file.remove(f)
@@ -1306,9 +1306,9 @@ updateConstraints <- function(object, on = NULL, off = NULL) {
 #' @examples
 #' ## Write to tempdir() and clean afterwards
 #' f1 <- file.path(tempdir(), "constraints_science.csv")
-#' write.csv(constraints_science_raw, f1, row.names = FALSE)
+#' write.csv(constraints_science_data, f1, row.names = FALSE)
 #' f2 <- file.path(tempdir(), "itemattrib_science.csv")
-#' write.csv(itemattrib_science_raw, f2, row.names = FALSE)
+#' write.csv(itemattrib_science_data, f2, row.names = FALSE)
 #'
 #' constraints <- buildConstraints(itempool_science, f1, f2)
 #'

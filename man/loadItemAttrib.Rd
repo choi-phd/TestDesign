@@ -23,12 +23,12 @@ Read item attributes from specified file.
 }
 \examples{
 ## Read from data.frame:
-itempool_science   <- loadItemPool(itempool_science_raw)
-itemattrib_science <- loadItemAttrib(itemattrib_science_raw, itempool_science)
+itempool_science   <- loadItemPool(itempool_science_data)
+itemattrib_science <- loadItemAttrib(itemattrib_science_data, itempool_science)
 
 ## Read from file: write to tempdir() for illustration and clean afterwards
 f <- file.path(tempdir(), "itemattrib_science.csv")
-write.csv(itemattrib_science_raw, f, row.names = FALSE)
+write.csv(itemattrib_science_data, f, row.names = FALSE)
 itemattrib_science <- loadItemAttrib(f, itempool_science)
 file.remove(f)
 

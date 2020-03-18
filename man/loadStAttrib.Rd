@@ -23,13 +23,13 @@ Read set, stimulus, or passage attributes from specified file.
 }
 \examples{
 ## Read from data.frame:
-itempool_reading   <- loadItemPool(itempool_reading_raw)
-itemattrib_reading <- loadItemAttrib(itemattrib_reading_raw, itempool_reading)
-stimattrib_reading <- loadStAttrib(stimattrib_reading_raw, itemattrib_reading)
+itempool_reading   <- loadItemPool(itempool_reading_data)
+itemattrib_reading <- loadItemAttrib(itemattrib_reading_data, itempool_reading)
+stimattrib_reading <- loadStAttrib(stimattrib_reading_data, itemattrib_reading)
 
 ## Read from file: write to tempdir() for illustration and clean afterwards
 f <- file.path(tempdir(), "stimattrib_reading.csv")
-write.csv(stimattrib_reading_raw, f, row.names = FALSE)
+write.csv(stimattrib_reading_data, f, row.names = FALSE)
 stimattrib_reading <- loadStAttrib(f, itemattrib_reading)
 file.remove(f)
 

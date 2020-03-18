@@ -23,11 +23,11 @@ Read item parameters from a data.frame or a .csv file and create an \linkS4class
 }
 \examples{
 ## Read from data.frame:
-itempool_science <- loadItemPool(itempool_science_raw)
+itempool_science <- loadItemPool(itempool_science_data)
 
 ## Read from file: write to tempdir() for illustration and clean afterwards
 f <- file.path(tempdir(), "itempool_science.csv")
-write.csv(itempool_science_raw, f, row.names = FALSE)
+write.csv(itempool_science_data, f, row.names = FALSE)
 itempool_science <- loadItemPool(f)
 file.remove(f)
 
