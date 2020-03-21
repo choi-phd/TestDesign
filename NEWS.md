@@ -1,3 +1,21 @@
+# TestDesign 1.1.0
+
+## QoL updates
+
+* `loadItemPool()`, `loadItemAttrib()`, `loadStAttrib()`, `loadConstraints()`, `buildConstraints()` are now capable of reading from data frame objects.
+* `Static()` now returns an `output_Static` object.
+* `Shadow()` now returns an `output_Shadow_all` object.
+* Added `print()` extensions for item objects, `item_pool`, `pool_cluster`, `item_attrib`, `st_attrib`, `constraints`, `config_Static`, `output_Static`, `output_Shadow_all` and `output_Shadow` objects.
+* Added `summary()` extensions for `item_pool`, `item_attrib`, `output_Static`, and `output_Shadow_all` objects.
+* Added `plot()` extensions for `item_pool`, `constraints`, `output_Static`, and `output_Shadow_all` objects.
+* `loadItemPool()` is now capable of reading from `SingleGroupClass` objects from `mirt` package.
+* `Shadow()` now uses `progress` package if available.
+* `item_pool` objects can now be subsetted and combined with `[` and `c()`.
+* Added `dataset_bayes` example dataset.
+
+## Bug fixes
+* Fixed a rare bug where `Shadow()` marked eligible items as ineligible when using `ELIGIBILITY` exposure control.
+
 # TestDesign 1.0.2
 
 ## Default solver
