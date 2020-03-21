@@ -205,3 +205,37 @@ setClass("output_Static",
     return(TRUE)
   }
 )
+
+#' summary
+#'
+#' @param object An \linkS4class{item_pool} object.
+#'
+#' @name summary-method
+#' @aliases summary,output_Static-method
+#' @docType methods
+#' @export
+
+setMethod("summary", "output_Static", function(object) {
+
+  cat("Static assembly\n\n")
+
+  n_targets <- length(object@config@item_selection$target_location)
+  target_location <- object@config@item_selection$target_location
+  items <- object@selected[['INDEX']]
+
+  cat(sprintf("         # of targets: %7i\n", length(target_location)))
+  cat(sprintf("    type of objective: %7s\n", object@config@item_selection$method))
+  cat(sprintf("  # of selected items: %7i\n", length(items)))
+  cat("\n")
+  subpool <- subsetItemPool(object@pool, select = items)
+
+  info  <- calcFisher(subpool, target_location)
+  info  <- rowSums(info)
+  score <- calcEscore(subpool, target_location)
+
+  cat("     theta      info     score\n")
+  for (i in 1:n_targets) {
+    cat(sprintf("      % 2.1f % 9.3f % 9.3f\n", target_location[i], info[i], score[i]))
+  }
+
+})
