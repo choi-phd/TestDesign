@@ -504,6 +504,44 @@ setClass("output_Shadow_all",
   }
 )
 
+#' summary
+#'
+#' @param object An \linkS4class{item_pool} object.
+#'
+#' @name summary-method
+#' @aliases summary,output_Static-method
+#' @docType methods
+#' @export
+
+setMethod(
+  f = "summary",
+  signature = "output_Shadow_all",
+  definition = function(object, ...) {
+
+    cat("Shadow assembly\n\n")
+
+    nj   <- length(object@output)
+    cat(sprintf("  # of simulees : %i\n", nj))
+    cat(sprintf("    test length : %i\n\n", object@constraints@test_length))
+
+    if (!is.null(object@true_theta)) {
+
+      diff <- rep(NA, nj)
+      for (i in 1:nj) {
+        diff[i] <- object@output[[i]]@final_theta_est - object@output[[i]]@true_theta
+      }
+      rmse <- sqrt(mean(diff ** 2))
+      bias <- mean(diff)
+    }
+
+    cat(sprintf("  estimation statistics\n"))
+    cat(sprintf("           RMSE : % 2.6f\n", rmse))
+    cat(sprintf("           bias : % 2.6f\n", bias))
+
+    return(invisible(x))
+  }
+)
+
 #' output_Shadow
 #'
 #' @slot simulee_id Numeric. The index of the simulee.
