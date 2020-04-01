@@ -3650,23 +3650,21 @@ setMethod(
         p <- recordPlot()
       }
 
+      out = new("exposure_rate_plot")
+      out@plot = p
+      out@item_exposure_rate         = item_exposure_rate
+      out@item_exposure_rate_segment = item_exposure_rate_segment
+      out@item_exposure_rate_segment_final = item_exposure_rate_segment_final
+      out@stim_exposure_rate               = stim_exposure_rate
+      out@stim_exposure_rate_segment       = stim_exposure_rate_segment
+      out@stim_exposure_rate_segment_final = stim_exposure_rate_segment_final
+      out@segment_rate_table = segment_rate_table
+      out@n_segment = n_segment
+      out@segment_n = segment_n
+      out@segment_cut = segment_cut
+      out@segment_label = segment_label
 
-      return(
-        list(
-          plot = p,
-          item_exposure_rate               = item_exposure_rate,
-          item_exposure_rate_segment       = item_exposure_rate_segment,
-          item_exposure_rate_segment_final = item_exposure_rate_segment_final,
-          stim_exposure_rate               = stim_exposure_rate,
-          stim_exposure_rate_segment       = stim_exposure_rate_segment,
-          stim_exposure_rate_segment_final = stim_exposure_rate_segment_final,
-          segment_rate_table = segment_rate_table,
-          n_segment = n_segment,
-          segment_n = segment_n,
-          segment_cut = segment_cut,
-          segment_label = segment_label
-        )
-      )
+      return(out)
     }
   }
 )

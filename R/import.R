@@ -59,8 +59,10 @@ NULL
   packageStartupMessage(cyan(paste0("  ", packageDescription('TestDesign')$BugReports)))
 }
 
-setClassUnion("dataframe_or_null", c("data.frame", "NULL"))
-setClassUnion("character_or_null", c("character",  "NULL"))
-setClassUnion("numeric_or_null",   c("numeric",    "NULL"))
-setClassUnion("matrix_or_null",    c("matrix",     "NULL"))
-setClassUnion("list_or_null",      c("list",       "NULL"))
+setClassUnion("dataframe_or_null"   , c("data.frame"  , "NULL"))
+setClassUnion("character_or_null"   , c("character"   , "NULL"))
+setClassUnion("numeric_or_null"     , c("numeric"     , "NULL"))
+setClassUnion("matrix_or_null"      , c("matrix"      , "NULL"))
+setClassUnion("list_or_null"        , c("list"        , "NULL"))
+setClassUnion("recordedplot_or_null", c("recordedplot", "NULL"))
+
