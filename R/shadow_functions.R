@@ -1273,7 +1273,14 @@ setMethod(
     ###    Loop over nj simulees
     #####
 
-    pb <- txtProgressBar(0, nj, char = "|", style = 3)
+    if (requireNamespace("progress")) {
+      pb <- progress::progress_bar$new(
+        format = "[:bar] :current/:total (:percent) eta :eta",
+        total = nj, clear = FALSE)
+      pb$tick(0)
+    } else {
+      pb <- txtProgressBar(0, nj, char = "|", style = 3)
+    }
 
     for (j in 1:nj) {
 
@@ -2230,13 +2237,21 @@ setMethod(
       if (!is.null(session)) {
         shinyWidgets::updateProgressBar(session = session, id = "pb", value = j, total = nj)
       } else {
-        setTxtProgressBar(pb, j)
+        if (requireNamespace("progress")) {
+          pb$tick()
+        } else {
+          setTxtProgressBar(pb, j)
+        }
       }
 
       ##
       #  Simulee: go to next simulee
       ##
 
+    }
+
+    if (!requireNamespace("progress")) {
+      close(pb)
     }
 
     final_theta_est <- unlist(lapply(1:nj, function(j) output_list[[j]]@final_theta_est))
