@@ -537,6 +537,26 @@ setClass("constraints",
   }
 )
 
+#' Print constraints object
+#'
+#' Print \code{\linkS4class{constraints}} object. This is a shortcut to the \code{@constraints} slot.
+#'
+#' @param x A \code{\linkS4class{constraints}} object.
+#' @param ... Further arguments to pass onto \code{\link{print}} function.
+#'
+#' @docType methods
+#' @rdname print-methods
+#' @export
+
+setMethod(
+  f = "print",
+  signature = "constraints",
+  definition = function(x, ...) {
+    print(x@constraints)
+    return(invisible(x))
+  }
+)
+
 #' Load constraints
 #'
 #' Read constraints from specified file.

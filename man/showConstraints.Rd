@@ -11,5 +11,5 @@ showConstraints(constraints)
 \item{constraints}{Output from \code{\link{loadConstraints}}.}
 }
 \description{
-Show constraints. This function is a shortcut to access \code{''} slot.
+(Deprecated) Show constraints. This function is a shortcut to access \code{'constraints'} slot.
 }
