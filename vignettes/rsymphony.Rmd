@@ -1,8 +1,6 @@
 ---
 title: "Installing Rsymphony solver package on Mac"
-output:
-  html_document:
-    highlight: null
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Installing Rsymphony solver package on Mac}
   %\VignetteEncoding{UTF-8}
