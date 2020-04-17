@@ -1,9 +1,9 @@
 ---
-title: "Creating constraints file in TestDesign package"
+title: "Creating constraints in TestDesign package"
 author: Sangdon Lim
-output: html_document
+output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Creating constraints file in TestDesign package}
+  %\VignetteIndexEntry{Creating constraints in TestDesign package}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -12,15 +12,13 @@ vignette: >
 
 ### Introduction
 
-This document explains how to create a constraint file. In test assembly, practitioners often want to select the items that satify various types of constraints. As of *TestDesign* version 0.2, constraints can be read in from a `.csv` spreadsheet file. The file is expected to be in the following structure:
+This document explains how to create constraints for `loadConstraints()`. In test assembly, practitioners often want to select the items that satify various types of constraints. As of *TestDesign* version 1.1.0, constraints can be read in from a data.frame object or a `.csv` spreadsheet file. Constraints are expected to be in the following structure:
 
 ```{r echo = FALSE, message = FALSE}
 library(knitr)
 library(kableExtra)
 library(TestDesign)
 ```
-
-
 
 ```{r echo = FALSE}
 knitr::kable(constraints_science_data[1:5, ]) %>%
@@ -34,7 +32,7 @@ knitr::kable(constraints_science_data[1:5, ]) %>%
   column_spec(7, "3em")
 ```
 
-The constraint file should have 7 columns, named as `CONSTRAINT`, `TYPE`, `WHAT`, `CONDITION`, `LB`, `UB`, `ONOFF` on the first row of the file. Beginning from the second row, each row should have the corresponding values for the 7 columns. A convenient way to creating the file is to use a spreadsheet application (e.g. Excel), work on the contents from there, and then saving it as a `.csv` file.
+Constraints should be structured in seven columns, named as `CONSTRAINT`, `TYPE`, `WHAT`, `CONDITION`, `LB`, `UB`, `ONOFF` on the first row. Beginning from the second row, each row should have the corresponding values for the 7 columns. A convenient way to creating constraints is to use a spreadsheet application (e.g. Excel), work on the contents from there, and then saving it as a `.csv` file.
 
 <br/>
 
@@ -42,7 +40,7 @@ The constraint file should have 7 columns, named as `CONSTRAINT`, `TYPE`, `WHAT`
 
 #### CONSTRAINT
 
-This column serves as indices for the constraints. A single numeric value should be put into each row, incrementing by 1.
+This column serves as indices for the constraints. A single numeric value should be put into each row, incrementing by 1. Indices will be recreated in `loadConstraints()` if necessary.
 
 <br/>
 
