@@ -1,9 +1,9 @@
 ---
-title: "Creating constraints file in TestDesign package"
+title: "Creating constraints in TestDesign package"
 author: Sangdon Lim
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Creating constraints file in TestDesign package}
+  %\VignetteIndexEntry{Creating constraints in TestDesign package}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -12,15 +12,13 @@ vignette: >
 
 ### Introduction
 
-This document explains how to create constraints. In test assembly, practitioners often want to select the items that satify various types of constraints. As of *TestDesign* version 1.0, constraints can be read in from a `.csv` spreadsheet file or a data.frame object. Constraints are expected to be in the following structure:
+This document explains how to create constraints for `loadConstraints()`. In test assembly, practitioners often want to select the items that satify various types of constraints. As of *TestDesign* version 1.1.0, constraints can be read in from a data.frame object or a `.csv` spreadsheet file. Constraints are expected to be in the following structure:
 
 ```{r echo = FALSE, message = FALSE}
 library(knitr)
 library(kableExtra)
 library(TestDesign)
 ```
-
-
 
 ```{r echo = FALSE}
 knitr::kable(constraints_science_data[1:5, ]) %>%
@@ -42,7 +40,7 @@ Constraints should be structured in seven columns, named as `CONSTRAINT`, `TYPE`
 
 #### CONSTRAINT
 
-This column serves as indices for the constraints. A single numeric value should be put into each row, incrementing by 1.
+This column serves as indices for the constraints. A single numeric value should be put into each row, incrementing by 1. Indices will be recreated in `loadConstraints()` if necessary.
 
 <br/>
 
