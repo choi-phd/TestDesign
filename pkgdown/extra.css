@@ -1,0 +1,28 @@
+.examples>.img>img {
+  width: 100%;
+}
+
+table {
+  display: inline-table;
+}
+
+h1 {
+  font-size: 28px;
+  font-weight: 400;
+}
+
+h2 {
+  font-size: 20px;
+  font-weight: 400;
+}
+
+h4 {
+  font-size: 1em;
+  font-weight: 700;
+}
+
+html::-webkit-scrollbar {
+  width: 0 !important;
+  overflow: -moz-scrollbars-none;
+  -ms-overflow-style: none;
+}
