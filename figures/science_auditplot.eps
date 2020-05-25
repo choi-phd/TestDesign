@@ -54,11 +54,48 @@
            >>
          ] setcolorspace } bind def
 /srgb { setcolor } bind def
+% begin encoding
+/WinAnsiEncoding [
+ /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+ /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+ /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+ /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+ /space /exclam /quotedbl /numbersign /dollar /percent /ampersand /quoteright
+ /parenleft /parenright /asterisk /plus /comma /minus /period /slash
+ /zero /one /two /three /four /five /six /seven
+ /eight /nine /colon /semicolon /less /equal /greater /question
+ /at /A /B /C /D /E /F /G
+ /H /I /J /K /L /M /N /O
+ /P /Q /R /S /T /U /V /W
+ /X /Y /Z /bracketleft /backslash /bracketright /asciicircum /underscore
+ /grave /a /b /c /d /e /f /g
+ /h /i /j /k /l /m /n /o
+ /p /q /r /s /t /u /v /w
+ /x /y /z /braceleft /bar /braceright /asciitilde /.notdef
+ /Euro /.notdef /quotesinglbase /florin /quotedblbase /ellipsis /dagger /daggerdbl
+ /circumflex /perthousand /Scaron /guilsinglleft /OE /.notdef /Zcaron /.notdef
+ /.notdef /quoteleft /quoteright /quotedblleft /quotedblright /bullet /endash /emdash
+ /tilde /trademark /scaron /guilsinglright /oe /.notdef /zcaron /Ydieresis
+ /space /exclamdown /cent /sterling /currency /yen /brokenbar /section
+ /dieresis /copyright /ordfeminine /guillemotleft /logicalnot /hyphen /registered /macron
+ /degree /plusminus /twosuperior /threesuperior /acute /mu /paragraph /periodcentered
+ /cedilla /onesuperior /ordmasculine /guillemotright /onequarter /onehalf /threequarters /questiondown
+ /Agrave /Aacute /Acircumflex /Atilde /Adieresis /Aring /AE /Ccedilla
+ /Egrave /Eacute /Ecircumflex /Edieresis /Igrave /Iacute /Icircumflex /Idieresis
+ /Eth /Ntilde /Ograve /Oacute /Ocircumflex /Otilde /Odieresis /multiply
+ /Oslash /Ugrave /Uacute /Ucircumflex /Udieresis /Yacute /Thorn /germandbls
+ /agrave /aacute /acircumflex /atilde /adieresis /aring /ae /ccedilla
+ /egrave /eacute /ecircumflex /edieresis /igrave /iacute /icircumflex /idieresis
+ /eth /ntilde /ograve /oacute /ocircumflex /otilde /odieresis /divide
+ /oslash /ugrave /uacute /ucircumflex /udieresis /yacute /thorn /ydieresis
+]
+ def
+% end encoding
 %%IncludeResource: font Helvetica
 /Helvetica findfont
 dup length dict begin
   {1 index /FID ne {def} {pop pop} ifelse} forall
-  /Encoding ISOLatin1Encoding def
+  /Encoding WinAnsiEncoding def
   currentdict
   end
 /Font1 exch definefont pop
@@ -66,7 +103,7 @@ dup length dict begin
 /Helvetica-Bold findfont
 dup length dict begin
   {1 index /FID ne {def} {pop pop} ifelse} forall
-  /Encoding ISOLatin1Encoding def
+  /Encoding WinAnsiEncoding def
   currentdict
   end
 /Font2 exch definefont pop
@@ -74,7 +111,7 @@ dup length dict begin
 /Helvetica-Oblique findfont
 dup length dict begin
   {1 index /FID ne {def} {pop pop} ifelse} forall
-  /Encoding ISOLatin1Encoding def
+  /Encoding WinAnsiEncoding def
   currentdict
   end
 /Font3 exch definefont pop
@@ -82,7 +119,7 @@ dup length dict begin
 /Helvetica-BoldOblique findfont
 dup length dict begin
   {1 index /FID ne {def} {pop pop} ifelse} forall
-  /Encoding ISOLatin1Encoding def
+  /Encoding WinAnsiEncoding def
   currentdict
   end
 /Font4 exch definefont pop
@@ -96,6 +133,8 @@ dup length dict begin
 %%EndProlog
 %%Page: 1 1
 bp
+/bg { 1 1 1 srgb } def
+0.00 0.00 576.00 504.00 r p2
 0.00 0.00 576.00 504.00 cl
 0 0 0 srgb
 0.75 setlinewidth
@@ -734,7 +773,7 @@ np
 8.28 0 l
 o
 0 0 1 srgb
-1.12 setlinewidth
+1.13 setlinewidth
 [ 0.00 4.50] 0 setdash
 np
 65.86 348.42 m
@@ -898,51 +937,51 @@ o
 1 setlinecap
 1 setlinejoin
 10.00 setmiterlimit
-61.73 22.57 8.27 13.03 r p3
-78.27 22.57 8.27 13.03 r p3
-94.82 22.57 8.27 39.10 r p3
-111.36 22.57 8.27 26.07 r p3
-127.91 22.57 8.27 13.03 r p3
-144.46 22.57 8.27 13.03 r p3
-161.00 22.57 8.27 26.07 r p3
+61.73 22.57 8.27 21.72 r p3
+78.27 22.57 8.27 21.72 r p3
+94.82 22.57 8.27 65.17 r p3
+111.36 22.57 8.27 43.45 r p3
+127.91 22.57 8.27 21.72 r p3
+144.46 22.57 8.27 21.72 r p3
+161.00 22.57 8.27 43.45 r p3
 /bg { 0.1961 0.8039 0.1961 srgb } def
-177.55 22.57 8.27 26.07 r p3
+177.55 22.57 8.27 43.45 r p3
 /bg { 1 0 0 srgb } def
-194.09 22.57 8.27 13.03 r p3
+194.09 22.57 8.27 21.72 r p3
 /bg { 0.1961 0.8039 0.1961 srgb } def
-210.64 22.57 8.27 26.07 r p3
+210.64 22.57 8.27 43.45 r p3
 /bg { 0 0.9333 0.9333 srgb } def
-227.18 22.57 8.27 13.03 r p3
-243.73 22.57 8.27 13.03 r p3
+227.18 22.57 8.27 21.72 r p3
+243.73 22.57 8.27 21.72 r p3
 /bg { 1 0 0 srgb } def
-260.28 22.57 8.27 13.03 r p3
+260.28 22.57 8.27 21.72 r p3
 /bg { 0.1961 0.8039 0.1961 srgb } def
-276.82 22.57 8.27 26.07 r p3
-293.37 22.57 8.27 26.07 r p3
+276.82 22.57 8.27 43.45 r p3
+293.37 22.57 8.27 43.45 r p3
 /bg { 0 0.9333 0.9333 srgb } def
-309.91 22.57 8.27 13.03 r p3
+309.91 22.57 8.27 21.72 r p3
 /bg { 1 0 0 srgb } def
-326.46 22.57 8.27 13.03 r p3
-343.00 22.57 8.27 13.03 r p3
-359.55 22.57 8.27 13.03 r p3
-376.10 22.57 8.27 13.03 r p3
+326.46 22.57 8.27 21.72 r p3
+343.00 22.57 8.27 21.72 r p3
+359.55 22.57 8.27 21.72 r p3
+376.10 22.57 8.27 21.72 r p3
 /bg { 0 0.9333 0.9333 srgb } def
-392.64 22.57 8.27 26.07 r p3
-409.19 22.57 8.27 13.03 r p3
+392.64 22.57 8.27 43.45 r p3
+409.19 22.57 8.27 21.72 r p3
 /bg { 1 0 0 srgb } def
-425.73 22.57 8.27 13.03 r p3
+425.73 22.57 8.27 21.72 r p3
 /bg { 0 0.9333 0.9333 srgb } def
-442.28 22.57 8.27 13.03 r p3
-458.83 22.57 8.27 13.03 r p3
+442.28 22.57 8.27 21.72 r p3
+458.83 22.57 8.27 21.72 r p3
 /bg { 1 0 0 srgb } def
-475.37 22.57 8.27 13.03 r p3
+475.37 22.57 8.27 21.72 r p3
 /bg { 0.1961 0.8039 0.1961 srgb } def
-491.92 22.57 8.27 26.07 r p3
+491.92 22.57 8.27 43.45 r p3
 /bg { 1 0 0 srgb } def
-508.46 22.57 8.27 13.03 r p3
+508.46 22.57 8.27 21.72 r p3
 /bg { 0.1961 0.8039 0.1961 srgb } def
-525.01 22.57 8.27 26.07 r p3
-541.55 22.57 8.27 26.07 r p3
+525.01 22.57 8.27 43.45 r p3
+541.55 22.57 8.27 43.45 r p3
 ep
 %%Trailer
 %%Pages: 1
