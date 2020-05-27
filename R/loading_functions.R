@@ -48,6 +48,28 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL) {
       ipar <- ipar
     } else if (inherits(ipar, "character")) {
       ipar <- read.csv(ipar, header = TRUE, as.is = TRUE)
+    } else if (inherits(ipar, "SingleGroupClass")) {
+      if (requireNamespace("mirt", quietly = TRUE)) {
+        if (ipar@Model$nfact > 1) {
+          stop(sprintf("model is not unidimensional: %s factors", ipar@Model$nfact))
+        }
+        tmp     <- mirt::coef(ipar, IRTpars = TRUE, simplify = TRUE)$items
+        item_id <- rownames(tmp)
+        item_m  <- ipar@Model$itemtype
+        item_m[which(item_m == "2PL")]    <- "2PL"
+        item_m[which(item_m == "3PL")]    <- "3PL"
+        item_m[which(item_m == "graded")] <- "GR"
+        item_m[which(item_m == "gpcm")]   <- "GPC"
+        ipar <- data.frame(ID = item_id, MODEL = item_m, tmp, row.names = NULL)
+        unsupported <- item_m[!item_m %in% c("2PL", "3PL", "graded", "gpcm")]
+        if (length(unsupported) > 0) {
+          stop(sprintf(
+            "unrecognized itemtype: %s",
+            paste0(unsupported, collapse = " ")))
+        }
+      } else {
+        stop("'mirt' package required to read SingleGroupClass objects")
+      }
     }
   }
 
