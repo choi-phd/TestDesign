@@ -316,6 +316,7 @@ setClass("st_attrib",
   }
 )
 
+#' @noRd
 setClassUnion("stattrib_or_null", c("st_attrib", "NULL"))
 
 #' Load set/stimulus/passage attributes
