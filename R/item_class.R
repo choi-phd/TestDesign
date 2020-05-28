@@ -294,18 +294,17 @@ setMethod("show", "item_GR", function(object) {
 
 #' An S4 class to represent an item pool
 #'
-#' An S4 class to represent an item pool.
-#'
-#' @slot ni Numeric. The number of items in the item pool.
-#' @slot max_cat Numeric. The maximum number of response categories across all items.
-#' @slot index Numeric. A vector of item indices.
-#' @slot id Character. A vector of item ids.
-#' @slot model Numeric. A vector of item model codes (1: item.1pl, 2: item_2PL, 3: item_3PL, 4: item_PC, 5: item_GPC, 6: item_GR).
-#' @slot NCAT Numeric. A vector of the number of response categories for each item.
-#' @slot parms A list of item parameters in the pool.
-#' @slot ipar A matrix of item parameters in the pool.
-#' @slot se A matrix representing standard errors of the item parameters.
-#' @slot raw A data.frame containing raw input data.
+#' @slot ni the number of items in the pool.
+#' @slot max_cat the maximum number of response categories across the pool.
+#' @slot index the numeric ID of each item.
+#' @slot id the ID string of each item.
+#' @slot model the item class name of each item. See \code{\link{item-classes}}.
+#' @slot NCAT the number of response categories of each item.
+#' @slot parms a list containing item class objects. See \code{\link{item-classes}}.
+#' @slot ipar a matrix containing item parameters.
+#' @slot se a matrix containing item parameter standard errors.
+#' @slot raw the raw input \code{\link{data.frame}} used in \code{\link{loadItemPool}} to create this object.
+#' @slot raw_se the raw input \code{\link{data.frame}} used in \code{\link{loadItemPool}} to create this object.
 setClass("item_pool",
   slots = c(
     ni      = "numeric",
@@ -317,7 +316,8 @@ setClass("item_pool",
     parms   = "list",
     ipar    = "matrix",
     se      = "matrix",
-    raw     = "data.frame"
+    raw     = "data.frame",
+    raw_se  = "dataframe_or_null"
   ),
   prototype = list(
     ni      = numeric(0),
@@ -329,7 +329,8 @@ setClass("item_pool",
     parms   = list(0),
     ipar    = matrix(0),
     se      = matrix(0),
-    raw     = data.frame()
+    raw     = data.frame(),
+    raw_se  = NULL
   ),
   validity = function(object) {
     if (length(unique(object@id)) != length(object@id)) {
