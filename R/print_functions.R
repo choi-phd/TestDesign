@@ -106,3 +106,27 @@ setMethod("print", "constraints", function(x) {
   print(x@constraints)
   return(invisible(x@constraints))
 })
+
+#' @aliases print,config_Static-method
+#' @docType methods
+#' @rdname print-methods
+setMethod("print", "config_Static", function(x) {
+  cat("Static assembly configurations \n\n")
+  cat("  Item selection criterion \n")
+  cat("    Method         :", x@item_selection$method, "\n")
+  cat("    Info type      :", x@item_selection$info_type, "\n")
+  cat("    Theta location :", x@item_selection$target_location, "\n")
+  cat("    Target value   :", x@item_selection$target_value, "\n")
+  cat("    Target weight  :", x@item_selection$target_weight, "\n")
+  cat("\n")
+  cat("  MIP \n")
+  cat("    Solver         :", x@MIP$solver, "\n")
+  cat("    Verbosity      :", x@MIP$verbosity, "\n")
+  cat("    Time limit     :", x@MIP$time_limit, "\n")
+  cat("    Gap limit \n")
+  cat("      Relative     :", x@MIP$gap_limit, "\n")
+  cat("      Absolute     :", x@MIP$gap_limit_abs, "\n")
+  cat("    Obj. tolerance :", x@MIP$obj_tol, "\n")
+  cat("\n")
+  return(invisible(x))
+})
