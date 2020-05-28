@@ -328,3 +328,47 @@ setMethod("print", "summary_item_pool", function(x) {
   }
   return(invisible(x))
 })
+
+#' @aliases print,summary_output_Static-method
+#' @docType methods
+#' @rdname print-methods
+setMethod("print", "summary_output_Static", function(x) {
+  cat("Static assembly\n\n")
+  cat(sprintf("         # of targets: %7i\n", x@n_targets))
+  cat(sprintf("    type of objective: %7s\n", x@obj_type))
+  cat(sprintf("  # of selected items: %7i\n", length(x@selected_items)))
+  if (x@set_based) {
+    cat(sprintf("   # of selected sets: %7i\n", x@n_selected_sets))
+  }
+  cat("\n")
+  cat("     theta      info     score\n")
+  for (i in 1:x@n_targets) {
+    cat(sprintf(
+      "      % 2.1f % 9.3f % 9.3f\n",
+      x@target_location[i],
+      x@info[i],
+      x@score[i]
+    ))
+  }
+  return(invisible(x))
+})
+
+#' @param digits minimal number of *significant* digits, see \code{\link{print.default}}.
+#'
+#' @aliases print,summary_output_Shadow_all-method
+#' @docType methods
+#' @rdname print-methods
+setMethod("print", "summary_output_Shadow_all", function(x, digits = 3) {
+  cat("Shadow assembly\n\n")
+  cat(sprintf("  # of simulees : %i\n",   x@n_simulee))
+  cat(sprintf("    test length : %i\n\n", x@test_length))
+  cat(sprintf("  theta estimation statistics\n"))
+  if (!is.null(x@true_theta)) {
+    cat(sprintf("            MSE : % 2.6f\n", x@mse))
+    cat(sprintf("           bias : % 2.6f\n", x@bias))
+    cat(sprintf("           corr : % 2.6f\n", x@corr))
+  }
+  cat(sprintf("     Average SE : % 2.6f\n\n", x@average_se))
+  print(x@count, digits = digits, ...)
+  return(invisible(x))
+})
