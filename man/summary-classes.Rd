@@ -5,6 +5,7 @@
 \alias{summary-classes}
 \alias{summary_item_pool-class}
 \alias{summary_item_attrib-class}
+\alias{summary_constraints-class}
 \title{Summary classes}
 \description{
 Summary classes
