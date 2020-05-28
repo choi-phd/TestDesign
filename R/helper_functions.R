@@ -27,14 +27,6 @@ setMethod(
   signature = "list",
   definition = function(object, examinee = NA, position = NA, index_only = TRUE) {
 
-    if (inherits(object$config, "config_Static")) {
-      cat("Static Assembly : Selected items\n\n")
-      tmp <- object$selected
-      if (index_only) {
-        tmp <- tmp[['INDEX']]
-      }
-      return(tmp)
-    }
     if (inherits(object$config, "config_Shadow")) {
       if (!is.na(examinee)) {
         if (is.na(position)) {
