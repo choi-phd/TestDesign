@@ -29,6 +29,7 @@ Suggests:
     Rsymphony,
     gurobi,
     Rglpk,
+    progress,
     shiny,
     shinythemes,
     shinyWidgets,
