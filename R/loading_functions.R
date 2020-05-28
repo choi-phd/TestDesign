@@ -3,27 +3,52 @@ NULL
 
 #' Load item paramaters
 #'
-#' Read item parameters from a .csv file or a data.frame and create an \linkS4class{item_pool} class.
+#' \code{\link{loadItemPool}} is a data loading function to create an \linkS4class{item_pool} class.
+#' \code{\link{loadItemPool}} can read item parameters and standard errors from a data.frame or a .csv file.
 #'
-#' @param file File path of a .csv file containing item parameters. The file content should at least include columns 'ID' and 'MODEL'.
-#' @param ipar A data.frame containing the item parameters. If supplied, this argument is used over 'file'.
-#' @param se_file File path of a .csv file containing standard errors.
-#' @return An \linkS4class{item_pool} object.
+#' @param ipar Item parameters. Can be a data.frame or the file path of a .csv file. The content should at least include columns 'ID' and 'MODEL'.
+#' @param ipar_se (Optional) Standard errors. Can be a data.frame or file path of a .csv file.
+#' @param file (Deprecated) Use 'ipar' above.
+#' @param se_file (Deprecated) Use 'ipar_se' above.
+#'
+#' @return An \code{\linkS4class{item_pool}} object.
 #'
 #' @examples
-#' ## Write to tempdir() and clean afterwards
+#' ## Read from data.frame:
+#' itempool_science <- loadItemPool(itempool_science_data)
+#'
+#' ## Read from file: write to tempdir() for illustration and clean afterwards
 #' f <- file.path(tempdir(), "itempool_science.csv")
 #' write.csv(itempool_science_data, f, row.names = FALSE)
 #' itempool_science <- loadItemPool(f)
 #' file.remove(f)
 #'
+#' ## TestDesign 1.1.0 - Deprecated arguments
+#' \dontrun{
+#' loadItemPool(ipar = "ipar.csv", ipar_se = "se.csv") # is equivalent to
+#' loadItemPool(file = "ipar.csv", se_file = "se.csv") # pre 1.1.0
+#' }
+#'
 #' @seealso \link{dataset_science} for example usage.
 #'
 #' @export
-loadItemPool <- function(file, ipar = NULL, se_file = NULL) {
+loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL) {
 
-  if (is.null(ipar)) {
-    ipar <- read.csv(file, header = TRUE, as.is = TRUE)
+  if (!missing("se_file")){
+    warning("Argument deprecated. Use 'ipar_se' instead.")
+    ipar_se <- se_file
+  }
+  if (!missing("file")){
+    warning("Argument deprecated. Use 'ipar' instead.")
+    ipar <- file
+  }
+
+  if (!is.null(ipar)) {
+    if (inherits(ipar, "data.frame")) {
+      ipar <- ipar
+    } else if (inherits(ipar, "character")) {
+      ipar <- read.csv(ipar, header = TRUE, as.is = TRUE)
+    }
   }
 
   pool       <- new("item_pool")
@@ -38,12 +63,20 @@ loadItemPool <- function(file, ipar = NULL, se_file = NULL) {
   valid      <- logical(ni)
   pool@ipar  <- matrix(NA, nrow = ni, ncol = max(nfields) - 2)
 
-  if (!is.null(se_file)) {
-    ipar_se  <- read.csv(se_file, header = TRUE, as.is = TRUE)
-    load_se  <- TRUE
-    se      <- matrix(NA, nrow = ni, ncol = max(nfields) - 2)
-  } else {
-    load_se <- FALSE
+  load_se <- FALSE
+
+  if (!is.null(ipar_se)) {
+    if (inherits(ipar_se, "data.frame")) {
+      ipar_se <- ipar_se
+      load_se <- TRUE
+    } else if (inherits(ipar_se, "character")) {
+      ipar_se <- read.csv(ipar_se, header = TRUE, as.is = TRUE)
+      load_se <- TRUE
+    }
+  }
+
+  if (load_se) {
+    se <- matrix(NA, nrow = ni, ncol = max(nfields) - 2)
   }
 
   for (i in 1:ni) {
@@ -53,9 +86,11 @@ loadItemPool <- function(file, ipar = NULL, se_file = NULL) {
       pool@model[i] <- "item_1PL"
       parms[[i]] <- new("item_1PL", difficulty = b)
       valid[i] <- TRUE
-      pool@ipar[i, 1] <- b
+
+      j <- 1
+      pool@ipar[i, j] <- b
       if (load_se) {
-        se[i, 1] <- ipar_se[[3]][i]
+        se[i, j] <- as.matrix(ipar_se[i, 2 + j])
       }
     } else if (model[i] == 2 | model[i] == "2PL") {
       NCAT[i] <- 2
@@ -65,9 +100,11 @@ loadItemPool <- function(file, ipar = NULL, se_file = NULL) {
         pool@model[i] <- "item_2PL"
         parms[[i]] <- new("item_2PL", slope = a, difficulty = b)
         valid[i] <- TRUE
-        pool@ipar[i, 1:2] <- c(a, b)
+
+        j <- 1:2
+        pool@ipar[i, j] <- c(a, b)
         if (load_se) {
-          se[i, 1:2] <- c(ipar_se[[3]][i], ipar_se[[4]][i])
+          se[i, j] <- as.matrix(ipar_se[i, 2 + j])
         }
       }
     } else if (model[i] == 3 | model[i] == "3PL") {
@@ -79,9 +116,11 @@ loadItemPool <- function(file, ipar = NULL, se_file = NULL) {
         pool@model[i] <- "item_3PL"
         parms[[i]] <- new("item_3PL", slope = a, difficulty = b, guessing = c)
         valid[i] <- TRUE
-        pool@ipar[i, 1:3] <- c(a, b, c)
+
+        j <- 1:3
+        pool@ipar[i, j] <- c(a, b, c)
         if (load_se) {
-          se[i, 1:3] <- c(ipar_se[[3]][i], ipar_se[[4]][i], ipar_se[[5]][i])
+          se[i, j] <- as.matrix(ipar_se[i, 2 + j])
         }
       }
     } else if (model[i] == 4 | model[i] == "PC") {
@@ -90,9 +129,11 @@ loadItemPool <- function(file, ipar = NULL, se_file = NULL) {
       pool@model[i] <- "item_PC"
       parms[[i]] <- new("item_PC", threshold = b, ncat = NCAT[i])
       valid[i] <- TRUE
-      pool@ipar[i, 1:(NCAT[i] - 1)] <- b
+
+      j <- 1:(NCAT[i] - 1)
+      pool@ipar[i, j] <- b
       if (load_se) {
-        se[i, 1:(NCAT[i] - 1)] <- ipar_se[i, 3:nfields[i]]
+        se[i, j] <- as.matrix(ipar_se[i, 2 + j])
       }
     } else if (model[i] == 5 | model[i] == "GPC") {
       NCAT[i] <- nfields[i] - 2
@@ -102,9 +143,11 @@ loadItemPool <- function(file, ipar = NULL, se_file = NULL) {
         pool@model[i] <- "item_GPC"
         parms[[i]] <- new("item_GPC", slope = a, threshold = b, ncat = NCAT[i])
         valid[i] <- TRUE
-        pool@ipar[i, 1:NCAT[i]] <- c(a, b)
+
+        j <- 1:NCAT[i]
+        pool@ipar[i, j] <- c(a, b)
         if (load_se) {
-          se[i, 1:NCAT[i]] <- c(ipar_se[[3]][i], as.numeric(ipar_se[i, 4:nfields[i]]))
+          se[i, j] <- as.matrix(ipar_se[i, 2 + j])
         }
       }
     } else if (model[i] == 6 | model[i] == "GR") {
@@ -115,9 +158,11 @@ loadItemPool <- function(file, ipar = NULL, se_file = NULL) {
         pool@model[i] <- "item_GR"
         parms[[i]] <- new("item_GR", slope = a, category = b, ncat = NCAT[i])
         valid[i] <- TRUE
-        pool@ipar[i, 1:NCAT[i]] <- c(a, b)
+
+        j <- 1:NCAT[i]
+        pool@ipar[i, j] <- c(a, b)
         if (load_se) {
-          se[i, 1:NCAT[i]] <- c(ipar[[3]][i], as.numeric(ipar_se[i, 4:nfields[i]]))
+          se[i, j] <- as.matrix(ipar_se[i, 2 + j])
         }
       }
     } else {
@@ -141,6 +186,10 @@ loadItemPool <- function(file, ipar = NULL, se_file = NULL) {
   if (max(rowSums(!is.na(pool@ipar))) != max(nfields) - 2) {
     pool@ipar <- pool@ipar[, 1:max(rowSums(!is.na(pool@ipar)))]
   }
+
+  tmp <- pool@raw
+  tmp[, 3:max(nfields)] <- pool@se
+  pool@raw_se <- tmp
 
   if (validObject(pool)) {
     return(pool)
