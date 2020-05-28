@@ -47,6 +47,7 @@ VignetteBuilder: knitr
 Collate:
     'RcppExports.R'
     'import.R'
+    'extensions.R'
     'item_class.R'
     'item_functions.R'
     'loading_functions.R'
@@ -57,4 +58,9 @@ Collate:
     'datasets.R'
     'solver_functions.R'
     'helper_functions.R'
+    'plot_functions.R'
+    'summary_class.R'
+    'print_functions.R'
     'runshiny.R'
+    'summary_functions.R'
+    'show_functions.R'
