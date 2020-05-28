@@ -16,35 +16,29 @@ Item-based example item pool (1000 items).
 \details{
 This pool is associated with the following objects:
 \itemize{
-  \item \code{itempool_science} An \code{\linkS4class{item_pool}} object.
-  \item \code{itemattrib_science} A data frame containing item attributes.
-  \item \code{constraints_science} A list containing 36 constraints.
+  \item \code{itempool_science} An \code{\linkS4class{item_pool}} object containing 1000 items.
+  \item \code{itemattrib_science} A \code{\linkS4class{item_attrib}} object containing 9 item-level attributes.
+  \item \code{constraints_science} A \code{\linkS4class{constraints}} object containing 36 constraints.
 }
 
-Also, the following datasets are intended for illustrating expected data structures. See examples below.
+Also, the following objects are intended for illustrating expected data structures.
 \itemize{
-  \item \code{itempool_science_data} Item parameters.
-  \item \code{itemattrib_science_data} Item attributes.
-  \item \code{constraints_science_data} Constraints.
+  \item \code{itempool_science_data} A \code{\link{data.frame}} containing item parameters.
+  \item \code{itemattrib_science_data} A \code{\link{data.frame}} containing item attributes.
+  \item \code{constraints_science_data} A \code{\link{data.frame}} containing constraint specifications.
 }
 }
 \examples{
-## Write to tempdir() and clean afterwards
-f <- file.path(tempdir(), "itempool_science.csv")
-write.csv(itempool_science_data, f, row.names = FALSE)
-itempool_science <- loadItemPool(f)
-file.remove(f)
-
-f <- file.path(tempdir(), "itemattrib_science.csv")
-write.csv(itemattrib_science_data, f, row.names = FALSE)
-itemattrib_science <- loadItemAttrib(f, itempool_science)
-file.remove(f)
-
-f <- file.path(tempdir(), "constraints_science.csv")
-write.csv(constraints_science_data, f, row.names = FALSE)
-constraints_science <- loadConstraints(f,
+itempool_science    <- loadItemPool(itempool_science_data)
+itemattrib_science  <- loadItemAttrib(itemattrib_science_data, itempool_science)
+constraints_science <- loadConstraints(constraints_science_data,
   itempool_science, itemattrib_science)
-file.remove(f)
+
+\dontrun{
+  View(itempool_science_data)
+  View(itemattrib_science_data)
+  View(constraints_science_data)
+}
 
 }
 \keyword{datasets}

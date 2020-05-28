@@ -19,41 +19,32 @@ Stimulus-based example item pool (303 items).
 This pool is associated with the following objects:
 \itemize{
   \item \code{itempool_reading} An \code{\linkS4class{item_pool}} object.
-  \item \code{itemattrib_reading} A data frame containing item attributes.
-  \item \code{stimattrib_reading} A data frame containing stimulus attributes.
-  \item \code{constraints_reading} A list containing 18 constraints.
+  \item \code{itemattrib_reading} An \code{\linkS4class{item_attrib}} object containing item attributes.
+  \item \code{stimattrib_reading} A \code{\linkS4class{st_attrib}} object containing stimulus attributes.
+  \item \code{constraints_reading} A \code{\linkS4class{constraints}} object containing 18 constraints.
 }
 
-Also, the following datasets are intended for illustrating expected data structures. See examples below.
+Also, the following objects are intended for illustrating expected data structures.
 \itemize{
-  \item \code{itempool_reading_data} Item parameters.
-  \item \code{itemattrib_reading_data} Item attributes.
-  \item \code{stimattrib_reading_data} Item attributes.
-  \item \code{constraints_reading_data} Constraints.
+  \item \code{itempool_reading_data} A \code{\link{data.frame}} containing item parameters.
+  \item \code{itemattrib_reading_data} A \code{\link{data.frame}} containing item attributes.
+  \item \code{stimattrib_reading_data} A \code{\link{data.frame}} containing stimulus attributes.
+  \item \code{constraints_reading_data} A \code{\link{data.frame}} containing constraint specifications.
 }
 }
 \examples{
-## Write to tempdir() and clean afterwards
-f <- file.path(tempdir(), "itempool_reading.csv")
-write.csv(itempool_reading_data, f, row.names = FALSE)
-itempool_reading <- loadItemPool(f)
-file.remove(f)
-
-f <- file.path(tempdir(), "itemattrib_reading.csv")
-write.csv(itemattrib_reading_data, f, row.names = FALSE)
-itemattrib_reading <- loadItemAttrib(f, itempool_reading)
-file.remove(f)
-
-f <- file.path(tempdir(), "stimattrib_reading.csv")
-write.csv(stimattrib_reading_data, f, row.names = FALSE)
-stimattrib_reading <- loadStAttrib(f, itemattrib_reading)
-file.remove(f)
-
-f <- file.path(tempdir(), "constraints_reading.csv")
-write.csv(constraints_reading_data, f, row.names = FALSE)
-constraints_reading <- loadConstraints(f,
+itempool_reading    <- loadItemPool(itempool_reading_data)
+itemattrib_reading  <- loadItemAttrib(itemattrib_reading_data, itempool_reading)
+stimattrib_reading  <- loadStAttrib(stimattrib_reading_data, itemattrib_reading)
+constraints_reading <- loadConstraints(constraints_reading_data,
   itempool_reading, itemattrib_reading, stimattrib_reading)
-file.remove(f)
+
+\dontrun{
+  View(itempool_reading_data)
+  View(itemattrib_reading_data)
+  View(stimattrib_reading_data)
+  View(constraints_reading_data)
+}
 
 }
 \keyword{datasets}
