@@ -5,28 +5,28 @@
 \alias{item_pool-class}
 \title{An S4 class to represent an item pool}
 \description{
-An S4 class to represent an item pool.
+An S4 class to represent an item pool
 }
 \section{Slots}{
 
 \describe{
-\item{\code{ni}}{Numeric. The number of items in the item pool.}
+\item{\code{ni}}{the number of items in the pool.}
 
-\item{\code{max_cat}}{Numeric. The maximum number of response categories across all items.}
+\item{\code{max_cat}}{the maximum number of response categories across the pool.}
 
-\item{\code{index}}{Numeric. A vector of item indices.}
+\item{\code{index}}{the numeric ID of each item.}
 
-\item{\code{id}}{Character. A vector of item ids.}
+\item{\code{id}}{the ID string of each item.}
 
-\item{\code{model}}{Numeric. A vector of item model codes (1: item.1pl, 2: item_2PL, 3: item_3PL, 4: item_PC, 5: item_GPC, 6: item_GR).}
+\item{\code{model}}{the item class name of each item. See \code{\link{item-classes}}.}
 
-\item{\code{NCAT}}{Numeric. A vector of the number of response categories for each item.}
+\item{\code{NCAT}}{the number of response categories of each item.}
 
-\item{\code{parms}}{A list of item parameters in the pool.}
+\item{\code{parms}}{a list containing item class objects. See \code{\link{item-classes}}.}
 
-\item{\code{ipar}}{A matrix of item parameters in the pool.}
+\item{\code{ipar}}{a matrix containing item parameters.}
 
-\item{\code{se}}{A matrix representing standard errors of the item parameters.}
+\item{\code{se}}{a matrix containing item parameter standard errors.}
 
 \item{\code{raw}}{the raw input \code{\link{data.frame}} used in \code{\link{loadItemPool}} to create this object.}
 

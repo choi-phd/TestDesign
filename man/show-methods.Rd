@@ -14,6 +14,7 @@
 \alias{show,item_attrib-method}
 \alias{show,st_attrib-method}
 \alias{show,constraints-method}
+\alias{show,summary_item_pool-method}
 \alias{show,config_Static-method}
 \alias{show,config_Shadow-method}
 \alias{show,output_Static-method}
@@ -41,6 +42,8 @@
 \S4method{show}{st_attrib}(object)
 
 \S4method{show}{constraints}(object)
+
+\S4method{show}{summary_item_pool}(object)
 
 \S4method{show}{config_Static}(object)
 
