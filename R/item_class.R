@@ -65,14 +65,6 @@ setClass("item_1PL",
   prototype = list(difficulty = numeric(0))
 )
 
-#' @name show-method
-#' @aliases show,item_1PL-method
-#' @docType methods
-#' @noRd
-setMethod("show", "item_1PL", function(object) {
-  cat("One-parameter logistic or Rasch model (item_1PL)\n")
-  cat("  Difficulty     :", object@difficulty, "\n")
-})
 
 #' An S4 class to represent a 2PL item
 #'
@@ -104,15 +96,6 @@ setClass("item_2PL",
   }
 )
 
-#' @name show-method
-#' @aliases show,item_2PL-method
-#' @docType methods
-#' @noRd
-setMethod("show", "item_2PL", function(object) {
-  cat("Two-parameter logistic model (item_2PL) \n")
-  cat("  Slope          :", object@slope, "\n")
-  cat("  Difficulty     :", object@difficulty, "\n")
-})
 
 #' An S4 class to represent a 3PL item
 #'
@@ -148,16 +131,6 @@ setClass("item_3PL",
   }
 )
 
-#' @name show-method
-#' @aliases show,item_3PL-method
-#' @docType methods
-#' @noRd
-setMethod("show", "item_3PL", function(object) {
-  cat("Three-parameter logistic model (item_3PL)\n")
-  cat("  Slope          :", object@slope, "\n")
-  cat("  Difficulty     :", object@difficulty, "\n")
-  cat("  Guessing       :", object@guessing, "\n")
-})
 
 #' An S4 class to represent a partial credit item
 #'
@@ -190,15 +163,6 @@ setClass("item_PC",
   }
 )
 
-#' @name show-method
-#' @aliases show,item_PC-method
-#' @docType methods
-#' @noRd
-setMethod("show", "item_PC", function(object) {
-  cat("Partial credit model (item_PC)\n")
-  cat("  Threshold     :", object@threshold, "\n")
-  cat("  N categories  :", object@ncat, "\n")
-})
 
 #' An S4 class to represent a generalized partial credit item
 #'
@@ -234,16 +198,6 @@ setClass("item_GPC",
   }
 )
 
-#' @name show-method
-#' @aliases show,item_GPC-method
-#' @docType methods
-#' @noRd
-setMethod("show", "item_GPC", function(object) {
-  cat("Generalized partial credit model (item_GPC)\n")
-  cat("  Slope         :", object@slope, "\n")
-  cat("  Threshold     :", object@threshold, "\n")
-  cat("  N categories  :", object@ncat, "\n")
-})
 
 #' An S4 class to represent a graded response item
 #'
@@ -281,16 +235,6 @@ setClass("item_GR",
   }
 )
 
-#' @name show-method
-#' @aliases show,item_GR-method
-#' @docType methods
-#' @noRd
-setMethod("show", "item_GR", function(object) {
-  cat("Graded response model (item_GR)\n")
-  cat("  Slope         :", object@slope, "\n")
-  cat("  Category b    :", object@category, "\n")
-  cat("  N categories  :", object@ncat, "\n")
-})
 
 #' An S4 class to represent an item pool
 #'
