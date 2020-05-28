@@ -13,7 +13,6 @@ NULL
 #' @docType methods
 #' @rdname getSolution-methods
 #' @export
-
 setGeneric(
   name = "getSolution",
   def = function(object, examinee = NA, position = NA, index_only = TRUE) {
@@ -23,7 +22,6 @@ setGeneric(
 
 #' @docType methods
 #' @rdname getSolution-methods
-
 setMethod(
   f = "getSolution",
   signature = "list",
@@ -74,7 +72,6 @@ setMethod(
 #'
 #' @docType methods
 #' @export
-
 showConstraints <- function(constraints) {
   return(constraints@constraints)
 }

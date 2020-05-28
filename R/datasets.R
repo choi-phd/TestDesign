@@ -42,7 +42,6 @@ NULL
 #' @keywords datasets
 #' @name dataset_science
 #' @rdname dataset_science
-
 NULL
 
 #' Reading dataset
@@ -93,7 +92,6 @@ NULL
 #' @keywords datasets
 #' @name dataset_reading
 #' @rdname dataset_reading
-
 NULL
 
 #' Fatigue dataset
@@ -150,5 +148,4 @@ NULL
 #' @keywords datasets
 #' @name dataset_fatigue
 #' @rdname dataset_fatigue
-
 NULL
