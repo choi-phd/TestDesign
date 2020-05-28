@@ -1250,7 +1250,15 @@ setMethod(
     ###    Loop over nj simulees
     #####
 
-    pb <- txtProgressBar(0, nj, char = "|", style = 3)
+    has_progress_pkg <- requireNamespace("progress")
+    if (has_progress_pkg) {
+      pb <- progress::progress_bar$new(
+        format = "[:bar] :spin :current/:total (:percent) eta :eta",
+        total = nj, clear = FALSE)
+      pb$tick(0)
+    } else {
+      pb <- txtProgressBar(0, nj, char = "|", style = 3)
+    }
 
     for (j in 1:nj) {
 
@@ -1706,6 +1714,10 @@ setMethod(
           done <- TRUE
           output@likelihood <- likelihood
           output@posterior  <- posterior[j, ]
+        }
+
+        if (has_progress_pkg) {
+          pb$tick(0)
         }
 
       }
@@ -2207,13 +2219,21 @@ setMethod(
       if (!is.null(session)) {
         shinyWidgets::updateProgressBar(session = session, id = "pb", value = j, total = nj)
       } else {
-        setTxtProgressBar(pb, j)
+        if (has_progress_pkg) {
+          pb$tick()
+        } else {
+          setTxtProgressBar(pb, j)
+        }
       }
 
       ##
       #  Simulee: go to next simulee
       ##
 
+    }
+
+    if (!has_progress_pkg) {
+      close(pb)
     }
 
     final_theta_est <- unlist(lapply(1:nj, function(j) output_list[[j]]@final_theta_est))
