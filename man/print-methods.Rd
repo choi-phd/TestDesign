@@ -18,6 +18,7 @@
 \alias{print,config_Shadow-method}
 \alias{print,output_Static-method}
 \alias{print,output_Shadow-method}
+\alias{print,exposure_rate_plot-method}
 \alias{print,summary_item_pool-method}
 \alias{print,summary_constraints-method}
 \alias{print,summary_output_Static-method}
@@ -53,6 +54,8 @@
 \S4method{print}{output_Static}(x, index_only = TRUE)
 
 \S4method{print}{output_Shadow}(x)
+
+\S4method{print}{exposure_rate_plot}(x)
 
 \S4method{print}{summary_item_pool}(x)
 

@@ -170,3 +170,11 @@ setMethod("show", "summary_output_Shadow_all", function(object) {
   print(object)
   return(invisible(NULL))
 })
+
+#' @aliases show,exposure_rate_plot-method
+#' @docType methods
+#' @rdname show-methods
+setMethod("show", "exposure_rate_plot", function(object) {
+  print(object)
+  return(invisible(NULL))
+})

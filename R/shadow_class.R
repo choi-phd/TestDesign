@@ -524,3 +524,40 @@ setClass("output_Shadow",
     return(TRUE)
   }
 )
+
+#' An S4 class to represent the exposure rate plot
+#'
+#' @noRd
+setClass("exposure_rate_plot",
+  slots = c(
+    plot = "recordedplot_or_null",
+    item_exposure_rate               = "numeric_or_null",
+    item_exposure_rate_segment       = "list_or_null",
+    item_exposure_rate_segment_final = "list_or_null",
+    stim_exposure_rate               = "numeric_or_null",
+    stim_exposure_rate_segment       = "list_or_null",
+    stim_exposure_rate_segment_final = "list_or_null",
+    segment_rate_table               = "dataframe_or_null",
+    n_segment                        = "numeric_or_null",
+    segment_n                        = "numeric_or_null",
+    segment_cut                      = "numeric_or_null",
+    segment_label                    = "character_or_null"
+  ),
+  prototype = list(
+    plot = NULL,
+    item_exposure_rate               = NULL,
+    item_exposure_rate_segment       = NULL,
+    item_exposure_rate_segment_final = NULL,
+    stim_exposure_rate               = NULL,
+    stim_exposure_rate_segment       = NULL,
+    stim_exposure_rate_segment_final = NULL,
+    segment_rate_table               = NULL,
+    n_segment                        = NULL,
+    segment_n                        = NULL,
+    segment_cut                      = NULL,
+    segment_label                    = NULL
+  ),
+  validity = function(object) {
+    return(TRUE)
+  }
+)
