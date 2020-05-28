@@ -4,7 +4,6 @@ NULL
 #' createStaticTestConfig
 #'
 #' @rdname createStaticTestConfig
-
 setClass("config_Static",
   slots = c(
     item_selection = "list",
