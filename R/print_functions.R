@@ -90,3 +90,11 @@ setMethod("print", "item_attrib", function(x) {
   print(x@data)
   return(invisible(x@data))
 })
+
+#' @aliases print,st_attrib-method
+#' @docType methods
+#' @rdname print-methods
+setMethod("print", "st_attrib", function(x) {
+  print(x@data)
+  return(invisible(x@data))
+})
