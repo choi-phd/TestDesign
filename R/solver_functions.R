@@ -21,8 +21,6 @@ NULL
 #'
 #' @references
 #' \insertRef{van_der_linden_linear_2005}{TestDesign}
-#'
-
 runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
 
   ni    <- constraints@ni
@@ -203,7 +201,6 @@ runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
 }
 
 #' @noRd
-
 runMIP <- function(solver, obj, mat, dir, rhs, maximize, types,
                    verbosity, time_limit, gap_limit_abs, gap_limit) {
 
@@ -281,7 +278,6 @@ runMIP <- function(solver, obj, mat, dir, rhs, maximize, types,
 }
 
 #' @noRd
-
 isOptimal <- function(status, solver) {
   is_optimal <- FALSE
   if (toupper(solver) == "LPSYMPHONY") {
@@ -299,7 +295,6 @@ isOptimal <- function(status, solver) {
 }
 
 #' @noRd
-
 notOptimal <- function(status, solver) {
   if (toupper(solver) == "LPSYMPHONY") {
     tmp <- sprintf("MIP solver returned non-zero status: %s", names(status))

@@ -10,7 +10,6 @@ NULL
 #' @param max_iter A maximum number of iterations.
 #' @param conv A convergence criterion.
 #' @param start_theta A starting theta value.
-
 calcRP <- function(object, rp = .50, max_iter = 100, conv = 0.0001, start_theta = 0) {
   RP <- numeric(object@ni)
   for (i in 1:object@ni) {
@@ -35,7 +34,6 @@ calcRP <- function(object, rp = .50, max_iter = 100, conv = 0.0001, start_theta 
 
 #' @rdname simResp-methods
 #' @aliases simResp,pool_cluster,numeric-method
-
 setMethod(
   f = "simResp",
   signature = c("pool_cluster", "list"),
@@ -68,7 +66,6 @@ setMethod(
 #'
 #' @rdname item_pool.operators
 #' @export
-
 `==.pool_cluster` <- function(pool_cluster1, pool_cluster2) {
   if (class(pool_cluster1) != "pool_cluster" || class(pool_cluster2) != "pool_cluster") stop("Operands must be 'pool_cluster' objects.")
   return(identical(pool_cluster1, pool_cluster2))
@@ -85,7 +82,6 @@ setMethod(
 #' @name extract-methods
 #' @aliases [,test,ANY,ANY,ANY-method
 #' @docType methods
-
 setMethod(
   f = "[",
   signature = "test",
@@ -122,7 +118,6 @@ setMethod(
 #' test <- makeTest(itempool_science, seq(-3, 3, 1))
 #' subtest <- subsetTest(test, 1:100)
 #' @export
-
 subsetTest <- function(test, select = NULL) {
   if (class(test) != "test") {
     stop("'test' must be a 'test' object.")
@@ -159,7 +154,6 @@ subsetTest <- function(test, select = NULL) {
 #' @examples
 #' test <- makeTest(itempool_science, seq(-3, 3, 1))
 #' @export
-
 setGeneric(
   name = "makeTest",
   def = function(object, theta = seq(-4, 4, .1), info_type = "FISHER", true_theta = NULL) {
@@ -170,7 +164,6 @@ setGeneric(
 #' @docType methods
 #' @rdname makeTest-methods
 #' @export
-
 setMethod(
   f = "makeTest",
   signature = "item_pool",
@@ -200,7 +193,6 @@ setMethod(
 #'
 #' @docType methods
 #' @rdname makeTestCluster-methods
-
 setGeneric(
   name = "makeTestCluster",
   def = function(object, theta, true_theta) {
@@ -210,7 +202,6 @@ setGeneric(
 
 #' @docType methods
 #' @rdname makeTestCluster-methods
-
 setMethod(
   f = "makeTestCluster",
   signature = c("pool_cluster", "numeric", "numeric"),
@@ -225,7 +216,6 @@ setMethod(
 
 #' @docType methods
 #' @rdname makeTestCluster-methods
-
 setMethod(
   f = "makeTestCluster",
   signature = c("pool_cluster", "numeric", "list"),
@@ -258,7 +248,6 @@ setMethod(
 #' @examples
 #' mle(itempool_fatigue, resp_fatigue_raw[10,])
 #' @export
-
 setGeneric(
   name = "mle",
   def = function(object, resp, start_theta = NULL, max_iter = 100, crit = 0.001, select = NULL, theta_range = c(-4, 4), truncate = FALSE, max_change = 1.0, do_Fisher = TRUE) {
@@ -268,7 +257,6 @@ setGeneric(
 
 #' @docType methods
 #' @rdname mle-methods
-
 setMethod(
   f = "mle",
   signature = "item_pool",
@@ -392,7 +380,6 @@ setMethod(
 #'
 #' @docType methods
 #' @rdname mlearray-methods
-
 setGeneric(
   name = "MLE",
   def = function(object, start_theta = NULL, max_iter = 100, crit = 0.001, select = NULL, theta_range = c(-4, 4), truncate = FALSE, max_change = 1.0, do_Fisher = TRUE) {
@@ -402,7 +389,6 @@ setGeneric(
 
 #' @docType methods
 #' @rdname mlearray-methods
-
 setMethod(
   f = "MLE",
   signature = "test",
@@ -516,7 +502,6 @@ setMethod(
 
 #' @docType methods
 #' @rdname mlearray-methods
-
 setMethod(
   f = "MLE",
   signature = "test_cluster",
@@ -542,7 +527,6 @@ setMethod(
 #' @docType methods
 #' @rdname eap-methods
 #' @export
-
 setGeneric(
   name = "eap",
   def = function(object, theta, prior, resp, select = NULL) {
@@ -553,7 +537,6 @@ setGeneric(
 #' @docType methods
 #' @rdname eap-methods
 #' @export
-
 setMethod(
   f = "eap",
   signature = "item_pool",
@@ -626,7 +609,6 @@ setMethod(
 #'
 #' @docType methods
 #' @rdname eaparray-methods
-
 setGeneric(
   name = "EAP",
   def = function(object, prior, select = NULL, reset_prior = FALSE) {
@@ -636,7 +618,6 @@ setGeneric(
 
 #' @docType methods
 #' @rdname eaparray-methods
-
 setMethod(
   f = "EAP",
   signature = "test",
@@ -678,7 +659,6 @@ setMethod(
 
 #' @docType methods
 #' @rdname eaparray-methods
-
 setMethod(
   f = "EAP",
   signature = "test_cluster",
@@ -698,7 +678,6 @@ setMethod(
   }
 )
 
-
 #' Create an item pool cluster object
 #'
 #' Create a \code{\linkS4class{pool_cluster}} object.
@@ -709,7 +688,6 @@ setMethod(
 #'
 #' cluster <- makeItemPoolCluster(c(itempool_science, itempool_reading))
 #' @export
-
 makeItemPoolCluster <- function(pools, names = NULL) {
   np <- length(pools)
   if (np == 0) {
@@ -734,7 +712,6 @@ makeItemPoolCluster <- function(pools, names = NULL) {
     return(pool_cluster)
   }
 }
-
 
 #' Run adaptive test assembly.
 #'
@@ -765,7 +742,6 @@ makeItemPoolCluster <- function(pools, names = NULL) {
 #' solution <- Shadow(config, constraints_science, true_theta)
 #' solution$output
 #' @export
-
 setGeneric(
   name = "Shadow",
   def = function(config, constraints = NULL, true_theta = NULL, data = NULL, prior = NULL, prior_par = NULL, session = NULL) {
@@ -775,7 +751,6 @@ setGeneric(
 
 #' @rdname Shadow-methods
 #' @export
-
 setMethod(
   f = "Shadow",
   signature = "config_Shadow",
@@ -2327,7 +2302,6 @@ setMethod(
 #'
 #' @param color A vector of color names or RGB color codes.
 #' @param alpha A vector of integers between 0 and 255 (0 = fully transparent, 255 = fully visible).
-
 addTrans <- function(color, alpha) {
   if (length(color) != length(alpha) & !any(c(length(color), length(alpha)) == 1)) {
     stop("Vector lengths not correct")
@@ -2361,7 +2335,6 @@ addTrans <- function(color, alpha) {
 #' @param file_pdf If supplied a filename, save as a PDF file.
 #' @param max_rate A target item exposure rate.
 #' @param discard_first A integer identifying the first x simulees to discard as burn-in.
-
 plotEligibilityStats <- function(config, object = NULL, object_no_fading = NULL, file = NULL, file_no_fading = NULL, segment = 1, items = c(1), file_pdf = NULL, max_rate = 0.25, discard_first = NULL) {
   fading_factor <- config@exposure_control$fading_factor
   if (!is.null(file_pdf)) {
@@ -2443,7 +2416,6 @@ plotEligibilityStats <- function(config, object = NULL, object_no_fading = NULL,
 #' @param x A vector of values.
 #' @param y A vector of values.
 #' @param conditional If \code{TRUE}, calculate RMSE conditional on x.
-
 RMSE <- function(x, y, conditional = TRUE) {
   if (length(x) != length(y)) {
     stop("length(x) and length(y) are not equal")
@@ -2462,7 +2434,6 @@ RMSE <- function(x, y, conditional = TRUE) {
 #'
 #' @param RMSE_foc A vector of RMSE values for the focal group.
 #' @param RMSE_ref A vector of RMSE values for the reference group.
-
 RE <- function(RMSE_foc, RMSE_ref) {
   if (length(RMSE_foc) != length(RMSE_ref)) {
     stop("length(x) and length(y) are not equal")
@@ -2478,7 +2449,6 @@ RE <- function(RMSE_foc, RMSE_ref) {
 #' @param constraints A \code{\linkS4class{constraints}} object generated by \code{\link{loadConstraints}}.
 #' @param usage_matrix A matrix of item usage data from \code{\link{Shadow}}.
 #' @param true_theta A vector of true theta values.
-
 checkConstraints <- function(constraints, usage_matrix, true_theta = NULL) {
 
 
@@ -2569,7 +2539,6 @@ checkConstraints <- function(constraints, usage_matrix, true_theta = NULL) {
 #' @param lty_set A vector of line types for the series.
 #' @param col_set A vector of colors for the series.
 #' @param theta A theta grid.
-
 plotRMSE <- function(..., title = NULL, legend_title = NULL, legend_labels = NULL, lty_set = NULL, col_set = NULL, theta = seq(-2, 2, 1)) {
 
   output_list <- list(...)
@@ -2608,7 +2577,6 @@ plotRMSE <- function(..., title = NULL, legend_title = NULL, legend_labels = NUL
 }
 
 #' @noRd
-
 plotER <- function(
   item_exposure_rate, item_exposure_rate_final = NULL,
   stim_exposure_rate = NULL, stim_index = NULL,
@@ -2663,7 +2631,6 @@ plotER <- function(
 #' @param width Width of the graphics device.
 #' @param height Height of the graphics device.
 #' @param mfrow Number of multiple figures defined as c(nrow, ncol).
-
 plotExposureRateBySegment <- function(object, config, max_rate = 0.25, file_pdf = NULL, width = 7, height = 6, mfrow = c(2, 4)) {
 
   ## FIX THIS: WHAT IF TRUE_THETA IS NOT AVAILABLE
@@ -2913,7 +2880,6 @@ plotExposureRateFinal <- function(object, config = NULL, max_rate = 0.25, theta 
 #' @param height Height of the graphics device.
 #' @param color Plotting color.
 #' @param mfrow Number of multiple figures defined as c(nrow, ncol).
-
 plotExposureRateFinalFlag <- function(object, pool, theta = seq(-3, 3, .1), flag_from = 0.4, file_pdf = NULL, width = 7, height = 6, color = "red", mfrow = c(2, 4)) {
   info <- calcFisher(pool, theta)
   ni <- pool@ni
@@ -2970,7 +2936,6 @@ plotExposureRateFinalFlag <- function(object, pool, theta = seq(-3, 3, .1), flag
 #' @param color Plotting color.
 #' @param width Width of the graphics device.
 #' @param height Height of the graphics device.
-
 plotInfoOverlay <- function(object, theta, info_type = "FISHER", select = NULL, file_pdf = NULL, color = "red", width = 7, height = 6) {
 
   if (toupper(info_type) == "FISHER") {
@@ -3116,7 +3081,6 @@ iparPosteriorSample <- function(pool, n_sample = 500) {
   }
   return(ipar_list)
 }
-
 
 #' Save or print audit trails
 #'
@@ -3536,7 +3500,6 @@ setGeneric(
 #' @docType methods
 #' @rdname plotExposure-methods
 #' @export
-
 setMethod(
   f = "plotExposure",
   signature = "list",

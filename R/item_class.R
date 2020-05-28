@@ -306,7 +306,6 @@ setMethod("show", "item_GR", function(object) {
 #' @slot ipar A matrix of item parameters in the pool.
 #' @slot se A matrix representing standard errors of the item parameters.
 #' @slot raw A data.frame containing raw input data.
-
 setClass("item_pool",
   slots = c(
     ni      = "numeric",
@@ -372,7 +371,6 @@ setMethod("show", "item_pool", function(object) {
 #' @examples
 #' subitempool <- subsetItemPool(itempool_science, 1:100)
 #' @export
-
 subsetItemPool <- function(pool, select = NULL) {
   if (class(pool) != "item_pool") {
     stop("'pool' must be an 'item_pool' object.")
@@ -405,7 +403,6 @@ subsetItemPool <- function(pool, select = NULL) {
 #' @name extract-methods
 #' @aliases [,item_pool,ANY,ANY,ANY-method
 #' @docType methods
-
 setMethod(
   f = "[",
   signature = "item_pool",
@@ -453,7 +450,6 @@ setMethod(
 #'
 #' @rdname item_pool.operators
 #' @export
-
 `+.item_pool` <- function(pool1, pool2) {
   if (class(pool1) != "item_pool" || class(pool2) != "item_pool") stop("Operands must be 'item_pool' objects.")
 
@@ -520,7 +516,6 @@ setMethod(
 #'
 #' @rdname item_pool.operators
 #' @export
-
 `-.item_pool` <- function(pool1, pool2) {
   if (class(pool1) != "item_pool" || class(pool2) != "item_pool") stop("Operands must be 'item_pool' objects.")
   if (any(pool2@id %in% pool1@id)) {
@@ -553,7 +548,6 @@ setMethod(
 #'
 #' @rdname item_pool.operators
 #' @export
-
 `==.item_pool` <- function(pool1, pool2) {
   if (class(pool1) != "item_pool" || class(pool2) != "item_pool") stop("Operands must be 'item_pool' objects.")
   return(identical(pool1, pool2))

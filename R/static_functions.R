@@ -1,7 +1,6 @@
 #' @include shadow_class.R
 NULL
 
-
 #' Run Static Test Assembly
 #'
 #' Perform static (fixed-form) test assembly with specified configurations.
@@ -38,7 +37,6 @@ NULL
 #' @docType methods
 #' @rdname Static-methods
 #' @export
-
 setGeneric(
   name = "Static",
   def = function(config, constraints) {
@@ -89,7 +87,6 @@ setMethod(
   }
 )
 
-
 #' Draw item information plots
 #'
 #' Draw item information plots.
@@ -116,7 +113,6 @@ setMethod(
 #' @docType methods
 #' @rdname plotInfo-methods
 #' @export
-
 setGeneric(
   name = "plotInfo",
   def = function(object, theta = seq(-3, 3, .1), info_type = "FISHER", plot_sum = TRUE, select = NULL, color = "blue", file_pdf = NULL, width = 7, height = 6, mfrow = c(2, 4)) {
@@ -127,7 +123,6 @@ setGeneric(
 #' @docType methods
 #' @rdname plotInfo-methods
 #' @export
-
 setMethod(
   f = "plotInfo",
   signature = "list",
@@ -195,11 +190,9 @@ setMethod(
   }
 )
 
-
 #' @docType methods
 #' @rdname plotInfo-methods
 #' @export
-
 setMethod(
   f = "plotInfo",
   signature = "item_pool",
@@ -245,7 +238,6 @@ setMethod(
 #' @docType methods
 #' @rdname plotInfo-methods
 #' @export
-
 setMethod(
   f = "plotInfo",
   signature = "constraints",
