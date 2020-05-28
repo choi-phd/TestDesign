@@ -18,3 +18,19 @@ setClass(
     return(TRUE)
   }
 )
+
+#' @rdname summary-classes
+setClass(
+  "summary_item_attrib",
+  slots = c(
+    attribs = "character",
+    levels  = "list"
+  ),
+  prototype = list(
+    attribs = character(0),
+    levels  = list()
+  ),
+  validity = function(object) {
+    return(TRUE)
+  }
+)
