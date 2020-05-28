@@ -107,6 +107,14 @@ setMethod("show", "summary_item_pool", function(object) {
   return(invisible(NULL))
 })
 
+#' @aliases show,summary_item_attrib-method
+#' @docType methods
+#' @rdname show-methods
+setMethod("show", "summary_item_attrib", function(object) {
+  print(object)
+  return(invisible(NULL))
+})
+
 #' @aliases show,config_Static-method
 #' @docType methods
 #' @rdname show-methods
