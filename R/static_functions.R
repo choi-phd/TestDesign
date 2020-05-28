@@ -77,6 +77,11 @@ setMethod(
 
     results <- runAssembly(config, constraints, objective = objective)
 
+    is_optimal <- isOptimal(results$status, config@MIP$solver)
+    if (!is_optimal) {
+      warning(notOptimal(results$MIP$status, config@MIP$solver))
+    }
+
     return(list(
       MIP = results$MIP,
       selected = results$shadow_test, obj_value = results$obj_value,
