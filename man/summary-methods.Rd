@@ -6,6 +6,7 @@
 \alias{summary,item_pool-method}
 \alias{summary,item_attrib-method}
 \alias{summary,constraints-method}
+\alias{summary,output_Static-method}
 \title{Extension of summary() for objects in TestDesign package}
 \usage{
 \S4method{summary}{item_pool}(object)
@@ -13,6 +14,8 @@
 \S4method{summary}{item_attrib}(object)
 
 \S4method{summary}{constraints}(object)
+
+\S4method{summary}{output_Static}(object)
 }
 \arguments{
 \item{object}{an object to summarize.}
