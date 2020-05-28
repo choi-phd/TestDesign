@@ -3,13 +3,13 @@
 \docType{methods}
 \name{showConstraints}
 \alias{showConstraints}
-\title{Show constraints}
+\title{(deprecated) Show constraints}
 \usage{
 showConstraints(constraints)
 }
 \arguments{
-\item{constraints}{Output from \code{\link{loadConstraints}}.}
+\item{constraints}{a \code{\linkS4class{constraints}} object.}
 }
 \description{
-Show constraints. This function is a shortcut to access \code{''} slot.
+(deprecated) Use \code{\link[TestDesign:print-methods]{print}} instead.
 }
