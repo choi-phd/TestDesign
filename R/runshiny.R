@@ -15,7 +15,6 @@ NULL
 #' @aliases app
 #' @rdname OAT
 #' @export
-
 OAT <- function() {
   app_dir <- system.file("shiny", package = "TestDesign")
   if (app_dir == "") {
@@ -48,7 +47,6 @@ OAT <- function() {
 
 #' @rdname OAT
 #' @export
-
 app <- function() {
   OAT()
 }

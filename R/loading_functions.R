@@ -1,7 +1,6 @@
 #' @include item_functions.R
 NULL
 
-
 #' Load item paramaters
 #'
 #' Read item parameters from a .csv file or a data.frame and create an \linkS4class{item_pool} class.
@@ -152,7 +151,6 @@ loadItemPool <- function(file, ipar = NULL, se_file = NULL) {
 #'
 #' @slot slope Numeric. A slope parameter value.
 #' @slot difficulty Numeric. A difficulty parameter value.
-
 setClass("item_attrib",
   slots = c(
     data = "data.frame"
@@ -201,7 +199,6 @@ setClass("item_attrib",
 #' @seealso \link{dataset_science} for example usage.
 #'
 #' @export
-
 loadItemAttrib <- function(file, pool) {
 
   if (is.null(pool) || class(pool) != "item_pool") {
@@ -248,12 +245,10 @@ loadItemAttrib <- function(file, pool) {
   }
 }
 
-
 #' An S4 class to represent a set of constraints.
 #'
 #' @slot slope Numeric. A slope parameter value.
 #' @slot difficulty Numeric. A difficulty parameter value.
-
 setClass("st_attrib",
   slots = c(
     data = "data.frame"
@@ -315,7 +310,6 @@ setClassUnion("stattrib_or_null", c("st_attrib", "NULL"))
 #' @seealso \link{dataset_reading} for example usage.
 #'
 #' @export
-
 loadStAttrib <- function(file, item_attrib) {
   st_attrib <- read.csv(file, header = TRUE, as.is = TRUE)
   names(st_attrib) <- toupper(names(st_attrib))
@@ -382,7 +376,6 @@ setClass("constraint",
 #'
 #' @slot slope Numeric. A slope parameter value.
 #' @slot difficulty Numeric. A difficulty parameter value.
-
 setClass("constraints",
   slots = c(
     constraints = "data.frame",
@@ -484,7 +477,6 @@ setClass("constraints",
 #' @seealso \link{dataset_science} for example usage.
 #'
 #' @export
-
 loadConstraints <- function(file, pool, item_attrib, st_attrib = NULL) {
 
   if (class(pool) != "item_pool") {
@@ -1151,7 +1143,6 @@ loadConstraints <- function(file, pool, item_attrib, st_attrib = NULL) {
 #' constraints_science3 <- updateConstraints(constraints_science, on = 32:36)
 #'
 #' @export
-
 updateConstraints <- function(object, on = NULL, off = NULL) {
   nc <- nrow(object@constraints)
   if (length(intersect(on, off)) > 0) {
@@ -1226,7 +1217,6 @@ updateConstraints <- function(object, on = NULL, off = NULL) {
 #' file.remove(f2)
 #'
 #' @export
-
 buildConstraints <- function(pool, file_constraints, file_item_attrib, file_st_attrib = NULL) {
   item_attrib <- loadItemAttrib(file_item_attrib, pool)
   if (!is.null(file_st_attrib)) {
