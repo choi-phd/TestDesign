@@ -347,3 +347,27 @@ setMethod("print", "summary_constraints", function(x) {
   }
   return(invisible(x))
 })
+
+#' @aliases print,summary_output_Static-method
+#' @docType methods
+#' @rdname print-methods
+setMethod("print", "summary_output_Static", function(x) {
+  cat("Static assembly\n\n")
+  cat(sprintf("         # of targets: %7i\n", x@n_targets))
+  cat(sprintf("    type of objective: %7s\n", x@obj_type))
+  cat(sprintf("  # of selected items: %7i\n", length(x@selected_items)))
+  if (x@set_based) {
+    cat(sprintf("   # of selected sets: %7i\n", x@n_selected_sets))
+  }
+  cat("\n")
+  cat("     theta      info     score\n")
+  for (i in 1:x@n_targets) {
+    cat(sprintf(
+      "      % 2.1f % 9.3f % 9.3f\n",
+      x@target_location[i],
+      x@info[i],
+      x@score[i]
+    ))
+  }
+  return(invisible(x))
+})
