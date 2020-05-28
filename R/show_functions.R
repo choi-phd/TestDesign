@@ -74,3 +74,11 @@ setMethod("show", "pool_cluster", function(object) {
     cat("The 'pool_cluster' object is empty.")
   }
 })
+
+#' @aliases show,item_attrib-method
+#' @docType methods
+#' @rdname show-methods
+setMethod("show", "item_attrib", function(object) {
+  print(object)
+  return(invisible(NULL))
+})

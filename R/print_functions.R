@@ -82,3 +82,11 @@ setMethod("print", "item_pool", function(x) {
   }
   return(invisible(x))
 })
+
+#' @aliases print,item_attrib-method
+#' @docType methods
+#' @rdname print-methods
+setMethod("print", "item_attrib", function(x) {
+  print(x@data)
+  return(invisible(x@data))
+})
