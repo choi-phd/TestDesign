@@ -5,6 +5,7 @@
 \alias{plot}
 \alias{plot,item_pool-method}
 \alias{plot,output_Static-method}
+\alias{plot,constraints-method}
 \title{Extension of plot() for objects in TestDesign package}
 \usage{
 \S4method{plot}{item_pool}(
@@ -36,6 +37,22 @@
   width = 7,
   height = 6,
   mfrow = c(2, 4),
+  ...
+)
+
+\S4method{plot}{constraints}(
+  x,
+  y,
+  theta = seq(-3, 3, 0.1),
+  type = "info",
+  info_type = "FISHER",
+  plot_sum = TRUE,
+  select = NULL,
+  color = "black",
+  file_pdf = NULL,
+  width = 7,
+  height = 6,
+  mfrow = c(1, 1),
   ...
 )
 }
