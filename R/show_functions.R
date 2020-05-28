@@ -114,3 +114,11 @@ setMethod("show", "config_Shadow", function(object) {
   print(object)
   return(invisible(NULL))
 })
+
+#' @aliases show,output_Static-method
+#' @docType methods
+#' @rdname show-methods
+setMethod("show", "output_Static", function(object) {
+  print(object, index_only = FALSE)
+  return(invisible(NULL))
+})
