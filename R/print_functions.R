@@ -130,3 +130,121 @@ setMethod("print", "config_Static", function(x) {
   cat("\n")
   return(invisible(x))
 })
+
+#' @aliases print,config_Shadow-method
+#' @docType methods
+#' @rdname print-methods
+setMethod("print", "config_Shadow", function(x) {
+  cat("Shadow assembly configurations \n\n")
+  cat("  item_selection \n")
+  cat("    method          :", x@item_selection$method, "\n")
+  cat("    info_type       :", x@item_selection$info_type, "\n")
+  cat("    initial_theta   :", x@item_selection$initial_theta, "\n")
+  cat("    fixed_theta     :", x@item_selection$fixed_theta, "\n")
+  cat("\n")
+  cat("  content_balancing \n")
+  cat("    method          :", x@content_balancing$method, "\n")
+  cat("\n")
+  cat("  MIP \n")
+  cat("    solver          :", x@MIP$solver, "\n")
+  cat("    verbosity       :", x@MIP$verbosity, "\n")
+  cat("    time_limit      :", x@MIP$time_limit, "\n")
+  cat("    gap_limit       :", x@MIP$gap_limit, "\n")
+  cat("    gap_limit_abs   :", x@MIP$gap_limit_abs, "\n")
+  cat("\n")
+  cat("  MCMC \n")
+  cat("    burn_in         :", x@MCMC$burn_in, "\n")
+  cat("    post_burn_in    :", x@MCMC$post_burn_in, "\n")
+  cat("    thin            :", x@MCMC$thin, "\n")
+  cat("    jump_factor     :", x@MCMC$jump_factor, "\n")
+  cat("\n")
+  cat("  refresh_policy \n")
+  cat("    method          :", x@refresh_policy$method, "\n")
+  cat("    interval        :", x@refresh_policy$interval, "\n")
+  cat("    threshold       :", x@refresh_policy$threshold, "\n")
+  cat("    position        :", x@refresh_policy$position, "\n")
+  cat("\n")
+  cat("  exposure_control \n")
+  cat("    method                    :", x@exposure_control$method, "\n")
+  cat("    M                         :", x@exposure_control$M, "\n")
+  cat("    max_exposure_rate         :", x@exposure_control$max_exposure_rate, "\n")
+  cat("    acceleration_factor       :", x@exposure_control$acceleration_factor, "\n")
+  cat("    n_segment                 :", x@exposure_control$n_segment, "\n")
+  cat("    first_segment             :", x@exposure_control$first_segment, "\n")
+  cat("    segment_cut               :", x@exposure_control$segment_cut, "\n")
+  cat("    initial_eligibility_stats :", !is.null(x@exposure_control$initial_eligibility_stats), "\n")
+  cat("    fading_factor             :", x@exposure_control$fading_factor, "\n")
+  cat("    diagnosticsStats          :", x@exposure_control$diagnostic_stats, "\n")
+  cat("\n")
+  cat("  stopping_criterion \n")
+  cat("    method          :", x@stopping_criterion$method, "\n")
+  cat("    test_length     :", x@stopping_criterion$test_length, "\n")
+  cat("    min_ni          :", x@stopping_criterion$min_ni, "\n")
+  cat("    max_ni          :", x@stopping_criterion$max_ni, "\n")
+  cat("    se_threshold    :",
+    ifelse(
+      toupper(x@stopping_criterion$method) == "VARIABLE",
+      x@stopping_criterion$se_threshold,
+      NA
+    ), "\n")
+  cat("\n")
+  cat("  interim_theta \n")
+  cat("    method               :", x@interim_theta$method, "\n")
+  cat("    shrinkage_correction :", x@interim_theta$shrinkage_correction, "\n")
+  cat("    prior_dist           :",
+    ifelse(
+      toupper(x@interim_theta$method == "EAP"),
+      x@interim_theta$prior_dist,
+      NA
+    ), "\n")
+  cat("    prior_par            :",
+    ifelse(
+      toupper(x@interim_theta$method == "EAP"),
+      sprintf(
+        ifelse(
+          toupper(x@interim_theta$prior_dist) == "NORMAL",
+          "Mean = %5.3f, SD = %5.3f",
+          "Min = %5.3f, Max = %5.3f"
+        ),
+        x@interim_theta$prior_par[1], x@interim_theta$prior_par[2]),
+      NA), "\n")
+  cat("    bound_ML             :", x@interim_theta$bound_ML, "\n")
+  cat("    truncate_ML          :", x@interim_theta$truncate_ML, "\n")
+  cat("    max_iter             :", x@interim_theta$max_iter, "\n")
+  cat("    crit                 :", x@interim_theta$crit, "\n")
+  cat("    max_change           :", x@interim_theta$max_change, "\n")
+  cat("    do_fisher            :", x@interim_theta$do_fisher, "\n\n")
+  cat("  final_theta \n")
+  cat("    method               :", x@final_theta$method, "\n")
+  cat("    shrinkage_correction :", x@final_theta$shrinkage_correction, "\n")
+  cat("    prior_dist           :",
+    ifelse(
+      toupper(x@final_theta$method == "EAP"),
+      x@final_theta$prior_dist,
+      NA
+    ), "\n")
+  cat("    prior_par            :",
+    ifelse(
+      toupper(x@final_theta$method == "EAP"),
+      sprintf(
+        ifelse(
+          toupper(x@final_theta$prior_dist) == "NORMAL",
+          "Mean = %5.3f, SD = %5.3f",
+          "Min = %5.3f, Max = %5.3f"
+        ),
+        x@final_theta$prior_par[1], x@final_theta$prior_par[2]),
+      NA
+    ), "\n")
+  cat("    bound_ML             :", x@final_theta$bound_ML, "\n")
+  cat("    truncate_ML          :", x@final_theta$truncate_ML, "\n")
+  cat("    max_iter             :", x@final_theta$max_iter, "\n")
+  cat("    crit                 :", x@final_theta$crit, "\n")
+  cat("    max_change           :", x@final_theta$max_change, "\n")
+  cat("    do_fisher            :", x@final_theta$do_fisher, "\n")
+  cat("\n")
+  cat("  theta_grid \n")
+  print(x@theta_grid)
+  cat("\n")
+  cat("  audit_trail : ", x@audit_trail, "\n")
+  return(invisible(x))
+})
