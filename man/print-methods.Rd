@@ -9,6 +9,7 @@
 \alias{print,item_PC-method}
 \alias{print,item_GPC-method}
 \alias{print,item_GR-method}
+\alias{print,item_pool-method}
 \title{Extension of print() for objects in TestDesign package}
 \usage{
 \S4method{print}{item_1PL}(x)
@@ -22,6 +23,8 @@
 \S4method{print}{item_GPC}(x)
 
 \S4method{print}{item_GR}(x)
+
+\S4method{print}{item_pool}(x)
 }
 \arguments{
 \item{x}{an object to print.}
