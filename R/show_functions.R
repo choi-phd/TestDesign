@@ -82,3 +82,11 @@ setMethod("show", "item_attrib", function(object) {
   print(object)
   return(invisible(NULL))
 })
+
+#' @aliases show,st_attrib-method
+#' @docType methods
+#' @rdname show-methods
+setMethod("show", "st_attrib", function(object) {
+  print(object)
+  return(invisible(NULL))
+})
