@@ -6,16 +6,16 @@ test_that("Exposure control", {
 
   config_science <- createShadowTestConfig(MIP = list(solver = "LPSOLVE"), exposure_control = list(method = "ELIGIBILITY"))
   solution <- Shadow(config_science, constraints_science2, true_theta, data = resp_science)
-  exposure_rate <- solution$exposure_rate[, 2]
+  exposure_rate <- solution@exposure_rate[, 2]
   expect_equal(mean(exposure_rate[exposure_rate > 0]) < config_science@exposure_control$max_exposure_rate, TRUE)
 
   true_theta <- 0
   config_science <- createShadowTestConfig(MIP = list(solver = "LPSOLVE"), refresh_policy = list(method = "THRESHOLD", threshold = .1))
   solution <- Shadow(config_science, constraints_science2, true_theta, data = resp_science)
-  expect_equal(all(solution$output[[1]]@shadow_test_refreshed), FALSE)
+  expect_equal(all(solution@output[[1]]@shadow_test_refreshed), FALSE)
 
   config_science <- createShadowTestConfig(MIP = list(solver = "LPSOLVE"), refresh_policy = list(method = "THRESHOLD", threshold = .0))
   solution <- Shadow(config_science, constraints_science2, true_theta, data = resp_science)
-  expect_equal(all(solution$output[[1]]@shadow_test_refreshed), TRUE)
+  expect_equal(all(solution@output[[1]]@shadow_test_refreshed), TRUE)
 
 })
