@@ -156,27 +156,6 @@ createStaticTestConfig <- function(item_selection = NULL, MIP = NULL) {
   }
 }
 
-#' @name show-method
-#' @aliases show,config_Static-method
-#' @docType methods
-#' @noRd
-setMethod("show", "config_Static", function(object) {
-  cat("Static Assembly Configurations \n\n")
-  cat("  Item selection criterion \n")
-  cat("    Method         :", object@item_selection$method, "\n")
-  cat("    Info type      :", object@item_selection$info_type, "\n")
-  cat("    Theta location :", object@item_selection$target_location, "\n")
-  cat("    Target value   :", object@item_selection$target_value, "\n")
-  cat("    Target weight  :", object@item_selection$target_weight, "\n\n")
-  cat("  MIP \n")
-  cat("    Solver         :", object@MIP$solver, "\n")
-  cat("    Verbosity      :", object@MIP$verbosity, "\n")
-  cat("    Time limit     :", object@MIP$time_limit, "\n")
-  cat("    Gap limit      \n")
-  cat("      Relative     :", object@MIP$gap_limit, "\n")
-  cat("      Absolute     :", object@MIP$gap_limit_abs, "\n")
-  cat("    Obj. tolerance :", object@MIP$obj_tol, "\n\n")
-})
 
 #' An S4 class to represent the output from Static()
 #'
