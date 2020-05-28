@@ -19,6 +19,7 @@
 \alias{print,output_Static-method}
 \alias{print,output_Shadow-method}
 \alias{print,summary_item_pool-method}
+\alias{print,summary_constraints-method}
 \title{Extension of print() for objects in TestDesign package}
 \usage{
 \S4method{print}{item_1PL}(x)
@@ -52,6 +53,8 @@
 \S4method{print}{output_Shadow}(x)
 
 \S4method{print}{summary_item_pool}(x)
+
+\S4method{print}{summary_constraints}(x)
 }
 \arguments{
 \item{x}{an object to print.}
