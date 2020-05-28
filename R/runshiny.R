@@ -1,21 +1,24 @@
 #' @include datasets.R
 NULL
 
-#' Launch Shiny app
+#' Open TestDesign app
 #'
-#' Launch Shiny app locally.
+#' \code{\link{TestDesign}} is a caller function to open the Shiny interface of TestDesign package.
 #'
 #' @examples
+#'
+#' \dontrun{
 #' if (interactive()) {
-#'   OAT()
+#'   TestDesign()
 #'   ## or
 #'   app()
 #' }
+#' }
 #'
 #' @aliases app
-#' @rdname OAT
+#' @rdname TestDesign
 #' @export
-OAT <- function() {
+TestDesign <- function() {
   app_dir <- system.file("shiny", package = "TestDesign")
   if (app_dir == "") {
     stop("Could not find the application directory. Try re-installing `TestDesign`.", call. = FALSE)
@@ -45,8 +48,14 @@ OAT <- function() {
   }
 }
 
-#' @rdname OAT
+#' @rdname TestDesign
 #' @export
 app <- function() {
-  OAT()
+  TestDesign()
+}
+
+#' @rdname TestDesign
+#' @export
+OAT <- function() {
+  TestDesign()
 }
