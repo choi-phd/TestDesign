@@ -98,3 +98,11 @@ setMethod("show", "constraints", function(object) {
   print(object)
   return(invisible(NULL))
 })
+
+#' @aliases show,config_Static-method
+#' @docType methods
+#' @rdname show-methods
+setMethod("show", "config_Static", function(object) {
+  print(object)
+  return(invisible(NULL))
+})
