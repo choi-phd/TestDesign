@@ -172,3 +172,46 @@ setMethod(
     return(p)
   }
 )
+
+#' @docType methods
+#' @rdname plot-methods
+#' @export
+setMethod(
+  f = "plot",
+  signature = "constraints",
+  definition = function(x, y, theta = seq(-3, 3, .1), type = "info", info_type = "FISHER", plot_sum = TRUE, select = NULL, color = "black", file_pdf = NULL, width = 7, height = 6, mfrow = c(1, 1), ...) {
+    if (!type == "info") {
+      stop("'type' should be 'info' for constraints")
+    }
+    idx_n_items <- which(
+      toupper(x@constraints[["WHAT"]]) == "ITEM" &
+        toupper(x@constraints[["CONDITION"]]) == "")
+    n_items <- x@constraints[idx_n_items, ]["LB"][1, 1]
+    max_info <- numeric(length(theta))
+    for (i in 1:length(theta)) {
+      max_info[i] <- sum(sort(calcFisher(x@pool, theta[i]), TRUE)[1:n_items])
+    }
+    mean_info <- calcFisher(x@pool, theta)
+    mean_info <- apply(mean_info, 1, mean)
+    mean_info <- mean_info * n_items
+    # Begin plot
+    pdf(NULL, bg = "white")
+    dev.control(displaylist = "enable")
+    tmp = sprintf("Maximum attainable test information and the randomly selected information")
+    plot(
+      0, 0,
+      type = "n", xlim = c(-3, 3), ylim = c(0, max(max_info)),
+      xlab = "Theta", ylab = "Information", main = "Test information based on best items vs. random selection",
+      ...
+    )
+    grid()
+    lines(theta, max_info,  lty = 1, lwd = 1, col = 'blue')
+    lines(theta, mean_info, lty = 2, lwd = 1, col = 'blue')
+    p <- recordPlot()
+    plot.new()
+    dev.off()
+    # End plot
+    return(p)
+
+  }
+)
