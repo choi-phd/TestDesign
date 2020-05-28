@@ -77,17 +77,16 @@ setMethod(
 
     results <- runAssembly(config, constraints, objective = objective)
 
-    is_optimal <- isOptimal(results$status, config@MIP$solver)
-    if (!is_optimal) {
-      warning(notOptimal(results$MIP$status, config@MIP$solver))
-    }
+    out             <- new("output_Static")
+    out@MIP         <- list(results$MIP)
+    out@selected    <- results$shadow_test
+    out@obj_value   <- results$obj_value
+    out@solve_time  <- results$solve_time
+    out@pool        <- pool
+    out@config      <- config
+    out@constraints <- constraints
 
-    return(list(
-      MIP = results$MIP,
-      selected = results$shadow_test, obj_value = results$obj_value,
-      solve_time = results$solve_time,
-      pool = pool, config = config, constraints = constraints
-    ))
+    return(out)
 
   }
 )
@@ -130,15 +129,15 @@ setGeneric(
 #' @export
 setMethod(
   f = "plotInfo",
-  signature = "list",
+  signature = "output_Static",
   definition = function(object, theta = seq(-3, 3, .1), info_type = "FISHER", plot_sum = TRUE, select = NULL, color = "blue", file_pdf = NULL, width = 7, height = 6, mfrow = c(2, 4)) {
 
-    config      <- object$config
-    constraints <- object$constraints
+    config      <- object@config
+    constraints <- object@constraints
     continuum   <- theta
     continuum   <- sort(c(continuum, config@item_selection$target_location))
 
-    idx <- which(object$MIP$solution[1:constraints@ni] == 1)
+    idx <- which(object@MIP[[1]]$solution[1:constraints@ni] == 1)
 
     if (toupper(config@item_selection$method) == "MAXINFO") {
       mat_sub <- calcFisher(constraints@pool, continuum)[, idx]

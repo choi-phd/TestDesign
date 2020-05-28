@@ -3,7 +3,7 @@
 \docType{methods}
 \name{plotInfo}
 \alias{plotInfo}
-\alias{plotInfo,list-method}
+\alias{plotInfo,output_Static-method}
 \alias{plotInfo,item_pool-method}
 \alias{plotInfo,constraints-method}
 \title{Draw item information plots}
@@ -21,7 +21,7 @@ plotInfo(
   mfrow = c(2, 4)
 )
 
-\S4method{plotInfo}{list}(
+\S4method{plotInfo}{output_Static}(
   object,
   theta = seq(-3, 3, 0.1),
   info_type = "FISHER",
