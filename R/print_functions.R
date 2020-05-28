@@ -248,3 +248,22 @@ setMethod("print", "config_Shadow", function(x) {
   cat("  audit_trail : ", x@audit_trail, "\n")
   return(invisible(x))
 })
+
+#' @param index_only if \code{TRUE} (default), only print item indices. Otherwise, print all item attributes.
+#'
+#' @aliases print,output_Static-method
+#' @docType methods
+#' @rdname print-methods
+setMethod("print", "output_Static", function(x, index_only = TRUE) {
+
+  cat("Static assembly : selected items\n\n")
+
+  tmp <- x@selected
+  if (index_only) {
+    tmp <- tmp[['INDEX']]
+  }
+
+  print(tmp)
+  return(invisible(tmp))
+
+})
