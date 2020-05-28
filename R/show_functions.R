@@ -90,3 +90,11 @@ setMethod("show", "st_attrib", function(object) {
   print(object)
   return(invisible(NULL))
 })
+
+#' @aliases show,constraints-method
+#' @docType methods
+#' @rdname show-methods
+setMethod("show", "constraints", function(object) {
+  print(object)
+  return(invisible(NULL))
+})

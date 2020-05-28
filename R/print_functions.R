@@ -98,3 +98,11 @@ setMethod("print", "st_attrib", function(x) {
   print(x@data)
   return(invisible(x@data))
 })
+  
+#' @aliases print,constraints-method
+#' @docType methods
+#' @rdname print-methods
+setMethod("print", "constraints", function(x) {
+  print(x@constraints)
+  return(invisible(x@constraints))
+})
