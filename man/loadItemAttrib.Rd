@@ -20,12 +20,12 @@ Read item attributes from specified file.
 \examples{
 ## Write to tempdir() and clean afterwards
 f <- file.path(tempdir(), "itempool_science.csv")
-write.csv(itempool_science_raw, f, row.names = FALSE)
+write.csv(itempool_science_data, f, row.names = FALSE)
 itempool_science <- loadItemPool(f)
 file.remove(f)
 
 f <- file.path(tempdir(), "itemattrib_science.csv")
-write.csv(itemattrib_science_raw, f, row.names = FALSE)
+write.csv(itemattrib_science_data, f, row.names = FALSE)
 itemattrib_science <- loadItemAttrib(f, itempool_science)
 file.remove(f)
 
