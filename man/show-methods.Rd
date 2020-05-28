@@ -15,6 +15,7 @@
 \alias{show,st_attrib-method}
 \alias{show,constraints-method}
 \alias{show,config_Static-method}
+\alias{show,config_Shadow-method}
 \title{Extension of show() for objects in TestDesign package}
 \usage{
 \S4method{show}{item_1PL}(object)
@@ -40,6 +41,8 @@
 \S4method{show}{constraints}(object)
 
 \S4method{show}{config_Static}(object)
+
+\S4method{show}{config_Shadow}(object)
 }
 \arguments{
 \item{object}{an object to display.}
