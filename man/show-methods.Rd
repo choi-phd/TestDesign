@@ -12,6 +12,7 @@
 \alias{show,item_pool-method}
 \alias{show,pool_cluster-method}
 \alias{show,item_attrib-method}
+\alias{show,st_attrib-method}
 \title{Extension of show() for objects in TestDesign package}
 \usage{
 \S4method{show}{item_1PL}(object)
@@ -31,6 +32,8 @@
 \S4method{show}{pool_cluster}(object)
 
 \S4method{show}{item_attrib}(object)
+
+\S4method{show}{st_attrib}(object)
 }
 \arguments{
 \item{object}{an object to display.}
