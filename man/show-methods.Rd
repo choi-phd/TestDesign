@@ -23,6 +23,7 @@
 \alias{show,output_Shadow-method}
 \alias{show,summary_output_Static-method}
 \alias{show,summary_output_Shadow_all-method}
+\alias{show,exposure_rate_plot-method}
 \title{Extension of show() for objects in TestDesign package}
 \usage{
 \S4method{show}{item_1PL}(object)
@@ -64,6 +65,8 @@
 \S4method{show}{summary_output_Static}(object)
 
 \S4method{show}{summary_output_Shadow_all}(object)
+
+\S4method{show}{exposure_rate_plot}(object)
 }
 \arguments{
 \item{object}{an object to display.}
