@@ -372,7 +372,7 @@ setMethod("show", "item_pool", function(object) {
 #' subitempool <- subsetItemPool(itempool_science, 1:100)
 #' @export
 subsetItemPool <- function(pool, select = NULL) {
-  if (class(pool) != "item_pool") {
+  if (!inherits(pool, "item_pool")) {
     stop("'pool' must be an 'item_pool' object.")
   }
   if (!validObject(pool)) {
@@ -451,8 +451,9 @@ setMethod(
 #' @rdname item_pool.operators
 #' @export
 `+.item_pool` <- function(pool1, pool2) {
-  if (class(pool1) != "item_pool" || class(pool2) != "item_pool") stop("Operands must be 'item_pool' objects.")
-
+  if (!inherits(pool1, "item_pool") || !inherits(pool2, "item_pool")) {
+    stop("Operands must be 'item_pool' objects.")
+  }
   if (!validObject(pool1)) {
     stop("'pool1' is not a valid 'item_pool' object.")
   }
@@ -517,7 +518,9 @@ setMethod(
 #' @rdname item_pool.operators
 #' @export
 `-.item_pool` <- function(pool1, pool2) {
-  if (class(pool1) != "item_pool" || class(pool2) != "item_pool") stop("Operands must be 'item_pool' objects.")
+  if (!inherits(pool1, "item_pool") || !inherits(pool2, "item_pool")) {
+    stop("Operands must be 'item_pool' objects.")
+  }
   if (any(pool2@id %in% pool1@id)) {
     left <- which(!(pool1@id %in% pool2@id))
     if (length(left) > 0) {
@@ -549,7 +552,9 @@ setMethod(
 #' @rdname item_pool.operators
 #' @export
 `==.item_pool` <- function(pool1, pool2) {
-  if (class(pool1) != "item_pool" || class(pool2) != "item_pool") stop("Operands must be 'item_pool' objects.")
+  if (!inherits(pool1, "item_pool") || !inherits(pool2, "item_pool")) {
+    stop("Operands must be 'item_pool' objects.")
+  }
   return(identical(pool1, pool2))
 }
 
