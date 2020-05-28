@@ -16,6 +16,7 @@
 \alias{print,config_Static-method}
 \alias{print,config_Shadow-method}
 \alias{print,output_Static-method}
+\alias{print,output_Shadow-method}
 \title{Extension of print() for objects in TestDesign package}
 \usage{
 \S4method{print}{item_1PL}(x)
@@ -43,6 +44,8 @@
 \S4method{print}{config_Shadow}(x)
 
 \S4method{print}{output_Static}(x, index_only = TRUE)
+
+\S4method{print}{output_Shadow}(x)
 }
 \arguments{
 \item{x}{an object to print.}
