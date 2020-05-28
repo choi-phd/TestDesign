@@ -4,42 +4,42 @@ NULL
 #' @noRd
 validateSlope <- function(object) {
   if (object@slope <= 0) {
-    return("@slope must be non-negative.")
+    return("@slope must be non-negative")
   }
 }
 
 #' @noRd
 validateGuessing <- function(object) {
   if (object@guessing < 0 || object@guessing >= 1.0) {
-    return("@guessing must be in [0.0, 1.0) range.")
+    return("@guessing must be in [0.0, 1.0) range")
   }
 }
 
 #' @noRd
 validateNcat <- function(object) {
   if (length(object@ncat) == 0) {
-    return("@ncat must be supplied.")
+    return("@ncat must be supplied")
   }
 }
 
 #' @noRd
 validateNthr <- function(object) {
   if (object@ncat != length(object@threshold) + 1) {
-    return("length(@threshold) must be equal to @ncat - 1.")
+    return("length(@threshold) must be equal to @ncat - 1")
   }
 }
 
 #' @noRd
 validateCategory <- function(object) {
   if (object@ncat != length(object@category) + 1) {
-    return("length(@category) must be equal to @ncat - 1.")
+    return("length(@category) must be equal to @ncat - 1")
   }
 }
 
 #' @noRd
 validateOrder <- function(object) {
   if (is.unsorted(object@category)) {
-    return("@category must be in ascending order.")
+    return("@category must be in ascending order")
   }
 }
 
