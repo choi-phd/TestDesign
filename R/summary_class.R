@@ -60,3 +60,37 @@ setClass(
    return(TRUE)
   }
 )
+
+#' @rdname summary-classes
+setClass(
+  "summary_output_Shadow_all",
+  slots = c(
+    n_simulee       = "numeric",
+    test_length     = "numeric",
+    true_theta      = "numeric_or_null",
+    est_theta       = "numeric_or_null",
+    est_theta_se    = "numeric_or_null",
+    diff            = "numeric_or_null",
+    mse             = "numeric_or_null",
+    bias            = "numeric_or_null",
+    corr            = "numeric_or_null",
+    average_se      = "numeric",
+    count           = "dataframe_or_null"
+  ),
+  prototype = list(
+    n_simulee       = numeric(0),
+    test_length     = numeric(0),
+    true_theta      = numeric(0),
+    est_theta       = numeric(0),
+    est_theta_se    = numeric(0),
+    diff            = numeric(0),
+    mse             = numeric(0),
+    bias            = numeric(0),
+    corr            = numeric(0),
+    average_se      = numeric(0),
+    count           = NULL
+  ),
+  validity = function(object) {
+    return(TRUE)
+  }
+)
