@@ -17,6 +17,7 @@
 \alias{show,config_Static-method}
 \alias{show,config_Shadow-method}
 \alias{show,output_Static-method}
+\alias{show,output_Shadow-method}
 \title{Extension of show() for objects in TestDesign package}
 \usage{
 \S4method{show}{item_1PL}(object)
@@ -46,6 +47,8 @@
 \S4method{show}{config_Shadow}(object)
 
 \S4method{show}{output_Static}(object)
+
+\S4method{show}{output_Shadow}(object)
 }
 \arguments{
 \item{object}{an object to display.}
