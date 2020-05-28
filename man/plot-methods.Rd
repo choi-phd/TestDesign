@@ -4,6 +4,7 @@
 \name{plot}
 \alias{plot}
 \alias{plot,item_pool-method}
+\alias{plot,output_Static-method}
 \title{Extension of plot() for objects in TestDesign package}
 \usage{
 \S4method{plot}{item_pool}(
@@ -19,6 +20,22 @@
   width = 7,
   height = 6,
   mfrow = c(1, 1),
+  ...
+)
+
+\S4method{plot}{output_Static}(
+  x,
+  y,
+  theta = seq(-3, 3, 0.1),
+  type = NULL,
+  info_type = "FISHER",
+  plot_sum = TRUE,
+  select = NULL,
+  color = "blue",
+  file_pdf = NULL,
+  width = 7,
+  height = 6,
+  mfrow = c(2, 4),
   ...
 )
 }

@@ -107,3 +107,68 @@ setMethod(
 
   }
 )
+
+#' @docType methods
+#' @rdname plot-methods
+#' @export
+setMethod(
+  f = "plot",
+  signature = "output_Static",
+  definition = function(x, y, theta = seq(-3, 3, .1), type = NULL, info_type = "FISHER", plot_sum = TRUE, select = NULL, color = "blue", file_pdf = NULL, width = 7, height = 6, mfrow = c(2, 4), ...) {
+    config      <- x@config
+    constraints <- x@constraints
+    continuum   <- theta
+    continuum   <- sort(c(continuum, config@item_selection$target_location))
+    idx <- which(x@MIP[[1]]$solution[1:constraints@ni] == 1)
+    if (toupper(config@item_selection$method) == "MAXINFO") {
+      mat_sub <- calcFisher(constraints@pool, continuum)[, idx]
+      vec_sub <- apply(mat_sub, 1, sum)
+      ylab    <- "Information"
+      title   <- "Test Information Function based on the assembled test"
+    }
+    if (toupper(config@item_selection$method) == "TIF") {
+      mat_sub <- calcFisher(constraints@pool, continuum)[, idx]
+      vec_sub <- apply(mat_sub, 1, sum)
+      ylab    <- "Information"
+      title   <- "Test Information Function based on the assembled test"
+    }
+    if (toupper(config@item_selection$method) == "TCC") {
+      l <- calcProb(constraints@pool, continuum)[idx]
+      for (i in 1:length(l)) {
+        prob_mat  <- l[[i]]
+        max_score <- dim(prob_mat)[2] - 1
+        prob_mat  <- prob_mat * matrix(c(0:max_score), dim(prob_mat)[1], dim(prob_mat)[2], byrow = T)
+        l[[i]]    <- apply(prob_mat, 1, sum)
+      }
+      vec_sub <- Reduce("+", l)
+      ylab    <- "Expected Score"
+      title   <- "Test Characteristic Curve based on the assembled test"
+    }
+    ymax <- max(vec_sub, config@item_selection$target_value)
+    # Begin plot
+    pdf(NULL, bg = "white")
+    dev.control(displaylist = "enable")
+    plot(
+      continuum, vec_sub,
+      xlim = c(min(continuum), max(continuum)), ylim = c(0, ymax),
+      main = title, xlab = "Theta", ylab = ylab, type = "n", bty = "n", ...
+    )
+    if (toupper(config@item_selection$method) != "MAXINFO") {
+      abline(h = config@item_selection$target_value, lty = 3, lwd = 1)
+    }
+    abline(v = config@item_selection$target_location, lty = 3, lwd = 1)
+    lines(continuum, vec_sub, lty = 1, lwd = 1, col = color)
+    legend(
+      "topleft",
+      "Target locations",
+      bty = "o", bg = "white",
+      box.lty = 0, box.lwd = 0, box.col = "white",
+      lty = 3, lwd = 1, seg.len = 1, inset = c(0, .01))
+    box()
+    p <- recordPlot()
+    plot.new()
+    dev.off()
+    # End plot
+    return(p)
+  }
+)
