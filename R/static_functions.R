@@ -201,41 +201,19 @@ setMethod(
   f = "plotInfo",
   signature = "item_pool",
   definition = function(object, theta = seq(-3, 3, .1), info_type = "FISHER", plot_sum = TRUE, select = NULL, color = "blue", file_pdf = NULL, width = 7, height = 6, mfrow = c(1, 1)) {
-
-    if (toupper(info_type) == "FISHER") {
-      info <- calcFisher(object, theta)
-      if (plot_sum) {
-        info <- rowSums(info)
-      }
-    } else {
-      stop("Invalid info_type specified")
-    }
-
-    if (!is.null(file_pdf)) {
-      pdf(file = file_pdf, width = width, height = height)
-    }
-
-    old_mfrow <- par()$mfrow
-    on.exit(par(mfrow = old_mfrow))
-    par(mfrow = mfrow)
-
-    items <- 1:object@ni
-    if (!is.null(select) && all(select %in% items)) {
-      items <- select
-    }
-
-    if (plot_sum) {
-      plot(theta, info, xlab = "Theta", ylab = "Info", main = sprintf("Information from all %i items", object@ni), type = "l", col = color, ylim = c(0, max(info)))
-    } else {
-      for (i in items) {
-        plot(theta, info[, i], xlab = "Theta", ylab = "Info", main = object@id[i], type = "l", col = color, ylim = c(0, max(info)))
-      }
-    }
-
-    if (!is.null(file_pdf)) {
-      dev.off()
-    }
-
+    .Deprecated("plot", msg = "'plotInfo' function is deprecated. Use 'plot' function instead.")
+    p <- plot(x = object,
+      theta = theta,
+      info_type = info_type,
+      plot_sum = plot_sum,
+      select = select,
+      color = color,
+      file_pdf = file_pdf,
+      width = width,
+      height = height,
+      mfrow = mfrow
+    )
+    return(p)
   }
 )
 
