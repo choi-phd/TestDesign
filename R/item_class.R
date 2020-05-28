@@ -287,24 +287,6 @@ setClass("item_pool",
   }
 )
 
-#' @name show-method
-#' @aliases show,item_pool-method
-#' @docType methods
-#' @noRd
-setMethod("show", "item_pool", function(object) {
-  if (length(object@ni) > 0) {
-    cat("@ni    :", object@ni, "\n")
-    cat("@max_cat :", object@max_cat, "\n\n")
-    print(data.frame(index = object@index, id = object@id, model = object@model, NCAT = object@NCAT))
-    for (i in 1:object@ni) {
-      cat("\n", paste0(object@index[i], ". "))
-      show(object@parms[[i]])
-    }
-    cat("\n")
-  } else {
-    cat("The 'item_pool' object is empty.")
-  }
-})
 
 #' Create a subset of an item pool object
 #'

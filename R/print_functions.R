@@ -63,3 +63,22 @@ setMethod("print", "item_GR", function(x) {
   cat("  N categories  :", x@ncat, "\n")
   return(invisible(x))
 })
+
+#' @aliases print,item_pool-method
+#' @docType methods
+#' @rdname print-methods
+setMethod("print", "item_pool", function(x) {
+  if (length(x@ni) > 0) {
+    cat("@ni      :", x@ni, "\n")
+    cat("@max_cat :", x@max_cat, "\n\n")
+    print(data.frame(index = x@index, id = x@id, model = x@model, NCAT = x@NCAT))
+    for (i in 1:x@ni) {
+      cat("\n", paste0(x@index[i], ". "))
+      print(x@parms[[i]])
+    }
+    cat("\n")
+  } else {
+    cat("'item_pool' object with 0 items")
+  }
+  return(invisible(x))
+})

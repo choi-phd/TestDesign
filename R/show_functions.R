@@ -50,3 +50,11 @@ setMethod("show", "item_GR", function(object) {
   print(object)
   return(invisible(NULL))
 })
+
+#' @aliases show,item_pool-method
+#' @docType methods
+#' @rdname show-methods
+setMethod("show", "item_pool", function(object) {
+  print(object)
+  return(invisible(NULL))
+})
