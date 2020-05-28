@@ -1,4 +1,4 @@
-test_that("Static", {
+test_that("static", {
   package_names <- c("lpSolve")
   solver_names <- c("lpSolve")
 
