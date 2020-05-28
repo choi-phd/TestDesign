@@ -727,6 +727,8 @@ makeItemPoolCluster <- function(pools, names = NULL) {
 #' @param prior_par Numeric. A vector of parameters for prior distribution.
 #' @param session Used to communicate with a Shiny session.
 #'
+#' @return An \code{\linkS4class{output_Shadow_all}} object containing results.
+#'
 #' @references{
 #'   \insertRef{van_der_linden_model_1998}{TestDesign}
 #'
@@ -742,7 +744,7 @@ makeItemPoolCluster <- function(pools, names = NULL) {
 #' config <- createShadowTestConfig()
 #' true_theta <- rnorm(1)
 #' solution <- Shadow(config, constraints_science, true_theta)
-#' solution$output
+#' solution@output
 #' @export
 setGeneric(
   name = "Shadow",
@@ -2287,15 +2289,27 @@ setMethod(
       freq_infeasible <- NULL
     }
 
-    return(
-      list(
-        output = output_list, pool = pool, config = config, true_theta = true_theta, constraints = constraints,
-        prior = prior, prior_par = prior_par, data = test@data, final_theta_est = final_theta_est, final_se_est = final_se_est,
-        exposure_rate = exposure_rate, usage_matrix = usage_matrix, true_segment_count = true_segment_count, est_segment_count = est_segment_count,
-        eligibility_stats = eligibility_stats, check_eligibility_stats = check_eligibility_stats, no_fading_eligibility_stats = no_fading_eligibility_stats,
-        freq_infeasible = freq_infeasible
-      )
-    )
+    out                             <- new("output_Shadow_all")
+    out@output                      <- output_list
+    out@pool                        <- pool
+    out@config                      <- config
+    out@true_theta                  <- true_theta
+    out@constraints                 <- constraints
+    out@prior                       <- prior
+    out@prior_par                   <- prior_par
+    out@data                        <- test@data
+    out@final_theta_est             <- final_theta_est
+    out@final_se_est                <- final_se_est
+    out@exposure_rate               <- exposure_rate
+    out@usage_matrix                <- usage_matrix
+    out@true_segment_count          <- true_segment_count
+    out@est_segment_count           <- est_segment_count
+    out@eligibility_stats           <- eligibility_stats
+    out@check_eligibility_stats     <- check_eligibility_stats
+    out@no_fading_eligibility_stats <- no_fading_eligibility_stats
+    out@freq_infeasible             <- freq_infeasible
+
+    return(out)
   }
 )
 
@@ -2731,10 +2745,10 @@ plotExposureRateBySegment <- function(object, config, max_rate = 0.25, file_pdf 
 plotExposureRateFinal <- function(object, config = NULL, max_rate = 0.25, theta = "Estimated", segment_cut = NULL, color = "red", file_pdf = NULL, width = 7, height = 6, mfrow = c(2, 4), burn = 0, retain = NULL) {
 
   if (toupper(theta) == "TRUE") {
-    theta_values <- object$true_theta
+    theta_values <- object@true_theta
     nj           <- length(theta_values)
   } else if (toupper(theta) == "ESTIMATED") {
-    theta_values <- object$final_theta_est
+    theta_values <- object@final_theta_est
     nj           <- length(theta_values)
   } else {
     stop(sprintf("unknown theta_segment '%s' specified: must be 'True' or 'Estimated'", theta))
@@ -2742,9 +2756,9 @@ plotExposureRateFinal <- function(object, config = NULL, max_rate = 0.25, theta 
 
   if (burn > 0) {
     if (toupper(theta) == "TRUE") {
-      retained <- object$true_segment_count > burn  ## CHECK THIS IF THIS IS WORKING AS INTENDED
+      retained <- object@true_segment_count > burn  ## CHECK THIS IF THIS IS WORKING AS INTENDED
     } else {
-      retained <- object$est_segment_count > burn   ## CHECK THIS IF THIS IS WORKING AS INTENDED
+      retained <- object@est_segment_count > burn   ## CHECK THIS IF THIS IS WORKING AS INTENDED
     }
   } else if (!is.null(retain)) {
     retained <- (1:nj) %in% retain
@@ -2753,10 +2767,10 @@ plotExposureRateFinal <- function(object, config = NULL, max_rate = 0.25, theta 
   }
   n_retained <- sum(retained)
 
-  ni <- ncol(object$usage_matrix)
+  ni <- ncol(object@usage_matrix)
 
   if (is.null(config)) {
-    config <- object$config
+    config <- object@config
   }
   if (is.null(segment_cut)) {
     segment_cut <- config@exposure_control$segment_cut
@@ -2772,7 +2786,7 @@ plotExposureRateFinal <- function(object, config = NULL, max_rate = 0.25, theta 
   segment_n    <- numeric(n_segment)
   segment_dist <- table(theta_segment_index)
   segment_n[as.numeric(names(segment_dist))] <- segment_dist
-  segment_index_table <- matrix(NA, n_retained, object$constraints@test_length)
+  segment_index_table <- matrix(NA, n_retained, object@constraints@test_length)
   for (k in 1:n_segment) {
     if (k < n_segment) {
       segment_label[k] <- paste0("(", cut_lower[k], ",", cut_upper[k], "]")
@@ -2781,19 +2795,19 @@ plotExposureRateFinal <- function(object, config = NULL, max_rate = 0.25, theta 
     }
   }
 
-  usage_matrix       <- object$usage_matrix[retained, ]
-  usage_matrix_final <- object$usage_matrix[retained, ]
+  usage_matrix       <- object@usage_matrix[retained, ]
+  usage_matrix_final <- object@usage_matrix[retained, ]
   idx <- 0
   for (j in 1:nj) {
     if (retained[j]) {
       idx <- idx + 1
-      usage_matrix_final[idx, object$output[[j]]@administered_item_index[object$output[[j]]@theta_segment_index != theta_segment_index[idx]]] <- FALSE
-      segment_index_table[idx, ] <- object$output[[j]]@theta_segment_index
+      usage_matrix_final[idx, object@output[[j]]@administered_item_index[object@output[[j]]@theta_segment_index != theta_segment_index[idx]]] <- FALSE
+      segment_index_table[idx, ] <- object@output[[j]]@theta_segment_index
     }
   }
 
   segment_freq <- matrix(0, n_segment, n_segment)
-  for (i in 1:object$constraints@test_length) {
+  for (i in 1:object@constraints@test_length) {
     factor(segment_index_table[, i], levels = 1:n_segment)
     segment_table <- tapply(factor(segment_index_table[, i], levels = 1:n_segment), theta_segment_index, table)
     for (s in 1:length(segment_table)) {
@@ -3150,18 +3164,18 @@ setGeneric(
 #' @export
 setMethod(
   f = "plotShadow",
-  signature = "list",
+  signature = "output_Shadow_all",
   definition = function(object, examinee_id = 1, sort_by_difficulty = FALSE, file_pdf = NULL, simple = FALSE, ...) {
 
     if (!is.null(file_pdf)) {
       pdf(file = file_pdf, bg = "white")
     }
 
-    constraints <- object$constraints
+    constraints <- object@constraints
 
     for (id in examinee_id) {
 
-      examinee_output <- object$output[[id]]
+      examinee_output <- object@output[[id]]
 
       max_ni <- constraints@test_length
       ni     <- constraints@ni
@@ -3383,16 +3397,16 @@ setGeneric(
 #' @export
 setMethod(
   f = "plotCAT",
-  signature = "list",
+  signature = "output_Shadow_all",
   definition = function(object, examinee_id = 1, min_theta = -5, max_theta = 5, min_score = 0, max_score = 1, z_ci = 1.96, file_pdf = NULL, ...) {
     if (!is.null(file_pdf)) {
       pdf(file = file_pdf, bg = "white")
     }
     for (i in examinee_id) {
       plotCAT(
-        object$output[[i]], examinee_id,
+        object@output[[i]], examinee_id,
         min_theta = min_theta, max_theta = max_theta,
-        min_score = min_score, max_score = object$pool@max_cat - 1,
+        min_score = min_score, max_score = object@pool@max_cat - 1,
         z_ci = z_ci, file_pdf = NULL, ...)
     }
     if (!is.null(file_pdf)) {
