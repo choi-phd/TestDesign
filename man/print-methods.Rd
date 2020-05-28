@@ -12,6 +12,7 @@
 \alias{print,item_pool-method}
 \alias{print,item_attrib-method}
 \alias{print,st_attrib-method}
+\alias{print,summary_item_attrib-method}
 \alias{print,constraints-method}
 \alias{print,config_Static-method}
 \alias{print,config_Shadow-method}
@@ -37,6 +38,8 @@
 \S4method{print}{item_attrib}(x)
 
 \S4method{print}{st_attrib}(x)
+
+\S4method{print}{summary_item_attrib}(x)
 
 \S4method{print}{constraints}(x)
 
