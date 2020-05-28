@@ -21,6 +21,7 @@
 \alias{print,summary_item_pool-method}
 \alias{print,summary_constraints-method}
 \alias{print,summary_output_Static-method}
+\alias{print,summary_output_Shadow_all-method}
 \title{Extension of print() for objects in TestDesign package}
 \usage{
 \S4method{print}{item_1PL}(x)
@@ -58,11 +59,15 @@
 \S4method{print}{summary_constraints}(x)
 
 \S4method{print}{summary_output_Static}(x)
+
+\S4method{print}{summary_output_Shadow_all}(x, digits = 3)
 }
 \arguments{
 \item{x}{an object to print.}
 
 \item{index_only}{if \code{TRUE} (default), only print item indices. Otherwise, print all item attributes.}
+
+\item{digits}{minimal number of *significant* digits, see \code{\link{print.default}}.}
 }
 \description{
 Extension of print() for objects in TestDesign package

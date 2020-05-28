@@ -371,3 +371,23 @@ setMethod("print", "summary_output_Static", function(x) {
   }
   return(invisible(x))
 })
+
+#' @param digits minimal number of *significant* digits, see \code{\link{print.default}}.
+#'
+#' @aliases print,summary_output_Shadow_all-method
+#' @docType methods
+#' @rdname print-methods
+setMethod("print", "summary_output_Shadow_all", function(x, digits = 3) {
+  cat("Shadow assembly\n\n")
+  cat(sprintf("  # of simulees : %i\n",   x@n_simulee))
+  cat(sprintf("    test length : %i\n\n", x@test_length))
+  cat(sprintf("  theta estimation statistics\n"))
+  if (!is.null(x@true_theta)) {
+    cat(sprintf("            MSE : % 2.6f\n", x@mse))
+    cat(sprintf("           bias : % 2.6f\n", x@bias))
+    cat(sprintf("           corr : % 2.6f\n", x@corr))
+  }
+  cat(sprintf("     Average SE : % 2.6f\n\n", x@average_se))
+  print(x@count, digits = digits)
+  return(invisible(x))
+})
