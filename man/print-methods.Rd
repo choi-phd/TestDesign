@@ -12,11 +12,16 @@
 \alias{print,item_pool-method}
 \alias{print,item_attrib-method}
 \alias{print,st_attrib-method}
+\alias{print,summary_item_attrib-method}
 \alias{print,constraints-method}
 \alias{print,config_Static-method}
 \alias{print,config_Shadow-method}
 \alias{print,output_Static-method}
 \alias{print,output_Shadow-method}
+\alias{print,exposure_rate_plot-method}
+\alias{print,summary_item_pool-method}
+\alias{print,summary_output_Static-method}
+\alias{print,summary_output_Shadow_all-method}
 \title{Extension of print() for objects in TestDesign package}
 \usage{
 \S4method{print}{item_1PL}(x)
@@ -37,6 +42,8 @@
 
 \S4method{print}{st_attrib}(x)
 
+\S4method{print}{summary_item_attrib}(x)
+
 \S4method{print}{constraints}(x)
 
 \S4method{print}{config_Static}(x)
@@ -46,11 +53,21 @@
 \S4method{print}{output_Static}(x, index_only = TRUE)
 
 \S4method{print}{output_Shadow}(x)
+
+\S4method{print}{exposure_rate_plot}(x)
+
+\S4method{print}{summary_item_pool}(x)
+
+\S4method{print}{summary_output_Static}(x)
+
+\S4method{print}{summary_output_Shadow_all}(x, digits = 3)
 }
 \arguments{
 \item{x}{an object to print.}
 
 \item{index_only}{if \code{TRUE} (default), only print item indices. Otherwise, print all item attributes.}
+
+\item{digits}{minimal number of *significant* digits, see \code{\link{print.default}}.}
 }
 \description{
 Extension of print() for objects in TestDesign package
