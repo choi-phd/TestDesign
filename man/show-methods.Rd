@@ -9,6 +9,7 @@
 \alias{show,item_PC-method}
 \alias{show,item_GPC-method}
 \alias{show,item_GR-method}
+\alias{show,item_pool-method}
 \title{Extension of show() for objects in TestDesign package}
 \usage{
 \S4method{show}{item_1PL}(object)
@@ -22,6 +23,8 @@
 \S4method{show}{item_GPC}(object)
 
 \S4method{show}{item_GR}(object)
+
+\S4method{show}{item_pool}(object)
 }
 \arguments{
 \item{object}{an object to display.}
