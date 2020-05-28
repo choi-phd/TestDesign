@@ -1,4 +1,4 @@
-#' @include RcppExports.R import.R
+#' @include extensions.R
 NULL
 
 #' @noRd
