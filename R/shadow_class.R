@@ -524,30 +524,3 @@ setClass("output_Shadow",
     return(TRUE)
   }
 )
-
-#' @name show-method
-#' @aliases show,output_Shadow-method
-#' @docType methods
-#' @noRd
-setMethod("show", "output_Shadow", function(object) {
-  if (length(object@administered_item_index) > 0) {
-    cat("Simulee Index          :", object@simulee_id, "\n")
-    cat("  True Theta           :", object@true_theta, "\n")
-    cat("  Final Theta Estimate :", object@final_theta_est, "\n")
-    cat("  Final SE Estimate    :", object@final_se_est, "\n")
-    output <- data.frame(
-      stage = 1:length(object@administered_item_index),
-      stimulus_index = ifelse(is.nan(object@administered_stimulus_index), rep(NA, length(object@administered_item_index)), object@administered_stimulus_index),
-      item_index = object@administered_item_index,
-      item_resp = object@administered_item_resp,
-      item_ncat = object@administered_item_ncat,
-      interim_theta = object@interim_theta_est,
-      interim_se = object@interim_se_est,
-      theta_segment = object@theta_segment_index
-    )
-    print(output)
-  } else {
-    cat("The 'output_Shadow' object is empty.")
-  }
-  cat("\n")
-})

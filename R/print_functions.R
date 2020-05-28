@@ -267,3 +267,30 @@ setMethod("print", "output_Static", function(x, index_only = TRUE) {
   return(invisible(tmp))
 
 })
+
+#' @aliases print,output_Shadow-method
+#' @docType methods
+#' @rdname print-methods
+setMethod("print", "output_Shadow", function(x) {
+  if (length(x@administered_item_index) > 0) {
+    cat("Simulee index          :", x@simulee_id, "\n")
+    cat("  True theta           :", x@true_theta, "\n")
+    cat("  Final theta estimate :", x@final_theta_est, "\n")
+    cat("  Final SE estimate    :", x@final_se_est, "\n")
+    output <- data.frame(
+      stage          = 1:length(x@administered_item_index),
+      stimulus_index = ifelse(is.nan(x@administered_stimulus_index), rep(NA, length(x@administered_item_index)), x@administered_stimulus_index),
+      item_index     = x@administered_item_index,
+      item_resp      = x@administered_item_resp,
+      item_ncat      = x@administered_item_ncat,
+      interim_theta  = x@interim_theta_est,
+      interim_se     = x@interim_se_est,
+      theta_segment  = x@theta_segment_index
+    )
+    print(output)
+  } else {
+    cat("empty 'output_Shadow' object")
+  }
+  cat("\n")
+  return(invisible(x))
+})
