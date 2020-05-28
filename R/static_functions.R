@@ -177,40 +177,18 @@ setMethod(
   f = "plotInfo",
   signature = "constraints",
   definition = function(object, theta = seq(-3, 3, .1), info_type = "FISHER", plot_sum = TRUE, select = NULL, color = "black", file_pdf = NULL, width = 7, height = 6, mfrow = c(1, 1)) {
-
-    idx_n_items <- which(toupper(object@constraints[["WHAT"]]) == "ITEM" &
-                           toupper(object@constraints[["CONDITION"]]) == "")
-    n_items <- object@constraints[idx_n_items, ]["LB"][1, 1]
-
-    max_info <- numeric(length(theta))
-
-    for (i in 1:length(theta)) {
-      max_info[i] <- sum(sort(calcFisher(object@pool, theta[i]), TRUE)[1:n_items])
-    }
-
-    mean_info <- calcFisher(object@pool, theta)
-    mean_info <- apply(mean_info, 1, mean)
-    mean_info <- mean_info * n_items
-
-    pdf(NULL, bg = "white")
-    dev.control(displaylist = "enable")
-
-    tmp = sprintf("Maximum attainable test information and the randomly selected information")
-
-    plot(0, 0,
-         type = "n", xlim = c(-3, 3), ylim = c(0, max(max_info)),
-         xlab = "Theta", ylab = "Information", main = "Test information based on best items vs. random selection"
+    .Deprecated("plot", msg = "'plotInfo' function is deprecated. Use 'plot' function instead.")
+    p <- plot(x = object,
+      theta = theta,
+      info_type = info_type,
+      plot_sum = plot_sum,
+      select = select,
+      color = color,
+      file_pdf = file_pdf,
+      width = width,
+      height = height,
+      mfrow = mfrow
     )
-    grid()
-
-    lines(theta, max_info,  lty = 1, lwd = 1, col = 'blue')
-    lines(theta, mean_info, lty = 2, lwd = 1, col = 'blue')
-
-    p <- recordPlot()
-    plot.new()
-    dev.off()
-
     return(p)
-
   }
 )
