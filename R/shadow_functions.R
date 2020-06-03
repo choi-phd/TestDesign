@@ -780,17 +780,7 @@ setMethod(
 
     all_data         <- makeData(pool, true_theta, data, constants)
     posterior_record <- initializePosterior(prior, prior_par, config, constants, pool)
-
-    #####
-    ###    Get initial theta estimate
-    #####
-
-    if (!is.null(config@item_selection$initial_theta)) {
-      initial_theta <- rep(config@item_selection$initial_theta, constants$nj)
-    } else {
-      initial_theta <- as.vector(posterior %*% matrix(constants$theta_q, ncol = 1))
-    }
-
+    initial_theta    <- initializeTheta(config, constants, posterior_record)
 
     #####
     ###    Initialize exposure rate control
