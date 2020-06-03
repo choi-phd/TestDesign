@@ -1095,15 +1095,12 @@ setMethod(
         # Item position / simulee: estimate theta
 
         if (toupper(config@interim_theta$method) == "EAP") {
+
           interim_EAP <- estimateThetaEAP(posterior_record$posterior[j, ], constants$theta_q)
+          interim_EAP <- applyShrinkageCorrection(interim_EAP, config@interim_theta)
           output@interim_theta_est[position] <- interim_EAP$theta
           output@interim_se_est[position]    <- interim_EAP$se
-          if (toupper(config@interim_theta$prior_dist) == "NORMAL" && config@interim_theta$shrinkage_correction) {
-            output@interim_theta_est[position] <- output@interim_theta_est[position] * (1 + output@interim_se_est[position]^2)
-            if (output@interim_se_est[position] < config@interim_theta$prior_par[2]) {
-              output@interim_se_est[position] <- 1 / sqrt(1 / output@interim_se_est[position]^2 - 1 / config@interim_theta$prior_par[2]^2)
-            }
-          }
+
         } else if (toupper(config@interim_theta$method) == "MLE") {
 
           interim_EAP <- estimateThetaEAP(posterior_record$posterior[j, ], constants$theta_q)
@@ -1187,15 +1184,9 @@ setMethod(
 
         output@posterior       <- output@likelihood * final_prior
         final_EAP <- estimateThetaEAP(output@posterior, constants$theta_q)
+        final_EAP <- applyShrinkageCorrection(final_EAP, config@final_theta)
         output@final_theta_est <- final_EAP$theta
         output@final_se_est    <- final_EAP$se
-
-        if (toupper(config@final_theta$prior_dist) == "NORMAL" && config@final_theta$shrinkage_correction) {
-          output@final_theta_est <- output@final_theta_est * (1 + output@final_se_est^2)
-          if (output@final_se_est < config@final_theta$prior_par[2]) {
-            output@final_se_est <- 1 / sqrt(1 / output@final_se_est^2 - 1 / config@final_theta$prior_par[2]^2)
-          }
-        }
 
       } else if (toupper(config@final_theta$method) == "MLE") {
 
