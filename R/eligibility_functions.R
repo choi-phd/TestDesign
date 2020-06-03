@@ -232,3 +232,70 @@ applyIncrementVisitedSegments <- function(o, segment_prob, segment_visited, inel
   return(o)
 
 }
+
+#' @noRd
+applyAcceleration <- function(o, exposure_constants, constants) {
+
+  max_exposure_rate <- exposure_constants$max_exposure_rate
+  acc_factor        <- exposure_constants$acceleration_factor
+  n_segment         <- exposure_constants$n_segment
+
+  ni <- constants$ni
+  # p_jk is only avalilable in ELIGIBILITY method
+  if (is.null(o$p_jk)) {
+    nf_ijk <- matrix(1              , n_segment, ni)
+  } else {
+    nf_ijk <- matrix(o$n_jk / o$p_jk, n_segment, ni)
+  }
+
+  if (acc_factor > 1) {
+    p_a_ijk <- o$a_ijk / matrix(o$n_jk, n_segment, ni)
+    p_r_ijk <- o$r_ijk / matrix(o$n_jk, n_segment, ni)
+    p_a_ijk[is.na(p_a_ijk)] <- 0
+    p_r_ijk[is.na(p_r_ijk)] <- 1
+    idx <- p_a_ijk > max_exposure_rate
+    for (k in 1:n_segment) {
+      o$pe_i[k,  idx[k, ]] <-
+        1 - nf_ijk[k,  idx[k, ]] +
+        (max_exposure_rate[k] / p_a_ijk[k, idx[k, ]]) ** acc_factor * nf_ijk[k, idx[k, ]] * p_r_ijk[k, idx[k, ]]
+      o$pe_i[k, !idx[k, ]] <-
+        1 - nf_ijk[k, !idx[k, ]] +
+        max_exposure_rate[k] * nf_ijk[k, !idx[k, ]] * o$r_ijk[k, !idx[k, ]] / o$a_ijk[k, !idx[k, ]]
+    }
+  } else {
+    o$pe_i <- 1 - nf_ijk + max_exposure_rate * nf_ijk * o$r_ijk / o$a_ijk
+  }
+
+  if (!constants$set_based) {
+    return(o)
+  }
+
+  ns <- constants$ns
+  # p_jk is only avalilable in ELIGIBILITY method
+  if (is.null(o$p_jk)) {
+    nf_sjk <- matrix(1              , n_segment, ns)
+  } else {
+    nf_sjk <- matrix(o$n_jk / o$p_jk, n_segment, ns)
+  }
+
+  if (acc_factor > 1) {
+    p_a_sjk <- o$a_sjk / matrix(o$n_jk, n_segment, ns)
+    p_r_sjk <- o$r_sjk / matrix(o$n_jk, n_segment, ns)
+    p_a_sjk[is.na(p_a_sjk)] <- 0
+    p_r_sjk[is.na(p_r_sjk)] <- 1
+    idx <- p_a_sjk > max_exposure_rate
+    for (k in 1:n_segment) {
+      o$pe_s[k,  idx[k, ]] <-
+        1 - nf_sjk[k,  idx[k, ]] +
+        (max_exposure_rate[k] / p_a_sjk[k, idx[k, ]]) ** acc_factor * nf_sjk[k, idx[k, ]] * p_r_sjk[k, idx[k, ]]
+      o$pe_s[k, !idx[k, ]] <-
+        1 - nf_sjk[k, !idx[k, ]] +
+        max_exposure_rate[k] * nf_sjk[k, !idx[k, ]] * o$r_sjk[k, !idx[k, ]] / o$a_sjk[k, !idx[k, ]]
+    }
+  } else {
+    o$pe_s <- 1 - nf_sjk + max_exposure_rate * nf_sjk * o$r_sjk / o$a_sjk
+  }
+
+  return(o)
+
+}
