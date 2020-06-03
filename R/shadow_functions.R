@@ -898,13 +898,11 @@ setMethod(
 
     for (j in 1:constants$nj) {
 
-      output <- new("output_Shadow")
-      output@simulee_id <- j
+      o <- new("output_Shadow")
+      o@simulee_id <- j
 
       if (!is.null(true_theta)) {
-        output@true_theta <- true_theta[j]
-      } else {
-        output@true_theta <- NULL
+        o@true_theta <- true_theta[j]
       }
 
       output@prior <- posterior_record$posterior[j, ]
