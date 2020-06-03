@@ -773,52 +773,9 @@ setMethod(
     constants <- getConstants(constraints, config, data, true_theta)
 
     exposure_control  <- toupper(config@exposure_control$method)
-    refresh_policy    <- toupper(config@refresh_policy$method)
-    content_balancing <- toupper(config@content_balancing$method)
 
-    #####
-    ###    Switch per content balancing method
-    #####
-
-    if (content_balancing %in% c("STA", "SHADOW", "SHADOWTEST", "SHADOW TEST")) {
-
-      #####
-      ###    Mark refresh positions
-      #####
-
-      refresh_shadow <- rep(FALSE, constants$test_length)
-
-      if (refresh_policy %in% c("ALWAYS", "THRESHOLD")) {
-
-        refresh_shadow <- rep(TRUE, constants$test_length)
-
-      } else if (refresh_policy == "POSITION") {
-
-        if (!all(config@refresh_policy$position %in% 1:constants$test_length)) {
-          stop("config@refresh_policy$position must be within test length")
-        }
-
-        refresh_shadow[config@refresh_policy$position] <- TRUE
-
-      } else if (refresh_policy %in% c("INTERVAL", "INTERVAL-THRESHOLD")) {
-
-        if (!(config@refresh_policy$interval >= 1 && config@refresh_policy$interval <= constants$test_length)) {
-          stop("config@refresh_policy$interval must be not greater than test length, and be at least 1")
-        }
-
-        refresh_shadow[seq(1, constants$test_length, config@refresh_policy$interval)] <- TRUE
-
-      } else if (constants$set_based_refresh) {
-
-        if (!constants$set_based) {
-          stop("constraints@set_based must be TRUE when config@refresh_policy$method is 'STIMULUS'")
-        }
-
-      }
-
-      refresh_shadow[1] <- TRUE
-
-    } else {
+    if (constants$use_shadow) {
+      refresh_shadow <- initializeShadowEngine(constants, config@refresh_policy)
     }
 
     #####
@@ -1664,7 +1621,7 @@ setMethod(
 
         # Item position / simulee: trigger shadow test refresh if theta change is sufficient
 
-        if (refresh_policy == "THRESHOLD") {
+        if (toupper(config@refresh_policy$method) == "THRESHOLD") {
           if ((abs(theta_change) > config@refresh_policy$threshold) && (position < constants$test_length)) {
             refresh_shadow[position + 1] <- TRUE
           }
