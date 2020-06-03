@@ -773,14 +773,7 @@ setMethod(
       stop("'constraints' must be supplied.")
     }
 
-    model <- pool@model
-    model[which(model == "item_1PL")] <- 1
-    model[which(model == "item_2PL")] <- 2
-    model[which(model == "item_3PL")] <- 3
-    model[which(model == "item_PC")]  <- 4
-    model[which(model == "item_GPC")] <- 5
-    model[which(model == "item_GR")]  <- 6
-    model <- as.numeric(model)
+    model <- sanitizeModel(pool@model)
 
     if (!is.null(true_theta)) {
       nj <- length(true_theta)
