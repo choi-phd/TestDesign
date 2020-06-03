@@ -176,7 +176,7 @@ setClass("config_Shadow",
     audit_trail = FALSE
   ),
   validity = function(object) {
-    errors <- NULL
+    err <- NULL
     if (!toupper(object@MIP$solver) %in% c("LPSYMPHONY", "RSYMPHONY", "LPSOLVE", "GUROBI", "RGLPK")) {
       msg <- sprintf("config@MIP: unrecognized $solver '%s' (accepts LPSYMPHONY, RSYMPHONY, LPSOLVE, GUROBI, RGLPK)", object@MIP$solver)
       err <- c(err, msg)
@@ -195,6 +195,11 @@ setClass("config_Shadow",
       msg <- sprintf("config@item_selection: unrecognized $method '%s' (accepts MFI, MPWI, EB, FB, or FIXED)", object@item_selection$method)
       err <- c(err, msg)
     }
+    if (toupper(object@item_selection$method) %in% c("FIXED")) {
+      if (is.null(object@item_selection$fixed_theta)) {
+        msg <- sprintf("config@item_selection: $method 'FIXED' requires $fixed_theta")
+        err <- c(err, msg)
+      }
     }
 
     if (!object@content_balancing$method %in% c("NONE", "STA")) {
@@ -210,6 +215,9 @@ setClass("config_Shadow",
       msg <- sprintf("config@exposure_control: unrecognized $method '%s' (accepts NONE, ELIGIBILITY, BIGM, or BIGM-BAYESIAN)", object@exposure_control$method)
       err <- c(err, msg)
     }
+    if (!length(object@exposure_control$max_exposure_rate) %in% c(1, object@exposure_control$n_segment)) {
+      msg <- "config@exposure_control: length($max_exposure_rate) must be 1 or $n_segment"
+      err <- c(err, msg)
     }
     if (object@exposure_control$n_segment != length(object@exposure_control$segment_cut) - 1) {
       msg <- "config@exposure_control: $n_segment must be equal to length($segment_cut) - 1"
@@ -227,6 +235,9 @@ setClass("config_Shadow",
       msg <- sprintf("config@interim_theta: unrecognized $method '%s' (accepts EAP, MLE, EB, or FB)", object@interim_theta$method)
       err <- c(err, msg)
     }
+    if (!object@interim_theta$prior_dist %in% c("NORMAL", "UNIFORM")) {
+      msg <- sprintf("config@interim_theta: unrecognized $prior_dist '%s' (accepts NORMAL or UNIFORM)", object@interim_theta$prior_dist)
+      err <- c(err, msg)
     }
     if (!object@final_theta$method %in% c("EAP", "MLE", "EB", "FB")) {
       msg <- sprintf("config@final_theta: unrecognized $method '%s' (accepts EAP, MLE, EB, or FB)", object@final_theta$method)
