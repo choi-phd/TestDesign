@@ -27,3 +27,21 @@ getExposureConstants <- function(exposure_control) {
   return(o)
 
 }
+
+#' @noRd
+initializeSegmentRecord <- function(exposure_constants, constants) {
+
+  o <- list()
+
+  if (!exposure_constants$use_eligibility_control) {
+    return(o)
+  }
+
+  o$freq_true  <- numeric(exposure_constants$n_segment)
+  o$freq_est   <- numeric(exposure_constants$n_segment)
+  o$count_true <- numeric(constants$nj)
+  o$count_est  <- numeric(constants$nj)
+
+  return(o)
+
+}
