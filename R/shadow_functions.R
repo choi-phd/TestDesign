@@ -1307,44 +1307,12 @@ setMethod(
           eligible_flag     <- getEligibleFlag(ineligible_flag, constants, !theta_is_feasible)
           exposure_record   <- applyIncrement(exposure_record, segments_to_apply, segment_prob, theta_is_feasible, eligible_flag, output, exposure_constants, constants)
           exposure_record   <- applyIncrementVisitedSegments(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_segment, output, exposure_constants, constants)
-
-          nf_ijk <- matrix(n_jk / phi_jk, exposure_constants$n_segment, ni)
-
-          if (exposure_constants$acceleration_factor > 1) {
-            p_alpha_ijk <- alpha_ijk / matrix(n_jk, exposure_constants$n_segment, ni)
-            p_rho_ijk <- rho_ijk / matrix(n_jk, exposure_constants$n_segment, ni)
-            p_alpha_ijk[is.na(p_alpha_ijk)] <- 0
-            p_rho_ijk[is.na(p_rho_ijk)] <- 1
-            flag_alpha_ijk <- p_alpha_ijk > exposure_constants$max_exposure_rate
-            for (k in 1:exposure_constants$n_segment) {
-              pe_i[k,  flag_alpha_ijk[k, ]] <- 1 - nf_ijk[k,  flag_alpha_ijk[k, ]] + (exposure_constants$max_exposure_rate[k] / p_alpha_ijk[k, flag_alpha_ijk[k, ]])^exposure_constants$acceleration_factor * nf_ijk[k, flag_alpha_ijk[k, ]] * p_rho_ijk[k, flag_alpha_ijk[k, ]]
-              pe_i[k, !flag_alpha_ijk[k, ]] <- 1 - nf_ijk[k, !flag_alpha_ijk[k, ]] + exposure_constants$max_exposure_rate[k] * nf_ijk[k, !flag_alpha_ijk[k, ]] * rho_ijk[k, !flag_alpha_ijk[k, ]] / alpha_ijk[k, !flag_alpha_ijk[k, ]]
-            }
-          } else {
-            pe_i <- 1 - nf_ijk + exposure_constants$max_exposure_rate * nf_ijk * rho_ijk / alpha_ijk
-          }
+          exposure_record   <- applyAcceleration(exposure_record, exposure_constants, constants)
 
           pe_i[is.na(pe_i) | alpha_ijk == 0] <- 1
           pe_i[pe_i > 1] <- 1
 
           if (constants$set_based) {
-
-            nf_sjk <- matrix(n_jk / phi_jk, exposure_constants$n_segment, ns)
-            if (exposure_constants$acceleration_factor > 1) {
-              p_alpha_sjk <- alpha_sjk / matrix(n_jk, exposure_constants$n_segment, ns)
-              p_rho_sjk   <- rho_sjk / matrix(n_jk, exposure_constants$n_segment, ns)
-              p_alpha_sjk[is.na(p_alpha_sjk)] <- 0
-              p_rho_sjk[is.na(p_rho_sjk)]     <- 1
-              flag_alpha_sjk <- p_alpha_sjk > exposure_constants$max_exposure_rate
-              for (k in 1:exposure_constants$n_segment) {
-                pe_s[k,  flag_alpha_sjk[k, ]] <- 1 - nf_sjk[k,  flag_alpha_sjk[k, ]] +
-                  (exposure_constants$max_exposure_rate[k] / p_alpha_sjk[k, flag_alpha_sjk[k, ]])^exposure_constants$acceleration_factor * nf_sjk[k, flag_alpha_sjk[k, ]] * p_rho_sjk[k, flag_alpha_sjk[k, ]]
-                pe_s[k, !flag_alpha_sjk[k, ]] <- 1 - nf_sjk[k, !flag_alpha_sjk[k, ]] +
-                  exposure_constants$max_exposure_rate[k] * nf_sjk[k, !flag_alpha_sjk[k, ]] * rho_sjk[k, !flag_alpha_sjk[k, ]] / alpha_sjk[k, !flag_alpha_sjk[k, ]]
-              }
-            } else {
-              pe_s <- 1 - nf_sjk + exposure_constants$max_exposure_rate * nf_sjk * rho_sjk / alpha_sjk
-            }
             pe_s[is.na(pe_s) | alpha_sjk == 0] <- 1
             pe_s[pe_s > 1] <- 1
           }
@@ -1357,41 +1325,12 @@ setMethod(
           eligible_flag     <- getEligibleFlag(ineligible_flag, constants, FALSE)
           exposure_record   <- applyIncrement(exposure_record, segments_to_apply, segment_prob, FALSE, eligible_flag, output, exposure_constants, constants)
           exposure_record   <- applyIncrementVisitedSegments(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_segment, output, exposure_constants, constants)
-
-          if (exposure_constants$acceleration_factor > 1) {
-
-            p_alpha_ijk <- alpha_ijk / matrix(n_jk, exposure_constants$n_segment, ni)
-            p_rho_ijk   <- rho_ijk   / matrix(n_jk, exposure_constants$n_segment, ni)
-            p_alpha_ijk[is.na(p_alpha_ijk)] <- 0
-            p_rho_ijk[is.na(p_rho_ijk)]     <- 1
-            flag_alpha_ijk <- p_alpha_ijk > exposure_constants$max_exposure_rate
-            for (k in 1:exposure_constants$n_segment) {
-              pe_i[k, flag_alpha_ijk[k, ]]  <- (exposure_constants$max_exposure_rate[k] / p_alpha_ijk[k, flag_alpha_ijk[k, ]])^exposure_constants$acceleration_factor * p_rho_ijk[k, flag_alpha_ijk[k, ]]
-              pe_i[k, !flag_alpha_ijk[k, ]] <- exposure_constants$max_exposure_rate[k] * rho_ijk[k, !flag_alpha_ijk[k, ]] / alpha_ijk[k, !flag_alpha_ijk[k, ]]
-            }
-
-          } else {
-            pe_i <- exposure_constants$max_exposure_rate * rho_ijk / alpha_ijk
-          }
+          exposure_record   <- applyAcceleration(exposure_record, exposure_constants, constants)
 
           pe_i[is.na(pe_i) | alpha_ijk == 0] <- 1
           pe_i[pe_i > 1] <- 1
 
           if (constants$set_based) {
-            if (exposure_constants$acceleration_factor > 1) {
-              p_alpha_sjk <- alpha_sjk / matrix(n_jk, exposure_constants$n_segment, constants$ns)
-              p_rho_sjk   <- rho_sjk / matrix(n_jk, exposure_constants$n_segment, constants$ns)
-              p_alpha_sjk[is.na(p_alpha_sjk)] <- 0
-              p_rho_sjk[is.na(p_rho_sjk)]     <- 1
-              flag_alpha_sjk <- p_alpha_sjk > exposure_constants$max_exposure_rate
-              for (k in 1:exposure_constants$n_segment) {
-                pe_s[k, flag_alpha_sjk[k, ]]  <- (exposure_constants$max_exposure_rate[k] / p_alpha_sjk[k, flag_alpha_sjk[k, ]])^exposure_constants$acceleration_factor * p_rho_sjk[k, flag_alpha_sjk[k, ]]
-                pe_s[k, !flag_alpha_sjk[k, ]] <- exposure_constants$max_exposure_rate[k] * rho_sjk[k, !flag_alpha_sjk[k, ]] / alpha_sjk[k, !flag_alpha_sjk[k, ]]
-              }
-
-            } else {
-              pe_s <- exposure_constants$max_exposure_rate * rho_sjk / alpha_sjk
-            }
             pe_s[is.na(pe_s) | alpha_sjk == 0] <- 1
             pe_s[pe_s > 1] <- 1
           }
@@ -1404,39 +1343,12 @@ setMethod(
           eligible_flag     <- getEligibleFlag(ineligible_flag, constants, FALSE)
           exposure_record   <- applyIncrement(exposure_record, segments_to_apply, segment_prob, FALSE, eligible_flag, output, exposure_constants, constants)
           exposure_record   <- applyIncrementVisitedSegments(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_segment, output, exposure_constants, constants)
-
-          if (exposure_constants$acceleration_factor > 1) {
-            p_alpha_ijk <- alpha_ijk / matrix(n_jk, exposure_constants$n_segment, ni)
-            p_rho_ijk   <- rho_ijk / matrix(n_jk, exposure_constants$n_segment, ni)
-            p_alpha_ijk[is.na(p_alpha_ijk)] <- 0
-            p_rho_ijk[is.na(p_rho_ijk)]     <- 1
-            flag_alpha_ijk <- p_alpha_ijk > exposure_constants$max_exposure_rate
-            for (k in 1:exposure_constants$n_segment) {
-              pe_i[k, flag_alpha_ijk[k, ]] <- (exposure_constants$max_exposure_rate[k] / p_alpha_ijk[k, flag_alpha_ijk[k, ]])^exposure_constants$acceleration_factor * p_rho_ijk[k, flag_alpha_ijk[k, ]]
-              pe_i[k, !flag_alpha_ijk[k, ]] <- exposure_constants$max_exposure_rate[k] * rho_ijk[k, !flag_alpha_ijk[k, ]] / alpha_ijk[k, !flag_alpha_ijk[k, ]]
-            }
-
-          } else {
-            pe_i <- exposure_constants$max_exposure_rate * rho_ijk / alpha_ijk
-          }
+          exposure_record   <- applyAcceleration(exposure_record, exposure_constants, constants)
 
           pe_i[is.na(pe_i) | alpha_ijk == 0] <- 1
           pe_i[pe_i > 1] <- 1
 
           if (constants$set_based) {
-            if (exposure_constants$acceleration_factor > 1) {
-              p_alpha_sjk <- alpha_sjk / matrix(n_jk, exposure_constants$n_segment, constants$ns)
-              p_rho_sjk <- rho_sjk / matrix(n_jk, exposure_constants$n_segment, constants$ns)
-              p_alpha_sjk[is.na(p_alpha_sjk)] <- 0
-              p_rho_sjk[is.na(p_rho_sjk)] <- 1
-              flag_alpha_sjk <- p_alpha_sjk > exposure_constants$max_exposure_rate
-              for (k in 1:exposure_constants$n_segment) {
-                pe_s[k, flag_alpha_sjk[k, ]]  <- (exposure_constants$max_exposure_rate[k] / p_alpha_sjk[k, flag_alpha_sjk[k, ]])^exposure_constants$acceleration_factor * p_rho_sjk[k, flag_alpha_sjk[k, ]]
-                pe_s[k, !flag_alpha_sjk[k, ]] <- exposure_constants$max_exposure_rate[k] * rho_sjk[k, !flag_alpha_sjk[k, ]] / alpha_sjk[k, !flag_alpha_sjk[k, ]]
-              }
-            } else {
-              pe_s <- exposure_constants$max_exposure_rate * rho_sjk / alpha_sjk
-            }
             pe_s[is.na(pe_s) | alpha_sjk == 0] <- 1
             pe_s[pe_s > 1] <- 1
           }
