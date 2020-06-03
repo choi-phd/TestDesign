@@ -1324,25 +1324,9 @@ setMethod(
 
         if (config@exposure_control$diagnostic_stats) {
 
-          for (g in 1:exposure_constants$n_segment) {
-            alpha_g_i[j, (g - 1) * constants$ni + 1:constants$ni]   <- alpha_ijk[g, ]
-            epsilon_g_i[j, (g - 1) * constants$ni + 1:constants$ni] <- rho_ijk[g, ]
-            if (constants$set_based) {
-              alpha_g_s[j, (g - 1) * constants$ns + 1:constants$ns]   <- alpha_sjk[g, ]
-              epsilon_g_s[j, (g - 1) * constants$ns + 1:constants$ns] <- rho_sjk[g, ]
-            }
-          }
-
-          if (exposure_constants$fading_factor != 1) {
-            for (g in 1:exposure_constants$n_segment) {
-              no_fading_alpha_g_i[j, (g - 1) * constants$ni + 1:constants$ni]   <- no_fading_alpha_ijk[g, ]
-              no_fading_epsilon_g_i[j, (g - 1) * constants$ni + 1:constants$ni] <- no_fading_rho_ijk[g, ]
-              if (constants$set_based) {
-                no_fading_alpha_g_s[j, (g - 1) * constants$ns + 1:constants$ns]   <- no_fading_alpha_sjk[g, ]
-                no_fading_epsilon_g_s[j, (g - 1) * constants$ns + 1:constants$ns] <- no_fading_rho_sjk[g, ]
-              }
-            }
-          }
+          exposure_record_detailed <- updateExposureRecordSegmentwise(
+            exposure_record_detailed, j, exposure_constants, constants
+          )
 
         }
 
