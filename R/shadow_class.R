@@ -178,73 +178,74 @@ setClass("config_Shadow",
   validity = function(object) {
     errors <- NULL
     if (!toupper(object@MIP$solver) %in% c("LPSYMPHONY", "RSYMPHONY", "LPSOLVE", "GUROBI", "RGLPK")) {
-      msg <- sprintf("Unrecognized option in @MIP$solver : %s", object@MIP$solver)
-      errors <- c(errors, msg)
+      msg <- sprintf("config@MIP: unrecognized $solver '%s' (accepts LPSYMPHONY, RSYMPHONY, LPSOLVE, GUROBI, RGLPK)", object@MIP$solver)
+      err <- c(err, msg)
     }
 
     for (solver_name in c("gurobi", "Rsymphony", "lpsymphony", "Rglpk")) {
       if (toupper(object@MIP$solver) == toupper(solver_name)) {
         if (!requireNamespace(solver_name, quietly = TRUE)) {
-          msg <- sprintf("could not find the specified solver package : %s", solver_name)
-          errors <- c(errors, msg)
+          msg <- sprintf("config@MIP: could not find the specified $solver package '$s'", solver_name)
+          err <- c(err, msg)
         }
       }
     }
 
-    if (!toupper(object@item_selection$method) %in% c("MFI", "MPWI", "EB", "FB")) {
-      msg <- sprintf("Unrecognized option in @item_selection$method : %s", object@item_selection$method)
-      errors <- c(errors, msg)
+    if (!toupper(object@item_selection$method) %in% c("MFI", "MPWI", "EB", "FB", "FIXED")) {
+      msg <- sprintf("config@item_selection: unrecognized $method '%s' (accepts MFI, MPWI, EB, FB, or FIXED)", object@item_selection$method)
+      err <- c(err, msg)
+    }
     }
 
     if (!object@content_balancing$method %in% c("NONE", "STA")) {
-      msg <- sprintf("Unrecognized option in @content_balancing$method : %s", object@content_balancing$method)
-      errors <- c(errors, msg)
+      msg <- sprintf("config@content_balancing: unrecognized $method '%s' (accepts NONE, or STA)", object@content_balancing$method)
+      err <- c(err, msg)
     }
     if (!object@refresh_policy$method %in%
       c("ALWAYS", "POSITION", "INTERVAL", "THRESHOLD", "INTERVAL-THRESHOLD", "STIMULUS", "SET", "PASSAGE")) {
-      msg <- sprintf("Unrecognized option in @refresh_policy$method : %s", object@refresh_policy$method)
-      errors <- c(errors, msg)
+      msg <- sprintf("config@refresh_policy: unrecognized $method '%s'", object@refresh_policy$method)
+      err <- c(err, msg)
     }
     if (!object@exposure_control$method %in% c("NONE", "ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
-      msg <- sprintf("Unrecognized option in @exposure_control$method : %s", object@exposure_control$method)
-      errors <- c(errors, msg)
+      msg <- sprintf("config@exposure_control: unrecognized $method '%s' (accepts NONE, ELIGIBILITY, BIGM, or BIGM-BAYESIAN)", object@exposure_control$method)
+      err <- c(err, msg)
+    }
     }
     if (object@exposure_control$n_segment != length(object@exposure_control$segment_cut) - 1) {
-      msg <- "@exposure_control$n_segment must match @exposure_control$segment_cut."
-      errors <- c(errors, msg)
+      msg <- "config@exposure_control: $n_segment must be equal to length($segment_cut) - 1"
+      err <- c(err, msg)
     }
     if (!length(object@exposure_control$max_exposure_rate) %in% c(1, object@exposure_control$n_segment)) {
       msg <- sprintf("@exposure_control: unexpected length($max_exposure_rate) %s (must be 1 or $n_segment)", length(object@exposure_control$max_exposure_rate))
-      errors <- c(errors, msg)
+      err <- c(err, msg)
     }
     if (!object@stopping_criterion$method %in% c("FIXED")) {
-      msg <- sprintf("Unrecognized option in @stopping_criterion$method : %s", object@stopping_criterion$method)
-      errors <- c(errors, msg)
+      msg <- sprintf("config@stopping_criterion: unrecognized $method '%s'", object@stopping_criterion$method)
+      err <- c(err, msg)
     }
     if (!object@interim_theta$method %in% c("EAP", "MLE", "EB", "FB")) {
-      msg <- sprintf("Unrecognized option in @interim_theta$method : %s (must be one of EAP, MLE, EB, or FB)", object@interim_theta$method)
-      errors <- c(errors, msg)
+      msg <- sprintf("config@interim_theta: unrecognized $method '%s' (accepts EAP, MLE, EB, or FB)", object@interim_theta$method)
+      err <- c(err, msg)
+    }
     }
     if (!object@final_theta$method %in% c("EAP", "MLE", "EB", "FB")) {
-      msg <- sprintf("Unrecognized option in @final_theta$method : %s (must be one of EAP, MLE, EB, or FB)", object@final_theta$method)
-      errors <- c(errors, msg)
+      msg <- sprintf("config@final_theta: unrecognized $method '%s' (accepts EAP, MLE, EB, or FB)", object@final_theta$method)
+      err <- c(err, msg)
     }
     if (toupper(object@final_theta$method) == "EAP") {
       if (!toupper(object@final_theta$prior_dist) %in% c("NORMAL", "UNIFORM")) {
-        msg <- sprintf("Unrecognized option in @final_theta$prior_dist : %s (must be one of NORMAL or UNIFORM when @final_theta$method is EAP)", object@final_theta$prior_dist)
-        errors <- c(errors, msg)
+        msg <- sprintf("config@final_theta: unrecognized $prior_dist '%s' (when $method is EAP, accepts NORMAL or UNIFORM)", object@final_theta$prior_dist)
+        err <- c(err, msg)
       }
     }
-
     if ((object@exposure_control$method == c("BIGM-BAYESIAN")) &&
       (!object@interim_theta$method %in% c("EB", "FB"))) {
-      errors <- c(errors, "exposure_control$method == 'BIGM-BAYESIAN' requires interim_theta$method to be EB or FB.")
+      err <- c(err, "config@exposure_control: $method 'BIGM-BAYESIAN' requires interim_theta$method to be EB or FB")
     }
-    if (length(errors) == 0) {
+    if (length(err) == 0) {
       return(TRUE)
     } else {
-      errors = paste0(c("", errors), collapse = '\n')
-      return(errors)
+      return(err)
     }
   }
 )
@@ -349,7 +350,7 @@ setClass("config_Shadow",
 createShadowTestConfig <- function(item_selection = NULL, content_balancing = NULL, MIP = NULL, MCMC = NULL,
                           refresh_policy = NULL, exposure_control = NULL, stopping_criterion = NULL,
                           interim_theta = NULL, final_theta = NULL, theta_grid = seq(-4, 4, .1), audit_trail = F) {
-  conf <- new("config_Shadow")
+  cfg <- new("config_Shadow")
 
   arg_names <- c(
     "item_selection", "content_balancing", "MIP", "MCMC",
@@ -359,9 +360,9 @@ createShadowTestConfig <- function(item_selection = NULL, content_balancing = NU
   obj_names <- c()
   for (arg in arg_names) {
     if (!is.null(eval(parse(text = arg)))) {
-      eval(parse(text = paste0("obj_names <- names(conf@", arg, ")")))
+      eval(parse(text = paste0("obj_names <- names(cfg@", arg, ")")))
       for (entry in obj_names) {
-        entry_l <- paste0("conf@", arg, "$", entry)
+        entry_l <- paste0("cfg@", arg, "$", entry)
         entry_r <- paste0(arg, "$", entry)
         tmp <- eval(parse(text = entry_r))
         if (!is.null(tmp)) {
@@ -371,20 +372,20 @@ createShadowTestConfig <- function(item_selection = NULL, content_balancing = NU
     }
   }
   if (!is.null(theta_grid)) {
-    conf@theta_grid <- theta_grid
+    cfg@theta_grid <- theta_grid
   }
   if (!is.null(audit_trail)) {
-    conf@audit_trail <- audit_trail
+    cfg@audit_trail <- audit_trail
   }
-  if (length(conf@exposure_control$max_exposure_rate) == 1) {
-    conf@exposure_control$max_exposure_rate <- rep(
-      conf@exposure_control$max_exposure_rate,
-      conf@exposure_control$n_segment
+  if (length(cfg@exposure_control$max_exposure_rate) == 1) {
+    cfg@exposure_control$max_exposure_rate <- rep(
+      cfg@exposure_control$max_exposure_rate,
+      cfg@exposure_control$n_segment
     )
   }
-  v <- validObject(conf)
+  v <- validObject(cfg)
   if (v) {
-    return(conf)
+    return(cfg)
   }
 }
 
