@@ -1060,42 +1060,10 @@ setMethod(
       done         <- FALSE
       position     <- 0
 
-      ##
-      #  Simulee: flag ineligibile items
-      ##
+      # Simulee: flag ineligibile items
 
       if (exposure_constants$use_eligibility_control) {
-
-        # Randomly flag items in each segment to be ineligible
-
-        ineligible_i <- matrix(0, exposure_constants$n_segment, ni)
-        prob_random  <- matrix(runif(exposure_constants$n_segment * ni), exposure_constants$n_segment, ni)
-        ineligible_i[prob_random >= pe_i] <- 1
-
-        # Randomly flag stimuli in each segment to be ineligible
-
-        if (constants$set_based) {
-          ineligible_s <- matrix(0, exposure_constants$n_segment, ns)
-          prob_random <- matrix(runif(exposure_constants$n_segment * ns), exposure_constants$n_segment, ns)
-          ineligible_s[prob_random >= pe_s] <- 1
-
-          for (k in 1:exposure_constants$n_segment) {
-            for (s in which(ineligible_s[k, ] == 1)) {
-              ineligible_i[k, constraints@item_index_by_stimulus[[s]]] <- 1
-            }
-            for (s in which(ineligible_s[k, ] == 0)) {
-              ineligible_i[k, constraints@item_index_by_stimulus[[s]]] <- 0
-            }
-          }
-
-        }
-
-        if (exposure_control %in% c("ELIGIBILITY")) {
-          xmat <- NULL
-          xdir <- NULL
-          xrhs <- NULL
-        }
-
+        ineligible_flag <- flagIneligible(exposure_record, exposure_constants, constants, constraints@item_index_by_stimulus)
       }
 
       ##
@@ -1228,9 +1196,9 @@ setMethod(
 
               # Get ineligibile items in the current theta segment
 
-              item_ineligible <- ineligible_i[output@theta_segment_index[position], ]
+              item_ineligible <- ineligible_flag$i[output@theta_segment_index[position], ]
               if (constants$set_based) {
-                stimulus_ineligible <- ineligible_s[output@theta_segment_index[position], ]
+                stimulus_ineligible <- ineligible_flag$s[output@theta_segment_index[position], ]
               }
 
               if (position > 1) {
@@ -1570,9 +1538,9 @@ setMethod(
         segment_record$count_est[j] <-
         segment_record$freq_est[segment_final]
 
-        eligible_in_final_segment <- ineligible_i[segment_final, ] == 0
+        eligible_in_final_segment <- ineligible_flag$i[segment_final, ] == 0
         if (constants$set_based) {
-          eligible_set_in_final_segment <- ineligible_s[segment_final, ] == 0
+          eligible_set_in_final_segment <- ineligible_flag$s[segment_final, ] == 0
         }
 
         # TODO: Why are we sorting segment_visited? might be better to not sort
@@ -1821,14 +1789,14 @@ setMethod(
           }
 
           for (segment in 1:exposure_constants$n_segment) {
-            eligible <- ineligible_i[segment, ] == 0
+            eligible <- ineligible_flag$i[segment, ] == 0
             rho_ijk[segment, eligible] <- rho_ijk[segment, eligible] + segment_prob[segment]
           }
           if (exposure_constants$fading_factor != 1) {
             no_fading_n_jk <- no_fading_n_jk + segment_prob
             no_fading_alpha_ijk[, output@administered_item_index] <- no_fading_alpha_ijk[, output@administered_item_index] + segment_prob
             for (segment in 1:exposure_constants$n_segment) {
-              eligible <- ineligible_i[segment, ] == 0
+              eligible <- ineligible_flag$i[segment, ] == 0
               no_fading_rho_ijk[segment, eligible] <- no_fading_rho_ijk[segment, eligible] + segment_prob[segment]
             }
           }
@@ -1868,12 +1836,12 @@ setMethod(
             }
 
             for (segment in 1:exposure_constants$n_segment) {
-              rho_sjk[segment, ineligible_s[segment, ] == 0] <- rho_sjk[segment, ineligible_s[segment, ] == 0] + segment_prob[segment]
+              rho_sjk[segment, ineligible_flag$s[segment, ] == 0] <- rho_sjk[segment, ineligible_flag$s[segment, ] == 0] + segment_prob[segment]
             }
             if (exposure_constants$fading_factor != 1) {
               no_fading_alpha_sjk[, output@administered_stimulus_index] <- no_fading_alpha_sjk[, output@administered_stimulus_index] + segment_prob
               for (segment in 1:exposure_constants$n_segment) {
-                no_fading_rho_sjk[segment, ineligible_s[segment, ] == 0] <- no_fading_rho_sjk[segment, ineligible_s[segment, ] == 0] + segment_prob[k]
+                no_fading_rho_sjk[segment, ineligible_flag$s[segment, ] == 0] <- no_fading_rho_sjk[segment, ineligible_flag$s[segment, ] == 0] + segment_prob[k]
               }
             }
             if (exposure_constants$acceleration_factor > 1) {
