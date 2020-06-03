@@ -778,25 +778,7 @@ setMethod(
       refresh_shadow <- initializeShadowEngine(constants, config@refresh_policy)
     }
 
-    #####
-    ###    Simulate datasets with supplied values
-    #####
-
-    if (!is.null(data)) {
-      test <- makeTest(pool, constants$theta_q, info_type = "FISHER", true_theta = NULL)
-      data <- as.matrix(data)
-      for (i in 1:constants$ni) {
-        invalid_resp <- !(data[, i] %in% 0:(pool@NCAT[i] - 1))
-        data[invalid_resp, i] <- NA
-      }
-      test@data <- data
-    } else if (!is.null(true_theta)) {
-      test <- makeTest(pool, constants$theta_q, info_type = "FISHER", true_theta)
-    } else {
-      stop("either 'data' or 'true_theta' must be supplied")
-    }
-
-    max_info <- max(test@info)
+    all_data         <- makeData(pool, true_theta, data, constants)
 
     #####
     ###    Initialize bayesian stuff
@@ -956,7 +938,7 @@ setMethod(
     if (!is.null(config@item_selection$fixed_theta)) {
       if (length(config@item_selection$fixed_theta) == 1) {
         info_fixed_theta <- vector(mode = "list", length = constants$nj)
-        info_fixed_theta[1:constants$nj] <- test@info[which.min(abs(test@theta - config@item_selection$fixed_theta)), ]
+        info_fixed_theta[1:constants$nj] <- all_data$test@info[which.min(abs(config@theta_grid - config@item_selection$fixed_theta)), ]
         config@item_selection$fixed_theta <- rep(config@item_selection$fixed_theta, constants$nj)
         select_at_fixed_theta <- TRUE
       } else if (length(config@item_selection$fixed_theta) == constants$nj) {
@@ -987,7 +969,7 @@ setMethod(
       if (select_at_fixed_theta) {
         info <- info_fixed_theta[[j]]
       } else if (config@item_selection$method == "MPWI") {
-        info <- as.vector(matrix(posterior[j, ], nrow = 1) %*% test@info)
+        info <- as.vector(matrix(posterior[j, ], nrow = 1) %*% all_data$test@info)
       } else if (config@item_selection$method == "MFI") {
         info <- calc_info(current_theta, pool@ipar, pool@NCAT, model)
       } else if (config@item_selection$method == "EB") {
@@ -1487,7 +1469,7 @@ setMethod(
                 if (!is.null(config@exposure_control$M)) {
                   info[item_ineligible == 1] <- info[item_ineligible == 1] - config@exposure_control$M
                 } else {
-                  info[item_ineligible == 1] <- -1 * max_info - 1
+                  info[item_ineligible == 1] <- -1 * all_data$max_info - 1
                 }
 
                 xdata = list(xmat = imat,
@@ -1566,20 +1548,20 @@ setMethod(
 
         # Item position / simulee: record which item was administered
 
-        output@administered_item_resp[position] <- test@data[j, output@administered_item_index[position]]
+        output@administered_item_resp[position] <- all_data$test@data[j, output@administered_item_index[position]]
         output@administered_item_ncat[position] <- pool@NCAT[output@administered_item_index[position]]
         items_administered[j, output@administered_item_index[position]] <- TRUE
 
         # Item position / simulee: update posterior and likelihood
-        prob_resp      <- test@prob[[output@administered_item_index[position]]][, output@administered_item_resp[position] + 1]
+        prob_resp      <- all_data$test@prob[[output@administered_item_index[position]]][, output@administered_item_resp[position] + 1]
         posterior[j, ] <- posterior[j, ] * prob_resp
         likelihood     <- likelihood     * prob_resp
 
         # Item position / simulee: estimate theta
 
         if (toupper(config@interim_theta$method) == "EAP") {
-          output@interim_theta_est[position] <- sum(posterior[j, ] * test@theta) / sum(posterior[j, ])
-          output@interim_se_est[position]    <- sqrt(sum(posterior[j, ] * (test@theta - output@interim_theta_est[position])^2) / sum(posterior[j, ]))
+          output@interim_theta_est[position] <- sum(posterior[j, ] * config@theta_grid) / sum(posterior[j, ])
+          output@interim_se_est[position]    <- sqrt(sum(posterior[j, ] * (config@theta_grid - output@interim_theta_est[position])^2) / sum(posterior[j, ]))
           if (toupper(config@interim_theta$prior_dist) == "NORMAL" && config@interim_theta$shrinkage_correction) {
             output@interim_theta_est[position] <- output@interim_theta_est[position] * (1 + output@interim_se_est[position]^2)
             if (output@interim_se_est[position] < config@interim_theta$prior_par[2]) {
@@ -1587,7 +1569,7 @@ setMethod(
             }
           }
         } else if (toupper(config@interim_theta$method) == "MLE") {
-          interim_EAP <- sum(posterior[j, ] * test@theta) / sum(posterior[j, ])
+          interim_EAP <- sum(posterior[j, ] * config@theta_grid) / sum(posterior[j, ])
           interim_MLE <- mle(pool, output@administered_item_resp[1:position], start_theta = interim_EAP, theta_range = config@interim_theta$bound_ml, max_iter = config@interim_theta$max_iter, crit = config@interim_theta$crit, select = output@administered_item_index[1:position])
           output@interim_theta_est[position] <- interim_MLE$th
           output@interim_se_est[position]    <- interim_MLE$se
@@ -2241,7 +2223,7 @@ setMethod(
     out@constraints                 <- constraints
     out@prior                       <- prior
     out@prior_par                   <- prior_par
-    out@data                        <- test@data
+    out@data                        <- all_data$test@data
     out@final_theta_est             <- final_theta_est
     out@final_se_est                <- final_se_est
     out@exposure_rate               <- exposure_rate
