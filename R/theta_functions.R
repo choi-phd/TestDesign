@@ -94,3 +94,21 @@ estimateThetaEAP <- function(posterior, theta_grid) {
   o$se    <- sqrt(sum(posterior * (theta_grid - o$theta)^2) / sum(posterior))
   return(o)
 }
+
+#' @noRd
+applyShrinkageCorrection <- function(EAP, config_theta) {
+
+  if (toupper(config_theta$prior_dist) == "NORMAL" && config_theta$shrinkage_correction) {
+    prior_sd <- config_theta$prior_sd
+    o        <- list()
+    o$theta  <- EAP$theta * (1 + (EAP$se ** 2))
+    o$se     <- EAP$se
+    if (o$se < prior_sd) {
+      o$se <- 1 / sqrt((o$se ** -2) - (prior_sd ** -2))
+    }
+    return(o)
+  }
+
+  return(EAP)
+
+}
