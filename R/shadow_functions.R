@@ -1028,21 +1028,7 @@ setMethod(
       output@shadow_test <- vector(mode = "list", length = constants$max_ni)
       output@max_cat_pool <- pool@max_cat
 
-      ##
-      #  Simulee: set initial theta estimate
-      ##
-
-      if (config@interim_theta$method %in% c("EAP", "MLE")) {
-        current_theta <- initial_theta[j]
-      } else if (toupper(config@interim_theta$method) %in% c("EB", "FB")) {
-        output@prior_par <- parsePriorPar(prior_par, constants$nj, j, config@interim_theta$prior_par)
-        output@posterior_sample <- getPosteriorSample(
-          posterior_record$n_sample,
-          output@prior_par[1], output@prior_par[2],
-          config@MCMC)
-        current_theta <- mean(output@posterior_sample)
-        current_se <- sd(output@posterior_sample) * config@MCMC$jump_factor
-      }
+      current_theta <- estimateInitialTheta(config, initial_theta, prior_par, constants$nj, j, posterior_record)
 
       ##
       #  Simulee: initialize stimulus tracking
@@ -1142,7 +1128,7 @@ setMethod(
               all(config@exposure_control$first_segment <= exposure_constants$n_segment)) {
               output@theta_segment_index[position] <- config@exposure_control$first_segment[position]
             } else {
-              output@theta_segment_index[position] <- find_segment(current_theta, exposure_constants$segment_cut)
+              output@theta_segment_index[position] <- find_segment(current_theta$theta, exposure_constants$segment_cut)
             }
 
           } else if (exposure_control %in% c("BIGM-BAYESIAN")) {
@@ -1423,17 +1409,17 @@ setMethod(
           current_item <- output@administered_item_index[position]
           if (toupper(config@interim_theta$method == "EB")) {
             output@posterior_sample <- theta_EB_single(
-              posterior_record$n_sample, current_theta, current_se,
+              posterior_record$n_sample, current_theta$theta, current_theta$se,
               pool@ipar[current_item, ],
               output@administered_item_resp[position], pool@NCAT[current_item],
-              model[current_item], 1, c(current_theta, current_se)
+              model[current_item], 1, c(current_theta$theta, current_theta$se)
             )
           } else {
             output@posterior_sample <- theta_FB_single(
-              posterior_record$n_sample, current_theta, current_se, posterior_record$ipar_list[[current_item]],
+              posterior_record$n_sample, current_theta$theta, current_theta$se, posterior_record$ipar_list[[current_item]],
               pool@ipar[current_item, ],
               output@administered_item_resp[position], pool@NCAT[current_item],
-              model[current_item], 1, c(current_theta, current_se)
+              model[current_item], 1, c(current_theta$theta, current_theta$se)
             )
           }
           output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = posterior_record$n_sample, by = config@MCMC$thin)]
@@ -1441,9 +1427,9 @@ setMethod(
           output@interim_se_est[position] <- sd(output@posterior_sample)
         }
 
-        theta_change  <- output@interim_theta_est[position] - current_theta
-        current_theta <- output@interim_theta_est[position]
-        current_se    <- output@interim_se_est[position]
+        theta_change  <- output@interim_theta_est[position] - current_theta$theta
+        current_theta$theta <- output@interim_theta_est[position]
+        current_theta$se    <- output@interim_se_est[position]
 
 
         # Item position / simulee: trigger shadow test refresh if theta change is sufficient
