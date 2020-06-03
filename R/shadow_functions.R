@@ -805,28 +805,8 @@ setMethod(
         rho_sjk   <- NULL
       }
 
-      # Initialize diagnostic stats
-
-      if (config@exposure_control$diagnostic_stats) {
-
-        alpha_g_i   <- matrix(0, nrow = constants$nj, ncol = exposure_constants$n_segment * constants$ni)
-        epsilon_g_i <- matrix(0, nrow = constants$nj, ncol = exposure_constants$n_segment * constants$ni)
-
-        if (constants$set_based) {
-          alpha_g_s   <- matrix(0, nrow = constants$nj, ncol = exposure_constants$n_segment * constants$ns)
-          epsilon_g_s <- matrix(0, nrow = constants$nj, ncol = exposure_constants$n_segment * constants$ns)
-        }
-
-        if (exposure_constants$fading_factor != 1) {
-          no_fading_alpha_g_i   <- matrix(0, nrow = constants$nj, ncol = exposure_constants$n_segment * constants$ni)
-          no_fading_epsilon_g_i <- matrix(0, nrow = constants$nj, ncol = exposure_constants$n_segment * constants$ni)
-          if (constants$set_based) {
-            no_fading_alpha_g_s   <- matrix(0, nrow = constants$nj, ncol = exposure_constants$n_segment * constants$ns)
-            no_fading_epsilon_g_s <- matrix(0, nrow = constants$nj, ncol = exposure_constants$n_segment * constants$ns)
-          }
-        }
-      }
       exposure_record          <- initializeExposureRecord(config@exposure_control, exposure_constants, constants)
+      exposure_record_detailed <- initializeExposureRecordSegmentwise(exposure_constants, constants)
 
       # Initialize eligibility parameters
 
@@ -2060,16 +2040,18 @@ setMethod(
 
       if (config@exposure_control$diagnostic_stats) {
 
-        check_eligibility_stats <- as.data.frame(
-          cbind(1:constants$nj, true_theta, find_segment(true_theta, exposure_constants$segment_cut), segment_record$count_true, alpha_g_i, epsilon_g_i),
-          row.names = NULL)
-
+        check_eligibility_stats <- as.data.frame(cbind(
+          1:constants$nj, true_theta, find_segment(true_theta, exposure_constants$segment_cut), segment_record$count_true,
+          exposure_record_detailed$a_g_i,
+          exposure_record_detailed$e_g_i), row.names = NULL)
         names(check_eligibility_stats) <- c("Examinee", "TrueTheta", "TrueSegment", "TrueSegmentCount",
           paste("a", "g", rep(1:exposure_constants$n_segment, rep(constants$ni, exposure_constants$n_segment)), "i", rep(1:constants$ni, exposure_constants$n_segment), sep = "_"),
           paste("e", "g", rep(1:exposure_constants$n_segment, rep(constants$ni, exposure_constants$n_segment)), "i", rep(1:constants$ni, exposure_constants$n_segment), sep = "_"))
 
         if (constants$set_based) {
-          check_eligibility_stats_stimulus <- as.data.frame(cbind(alpha_g_s, epsilon_g_s), row.names = NULL)
+          check_eligibility_stats_stimulus <- as.data.frame(cbind(
+            exposure_record_detailed$a_g_s,
+            exposure_record_detailed$e_g_s), row.names = NULL)
           names(check_eligibility_stats_stimulus) <- c(
             paste("a", "g", rep(1:exposure_constants$n_segment, rep(constants$ns, exposure_constants$n_segment)), "s", rep(1:constants$ns, exposure_constants$n_segment), sep = "_"),
             paste("e", "g", rep(1:exposure_constants$n_segment, rep(constants$ns, exposure_constants$n_segment)), "s", rep(1:constants$ns, exposure_constants$n_segment), sep = "_"))
@@ -2077,12 +2059,17 @@ setMethod(
         }
 
         if (exposure_constants$fading_factor != 1) {
-          no_fading_eligibility_stats <- as.data.frame(cbind(1:constants$nj, true_theta, find_segment(true_theta, exposure_constants$segment_cut), segment_record$count_true, no_fading_alpha_g_i, no_fading_epsilon_g_i), row.names = NULL)
+          no_fading_eligibility_stats <- as.data.frame(cbind(
+            1:constants$nj, true_theta, find_segment(true_theta, exposure_constants$segment_cut), segment_record$count_true,
+            exposure_record_detailed$a_g_i_nofade,
+            exposure_record_detailed$e_g_i_nofade), row.names = NULL)
           names(no_fading_eligibility_stats) <- c("Examinee", "TrueTheta", "TrueSegment", "TrueSegmentCount",
             paste("a", "g", rep(1:exposure_constants$n_segment, rep(constants$ni, exposure_constants$n_segment)), "i", rep(1:constants$ni, exposure_constants$n_segment), sep = "_"),
             paste("e", "g", rep(1:exposure_constants$n_segment, rep(constants$ni, exposure_constants$n_segment)), "i", rep(1:constants$ni, exposure_constants$n_segment), sep = "_"))
           if (constants$set_based) {
-            no_fading_eligibility_stats_stimulus <- as.data.frame(cbind(no_fading_alpha_g_s, no_fading_epsilon_g_s), row.names = NULL)
+            no_fading_eligibility_stats_stimulus <- as.data.frame(cbind(
+              exposure_record_detailed$a_g_s_nofade,
+              exposure_record_detailed$e_g_s_nofade), row.names = NULL)
             names(no_fading_eligibility_stats_stimulus) <- c(
               paste("a", "g", rep(1:exposure_constants$n_segment, rep(constants$ns, exposure_constants$n_segment)), "s", rep(1:constants$ns, exposure_constants$n_segment), sep = "_"),
               paste("e", "g", rep(1:exposure_constants$n_segment, rep(constants$ns, exposure_constants$n_segment)), "s", rep(1:constants$ns, exposure_constants$n_segment), sep = "_"))
