@@ -45,3 +45,42 @@ initializeSegmentRecord <- function(exposure_constants, constants) {
   return(o)
 
 }
+
+#' @noRd
+initializeExposureRecord <- function(exposure_control, exposure_constants, constants) {
+
+  o <- list()
+
+  ni <- constants$ni
+  ns <- constants$ns
+  n_segment <- exposure_constants$n_segment
+
+  o$n_jk  <- numeric(n_segment)
+  o$p_jk  <- numeric(n_segment)
+  if (exposure_constants$fading_factor != 1) {
+    o$n_jk_nofade  <- o$n_jk
+  }
+
+  o$a_ijk <- matrix(0, n_segment, ni)
+  o$r_ijk <- matrix(0, n_segment, ni)
+  o$pe_i  <- matrix(1, n_segment, ni)
+  if (exposure_constants$fading_factor != 1) {
+    o$a_ijk_nofade <- o$a_ijk
+    o$r_ijk_nofade <- o$r_ijk
+  }
+
+  if (!constants$set_based) {
+    return(o)
+  }
+
+  o$a_sjk <- matrix(0, n_segment, ns)
+  o$r_sjk <- matrix(0, n_segment, ns)
+  o$pe_s  <- matrix(1, n_segment, ns)
+  if (exposure_constants$fading_factor != 1) {
+    o$a_sjk_nofade <- o$a_sjk
+    o$r_sjk_nofade <- o$r_sjk
+  }
+
+  return(o)
+
+}

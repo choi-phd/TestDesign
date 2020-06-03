@@ -826,6 +826,7 @@ setMethod(
           }
         }
       }
+      exposure_record          <- initializeExposureRecord(config@exposure_control, exposure_constants, constants)
 
       # Initialize eligibility parameters
 
@@ -837,25 +838,6 @@ setMethod(
         if (constants$set_based) {
           alpha_sjk <- config@exposure_control$initial_eligibility_stats$alpha_sjk
           rho_sjk   <- config@exposure_control$initial_eligibility_stats$rho_sjk
-        }
-      } else {
-        n_jk      <- numeric(exposure_constants$n_segment)
-        alpha_ijk <- matrix(0, exposure_constants$n_segment, constants$ni)
-        phi_jk    <- numeric(exposure_constants$n_segment)
-        rho_ijk   <- matrix(0, exposure_constants$n_segment, constants$ni)
-        if (constants$set_based) {
-          alpha_sjk <- matrix(0, exposure_constants$n_segment, constants$ns)
-          rho_sjk   <- matrix(0, exposure_constants$n_segment, constants$ns)
-        }
-      }
-
-      if (exposure_constants$fading_factor != 1) {
-        no_fading_n_jk      <- n_jk
-        no_fading_alpha_ijk <- alpha_ijk
-        no_fading_rho_ijk   <- rho_ijk
-        if (constants$set_based) {
-          no_fading_alpha_sjk <- alpha_sjk
-          no_fading_rho_sjk   <- rho_sjk
         }
       }
 
@@ -2076,12 +2058,6 @@ setMethod(
 
     if (exposure_constants$use_eligibility_control) {
 
-      eligibility_stats <- list(
-        pe_i = pe_i, n_jk = n_jk,
-        alpha_ijk = alpha_ijk, phi_jk = phi_jk, rho_ijk = rho_ijk,
-        pe_s = pe_s,
-        alpha_sjk = alpha_sjk, rho_sjk = rho_sjk)
-
       if (config@exposure_control$diagnostic_stats) {
 
         check_eligibility_stats <- as.data.frame(
@@ -2138,7 +2114,7 @@ setMethod(
     out@usage_matrix                <- usage_matrix
     out@true_segment_count          <- segment_record$count_true
     out@est_segment_count           <- segment_record$count_est
-    out@eligibility_stats           <- eligibility_stats
+    out@eligibility_stats           <- exposure_record
     out@check_eligibility_stats     <- check_eligibility_stats
     out@no_fading_eligibility_stats <- no_fading_eligibility_stats
     out@freq_infeasible             <- freq_infeasible
