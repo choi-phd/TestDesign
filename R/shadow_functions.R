@@ -835,21 +835,6 @@ setMethod(
     ###    select a non-administered item with the largest information
     #####
 
-    selectItem <- function() {
-
-      if (position > 1) {
-        info[output@administered_item_index[1:(position - 1)]] <- -1
-      }
-
-      info_index    <- order(info, decreasing = TRUE)
-      item_selected <- info_index[1]
-
-      if (item_selected %in% output@administered_item_index[1:(position - 1)]) {
-        stop(sprintf("the selected item %i has been already administered", item_selected))
-      }
-
-      return(item_selected)
-    }
 
     #####
     ###    select a non-administered item with the largest information
@@ -1175,7 +1160,7 @@ setMethod(
 
         } else {
           # If not doing shadow
-          output@administered_item_index[position] <- selectItem()
+          output@administered_item_index[position] <- selectItem(info, position, output)
         }
 
         # Item position / simulee: record which stimulus was administered
