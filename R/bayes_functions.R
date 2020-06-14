@@ -91,3 +91,17 @@ parsePriorPar <- function(prior_par, nj, j, config_prior_par) {
   return(config_prior_par)
 
 }
+
+#' @noRd
+getPosteriorSample <- function(n_sample, arg_mean, arg_sd, config_MCMC) {
+
+  posterior_sample <- rnorm(n_sample, mean = arg_mean, sd = arg_sd)
+  posterior_sample <- posterior_sample[seq(
+    from = config_MCMC$burn_in + 1,
+    to = n_sample,
+    by = config_MCMC$thin
+  )]
+
+  return(posterior_sample)
+
+}
