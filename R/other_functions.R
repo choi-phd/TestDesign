@@ -122,3 +122,30 @@ makeData <- function(pool, true_theta, arg_data, constants) {
   return(o)
 
 }
+
+#' @noRd
+getInfoFixedTheta <- function(item_selection, constants, test, pool, model) {
+
+  nj <- constants$nj
+  o <- list()
+
+  if (!is.null(item_selection$fixed_theta)) {
+    if (length(item_selection$fixed_theta) == 1) {
+      o$info_fixed_theta <- vector(mode = "list", length = nj)
+      o$info_fixed_theta <- test@info[which.min(abs(constants$theta_grid - item_selection$fixed_theta)), ]
+      o$select_at_fixed_theta <- TRUE
+    }
+    if (length(item_selection$fixed_theta) == nj) {
+      o$info_fixed_theta <- lapply(seq_len(nj), function(j) calc_info(item_selection$fixed_theta[j], pool@ipar, pool@NCAT, model))
+      o$select_at_fixed_theta <- TRUE
+    }
+    if (is.null(o$info_fixed_theta)) {
+      stop("config@item_selection: length($fixed_theta) must be either 1 or nj")
+    }
+  } else {
+    o$select_at_fixed_theta <- FALSE
+  }
+
+  return(o)
+
+}

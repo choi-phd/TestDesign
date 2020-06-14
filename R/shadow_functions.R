@@ -772,6 +772,7 @@ setMethod(
     model            <- sanitizeModel(pool@model)
     constants        <- getConstants(constraints, config, data, true_theta)
     all_data         <- makeData(pool, true_theta, data, constants)
+    info_fixed_theta <- getInfoFixedTheta(config@item_selection, constants, all_data$test, pool, model)
     posterior_record <- initializePosterior(prior, prior_par, config, constants, pool)
     initial_theta    <- initializeTheta(config, constants, posterior_record)
 
@@ -817,26 +818,6 @@ setMethod(
 
     } else {
 
-    }
-
-    #####
-    ###    Use a fixed theta value throughout selection, if supplied
-    #####
-
-    if (!is.null(config@item_selection$fixed_theta)) {
-      if (length(config@item_selection$fixed_theta) == 1) {
-        info_fixed_theta <- vector(mode = "list", length = constants$nj)
-        info_fixed_theta[1:constants$nj] <- all_data$test@info[which.min(abs(config@theta_grid - config@item_selection$fixed_theta)), ]
-        config@item_selection$fixed_theta <- rep(config@item_selection$fixed_theta, constants$nj)
-        select_at_fixed_theta <- TRUE
-      } else if (length(config@item_selection$fixed_theta) == constants$nj) {
-        info_fixed_theta <- lapply(seq_len(constants$nj), function(j) calc_info(config@item_selection$fixed_theta[j], pool@ipar, pool@NCAT, model))
-        select_at_fixed_theta <- TRUE
-      } else {
-        stop("length of config@item_selection$fixed_theta must be either 1 or nj")
-      }
-    } else {
-      select_at_fixed_theta <- FALSE
     }
 
     #####
