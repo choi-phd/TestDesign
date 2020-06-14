@@ -35,3 +35,43 @@ estimateInitialTheta <- function(config, initial_theta, prior_par, nj, j, poster
   return(o)
 
 }
+
+#' @noRd
+getThetaSegment <- function(current_theta, position, exposure_control, exposure_constants, posterior_sample) {
+
+  exposure_control_method <- toupper(exposure_control$method)
+  n_segment   <- exposure_constants$n_segment
+  segment_cut <- exposure_constants$segment_cut
+
+  if (exposure_control_method %in% c("ELIGIBILITY", "BIGM")) {
+    if (isFirstSegmentValid(exposure_control$first_segment, n_segment, position)) {
+      segment <- exposure_control$first_segment[position]
+      return(segment)
+    } else {
+      segment <- find_segment(current_theta, segment_cut)
+      return(segment)
+    }
+  }
+
+  if (exposure_control_method %in% c("BIGM-BAYESIAN")) {
+    segment_sample       <- find_segment(posterior_sample, segment_cut)
+    segment_distribution <- table(segment_sample) / length(segment_sample)
+    segment_classified   <- as.numeric(names(segment_distribution))
+    segment_prob         <- numeric(n_segment)
+    segment_prob[segment_classified] <- segment_distribution
+    segment <- which.max(segment_prob)
+    return(segment)
+  }
+
+}
+
+#' @noRd
+isFirstSegmentValid <- function(first_segment, n_segment, position) {
+  if (
+    !is.null(first_segment) &&
+    all(first_segment %in% 1:n_segment) &&
+    length(first_segment) >= position) {
+    return(TRUE)
+  }
+  return(FALSE)
+}
