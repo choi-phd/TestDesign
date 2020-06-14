@@ -1090,29 +1090,7 @@ setMethod(
 
         if (constants$use_shadow) {
 
-          if (exposure_control %in% c("ELIGIBILITY", "BIGM")) {
-
-            # Item position / simulee: get which theta segment are we on
-
-            if (!is.null(config@exposure_control$first_segment) &&
-              length(config@exposure_control$first_segment) >= position &&
-              all(config@exposure_control$first_segment >= 1) &&
-              all(config@exposure_control$first_segment <= exposure_constants$n_segment)) {
-              output@theta_segment_index[position] <- config@exposure_control$first_segment[position]
-            } else {
-              output@theta_segment_index[position] <- find_segment(current_theta$theta, exposure_constants$segment_cut)
-            }
-
-          } else if (exposure_control %in% c("BIGM-BAYESIAN")) {
-
-            sample_segment <- find_segment(output@posterior_sample, exposure_constants$segment_cut)
-            segment_distribution <- table(sample_segment) / length(sample_segment)
-            segment_classified <- as.numeric(names(segment_distribution))
-            segment_prob <- numeric(exposure_constants$n_segment)
-            segment_prob[segment_classified] <- segment_distribution
-            output@theta_segment_index[position] <- which.max(segment_prob)
-
-          }
+          output@theta_segment_index[position] <- getThetaSegment(current_theta$theta, position, config@exposure_control, exposure_constants, output@posterior_sample)
 
           # Item position / simulee: refresh shadow test
 
