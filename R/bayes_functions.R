@@ -77,3 +77,17 @@ generateDistributionFromPriorPar <- function(dist_type, prior_par, theta_grid, n
   return(m)
 
 }
+
+#' @noRd
+parsePriorPar <- function(prior_par, nj, j, config_prior_par) {
+
+  if (is.vector(prior_par) && length(prior_par) == 2) {
+    return(prior_par)
+  }
+  if (is.matrix(prior_par) && all(dim(prior_par) == c(nj, 2))) {
+    return(prior_par[j, ])
+  }
+
+  return(config_prior_par)
+
+}
