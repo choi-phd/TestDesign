@@ -768,53 +768,17 @@ setMethod(
       stop("'constraints' must be supplied.")
     }
 
-    pool      <- constraints@pool
-    model     <- sanitizeModel(pool@model)
-    constants <- getConstants(constraints, config, data, true_theta)
-    all_data  <- makeData(pool, true_theta, data, constants)
-    exposure_control  <- toupper(config@exposure_control$method)
+    pool             <- constraints@pool
+    model            <- sanitizeModel(pool@model)
+    constants        <- getConstants(constraints, config, data, true_theta)
+    all_data         <- makeData(pool, true_theta, data, constants)
+    posterior_record <- initializePosterior(prior, prior_par, config, constants, pool)
 
     if (constants$use_shadow) {
       refresh_shadow <- initializeShadowEngine(constants, config@refresh_policy)
     }
 
-    #####
-    ###    Initialize bayesian stuff
-    #####
-
-    if (is.null(prior)) {
-      if (!is.null(prior_par)) {
-        if (is.vector(prior_par) && length(prior_par) == 2) {
-          posterior <- matrix(dnorm(constants$theta_q, mean = prior_par[1], sd = prior_par[2]), nj, nq, byrow = TRUE)
-        } else if (is.matrix(prior_par) && all(dim(prior_par) == c(nj, 2))) {
-          posterior <- matrix(NA, nj, nq)
-          for (j in 1:nj) {
-            posterior[j, ] <- dnorm(constants$theta_q, mean = prior_par[j, 1], sd = prior_par[j, 2])
-          }
-        } else {
-          stop("prior_par must be a vector of length 2, c(mean, sd), or a matrix of dim c(nj x 2)")
-        }
-      } else if (toupper(config@interim_theta$prior_dist) == "NORMAL") {
-        posterior <- matrix(dnorm(constants$theta_q, mean = config@interim_theta$prior_par[1], sd = config@interim_theta$prior_par[2]), nj, nq, byrow = TRUE)
-      } else if (toupper(config@interim_theta$prior_dist) == "UNIFORM") {
-        posterior <- matrix(1, nj, nq)
-      } else {
-        stop("invalid configuration option for interim_theta$prior_dist")
-      }
-    } else if (is.vector(prior) && length(prior) == nq) {
-      posterior <- matrix(prior, nj, nq, byrow = TRUE)
-    } else if (is.matrix(prior) && all(dim(prior) == c(nj, nq))) {
-      posterior <- prior
-    } else {
-      stop("misspecification for prior or prior_par")
-    }
-
-    if (toupper(config@interim_theta$method) %in% c("EB", "FB") || toupper(config@final_theta$method) %in% c("EB", "FB")) {
-      n_sample <- config@MCMC$burn_in + config@MCMC$post_burn_in
-    }
-    if (toupper(config@interim_theta$method) == "FB" || toupper(config@final_theta$method) == "FB") {
-      ipar_list <- iparPosteriorSample(pool, n_sample)
-    }
+    exposure_control <- toupper(config@exposure_control$method)
 
     #####
     ###    Get initial theta estimate
@@ -967,16 +931,16 @@ setMethod(
       if (select_at_fixed_theta) {
         info <- info_fixed_theta[[j]]
       } else if (config@item_selection$method == "MPWI") {
-        info <- as.vector(matrix(posterior[j, ], nrow = 1) %*% all_data$test@info)
+        info <- as.vector(matrix(posterior_record$posterior[j, ], nrow = 1) %*% all_data$test@info)
       } else if (config@item_selection$method == "MFI") {
         info <- calc_info(current_theta, pool@ipar, pool@NCAT, model)
       } else if (config@item_selection$method == "EB") {
         info <- calc_info_EB(output@posterior_sample, pool@ipar, pool@NCAT, model)
       } else if (config@item_selection$method == "FB") {
         if (config@item_selection$info_type == "FISHER") {
-          info <- calc_info_FB(output@posterior_sample, ipar_list, pool@NCAT, model)
+          info <- calc_info_FB(output@posterior_sample, posterior_record$ipar_list, pool@NCAT, model)
         } else if (config@item_selection$info_type %in% c("MI", "MUTUAL")) {
-          info <- calc_MI_FB(output@posterior_sample, ipar_list, pool@NCAT, model)
+          info <- calc_MI_FB(output@posterior_sample, posterior_record$ipar_list, pool@NCAT, model)
         }
       }
       return(info)
@@ -1169,7 +1133,7 @@ setMethod(
         output@true_theta <- NULL
       }
 
-      output@prior <- posterior[j, ]
+      output@prior <- posterior_record$posterior[j, ]
       output@administered_item_index <- rep(NA_real_, constants$max_ni)
       output@administered_item_resp  <- rep(NA_real_, constants$max_ni)
       output@theta_segment_index     <- rep(NA_real_, constants$max_ni)
@@ -1193,8 +1157,8 @@ setMethod(
         } else {
           output@prior_par <- config@interim_theta$prior_par
         }
-        output@posterior_sample <- rnorm(n_sample, mean = output@prior_par[1], sd = output@prior_par[2])
-        output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = n_sample, by = config@MCMC$thin)]
+        output@posterior_sample <- rnorm(posterior_record$n_sample, mean = output@prior_par[1], sd = output@prior_par[2])
+        output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = posterior_record$n_sample, by = config@MCMC$thin)]
         current_theta <- mean(output@posterior_sample)
         current_se <- sd(output@posterior_sample) * config@MCMC$jump_factor
       }
@@ -1227,7 +1191,6 @@ setMethod(
         }
       }
 
-      likelihood   <- rep(1, nq)
       theta_change <- 10000
       done         <- FALSE
       position     <- 0
@@ -1553,14 +1516,14 @@ setMethod(
 
         # Item position / simulee: update posterior and likelihood
         prob_resp      <- all_data$test@prob[[output@administered_item_index[position]]][, output@administered_item_resp[position] + 1]
-        posterior[j, ] <- posterior[j, ] * prob_resp
-        likelihood     <- likelihood     * prob_resp
+        posterior_record$posterior[j, ] <- posterior_record$posterior[j, ] * prob_resp
+        posterior_record$likelihood     <- posterior_record$likelihood     * prob_resp
 
         # Item position / simulee: estimate theta
 
         if (toupper(config@interim_theta$method) == "EAP") {
-          output@interim_theta_est[position] <- sum(posterior[j, ] * config@theta_grid) / sum(posterior[j, ])
-          output@interim_se_est[position]    <- sqrt(sum(posterior[j, ] * (config@theta_grid - output@interim_theta_est[position])^2) / sum(posterior[j, ]))
+          output@interim_theta_est[position] <- sum(posterior_record$posterior[j, ] * config@theta_grid) / sum(posterior_record$posterior[j, ])
+          output@interim_se_est[position]    <- sqrt(sum(posterior_record$posterior[j, ] * (config@theta_grid - output@interim_theta_est[position])^2) / sum(posterior_record$posterior[j, ]))
           if (toupper(config@interim_theta$prior_dist) == "NORMAL" && config@interim_theta$shrinkage_correction) {
             output@interim_theta_est[position] <- output@interim_theta_est[position] * (1 + output@interim_se_est[position]^2)
             if (output@interim_se_est[position] < config@interim_theta$prior_par[2]) {
@@ -1568,7 +1531,7 @@ setMethod(
             }
           }
         } else if (toupper(config@interim_theta$method) == "MLE") {
-          interim_EAP <- sum(posterior[j, ] * config@theta_grid) / sum(posterior[j, ])
+          interim_EAP <- sum(posterior_record$posterior[j, ] * config@theta_grid) / sum(posterior_record$posterior[j, ])
           interim_MLE <- mle(pool, output@administered_item_resp[1:position], start_theta = interim_EAP, theta_range = config@interim_theta$bound_ml, max_iter = config@interim_theta$max_iter, crit = config@interim_theta$crit, select = output@administered_item_index[1:position])
           output@interim_theta_est[position] <- interim_MLE$th
           output@interim_se_est[position]    <- interim_MLE$se
@@ -1576,20 +1539,20 @@ setMethod(
           current_item <- output@administered_item_index[position]
           if (toupper(config@interim_theta$method == "EB")) {
             output@posterior_sample <- theta_EB_single(
-              n_sample, current_theta, current_se,
+              posterior_record$n_sample, current_theta, current_se,
               pool@ipar[current_item, ],
               output@administered_item_resp[position], pool@NCAT[current_item],
               model[current_item], 1, c(current_theta, current_se)
             )
           } else {
             output@posterior_sample <- theta_FB_single(
-              n_sample, current_theta, current_se, ipar_list[[current_item]],
+              posterior_record$n_sample, current_theta, current_se, posterior_record$ipar_list[[current_item]],
               pool@ipar[current_item, ],
               output@administered_item_resp[position], pool@NCAT[current_item],
               model[current_item], 1, c(current_theta, current_se)
             )
           }
-          output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = n_sample, by = config@MCMC$thin)]
+          output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = posterior_record$n_sample, by = config@MCMC$thin)]
           output@interim_theta_est[position] <- mean(output@posterior_sample)
           output@interim_se_est[position] <- sd(output@posterior_sample)
         }
@@ -1611,8 +1574,8 @@ setMethod(
 
         if (position == constants$max_ni) {
           done <- TRUE
-          output@likelihood <- likelihood
-          output@posterior  <- posterior[j, ]
+          output@likelihood <- posterior_record$likelihood
+          output@posterior  <- posterior_record$posterior[j, ]
         }
 
         if (has_progress_pkg) {
@@ -1676,28 +1639,28 @@ setMethod(
             }
           }
 
-          output@posterior_sample <- rnorm(n_sample, mean = output@prior_par[1], sd = output@prior_par[2])
-          output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = n_sample, by = config@MCMC$thin)]
+          output@posterior_sample <- rnorm(posterior_record$n_sample, mean = output@prior_par[1], sd = output@prior_par[2])
+          output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = posterior_record$n_sample, by = config@MCMC$thin)]
           current_theta <- mean(output@posterior_sample)
           current_se    <- sd(output@posterior_sample) * config@MCMC$jump_factor
 
           if (toupper(config@final_theta$method == "EB")) {
             output@posterior_sample <- theta_EB(
-              n_sample, current_theta, current_se,
+              posterior_record$n_sample, current_theta, current_se,
               pool@ipar[output@administered_item_index[1:position], ],
               output@administered_item_resp[1:position], pool@NCAT[output@administered_item_index[1:position]],
               model[output@administered_item_index[1:position]], 1, c(current_theta, current_se)
             )
           } else if (toupper(config@final_theta$method == "FB")) {
             output@posterior_sample <- theta_FB(
-              n_sample, current_theta, current_se, ipar_list[output@administered_item_index[1:position]],
+              posterior_record$n_sample, current_theta, current_se, posterior_record$ipar_list[output@administered_item_index[1:position]],
               pool@ipar[output@administered_item_index[1:position], ],
               output@administered_item_resp[1:position], pool@NCAT[output@administered_item_index[1:position]],
               model[output@administered_item_index[1:position]], 1, c(current_theta, current_se)
             )
           }
 
-          output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = n_sample, by = config@MCMC$thin)]
+          output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = posterior_record$n_sample, by = config@MCMC$thin)]
           output@final_theta_est  <- mean(output@posterior_sample)
           output@final_se_est     <- sd(output@posterior_sample)
 
