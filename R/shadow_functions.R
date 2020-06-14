@@ -764,28 +764,13 @@ setMethod(
       stop("invalid configuration options specified")
     }
 
-    if (!is.null(constraints)) {
-      ni <- constraints@ni
-      ns <- constraints@ns
-      nv <- constraints@nv
-      pool <- constraints@pool
-    } else {
+    if (is.null(constraints)) {
       stop("'constraints' must be supplied.")
     }
 
+    pool  <- constraints@pool
     model <- sanitizeModel(pool@model)
-
-    if (!is.null(true_theta)) {
-      nj <- length(true_theta)
-    } else if (!is.null(data)) {
-      nj <- nrow(data)
-    } else {
-      stop("either true_theta or data must be supplied")
-    }
-
-    nq        <- length(config@theta_grid)
-    min_theta <- min(config@theta_grid)
-    max_theta <- max(config@theta_grid)
+    constants <- getConstants(constraints, config, data, true_theta)
 
     exposure_control  <- toupper(config@exposure_control$method)
     refresh_policy    <- toupper(config@refresh_policy$method)
@@ -858,15 +843,15 @@ setMethod(
     #####
 
     if (!is.null(data)) {
-      test <- makeTest(pool, config@theta_grid, info_type = "FISHER", true_theta = NULL)
+      test <- makeTest(pool, constants$theta_q, info_type = "FISHER", true_theta = NULL)
       data <- as.matrix(data)
-      for (i in 1:ni) {
+      for (i in 1:constants$ni) {
         invalid_resp <- !(data[, i] %in% 0:(pool@NCAT[i] - 1))
         data[invalid_resp, i] <- NA
       }
       test@data <- data
     } else if (!is.null(true_theta)) {
-      test <- makeTest(pool, config@theta_grid, info_type = "FISHER", true_theta)
+      test <- makeTest(pool, constants$theta_q, info_type = "FISHER", true_theta)
     } else {
       stop("either 'data' or 'true_theta' must be supplied")
     }
@@ -880,17 +865,17 @@ setMethod(
     if (is.null(prior)) {
       if (!is.null(prior_par)) {
         if (is.vector(prior_par) && length(prior_par) == 2) {
-          posterior <- matrix(dnorm(config@theta_grid, mean = prior_par[1], sd = prior_par[2]), nj, nq, byrow = TRUE)
+          posterior <- matrix(dnorm(constants$theta_q, mean = prior_par[1], sd = prior_par[2]), nj, nq, byrow = TRUE)
         } else if (is.matrix(prior_par) && all(dim(prior_par) == c(nj, 2))) {
           posterior <- matrix(NA, nj, nq)
           for (j in 1:nj) {
-            posterior[j, ] <- dnorm(config@theta_grid, mean = prior_par[j, 1], sd = prior_par[j, 2])
+            posterior[j, ] <- dnorm(constants$theta_q, mean = prior_par[j, 1], sd = prior_par[j, 2])
           }
         } else {
           stop("prior_par must be a vector of length 2, c(mean, sd), or a matrix of dim c(nj x 2)")
         }
       } else if (toupper(config@interim_theta$prior_dist) == "NORMAL") {
-        posterior <- matrix(dnorm(config@theta_grid, mean = config@interim_theta$prior_par[1], sd = config@interim_theta$prior_par[2]), nj, nq, byrow = TRUE)
+        posterior <- matrix(dnorm(constants$theta_q, mean = config@interim_theta$prior_par[1], sd = config@interim_theta$prior_par[2]), nj, nq, byrow = TRUE)
       } else if (toupper(config@interim_theta$prior_dist) == "UNIFORM") {
         posterior <- matrix(1, nj, nq)
       } else {
@@ -916,9 +901,9 @@ setMethod(
     #####
 
     if (!is.null(config@item_selection$initial_theta)) {
-      initial_theta <- rep(config@item_selection$initial_theta, nj)
+      initial_theta <- rep(config@item_selection$initial_theta, constants$nj)
     } else {
-      initial_theta <- as.vector(posterior %*% matrix(config@theta_grid, ncol = 1))
+      initial_theta <- as.vector(posterior %*% matrix(constants$theta_q, ncol = 1))
     }
 
 
@@ -926,8 +911,8 @@ setMethod(
     ###    Initialize exposure rate control
     #####
 
-    items_administered <- matrix(FALSE, nj, ni)
-    output_list <- vector(mode = "list", length = nj)
+    items_administered <- matrix(FALSE, constants$nj, constants$ni)
+    output_list <- vector(mode = "list", length = constants$nj)
 
     if (exposure_control %in% c("ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
 
@@ -952,10 +937,10 @@ setMethod(
       segment_cut  <- config@exposure_control$segment_cut
       cut_lower    <- segment_cut[1:n_segment]
       cut_upper    <- segment_cut[2:(n_segment + 1)]
-      pe_i <- matrix(1, n_segment, ni)
+      pe_i <- matrix(1, n_segment, constants$ni)
 
       if (set_based) {
-        pe_s <- matrix(1, n_segment, ns)
+        pe_s <- matrix(1, n_segment, constants$ns)
       } else {
         pe_s <- NULL
         alpha_sjk <- NULL
@@ -966,20 +951,20 @@ setMethod(
 
       if (config@exposure_control$diagnostic_stats) {
 
-        alpha_g_i   <- matrix(0, nrow = nj, ncol = n_segment * ni)
-        epsilon_g_i <- matrix(0, nrow = nj, ncol = n_segment * ni)
+        alpha_g_i   <- matrix(0, nrow = constants$nj, ncol = n_segment * constants$ni)
+        epsilon_g_i <- matrix(0, nrow = constants$nj, ncol = n_segment * constants$ni)
 
         if (set_based) {
-          alpha_g_s   <- matrix(0, nrow = nj, ncol = n_segment * ns)
-          epsilon_g_s <- matrix(0, nrow = nj, ncol = n_segment * ns)
+          alpha_g_s   <- matrix(0, nrow = constants$nj, ncol = n_segment * constants$ns)
+          epsilon_g_s <- matrix(0, nrow = constants$nj, ncol = n_segment * constants$ns)
         }
 
         if (fading_factor != 1) {
-          no_fading_alpha_g_i   <- matrix(0, nrow = nj, ncol = n_segment * ni)
-          no_fading_epsilon_g_i <- matrix(0, nrow = nj, ncol = n_segment * ni)
+          no_fading_alpha_g_i   <- matrix(0, nrow = constants$nj, ncol = n_segment * constants$ni)
+          no_fading_epsilon_g_i <- matrix(0, nrow = constants$nj, ncol = n_segment * constants$ni)
           if (set_based) {
-            no_fading_alpha_g_s   <- matrix(0, nrow = nj, ncol = n_segment * ns)
-            no_fading_epsilon_g_s <- matrix(0, nrow = nj, ncol = n_segment * ns)
+            no_fading_alpha_g_s   <- matrix(0, nrow = constants$nj, ncol = n_segment * constants$ns)
+            no_fading_epsilon_g_s <- matrix(0, nrow = constants$nj, ncol = n_segment * constants$ns)
           }
         }
       }
@@ -997,12 +982,12 @@ setMethod(
         }
       } else {
         n_jk      <- numeric(n_segment)
-        alpha_ijk <- matrix(0, n_segment, ni)
+        alpha_ijk <- matrix(0, n_segment, constants$ni)
         phi_jk    <- numeric(n_segment)
-        rho_ijk   <- matrix(0, n_segment, ni)
+        rho_ijk   <- matrix(0, n_segment, constants$ni)
         if (set_based) {
-          alpha_sjk <- matrix(0, n_segment, ns)
-          rho_sjk   <- matrix(0, n_segment, ns)
+          alpha_sjk <- matrix(0, n_segment, constants$ns)
+          rho_sjk   <- matrix(0, n_segment, constants$ns)
         }
       }
 
@@ -1030,12 +1015,12 @@ setMethod(
 
     if (!is.null(config@item_selection$fixed_theta)) {
       if (length(config@item_selection$fixed_theta) == 1) {
-        info_fixed_theta <- vector(mode = "list", length = nj)
-        info_fixed_theta[1:nj] <- test@info[which.min(abs(test@theta - config@item_selection$fixed_theta)), ]
-        config@item_selection$fixed_theta <- rep(config@item_selection$fixed_theta, nj)
+        info_fixed_theta <- vector(mode = "list", length = constants$nj)
+        info_fixed_theta[1:constants$nj] <- test@info[which.min(abs(test@theta - config@item_selection$fixed_theta)), ]
+        config@item_selection$fixed_theta <- rep(config@item_selection$fixed_theta, constants$nj)
         select_at_fixed_theta <- TRUE
-      } else if (length(config@item_selection$fixed_theta) == nj) {
-        info_fixed_theta <- lapply(seq_len(nj), function(j) calc_info(config@item_selection$fixed_theta[j], pool@ipar, pool@NCAT, model))
+      } else if (length(config@item_selection$fixed_theta) == constants$nj) {
+        info_fixed_theta <- lapply(seq_len(constants$nj), function(j) calc_info(config@item_selection$fixed_theta[j], pool@ipar, pool@NCAT, model))
         select_at_fixed_theta <- TRUE
       } else {
         stop("length of config@item_selection$fixed_theta must be either 1 or nj")
@@ -1049,9 +1034,9 @@ setMethod(
     #####
 
     if (set_based) {
-      usage_matrix <- matrix(FALSE, nrow = nj, ncol = nv)
+      usage_matrix <- matrix(FALSE, nrow = constants$nj, ncol = constants$nv)
     } else {
-      usage_matrix <- matrix(FALSE, nrow = nj, ncol = ni)
+      usage_matrix <- matrix(FALSE, nrow = constants$nj, ncol = constants$ni)
     }
 
     #####
@@ -1234,7 +1219,7 @@ setMethod(
       }
 
       resp_string <- paste(output@administered_item_resp, collapse = ",")
-      plot(config@theta_grid, output@posterior, main = "Final Posterior Distribution", xlab = "Theta", ylab = "Posterior", type = "l", col = "blue", yaxt = "n")
+      plot(constants$theta_q, output@posterior, main = "Final Posterior Distribution", xlab = "Theta", ylab = "Posterior", type = "l", col = "blue", yaxt = "n")
       text(min_theta, max(output@posterior), paste0("Responses: ", resp_string), cex = 0.7, adj = 0)
 
     }
@@ -1247,13 +1232,13 @@ setMethod(
     if (has_progress_pkg) {
       pb <- progress::progress_bar$new(
         format = "[:bar] :spin :current/:total (:percent) eta :eta",
-        total = nj, clear = FALSE)
+        total = constants$nj, clear = FALSE)
       pb$tick(0)
     } else {
-      pb <- txtProgressBar(0, nj, char = "|", style = 3)
+      pb <- txtProgressBar(0, constants$nj, char = "|", style = 3)
     }
 
-    for (j in 1:nj) {
+    for (j in 1:constants$nj) {
 
       output <- new("output_Shadow")
       output@simulee_id <- j
@@ -1282,7 +1267,7 @@ setMethod(
       } else if (toupper(config@interim_theta$method) %in% c("EB", "FB")) {
         if (is.vector(prior_par) && length(prior_par) == 2) {
           output@prior_par <- prior_par
-        } else if (is.matrix(prior_par) && all(dim(prior_par) == c(nj, 2))) {
+        } else if (is.matrix(prior_par) && all(dim(prior_par) == c(constants$nj, 2))) {
           output@prior_par <- prior_par[j, ]
         } else {
           output@prior_par <- config@interim_theta$prior_par
@@ -1729,14 +1714,14 @@ setMethod(
       } else if (toupper(config@final_theta$method == "EAP")) {
 
         if (toupper(config@final_theta$prior_dist) == "NORMAL") {
-          final_prior <- dnorm(config@theta_grid, mean = config@final_theta$prior_par[1], sd = config@final_theta$prior_par[2])
+          final_prior <- dnorm(constants$theta_q, mean = config@final_theta$prior_par[1], sd = config@final_theta$prior_par[2])
         } else if (toupper(config@final_theta$prior_dist) == "UNIFORM") {
           final_prior <- rep(1, nq)
         }
 
         output@posterior       <- output@likelihood * final_prior
-        output@final_theta_est <- sum(output@posterior * config@theta_grid) / sum(output@posterior)
-        output@final_se_est    <- sqrt(sum(output@posterior * (config@theta_grid - output@final_theta_est)^2) / sum(output@posterior))
+        output@final_theta_est <- sum(output@posterior * constants$theta_q) / sum(output@posterior)
+        output@final_se_est    <- sqrt(sum(output@posterior * (constants$theta_q - output@final_theta_est)^2) / sum(output@posterior))
 
         if (toupper(config@final_theta$prior_dist) == "NORMAL" && config@final_theta$shrinkage_correction) {
           output@final_theta_est <- output@final_theta_est * (1 + output@final_se_est^2)
@@ -1763,7 +1748,7 @@ setMethod(
           if (toupper(config@final_theta$method) %in% c("EB", "FB")) {
             if (is.vector(prior_par) && length(prior_par) == 2) {
               output@prior_par <- prior_par
-            } else if (is.matrix(prior_par) && all(dim(prior_par) == c(nj, 2))) {
+            } else if (is.matrix(prior_par) && all(dim(prior_par) == c(constants$nj, 2))) {
               output@prior_par <- prior_par[j, ]
             } else {
               output@prior_par <- config@final_theta$prior_par
@@ -1805,7 +1790,7 @@ setMethod(
 
       usage_matrix[j, output@administered_item_index] <- TRUE
       if (set_based) {
-        usage_matrix[j, ni + output@administered_stimulus_index] <- TRUE
+        usage_matrix[j, constants$ni + output@administered_stimulus_index] <- TRUE
       }
 
       output_list[[j]] <- output
@@ -2047,8 +2032,8 @@ setMethod(
             }
 
             if (acceleration_factor > 1) {
-              p_alpha_sjk <- alpha_sjk / matrix(n_jk, n_segment, ns)
-              p_rho_sjk   <- rho_sjk / matrix(n_jk, n_segment, ns)
+              p_alpha_sjk <- alpha_sjk / matrix(n_jk, n_segment, constants$ns)
+              p_rho_sjk   <- rho_sjk / matrix(n_jk, n_segment, constants$ns)
               p_alpha_sjk[is.na(p_alpha_sjk)] <- 0
               p_rho_sjk[is.na(p_rho_sjk)]     <- 1
               flag_alpha_sjk <- p_alpha_sjk > max_exposure_rate
@@ -2157,8 +2142,8 @@ setMethod(
               }
             }
             if (acceleration_factor > 1) {
-              p_alpha_sjk <- alpha_sjk / matrix(n_jk, n_segment, ns)
-              p_rho_sjk <- rho_sjk / matrix(n_jk, n_segment, ns)
+              p_alpha_sjk <- alpha_sjk / matrix(n_jk, n_segment, constants$ns)
+              p_rho_sjk <- rho_sjk / matrix(n_jk, n_segment, constants$ns)
               p_alpha_sjk[is.na(p_alpha_sjk)] <- 0
               p_rho_sjk[is.na(p_rho_sjk)] <- 1
               flag_alpha_sjk <- p_alpha_sjk > max_exposure_rate
@@ -2182,21 +2167,21 @@ setMethod(
         if (config@exposure_control$diagnostic_stats) {
 
           for (g in 1:n_segment) {
-            alpha_g_i[j, (g - 1) * ni + 1:ni]   <- alpha_ijk[g, ]
-            epsilon_g_i[j, (g - 1) * ni + 1:ni] <- rho_ijk[g, ]
+            alpha_g_i[j, (g - 1) * constants$ni + 1:constants$ni]   <- alpha_ijk[g, ]
+            epsilon_g_i[j, (g - 1) * constants$ni + 1:constants$ni] <- rho_ijk[g, ]
             if (set_based) {
-              alpha_g_s[j, (g - 1) * ns + 1:ns]   <- alpha_sjk[g, ]
-              epsilon_g_s[j, (g - 1) * ns + 1:ns] <- rho_sjk[g, ]
+              alpha_g_s[j, (g - 1) * constants$ns + 1:constants$ns]   <- alpha_sjk[g, ]
+              epsilon_g_s[j, (g - 1) * constants$ns + 1:constants$ns] <- rho_sjk[g, ]
             }
           }
 
           if (fading_factor != 1) {
             for (g in 1:n_segment) {
-              no_fading_alpha_g_i[j, (g - 1) * ni + 1:ni]   <- no_fading_alpha_ijk[g, ]
-              no_fading_epsilon_g_i[j, (g - 1) * ni + 1:ni] <- no_fading_rho_ijk[g, ]
+              no_fading_alpha_g_i[j, (g - 1) * constants$ni + 1:constants$ni]   <- no_fading_alpha_ijk[g, ]
+              no_fading_epsilon_g_i[j, (g - 1) * constants$ni + 1:constants$ni] <- no_fading_rho_ijk[g, ]
               if (set_based) {
-                no_fading_alpha_g_s[j, (g - 1) * ns + 1:ns]   <- no_fading_alpha_sjk[g, ]
-                no_fading_epsilon_g_s[j, (g - 1) * ns + 1:ns] <- no_fading_rho_sjk[g, ]
+                no_fading_alpha_g_s[j, (g - 1) * constants$ns + 1:constants$ns]   <- no_fading_alpha_sjk[g, ]
+                no_fading_epsilon_g_s[j, (g - 1) * constants$ns + 1:constants$ns] <- no_fading_rho_sjk[g, ]
               }
             }
           }
@@ -2210,7 +2195,7 @@ setMethod(
       }
 
       if (!is.null(session)) {
-        shinyWidgets::updateProgressBar(session = session, id = "pb", value = j, total = nj)
+        shinyWidgets::updateProgressBar(session = session, id = "pb", value = j, total = constants$nj)
       } else {
         if (has_progress_pkg) {
           pb$tick()
@@ -2229,28 +2214,26 @@ setMethod(
       close(pb)
     }
 
-    final_theta_est <- unlist(lapply(1:nj, function(j) output_list[[j]]@final_theta_est))
-    final_se_est    <- unlist(lapply(1:nj, function(j) output_list[[j]]@final_se_est))
+    final_theta_est <- unlist(lapply(1:constants$nj, function(j) output_list[[j]]@final_theta_est))
+    final_se_est    <- unlist(lapply(1:constants$nj, function(j) output_list[[j]]@final_se_est))
 
     #####
     ###    Get exposure rate from everyone
     #####
 
     if (!set_based) {
-      exposure_rate <- matrix(NA, ni, 2)
+      exposure_rate <- matrix(NA, constants$ni, 2)
       colnames(exposure_rate) <- c('Item', 'Item ER')
-      exposure_rate[, 1] <- 1:ni
-      exposure_rate[, 2] <- colSums(usage_matrix) / nj
+      exposure_rate[, 1] <- 1:constants$ni
+      exposure_rate[, 2] <- colSums(usage_matrix) / constants$nj
     } else {
-      exposure_rate <- matrix(NA, ni, 4)
+      exposure_rate <- matrix(NA, constants$ni, 4)
       colnames(exposure_rate) <- c('Item', 'Stimulus', 'Item ER', 'Stimulus ER')
-      exposure_rate_raw <- colSums(usage_matrix) / nj
-      exposure_rate[, 1] <- 1:ni
-      constraints@stimulus_index_by_item
+      exposure_rate_raw <- colSums(usage_matrix) / constants$nj
+      exposure_rate[, 1] <- 1:constants$ni
       exposure_rate[, 2] <- constraints@stimulus_index_by_item
-      exposure_rate[, 3] <- exposure_rate_raw[1:ni]
-      exposure_rate[, 4] <- exposure_rate_raw[(ni + 1):nv][constraints@stimulus_index_by_item]
-
+      exposure_rate[, 3] <- exposure_rate_raw[1:constants$ni]
+      exposure_rate[, 4] <- exposure_rate_raw[(constants$ni + 1):constants$nv][constraints@stimulus_index_by_item]
     }
 
     eligibility_stats           <- NULL
@@ -2272,23 +2255,31 @@ setMethod(
       if (config@exposure_control$diagnostic_stats) {
 
         check_eligibility_stats <- as.data.frame(
-          cbind(1:nj, true_theta, find_segment(true_theta, segment_cut), true_segment_count, alpha_g_i, epsilon_g_i),
+          cbind(1:constants$nj, true_theta, find_segment(true_theta, segment_cut), true_segment_count, alpha_g_i, epsilon_g_i),
           row.names = NULL)
 
-        names(check_eligibility_stats) <- c("Examinee", "TrueTheta", "TrueSegment", "TrueSegmentCount", paste("a", "g", rep(1:n_segment, rep(ni, n_segment)), "i", rep(1:ni, n_segment), sep = "_"), paste("e", "g", rep(1:n_segment, rep(ni, n_segment)), "i", rep(1:ni, n_segment), sep = "_"))
+        names(check_eligibility_stats) <- c("Examinee", "TrueTheta", "TrueSegment", "TrueSegmentCount",
+          paste("a", "g", rep(1:n_segment, rep(constants$ni, n_segment)), "i", rep(1:constants$ni, n_segment), sep = "_"),
+          paste("e", "g", rep(1:n_segment, rep(constants$ni, n_segment)), "i", rep(1:constants$ni, n_segment), sep = "_"))
 
         if (set_based) {
           check_eligibility_stats_stimulus <- as.data.frame(cbind(alpha_g_s, epsilon_g_s), row.names = NULL)
-          names(check_eligibility_stats_stimulus) <- c(paste("a", "g", rep(1:n_segment, rep(ns, n_segment)), "s", rep(1:ns, n_segment), sep = "_"), paste("e", "g", rep(1:n_segment, rep(ns, n_segment)), "s", rep(1:ns, n_segment), sep = "_"))
+          names(check_eligibility_stats_stimulus) <- c(
+            paste("a", "g", rep(1:n_segment, rep(constants$ns, n_segment)), "s", rep(1:constants$ns, n_segment), sep = "_"),
+            paste("e", "g", rep(1:n_segment, rep(constants$ns, n_segment)), "s", rep(1:constants$ns, n_segment), sep = "_"))
           check_eligibility_stats <- cbind(check_eligibility_stats, check_eligibility_stats_stimulus)
         }
 
         if (fading_factor != 1) {
-          no_fading_eligibility_stats <- as.data.frame(cbind(1:nj, true_theta, find_segment(true_theta, segment_cut), true_segment_count, no_fading_alpha_g_i, no_fading_epsilon_g_i), row.names = NULL)
-          names(no_fading_eligibility_stats) <- c("Examinee", "TrueTheta", "TrueSegment", "TrueSegmentCount", paste("a", "g", rep(1:n_segment, rep(ni, n_segment)), "i", rep(1:ni, n_segment), sep = "_"), paste("e", "g", rep(1:n_segment, rep(ni, n_segment)), "i", rep(1:ni, n_segment), sep = "_"))
+          no_fading_eligibility_stats <- as.data.frame(cbind(1:constants$nj, true_theta, find_segment(true_theta, segment_cut), true_segment_count, no_fading_alpha_g_i, no_fading_epsilon_g_i), row.names = NULL)
+          names(no_fading_eligibility_stats) <- c("Examinee", "TrueTheta", "TrueSegment", "TrueSegmentCount",
+            paste("a", "g", rep(1:n_segment, rep(constants$ni, n_segment)), "i", rep(1:constants$ni, n_segment), sep = "_"),
+            paste("e", "g", rep(1:n_segment, rep(constants$ni, n_segment)), "i", rep(1:constants$ni, n_segment), sep = "_"))
           if (set_based) {
             no_fading_eligibility_stats_stimulus <- as.data.frame(cbind(no_fading_alpha_g_s, no_fading_epsilon_g_s), row.names = NULL)
-            names(no_fading_eligibility_stats_stimulus) <- c(paste("a", "g", rep(1:n_segment, rep(ns, n_segment)), "s", rep(1:ns, n_segment), sep = "_"), paste("e", "g", rep(1:n_segment, rep(ns, n_segment)), "s", rep(1:ns, n_segment), sep = "_"))
+            names(no_fading_eligibility_stats_stimulus) <- c(
+              paste("a", "g", rep(1:n_segment, rep(constants$ns, n_segment)), "s", rep(1:constants$ns, n_segment), sep = "_"),
+              paste("e", "g", rep(1:n_segment, rep(constants$ns, n_segment)), "s", rep(1:constants$ns, n_segment), sep = "_"))
             no_fading_eligibility_stats <- cbind(no_fading_eligibility_stats, no_fading_eligibility_stats_stimulus)
           }
         }
@@ -2297,7 +2288,7 @@ setMethod(
     }
 
     if (sta) {
-      freq_infeasible <- table(unlist(lapply(1:nj, function(j) sum(!output_list[[j]]@shadow_test_feasible))))
+      freq_infeasible <- table(unlist(lapply(1:constants$nj, function(j) sum(!output_list[[j]]@shadow_test_feasible))))
     } else {
       freq_infeasible <- NULL
     }
