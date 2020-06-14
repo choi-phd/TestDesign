@@ -1035,13 +1035,7 @@ setMethod(
       if (config@interim_theta$method %in% c("EAP", "MLE")) {
         current_theta <- initial_theta[j]
       } else if (toupper(config@interim_theta$method) %in% c("EB", "FB")) {
-        if (is.vector(prior_par) && length(prior_par) == 2) {
-          output@prior_par <- prior_par
-        } else if (is.matrix(prior_par) && all(dim(prior_par) == c(constants$nj, 2))) {
-          output@prior_par <- prior_par[j, ]
-        } else {
-          output@prior_par <- config@interim_theta$prior_par
-        }
+        output@prior_par <- parsePriorPar(prior_par, constants$nj, j, config@interim_theta$prior_par)
         output@posterior_sample <- rnorm(posterior_record$n_sample, mean = output@prior_par[1], sd = output@prior_par[2])
         output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = posterior_record$n_sample, by = config@MCMC$thin)]
         current_theta <- mean(output@posterior_sample)
