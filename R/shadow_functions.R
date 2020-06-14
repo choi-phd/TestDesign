@@ -1036,8 +1036,10 @@ setMethod(
         current_theta <- initial_theta[j]
       } else if (toupper(config@interim_theta$method) %in% c("EB", "FB")) {
         output@prior_par <- parsePriorPar(prior_par, constants$nj, j, config@interim_theta$prior_par)
-        output@posterior_sample <- rnorm(posterior_record$n_sample, mean = output@prior_par[1], sd = output@prior_par[2])
-        output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = posterior_record$n_sample, by = config@MCMC$thin)]
+        output@posterior_sample <- getPosteriorSample(
+          posterior_record$n_sample,
+          output@prior_par[1], output@prior_par[2],
+          config@MCMC)
         current_theta <- mean(output@posterior_sample)
         current_se <- sd(output@posterior_sample) * config@MCMC$jump_factor
       }
