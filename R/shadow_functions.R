@@ -1095,8 +1095,9 @@ setMethod(
         # Item position / simulee: estimate theta
 
         if (toupper(config@interim_theta$method) == "EAP") {
-          output@interim_theta_est[position] <- sum(posterior_record$posterior[j, ] * config@theta_grid) / sum(posterior_record$posterior[j, ])
-          output@interim_se_est[position]    <- sqrt(sum(posterior_record$posterior[j, ] * (config@theta_grid - output@interim_theta_est[position])^2) / sum(posterior_record$posterior[j, ]))
+          interim_EAP <- estimateThetaEAP(posterior_record$posterior[j, ], constants$theta_q)
+          output@interim_theta_est[position] <- interim_EAP$theta
+          output@interim_se_est[position]    <- interim_EAP$se
           if (toupper(config@interim_theta$prior_dist) == "NORMAL" && config@interim_theta$shrinkage_correction) {
             output@interim_theta_est[position] <- output@interim_theta_est[position] * (1 + output@interim_se_est[position]^2)
             if (output@interim_se_est[position] < config@interim_theta$prior_par[2]) {
@@ -1104,10 +1105,17 @@ setMethod(
             }
           }
         } else if (toupper(config@interim_theta$method) == "MLE") {
-          interim_EAP <- sum(posterior_record$posterior[j, ] * config@theta_grid) / sum(posterior_record$posterior[j, ])
-          interim_MLE <- mle(pool, output@administered_item_resp[1:position], start_theta = interim_EAP, theta_range = config@interim_theta$bound_ml, max_iter = config@interim_theta$max_iter, crit = config@interim_theta$crit, select = output@administered_item_index[1:position])
+
+          interim_EAP <- estimateThetaEAP(posterior_record$posterior[j, ], constants$theta_q)
+          interim_MLE <- mle(pool, output@administered_item_resp[1:position],
+            start_theta = interim_EAP$theta,
+            theta_range = config@interim_theta$bound_ml,
+            max_iter    = config@interim_theta$max_iter,
+            crit        = config@interim_theta$crit,
+            select      = output@administered_item_index[1:position])
           output@interim_theta_est[position] <- interim_MLE$th
           output@interim_se_est[position]    <- interim_MLE$se
+
         } else if (toupper(config@interim_theta$method) %in% c("EB", "FB")) {
           current_item <- output@administered_item_index[position]
           if (toupper(config@interim_theta$method == "EB")) {
@@ -1178,8 +1186,9 @@ setMethod(
         )[1, ]
 
         output@posterior       <- output@likelihood * final_prior
-        output@final_theta_est <- sum(output@posterior * constants$theta_q) / sum(output@posterior)
-        output@final_se_est    <- sqrt(sum(output@posterior * (constants$theta_q - output@final_theta_est)^2) / sum(output@posterior))
+        final_EAP <- estimateThetaEAP(output@posterior, constants$theta_q)
+        output@final_theta_est <- final_EAP$theta
+        output@final_se_est    <- final_EAP$se
 
         if (toupper(config@final_theta$prior_dist) == "NORMAL" && config@final_theta$shrinkage_correction) {
           output@final_theta_est <- output@final_theta_est * (1 + output@final_se_est^2)
