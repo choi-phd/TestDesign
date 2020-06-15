@@ -1088,10 +1088,9 @@ setMethod(
         output@administered_item_ncat[position] <- pool@NCAT[output@administered_item_index[position]]
         items_administered[j, output@administered_item_index[position]] <- TRUE
 
-        # Item position / simulee: update posterior and likelihood
-        prob_resp      <- all_data$test@prob[[output@administered_item_index[position]]][, output@administered_item_resp[position] + 1]
-        posterior_record$posterior[j, ] <- posterior_record$posterior[j, ] * prob_resp
-        posterior_record$likelihood     <- posterior_record$likelihood     * prob_resp
+        # Item position / simulee: update posterior
+        prob_resp <- all_data$test@prob[[output@administered_item_index[position]]][, output@administered_item_resp[position] + 1]
+        posterior_record <- updatePosterior(posterior_record, j, prob_resp)
 
         # Item position / simulee: estimate theta
 
