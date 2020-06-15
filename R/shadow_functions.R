@@ -1111,35 +1111,8 @@ setMethod(
 
               if (exposure_control %in% c("ELIGIBILITY")) {
 
-                # Do eligibility-based exposure control
-                # get xmat representing ineligible items
-
-                if (any(ineligible_flag_in_segment$i == 1)) {
-
-                  xmat <- numeric(nv)
-                  xmat[1:ni] <- ineligible_flag_in_segment$i
-                  xdir <- "=="
-                  xrhs <- 0
-
-                  if (constants$set_based) {
-                    if (any(ineligible_flag_in_segment$s == 1)) {
-                      xmat[(ni + 1):nv] <- ineligible_flag_in_segment$s
-                      for (s in which(ineligible_flag_in_segment$s == 1)) {
-                        xmat[constraints@item_index_by_stimulus[[s]]] <- 1
-                      }
-                      for (s in which(ineligible_flag_in_segment$s == 0)) {
-                        xmat[constraints@item_index_by_stimulus[[s]]] <- 0
-                      }
-                    }
-                  }
-
-                }
-
-                xdata = list(xmat = rbind(xmat, imat),
-                             xdir =     c(xdir, idir),
-                             xrhs =     c(xrhs, irhs))
-
-                optimal    <- runAssembly(config, constraints, xdata = xdata, objective = info)
+                xdata_elg  <- applyIneligibleFlagtoXdata(xdata, ineligible_flag_in_segment, constants, constraints)
+                optimal    <- runAssembly(config, constraints, xdata = xdata_elg, objective = info)
                 is_optimal <- isOptimal(optimal$status, config@MIP$solver)
 
                 # If not optimal, retry without xmat
