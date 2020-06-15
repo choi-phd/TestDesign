@@ -1097,74 +1097,7 @@ setMethod(
 
             administered_stimulus_index <- na.omit(unique(output@administered_stimulus_index))
 
-            if (position > 1) {
-
-              # Include administered items in selection
-
-              imat <- matrix(0, nrow = position - 1, ncol = nv)
-
-              for (p in 1:(position - 1)) {
-                imat[p, output@administered_item_index[p]] <- 1
-              }
-
-              idir <- rep("==", position - 1)
-              irhs <- rep(1   , position - 1)
-
-              # Include administered stimulus in selection
-
-              if (constants$set_based) {
-
-                if (length(administered_stimulus_index) > 0) {
-
-                  smat <- matrix(0, nrow = length(administered_stimulus_index), ncol = nv)
-
-                  for (s in 1:length(administered_stimulus_index)) {
-                    smat[s, ni + administered_stimulus_index[s]] <- 1
-                  }
-
-                  sdir <- rep("==", length(administered_stimulus_index))
-                  srhs <- rep(1, length(administered_stimulus_index))
-
-                  imat <- rbind(imat, smat)
-                  idir <-     c(idir, sdir)
-                  irhs <-     c(irhs, srhs)
-
-                  if (constants$set_based_refresh && constants$set_based && stimulus_record$end_set) {
-
-                    n_administered_stimulus <- length(administered_stimulus_index)
-                    if (n_administered_stimulus > 0) {
-                      smat <- matrix(0, nrow = n_administered_stimulus, ncol = nv)
-                      sdir <- rep("==", n_administered_stimulus)
-                      srhs <- numeric(n_administered_stimulus)
-                      for (s in 1:n_administered_stimulus) {
-                        smat[s, constraints@item_index_by_stimulus[[administered_stimulus_index[s]]]] <- 1
-                        srhs[s] <- sum(output@administered_stimulus_index[1:(position - 1)] == administered_stimulus_index[s], na.rm = TRUE)
-                      }
-                      imat <- rbind(imat, smat)
-                      idir <-     c(idir, sdir)
-                      irhs <-     c(irhs, srhs)
-                    }
-
-                  } else {
-
-                    n_finished_stimulus <- length(stimulus_record$finished_stimulus_index)
-
-                    if (n_finished_stimulus > 0) {
-                      smat <- matrix(0, nrow = n_finished_stimulus, ncol = nv)
-                      sdir <- rep("==", n_finished_stimulus)
-                      srhs <- stimulus_record$finished_stimulus_item_count
-                      for (s in 1:n_finished_stimulus) {
-                        smat[s, constraints@item_index_by_stimulus[[stimulus_record$finished_stimulus_index[s]]]] <- 1
-                      }
-                      imat <- rbind(imat, smat)
-                      idir <-     c(idir, sdir)
-                      irhs <-     c(irhs, srhs)
-                    }
-
-                  }
-                }
-              }
-            }
+            xdata <- getXdataOfAdministered(constants, position, output, stimulus_record, constraints)
 
             # Do exposure control stuff
 
@@ -1226,11 +1159,6 @@ setMethod(
                 } else {
 
                   output@shadow_test_feasible[position] <- FALSE
-
-                  xdata = list(xmat = imat,
-                               xdir = idir,
-                               xrhs = irhs)
-
                   optimal <- runAssembly(config, constraints, xdata = xdata, objective = info)
 
                 }
@@ -1246,10 +1174,6 @@ setMethod(
                   info[item_ineligible == 1] <- -1 * all_data$max_info - 1
                 }
 
-                xdata = list(xmat = imat,
-                             xdir = idir,
-                             xrhs = irhs)
-
                 optimal <- runAssembly(config, constraints, xdata = xdata, objective = info)
                 output@shadow_test_feasible[position] <- TRUE
 
@@ -1258,10 +1182,6 @@ setMethod(
             } else {
 
               # No exposure control
-
-              xdata = list(xmat = imat,
-                           xdir = idir,
-                           xrhs = irhs)
 
               optimal <- runAssembly(config, constraints, xdata = xdata, objective = info)
               output@shadow_test_feasible[position] <- TRUE
