@@ -63,3 +63,38 @@ flagAdministeredAsEligible <- function(o, x, position, constants) {
   return(o)
 
 }
+
+#' @noRd
+applyIneligibleFlagtoXdata <- function(xdata, ineligible_flag_in_segment, constants, constraints) {
+
+  o <- list()
+
+  ni <- constants$ni
+  nv <- constants$nv
+  item_index_by_stimulus <- constraints@item_index_by_stimulus
+
+  if (any(ineligible_flag_in_segment$i == 1)) {
+    o$xmat_elg <- numeric(nv)
+    o$xmat_elg[1:ni] <- ineligible_flag_in_segment$i
+    o$xdir_elg <- "=="
+    o$xrhs_elg <- 0
+  }
+
+  if (any(ineligible_flag_in_segment$s == 1)) {
+    o$xmat_elg[(ni + 1):nv] <- ineligible_flag_in_segment$s
+    for (s in which(ineligible_flag_in_segment$s == 1)) {
+      o$xmat_elg[item_index_by_stimulus[[s]]] <- 1
+    }
+    for (s in which(ineligible_flag_in_segment$s == 0)) {
+      o$xmat_elg[item_index_by_stimulus[[s]]] <- 0
+    }
+  }
+
+  xdata_elg = list(
+    xmat = rbind(o$xmat_elg, xdata$xmat),
+    xdir =     c(o$xdir_elg, xdata$xdir),
+    xrhs =     c(o$xrhs_elg, xdata$xrhs))
+
+  return(xdata_elg)
+
+}
