@@ -184,6 +184,24 @@ applyIncrement <- function(o, segments_to_apply, segment_prob, theta_is_feasible
 
 }
 
+
+#' @noRd
+applyClip <- function(o, constants) {
+
+  o$pe_i[is.na(o$pe_i) | o$alpha_ijk == 0] <- 1
+  o$pe_i[o$pe_i > 1] <- 1
+
+  if (!constants$set_based) {
+    return(o)
+  }
+
+  o$pe_s[is.na(o$pe_s) | o$alpha_sjk == 0] <- 1
+  o$pe_s[o$pe_s > 1] <- 1
+
+  return(o)
+
+}
+
 #' @noRd
 getEligibleFlag <- function(ineligible_flag, constants, force_true) {
   o <- list()
