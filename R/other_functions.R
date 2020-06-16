@@ -188,3 +188,12 @@ getInfo <- function(item_selection, j, info_fixed_theta, current_theta, pool, mo
     return(info)
   }
 }
+
+#' @noRd
+initializeStimulusRecord <- function() {
+  o <- list()
+  o$end_set <- TRUE
+  o$finished_stimulus_index      <- NULL
+  o$finished_stimulus_item_count <- NULL
+  return(o)
+}
