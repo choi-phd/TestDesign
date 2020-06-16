@@ -1743,11 +1743,7 @@ setMethod(
         } else if (exposure_control %in% c("BIGM-BAYESIAN")) {
 
           segment_visited <- sort(unique(output@theta_segment_index))
-          sample_segment  <- find_segment(output@posterior_sample, exposure_constants$segment_cut)
-          segment_distribution <- table(sample_segment) / length(sample_segment)
-          segment_classified   <- as.numeric(names(segment_distribution))
-          segment_prob <- numeric(exposure_constants$n_segment)
-          segment_prob[segment_classified] <- segment_distribution
+          segment_prob      <- getSegmentProb(output@posterior_sample, exposure_constants)
 
           n_jk      <- exposure_constants$fading_factor * n_jk + segment_prob
           rho_ijk   <- exposure_constants$fading_factor * rho_ijk
