@@ -1292,10 +1292,8 @@ setMethod(
         if (exposure_control %in% c("ELIGIBILITY")) {
 
           segments_to_apply <- getSegmentsToApply(exposure_constants$n_segment, segment_of$final_theta_est)
-
-          n_jk[segments_to_apply] <- exposure_constants$fading_factor * n_jk[segments_to_apply]
+          exposure_record   <- applyFading(exposure_record, segments_to_apply, exposure_constants, constants)
           n_jk[segments_to_apply] <- n_jk[segments_to_apply] + 1
-          alpha_ijk[segments_to_apply, ] <- exposure_constants$fading_factor * alpha_ijk[segments_to_apply, ]
           alpha_ijk[segments_to_apply, output@administered_item_index] <-
           alpha_ijk[segments_to_apply, output@administered_item_index] + 1
 
@@ -1319,8 +1317,6 @@ setMethod(
 
           segment_feasible   <- unique(output@theta_segment_index[output@shadow_test_feasible == TRUE])
           segment_infeasible <- unique(output@theta_segment_index[output@shadow_test_feasible == FALSE])
-          phi_jk[segments_to_apply]    <- exposure_constants$fading_factor * phi_jk[segments_to_apply]
-          rho_ijk[segments_to_apply, ] <- exposure_constants$fading_factor * rho_ijk[segments_to_apply, ]
 
           if (segment_of$final_theta_est %in% segment_feasible) {
             phi_jk[segments_to_apply] <- phi_jk[segments_to_apply] + 1
@@ -1358,7 +1354,6 @@ setMethod(
           pe_i[pe_i > 1] <- 1
 
           if (constants$set_based) {
-            alpha_sjk[segments_to_apply, ] <- exposure_constants$fading_factor * alpha_sjk[segments_to_apply, ]
             alpha_sjk[segments_to_apply, na.omit(output@administered_stimulus_index)] <-
             alpha_sjk[segments_to_apply, na.omit(output@administered_stimulus_index)] + 1
 
@@ -1378,7 +1373,6 @@ setMethod(
               no_fading_alpha_sjk[segments_to_apply, na.omit(output@administered_stimulus_index)] <-
               no_fading_alpha_sjk[segments_to_apply, na.omit(output@administered_stimulus_index)] + 1
             }
-            rho_sjk[segments_to_apply, ] <- exposure_constants$fading_factor * rho_sjk[segments_to_apply, ]
             if (segment_of$final_theta_est %in% segment_feasible) {
               rho_sjk[segments_to_apply, eligible_set_in_final_segment] <-
               rho_sjk[segments_to_apply, eligible_set_in_final_segment] + 1
@@ -1415,9 +1409,9 @@ setMethod(
         } else if (exposure_control %in% c("BIGM")) {
 
           segments_to_apply <- getSegmentsToApply(exposure_constants$n_segment, segment_of$final_theta_est)
-          n_jk[segments_to_apply] <- exposure_constants$fading_factor * n_jk[segments_to_apply]
+          exposure_record   <- applyFading(exposure_record, segments_to_apply, exposure_constants, constants)
+
           n_jk[segments_to_apply] <- n_jk[segments_to_apply] + 1
-          alpha_ijk[segments_to_apply, ] <- exposure_constants$fading_factor * alpha_ijk[segments_to_apply, ]
           alpha_ijk[segments_to_apply, output@administered_item_index] <-
           alpha_ijk[segments_to_apply, output@administered_item_index] + 1
 
@@ -1434,7 +1428,6 @@ setMethod(
             }
           }
 
-          rho_ijk[segments_to_apply, ] <- exposure_constants$fading_factor * rho_ijk[segments_to_apply, ]
           rho_ijk[segments_to_apply, eligible_in_final_segment] <-
           rho_ijk[segments_to_apply, eligible_in_final_segment] + 1
 
@@ -1466,10 +1459,8 @@ setMethod(
           pe_i[pe_i > 1] <- 1
 
           if (constants$set_based) {
-            alpha_sjk[segments_to_apply, ] <- exposure_constants$fading_factor * alpha_sjk[segments_to_apply, ]
             alpha_sjk[segments_to_apply, na.omit(output@administered_stimulus_index)] <-
             alpha_sjk[segments_to_apply, na.omit(output@administered_stimulus_index)] + 1
-            rho_sjk[segments_to_apply, ] <- exposure_constants$fading_factor * rho_sjk[segments_to_apply, ]
             rho_sjk[segments_to_apply, eligible_set_in_final_segment] <-
             rho_sjk[segments_to_apply, eligible_set_in_final_segment] + 1
 
@@ -1513,15 +1504,12 @@ setMethod(
         } else if (exposure_control %in% c("BIGM-BAYESIAN")) {
 
           segments_to_apply <- getSegmentsToApply(exposure_constants$n_segment, 1:exposure_constants$n_segment)
+          exposure_record   <- applyFading(exposure_record, segments_to_apply, exposure_constants, constants)
           segment_prob      <- getSegmentProb(output@posterior_sample, exposure_constants)
 
-          n_jk[segments_to_apply] <- exposure_constants$fading_factor * n_jk[segments_to_apply]
           n_jk[segments_to_apply] <- n_jk[segments_to_apply] + segment_prob
-          alpha_ijk[segments_to_apply, ] <- exposure_constants$fading_factor * alpha_ijk[segments_to_apply, ]
           alpha_ijk[segments_to_apply, output@administered_item_index] <-
           alpha_ijk[segments_to_apply, output@administered_item_index] + segment_prob
-
-          rho_ijk[segments_to_apply, ] <- exposure_constants$fading_factor * rho_ijk[segments_to_apply, ]
 
           if (length(segment_of$visited) > 0) {
             if (any(ineligible_flag_in_segment$i[output@administered_item_index])) {
@@ -1567,8 +1555,6 @@ setMethod(
           pe_i[pe_i > 1] <- 1
 
           if (constants$set_based) {
-            alpha_sjk[segments_to_apply] <- exposure_constants$fading_factor * alpha_sjk[segments_to_apply]
-            rho_sjk[segments_to_apply]   <- exposure_constants$fading_factor * rho_sjk[segments_to_apply]
             alpha_sjk[segments_to_apply, output@administered_stimulus_index] <-
             alpha_sjk[segments_to_apply, output@administered_stimulus_index] + segment_prob
 
