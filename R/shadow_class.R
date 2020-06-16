@@ -213,6 +213,10 @@ setClass("config_Shadow",
       msg <- "@exposure_control$n_segment must match @exposure_control$segment_cut."
       errors <- c(errors, msg)
     }
+    if (!length(object@exposure_control$max_exposure_rate) %in% c(1, object@exposure_control$n_segment)) {
+      msg <- sprintf("@exposure_control: unexpected length($max_exposure_rate) %s (must be 1 or $n_segment)", length(object@exposure_control$max_exposure_rate))
+      errors <- c(errors, msg)
+    }
     if (!object@stopping_criterion$method %in% c("FIXED")) {
       msg <- sprintf("Unrecognized option in @stopping_criterion$method : %s", object@stopping_criterion$method)
       errors <- c(errors, msg)
@@ -371,6 +375,12 @@ createShadowTestConfig <- function(item_selection = NULL, content_balancing = NU
   }
   if (!is.null(audit_trail)) {
     conf@audit_trail <- audit_trail
+  }
+  if (length(conf@exposure_control$max_exposure_rate) == 1) {
+    conf@exposure_control$max_exposure_rate <- rep(
+      conf@exposure_control$max_exposure_rate,
+      conf@exposure_control$n_segment
+    )
   }
   v <- validObject(conf)
   if (v) {
