@@ -1296,14 +1296,7 @@ setMethod(
           exposure_record   <- applyIncrement(exposure_record, segments_to_apply, segment_prob, theta_is_feasible, eligible_flag, output, exposure_constants, constants)
           exposure_record   <- applyIncrementVisitedSegments(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_segment, output, exposure_constants, constants)
           exposure_record   <- applyAcceleration(exposure_record, exposure_constants, constants)
-
-          pe_i[is.na(pe_i) | alpha_ijk == 0] <- 1
-          pe_i[pe_i > 1] <- 1
-
-          if (constants$set_based) {
-            pe_s[is.na(pe_s) | alpha_sjk == 0] <- 1
-            pe_s[pe_s > 1] <- 1
-          }
+          exposure_record   <- applyClip(exposure_record, constants)
 
         } else if (exposure_control %in% c("BIGM")) {
 
@@ -1314,14 +1307,7 @@ setMethod(
           exposure_record   <- applyIncrement(exposure_record, segments_to_apply, segment_prob, FALSE, eligible_flag, output, exposure_constants, constants)
           exposure_record   <- applyIncrementVisitedSegments(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_segment, output, exposure_constants, constants)
           exposure_record   <- applyAcceleration(exposure_record, exposure_constants, constants)
-
-          pe_i[is.na(pe_i) | alpha_ijk == 0] <- 1
-          pe_i[pe_i > 1] <- 1
-
-          if (constants$set_based) {
-            pe_s[is.na(pe_s) | alpha_sjk == 0] <- 1
-            pe_s[pe_s > 1] <- 1
-          }
+          exposure_record   <- applyClip(exposure_record, constants)
 
         } else if (exposure_control %in% c("BIGM-BAYESIAN")) {
 
@@ -1332,14 +1318,8 @@ setMethod(
           exposure_record   <- applyIncrement(exposure_record, segments_to_apply, segment_prob, FALSE, eligible_flag, output, exposure_constants, constants)
           exposure_record   <- applyIncrementVisitedSegments(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_segment, output, exposure_constants, constants)
           exposure_record   <- applyAcceleration(exposure_record, exposure_constants, constants)
+          exposure_record   <- applyClip(exposure_record, constants)
 
-          pe_i[is.na(pe_i) | alpha_ijk == 0] <- 1
-          pe_i[pe_i > 1] <- 1
-
-          if (constants$set_based) {
-            pe_s[is.na(pe_s) | alpha_sjk == 0] <- 1
-            pe_s[pe_s > 1] <- 1
-          }
         }
 
         if (config@exposure_control$diagnostic_stats) {
