@@ -1042,9 +1042,7 @@ setMethod(
 
       if (constants$set_based) {
         output@administered_stimulus_index <- rep(NA_real_, constants$max_ni)
-        end_set <- TRUE
-        finished_stimulus_index      <- NULL
-        finished_stimulus_item_count <- NULL
+        stimulus_record <- initializeStimulusRecord()
       }
 
       ##
@@ -1155,7 +1153,7 @@ setMethod(
             (refresh_policy %in% c("POSITION", "INTERVAL") && refresh_shadow[position]) ||
             (refresh_policy == "THRESHOLD" && abs(theta_change) > config@refresh_policy$threshold) ||
             (refresh_policy == "INTERVAL-THRESHOLD" && refresh_shadow[position] && abs(theta_change) > config@refresh_policy$threshold) ||
-            (constants$set_based_refresh && constants$set_based && end_set)) {
+            (constants$set_based_refresh && constants$set_based && stimulus_record$end_set)) {
 
             output@shadow_test_refreshed[position] <- TRUE
 
@@ -1193,7 +1191,7 @@ setMethod(
                   idir <-     c(idir, sdir)
                   irhs <-     c(irhs, srhs)
 
-                  if (constants$set_based_refresh && constants$set_based && end_set) {
+                  if (constants$set_based_refresh && constants$set_based && stimulus_record$end_set) {
 
                     n_administered_stimulus <- length(administered_stimulus_index)
                     if (n_administered_stimulus > 0) {
@@ -1211,14 +1209,14 @@ setMethod(
 
                   } else {
 
-                    n_finished_stimulus <- length(finished_stimulus_index)
+                    n_finished_stimulus <- length(stimulus_record$finished_stimulus_index)
 
                     if (n_finished_stimulus > 0) {
                       smat <- matrix(0, nrow = n_finished_stimulus, ncol = nv)
                       sdir <- rep("==", n_finished_stimulus)
-                      srhs <- finished_stimulus_item_count
+                      srhs <- stimulus_record$finished_stimulus_item_count
                       for (s in 1:n_finished_stimulus) {
-                        smat[s, constraints@item_index_by_stimulus[[finished_stimulus_index[s]]]] <- 1
+                        smat[s, constraints@item_index_by_stimulus[[stimulus_record$finished_stimulus_index[s]]]] <- 1
                       }
                       imat <- rbind(imat, smat)
                       idir <-     c(idir, sdir)
@@ -1367,18 +1365,19 @@ setMethod(
 
         if (constants$set_based) {
           output@administered_stimulus_index[position] <- selection$stimulus_selected
+
           if (selection$stimulus_finished) {
-            end_set <- TRUE
+            stimulus_record$end_set <- TRUE
           } else {
-            end_set <- FALSE
+            stimulus_record$end_set <- FALSE
           }
 
           # TODO: why is selection$last_stimulus_index == 0 at position 1?
 
           if (!is.na(selection$last_stimulus_index)) {
             if (selection$new_stimulus_selected && selection$last_stimulus_index > 0) {
-              finished_stimulus_index      <- c(finished_stimulus_index, selection$last_stimulus_index)
-              finished_stimulus_item_count <- c(finished_stimulus_item_count, sum(output@administered_stimulus_index[1:(position - 1)] == selection$last_stimulus_index, na.rm = TRUE))
+              stimulus_record$finished_stimulus_index      <- c(stimulus_record$finished_stimulus_index, selection$last_stimulus_index)
+              stimulus_record$finished_stimulus_item_count <- c(stimulus_record$finished_stimulus_item_count, sum(output@administered_stimulus_index[1:(position - 1)] == selection$last_stimulus_index, na.rm = TRUE))
             }
           }
 
