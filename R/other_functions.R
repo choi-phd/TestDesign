@@ -310,3 +310,51 @@ selectItemFromShadowTest <- function(shadow_test, position, constants, x) {
   return(o)
 
 }
+
+#' @noRd
+plotAuditTrail <- function(o, j, constants, config) {
+
+  old_mar   <- par()$mar
+  old_mfrow <- par()$mfrow
+  on.exit(par(mar = old_mar, mfrow = old_mfrow))
+  par(mar = c(2, 3, 1, 1) + 0.1, mfrow = c(2, 1))
+
+  max_ni     <- constants$max_ni
+  theta_grid <- constants$theta_q
+  min_q      <- constants$min_q
+  max_q      <- constants$max_q
+
+  plot(1:max_ni, seq(min_q, max_q, length = max_ni),
+    main = paste0("Examinee ", j), xlab = "Items Administered", ylab = "Theta",
+    type = "n", las = 1)
+  points(1:max_ni, o@interim_theta_est,
+    type = "b", pch = 9, col = "blue")
+
+  if (!is.null(o@true_theta)) {
+    abline(h = o@true_theta, lty = 2, col = "red")
+  } else {
+    abline(h = o@final_theta_est, lty = 2, col = "red")
+  }
+
+  item_string <- paste(o@administered_item_index, collapse = ",")
+  text(1, max_q,
+    paste0("Items: ", item_string),
+    cex = 0.7, adj = 0)
+  text(1, min_q + 0.3,
+    paste("Theta: ", round(o@final_theta_est, digits = 2), " SE: ", round(o@final_se_est, digits = 2)),
+    cex = 0.8, adj = 0)
+
+  for (i in 1:max_ni) {
+    lines(rep(i, 2), c(o@interim_theta_est[i] - 1.96 * o@interim_se_est[i], o@interim_theta_est[i] + 1.96 * o@interim_se_est[i]))
+    if (constants$use_shadow) {
+      if (o@shadow_test_refreshed[i]) {
+        points(i, o@interim_theta_est[i], pch = 18, col = "red")
+      }
+    }
+  }
+
+  resp_string <- paste(o@administered_item_resp, collapse = ",")
+  plot(theta_grid, o@posterior, main = "Final Posterior Distribution", xlab = "Theta", ylab = "Posterior", type = "l", col = "blue", yaxt = "n")
+  text(min_q, max(o@posterior), paste0("Responses: ", resp_string), cex = 0.7, adj = 0)
+
+}
