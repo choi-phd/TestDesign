@@ -835,46 +835,6 @@ setMethod(
     ###    select a non-administered item with the largest information
     #####
 
-
-    #####
-    ###    plot audit trail
-    #####
-
-    plotAuditTrail <- function() {
-
-      old_mar   <- par()$mar
-      old_mfrow <- par()$mfrow
-      on.exit(par(mar = old_mar, mfrow = old_mfrow))
-      par(mar = c(2, 3, 1, 1) + 0.1, mfrow = c(2, 1))
-
-      plot(1:max_ni, seq(min_theta, max_theta, length = max_ni), main = paste0("Examinee ", j), xlab = "Items Administered", ylab = "Theta", type = "n", las = 1)
-      points(1:max_ni, output@interim_theta_est, type = "b", pch = 9, col = "blue")
-
-      if (!is.null(true_theta)) {
-        abline(h = output@true_theta, lty = 2, col = "red")
-      } else {
-        abline(h = output@final_theta_est, lty = 2, col = "red")
-      }
-
-      item_string <- paste(output@administered_item_index, collapse = ",")
-      text(1, max_theta, paste0("Items: ", item_string), cex = 0.7, adj = 0)
-      text(1, min_theta + 0.3, paste("Theta: ", round(output@final_theta_est, digits = 2), " SE: ", round(output@final_se_est, digits = 2)), cex = 0.8, adj = 0)
-
-      for (i in 1:max_ni) {
-        lines(rep(i, 2), c(output@interim_theta_est[i] - 1.96 * output@interim_se_est[i], output@interim_theta_est[i] + 1.96 * output@interim_se_est[i]))
-        if (constants$use_shadow) {
-          if (output@shadow_test_refreshed[i]) {
-            points(i, output@interim_theta_est[i], pch = 18, col = "red")
-          }
-        }
-      }
-
-      resp_string <- paste(output@administered_item_resp, collapse = ",")
-      plot(constants$theta_q, output@posterior, main = "Final Posterior Distribution", xlab = "Theta", ylab = "Posterior", type = "l", col = "blue", yaxt = "n")
-      text(min_theta, max(output@posterior), paste0("Responses: ", resp_string), cex = 0.7, adj = 0)
-
-    }
-
     #####
     ###    Loop over nj simulees
     #####
