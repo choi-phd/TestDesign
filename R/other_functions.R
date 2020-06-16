@@ -43,6 +43,13 @@ getConstants <- function(constraints, config, arg_data, true_theta) {
     o$max_se         <- config@stopping_criterion$se_threshold
   }
 
+  refresh_method <- toupper(config@refresh_policy$method)
+  if (refresh_method %in% c("STIMULUS", "SET", "PASSAGE")) {
+    o$set_based_refresh <- TRUE
+  } else {
+    o$set_based_refresh <- FALSE
+  }
+
   return(o)
 
 }

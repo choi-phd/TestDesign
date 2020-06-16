@@ -808,7 +808,7 @@ setMethod(
 
         refresh_shadow[seq(1, constants$test_length, config@refresh_policy$interval)] <- TRUE
 
-      } else if (refresh_policy %in% c("STIMULUS", "SET", "PASSAGE")) {
+      } else if (constants$set_based_refresh) {
 
         if (!constants$set_based) {
           stop("constraints@set_based must be TRUE when config@refresh_policy$method is 'STIMULUS'")
@@ -1379,7 +1379,7 @@ setMethod(
             (refresh_policy %in% c("POSITION", "INTERVAL") && refresh_shadow[position]) ||
             (refresh_policy == "THRESHOLD" && abs(theta_change) > config@refresh_policy$threshold) ||
             (refresh_policy == "INTERVAL-THRESHOLD" && refresh_shadow[position] && abs(theta_change) > config@refresh_policy$threshold) ||
-            (refresh_policy %in% c("STIMULUS", "SET", "PASSAGE") && constants$set_based && end_set)) {
+            (constants$set_based_refresh && constants$set_based && end_set)) {
 
             output@shadow_test_refreshed[position] <- TRUE
 
@@ -1417,7 +1417,7 @@ setMethod(
                   idir <-     c(idir, sdir)
                   irhs <-     c(irhs, srhs)
 
-                  if (refresh_policy %in% c("STIMULUS", "SET", "PASSAGE") && constants$set_based && end_set) {
+                  if (constants$set_based_refresh && constants$set_based && end_set) {
 
                     n_administered_stimulus <- length(administered_stimulus_index)
                     if (n_administered_stimulus > 0) {
