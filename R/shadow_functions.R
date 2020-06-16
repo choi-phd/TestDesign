@@ -1288,18 +1288,7 @@ setMethod(
           theta_is_feasible <- segment_of$final_theta_est %in% segment_feasible
           eligible_flag     <- getEligibleFlag(ineligible_flag, constants, !theta_is_feasible)
           exposure_record   <- applyIncrement(exposure_record, segments_to_apply, segment_prob, theta_is_feasible, eligible_flag, output, exposure_constants, constants)
-
-          if (length(segment_of$visited) > 0) {
-            if (any(ineligible_flag_in_segment$i[output@administered_item_index])) {
-              for (k in segment_of$visited) {
-                for (i in output@administered_item_index[output@theta_segment_index == k]) {
-                  if (ineligible_flag_in_segment$i[i]) {
-                    alpha_ijk[k, i] <- alpha_ijk[k, i] + 1
-                  }
-                }
-              }
-            }
-          }
+          exposure_record   <- applyIncrementVisitedSegments(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_segment, output, exposure_constants, constants)
 
           nf_ijk <- matrix(n_jk / phi_jk, exposure_constants$n_segment, ni)
 
@@ -1321,18 +1310,6 @@ setMethod(
           pe_i[pe_i > 1] <- 1
 
           if (constants$set_based) {
-
-            if (length(segment_of$visited) > 0) {
-              if (any(ineligible_flag_in_segment$s[administered_stimulus_index])) {
-                for (k in segment_of$visited) {
-                  for (s in unique(output@administered_stimulus_index[output@theta_segment_index == k & output@administered_stimulus_index %in% administered_stimulus_index])) {
-                    if (ineligible_flag_in_segment$s[s]) {
-                      alpha_sjk[k, s] <- alpha_sjk[k, s] + 1
-                    }
-                  }
-                }
-              }
-            }
 
             nf_sjk <- matrix(n_jk / phi_jk, exposure_constants$n_segment, ns)
             if (exposure_constants$acceleration_factor > 1) {
@@ -1361,19 +1338,7 @@ setMethod(
           segment_prob      <- 1
           eligible_flag     <- getEligibleFlag(ineligible_flag, constants, FALSE)
           exposure_record   <- applyIncrement(exposure_record, segments_to_apply, segment_prob, FALSE, eligible_flag, output, exposure_constants, constants)
-
-          # Visited segments that are not the final segment
-          if (length(segment_of$visited) > 0) {
-            if (any(ineligible_flag_in_segment$i[output@administered_item_index])) {
-              for (k in segment_of$visited) {
-                for (i in output@administered_item_index[output@theta_segment_index == k]) {
-                  if (ineligible_flag_in_segment$i[i]) {
-                    alpha_ijk[k, i] <- alpha_ijk[k, i] + 1
-                  }
-                }
-              }
-            }
-          }
+          exposure_record   <- applyIncrementVisitedSegments(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_segment, output, exposure_constants, constants)
 
           if (exposure_constants$acceleration_factor > 1) {
 
@@ -1395,19 +1360,6 @@ setMethod(
           pe_i[pe_i > 1] <- 1
 
           if (constants$set_based) {
-
-            if (length(segment_of$visited) > 0) {
-              if (any(ineligible_flag_in_segment$s[administered_stimulus_index], na.rm = T)) {
-                for (k in segment_of$visited) {
-                  for (s in unique(output@administered_stimulus_index[output@theta_segment_index == k & output@administered_stimulus_index %in% administered_stimulus_index])) {
-                    if (ineligible_flag_in_segment$s[s]) {
-                      alpha_sjk[k, s] <- alpha_sjk[k, s] + 1
-                    }
-                  }
-                }
-              }
-            }
-
             if (exposure_constants$acceleration_factor > 1) {
               p_alpha_sjk <- alpha_sjk / matrix(n_jk, exposure_constants$n_segment, constants$ns)
               p_rho_sjk   <- rho_sjk / matrix(n_jk, exposure_constants$n_segment, constants$ns)
@@ -1433,18 +1385,7 @@ setMethod(
           segment_prob      <- getSegmentProb(output@posterior_sample, exposure_constants)
           eligible_flag     <- getEligibleFlag(ineligible_flag, constants, FALSE)
           exposure_record   <- applyIncrement(exposure_record, segments_to_apply, segment_prob, FALSE, eligible_flag, output, exposure_constants, constants)
-
-          if (length(segment_of$visited) > 0) {
-            if (any(ineligible_flag_in_segment$i[output@administered_item_index])) {
-              for (k in segment_of$visited) {
-                for (i in output@administered_item_index[output@theta_segment_index == k]) {
-                  if (ineligible_flag_in_segment$i[i]) {
-                    alpha_ijk[k, i] <- alpha_ijk[k, i] + segment_prob[k]
-                  }
-                }
-              }
-            }
-          }
+          exposure_record   <- applyIncrementVisitedSegments(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_segment, output, exposure_constants, constants)
 
           if (exposure_constants$acceleration_factor > 1) {
             p_alpha_ijk <- alpha_ijk / matrix(n_jk, exposure_constants$n_segment, ni)
@@ -1465,19 +1406,6 @@ setMethod(
           pe_i[pe_i > 1] <- 1
 
           if (constants$set_based) {
-
-            if (length(segment_of$visited) > 0) {
-              if (any(ineligible_flag_in_segment$s[administered_stimulus_index])) {
-                for (k in segment_of$visited) {
-                  for (s in unique(output@administered_stimulus_index[output@theta_segment_index == k & output@administered_stimulus_index %in% administered_stimulus_index])) {
-                    if (ineligible_flag_in_segment$s[s]) {
-                      alpha_sjk[k, s] <- alpha_sjk[k, s] + segment_prob[k]
-                    }
-                  }
-                }
-              }
-            }
-
             if (exposure_constants$acceleration_factor > 1) {
               p_alpha_sjk <- alpha_sjk / matrix(n_jk, exposure_constants$n_segment, constants$ns)
               p_rho_sjk <- rho_sjk / matrix(n_jk, exposure_constants$n_segment, constants$ns)
