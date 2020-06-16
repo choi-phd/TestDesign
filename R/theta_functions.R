@@ -68,12 +68,9 @@ getThetaSegment <- function(current_theta, position, exposure_control, exposure_
   }
 
   if (exposure_control_method %in% c("BIGM-BAYESIAN")) {
-    segment_sample       <- find_segment(current_theta$posterior_sample, segment_cut)
-    segment_distribution <- table(segment_sample) / length(segment_sample)
-    segment_classified   <- as.numeric(names(segment_distribution))
-    segment_prob         <- numeric(n_segment)
-    segment_prob[segment_classified] <- segment_distribution
-    segment <- which.max(segment_prob)
+    # maybe not necessary to make this into a function
+    segment_prob <- getSegmentProb(current_theta$posterior_sample, exposure_constants)
+    segment      <- which.max(segment_prob)
     return(segment)
   }
 
