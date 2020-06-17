@@ -1283,10 +1283,11 @@ setMethod(
 
           segments_to_apply <- getSegmentsToApply(exposure_constants$n_segment, segment_of$final_theta_est)
           exposure_record   <- applyFading(exposure_record, segments_to_apply, exposure_constants, constants)
+          segment_prob      <- 1
           segment_feasible  <- unique(output@theta_segment_index[output@shadow_test_feasible == TRUE])
           theta_is_feasible <- segment_of$final_theta_est %in% segment_feasible
-          segment_prob      <- 1
-          exposure_record   <- applyIncrement(exposure_record, segments_to_apply, segment_prob, theta_is_feasible, output, exposure_constants, constants)
+          eligible_flag     <- getEligibleFlag(ineligible_flag, constants, !theta_is_feasible)
+          exposure_record   <- applyIncrement(exposure_record, segments_to_apply, segment_prob, theta_is_feasible, eligible_flag, output, exposure_constants, constants)
 
           if (length(segment_of$visited) > 0) {
             if (any(ineligible_flag_in_segment$i[output@administered_item_index])) {
@@ -1298,17 +1299,6 @@ setMethod(
                 }
               }
             }
-          }
-
-          if (theta_is_feasible) {
-            eligible_flag <- getEligibleFlag(ineligible_flag, constants, FALSE)
-          } else {
-            eligible_flag <- getEligibleFlag(ineligible_flag, constants, TRUE)
-          }
-
-          rho_ijk <- rho_ijk + eligible_flag$i * segments_to_apply * segment_prob
-          if (exposure_constants$fading_factor != 1) {
-            no_fading_rho_ijk <- no_fading_rho_ijk + eligible_flag$i * segments_to_apply * segment_prob
           }
 
           nf_ijk <- matrix(n_jk / phi_jk, exposure_constants$n_segment, ni)
@@ -1344,11 +1334,6 @@ setMethod(
               }
             }
 
-            rho_sjk <- rho_sjk + eligible_flag$s * segments_to_apply * segment_prob
-            if (exposure_constants$fading_factor != 1) {
-              no_fading_rho_sjk <- no_fading_rho_sjk + eligible_flag$s * segments_to_apply * segment_prob
-            }
-
             nf_sjk <- matrix(n_jk / phi_jk, exposure_constants$n_segment, ns)
             if (exposure_constants$acceleration_factor > 1) {
               p_alpha_sjk <- alpha_sjk / matrix(n_jk, exposure_constants$n_segment, ns)
@@ -1375,7 +1360,7 @@ setMethod(
           exposure_record   <- applyFading(exposure_record, segments_to_apply, exposure_constants, constants)
           segment_prob      <- 1
           eligible_flag     <- getEligibleFlag(ineligible_flag, constants, FALSE)
-          exposure_record   <- applyIncrement(exposure_record, segments_to_apply, segment_prob, FALSE, output, exposure_constants, constants)
+          exposure_record   <- applyIncrement(exposure_record, segments_to_apply, segment_prob, FALSE, eligible_flag, output, exposure_constants, constants)
 
           # Visited segments that are not the final segment
           if (length(segment_of$visited) > 0) {
@@ -1388,11 +1373,6 @@ setMethod(
                 }
               }
             }
-          }
-
-          rho_ijk <- rho_ijk + eligible_flag$i * segments_to_apply * segment_prob
-          if (exposure_constants$fading_factor != 1) {
-            no_fading_rho_ijk <- no_fading_rho_ijk + eligible_flag$i * segments_to_apply * segment_prob
           }
 
           if (exposure_constants$acceleration_factor > 1) {
@@ -1428,11 +1408,6 @@ setMethod(
               }
             }
 
-            rho_sjk <- rho_sjk + eligible_flag$s * segments_to_apply * segment_prob
-            if (exposure_constants$fading_factor != 1) {
-              no_fading_rho_sjk <- no_fading_rho_sjk + eligible_flag$s * segments_to_apply * segment_prob
-            }
-
             if (exposure_constants$acceleration_factor > 1) {
               p_alpha_sjk <- alpha_sjk / matrix(n_jk, exposure_constants$n_segment, constants$ns)
               p_rho_sjk   <- rho_sjk / matrix(n_jk, exposure_constants$n_segment, constants$ns)
@@ -1456,7 +1431,8 @@ setMethod(
           segments_to_apply <- getSegmentsToApply(exposure_constants$n_segment, 1:exposure_constants$n_segment)
           exposure_record   <- applyFading(exposure_record, segments_to_apply, exposure_constants, constants)
           segment_prob      <- getSegmentProb(output@posterior_sample, exposure_constants)
-          exposure_record   <- applyIncrement(exposure_record, segments_to_apply, segment_prob, FALSE, output, exposure_constants, constants)
+          eligible_flag     <- getEligibleFlag(ineligible_flag, constants, FALSE)
+          exposure_record   <- applyIncrement(exposure_record, segments_to_apply, segment_prob, FALSE, eligible_flag, output, exposure_constants, constants)
 
           if (length(segment_of$visited) > 0) {
             if (any(ineligible_flag_in_segment$i[output@administered_item_index])) {
@@ -1470,12 +1446,6 @@ setMethod(
             }
           }
 
-          eligible_flag     <- getEligibleFlag(ineligible_flag, constants, FALSE)
-
-          rho_ijk <- rho_ijk + eligible_flag$i * segments_to_apply * segment_prob
-          if (exposure_constants$fading_factor != 1) {
-            no_fading_rho_ijk <- no_fading_rho_ijk + eligible_flag$i * segments_to_apply * segment_prob
-          }
           if (exposure_constants$acceleration_factor > 1) {
             p_alpha_ijk <- alpha_ijk / matrix(n_jk, exposure_constants$n_segment, ni)
             p_rho_ijk   <- rho_ijk / matrix(n_jk, exposure_constants$n_segment, ni)
@@ -1508,10 +1478,6 @@ setMethod(
               }
             }
 
-            rho_sjk <- rho_sjk + eligible_flag$s * segment_prob
-            if (exposure_constants$fading_factor != 1) {
-              no_fading_rho_sjk <- no_fading_rho_sjk + eligible_flag$s * segment_prob
-            }
             if (exposure_constants$acceleration_factor > 1) {
               p_alpha_sjk <- alpha_sjk / matrix(n_jk, exposure_constants$n_segment, constants$ns)
               p_rho_sjk <- rho_sjk / matrix(n_jk, exposure_constants$n_segment, constants$ns)
