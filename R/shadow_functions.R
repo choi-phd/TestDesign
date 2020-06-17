@@ -1110,7 +1110,6 @@ setMethod(
             if (exposure_constants$use_eligibility_control) {
 
               # Get ineligibile items in the current theta segment
-
               current_segment            <- output@theta_segment_index[position]
               ineligible_flag_in_segment <- getIneligibleFlagInSegment(ineligible_flag, current_segment, constants)
               ineligible_flag_in_segment <- flagAdministeredAsEligible(ineligible_flag_in_segment, output, position, constants)
@@ -1124,14 +1123,10 @@ setMethod(
                 # If not optimal, retry without xmat
 
                 if (is_optimal) {
-
                   output@shadow_test_feasible[position] <- TRUE
-
                 } else {
-
                   output@shadow_test_feasible[position] <- FALSE
                   optimal <- runAssembly(config, constraints, xdata = xdata, objective = info)
-
                 }
 
               } else if (exposure_control %in% c("BIGM", "BIGM-BAYESIAN")) {
@@ -1151,8 +1146,6 @@ setMethod(
               }
 
             } else {
-
-              # No exposure control
 
               optimal <- runAssembly(config, constraints, xdata = xdata, objective = info)
               output@shadow_test_feasible[position] <- TRUE
@@ -1183,11 +1176,8 @@ setMethod(
           output@shadow_test[[position]]           <- optimal$shadow_test[["INDEX"]]
 
         } else {
-
           # If not doing shadow
-
           output@administered_item_index[position] <- selectItem()
-
         }
 
         # Item position / simulee: record which stimulus was administered
