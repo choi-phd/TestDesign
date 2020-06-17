@@ -1279,16 +1279,7 @@ setMethod(
       if (exposure_constants$use_eligibility_control) {
 
         segment_of               <- getSegmentOf(output, exposure_constants)
-
-        segment_record$freq_true[segment_of$true_theta] <-
-        segment_record$freq_true[segment_of$true_theta] + 1
-        segment_record$freq_est[segment_of$final_theta_est] <-
-        segment_record$freq_est[segment_of$final_theta_est] + 1
-
-        segment_record$count_true[j] <-
-        segment_record$freq_true[segment_of$true_theta]
-        segment_record$count_est[j] <-
-        segment_record$freq_est[segment_of$final_theta_est]
+        segment_record           <- updateSegmentRecord(segment_record, segment_of, j)
 
         ineligible_flag_in_segment <- getIneligibleFlagInSegment(ineligible_flag, segment_of$final_theta_est, constants)
         eligible_in_final_segment <- ineligible_flag$i[segment_of$final_theta_est, ] == 0
