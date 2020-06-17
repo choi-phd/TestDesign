@@ -139,3 +139,24 @@ getSegmentOf <- function(x, exposure_constants) {
   return(o)
 
 }
+
+#' @noRd
+updateSegmentRecord <- function(segment_record, segment_of, j) {
+
+  segment_record$freq_est[segment_of$final_theta_est] <-
+  segment_record$freq_est[segment_of$final_theta_est] + 1
+  segment_record$count_est[j] <-
+  segment_record$freq_est[segment_of$final_theta_est]
+
+  if (is.null(segment_of$true_theta)) {
+    return(segment_record)
+  }
+
+  segment_record$freq_true[segment_of$true_theta] <-
+  segment_record$freq_true[segment_of$true_theta] + 1
+  segment_record$count_true[j] <-
+  segment_record$freq_true[segment_of$true_theta]
+
+  return(segment_record)
+
+}
