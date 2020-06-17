@@ -1108,7 +1108,9 @@ setMethod(
               ineligible_flag_in_segment <- getIneligibleFlagInSegment(ineligible_flag, current_segment, constants)
               ineligible_flag_in_segment <- flagAdministeredAsEligible(ineligible_flag_in_segment, output, position, constants)
 
-            if (exposure_control %in% c("ELIGIBILITY")) {
+            }
+
+            if (exposure_constants$use_eligibility_control && exposure_control %in% c("ELIGIBILITY")) {
 
               xdata_elg  <- applyIneligibleFlagtoXdata(xdata, ineligible_flag_in_segment, constants, constraints)
               optimal    <- runAssembly(config, constraints, xdata = xdata_elg, objective = info)
@@ -1123,7 +1125,9 @@ setMethod(
                 optimal <- runAssembly(config, constraints, xdata = xdata, objective = info)
               }
 
-            } else if (exposure_control %in% c("BIGM", "BIGM-BAYESIAN")) {
+            }
+
+            if (exposure_constants$use_eligibility_control && exposure_control %in% c("BIGM", "BIGM-BAYESIAN")) {
 
               # Do Big-M based exposure control
               # Penalize item info
@@ -1139,7 +1143,7 @@ setMethod(
 
             }
 
-            } else {
+            if (!exposure_constants$use_eligibility_control) {
 
               optimal <- runAssembly(config, constraints, xdata = xdata, objective = info)
               output@shadow_test_feasible[position] <- TRUE
