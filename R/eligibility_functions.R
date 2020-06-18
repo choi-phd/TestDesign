@@ -134,3 +134,40 @@ getEligibleFlagInSegment <- function(ineligible_flag, segment, constants) {
   o$s <- !ineligible_flag$s[segment, ]
   return(o)
 }
+
+#' @noRd
+applyIncrement <- function(o, segments_to_apply, segment_prob, x, exposure_constants, constants) {
+
+  fading_factor <- exposure_constants$fading_factor
+
+  o$n_jk[segments_to_apply] <- o$n_jk[segments_to_apply] + segment_prob
+  if (fading_factor != 1) {
+    o$n_jk_nofade[segments_to_apply] <-
+    o$n_jk_nofade[segments_to_apply] + segment_prob
+  }
+
+  administered_i <- x@administered_item_index
+
+  o$a_ijk[segments_to_apply, administered_i] <-
+  o$a_ijk[segments_to_apply, administered_i] + segment_prob
+  if (fading_factor != 1) {
+    o$a_ijk_nofade[segments_to_apply, administered_i] <-
+    o$a_ijk_nofade[segments_to_apply, administered_i] + segment_prob
+  }
+
+  if (!constants$set_based) {
+    return(o)
+  }
+
+  administered_s <- x@administered_stimulus_index
+
+  o$a_sjk[segments_to_apply, administered_s] <-
+  o$a_sjk[segments_to_apply, administered_s] + segment_prob
+  if (fading_factor != 1) {
+    o$a_sjk_nofade[segments_to_apply, administered_s] <-
+    o$a_sjk_nofade[segments_to_apply, administered_s] + segment_prob
+  }
+
+  return(o)
+
+}
