@@ -160,3 +160,10 @@ updateSegmentRecord <- function(segment_record, segment_of, j) {
   return(segment_record)
 
 }
+
+#' @noRd
+getSegmentsToApply <- function(n_segment, segments) {
+  o <- rep(FALSE, n_segment)
+  o[segments] <- TRUE
+  return(o)
+}
