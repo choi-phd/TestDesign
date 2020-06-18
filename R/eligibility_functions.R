@@ -175,3 +175,16 @@ applyIncrement <- function(o, segments_to_apply, segment_prob, theta_is_feasible
   return(o)
 
 }
+
+#' @noRd
+getEligibleFlag <- function(ineligible_flag, constants, force_true) {
+  o <- list()
+  o$i <- !ineligible_flag$i
+  if (force_true) o$i <- TRUE
+  if (!constants$set_based) {
+    return(o)
+  }
+  o$s <- !ineligible_flag$s
+  if (force_true) o$s <- TRUE
+  return(o)
+}
