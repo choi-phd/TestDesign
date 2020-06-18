@@ -123,3 +123,14 @@ applyFading <- function(o, segments_to_apply, exposure_constants, constants) {
   return(o)
 
 }
+
+#' @noRd
+getEligibleFlagInSegment <- function(ineligible_flag, segment, constants) {
+  o <- list()
+  o$i <- !ineligible_flag$i[segment, ]
+  if (!constants$set_based) {
+    return(o)
+  }
+  o$s <- !ineligible_flag$s[segment, ]
+  return(o)
+}
