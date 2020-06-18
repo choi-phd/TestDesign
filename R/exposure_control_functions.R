@@ -120,3 +120,22 @@ initializeExposureRecordSegmentwise <- function(exposure_constants, constants) {
   return(o)
 
 }
+
+#' @noRd
+getSegmentOf <- function(x, exposure_constants) {
+
+  o <- list()
+
+  o$final_theta_est   <- find_segment(x@final_theta_est, exposure_constants$segment_cut)
+
+  tmp                 <- sort(unique(x@theta_segment_index))
+  o$visited           <- tmp[tmp != o$final_theta_est]
+
+  if (is.null(x@true_theta)) {
+    return(o)
+  }
+
+  o$true_theta        <- find_segment(x@true_theta, exposure_constants$segment_cut)
+  return(o)
+
+}
