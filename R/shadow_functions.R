@@ -1301,15 +1301,14 @@ setMethod(
           }
 
           if (theta_is_feasible) {
-            rho_ijk <- rho_ijk + (!ineligible_flag$i) * segments_to_apply * segment_prob
-            if (exposure_constants$fading_factor != 1) {
-              no_fading_rho_ijk <- no_fading_rho_ijk + (!ineligible_flag$i) * segments_to_apply * segment_prob
-            }
+            eligible_flag <- getEligibleFlag(ineligible_flag, constants, FALSE)
           } else {
-            rho_ijk <- rho_ijk + segments_to_apply * segment_prob
-            if (exposure_constants$fading_factor != 1) {
-              no_fading_rho_ijk <- no_fading_rho_ijk + segments_to_apply * segment_prob
-            }
+            eligible_flag <- getEligibleFlag(ineligible_flag, constants, TRUE)
+          }
+
+          rho_ijk <- rho_ijk + eligible_flag$i * segments_to_apply * segment_prob
+          if (exposure_constants$fading_factor != 1) {
+            no_fading_rho_ijk <- no_fading_rho_ijk + eligible_flag$i * segments_to_apply * segment_prob
           }
 
           nf_ijk <- matrix(n_jk / phi_jk, exposure_constants$n_segment, ni)
@@ -1345,17 +1344,11 @@ setMethod(
               }
             }
 
-            if (segment_of$final_theta_est %in% segment_feasible) {
-              rho_sjk <- rho_sjk + (!ineligible_flag$s) * segments_to_apply * segment_prob
-              if (exposure_constants$fading_factor != 1) {
-                no_fading_rho_sjk <- no_fading_rho_sjk + (!ineligible_flag$s) * segments_to_apply * segment_prob
-              }
-            } else {
-              rho_sjk <- rho_sjk + segments_to_apply
-              if (exposure_constants$fading_factor != 1) {
-                no_fading_rho_sjk <- no_fading_rho_sjk + segments_to_apply * segment_prob
-              }
+            rho_sjk <- rho_sjk + eligible_flag$s * segments_to_apply * segment_prob
+            if (exposure_constants$fading_factor != 1) {
+              no_fading_rho_sjk <- no_fading_rho_sjk + eligible_flag$s * segments_to_apply * segment_prob
             }
+
             nf_sjk <- matrix(n_jk / phi_jk, exposure_constants$n_segment, ns)
             if (exposure_constants$acceleration_factor > 1) {
               p_alpha_sjk <- alpha_sjk / matrix(n_jk, exposure_constants$n_segment, ns)
@@ -1381,6 +1374,7 @@ setMethod(
           segments_to_apply <- getSegmentsToApply(exposure_constants$n_segment, segment_of$final_theta_est)
           exposure_record   <- applyFading(exposure_record, segments_to_apply, exposure_constants, constants)
           segment_prob      <- 1
+          eligible_flag     <- getEligibleFlag(ineligible_flag, constants, FALSE)
           exposure_record   <- applyIncrement(exposure_record, segments_to_apply, segment_prob, FALSE, output, exposure_constants, constants)
 
           # Visited segments that are not the final segment
@@ -1396,9 +1390,9 @@ setMethod(
             }
           }
 
-          rho_ijk <- rho_ijk + (!ineligible_flag$i) * segments_to_apply * segment_prob
+          rho_ijk <- rho_ijk + eligible_flag$i * segments_to_apply * segment_prob
           if (exposure_constants$fading_factor != 1) {
-            no_fading_rho_ijk <- no_fading_rho_ijk + (!ineligible_flag$i) * segments_to_apply * segment_prob
+            no_fading_rho_ijk <- no_fading_rho_ijk + eligible_flag$i * segments_to_apply * segment_prob
           }
 
           if (exposure_constants$acceleration_factor > 1) {
@@ -1434,9 +1428,9 @@ setMethod(
               }
             }
 
-            rho_sjk <- rho_sjk + (!ineligible_flag$s) * segments_to_apply * segment_prob
+            rho_sjk <- rho_sjk + eligible_flag$s * segments_to_apply * segment_prob
             if (exposure_constants$fading_factor != 1) {
-              no_fading_rho_sjk <- no_fading_rho_sjk + (!ineligible_flag$s) * segments_to_apply * segment_prob
+              no_fading_rho_sjk <- no_fading_rho_sjk + eligible_flag$s * segments_to_apply * segment_prob
             }
 
             if (exposure_constants$acceleration_factor > 1) {
@@ -1476,9 +1470,11 @@ setMethod(
             }
           }
 
-          rho_ijk <- rho_ijk + (!ineligible_flag$i) * segments_to_apply * segment_prob
+          eligible_flag     <- getEligibleFlag(ineligible_flag, constants, FALSE)
+
+          rho_ijk <- rho_ijk + eligible_flag$i * segments_to_apply * segment_prob
           if (exposure_constants$fading_factor != 1) {
-            no_fading_rho_ijk <- no_fading_rho_ijk + (!ineligible_flag$i) * segments_to_apply * segment_prob
+            no_fading_rho_ijk <- no_fading_rho_ijk + eligible_flag$i * segments_to_apply * segment_prob
           }
           if (exposure_constants$acceleration_factor > 1) {
             p_alpha_ijk <- alpha_ijk / matrix(n_jk, exposure_constants$n_segment, ni)
@@ -1512,9 +1508,9 @@ setMethod(
               }
             }
 
-            rho_sjk <- rho_sjk + (!ineligible_flag$s) * segment_prob
+            rho_sjk <- rho_sjk + eligible_flag$s * segment_prob
             if (exposure_constants$fading_factor != 1) {
-              no_fading_rho_sjk <- no_fading_rho_sjk + (!ineligible_flag$s) * segment_prob
+              no_fading_rho_sjk <- no_fading_rho_sjk + eligible_flag$s * segment_prob
             }
             if (exposure_constants$acceleration_factor > 1) {
               p_alpha_sjk <- alpha_sjk / matrix(n_jk, exposure_constants$n_segment, constants$ns)
