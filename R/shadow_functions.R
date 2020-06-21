@@ -1113,13 +1113,7 @@ setMethod(
 
               current_segment            <- output@theta_segment_index[position]
               ineligible_flag_in_segment <- getIneligibleFlagInSegment(ineligible_flag, current_segment, constants)
-
-              if (position > 1) {
-                ineligible_flag_in_segment$i[output@administered_item_index[1:(position - 1)]] <- 0
-                if (constants$set_based) {
-                  ineligible_flag_in_segment$s[output@administered_stimulus_index[1:(position - 1)]] <- 0
-                }
-              }
+              ineligible_flag_in_segment <- flagAdministeredAsEligible(ineligible_flag_in_segment, output, position, constants)
 
               if (exposure_control %in% c("ELIGIBILITY")) {
 
