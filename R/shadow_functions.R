@@ -1301,8 +1301,10 @@ setMethod(
 
           segments_to_apply <- getSegmentsToApply(exposure_constants$n_segment, segment_of$final_theta_est)
           exposure_record   <- applyFading(exposure_record, segments_to_apply, exposure_constants, constants)
+          segment_feasible  <- unique(output@theta_segment_index[output@shadow_test_feasible == TRUE])
+          theta_is_feasible <- segment_of$final_theta_est %in% segment_feasible
           segment_prob      <- 1
-          exposure_record   <- applyIncrement(exposure_record, segments_to_apply, segment_prob, output, exposure_constants, constants)
+          exposure_record   <- applyIncrement(exposure_record, segments_to_apply, segment_prob, theta_is_feasible, output, exposure_constants, constants)
 
           if (length(segment_of$visited) > 0) {
             if (any(ineligible_flag_in_segment$i[output@administered_item_index])) {
@@ -1316,11 +1318,7 @@ setMethod(
             }
           }
 
-          segment_feasible   <- unique(output@theta_segment_index[output@shadow_test_feasible == TRUE])
-          segment_infeasible <- unique(output@theta_segment_index[output@shadow_test_feasible == FALSE])
-
-          if (segment_of$final_theta_est %in% segment_feasible) {
-            phi_jk[segments_to_apply] <- phi_jk[segments_to_apply] + 1
+          if (theta_is_feasible) {
             rho_ijk[segments_to_apply, eligible_flag_in_segment$i] <-
             rho_ijk[segments_to_apply, eligible_flag_in_segment$i] + 1
             if (exposure_constants$fading_factor != 1) {
@@ -1406,7 +1404,7 @@ setMethod(
           segments_to_apply <- getSegmentsToApply(exposure_constants$n_segment, segment_of$final_theta_est)
           exposure_record   <- applyFading(exposure_record, segments_to_apply, exposure_constants, constants)
           segment_prob      <- 1
-          exposure_record   <- applyIncrement(exposure_record, segments_to_apply, segment_prob, output, exposure_constants, constants)
+          exposure_record   <- applyIncrement(exposure_record, segments_to_apply, segment_prob, FALSE, output, exposure_constants, constants)
 
           # Visited segments that are not the final segment
           if (length(segment_of$visited) > 0) {
@@ -1492,7 +1490,7 @@ setMethod(
           segments_to_apply <- getSegmentsToApply(exposure_constants$n_segment, 1:exposure_constants$n_segment)
           exposure_record   <- applyFading(exposure_record, segments_to_apply, exposure_constants, constants)
           segment_prob      <- getSegmentProb(current_theta$posterior_sample, exposure_constants)
-          exposure_record   <- applyIncrement(exposure_record, segments_to_apply, segment_prob, output, exposure_constants, constants)
+          exposure_record   <- applyIncrement(exposure_record, segments_to_apply, segment_prob, FALSE, output, exposure_constants, constants)
 
           if (length(segment_of$visited) > 0) {
             if (any(ineligible_flag_in_segment$i[output@administered_item_index])) {
