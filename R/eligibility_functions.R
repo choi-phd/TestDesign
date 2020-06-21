@@ -39,3 +39,14 @@ flagIneligible <- function(exposure_record, exposure_constants, constants, item_
   return(o)
 
 }
+
+#' @noRd
+getIneligibleFlagInSegment <- function(ineligible_flag, segment, constants) {
+  o <- list()
+  o$i <- ineligible_flag$i[segment, ]
+  if (!constants$set_based) {
+    return(o)
+  }
+  o$s <- ineligible_flag$s[segment, ]
+  return(o)
+}
