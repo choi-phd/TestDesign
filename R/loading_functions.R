@@ -1250,22 +1250,22 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
   return(out)
 }
 
-#' Update constraints
+#' Toggle constraints
 #'
-#' Update the constraints list
+#' \code{\link{toggleConstraints}} is a function to toggle individual constraints in a \code{\linkS4class{constraints}} object.
 #'
-#' @param object A \code{\linkS4class{constraints}} object from \code{\link{loadConstraints}}.
-#' @param on a vector of constraints index to turn on.
-#' @param off a vector of constraints index to turn off.
+#' @param object a \code{\linkS4class{constraints}} object from \code{\link{loadConstraints}}.
+#' @param on constraint indices to mark as active.
+#' @param off constraint indices to mark as inactive.
 #'
-#' @return An updated \code{\linkS4class{constraints}} object, to be used in \code{\link{Static}} and \code{\link{Shadow}}.
+#' @return \code{\link{toggleConstraints}} returns the updated \code{\linkS4class{constraints}} object.
 #'
 #' @examples
 #' constraints_science2 <- updateConstraints(constraints_science, off = 32:36)
 #' constraints_science3 <- updateConstraints(constraints_science, on = 32:36)
 #'
 #' @export
-updateConstraints <- function(object, on = NULL, off = NULL) {
+toggleConstraints <- function(object, on = NULL, off = NULL) {
   nc <- nrow(object@constraints)
   if (length(intersect(on, off)) > 0) {
     stop("'on' and 'off' must not have a common value.")
@@ -1313,6 +1313,14 @@ updateConstraints <- function(object, on = NULL, off = NULL) {
   object@rhs   <- rhs
 
   return(object)
+}
+
+#' @rdname toggleConstraints
+#' @export
+updateConstraints <- function(object, on = NULL, off = NULL) {
+  .Deprecated("toggleConstraints", msg = "updateConstraints() is deprecated. Use toggleConstraints() instead.")
+  o <- toggleConstraints(object, on, off)
+  return(o)
 }
 
 #' Build constraints (shortcut to other loading functions)
