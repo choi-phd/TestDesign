@@ -3,7 +3,7 @@
 \docType{methods}
 \name{showConstraints}
 \alias{showConstraints}
-\title{Show constraints}
+\title{(deprecated) Show constraints}
 \usage{
 showConstraints(constraints)
 }
@@ -11,5 +11,5 @@ showConstraints(constraints)
 \item{constraints}{(deprecated)}
 }
 \description{
-Show constraints. This function is a shortcut to access \code{''} slot.
+(deprecated) Show constraints. This function is a shortcut to access \code{''} slot.
 }

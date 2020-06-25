@@ -1,17 +1,32 @@
 #' @include item_functions.R
 NULL
 
-#' Load item paramaters
+#' Load item pool
 #'
-#' \code{\link{loadItemPool}} is a data loading function to create an \linkS4class{item_pool} class.
+#' \code{\link{loadItemPool}} is a data loading function to create an \code{\linkS4class{item_pool}} object.
 #' \code{\link{loadItemPool}} can read item parameters and standard errors from a data.frame or a .csv file.
 #'
-#' @param ipar Item parameters. Can be a data.frame or the file path of a .csv file. The content should at least include columns 'ID' and 'MODEL'.
-#' @param ipar_se (Optional) Standard errors. Can be a data.frame or file path of a .csv file.
-#' @param file (Deprecated) Use 'ipar' above.
-#' @param se_file (Deprecated) Use 'ipar_se' above.
+#' @param ipar item parameters. Can be a data.frame or the file path of a .csv file. The content should at least include columns 'ID' and 'MODEL'.
+#' @param ipar_se (optional) standard errors. Can be a data.frame or the file path of a .csv file.
+#' @param file (deprecated) use \code{ipar} argument instead.
+#' @param se_file (deprecated) use \code{ipar_se} argument instead.
 #'
-#' @return An \code{\linkS4class{item_pool}} object.
+#' @return \code{\link{loadItemPool}} returns an \code{\linkS4class{item_pool}} object.
+#'
+#' \itemize{
+#'   \item{\code{ni}} the number of items in the pool.
+#'   \item{\code{max_cat}} maximum number of response categories across all items in the pool.
+#'   \item{\code{index}} numeric item index of each item.
+#'   \item{\code{id}} item ID string of each item.
+#'   \item{\code{model}} the object class of each item representing an item model type.
+#'   Can be \code{\linkS4class{item_1PL}}, \code{\linkS4class{item_2PL}}, \code{\linkS4class{item_3PL}},
+#'   \code{\linkS4class{item_PC}}, \code{\linkS4class{item_GPC}}, or \code{\linkS4class{item_GR}}.
+#'   \item{\code{NCAT}} the number of response categories of each item.
+#'   \item{\code{parms}} a list containing the item object of each item.
+#'   \item{\code{ipar}} a matrix containing all item parameters.
+#'   \item{\code{se}} a matrix containing all item parameter standard errors. The values will be 0 if the argument \code{ipar_se} was not supplied.
+#'   \item{\code{raw}} a data.frame containing all item parameters, model types, and item ID strings.
+#' }
 #'
 #' @examples
 #' ## Read from data.frame:
@@ -29,17 +44,17 @@ NULL
 #' loadItemPool(file = "ipar.csv", se_file = "se.csv") # pre 1.1.0
 #' }
 #'
-#' @seealso \link{dataset_science} for example usage.
+#' @seealso \code{\link{dataset_science}}, \code{\link{dataset_reading}}, \code{\link{dataset_fatigue}}, \code{\link{dataset_bayes}} for examples.
 #'
 #' @export
 loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL) {
 
   if (!missing("se_file")){
-    warning("Argument deprecated. Use 'ipar_se' instead.")
+    warning("argument 'se_file' is deprecated. Use 'ipar_se' instead.")
     ipar_se <- se_file
   }
   if (!missing("file")){
-    warning("Argument deprecated. Use 'ipar' instead.")
+    warning("argument 'file' is deprecated. Use 'ipar' instead.")
     ipar <- file
   }
 
@@ -228,13 +243,18 @@ setClass("item_attrib",
 
 #' Load item attributes
 #'
-#' Read item attributes from specified file.
+#' \code{\link{loadItemAttrib}} is a data loading function to create an \code{\linkS4class{item_attrib}} object.
+#' \code{\link{loadItemAttrib}} can read item attributes a data.frame or a .csv file.
 #'
-#' @param object Item attributes. Can be a data.frame or the file path of a .csv file. The content should at least include column 'ID' that matches the item pool.
-#' @param pool An \code{\linkS4class{item_pool}} object. Use \code{\link{loadItemPool}} for this.
-#' @param file (Deprecated) Use 'object' above.
+#' @param object item attributes. Can be a data.frame or the file path of a .csv file. The content should at least include column 'ID' that matches with the \code{\linkS4class{item_pool}} object.
+#' @template pool_param
+#' @template deprecated_file_object_param
 #'
-#' @return An \code{\linkS4class{item_attrib}} object.
+#' @return \code{\link{loadItemAttrib}} returns an \code{\linkS4class{item_attrib}} object.
+#'
+#' \itemize{
+#'   \item{\code{data}} a data.frame containing item attributes.
+#' }
 #'
 #' @examples
 #' ## Read from data.frame:
@@ -253,7 +273,7 @@ setClass("item_attrib",
 #' loadItemAttrib(file   = "iatt.csv", pool) # pre 1.1.0
 #' }
 #'
-#' @seealso \link{dataset_science} for example usage.
+#' @seealso \code{\link{dataset_science}}, \code{\link{dataset_reading}}, \code{\link{dataset_fatigue}}, \code{\link{dataset_bayes}} for examples.
 #'
 #' @export
 loadItemAttrib <- function(object, pool, file = NULL) {
@@ -343,13 +363,18 @@ setClassUnion("stattrib_or_null", c("st_attrib", "NULL"))
 
 #' Load set/stimulus/passage attributes
 #'
-#' Read set, stimulus, or passage attributes from specified file.
+#' \code{\link{loadStAttrib}} is a data loading function to create an \code{\linkS4class{st_attrib}} object.
+#' \code{\link{loadStAttrib}} can read stimulus attributes a data.frame or a .csv file.
 #'
-#' @param object Set attributes. Can be a file path of a .csv file, or a data.frame. The content should at least include the column 'STID' referring to the same column in item attributes.
-#' @param item_attrib An \code{\linkS4class{item_attrib}} object containing item attributes. Use \code{\link{loadItemAttrib}} for this.
-#' @param file (Deprecated) Use 'object' above.
+#' @param object set attributes. Can be a data.frame or the file path of a .csv file. The content should at least include the column 'STID' referring to the column 'STID' in the \code{data} slot of the \code{\linkS4class{item_attrib}} object.
+#' @template item_attrib_param
+#' @template deprecated_file_object_param
 #'
-#' @return A \code{\linkS4class{st_attrib}} object containing stimulus attributes.
+#' @return \code{\link{loadStAttrib}} returns an \code{\linkS4class{st_attrib}} object.
+#'
+#' \itemize{
+#'   \item{\code{data}} a data.frame containing stimulus attributes.
+#' }
 #'
 #' @examples
 #' ## Read from data.frame:
@@ -369,7 +394,7 @@ setClassUnion("stattrib_or_null", c("st_attrib", "NULL"))
 #' loadStAttrib(file   = "satt.csv", item_attrib) # pre 1.1.0
 #' }
 #'
-#' @seealso \link{dataset_reading} for example usage.
+#' @seealso \code{\link{dataset_reading}} for examples.
 #'
 #' @export
 loadStAttrib <- function(object, item_attrib, file = NULL) {
@@ -416,16 +441,18 @@ loadStAttrib <- function(object, item_attrib, file = NULL) {
   }
 }
 
-#' An S4 class to represent a single constraint
+#' Class 'constraints': a single constraint
 #'
-#' An S4 class to represent a single constraint.
+#' \code{\linkS4class{constraint}} is an S4 class to represent a single constraint.
 #'
-#' @slot constraint Character. The index of the constraint.
-#' @slot mat A matrix representing the left-hand side weights. Has nc rows.
-#' @slot dir A vector of length nc. Each entry represents a logical operator relating the left-hand side to the right-hand side.
-#' @slot rhs A vector of length nc. Each entry represents the right-hand side of the constraint.
-#' @slot nc Numeric. The number of constraints represented in the constraint set.
-#' @slot suspend \code{TRUE} if the constraint is to be turned off.
+#' @slot constraint the constraint ID string of the constraint.
+#' @slot nc the number of MIP-format constraints translated from this constraint.
+#' @slot mat LHS coefficients to use on decision variables.
+#' @slot rhs RHS values to use.
+#' @slot dir the imposed constraint between LHS and RHS.
+#' @slot suspend \code{TRUE} if the constraint is not to be imposed.
+#'
+#' @export
 setClass("constraint",
   slots = c(
     constraint = "character",
@@ -483,12 +510,36 @@ setClass("constraint",
   }
 )
 
-#' An S4 class to represent a set of constraints
+#' Class 'constraints': a set of constraints
 #'
-#' An S4 class to represent a set of constraints.
+#' \code{\linkS4class{constraints}} is an S4 class to represent a set of constraints and its associated objects.
 #'
-#' @slot slope Numeric. A slope parameter value.
-#' @slot difficulty Numeric. A difficulty parameter value.
+#' @slot constraints a data.frame containing the constraint specifications.
+#' @slot list_constraints a list containing the \code{\linkS4class{constraint}} object representation of each constraint.
+#' @slot pool the \code{\linkS4class{item_pool}} object associated with the constraints.
+#' @slot item_attrib the \code{\linkS4class{item_attrib}} object associated with the constraints.
+#' @slot st_attrib the \code{\linkS4class{st_attrib}} object associated with the constraints.
+#' @slot test_length the test length specified in the constraints.
+#' @slot nv the number of decision variables. Equals \code{ni + ns}.
+#' @slot ni the number of items to search from.
+#' @slot ns the number of stimulus to search from.
+#' @slot id the item/stimulus ID string of each item/stimulus.
+#' @slot index,mat,dir,rhs these represent MIP-format constraints. A single MIP-format constraint is associated with a value in \code{index}, a row in \code{mat}, a value in \code{rhs}, and a value in \code{dir}.
+#' \itemize{
+#'    \item{the \emph{i}-th value of \code{index} represents which constraint specification in the \code{constraints} argument it was translated from.}
+#'    \item{the \emph{i}-th row of \code{mat} represents LHS coefficients to use on decision variables in the \emph{i}-th MIP-format constraint.}
+#'    \item{the \emph{i}-th value of \code{rhs} represents RHS values to use in the \emph{i}-th MIP-format constraint.}
+#'    \item{the \emph{i}-th value of \code{dir} represents the imposed constraint between LHS and RHS.}
+#' }
+#' @slot set_based \code{TRUE} if the constraint is set-based. \code{FALSE} otherwise.
+#' @slot item_order the item attribute of each item to use in imposing an item order constraint, if any.
+#' @slot item_order_by the name of the item attribute to use in imposing an item order constraint, if any.
+#' @slot stim_order the stimulus attribute of each stimulus to use in imposing a stimulus order constraint, if any.
+#' @slot stim_order_by the name of the stimulus attribute to use in imposing a stimulus order constraint, if any.
+#' @slot item_index_by_stimulus a list containing item indices of each stimulus.
+#' @slot stimulus_index_by_item the stimulus indices of each item.
+#'
+#' @export
 setClass("constraints",
   slots = c(
     constraints = "data.frame",
@@ -537,38 +588,58 @@ setClass("constraints",
     stimulus_index_by_item = numeric(0)
   ),
   validity = function(object) {
-    if (!all(names(object@constraints) %in% c("CONSTRAINT", "TYPE", "WHAT", "CONDITION", "LB", "UB", "ONOFF"))) {
-      stop("Column names must include all of CONSTRAINT, TYPE, WHAT, CONDITION, LB, UB, and ONOFF. See vignette('constraints') for details.")
+    err <- c()
+    if (!all(c("CONSTRAINT", "TYPE", "WHAT", "CONDITION", "LB", "UB", "ONOFF") %in% names(object@constraints))) {
+      msg <- "constraints: must include columns CONSTRAINT, TYPE, WHAT, CONDITION, LB, UB, and ONOFF (see vignette('constraints') for details)"
+      err <- c(err, msg)
     }
-    if (!any(is.na(object@constraints[["LB"]]) | is.na(object@constraints[["UB"]]))) {
-      if (any(object@constraints[["LB"]] > object@constraints[["UB"]])) {
-        stop("Specified UBs must be equal to or larger than LBs.")
+    for (i in 1:dim(object@constraints)[1]) {
+      if (xor(
+        is.na(object@constraints[i, ]$LB),
+        is.na(object@constraints[i, ]$UB))) {
+        msg <- sprintf("constraint %s: missing LB/UB", i)
+        err <- c(err, msg)
       }
-    } else if (any(is.na(object@constraints[["LB"]]) + is.na(object@constraints[["UB"]]) == 1)) {
-      stop("In each constraint, LB and UB must be specified together or omitted together.")
+      if (!any(is.na(c(object@constraints[i, ]$LB, object@constraints[i, ]$UB)))) {
+        if (object@constraints[i, ]$LB > object@constraints[i, ]$UB) {
+          msg <- sprintf(
+            "constraint %s: unexpectedly larger LB than UB %s > %s", i,
+            object@constraints[i, ]$LB,
+            object@constraints[i, ]$UB)
+          err <- c(err, msg)
+        }
+      }
+      if (!object@constraints[i, ]$TYPE %in% c(
+        "NUMBER", "COUNT", "ALLORNONE", "ALL OR NONE", "IIF", "MUTUALLYEXCLUSIVE", "MUTUALLY EXCLUSIVE",
+        "XOR", "ENEMY", "SUM", "AVERAGE", "MEAN", "INCLUDE", "EXCLUDE", "NOT", "ORDER")) {
+        msg <- sprintf(
+          "constraint %s: unexpected TYPE '%s' (see vignette('constraints') for details)", i,
+          object@constraints[i, ]$TYPE
+        )
+        err <- c(err, msg)
+      }
     }
-    if (!all(object@constraints[["TYPE"]] %in% c(
-      "NUMBER", "COUNT", "ALLORNONE", "ALL OR NONE", "IIF", "MUTUALLYEXCLUSIVE", "MUTUALLY EXCLUSIVE",
-      "XOR", "ENEMY", "SUM", "AVERAGE", "MEAN", "INCLUDE", "EXCLUDE", "NOT", "ORDER"))) {
-      stop("The 'TYPE' values must be from accepted values. See vignette('constraints') for details.")
+    if (length(err) == 0) {
+      return(TRUE)
+    } else {
+      return(err)
     }
-    return(TRUE)
   }
 )
 
 #' Load constraints
 #'
-#' Read constraints from specified file.
+#' \code{\link{loadConstraints}} is a data loading function to create a \code{\linkS4class{constraints}} object.
+#' \code{\link{loadConstraints}} can read constraints from a data.frame or a .csv file.
+#' The contents must be in the expected format; see the vignette in \code{vignette("constraints")}.
 #'
-#' Use \code{vignette("constraints")} for instructions on how to create the constraint file.
+#' @param object constraint specifications. Can be a data.frame or the file path of a .csv file. See the vignette for the expected format.
+#' @template pool_param
+#' @template item_attrib_param
+#' @template st_attrib_param
+#' @template deprecated_file_object_param
 #'
-#' @param object Constraint specifications. Can be a file path of a .csv file, or a data.frame. See vignette for the expected format.
-#' @param pool An \code{item_pool} object. Use \code{\link{loadItemPool}} for this.
-#' @param item_attrib An \code{item_attrib} object containing item attributes. Use \code{\link{loadItemAttrib}} for this.
-#' @param st_attrib (Optional) An \code{st_attrib} object containing stimulus attributes. Use \code{\link{loadStAttrib}} for this.
-#' @param file (Deprecated) Use 'object' above.
-#'
-#' @return A \code{constraints} object containing the parsed constraints, to be used in \code{\link{Static}} and \code{\link{Shadow}}.
+#' @return \code{\link{loadConstraints}} returns a \code{\linkS4class{constraints}} object. This object is used in \code{\link{Static}} and \code{\link{Shadow}}.
 #'
 #' @examples
 #' ## Read from data.frame:
@@ -590,20 +661,20 @@ setClass("constraints",
 #' loadConstraints(file   = "consts.csv", pool, item_attrib) # pre 1.1.0
 #' }
 #'
-#' @seealso \link{dataset_science} for example usage.
+#' @seealso \code{\link{dataset_science}}, \code{\link{dataset_reading}}, \code{\link{dataset_fatigue}}, \code{\link{dataset_bayes}} for examples.
 #'
 #' @export
 loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = NULL) {
 
   if (!inherits(pool, "item_pool")) {
-    stop("'pool' must be an 'item_pool' object.")
+    stop("'pool' argument must be an 'item_pool' object")
   }
   if (!inherits(item_attrib, "item_attrib")) {
-    stop("'item_attrib' must be an 'item_attrib' object.")
+    stop("'item_attrib' argument must be an 'item_attrib' object")
   }
   if (!is.null(st_attrib)) {
     if (!inherits(st_attrib, "st_attrib")) {
-      stop("'st_attrib' must be a 'st_attrib' object.")
+      stop("'st_attrib' argument must be a 'st_attrib' object")
     }
   }
 
@@ -639,7 +710,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
     if (any(constraints[["CONSTRAINT"]] != as.character(1:dim(constraints)[1])) |
       !inherits(constraints[["CONSTRAINT"]], "character")) {
       constraints[["CONSTRAINT"]] <- as.character(1:dim(constraints)[1])
-      warning("The 'CONSTRAINT' column was ignored and replaced with valid values.")
+      warning("the 'CONSTRAINT' column was ignored and replaced with valid indices")
     }
   }
 
@@ -651,10 +722,10 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
   nc <- nrow(constraints)
 
   if (nrow(item_attrib@data) != ni) {
-    stop("Number of rows of 'item_attrib' must match pool@ni.")
+    stop("item_attrib@data: nrow() must match pool@ni")
   }
   if (!all(pool@id == item_attrib@data[["ID"]])) {
-    stop("'ID' entries in 'item_attrib' must match pool@id.")
+    stop("item_attrib@data: 'ID' must match pool@id")
   }
   list_constraints <- vector(mode = "list", length = nc)
   item_constraints <- which(constraints[["WHAT"]] == "ITEM")
@@ -664,10 +735,10 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 
   if (length(stim_constraints) > 0) {
     if (is.null(st_attrib)) {
-      stop("'st_attrib' must be supplied to load stimulus-based constraints.")
+      stop("constraints: stimulus-based constraints require 'st_attrib' argument")
     }
     if (!("STID" %in% names(item_attrib@data))) {
-      stop("'item_attrib' content must include 'STID' column to load stimulus-based constraints.")
+      stop("constraints: stimulus-based constraints require 'STID' column in item_attrib@data")
     }
 
     set_based <- TRUE

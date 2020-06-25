@@ -3,15 +3,53 @@
 \docType{class}
 \name{constraints-class}
 \alias{constraints-class}
-\title{An S4 class to represent a set of constraints}
+\title{Class 'constraints': a set of constraints}
 \description{
-An S4 class to represent a set of constraints.
+\code{\linkS4class{constraints}} is an S4 class to represent a set of constraints and its associated objects.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{slope}}{Numeric. A slope parameter value.}
+\item{\code{constraints}}{a data.frame containing the constraint specifications.}
 
-\item{\code{difficulty}}{Numeric. A difficulty parameter value.}
+\item{\code{list_constraints}}{a list containing the \code{\linkS4class{constraint}} object representation of each constraint.}
+
+\item{\code{pool}}{the \code{\linkS4class{item_pool}} object associated with the constraints.}
+
+\item{\code{item_attrib}}{the \code{\linkS4class{item_attrib}} object associated with the constraints.}
+
+\item{\code{st_attrib}}{the \code{\linkS4class{st_attrib}} object associated with the constraints.}
+
+\item{\code{test_length}}{the test length specified in the constraints.}
+
+\item{\code{nv}}{the number of decision variables. Equals \code{ni + ns}.}
+
+\item{\code{ni}}{the number of items to search from.}
+
+\item{\code{ns}}{the number of stimulus to search from.}
+
+\item{\code{id}}{the item/stimulus ID string of each item/stimulus.}
+
+\item{\code{index,mat,dir,rhs}}{these represent MIP-format constraints. A single MIP-format constraint is associated with a value in \code{index}, a row in \code{mat}, a value in \code{rhs}, and a value in \code{dir}.
+\itemize{
+   \item{the \emph{i}-th value of \code{index} represents which constraint specification in the \code{constraints} argument it was translated from.}
+   \item{the \emph{i}-th row of \code{mat} represents LHS coefficients to use on decision variables in the \emph{i}-th MIP-format constraint.}
+   \item{the \emph{i}-th value of \code{rhs} represents RHS values to use in the \emph{i}-th MIP-format constraint.}
+   \item{the \emph{i}-th value of \code{dir} represents the imposed constraint between LHS and RHS.}
+}}
+
+\item{\code{set_based}}{\code{TRUE} if the constraint is set-based. \code{FALSE} otherwise.}
+
+\item{\code{item_order}}{the item attribute of each item to use in imposing an item order constraint, if any.}
+
+\item{\code{item_order_by}}{the name of the item attribute to use in imposing an item order constraint, if any.}
+
+\item{\code{stim_order}}{the stimulus attribute of each stimulus to use in imposing a stimulus order constraint, if any.}
+
+\item{\code{stim_order_by}}{the name of the stimulus attribute to use in imposing a stimulus order constraint, if any.}
+
+\item{\code{item_index_by_stimulus}}{a list containing item indices of each stimulus.}
+
+\item{\code{stimulus_index_by_item}}{the stimulus indices of each item.}
 }}
 

@@ -1,2 +1,2 @@
-#' @param a Numeric. A slope parameter value.
-#' @param b Numeric. A difficulty parameter value.
+#' @param a the slope parameter value.
+#' @param b the difficulty parameter value.

@@ -5,7 +5,7 @@
 \alias{plotShadow}
 \alias{plotShadow,output_Shadow_all-method}
 \alias{plotShadow,list-method}
-\title{(Deprecated) Draw a shadow test chart}
+\title{(deprecated) Plot a shadow test chart}
 \usage{
 plotShadow(
   object,
@@ -48,7 +48,7 @@ plotShadow(
 \item{...}{Additional options to be passed on to \code{pdf()}.}
 }
 \description{
-(Deprecated)
+(deprecated) Use \code{\link[TestDesign:plot-methods]{plot}} with \code{type = 'shadow'} instead.
 }
 \examples{
 config <- createShadowTestConfig()

@@ -1,8 +1,6 @@
 #' @include loading_functions.R
 NULL
 
-#' createStaticTestConfig
-#'
 #' @rdname createStaticTestConfig
 setClass("config_Static",
   slots = c(
@@ -27,20 +25,23 @@ setClass("config_Static",
     )
   ),
   validity = function(object) {
-    errors <- NULL
+    err <- NULL
     if (!toupper(object@item_selection$method) %in% c("MAXINFO", "TIF", "TCC")) {
-      errors <- c(errors, "@item_selection$method only accepts one of MAXINFO, TIF, or TCC.")
+      msg <- sprintf("config@item_selection: unexpected $method '%s' (accepts MAXINFO, TIF, or TCC)", toupper(object@item_selection$method))
+      err <- c(err, msg)
     }
     if (toupper(object@item_selection$method) == "MAXINFO") {
       if (!is.null(object@item_selection$target_value)) {
-        errors <- c(errors, "@item_selection$target_value must be empty when @item_selection$method is MAXINFO.")
+        msg <- "config@item_selection: $target_value must be empty when $method is 'MAXINFO'"
+        err <- c(err, msg)
       }
       target_lengths <- unique(c(
         length(object@item_selection$target_location),
         length(object@item_selection$target_weight)
       ))
       if (length(target_lengths) != 1) {
-        errors <- c(errors, "@item_selection$target_location and @item_selection$target_weight must have the same length.")
+        msg <- "config@item_selection: $target_location and $target_weight must have the same length()"
+        err <- c(err, msg)
       }
     }
     if (toupper(object@item_selection$method) != "MAXINFO") {
@@ -50,20 +51,23 @@ setClass("config_Static",
         length(object@item_selection$target_weight)
       ))
       if (length(target_lengths) != 1) {
-        errors <- c(errors, "@item_selection$target_location, @item_selection$target_value, and @item_selection$target_weight must have the same length.")
+        msg <- "config@item_selection: $target_location, $target_value, and $target_weight must have the same length()"
+        err <- c(err, msg)
       }
     }
     if (toupper(object@item_selection$info_type) != "FISHER") {
-      errors <- c(errors, "@item_selection$info_type only accepts FISHER.")
+      msg <- sprintf("config@item_selection: unexpected $info_type '%s' (accepts FISHER)", toupper(object@item_selection$info_type))
+      err <- c(err, msg)
     }
     if (!toupper(object@MIP$solver) %in% c("LPSYMPHONY", "RSYMPHONY", "GUROBI", "LPSOLVE", "RGLPK")) {
-      errors <- c(errors, "@MIP$solver only accepts one of lpsymphony, Rsymphony, gurobi, lpSolve, or Rglpk.")
+      msg <- sprintf("config@MIP: unexpected $solver (accepts lpsymphony, Rsymphony, gurobi, lpSolve, or Rglpk)", object@MIP$solver)
+      err <- c(err, msg)
     }
 
-    if (length(errors) == 0) {
+    if (length(err) == 0) {
       return(TRUE)
     } else {
-      return(errors)
+      return(err)
     }
   }
 )
@@ -73,26 +77,27 @@ setClassUnion("config_ATA", c("config_Static"))
 
 #' Create a config_Static object
 #'
-#' Create a \code{\linkS4class{config_Static}} object for Static (fixed-form) test assembly.
+#' \code{\link{createStaticTestConfig}} is a config function to create a \code{\linkS4class{config_Static}} object for Static (fixed-form) test assembly.
+#' Default values are used for any unspecified parameters/slots.
 #'
-#' @param item_selection A list containing item selection criteria. This should have the following entries:
+#' @param item_selection a named list containing item selection criteria.
 #' \itemize{
-#'   \item{\code{method}} The type of criteria. Accepts \code{MAXINFO, TIF, TCC}.
-#'   \item{\code{info_type}} The type of information. Accepts \code{FISHER}.
-#'   \item{\code{target_location}} A numeric vector containing the locations of target theta points. (e.g. \code{c(-1, 0, 1)})
-#'   \item{\code{target_value}} A numeric vector containing the target values at each theta location. This should have the same length with \code{target_location}. Ignored if method is \code{MAXINFO}.
-#'   \item{\code{target_weight}} A numeric vector containing the weights for each theta location. This should have the same length with \code{targetlocation}. Defaults to a vector of 1s.
-#' }
-#' @param MIP A list containing solver options. This should have the following entries:
-#' \itemize{
-#'   \item{\code{solver}} The type of solver. Accepts \code{lpsymphony, Rsymphony, gurobi, lpSolve, Rglpk}.
-#'   \item{\code{verbosity}} Verbosity level of the solver. Defaults to -2.
-#'   \item{\code{time_limit}} Time limit in seconds passed onto the solver. Defaults to 60. Used in solvers \code{lpsymphony, Rsymphony, gurobi, Rglpk}.
-#'   \item{\code{gap_limit}} Termination criterion. Gap limit in relative scale passed onto the solver. Defaults to .05. Used in solver \code{gurobi}.
-#'   \item{\code{gap_limit_abs}} Termination criterion. Gap limit in absolute scale passed onto the solver. Defaults to .05. Used in solver \code{lpsymphony, Rsymphony}.
-#'   \item{\code{obj_tol}} Termination criterion. Tolerance on target objective value in absolute difference scale. Defaults to .05. Ignored if method is \code{MAXINFO}.
+#'   \item{\code{method}} the type of selection criteria. Accepts \code{MAXINFO, TIF, TCC}.
+#'   \item{\code{info_type}} the type of information. Accepts \code{FISHER}.
+#'   \item{\code{target_location}} a numeric vector containing the locations of target theta points. (e.g. \code{c(-1, 0, 1)})
+#'   \item{\code{target_value}} a numeric vector containing the target values at each theta location. This should have the same length with \code{target_location}. Ignored if method is \code{MAXINFO}.
+#'   \item{\code{target_weight}} a numeric vector containing the weights for each theta location. This should have the same length with \code{targetlocation}. Defaults to a vector of 1s.
 #' }
 #'
+#' @param MIP a list containing solver options. This should have the following entries:
+#' \itemize{
+#'   \item{\code{solver}} the type of solver. Accepts \code{lpsymphony, Rsymphony, gurobi, lpSolve, Rglpk}. (default = \code{LPSOLVE})
+#'   \item{\code{verbosity}} verbosity level of the solver. (default = \code{-2})
+#'   \item{\code{time_limit}} time limit in seconds. Used in solvers \code{lpsymphony, Rsymphony, gurobi, Rglpk}. (default = \code{60})
+#'   \item{\code{gap_limit}} search termination criterion. Gap limit in relative scale passed onto the solver. Used in solver \code{gurobi}. (default = \code{.05})
+#'   \item{\code{gap_limit_abs}} search termination criterion. Gap limit in absolute scale passed onto the solver. Used in solvers \code{lpsymphony, Rsymphony}. (default = \code{0.05})
+#'   \item{\code{obj_tol}} search termination criterion. Tolerance on target objective value in absolute difference scale. Used when \code{item_selection$method} is \code{TIF} or \code{TCC}. (default = \code{0.05})
+#' }
 #' @examples
 #' cfg1 <- createStaticTestConfig(
 #'   list(
@@ -123,7 +128,6 @@ setClassUnion("config_ATA", c("config_Static"))
 #'   )
 #' )
 #' @rdname createStaticTestConfig
-#'
 #' @export
 createStaticTestConfig <- function(item_selection = NULL, MIP = NULL) {
   cfg <- new("config_Static")
@@ -156,10 +160,19 @@ createStaticTestConfig <- function(item_selection = NULL, MIP = NULL) {
   }
 }
 
-
-#' An S4 class to represent the output from Static()
+#' Class 'output_Static': fixed-form assembly solution
 #'
-#' @rdname Static
+#' \code{\linkS4class{output_Static}} is an S4 class to represent a fixed-form assembly solution.
+#'
+#' @slot MIP a list containing the result from MIP solver.
+#' @slot selected a data.frame containing the selected items and their attributes.
+#' @slot obj_value the objective value of the solution.
+#' @slot solve_time the elapsed time in running the solver.
+#' @slot pool the \code{\linkS4class{item_pool}} used in the assembly.
+#' @slot config the \code{\linkS4class{config_Static}} used in the assembly.
+#' @slot constraints the \code{\linkS4class{constraints}} used in the assembly.
+#'
+#' @export
 setClass("output_Static",
   slots = c(
     MIP         = "list_or_null",

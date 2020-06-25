@@ -5,19 +5,25 @@ NULL
 #'
 #' Plot from objects in the TestDesign package.
 #'
-#' @param x An \code{\linkS4class{item_pool}} object to draw pool-level or item-level information, or a list from \code{\link{Static}} to draw test-level information.
-#' @param y Unused argument, exists for compatibility with \code{\link{plot}} in the base R package.
-#' @param type Type of the plot. \code{info} to plot information, \code{score} to plot expected scores, \code{shadow} to plot shadow test chart, \code{audit} to plot audit trail, and \code{exposure} to plot exposure rates.
-#' @param theta Theta values for drawing the curve. Default is \code{seq(-3, 3, .1)}.
-#' @param info_type Type of information. Currently only accepts \code{FISHER} (default).
+#' @param x accepts the following signatures:
+#' \itemize{
+#'   \item{\code{\linkS4class{item_pool}}}:
+#'   \item{\code{\linkS4class{constraints}}}:
+#'   \item{\code{\linkS4class{output_Static}}}:
+#'   \item{\code{\linkS4class{output_Shadow}}}:
+#' }
+#' @param y not used, exists for compatibility with \code{\link[base]{plot}} in the base R package.
+#' @param type the type of plot. \code{info} to plot information, \code{score} to plot expected scores, \code{shadow} to plot shadow test chart, \code{audit} to plot audit trail, and \code{exposure} to plot exposure rates.
+#' @param theta the theta grid to use in plotting. (default = \code{seq(-3, 3, .1)})
+#' @param info_type the type of information. Currently only accepts \code{FISHER}. (default = \code{FISHER})
 #' @param plot_sum When 'object' is an \code{\linkS4class{item_pool}} object, if \code{TRUE} then draw pool-level information, and if \code{FALSE} draw item-level information for every item in the pool.
 #' @param select A vector of indices identifying the items to subset, for when 'object' is an \code{\linkS4class{item_pool}} object.
-#' @param color The color of the curve.
-#' @param file_pdf If supplied a filename, save as a PDF file.
-#' @param width Width of graphics device.
-#' @param height Height of graphics device.
-#' @param mfrow Multipanel configurations as c(nrow, ncol).
-#' @param ... Arguments to pass onto \code{\link{plot}}.
+#' @param color the color of the curve.
+#' @param file_pdf if supplied a filename, save as a PDF file.
+#' @param width the width of graphics device.
+#' @param height the height of graphics device.
+#' @param mfrow multipanel configurations in \code{c(nrow, ncol)}.
+#' @param ... arguments to pass onto \code{\link{plot}}.
 #'
 #' @examples
 #' ## Plot item information of a pool

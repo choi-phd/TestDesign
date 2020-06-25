@@ -11,6 +11,7 @@ NULL
 #' @param conv A convergence criterion.
 #' @param start_theta A starting theta value.
 calcRP <- function(object, rp = .50, max_iter = 100, conv = 0.0001, start_theta = 0) {
+  # calcRP does not run, needs review
   RP <- numeric(object@ni)
   for (i in 1:object@ni) {
     max_score <- object@NCAT[i] - 1
@@ -228,29 +229,39 @@ setMethod(
   }
 )
 
-#' Generate maximum likelihood estimates of theta
+#' Compute maximum likelihood estimates of theta
 #'
-#' Generate maximum likelihood estimates of theta.
+#' \code{\link{mle}} is a function to compute maximum likelihood estimates of theta.
 #'
-#' @param object A \code{\linkS4class{item_pool}} object.
-#' @param resp A vector (or matrix) of item responses.
-#' @param start_theta An optional vector of start theta values.
-#' @param max_iter Maximum number of iterations.
-#' @param crit Convergence criterion.
-#' @param select A vector of indices identifying the items to subset.
-#' @param theta_range A range of theta values.
-#' @param truncate Set \code{TRUE} to bound MLE to theta_range: c(minTheta, maxTheta).
-#' @param max_change Maximum change between iterations.
-#' @param do_Fisher \code{TRUE} to use Fisher's method of scoring.
+#' @param object an \code{\linkS4class{item_pool}} object.
+#' @param resp a vector of item responses from one person on all items in the \code{object} argument.
+#' @param start_theta (optional) initial theta values.
+#' @param max_iter maximum number of iterations. (default = \code{100})
+#' @param crit convergence criterion to use. (default = \code{0.001})
+#' @param select (optional) if item indices are supplied, only the specified items are used. The \code{resp} argument must have the same length with the length of this argument.
+#' @param truncate set \code{TRUE} to impose a bound on the estimate.
+#' @param theta_range a range of theta values to bound the estimate. Only effective when \code{truncate} is \code{TRUE}. (default = \code{c(-4, 4)})
+#' @param max_change upper bound to impose on the change in theta between iterations. Changes exceeding this value will be replaced by \code{max_change}. (default = \code{1.0})
+#' @param do_Fisher set \code{TRUE} to use Fisher scoring. (default = \code{TRUE})
+#'
+#' @return \code{\link{mle}} returns a list containing estimated values.
+#'
+#' \itemize{
+#'   \item{\code{th}} theta value.
+#'   \item{\code{se}} standard error.
+#'   \item{\code{conv}} \code{TRUE} if estimation converged.
+#'   \item{\code{trunc}} \code{TRUE} if truncating was applied on \code{th}.
+#' }
 #'
 #' @docType methods
 #' @rdname mle-methods
 #' @examples
-#' mle(itempool_fatigue, resp_fatigue_data[10,])
+#' mle(itempool_fatigue, resp_fatigue_data[10, ])
+#' mle(itempool_fatigue, resp_fatigue_data[10, 1:20], select = 1:20)
 #' @export
 setGeneric(
   name = "mle",
-  def = function(object, resp, start_theta = NULL, max_iter = 100, crit = 0.001, select = NULL, theta_range = c(-4, 4), truncate = FALSE, max_change = 1.0, do_Fisher = TRUE) {
+  def = function(object, resp, start_theta = NULL, max_iter = 100, crit = 0.001, select = NULL, truncate = FALSE, theta_range = c(-4, 4), max_change = 1.0, do_Fisher = TRUE) {
     standardGeneric("mle")
   }
 )
@@ -260,7 +271,7 @@ setGeneric(
 setMethod(
   f = "mle",
   signature = "item_pool",
-  definition = function(object, resp, start_theta = NULL, max_iter = 50, crit = 0.005, select = NULL, theta_range = c(-4, 4), truncate = FALSE, max_change = 1.0, do_Fisher = TRUE) {
+  definition = function(object, resp, start_theta = NULL, max_iter = 50, crit = 0.005, select = NULL, truncate = FALSE, theta_range = c(-4, 4), max_change = 1.0, do_Fisher = TRUE) {
     ni <- object@ni
     theta <- seq(min(theta_range), max(theta_range), .1)
     nq <- length(theta)
@@ -514,12 +525,12 @@ setMethod(
   }
 )
 
-#' Generate expected a posteriori estimates of theta
+#' Compute expected a posteriori estimates of theta
 #'
-#' Generate expected a posteriori estimates of theta.
+#' \code{\link{eap}} is a function to compute expected a posteriori estimates of theta.
 #'
-#' @param object An \code{\linkS4class{item_pool}} object.
-#' @param theta A theta grid.
+#' @param object an \code{\linkS4class{item_pool}} object.
+#' @param theta the theta grid to use as quadrature points.
 #' @param prior A prior distribution, a numeric vector for a common prior or a matrix for individualized priors.
 #' @param resp A numeric matrix of item responses, one row per examinee.
 #' @param select A vector of indices identifying the items to subset.
@@ -552,23 +563,23 @@ setMethod(
       nj <- nrow(resp)
       resp <- as.matrix(resp)
     } else {
-      stop("resp must be of class either vector or matrix")
+      stop("'resp' must be a vector or a matrix")
     }
     posterior <- matrix(rep(prior, nj), nj, nq, byrow = TRUE)
     if (length(prior) != nq) {
-      stop("theta and prior must be equal in length")
+      stop("length(theta) and length(prior) must be equal")
     }
     if (!is.null(select)) {
       if (length(resp) != length(select)) {
         stop("resp and select must be equal in length when select is not NULL")
       }
       if (anyDuplicated(select) > 0) {
-        warning("select contains duplicated indices")
+        warning("'select' contains duplicated indices")
         select <- select[-duplicated(select)]
-        response <- response[-duplicated(select)]
+        resp   <- resp[-duplicated(select)]
       }
       if (!all(select %in% 1:ni)) {
-        stop("select contains invalid indices")
+        stop("item indices in 'select' must be in 1:ni")
       }
       items <- select
     } else {
@@ -715,27 +726,30 @@ makeItemPoolCluster <- function(pools, names = NULL) {
   }
 }
 
-#' Run adaptive test assembly.
+#' Run adaptive test assembly
 #'
-#' Perform adaptive test assembly based on generalized shadow-test approach, with specified configurations.
+#' \code{\link{Shadow}} is a test assembly function to perform adaptive test assembly based on the generalized shadow-test framework.
 #'
-#' @param config A \code{\linkS4class{config_Shadow}} object.
-#' @param constraints A list representing optimization constraints. Use \code{\link{loadConstraints}} for this.
-#' @param true_theta Numeric. A vector of true theta values to be used in simulation.
-#' @param data Numeric. A matrix containing item response data.
-#' @param prior Numeric. A matrix or a vector containing priors.
-#' @param prior_par Numeric. A vector of parameters for prior distribution.
-#' @param session Used to communicate with a Shiny session.
+#' @template config_Shadow-param
+#' @template constraints-param
+#' @param true_theta (optional) true theta values to use in simulation. Either \code{true_theta} or \code{data} must be supplied.
+#' @param data (optional) a matrix containing item response data to use in simulation. Either \code{true_theta} or \code{data} must be supplied.
+#' @param prior prior density at each \code{config@theta_grid}. This overrides \code{prior_par}. Can be a vector to use the same prior for all \emph{nj} participants, or a \emph{nj}-row matrix to use a different prior for each participant.
+#' @param prior_par normal distribution parameters \code{c(mean, sd)} to use as prior. Can be a vector to use the same prior for all \emph{nj} participants, or a \emph{nj}-row matrix to use a different prior for each participant.
+#' @param session (optional) used to communicate with Shiny app \code{\link{TestDesign}}.
 #'
-#' @return An \code{\linkS4class{output_Shadow_all}} object containing results.
+#' @return \code{\link{Shadow}} returns an \code{\linkS4class{output_Shadow_all}} object containing assembly results.
 #'
 #' @references{
 #'   \insertRef{van_der_linden_model_1998}{TestDesign}
-#'
+#' }
+#' @references{
 #'   \insertRef{van_der_linden_optimal_1998}{TestDesign}
-#'
+#' }
+#' @references{
 #'   \insertRef{van_der_linden_optimal_2000}{TestDesign}
-#'
+#' }
+#' @references{
 #'   \insertRef{van_der_linden_linear_2005}{TestDesign}
 #' }
 #' @rdname Shadow-methods
@@ -761,75 +775,44 @@ setMethod(
   definition = function(config, constraints, true_theta, data, prior, prior_par, session) {
 
     if (!validObject(config)) {
-      stop("invalid configuration options specified")
+      stop("'config' argument is not a valid 'config_Shadow' object")
     }
 
     if (is.null(constraints)) {
-      stop("'constraints' must be supplied.")
+      stop("'constraints' must be supplied")
     }
 
-    pool  <- constraints@pool
-    model <- sanitizeModel(pool@model)
-    constants <- getConstants(constraints, config, data, true_theta)
-
-    exposure_control  <- toupper(config@exposure_control$method)
+    pool             <- constraints@pool
+    model            <- sanitizeModel(pool@model)
+    constants        <- getConstants(constraints, config, data, true_theta)
+    all_data         <- makeData(pool, true_theta, data, constants)
+    info_fixed_theta <- getInfoFixedTheta(config@item_selection, constants, all_data$test, pool, model)
+    posterior_record <- initializePosterior(prior, prior_par, config, constants, pool)
+    initial_theta    <- initializeTheta(config, constants, posterior_record)
 
     if (constants$use_shadow) {
       refresh_shadow <- initializeShadowEngine(constants, config@refresh_policy)
     }
 
-    all_data         <- makeData(pool, true_theta, data, constants)
-    posterior_record <- initializePosterior(prior, prior_par, config, constants, pool)
-    initial_theta    <- initializeTheta(config, constants, posterior_record)
+    # Initialize exposure rate control
 
-    #####
-    ###    Initialize exposure rate control
-    #####
-
-    exposure_constants      <- getExposureConstants(config@exposure_control)
-
+    exposure_control   <- toupper(config@exposure_control$method)
+    exposure_constants <- getExposureConstants(config@exposure_control)
     items_administered <- matrix(FALSE, constants$nj, constants$ni)
     o_list <- vector(mode = "list", length = constants$nj)
 
     if (exposure_control %in% c("ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
 
-      segment_record <- initializeSegmentRecord(exposure_constants, constants)
-
-      pe_i <- matrix(1, exposure_constants$n_segment, constants$ni)
-
-      if (constants$set_based) {
-        pe_s <- matrix(1, exposure_constants$n_segment, constants$ns)
-      } else {
-        pe_s <- NULL
-        alpha_sjk <- NULL
-        rho_sjk   <- NULL
-      }
-
+      segment_record           <- initializeSegmentRecord(exposure_constants, constants)
       exposure_record          <- initializeExposureRecord(config@exposure_control, exposure_constants, constants)
       exposure_record_detailed <- initializeExposureRecordSegmentwise(exposure_constants, constants)
-
-      # Initialize eligibility parameters
-
       if (!is.null(config@exposure_control$initial_eligibility_stats)) {
-        n_jk      <- config@exposure_control$initial_eligibility_stats$n_jk
-        alpha_ijk <- config@exposure_control$initial_eligibility_stats$alpha_ijk
-        phi_jk    <- config@exposure_control$initial_eligibility_stats$phi_jk
-        rho_ijk   <- config@exposure_control$initial_eligibility_stats$rho_ijk
-        if (constants$set_based) {
-          alpha_sjk <- config@exposure_control$initial_eligibility_stats$alpha_sjk
-          rho_sjk   <- config@exposure_control$initial_eligibility_stats$rho_sjk
-        }
+        exposure_record <- config@exposure_control$initial_eligibility_stats
       }
-
-    } else {
 
     }
 
-    info_fixed_theta <- getInfoFixedTheta(config@item_selection, constants, all_data$test, pool, model)
-
-    #####
-    ###    Initialize usage matrix
-    #####
+    # Initialize usage matrix
 
     if (constants$set_based) {
       usage_matrix <- matrix(FALSE, nrow = constants$nj, ncol = constants$nv)
@@ -837,14 +820,7 @@ setMethod(
       usage_matrix <- matrix(FALSE, nrow = constants$nj, ncol = constants$ni)
     }
 
-
-    #####
-    ###    select a non-administered item with the largest information
-    #####
-
-    #####
-    ###    Loop over nj simulees
-    #####
+    # Loop over nj simulees
 
     has_progress_pkg <- requireNamespace("progress")
     if (has_progress_pkg) {
@@ -876,30 +852,18 @@ setMethod(
 
       current_theta <- estimateInitialTheta(config, initial_theta, prior_par, constants$nj, j, posterior_record)
 
-      ##
-      #  Simulee: initialize stimulus tracking
-      ##
+      # Simulee: initialize stimulus record
 
       if (constants$set_based) {
         o@administered_stimulus_index <- rep(NA_real_, constants$max_ni)
         stimulus_record <- initializeStimulusRecord()
       }
 
-      ##
-      #  Simulee: initialize shadow test stuff
-      ##
+      # Simulee: initialize shadow test record
 
       if (constants$use_shadow) {
         o@shadow_test_feasible  <- logical(constants$test_length)
         o@shadow_test_refreshed <- logical(constants$test_length)
-        imat <- NULL
-        idir <- NULL
-        irhs <- NULL
-        if (constants$set_based) {
-          smat <- NULL
-          sdir <- NULL
-          srhs <- NULL
-        }
       }
 
       theta_change <- 10000
@@ -912,11 +876,9 @@ setMethod(
         ineligible_flag <- flagIneligible(exposure_record, exposure_constants, constants, constraints@item_index_by_stimulus)
       }
 
-      ##
-      #  Simulee: administer (test_length) items
-      ##
+      # Simulee: administer items
 
-      position = 0
+      position <- 0
 
       while (!done) {
 
@@ -926,30 +888,28 @@ setMethod(
           posterior_record, all_data$test@info
         )
 
-        # Item position / simulee: do shadow test stuff
+        # Item position / simulee: do shadow test assembly
 
         if (constants$use_shadow) {
 
           o@theta_segment_index[position] <- getThetaSegment(current_theta$theta, position, config@exposure_control, exposure_constants, o@posterior_sample)
-
-          # Item position / simulee: refresh shadow test
 
           if (shouldShadowBeRefreshed(
             position, config@refresh_policy, refresh_shadow,
             theta_change, constants, stimulus_record
           )) {
 
-
             administered_stimulus_index <- na.omit(unique(o@administered_stimulus_index))
             o@shadow_test_refreshed[position] <- TRUE
 
             xdata <- getXdataOfAdministered(constants, position, o, stimulus_record, constraints)
 
-            # Do exposure control stuff
+            # Do exposure control
 
             if (exposure_constants$use_eligibility_control) {
 
               # Get ineligibile items in the current theta segment
+
               current_segment            <- o@theta_segment_index[position]
               ineligible_flag_in_segment <- getIneligibleFlagInSegment(ineligible_flag, current_segment, constants)
               ineligible_flag_in_segment <- flagAdministeredAsEligible(ineligible_flag_in_segment, o, position, constants)
@@ -1006,10 +966,8 @@ setMethod(
 
           } else {
 
-            # Do not refresh shadow test
-
             o@shadow_test_refreshed[position] <- FALSE
-            o@shadow_test_feasible[position]  <- TRUE
+            o@shadow_test_feasible[position]  <- o@shadow_test_feasible[position - 1]
 
           }
 
@@ -1020,8 +978,11 @@ setMethod(
           o@shadow_test[[position]]           <- optimal$shadow_test[["INDEX"]]
 
         } else {
+
           # If not doing shadow
+
           o@administered_item_index[position] <- selectItem(info, position, o)
+
         }
 
         # Item position / simulee: record which stimulus was administered
@@ -1035,24 +996,26 @@ setMethod(
             stimulus_record$end_set <- FALSE
           }
 
-          # TODO: why is selection$stimulus_of_previous_item == 0 at position 1?
-
           if (!is.na(selection$stimulus_of_previous_item)) {
             if (selection$new_stimulus_selected && selection$stimulus_of_previous_item > 0) {
-              stimulus_record$finished_stimulus_index      <- c(stimulus_record$finished_stimulus_index, selection$stimulus_of_previous_item)
-              stimulus_record$finished_stimulus_item_count <- c(stimulus_record$finished_stimulus_item_count, sum(o@administered_stimulus_index[1:(position - 1)] == selection$stimulus_of_previous_item, na.rm = TRUE))
+              stimulus_record$finished_stimulus_index <- c(
+              stimulus_record$finished_stimulus_index,
+              selection$stimulus_of_previous_item)
+              stimulus_record$finished_stimulus_item_count <- c(
+              stimulus_record$finished_stimulus_item_count,
+              sum(o@administered_stimulus_index[1:(position - 1)] == selection$stimulus_of_previous_item, na.rm = TRUE))
             }
           }
-
         }
 
         # Item position / simulee: record which item was administered
+
         o@administered_item_resp[position] <- all_data$test@data[j, o@administered_item_index[position]]
         o@administered_item_ncat[position] <- pool@NCAT[o@administered_item_index[position]]
         items_administered[j, o@administered_item_index[position]] <- TRUE
 
-
         # Item position / simulee: update posterior
+
         prob_resp <- all_data$test@prob[[o@administered_item_index[position]]][, o@administered_item_resp[position] + 1]
         posterior_record <- updatePosterior(posterior_record, j, prob_resp)
 
@@ -1081,32 +1044,33 @@ setMethod(
           o@interim_theta_est[position] <- interim_MLE$th
           o@interim_se_est[position]    <- interim_MLE$se
 
-        } else if (toupper(config@interim_theta$method) %in% c("EB", "FB")) {
+        } else if (toupper(config@interim_theta$method) == "EB") {
           current_item <- o@administered_item_index[position]
-          if (toupper(config@interim_theta$method == "EB")) {
-            o@posterior_sample <- theta_EB_single(
-              posterior_record$n_sample, current_theta$theta, current_theta$se,
-              pool@ipar[current_item, ],
-              o@administered_item_resp[position], pool@NCAT[current_item],
-              model[current_item], 1, c(current_theta$theta, current_theta$se)
-            )
-          } else {
-            o@posterior_sample <- theta_FB_single(
-              posterior_record$n_sample, current_theta$theta, current_theta$se, posterior_record$ipar_list[[current_item]],
-              pool@ipar[current_item, ],
-              o@administered_item_resp[position], pool@NCAT[current_item],
-              model[current_item], 1, c(current_theta$theta, current_theta$se)
-            )
-          }
+          o@posterior_sample <- theta_EB_single(
+            posterior_record$n_sample, current_theta$theta, current_theta$se,
+            pool@ipar[current_item, ],
+            o@administered_item_resp[position], pool@NCAT[current_item],
+            model[current_item], 1, c(current_theta$theta, current_theta$se)
+          )
           o@posterior_sample <- o@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = posterior_record$n_sample, by = config@MCMC$thin)]
           o@interim_theta_est[position] <- mean(o@posterior_sample)
-          o@interim_se_est[position] <- sd(o@posterior_sample)
+          o@interim_se_est[position]    <- sd(o@posterior_sample)
+        } else if (toupper(config@interim_theta$method) == "FB") {
+          current_item <- o@administered_item_index[position]
+          o@posterior_sample <- theta_FB_single(
+            posterior_record$n_sample, current_theta$theta, current_theta$se, posterior_record$ipar_list[[current_item]],
+            pool@ipar[current_item, ],
+            o@administered_item_resp[position], pool@NCAT[current_item],
+            model[current_item], 1, c(current_theta$theta, current_theta$se)
+          )
+          o@posterior_sample <- o@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = posterior_record$n_sample, by = config@MCMC$thin)]
+          o@interim_theta_est[position] <- mean(o@posterior_sample)
+          o@interim_se_est[position]    <- sd(o@posterior_sample)
         }
 
         theta_change        <- o@interim_theta_est[position] - current_theta$theta
         current_theta$theta <- o@interim_theta_est[position]
         current_theta$se    <- o@interim_se_est[position]
-
 
         # Item position / simulee: trigger shadow test refresh if theta change is sufficient
 
@@ -1130,9 +1094,7 @@ setMethod(
 
       }
 
-      ##
-      #  Simulee: test complete, estimate theta
-      ##
+      # Simulee: test complete, estimate theta
 
       if (identical(config@final_theta, config@interim_theta)) {
 
@@ -1158,7 +1120,8 @@ setMethod(
 
       } else if (toupper(config@final_theta$method) == "MLE") {
 
-        final_MLE <- mle(pool, o@administered_item_resp[1:constants$max_ni],
+        final_MLE <- mle(
+          pool, o@administered_item_resp[1:constants$max_ni],
           start_theta = o@interim_theta_est[constants$max_ni],
           max_iter    = config@final_theta$max_iter,
           crit        = config@final_theta$crit,
@@ -1171,46 +1134,52 @@ setMethod(
         o@final_theta_est <- final_MLE$th
         o@final_se_est    <- final_MLE$se
 
-      } else if (toupper(config@final_theta$method) %in% c("EB", "FB")) {
+      } else if (toupper(config@final_theta$method) == "EB") {
 
-        if (toupper(config@interim_theta$method) == toupper(config@final_theta$method) && identical(config@interim_theta$prior_par, config@final_theta$prior_par)) {
+        if (toupper(config@interim_theta$method) == toupper(config@final_theta$method) &&
+            identical(config@interim_theta$prior_par, config@final_theta$prior_par)) {
 
           o@final_theta_est <- o@interim_theta_est[position]
           o@final_se_est    <- o@interim_se_est[position]
 
         } else {
 
-          if (toupper(config@final_theta$method) %in% c("EB", "FB")) {
-            if (is.vector(prior_par) && length(prior_par) == 2) {
-              o@prior_par <- prior_par
-            } else if (is.matrix(prior_par) && all(dim(prior_par) == c(constants$nj, 2))) {
-              o@prior_par <- prior_par[j, ]
-            } else {
-              o@prior_par <- config@final_theta$prior_par
-            }
-          }
-
-          o@posterior_sample <- rnorm(posterior_record$n_sample, mean = o@prior_par[1], sd = o@prior_par[2])
+          o@prior_par        <- parsePriorPar(prior_par, constants$nj, j, config@final_theta$prior_par)
+          o@posterior_sample <- getPosteriorSample(posterior_record$n_sample, o@prior_par[1], o@prior_par[2], config@MCMC)
+          current_theta      <- mean(o@posterior_sample)
+          current_se         <- sd(o@posterior_sample) * config@MCMC$jump_factor
+          o@posterior_sample <- theta_EB(
+            posterior_record$n_sample, current_theta, current_se,
+            pool@ipar[o@administered_item_index[1:position], ],
+            o@administered_item_resp[1:position], pool@NCAT[o@administered_item_index[1:position]],
+            model[o@administered_item_index[1:position]], 1, c(current_theta, current_se)
+          )
           o@posterior_sample <- o@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = posterior_record$n_sample, by = config@MCMC$thin)]
-          current_theta <- mean(o@posterior_sample)
-          current_se    <- sd(o@posterior_sample) * config@MCMC$jump_factor
+          o@final_theta_est  <- mean(o@posterior_sample)
+          o@final_se_est     <- sd(o@posterior_sample)
 
-          if (toupper(config@final_theta$method == "EB")) {
-            o@posterior_sample <- theta_EB(
-              posterior_record$n_sample, current_theta, current_se,
-              pool@ipar[o@administered_item_index[1:position], ],
-              o@administered_item_resp[1:position], pool@NCAT[o@administered_item_index[1:position]],
-              model[o@administered_item_index[1:position]], 1, c(current_theta, current_se)
-            )
-          } else if (toupper(config@final_theta$method == "FB")) {
-            o@posterior_sample <- theta_FB(
-              posterior_record$n_sample, current_theta, current_se, posterior_record$ipar_list[o@administered_item_index[1:position]],
-              pool@ipar[o@administered_item_index[1:position], ],
-              o@administered_item_resp[1:position], pool@NCAT[o@administered_item_index[1:position]],
-              model[o@administered_item_index[1:position]], 1, c(current_theta, current_se)
-            )
-          }
+        }
 
+      } else if (toupper(config@final_theta$method) == "FB") {
+
+        if (toupper(config@interim_theta$method) == toupper(config@final_theta$method) &&
+            identical(config@interim_theta$prior_par, config@final_theta$prior_par)) {
+
+          o@final_theta_est <- o@interim_theta_est[position]
+          o@final_se_est    <- o@interim_se_est[position]
+
+        } else {
+
+          o@prior_par        <- parsePriorPar(prior_par, constants$nj, j, config@final_theta$prior_par)
+          o@posterior_sample <- getPosteriorSample(posterior_record$n_sample, o@prior_par[1], o@prior_par[2], config@MCMC)
+          current_theta      <- mean(o@posterior_sample)
+          current_se         <- sd(o@posterior_sample) * config@MCMC$jump_factor
+          o@posterior_sample <- theta_FB(
+            posterior_record$n_sample, current_theta, current_se, posterior_record$ipar_list[o@administered_item_index[1:position]],
+            pool@ipar[o@administered_item_index[1:position], ],
+            o@administered_item_resp[1:position], pool@NCAT[o@administered_item_index[1:position]],
+            model[o@administered_item_index[1:position]], 1, c(current_theta, current_se)
+          )
           o@posterior_sample <- o@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = posterior_record$n_sample, by = config@MCMC$thin)]
           o@final_theta_est  <- mean(o@posterior_sample)
           o@final_se_est     <- sd(o@posterior_sample)
@@ -1219,9 +1188,7 @@ setMethod(
 
       }
 
-      ##
-      #  Simulee: record item usage
-      ##
+      # Simulee: record item usage
 
       usage_matrix[j, o@administered_item_index] <- TRUE
       if (constants$set_based) {
@@ -1230,14 +1197,12 @@ setMethod(
 
       o_list[[j]] <- o
 
-      ##
-      #  Simulee: do exposure control
-      ##
+      # Simulee: do exposure control
 
       if (exposure_constants$use_eligibility_control) {
 
-        segment_of               <- getSegmentOf(o, exposure_constants)
-        segment_record           <- updateSegmentRecord(segment_record, segment_of, j)
+        segment_of                 <- getSegmentOf(o, exposure_constants)
+        segment_record             <- updateSegmentRecord(segment_record, segment_of, j)
         ineligible_flag_in_segment <- getIneligibleFlagInSegment(ineligible_flag, segment_of$final_theta_est, constants)
         eligible_flag_in_segment   <- getEligibleFlagInSegment(ineligible_flag, segment_of$final_theta_est, constants)
 
@@ -1304,9 +1269,7 @@ setMethod(
         }
       }
 
-      ##
-      #  Simulee: go to next simulee
-      ##
+      # Simulee: go to next simulee
 
     }
 
@@ -1317,9 +1280,7 @@ setMethod(
     final_theta_est <- unlist(lapply(1:constants$nj, function(j) o_list[[j]]@final_theta_est))
     final_se_est    <- unlist(lapply(1:constants$nj, function(j) o_list[[j]]@final_se_est))
 
-    #####
-    ###    Get exposure rate from everyone
-    #####
+    # Aggregate exposure rates
 
     if (!constants$set_based) {
       exposure_rate <- matrix(NA, constants$ni, 2)
@@ -1340,9 +1301,7 @@ setMethod(
     check_eligibility_stats     <- NULL
     no_fading_eligibility_stats <- NULL
 
-    #####
-    ###    Get exposure control diagnostic stats
-    #####
+    # Get exposure control diagnostic stats
 
     if (exposure_constants$use_eligibility_control) {
 
@@ -2234,9 +2193,9 @@ saveOutput <- function(object_list, file = NULL) {
   }
 }
 
-#' (Deprecated) Draw a shadow test chart
+#' (deprecated) Plot a shadow test chart
 #'
-#' (Deprecated)
+#' (deprecated) Use \code{\link[TestDesign:plot-methods]{plot}} with \code{type = 'shadow'} instead.
 #'
 #' @param object An output from \code{\link{Shadow}} function.
 #' @param examinee_id Numeric ID of the examinee to draw the plot.
@@ -2307,9 +2266,9 @@ setMethod(
   }
 )
 
-#' (Deprecated) Draw an audit trail plot
+#' (deprecated) Plot audit trail
 #'
-#' (Deprecated)
+#' (deprecated) Use \code{\link[TestDesign:plot-methods]{plot}} with \code{type = 'audit'} instead.
 #'
 #' @param object An output object generated by \code{\link{Shadow}}.
 #' @param examinee_id Numeric ID of the examinee to draw the plot.
@@ -2410,9 +2369,9 @@ setMethod(
   }
 )
 
-#' (Deprecated) Draw an item exposure plot
+#' (deprecated) Plot item exposure rates
 #'
-#' (Deprecated) Draw a plot of item exposure rates
+#' (deprecated) Use \code{\link[TestDesign:plot-methods]{plot}} with \code{type = 'exposure'} instead.
 #'
 #' @param object An output object generated by \code{\link{Shadow}}.
 #' @param max_rate A target exposure rate.
@@ -2451,7 +2410,7 @@ setMethod(
   f = "plotExposure",
   signature = "list",
   definition = function(object, max_rate = 0.25, theta_segment = "estimated", color = "blue", color_final = "blue", file_pdf = NULL, ...) {
-    .Deprecated("plot", msg = "plotExposure() is deprecated. Use plot() instead.")
+    .Deprecated("plot", msg = "plotExposure() is deprecated. Use plot(type = 'exposure') instead.")
     message("Consider converting the object to 'output_Shadow_all' class.\n")
     new_object <- new("output_Shadow_all")
     for (n in names(object)) {
@@ -2469,17 +2428,14 @@ setMethod(
   }
 )
 
-
-
 #' @docType methods
 #' @rdname plotExposure-methods
 #' @export
-
 setMethod(
   f = "plotExposure",
   signature = "output_Shadow_all",
   definition = function(object, max_rate = 0.25, theta_segment = "estimated", color = "blue", color_final = "blue", file_pdf = NULL, ...) {
-    .Deprecated("plot", msg = "plotExposure() is deprecated. Use plot() instead.")
+    .Deprecated("plot", msg = "plotExposure() is deprecated. Use plot(type = 'exposure') instead.")
     p <- plot(object,
       type = "exposure",
       theta_segment = theta_segment,

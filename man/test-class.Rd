@@ -3,23 +3,23 @@
 \docType{class}
 \name{test-class}
 \alias{test-class}
-\title{An S4 class to represent a test}
+\title{Class 'test': data for test assembly}
 \description{
-An S4 class to represent a test.
+\code{\linkS4class{test}} is an S4 class to represent data for test assembly.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{pool}}{An \code{\linkS4class{item_pool}} object.}
+\item{\code{pool}}{the \code{\linkS4class{item_pool}} object.}
 
-\item{\code{theta}}{A theta grid.}
+\item{\code{theta}}{the theta grid to use as quadrature points.}
 
-\item{\code{prob}}{A list of item response probabilities.}
+\item{\code{prob}}{the list containing item response probabilities.}
 
-\item{\code{info}}{A matrix of item information values.}
+\item{\code{info}}{the matrix containing item information values.}
 
-\item{\code{true_theta}}{An optional vector of true theta values.}
+\item{\code{true_theta}}{(optional) the true theta values.}
 
-\item{\code{data}}{An optional matrix of item responses.}
+\item{\code{data}}{(optional) the matrix containing item responses.}
 }}
 

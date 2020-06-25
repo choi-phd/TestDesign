@@ -32,9 +32,9 @@ calcEscore(object, theta)
 \S4method{calcEscore}{pool_cluster,numeric}(object, theta)
 }
 \arguments{
-\item{object}{An \code{\link{item}} object or an \code{\linkS4class{item_pool}} object.}
+\item{object}{an \code{\link{item}} or an \code{\linkS4class{item_pool}} object.}
 
-\item{theta}{A vector of theta values.}
+\item{theta}{theta values to use.}
 }
 \value{
 A vector of expected scores of length nq (the number of values on theta grid).
@@ -66,11 +66,17 @@ TCC_pool   <- calcEscore(itempool_science, seq(-3, 3, 1))
 
 {
   \insertRef{lord_theory_1952}{TestDesign}
+}
 
+{
   \insertRef{birnbaum_efficient_1957}{TestDesign}
+}
 
+{
   \insertRef{birnbaum_estimation_1958}{TestDesign}
+}
 
+{
   \insertRef{birnbaum_further_1958}{TestDesign}
 }
 
@@ -80,7 +86,9 @@ TCC_pool   <- calcEscore(itempool_science, seq(-3, 3, 1))
 
 {
   \insertRef{masters_rasch_1982}{TestDesign}
+}
 
+{
   \insertRef{andrich_rating_1978}{TestDesign}
 }
 

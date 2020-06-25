@@ -67,9 +67,9 @@ setMethod(
   }
 )
 
-#' Show constraints
+#' (deprecated) Show constraints
 #'
-#' Show constraints. This function is a shortcut to access \code{''} slot.
+#' (deprecated) Show constraints. This function is a shortcut to access \code{''} slot.
 #'
 #' @param constraints (deprecated)
 #'

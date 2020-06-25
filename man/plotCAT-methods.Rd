@@ -6,7 +6,7 @@
 \alias{plotCAT,output_Shadow_all-method}
 \alias{plotCAT,list-method}
 \alias{plotCAT,output_Shadow-method}
-\title{(Deprecated) Draw an audit trail plot}
+\title{(deprecated) Plot audit trail}
 \usage{
 plotCAT(
   object,
@@ -76,7 +76,7 @@ plotCAT(
 \item{...}{Additional options to be passed on to \code{pdf()}.}
 }
 \description{
-(Deprecated)
+(deprecated) Use \code{\link[TestDesign:plot-methods]{plot}} with \code{type = 'audit'} instead.
 }
 \examples{
 config <- createShadowTestConfig()
