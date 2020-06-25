@@ -132,7 +132,7 @@ getInfoFixedTheta <- function(item_selection, constants, test, pool, model) {
   if (!is.null(item_selection$fixed_theta)) {
     if (length(item_selection$fixed_theta) == 1) {
       o$info_fixed_theta <- vector(mode = "list", length = nj)
-      o$info_fixed_theta[1:nj] <- test@info[which.min(abs(constants$theta_grid - item_selection$fixed_theta)), ]
+      o$info_fixed_theta <- test@info[which.min(abs(constants$theta_grid - item_selection$fixed_theta)), ]
       o$select_at_fixed_theta <- TRUE
     }
     if (length(item_selection$fixed_theta) == nj) {
