@@ -158,7 +158,7 @@ setClass("config_Shadow",
       max_iter = 50,
       crit = 0.001,
       max_change = 1.0,
-      do_fisher = TRUE
+      do_Fisher = TRUE
     ),
     final_theta = list(
       method = "EAP",
@@ -170,7 +170,7 @@ setClass("config_Shadow",
       max_iter = 50,
       crit = 0.001,
       max_change = 1.0,
-      do_fisher = TRUE
+      do_Fisher = TRUE
     ),
     theta_grid = seq(-4, 4, .1),
     audit_trail = FALSE
