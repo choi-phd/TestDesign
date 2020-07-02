@@ -5,7 +5,7 @@
 \alias{item_pool-class}
 \title{An S4 class to represent an item pool}
 \description{
-An S4 class to represent an item pool.
+\code{\linkS4class{item_pool}} class represents an item pool.
 }
 \section{Slots}{
 
