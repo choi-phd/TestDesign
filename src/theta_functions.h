@@ -1,68 +1,68 @@
 #ifndef _THETA_FUNCTIONS_H
 #define _THETA_FUNCTIONS_H
 
-NumericVector theta_EAP(
-  const NumericVector&,
-  const NumericMatrix&,
-  const IntegerVector&,
-  const IntegerVector&,
-  const IntegerVector&,
+arma::colvec theta_EAP(
+  const arma::mat&,
+  const arma::mat&,
+  const arma::icolvec&,
+  const arma::icolvec&,
+  const arma::icolvec&,
   const int&,
-  const NumericVector&);
+  const arma::rowvec&);
 
-NumericMatrix theta_EAP_matrix(
-  const NumericVector&,
-  const NumericMatrix&,
-  const IntegerMatrix&,
-  const IntegerVector&,
-  const IntegerVector&,
+arma::mat theta_EAP_matrix(
+  const arma::mat&,
+  const arma::mat&,
+  const arma::imat Resp,
+  const arma::icolvec&,
+  const arma::icolvec&,
   const int&,
-  const NumericVector&);
+  const arma::rowvec&);
 
-NumericVector theta_EB(
+arma::mat theta_EB(
   const int&,
+  const arma::rowvec&,
   const double&,
-  const double&,
-  const NumericMatrix&,
-  const IntegerVector&,
-  const IntegerVector&,
-  const IntegerVector&,
+  const arma::mat&,
+  const arma::icolvec&,
+  const arma::icolvec&,
+  const arma::icolvec&,
   const int&,
-  const NumericVector&);
+  const arma::rowvec&);
 
-NumericVector theta_EB_single(
+arma::mat theta_EB_single(
   const int&,
+  const arma::rowvec&,
   const double&,
-  const double&,
-  const NumericVector&,
+  const arma::rowvec&,
   const int&,
   const int&,
   const int&,
   const int&,
-  const NumericVector&);
+  const arma::rowvec&);
 
-NumericVector theta_FB(
+arma::mat theta_FB(
   const int&,
-  const double&,
+  const arma::rowvec&,
   const double&,
   const List&,
-  const NumericMatrix&,
-  const IntegerVector&,
-  const IntegerVector&,
-  const IntegerVector&,
+  const arma::mat&,
+  const arma::icolvec&,
+  const arma::icolvec&,
+  const arma::icolvec&,
   const int&,
-  const NumericVector&);
+  const arma::rowvec&);
 
-NumericVector theta_FB_single(
+arma::mat theta_FB_single(
   const int&,
+  const arma::rowvec&,
   const double&,
-  const double&,
-  const NumericMatrix&,
-  const NumericVector&,
+  const arma::mat&,
+  const arma::rowvec&,
   const int&,
   const int&,
   const int&,
   const int&,
-  const NumericVector&);
+  const arma::rowvec&);
 
 #endif
