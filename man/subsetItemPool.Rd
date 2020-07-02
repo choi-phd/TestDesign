@@ -12,7 +12,7 @@ subsetItemPool(pool, select = NULL)
 \item{select}{A vector of indices identifying the items to subset.}
 }
 \description{
-Create a subset of an \code{\linkS4class{item_pool}} object.
+\code{\link{subsetItemPool}} is a function to create a subset of an \code{\linkS4class{item_pool}} object.
 }
 \examples{
 subitempool <- subsetItemPool(itempool_science, 1:100)
