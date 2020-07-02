@@ -4,11 +4,14 @@
 \name{getSolution}
 \alias{getSolution}
 \alias{getSolution,list-method}
+\alias{getSolution,output_Static-method}
 \title{Print solution items}
 \usage{
 getSolution(object, examinee = NA, position = NA, index_only = TRUE)
 
 \S4method{getSolution}{list}(object, examinee = NA, position = NA, index_only = TRUE)
+
+\S4method{getSolution}{output_Static}(object, examinee = NA, position = NA, index_only = TRUE)
 }
 \arguments{
 \item{object}{Output from \code{\link{Static}} or \code{\link{Shadow}}.}
