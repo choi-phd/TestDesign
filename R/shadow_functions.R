@@ -2672,7 +2672,6 @@ plotER <- function(
 plotExposureRateBySegment <- function(object, config, max_rate = 0.25, file_pdf = NULL, width = 7, height = 6, mfrow = c(2, 4)) {
 
   ## FIX THIS: WHAT IF TRUE_THETA IS NOT AVAILABLE
-  ## FIX THIS: WHAT IF TRUE_THETA IS NOT AVAILABLE
 
   nj <- length(object$true_theta)
   ni <- object$pool@ni
@@ -2714,7 +2713,6 @@ plotExposureRateBySegment <- function(object, config, max_rate = 0.25, file_pdf 
   on.exit(par(mfrow = old_mfrow))
   par(mfrow = mfrow)
 
-  ## FIX THIS: split EXPOSURE_RATE into ITEM_EXPOSURE_RATE and STIM_EXPOSURE_RATE
   ## FIX THIS: split EXPOSURE_RATE into ITEM_EXPOSURE_RATE and STIM_EXPOSURE_RATE
 
   plotER(exposure_rate, max_rate = max_rate, title = paste0("Overall (N = ", nj, ")"), color = "blue")
@@ -2893,14 +2891,14 @@ plotExposureRateFinal <- function(object, config = NULL, max_rate = 0.25, theta 
 
   return(
     list(
-      exposure_rate = exposure_rate,
-      exposure_rate_segment = exposure_rate_segment,
+      exposure_rate               = exposure_rate,
+      exposure_rate_segment       = exposure_rate_segment,
       exposure_rate_segment_final = exposure_rate_segment_final,
-      segment_rate_table = segment_rate_table,
-      n_segment = n_segment,
-      segment_n = segment_n,
-      segment_cut = segment_cut,
-      segment_label = segment_label
+      segment_rate_table          = segment_rate_table,
+      n_segment                   = n_segment,
+      segment_n                   = segment_n,
+      segment_cut                 = segment_cut,
+      segment_label               = segment_label
     )
   )
 }
