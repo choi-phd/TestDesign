@@ -1,35 +1,35 @@
 #ifndef _INFO_ARRAY_FUNCTIONS_H
 #define _INFO_ARRAY_FUNCTIONS_H
 
-NumericVector calc_info(
-  const double&,
-  const NumericMatrix&,
-  const IntegerVector&,
-  const IntegerVector&);
+arma::colvec calc_info(
+  const arma::rowvec&,
+  const arma::mat&,
+  const arma::icolvec&,
+  const arma::icolvec&);
 
-NumericMatrix calc_info_matrix(
-  const NumericVector&,
-  const NumericMatrix&,
-  const IntegerVector&,
-  const IntegerVector&);
+arma::mat calc_info_matrix(
+  const arma::mat&,
+  const arma::mat&,
+  const arma::icolvec&,
+  const arma::icolvec&);
 
-NumericVector calc_info_EB(
-  const NumericVector&,
-  const NumericMatrix&,
-  const IntegerVector&,
-  const IntegerVector&);
+arma::rowvec calc_info_EB (
+  const arma::mat&,
+  const arma::mat&,
+  const arma::icolvec&,
+  const arma::icolvec&);
 
-NumericVector calc_info_FB(
-  const NumericVector&,
+arma::colvec calc_info_FB (
+  const arma::rowvec&,
   const List&,
-  const IntegerVector&,
-  const IntegerVector&,
+  const arma::icolvec&,
+  const arma::icolvec&,
   const bool&);
 
-NumericVector calc_MI_FB(
-  const NumericVector&,
+arma::colvec calc_MI_FB (
+  const arma::rowvec&,
   const List&,
-  const IntegerVector&,
-  const IntegerVector&);
+  const arma::icolvec&,
+  const arma::icolvec&);
 
 #endif
