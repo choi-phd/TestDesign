@@ -1419,12 +1419,12 @@ NumericVector theta_FB_single(const int& nx,
 //'
 //' Find the segment to which each theta value belongs.
 //'
-//' @param segment A numeric vector of segment cuts.
 //' @param x A numeric vector of theta values.
+//' @param segment A numeric vector of segment cuts.
 //'
 // [[Rcpp::export]]
-IntegerVector find_segment(NumericVector segment,
-                          NumericVector x) {
+IntegerVector find_segment(NumericVector x,
+                           NumericVector segment) {
   int ns = segment.size();
   int nx = x.size();
   IntegerVector out(nx);
