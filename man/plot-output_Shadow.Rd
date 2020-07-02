@@ -3,6 +3,7 @@
 \docType{methods}
 \name{plot,output_Shadow-method}
 \alias{plot,output_Shadow-method}
+\alias{plot,output_Shadow_all-method}
 \title{Draw an audit trail plot}
 \usage{
 \S4method{plot}{output_Shadow}(
@@ -15,6 +16,25 @@
   min_score = 0,
   max_score = 1,
   z_ci = 1.96,
+  ...
+)
+
+\S4method{plot}{output_Shadow_all}(
+  x,
+  y,
+  examinee_id = 1,
+  type = "audit",
+  min_theta = -5,
+  max_theta = 5,
+  min_score = 0,
+  max_score = 1,
+  z_ci = 1.96,
+  simple = FALSE,
+  sort_by_difficulty = FALSE,
+  theta_segment = "Estimated",
+  color = "blue",
+  color_final = "blue",
+  file_pdf = NULL,
   ...
 )
 }
