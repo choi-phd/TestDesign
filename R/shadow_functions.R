@@ -72,42 +72,6 @@ setMethod(
   return(identical(pool_cluster1, pool_cluster2))
 }
 
-#' Extract
-#'
-#' @param x x
-#' @param i i
-#' @param j j
-#' @param ... ...
-#' @param drop drop
-#'
-#' @name extract-methods
-#' @aliases [,test,ANY,ANY,ANY-method
-#' @docType methods
-setMethod(
-  f = "[",
-  signature = "test",
-  definition = function(x, i, j, ...) {
-    if (i == "pool") {
-      return(x@pool)
-    }
-    if (i == "theta") {
-      return(x@theta)
-    }
-    if (i == "prob") {
-      return(x@prob)
-    }
-    if (i == "info") {
-      return(x@info)
-    }
-    if (i == "true_theta") {
-      return(x@true_theta)
-    }
-    if (i == "data") {
-      return(x@data)
-    }
-  }
-)
-
 #' Create a subset of a test object
 #'
 #' Create a subset of a test object.

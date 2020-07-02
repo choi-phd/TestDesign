@@ -301,43 +301,6 @@ subsetItemPool <- function(pool, select = NULL) {
   }
 }
 
-#' @name extract-methods
-#' @aliases [,item_pool,ANY,ANY,ANY-method
-#' @docType methods
-setMethod(
-  f = "[",
-  signature = "item_pool",
-  definition = function(x, i, j, ...) {
-    if (i == "ni") {
-      return(x@ni)
-    }
-    if (i == "max_cat") {
-      return(x@max_cat)
-    }
-    if (i == "index") {
-      return(x@index)
-    }
-    if (i == "id") {
-      return(x@id)
-    }
-    if (i == "model") {
-      return(x@model)
-    }
-    if (i == "NCAT") {
-      return(x@NCAT)
-    }
-    if (i == "parms") {
-      return(x@parms)
-    }
-    if (i == "ipar") {
-      return(x@ipar)
-    }
-    if (i == "se") {
-      return(x@se)
-    }
-  }
-)
-
 #' @name item_pool.operators
 #' @title Item pool and pool cluster operators
 #'
