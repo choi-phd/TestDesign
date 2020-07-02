@@ -22,7 +22,6 @@
 # Do not disambiguate references. (e.g. (x) "Argument 'x' must be blah.", (o) "'x' must be blah.")
 # Always give full names for slot references. (e.g. "@foo$bar")
 
-#' @import Matrix
 #' @import lpSolve
 #' @import Rcpp methods
 #' @import foreach
