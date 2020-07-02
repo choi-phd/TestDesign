@@ -63,6 +63,7 @@ Collate:
     'exposure_control_functions.R'
     'solver_functions.R'
     'helper_functions.R'
+    'itempool_operators.R'
     'other_functions.R'
     'plot_functions.R'
     'summary_class.R'
