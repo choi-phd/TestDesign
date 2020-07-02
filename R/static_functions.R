@@ -93,7 +93,7 @@ setMethod(
 
 #' Draw item information plots
 #'
-#' Draw item information plots.
+#' (deprecated) Draw item information plots.
 #'
 #' @param object An \code{\linkS4class{item_pool}} object to draw pool-level or item-level information, or a list from \code{\link{Static}} to draw test-level information.
 #' @param theta Theta values for drawing the curve. Default is \code{seq(-3, 3, .1)}.

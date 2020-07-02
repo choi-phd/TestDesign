@@ -82,7 +82,7 @@ plotInfo(
 \item{mfrow}{Multipanel configurations as c(nrow, ncol).}
 }
 \description{
-Draw item information plots.
+(deprecated) Draw item information plots.
 }
 \examples{
 subitempool <- subsetItemPool(itempool_science, 1:8)
