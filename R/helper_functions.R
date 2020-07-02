@@ -71,12 +71,13 @@ setMethod(
 #'
 #' Show constraints. This function is a shortcut to access \code{''} slot.
 #'
-#' @param constraints Output from \code{\link{loadConstraints}}.
+#' @param constraints (deprecated)
 #'
 #' @docType methods
 #' @export
 showConstraints <- function(constraints) {
-  return(constraints@constraints)
+  .Deprecated("print", msg = "'showConstraints' function is deprecated. Use 'print' function instead.")
+  print(constraints)
 }
 
 #' @noRd

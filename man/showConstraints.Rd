@@ -8,7 +8,7 @@
 showConstraints(constraints)
 }
 \arguments{
-\item{constraints}{Output from \code{\link{loadConstraints}}.}
+\item{constraints}{(deprecated)}
 }
 \description{
 Show constraints. This function is a shortcut to access \code{''} slot.
