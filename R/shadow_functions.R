@@ -1396,12 +1396,12 @@ setMethod(
               all(config@exposure_control$first_segment <= n_segment)) {
               output@theta_segment_index[position] <- config@exposure_control$first_segment[position]
             } else {
-              output@theta_segment_index[position] <- find_segment(segment_cut, current_theta)
+              output@theta_segment_index[position] <- find_segment(current_theta, segment_cut)
             }
 
           } else if (exposure_control %in% c("BIGM-BAYESIAN")) {
 
-            sample_segment <- find_segment(segment_cut, output@posterior_sample)
+            sample_segment <- find_segment(output@posterior_sample, segment_cut)
             segment_distribution <- table(sample_segment) / length(sample_segment)
             segment_classified <- as.numeric(names(segment_distribution))
             segment_prob <- numeric(n_segment)
@@ -1823,12 +1823,12 @@ setMethod(
 
       if (item_eligibility_control) {
         if (!is.null(true_theta)) {
-          segment_true <- find_segment(segment_cut, output@true_theta)
+          segment_true <- find_segment(output@true_theta, segment_cut)
           output_list[[j]]@true_theta_segment <- segment_true
           true_segment_freq[segment_true] <- true_segment_freq[segment_true] + 1
           true_segment_count[j]           <- true_segment_freq[segment_true]
         }
-        segment_final <- find_segment(segment_cut, output@final_theta_est)
+        segment_final <- find_segment(output@final_theta_est, segment_cut)
         eligible_in_final_segment <- ineligible_i[segment_final, ] == 0
         est_segment_freq[segment_final] <- est_segment_freq[segment_final] + 1
         est_segment_count[j]            <- est_segment_freq[segment_final]
@@ -2079,7 +2079,7 @@ setMethod(
         } else if (exposure_control %in% c("BIGM-BAYESIAN")) {
 
           segment_visited <- sort(unique(output@theta_segment_index))
-          sample_segment  <- find_segment(segment_cut, output@posterior_sample)
+          sample_segment  <- find_segment(output@posterior_sample, segment_cut)
           segment_distribution <- table(sample_segment) / length(sample_segment)
           segment_classified   <- as.numeric(names(segment_distribution))
           segment_prob <- numeric(n_segment)
@@ -2279,7 +2279,7 @@ setMethod(
       if (config@exposure_control$diagnostic_stats) {
 
         check_eligibility_stats <- as.data.frame(
-          cbind(1:nj, true_theta, find_segment(segment_cut, true_theta), true_segment_count, alpha_g_i, epsilon_g_i),
+          cbind(1:nj, true_theta, find_segment(true_theta, segment_cut), true_segment_count, alpha_g_i, epsilon_g_i),
           row.names = NULL)
 
         names(check_eligibility_stats) <- c("Examinee", "TrueTheta", "TrueSegment", "TrueSegmentCount", paste("a", "g", rep(1:n_segment, rep(ni, n_segment)), "i", rep(1:ni, n_segment), sep = "_"), paste("e", "g", rep(1:n_segment, rep(ni, n_segment)), "i", rep(1:ni, n_segment), sep = "_"))
@@ -2291,7 +2291,7 @@ setMethod(
         }
 
         if (fading_factor != 1) {
-          no_fading_eligibility_stats <- as.data.frame(cbind(1:nj, true_theta, find_segment(segment_cut, true_theta), true_segment_count, no_fading_alpha_g_i, no_fading_epsilon_g_i), row.names = NULL)
+          no_fading_eligibility_stats <- as.data.frame(cbind(1:nj, true_theta, find_segment(true_theta, segment_cut), true_segment_count, no_fading_alpha_g_i, no_fading_epsilon_g_i), row.names = NULL)
           names(no_fading_eligibility_stats) <- c("Examinee", "TrueTheta", "TrueSegment", "TrueSegmentCount", paste("a", "g", rep(1:n_segment, rep(ni, n_segment)), "i", rep(1:ni, n_segment), sep = "_"), paste("e", "g", rep(1:n_segment, rep(ni, n_segment)), "i", rep(1:ni, n_segment), sep = "_"))
           if (set_based) {
             no_fading_eligibility_stats_stimulus <- as.data.frame(cbind(no_fading_alpha_g_s, no_fading_epsilon_g_s), row.names = NULL)
@@ -2801,7 +2801,7 @@ plotExposureRateFinal <- function(object, config = NULL, max_rate = 0.25, theta 
   cut_upper <- segment_cut[2:(n_segment + 1)]
   segment_label <- character(n_segment)
   theta_segment_index <- numeric(sum(retained))
-  theta_segment_index <- find_segment(segment_cut, theta_values[retained])
+  theta_segment_index <- find_segment(theta_values[retained], segment_cut)
 
   segment_n    <- numeric(n_segment)
   segment_dist <- table(theta_segment_index)
