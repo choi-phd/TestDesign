@@ -4,8 +4,9 @@
 \name{plotCAT}
 \alias{plotCAT}
 \alias{plotCAT,output_Shadow_all-method}
+\alias{plotCAT,list-method}
 \alias{plotCAT,output_Shadow-method}
-\title{Draw an audit trail plot}
+\title{(Deprecated) Draw an audit trail plot}
 \usage{
 plotCAT(
   object,
@@ -20,6 +21,18 @@ plotCAT(
 )
 
 \S4method{plotCAT}{output_Shadow_all}(
+  object,
+  examinee_id = 1,
+  min_theta = -5,
+  max_theta = 5,
+  min_score = 0,
+  max_score = 1,
+  z_ci = 1.96,
+  file_pdf = NULL,
+  ...
+)
+
+\S4method{plotCAT}{list}(
   object,
   examinee_id = 1,
   min_theta = -5,
@@ -63,7 +76,7 @@ plotCAT(
 \item{...}{Additional options to be passed on to \code{pdf()}.}
 }
 \description{
-Draw an audit trail plot.
+(Deprecated)
 }
 \examples{
 config <- createShadowTestConfig()
