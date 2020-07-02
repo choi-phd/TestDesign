@@ -56,6 +56,17 @@ setMethod(
   }
 )
 
+#' @docType methods
+#' @rdname getSolution-methods
+setMethod(
+  f = "getSolution",
+  signature = "output_Static",
+  definition = function(object, examinee = NA, position = NA, index_only = TRUE) {
+    .Deprecated("print", msg = "'getSolution' function is deprecated. Use 'print' function instead.")
+    print(object, index_only = index_only)
+  }
+)
+
 #' Show constraints
 #'
 #' Show constraints. This function is a shortcut to access \code{''} slot.
