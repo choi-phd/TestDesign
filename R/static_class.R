@@ -7,23 +7,23 @@ NULL
 setClass("config_Static",
   slots = c(
     item_selection = "list",
-    MIP = "list"
+    MIP            = "list"
   ),
   prototype = list(
     item_selection = list(
-      method = "MaxInfo",
-      info_type = "FISHER",
+      method          = "MaxInfo",
+      info_type       = "FISHER",
       target_location = c(-1.2, 0, 1.2),
-      target_value = NULL,
-      target_weight = c(1, 1, 1)
+      target_value    = NULL,
+      target_weight   = c(1, 1, 1)
     ),
     MIP = list(
-      solver = "LPSOLVE",
-      verbosity = -2,
-      time_limit = 60,
-      gap_limit = 0.05,
-      gap_limit_abs = 0.05,
-      obj_tol = 0.05
+      solver          = "LPSOLVE",
+      verbosity       = -2,
+      time_limit      = 60,
+      gap_limit       = 0.05,
+      gap_limit_abs   = 0.05,
+      obj_tol         = 0.05
     )
   ),
   validity = function(object) {
