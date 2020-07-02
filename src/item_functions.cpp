@@ -8,8 +8,9 @@
 //' @template 1pl-params
 //' @template 1pl-ref
 // [[Rcpp::export]]
-double p_1pl(const double& x, const double& b){
-  return 1/(1+std::exp(b-x));
+double p_1pl(const arma::rowvec& x, const double& b) {
+  double xmul = x(0);
+  return 1 / (1 + std::exp(b - xmul));
 }
 
 //' Calculate probability at a single theta (2PL)
@@ -20,8 +21,9 @@ double p_1pl(const double& x, const double& b){
 //' @template 2pl-params
 //' @template 2pl-ref
 // [[Rcpp::export]]
-double p_2pl(const double& x, const double& a, const double& b){
-  return 1/(1+std::exp(-a*(x-b)));
+double p_2pl(const arma::rowvec& x, const double& a, const double& b) {
+  double xmul = x(0);
+  return 1 / (1 + std::exp(-a * (xmul - b)));
 }
 
 //' Calculate probability at a single theta (3PL)
@@ -32,8 +34,9 @@ double p_2pl(const double& x, const double& a, const double& b){
 //' @template 3pl-params
 //' @template 3pl-ref
 // [[Rcpp::export]]
-double p_3pl(const double& x, const double& a, const double& b, const double& c){
-  return c+(1-c)/(1+std::exp(-a*(x-b)));
+double p_3pl(const arma::rowvec& x, const double& a, const double& b, const double& c) {
+  double xmul = x(0);
+  return c + (1 - c) / (1 + std::exp(-a * (xmul - b)));
 }
 
 //' Calculate probability at a single theta (PC)
@@ -44,17 +47,23 @@ double p_3pl(const double& x, const double& a, const double& b, const double& c)
 //' @template pc-params
 //' @template pc-ref
 // [[Rcpp::export]]
-NumericVector p_pc(const double& x, const NumericVector& b){
-  int nk = b.size()+1;
-  NumericVector z(nk);
-  z[0] = x;
-  for(int k=1; k<nk; k++) {
-    z[k] = x-b[k-1];
+arma::rowvec p_pc(const arma::rowvec& x, const arma::rowvec& b) {
+
+  double xmul = x(0);
+  int nk = b.n_cols + 1;
+  rowvec z(nk);
+  z(0) = xmul;
+
+  for (int k = 1; k < nk; k++) {
+    z(k) = xmul - b(k - 1);
   }
-  NumericVector zz = cumsum(z);
-  NumericVector pp = exp(zz);
+
+  rowvec zz = cumsum(z);
+  rowvec pp = exp(zz);
   double psum = sum(pp);
-  return pp/psum;
+
+  return pp / psum;
+
 }
 
 //' Calculate probability at a single theta (GPC)
@@ -65,17 +74,23 @@ NumericVector p_pc(const double& x, const NumericVector& b){
 //' @template gpc-params
 //' @template gpc-ref
 // [[Rcpp::export]]
-NumericVector p_gpc(const double& x, const double& a, const NumericVector& b){
-  int nk = b.size()+1;
-  NumericVector z(nk);
-  z[0] = a*x;
-  for(int k=1; k<nk; k++) {
-    z[k] = a*(x-b[k-1]);
+arma::rowvec p_gpc(const arma::rowvec& x, const double& a, const arma::rowvec& b) {
+
+  double xmul = x(0);
+  int nk = b.n_cols + 1;
+  rowvec z(nk);
+  z(0) = a * xmul;
+
+  for (int k = 1; k < nk; k++) {
+    z(k) = a * (xmul - b(k - 1));
   }
-  NumericVector zz = cumsum(z);
-  NumericVector pp = exp(zz);
+
+  rowvec zz = cumsum(z);
+  rowvec pp = exp(zz);
   double psum = sum(pp);
-  return pp/psum;
+
+  return pp / psum;
+
 }
 
 //' Calculate probability at a single theta (GR)
@@ -86,18 +101,22 @@ NumericVector p_gpc(const double& x, const double& a, const NumericVector& b){
 //' @template gr-params
 //' @template gr-ref
 // [[Rcpp::export]]
-NumericVector p_gr(const double& x, const double& a, const NumericVector& b){
-  int nk = b.size()+1;
-  NumericVector p(nk), p_star(nk+1);
-  p_star[0] = 1;
-  p_star[nk] = 0;
-  for(int k = 1; k < nk; k++){
-    p_star[k] = p_2pl(x,a,b[k-1]);
+arma::rowvec p_gr(const arma::rowvec& x, const double& a, const arma::rowvec& b) {
+
+  int nk = b.n_cols + 1;
+  rowvec p(nk), p_star(nk + 1);
+  p_star(0) = 1;
+  p_star(nk) = 0;
+
+  for (int k = 1; k < nk; k++) {
+    p_star(k) = p_2pl(x, a, b(k - 1));
   }
-  for(int k = 0; k < nk; k++){
-    p[k] = p_star[k]-p_star[k+1];
+  for (int k = 0; k < nk; k++) {
+    p(k) = p_star(k) - p_star(k + 1);
   }
+
   return p;
+
 }
 
 //' Calculate probability at multiple thetas (1PL)
@@ -108,13 +127,17 @@ NumericVector p_gr(const double& x, const double& a, const NumericVector& b){
 //' @template 1pl-params
 //' @template 1pl-ref
 // [[Rcpp::export]]
-NumericVector array_p_1pl(const NumericVector& x, const double& b){
-  int nx = x.size();
-  NumericVector p_array(nx);
-  for(int j = 0; j < nx; j++) {
-    p_array[j] = p_1pl(x[j],b);
+arma::colvec array_p_1pl(const arma::mat& x, const double& b) {
+
+  int nx = x.n_rows;
+  colvec p_array(nx);
+
+  for (int j = 0; j < nx; j++) {
+    p_array(j) = p_1pl(x.row(j), b);
   }
+
   return p_array;
+
 }
 
 //' Calculate probability at multiple thetas (2PL)
@@ -125,13 +148,17 @@ NumericVector array_p_1pl(const NumericVector& x, const double& b){
 //' @template 2pl-params
 //' @template 2pl-ref
 // [[Rcpp::export]]
-NumericVector array_p_2pl(const NumericVector& x, const double& a, const double& b){
-  int nx = x.size();
-  NumericVector p_array(nx);
-  for(int j = 0; j < nx; j++) {
-    p_array[j] = p_2pl(x[j],a,b);
+arma::colvec array_p_2pl(const arma::mat& x, const double& a, const double& b) {
+
+  int nx = x.n_rows;
+  colvec p_array(nx);
+
+  for (int j = 0; j < nx; j++) {
+    p_array(j) = p_2pl(x.row(j), a, b);
   }
+
   return p_array;
+
 }
 
 //' Calculate probability at multiple thetas (3PL)
@@ -142,13 +169,17 @@ NumericVector array_p_2pl(const NumericVector& x, const double& a, const double&
 //' @template 3pl-params
 //' @template 3pl-ref
 // [[Rcpp::export]]
-NumericVector array_p_3pl(const NumericVector& x, const double& a, const double& b, const double& c){
-  int nx = x.size();
-  NumericVector p_array(nx);
-  for(int j = 0; j < nx; j++) {
-    p_array[j] = p_3pl(x[j],a,b,c);
+arma::colvec array_p_3pl(const arma::mat& x, const double& a, const double& b, const double& c) {
+
+  int nx = x.n_rows;
+  colvec p_array(nx);
+
+  for (int j = 0; j < nx; j++) {
+    p_array(j) = p_3pl(x.row(j), a, b, c);
   }
+
   return p_array;
+
 }
 
 //' Calculate probability at multiple thetas (PC)
@@ -159,17 +190,16 @@ NumericVector array_p_3pl(const NumericVector& x, const double& a, const double&
 //' @template pc-params
 //' @template pc-ref
 // [[Rcpp::export]]
-NumericMatrix array_p_pc(const NumericVector& x, const NumericVector& b){
-  int nx = x.size();
-  int nk = b.size()+1;
-  NumericMatrix p_array(nx,nk);
-  NumericVector p(nk);
-  for(int j = 0; j < nx; j++) {
-    p = p_pc(x[j],b);
-    for(int k = 0; k < nk; k++) {
-      p_array(j,k) = p[k];
-    }
+arma::mat array_p_pc(const arma::mat& x, const arma::rowvec& b) {
+
+  int nx = x.n_rows;
+  int nk = b.n_cols + 1;
+  mat p_array(nx, nk);
+
+  for (int j = 0; j < nx; j++) {
+    p_array.row(j) = p_pc(x.row(j), b);
   }
+
   return p_array;
 }
 
@@ -181,18 +211,18 @@ NumericMatrix array_p_pc(const NumericVector& x, const NumericVector& b){
 //' @template gpc-params
 //' @template gpc-ref
 // [[Rcpp::export]]
-NumericMatrix array_p_gpc(const NumericVector& x, const double& a, const NumericVector& b){
-  int nx = x.size();
-  int nk = b.size()+1;
-  NumericMatrix p_array(nx,nk);
-  NumericVector p(nk);
-  for(int j = 0; j < nx; j++) {
-    p = p_gpc(x[j],a,b);
-    for(int k = 0; k < nk; k++) {
-      p_array(j,k) = p[k];
-    }
+arma::mat array_p_gpc(const arma::mat& x, const double& a, const arma::rowvec& b) {
+
+  int nx = x.n_rows;
+  int nk = b.n_cols + 1;
+  mat p_array(nx, nk);
+
+  for (int j = 0; j < nx; j++) {
+    p_array.row(j) = p_gpc(x.row(j), a, b);
   }
+
   return p_array;
+
 }
 
 //' Calculate probability at multiple thetas (GR)
@@ -203,18 +233,18 @@ NumericMatrix array_p_gpc(const NumericVector& x, const double& a, const Numeric
 //' @template gr-params
 //' @template gr-ref
 // [[Rcpp::export]]
-NumericMatrix array_p_gr(const NumericVector& x, const double& a, const NumericVector& b){
-  int nx = x.size();
-  int nk = b.size()+1;
-  NumericMatrix p_array(nx,nk);
-  NumericVector p(nk);
-  for(int j = 0; j < nx; j++) {
-    p = p_gr(x[j],a,b);
-    for(int k = 0; k < nk; k++) {
-      p_array(j,k) = p[k];
-    }
+arma::mat array_p_gr(const arma::mat& x, const double& a, const arma::rowvec& b) {
+
+  int nx = x.n_rows;
+  int nk = b.n_cols + 1;
+  mat p_array(nx, nk);
+
+  for (int j = 0; j < nx; j++) {
+    p_array.row(j) = p_gr(x.row(j), a, b);
   }
+
   return p_array;
+
 }
 
 //' Calculate Fisher information at a single theta (1PL)
@@ -225,9 +255,9 @@ NumericMatrix array_p_gr(const NumericVector& x, const double& a, const NumericV
 //' @template 1pl-params
 //' @template 1pl-ref
 // [[Rcpp::export]]
-double info_1pl(const double& x, const double& b){
-  double p = p_1pl(x,b);
-  return p*(1-p);
+double info_1pl(const arma::rowvec& x, const double& b) {
+  double p = p_1pl(x, b);
+  return p * (1 - p);
 }
 
 //' Calculate Fisher information at a single theta (2PL)
@@ -238,9 +268,9 @@ double info_1pl(const double& x, const double& b){
 //' @template 2pl-params
 //' @template 2pl-ref
 // [[Rcpp::export]]
-double info_2pl(const double& x, const double& a, const double& b){
-  double p = p_2pl(x,a,b);
-  return pow(a,2)*p*(1-p);
+double info_2pl(const arma::rowvec& x, const double& a, const double& b) {
+  double p = p_2pl(x, a, b);
+  return pow(a, 2) * p * (1 - p);
 }
 
 //' Calculate Fisher information at a single theta (3PL)
@@ -251,9 +281,9 @@ double info_2pl(const double& x, const double& a, const double& b){
 //' @template 3pl-params
 //' @template 3pl-ref
 // [[Rcpp::export]]
-double info_3pl(const double& x, const double& a, const double& b, const double& c){
-  double p = p_3pl(x,a,b,c);
-  return pow(a,2)*(1-p)/p*pow((p-c)/(1-c),2);
+double info_3pl(const arma::rowvec& x, const double& a, const double& b, const double& c) {
+  double p = p_3pl(x, a, b, c);
+  return pow(a, 2) * (1 - p) / p * pow((p - c) / (1 - c), 2);
 }
 
 //' Calculate Fisher information at a single theta (PC)
@@ -264,15 +294,19 @@ double info_3pl(const double& x, const double& a, const double& b, const double&
 //' @template pc-params
 //' @template pc-ref
 // [[Rcpp::export]]
-double info_pc(const double& x, const NumericVector& b){
-  NumericVector p = p_pc(x,b);
-  int nk = b.size()+1;
+double info_pc(const arma::rowvec& x, const arma::rowvec& b) {
+
+  rowvec p = p_pc(x, b);
+  int nk = b.n_cols + 1;
   double const_1 = 0, const_2 = 0;
-  for(int i = 0; i < nk; i++){
-    const_1 += i*p[i];
-    const_2 += i*i*p[i];
+
+  for (int i = 0; i < nk; i++) {
+    const_1 += i * p(i);
+    const_2 += i * i * p(i);
   }
-  return const_2-pow(const_1,2);
+
+  return const_2 - pow(const_1, 2);
+
 }
 
 //' Calculate Fisher information at a single theta (GPC).
@@ -283,15 +317,19 @@ double info_pc(const double& x, const NumericVector& b){
 //' @template gpc-params
 //' @template gpc-ref
 // [[Rcpp::export]]
-double info_gpc(const double& x, const double& a, const NumericVector& b){
-  NumericVector p = p_gpc(x,a,b);
-  int nk = b.size()+1;
+double info_gpc(const arma::rowvec& x, const double& a, const arma::rowvec& b) {
+
+  rowvec p = p_gpc(x, a, b);
+  int nk = b.n_cols + 1;
   double const_1 = 0, const_2 = 0;
-  for(int i = 0; i < nk; i++){
-    const_1 += i*p[i];
-    const_2 += i*i*p[i];
+
+  for (int i = 0; i < nk; i++) {
+    const_1 += i * p(i);
+    const_2 += i * i * p(i);
   }
-  return pow(a,2)*(const_2-pow(const_1,2));
+
+  return pow(a, 2) * (const_2 - pow(const_1, 2));
+
 }
 
 //' Calculate Fisher information at a single theta (GR).
@@ -302,19 +340,25 @@ double info_gpc(const double& x, const double& a, const NumericVector& b){
 //' @template gr-params
 //' @template gr-ref
 // [[Rcpp::export]]
-double info_gr(const double& x, const double& a, const NumericVector& b){
-  int nk = b.size()+1;
-  NumericVector p_star(nk+1);
-  p_star[0] = 1;
-  p_star[nk] = 0;
-  for(int k = 1; k < nk; k++){
-    p_star[k] = p_2pl(x,a,b[k-1]);
+double info_gr(const arma::rowvec& x, const double& a, const arma::rowvec& b) {
+
+  int nk = b.n_cols + 1;
+  rowvec p_star(nk + 1);
+  p_star(0) = 1;
+  p_star(nk) = 0;
+
+  for (int k = 1; k < nk; k++) {
+    p_star(k) = p_2pl(x, a, b(k - 1));
   }
+
   double out = 0;
-  for(int k = 0; k < nk; k++){
-    out += (p_star[k]-p_star[k+1])*pow(1-p_star[k]-p_star[k+1],2);
+
+  for (int k = 0; k < nk; k++) {
+    out += (p_star(k) - p_star(k + 1)) * pow(1 - p_star(k) - p_star(k + 1), 2);
   }
-  return out *= pow(a,2);
+
+  return out *= pow(a, 2);
+
 }
 
 //' Calculate Fisher information at multiple thetas (1PL)
@@ -325,13 +369,17 @@ double info_gr(const double& x, const double& a, const NumericVector& b){
 //' @template 1pl-params
 //' @template 1pl-ref
 // [[Rcpp::export]]
-NumericVector array_info_1pl(const NumericVector& x, const double& b){
-  int nx = x.size();
-  NumericVector info_array(nx);
-  for(int j = 0; j < nx; j++) {
-    info_array[j] = info_1pl(x[j],b);
+arma::colvec array_info_1pl(const arma::mat& x, const double& b) {
+
+  int nx = x.n_rows;
+  colvec info_array(nx);
+
+  for (int j = 0; j < nx; j++) {
+    info_array(j) = info_1pl(x.row(j), b);
   }
+
   return info_array;
+
 }
 
 //' Calculate Fisher information at multiple thetas (2PL)
@@ -342,12 +390,15 @@ NumericVector array_info_1pl(const NumericVector& x, const double& b){
 //' @template 2pl-params
 //' @template 2pl-ref
 // [[Rcpp::export]]
-NumericVector array_info_2pl(const NumericVector& x, const double& a, const double& b){
-  int nx = x.size();
-  NumericVector info_array(nx);
-  for(int j = 0; j < nx; j++) {
-    info_array[j] = info_2pl(x[j],a,b);
+arma::colvec array_info_2pl(const arma::mat& x, const double& a, const double& b) {
+
+  int nx = x.n_rows;
+  colvec info_array(nx);
+
+  for (int j = 0; j < nx; j++) {
+    info_array(j) = info_2pl(x.row(j), a, b);
   }
+
   return info_array;
 }
 
@@ -359,14 +410,19 @@ NumericVector array_info_2pl(const NumericVector& x, const double& a, const doub
 //' @template 3pl-params
 //' @template 3pl-ref
 // [[Rcpp::export]]
-NumericVector array_info_3pl(const NumericVector& x, const double& a, const double& b, const double& c){
-  int nx = x.size();
-  NumericVector info_array(nx);
-  for(int j = 0; j < nx; j++) {
-    info_array[j] = info_3pl(x[j],a,b,c);
+arma::colvec array_info_3pl(const arma::mat& x, const double& a, const double& b, const double& c) {
+
+  int nx = x.n_rows;
+  colvec info_array(nx);
+
+  for (int j = 0; j < nx; j++) {
+    info_array(j) = info_3pl(x.row(j), a, b, c);
   }
+
   return info_array;
+
 }
+
 
 //' Calculate Fisher information at multiple thetas (PC)
 //'
@@ -376,13 +432,17 @@ NumericVector array_info_3pl(const NumericVector& x, const double& a, const doub
 //' @template pc-params
 //' @template pc-ref
 // [[Rcpp::export]]
-NumericVector array_info_pc(const NumericVector& x, const NumericVector& b){
-  int nx = x.size();
-  NumericVector info_array(nx);
-  for(int j = 0; j < nx; j++) {
-    info_array[j] = info_pc(x[j],b);
+arma::colvec array_info_pc(const arma::mat& x, const arma::rowvec& b) {
+
+  int nx = x.n_rows;
+  colvec info_array(nx);
+
+  for (int j = 0; j < nx; j++) {
+    info_array(j) = info_pc(x.row(j), b);
   }
+
   return info_array;
+
 }
 
 //' Calculate Fisher information at multiple thetas (GPC)
@@ -393,13 +453,17 @@ NumericVector array_info_pc(const NumericVector& x, const NumericVector& b){
 //' @template gpc-params
 //' @template gpc-ref
 // [[Rcpp::export]]
-NumericVector array_info_gpc(const NumericVector& x, const double& a, const NumericVector& b){
-  int nx = x.size();
-  NumericVector info_array(nx);
-  for(int j = 0; j < nx; j++) {
-    info_array[j] = info_gpc(x[j],a,b);
+arma::colvec array_info_gpc(const arma::mat& x, const double& a, const arma::rowvec& b) {
+
+  int nx = x.n_rows;
+  colvec info_array(nx);
+
+  for (int j = 0; j < nx; j++) {
+    info_array(j) = info_gpc(x.row(j), a, b);
   }
+
   return info_array;
+
 }
 
 //' Calculate Fisher information at multiple thetas (GR)
@@ -410,11 +474,15 @@ NumericVector array_info_gpc(const NumericVector& x, const double& a, const Nume
 //' @template gr-params
 //' @template gr-ref
 // [[Rcpp::export]]
-NumericVector array_info_gr(const NumericVector& x, const double& a, const NumericVector& b){
-  int nx = x.size();
-  NumericVector info_array(nx);
-  for(int j = 0; j < nx; j++) {
-    info_array[j] = info_gr(x[j],a,b);
+arma::colvec array_info_gr(const arma::mat& x, const double& a, const arma::rowvec& b) {
+
+  int nx = x.n_rows;
+  colvec info_array(nx);
+
+  for (int j = 0; j < nx; j++) {
+    info_array(j) = info_gr(x.row(j), a, b);
   }
+
   return info_array;
+
 }
