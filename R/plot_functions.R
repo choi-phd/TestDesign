@@ -309,3 +309,46 @@ setMethod(
     }
   }
 )
+
+#' @docType methods
+#' @rdname plot-output_Shadow
+#' @export
+setMethod(
+  f = "plot",
+  signature = "output_Shadow_all",
+  definition = function(
+    x, y, examinee_id = 1, type = "audit",
+    min_theta = -5, max_theta = 5, min_score = 0, max_score = 1, z_ci = 1.96,
+    simple = FALSE, sort_by_difficulty = FALSE,
+    theta_segment = "Estimated", color = "blue", color_final = "blue",
+    file_pdf = NULL, ...) {
+    if (!type %in% c("audit", "shadow", "exposure")) {
+      stop("'type' must be audit, shadow, or exposure")
+    }
+    if (type == "audit") {
+      if (!all(examinee_id %in% 1:length(x@output))) {
+        stop("'examinee_id' out of bounds")
+      }
+      if (!is.null(file_pdf)) {
+        pdf(file = file_pdf, bg = "white")
+      }
+      for (id in examinee_id) {
+        plot(
+          x@output[[id]],
+          type = "audit",
+          examinee_id = examinee_id,
+          min_theta = min_theta, max_theta = max_theta,
+          min_score = min_score, max_score = max_score,
+          z_ci = z_ci,
+          ...
+        )
+      }
+      if (!is.null(file_pdf)) {
+        dev.off()
+      } else {
+        p <- recordPlot()
+        return(p)
+      }
+    }
+  }
+)
