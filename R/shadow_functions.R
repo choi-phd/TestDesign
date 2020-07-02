@@ -3151,9 +3151,9 @@ saveOutput <- function(object_list, file = NULL) {
   }
 }
 
-#' Draw a shadow test chart
+#' (Deprecated) Draw a shadow test chart
 #'
-#' Draw a chart of shadow tests constructed for each simulee. The index of a column represents the position of item administration process, and each column represents the item pool.
+#' (Deprecated)
 #'
 #' @param object An output from \code{\link{Shadow}} function.
 #' @param examinee_id Numeric ID of the examinee to draw the plot.
@@ -3186,199 +3186,41 @@ setMethod(
   f = "plotShadow",
   signature = "output_Shadow_all",
   definition = function(object, examinee_id = 1, sort_by_difficulty = FALSE, file_pdf = NULL, simple = FALSE, ...) {
+    .Deprecated("plot", msg = "plotShadow() is deprecated. Use plot(type = 'shadow') instead.")
+    p <- plot(
+      object,
+      type = "shadow",
+      examinee_id = examinee_id,
+      sort_by_difficulty = sort_by_difficulty,
+      file_pdf = file_pdf,
+      simple = simple,
+      ...
+    )
+  }
+)
 
-    if (!is.null(file_pdf)) {
-      pdf(file = file_pdf, bg = "white")
+#' @docType methods
+#' @rdname plotShadow-methods
+#' @export
+setMethod(
+  f = "plotShadow",
+  signature = "list",
+  definition = function(object, examinee_id = 1, sort_by_difficulty = FALSE, file_pdf = NULL, simple = FALSE, ...) {
+    .Deprecated("plot", msg = "plotShadow() is deprecated. Use plot(type = 'shadow') instead.")
+    message("Consider converting the object to 'output_Shadow_all' class.\n")
+    new_object <- new("output_Shadow_all")
+    for (n in names(object)) {
+      slot(new_object, n) <- object[[n]]
     }
-
-    constraints <- object@constraints
-
-    for (id in examinee_id) {
-
-      examinee_output <- object@output[[id]]
-
-      max_ni <- constraints@test_length
-      ni     <- constraints@ni
-
-      old_mar   <- par()$mar
-      old_mfrow <- par()$mfrow
-      on.exit(par(mar = old_mar, mfrow = old_mfrow))
-      par(mar = c(2, 3, 1, 1) + 0.1, mfrow = c(1, 1))
-
-      n_points <- sum(!is.na(examinee_output@administered_item_resp)) # this should be equal to constraints@test_length
-      item_id <- constraints@item_attrib@data[["ID"]][examinee_output@administered_item_index]
-      item_sequence <- examinee_output@administered_item_index
-      responses     <- examinee_output@administered_item_resp
-      item_ncat     <- examinee_output@administered_item_ncat
-
-      if (simple) {
-
-        items_used <- sort(unique(do.call(c, examinee_output@shadow_test)))
-        new_y <- 1:length(items_used)
-
-        y_map <- rep(1, items_used[1] - 1)
-
-        for (i in 1:(length(items_used) - 1)) {
-          y_map <- c(y_map, rep(new_y[i], items_used[i + 1] - items_used[i]))
-        }
-
-        y_map <- c(y_map, rep(new_y[i + 1], ni - items_used[i + 1] + 1))
-
-      } else {
-        items_used <- 1:ni
-        y_map <- 1:ni
-      }
-
-      plot(c(0.5, max_ni + 0.5), c(0.5, y_map[ni] + 0.5), type = "n", las = 1, xlim = c(0, max_ni), xaxt = "n", yaxt = "n", ylab = "")
-
-      y_adj_3 <- (strheight("S") / 3)
-
-      usr <- par("usr")
-      text(max_ni / 2, (usr[3] / 2), "Position", adj = c(0.5, 0), cex = 1.0)
-      if (sort_by_difficulty) {
-        axis(2, at = y_map[ni] / 2, labels = "Easier <-  Items  -> Harder", cex.axis = 1.5, tick = FALSE, line = 0)
-      } else {
-        axis(2, at = y_map[ni] / 2, labels = "Items", cex.axis = 1.5, tick = FALSE, line = 0)
-      }
-
-      text(max_ni / 2, mean(c(usr[4], y_map[ni])), paste0("Examinee ID: ", examinee_output@simulee_id), adj = c(0.5, 0.5), cex = 1)
-
-      axis(1, at = 1:max_ni, tick = TRUE, labels = 1:max_ni, cex.axis = 0.7)
-
-      if (!simple) {
-        text(0, seq(10, y_map[ni], 10), seq(10, y_map[ni], 10), adj = c(0.5, 0.5), cex = 0.7)
-      } else {
-        text(0, new_y, items_used, adj = c(0.5, 0.5), cex = 0.7)
-      }
-
-      for (i in 1:n_points) {
-        y_dupecheck <- numeric(ni)
-        for (j in 1:ni) {
-          if (y_dupecheck[y_map[j]] == FALSE) {
-            y_dupecheck[y_map[j]] <- TRUE
-            rect(i - 0.25, y_map[j] - 0.25, i + 0.25, y_map[j] + 0.25, border = "gray88", lwd = 0.3)
-          }
-        }
-        if (examinee_output@shadow_test_refreshed[i]) {
-          mtext("S", at = i, side = 1, line = 0.3, col = "red", adj = c(0.5, 0.5), cex = 0.7)
-        }
-      }
-
-      if (constraints@set_based) {
-        for (p in 1:constraints@ns) {
-          tmp = constraints@item_index_by_stimulus[[p]]
-          if (!is.null(tmp)) {
-            tmp = tmp[tmp %in% items_used]
-            if (length(tmp) > 0) {
-              for (i in 1:n_points) {
-                rect(i - 0.35, y_map[min(tmp)] - 0.5,
-                     i + 0.35, y_map[max(tmp)] + 0.5, border = "gray88", lwd = 0.5)
-              }
-            }
-          }
-        }
-      }
-
-      shadow_tests <- examinee_output@shadow_test
-
-      if (constraints@set_based) {
-
-        item_table <- merge(constraints@item_attrib@data, constraints@st_attrib@data[c("STID", "STINDEX")], by = "STID", all.x = TRUE, sort = FALSE)
-
-        for (k in 1:n_points) {
-
-          items <- shadow_tests[[k]]
-          current_item <- examinee_output@administered_item_index[k]
-          passages <- unique(item_table[["STINDEX"]][which(item_table[["INDEX"]] %in% items)])
-          current_passage <- item_table[["STINDEX"]][which(item_table[["INDEX"]] == current_item)]
-
-          for (p in 1:length(passages)) {
-
-            if (!is.na(passages[p])) {
-
-              sub_items <- constraints@item_index_by_stimulus[[passages[p]]]
-              sub_items <- sub_items[sub_items %in% items_used]
-
-              if (!is.na(current_passage)) {
-                if (passages[p] == current_passage) {
-                  rect(k - 0.35, y_map[min(sub_items)] - 0.5,
-                       k + 0.35, y_map[max(sub_items)] + 0.5, border = "blue", col = "khaki", lwd = 0.5)
-                } else {
-                  rect(k - 0.35, y_map[min(sub_items)] - 0.5,
-                       k + 0.35, y_map[max(sub_items)] + 0.5, border = "blue", col = "gray50", lwd = 0.5)
-                }
-              } else {
-                rect(k - 0.35, y_map[min(sub_items)] - 0.5,
-                     k + 0.35, y_map[max(sub_items)] + 0.5, border = "blue", col = "gray50", lwd = 0.5)
-              }
-
-            } else {
-
-              sub_items <- item_table[["INDEX"]][which(is.na(item_table[["STINDEX"]]) & item_table[["INDEX"]] %in% items)]
-
-              for (i in 1:length(sub_items)) {
-                if (sub_items[i] == current_item) {
-                  rect(k - 0.35, y_map[sub_items[i]] - 0.5,
-                       k + 0.35, y_map[sub_items[i]] + 0.5, border = "blue", col = "khaki", lwd = 0.5)
-                } else {
-                  rect(k - 0.35, y_map[sub_items[i]] - 0.5,
-                       k + 0.35, y_map[sub_items[i]] + 0.5, border = "blue", col = "gray50", lwd = 0.5)
-                }
-              }
-
-            }
-
-          }
-
-        }
-
-      }
-
-      for (k in 1:n_points) {
-        items <- shadow_tests[[k]]
-        current_item <- examinee_output@administered_item_index[k]
-        for (i in 1:length(items)) {
-          if (items[i] != current_item) {
-            rect(k - 0.25, y_map[items[i]] - 0.25,
-                 k + 0.25, y_map[items[i]] + 0.25, border = "black", lwd = 0.3)
-          }
-        }
-      }
-
-      for (k in 1:n_points) {
-        items <- shadow_tests[[k]]
-        current_item <- examinee_output@administered_item_index[k]
-        for (i in 1:length(items)) {
-          if (items[i] == current_item) {
-            for (kk in k:n_points) {
-              rect(kk - 0.25, y_map[items[i]] - 0.25,
-                   kk + 0.25, y_map[items[i]] + 0.25, border = "gray33", col = "gray33", lwd = 0.3)
-            }
-            if (item_ncat[k] == 2) {
-              if (responses[k] == 0) {
-                rect_col = "red"
-              } else if (responses[k] == 1) {
-                rect_col = "lime green"
-              }
-            } else {
-              rect_col = "cyan2"
-            }
-
-            rect(k - 0.25, y_map[items[i]] - 0.25,
-                 k + 0.25, y_map[items[i]] + 0.25, border = rect_col, col = rect_col, lwd = 0.3)
-
-          }
-        }
-      }
-
-    }
-
-    if (!is.null(file_pdf)) {
-      dev.off()
-    } else {
-      p <- recordPlot()
-      return(p)
-    }
+    p <- plot(
+      new_object,
+      type = "shadow",
+      examinee_id = examinee_id,
+      sort_by_difficulty = sort_by_difficulty,
+      file_pdf = file_pdf,
+      simple = simple,
+      ...
+    )
   }
 )
 
