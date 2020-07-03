@@ -28,7 +28,6 @@
   max_score = 1,
   z_ci = 1.96,
   simple = FALSE,
-  sort_by_difficulty = FALSE,
   theta_segment = "Estimated",
   color = "blue",
   color_final = "blue",
@@ -58,8 +57,6 @@
 \item{max_score}{For type 'audit', the maximum item score.}
 
 \item{simple}{For type 'shadow', if \code{TRUE}, simplity the chart by hiding unused items.}
-
-\item{sort_by_difficulty}{For type 'shadow', sort the items by difficulty. (not implemented)}
 
 \item{theta_segment}{For type 'exposure', True or Estimated theta used to create segments ("Estimated" or "True").}
 
