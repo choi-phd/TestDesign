@@ -1052,7 +1052,7 @@ setMethod(
             pool@ipar[current_item, ],
             o@administered_item_resp[position], pool@NCAT[current_item],
             model[current_item], 1, c(current_theta$theta, current_theta$se)
-          )
+          )[, 1]
           o@posterior_sample <- o@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = posterior_record$n_sample, by = config@MCMC$thin)]
           o@interim_theta_est[position] <- mean(o@posterior_sample)
           o@interim_se_est[position]    <- sd(o@posterior_sample)
@@ -1063,7 +1063,7 @@ setMethod(
             pool@ipar[current_item, ],
             o@administered_item_resp[position], pool@NCAT[current_item],
             model[current_item], 1, c(current_theta$theta, current_theta$se)
-          )
+          )[, 1]
           o@posterior_sample <- o@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = posterior_record$n_sample, by = config@MCMC$thin)]
           o@interim_theta_est[position] <- mean(o@posterior_sample)
           o@interim_se_est[position]    <- sd(o@posterior_sample)

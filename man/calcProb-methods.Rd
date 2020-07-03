@@ -11,6 +11,13 @@
 \alias{calcProb,item_GPC,numeric-method}
 \alias{calcProb,item_GR,numeric-method}
 \alias{calcProb,item_pool,numeric-method}
+\alias{calcProb,item_1PL,matrix-method}
+\alias{calcProb,item_2PL,matrix-method}
+\alias{calcProb,item_3PL,matrix-method}
+\alias{calcProb,item_PC,matrix-method}
+\alias{calcProb,item_GPC,matrix-method}
+\alias{calcProb,item_GR,matrix-method}
+\alias{calcProb,item_pool,matrix-method}
 \alias{calcProb,pool_cluster,numeric-method}
 \title{Calculate item response probabilities}
 \usage{
@@ -29,6 +36,20 @@ calcProb(object, theta)
 \S4method{calcProb}{item_GR,numeric}(object, theta)
 
 \S4method{calcProb}{item_pool,numeric}(object, theta)
+
+\S4method{calcProb}{item_1PL,matrix}(object, theta)
+
+\S4method{calcProb}{item_2PL,matrix}(object, theta)
+
+\S4method{calcProb}{item_3PL,matrix}(object, theta)
+
+\S4method{calcProb}{item_PC,matrix}(object, theta)
+
+\S4method{calcProb}{item_GPC,matrix}(object, theta)
+
+\S4method{calcProb}{item_GR,matrix}(object, theta)
+
+\S4method{calcProb}{item_pool,matrix}(object, theta)
 
 \S4method{calcProb}{pool_cluster,numeric}(object, theta)
 }

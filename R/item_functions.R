@@ -61,10 +61,8 @@ setMethod(
   f = "calcProb",
   signature = c("item_1PL", "numeric"),
   definition = function(object, theta) {
-    prob <- matrix(NA, length(theta), 2)
-    prob[, 2] <- array_p_1pl(theta, object@difficulty)
-    prob[, 1] <- 1 - prob[, 2]
-    return(prob)
+    theta <- matrix(theta, , 1)
+    return(calcProb(object, theta))
   }
 )
 
@@ -74,10 +72,8 @@ setMethod(
   f = "calcProb",
   signature = c("item_2PL", "numeric"),
   definition = function(object, theta) {
-    prob <- matrix(NA, length(theta), 2)
-    prob[, 2] <- array_p_2pl(theta, object@slope, object@difficulty)
-    prob[, 1] <- 1 - prob[, 2]
-    return(prob)
+    theta <- matrix(theta, , 1)
+    return(calcProb(object, theta))
   }
 )
 
@@ -87,10 +83,8 @@ setMethod(
   f = "calcProb",
   signature = c("item_3PL", "numeric"),
   definition = function(object, theta) {
-    prob <- matrix(NA, length(theta), 2)
-    prob[, 2] <- array_p_3pl(theta, object@slope, object@difficulty, object@guessing)
-    prob[, 1] <- 1 - prob[, 2]
-    return(prob)
+    theta <- matrix(theta, , 1)
+    return(calcProb(object, theta))
   }
 )
 
@@ -100,8 +94,8 @@ setMethod(
   f = "calcProb",
   signature = c("item_PC", "numeric"),
   definition = function(object, theta) {
-    prob <- array_p_pc(theta, object@threshold)
-    return(prob)
+    theta <- matrix(theta, , 1)
+    return(calcProb(object, theta))
   }
 )
 
@@ -111,8 +105,8 @@ setMethod(
   f = "calcProb",
   signature = c("item_GPC", "numeric"),
   definition = function(object, theta) {
-    prob <- array_p_gpc(theta, object@slope, object@threshold)
-    return(prob)
+    theta <- matrix(theta, , 1)
+    return(calcProb(object, theta))
   }
 )
 
@@ -122,8 +116,8 @@ setMethod(
   f = "calcProb",
   signature = c("item_GR", "numeric"),
   definition = function(object, theta) {
-    prob <- array_p_gr(theta, object@slope, object@category)
-    return(prob)
+    theta <- matrix(theta, , 1)
+    return(calcProb(object, theta))
   }
 )
 
@@ -133,7 +127,90 @@ setMethod(
   f = "calcProb",
   signature = c("item_pool", "numeric"),
   definition = function(object, theta) {
-    if (length(theta) > 0 && all(!is.na(theta))) {
+    theta <- matrix(theta, , 1)
+    return(calcProb(object, theta))
+  }
+)
+
+#' @rdname calcProb-methods
+#' @aliases calcProb,item_1PL,matrix-method
+setMethod(
+  f = "calcProb",
+  signature = c("item_1PL", "matrix"),
+  definition = function(object, theta) {
+    prob <- matrix(NA, nrow(theta), 2)
+    prob[, 2] <- array_p_1pl(theta, object@difficulty)
+    prob[, 1] <- 1 - prob[, 2]
+    return(prob)
+  }
+)
+
+#' @rdname calcProb-methods
+#' @aliases calcProb,item_2PL,matrix-method
+setMethod(
+  f = "calcProb",
+  signature = c("item_2PL", "matrix"),
+  definition = function(object, theta) {
+    prob <- matrix(NA, nrow(theta), 2)
+    prob[, 2] <- array_p_2pl(theta, object@slope, object@difficulty)
+    prob[, 1] <- 1 - prob[, 2]
+    return(prob)
+  }
+)
+
+#' @rdname calcProb-methods
+#' @aliases calcProb,item_3PL,matrix-method
+setMethod(
+  f = "calcProb",
+  signature = c("item_3PL", "matrix"),
+  definition = function(object, theta) {
+    prob <- matrix(NA, nrow(theta), 2)
+    prob[, 2] <- array_p_3pl(theta, object@slope, object@difficulty, object@guessing)
+    prob[, 1] <- 1 - prob[, 2]
+    return(prob)
+  }
+)
+
+#' @rdname calcProb-methods
+#' @aliases calcProb,item_PC,matrix-method
+setMethod(
+  f = "calcProb",
+  signature = c("item_PC", "matrix"),
+  definition = function(object, theta) {
+    prob <- array_p_pc(theta, object@threshold)
+    return(prob)
+  }
+)
+
+#' @rdname calcProb-methods
+#' @aliases calcProb,item_GPC,matrix-method
+setMethod(
+  f = "calcProb",
+  signature = c("item_GPC", "matrix"),
+  definition = function(object, theta) {
+    prob <- array_p_gpc(theta, object@slope, object@threshold)
+    return(prob)
+  }
+)
+
+#' @rdname calcProb-methods
+#' @aliases calcProb,item_GR,matrix-method
+setMethod(
+  f = "calcProb",
+  signature = c("item_GR", "matrix"),
+  definition = function(object, theta) {
+    prob <- array_p_gr(theta, object@slope, object@category)
+    return(prob)
+  }
+)
+
+#' @rdname calcProb-methods
+#' @aliases calcProb,item_pool,matrix-method
+setMethod(
+  f = "calcProb",
+  signature = c("item_pool", "matrix"),
+  definition = function(object, theta) {
+    if (nrow(theta) > 0 && all(!is.na(theta))) {
       prob <- lapply(object@parms, calcProb, theta)
     } else {
       stop("'theta' is empty, or contains missing values.")
@@ -190,7 +267,8 @@ setMethod(
   f = "calcEscore",
   signature = c("item_1PL", "numeric"),
   definition = function(object, theta) {
-    return(calcProb(object, theta)[, 2])
+    theta <- matrix(theta, , 1)
+    return(calcEscore(object, theta))
   }
 )
 
@@ -200,7 +278,8 @@ setMethod(
   f = "calcEscore",
   signature = c("item_2PL", "numeric"),
   definition = function(object, theta) {
-    return(calcProb(object, theta)[, 2])
+    theta <- matrix(theta, , 1)
+    return(calcEscore(object, theta))
   }
 )
 
@@ -210,7 +289,8 @@ setMethod(
   f = "calcEscore",
   signature = c("item_3PL", "numeric"),
   definition = function(object, theta) {
-    return(calcProb(object, theta)[, 2])
+    theta <- matrix(theta, , 1)
+    return(calcEscore(object, theta))
   }
 )
 
@@ -220,9 +300,8 @@ setMethod(
   f = "calcEscore",
   signature = c("item_PC", "numeric"),
   definition = function(object, theta) {
-    prob           <- calcProb(object, theta)
-    expected_score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
-    return(expected_score)
+    theta <- matrix(theta, , 1)
+    return(calcEscore(object, theta))
   }
 )
 
@@ -232,9 +311,8 @@ setMethod(
   f = "calcEscore",
   signature = c("item_GPC", "numeric"),
   definition = function(object, theta) {
-    prob           <- calcProb(object, theta)
-    expected_score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
-    return(expected_score)
+    theta <- matrix(theta, , 1)
+    return(calcEscore(object, theta))
   }
 )
 
@@ -244,9 +322,8 @@ setMethod(
   f = "calcEscore",
   signature = c("item_GR", "numeric"),
   definition = function(object, theta) {
-    prob           <- calcProb(object, theta)
-    expected_score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
-    return(expected_score)
+    theta <- matrix(theta, , 1)
+    return(calcEscore(object, theta))
   }
 )
 
@@ -255,6 +332,83 @@ setMethod(
 setMethod(
   f = "calcEscore",
   signature = c("item_pool", "numeric"),
+  definition = function(object, theta) {
+    theta <- matrix(theta, , 1)
+    return(calcEscore(object, theta))
+  }
+)
+
+#' @rdname calcEscore-methods
+#' @aliases calcEscore,item_1PL,matrix-method
+setMethod(
+  f = "calcEscore",
+  signature = c("item_1PL", "matrix"),
+  definition = function(object, theta) {
+    return(calcProb(object, theta)[, 2])
+  }
+)
+
+#' @rdname calcEscore-methods
+#' @aliases calcEscore,item_2PL,matrix-method
+setMethod(
+  f = "calcEscore",
+  signature = c("item_2PL", "matrix"),
+  definition = function(object, theta) {
+    return(calcProb(object, theta)[, 2])
+  }
+)
+
+#' @rdname calcEscore-methods
+#' @aliases calcEscore,item_3PL,matrix-method
+setMethod(
+  f = "calcEscore",
+  signature = c("item_3PL", "matrix"),
+  definition = function(object, theta) {
+    return(calcProb(object, theta)[, 2])
+  }
+)
+
+#' @rdname calcEscore-methods
+#' @aliases calcEscore,item_PC,matrix-method
+setMethod(
+  f = "calcEscore",
+  signature = c("item_PC", "matrix"),
+  definition = function(object, theta) {
+    prob           <- calcProb(object, theta)
+    expected_score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
+    return(expected_score)
+  }
+)
+
+#' @rdname calcEscore-methods
+#' @aliases calcEscore,item_GPC,matrix-method
+setMethod(
+  f = "calcEscore",
+  signature = c("item_GPC", "matrix"),
+  definition = function(object, theta) {
+    prob           <- calcProb(object, theta)
+    expected_score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
+    return(expected_score)
+  }
+)
+
+#' @rdname calcEscore-methods
+#' @aliases calcEscore,item_GR,matrix-method
+setMethod(
+  f = "calcEscore",
+  signature = c("item_GR", "matrix"),
+  definition = function(object, theta) {
+    prob           <- calcProb(object, theta)
+    expected_score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
+    return(expected_score)
+  }
+)
+
+#' @rdname calcEscore-methods
+#' @aliases calcEscore,item_pool,matrix-method
+setMethod(
+  f = "calcEscore",
+  signature = c("item_pool", "matrix"),
   definition = function(object, theta) {
     if (length(theta) > 0 && all(!is.na(theta))) {
       expected_score <- as.vector(Reduce("+", lapply(object@parms, calcEscore, theta)))
@@ -313,8 +467,8 @@ setMethod(
   f = "calcFisher",
   signature = c("item_1PL", "numeric"),
   definition = function(object, theta) {
-    info_Fisher <- array_info_1pl(theta, object@difficulty)
-    return(info_Fisher)
+    theta <- matrix(theta, , 1)
+    return(calcFisher(object, theta))
   }
 )
 
@@ -324,8 +478,8 @@ setMethod(
   f = "calcFisher",
   signature = c("item_2PL", "numeric"),
   definition = function(object, theta) {
-    info_Fisher <- array_info_2pl(theta, object@slope, object@difficulty)
-    return(info_Fisher)
+    theta <- matrix(theta, , 1)
+    return(calcFisher(object, theta))
   }
 )
 
@@ -335,8 +489,8 @@ setMethod(
   f = "calcFisher",
   signature = c("item_3PL", "numeric"),
   definition = function(object, theta) {
-    info_Fisher <- array_info_3pl(theta, object@slope, object@difficulty, object@guessing)
-    return(info_Fisher)
+    theta <- matrix(theta, , 1)
+    return(calcFisher(object, theta))
   }
 )
 
@@ -346,8 +500,8 @@ setMethod(
   f = "calcFisher",
   signature = c("item_PC", "numeric"),
   definition = function(object, theta) {
-    info_Fisher <- array_info_pc(theta, object@threshold)
-    return(info_Fisher)
+    theta <- matrix(theta, , 1)
+    return(calcFisher(object, theta))
   }
 )
 
@@ -357,8 +511,8 @@ setMethod(
   f = "calcFisher",
   signature = c("item_GPC", "numeric"),
   definition = function(object, theta) {
-    info_Fisher <- array_info_gpc(theta, object@slope, object@threshold)
-    return(info_Fisher)
+    theta <- matrix(theta, , 1)
+    return(calcFisher(object, theta))
   }
 )
 
@@ -368,8 +522,8 @@ setMethod(
   f = "calcFisher",
   signature = c("item_GR", "numeric"),
   definition = function(object, theta) {
-    info_Fisher <- array_info_gr(theta, object@slope, object@category)
-    return(info_Fisher)
+    theta <- matrix(theta, , 1)
+    return(calcFisher(object, theta))
   }
 )
 
@@ -379,8 +533,85 @@ setMethod(
   f = "calcFisher",
   signature = c("item_pool", "numeric"),
   definition = function(object, theta) {
-    if (length(theta) > 0 && all(!is.na(theta))) {
-      info_Fisher <- matrix(NA, length(theta), object@ni)
+    theta <- matrix(theta, , 1)
+    return(calcFisher(object, theta))
+  }
+)
+
+#' @rdname calcFisher-methods
+#' @aliases calcFisher,item_1PL,matrix-method
+setMethod(
+  f = "calcFisher",
+  signature = c("item_1PL", "matrix"),
+  definition = function(object, theta) {
+    info_Fisher <- array_info_1pl(theta, object@difficulty)
+    return(info_Fisher)
+  }
+)
+
+#' @rdname calcFisher-methods
+#' @aliases calcFisher,item_2PL,matrix-method
+setMethod(
+  f = "calcFisher",
+  signature = c("item_2PL", "matrix"),
+  definition = function(object, theta) {
+    info_Fisher <- array_info_2pl(theta, object@slope, object@difficulty)
+    return(info_Fisher)
+  }
+)
+
+#' @rdname calcFisher-methods
+#' @aliases calcFisher,item_3PL,matrix-method
+setMethod(
+  f = "calcFisher",
+  signature = c("item_3PL", "matrix"),
+  definition = function(object, theta) {
+    info_Fisher <- array_info_3pl(theta, object@slope, object@difficulty, object@guessing)
+    return(info_Fisher)
+  }
+)
+
+#' @rdname calcFisher-methods
+#' @aliases calcFisher,item_PC,matrix-method
+setMethod(
+  f = "calcFisher",
+  signature = c("item_PC", "matrix"),
+  definition = function(object, theta) {
+    info_Fisher <- array_info_pc(theta, object@threshold)
+    return(info_Fisher)
+  }
+)
+
+#' @rdname calcFisher-methods
+#' @aliases calcFisher,item_GPC,matrix-method
+setMethod(
+  f = "calcFisher",
+  signature = c("item_GPC", "matrix"),
+  definition = function(object, theta) {
+    info_Fisher <- array_info_gpc(theta, object@slope, object@threshold)
+    return(info_Fisher)
+  }
+)
+
+#' @rdname calcFisher-methods
+#' @aliases calcFisher,item_GR,matrix-method
+setMethod(
+  f = "calcFisher",
+  signature = c("item_GR", "matrix"),
+  definition = function(object, theta) {
+    info_Fisher <- array_info_gr(theta, object@slope, object@category)
+    return(info_Fisher)
+  }
+)
+
+#' @rdname calcFisher-methods
+#' @aliases calcFisher,item_pool,matrix-method
+setMethod(
+  f = "calcFisher",
+  signature = c("item_pool", "matrix"),
+  definition = function(object, theta) {
+    if (nrow(theta) > 0 && all(!is.na(theta))) {
+      info_Fisher <- matrix(NA, nrow(theta), object@ni)
       for (i in 1:object@ni) {
         info_Fisher[, i] <- calcFisher(object@parms[[i]], theta)
       }
