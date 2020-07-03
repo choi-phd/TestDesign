@@ -40,32 +40,38 @@ calcHessian(object, theta, resp)
 \S4method{calcHessian}{pool_cluster,numeric,list}(object, theta, resp)
 }
 \arguments{
-\item{object}{An instance of an item class.}
+\item{object}{An \code{\link{item}} object or an \code{\linkS4class{item_pool}} object.}
 
 \item{theta}{A vector of theta values.}
 
 \item{resp}{Response data.}
 }
 \value{
-Second derivative values of log-likelihoods.
+\code{\link{calcHessian}} returns second derivative values of log-likelihoods.
 }
 \description{
-An S4 generic and its methods to calculate the second derivative of the log-likelihood function.
+\code{\link{calcHessian}} is a function to calculate the second derivative of the log-likelihood function.
 }
 \examples{
-item_1   <- new("item_1PL", difficulty = 0.5)
+
+item_1    <- new("item_1PL", difficulty = 0.5)
+item_2    <- new("item_2PL", slope = 1.0, difficulty = 0.5)
+item_3    <- new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+item_4    <- new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
+item_5    <- new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+item_6    <- new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+
 h_item_1 <- calcHessian(item_1, seq(-3, 3, 1), 0)
-item_2   <- new("item_2PL", slope = 1.0, difficulty = 0.5)
 h_item_2 <- calcHessian(item_2, seq(-3, 3, 1), 0)
-item_3   <- new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
 h_item_3 <- calcHessian(item_3, seq(-3, 3, 1), 0)
-item_4   <- new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
 h_item_4 <- calcHessian(item_4, seq(-3, 3, 1), 0)
-item_5   <- new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
 h_item_5 <- calcHessian(item_5, seq(-3, 3, 1), 0)
-item_6   <- new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
 h_item_6 <- calcHessian(item_6, seq(-3, 3, 1), 0)
-h_itempool <- calcHessian(itempool_science, seq(-3, 3, 1), 0)
+h_pool   <- calcHessian(
+  itempool_science, seq(-3, 3, 1),
+  rep(0, itempool_science@ni)
+)
+
 }
 \references{
 {
