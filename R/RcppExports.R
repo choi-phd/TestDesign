@@ -486,11 +486,11 @@ theta_FB_single <- function(nx, theta_init, theta_prop, item_mcmc, item_init, re
 #' Find the segment to which each theta value belongs
 #' 
 #' Find the segment to which each theta value belongs.
-#' 
-#' @param segment A numeric vector of segment cuts.
+#'
 #' @param x A numeric vector of theta values.
-#' 
-find_segment <- function(segment, x) {
-    .Call('_TestDesign_find_segment', PACKAGE = 'TestDesign', segment, x)
+#' @param segment A numeric vector of segment cuts.
+#'
+find_segment <- function(x, segment) {
+    .Call('_TestDesign_find_segment', PACKAGE = 'TestDesign', x, segment)
 }
 

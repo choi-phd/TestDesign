@@ -612,14 +612,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // find_segment
-IntegerVector find_segment(NumericVector segment, NumericVector x);
-RcppExport SEXP _TestDesign_find_segment(SEXP segmentSEXP, SEXP xSEXP) {
+IntegerVector find_segment(NumericVector x, NumericVector segment);
+RcppExport SEXP _TestDesign_find_segment(SEXP xSEXP, SEXP segmentSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type segment(segmentSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(find_segment(segment, x));
+    Rcpp::traits::input_parameter< NumericVector >::type segment(segmentSEXP);
+    rcpp_result_gen = Rcpp::wrap(find_segment(x, segment));
     return rcpp_result_gen;
 END_RCPP
 }
