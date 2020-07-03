@@ -230,7 +230,6 @@ setMethod(
 #' @param max_score For type 'audit', the maximum item score.
 #' @param z_ci For type 'audit', the quantile of the normal distribution for confidence intervals.
 #' @param simple For type 'shadow', if \code{TRUE}, simplity the chart by hiding unused items.
-#' @param sort_by_difficulty For type 'shadow', sort the items by difficulty. (not implemented)
 #' @param theta_segment For type 'exposure', True or Estimated theta used to create segments ("Estimated" or "True").
 #' @param color For type 'exposure', color of item-wise exposure rates.
 #' @param color_final For type 'exposure', color of item-wise exposure rates, only counting the items while in the final theta segment as exposed.
@@ -327,8 +326,7 @@ setMethod(
   definition = function(
     x, y, examinee_id = 1, type = "audit",
     min_theta = -5, max_theta = 5, min_score = 0, max_score = 1, z_ci = 1.96,
-    simple = FALSE, sort_by_difficulty = FALSE,
-    theta_segment = "Estimated", color = "blue", color_final = "blue",
+    simple = FALSE, theta_segment = "Estimated", color = "blue", color_final = "blue",
     file_pdf = NULL, ...) {
     if (!type %in% c("audit", "shadow", "exposure")) {
       stop("'type' must be audit, shadow, or exposure")
@@ -396,11 +394,7 @@ setMethod(
         y_adj_3 <- (strheight("S") / 3)
         usr <- par("usr")
         text(max_ni / 2, (usr[3] / 2), "Position", adj = c(0.5, 0), cex = 1.0)
-        if (sort_by_difficulty) {
-          axis(2, at = y_map[ni] / 2, labels = "Easier <-  Items  -> Harder", cex.axis = 1.5, tick = FALSE, line = 0)
-        } else {
-          axis(2, at = y_map[ni] / 2, labels = "Items", cex.axis = 1.5, tick = FALSE, line = 0)
-        }
+        axis(2, at = y_map[ni] / 2, labels = "Items", cex.axis = 1.5, tick = FALSE, line = 0)
         text(max_ni / 2, mean(c(usr[4], y_map[ni])), paste0("Examinee ID: ", examinee_output@simulee_id), adj = c(0.5, 0.5), cex = 1)
         axis(1, at = 1:max_ni, tick = TRUE, labels = 1:max_ni, cex.axis = 0.7)
         if (!simple) {
