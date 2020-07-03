@@ -4,12 +4,12 @@
 \alias{find_segment}
 \title{Find the segment to which each theta value belongs}
 \usage{
-find_segment(segment, x)
+find_segment(x, segment)
 }
 \arguments{
-\item{segment}{A numeric vector of segment cuts.}
-
 \item{x}{A numeric vector of theta values.}
+
+\item{segment}{A numeric vector of segment cuts.}
 }
 \description{
 Find the segment to which each theta value belongs.
