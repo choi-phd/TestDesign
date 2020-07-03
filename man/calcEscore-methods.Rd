@@ -10,6 +10,13 @@
 \alias{calcEscore,item_GPC,numeric-method}
 \alias{calcEscore,item_GR,numeric-method}
 \alias{calcEscore,item_pool,numeric-method}
+\alias{calcEscore,item_1PL,matrix-method}
+\alias{calcEscore,item_2PL,matrix-method}
+\alias{calcEscore,item_3PL,matrix-method}
+\alias{calcEscore,item_PC,matrix-method}
+\alias{calcEscore,item_GPC,matrix-method}
+\alias{calcEscore,item_GR,matrix-method}
+\alias{calcEscore,item_pool,matrix-method}
 \alias{calcEscore,pool_cluster,numeric-method}
 \title{Calculate expected scores}
 \usage{
@@ -28,6 +35,20 @@ calcEscore(object, theta)
 \S4method{calcEscore}{item_GR,numeric}(object, theta)
 
 \S4method{calcEscore}{item_pool,numeric}(object, theta)
+
+\S4method{calcEscore}{item_1PL,matrix}(object, theta)
+
+\S4method{calcEscore}{item_2PL,matrix}(object, theta)
+
+\S4method{calcEscore}{item_3PL,matrix}(object, theta)
+
+\S4method{calcEscore}{item_PC,matrix}(object, theta)
+
+\S4method{calcEscore}{item_GPC,matrix}(object, theta)
+
+\S4method{calcEscore}{item_GR,matrix}(object, theta)
+
+\S4method{calcEscore}{item_pool,matrix}(object, theta)
 
 \S4method{calcEscore}{pool_cluster,numeric}(object, theta)
 }
