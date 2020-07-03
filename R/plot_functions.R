@@ -252,7 +252,7 @@ setMethod(
   f = "plot",
   signature = "output_Shadow",
   definition = function(x, y, examinee_id = 1, type = "audit",
-                        min_theta = -5, max_theta = 5, min_score = 0, max_score = 1, z_ci = 1.96, ...) {
+                        min_theta = -5, max_theta = 5, z_ci = 1.96, ...) {
     if (type == "audit") {
       n_items <- length(x@administered_item_index)
       if (n_items > 0) {
@@ -284,7 +284,15 @@ setMethod(
             text(i, min_theta, "S", col = "red", cex = 1.5)
           }
         }
-        plot(1:n_items, seq(min_score, max_score, length.out = n_items), type = "n", xaxt = "n", ylim = c(min_score - 1, max_score + 1), xlim = c(0, n_items), yaxt = "n", ylab = "")
+
+        min_score <- 0
+        max_score <- x@max_cat_pool
+        plot(
+          1:n_items, seq(min_score, max_score, length.out = n_items),
+          type = "n", xaxt = "n", yaxt = "n",
+          xlim = c(0, n_items),
+          ylim = c(min_score - 1, max_score + 1),
+          ylab = "")
         mtext("Position", side = 1, line = 1, outer = FALSE, cex = 1.5)
         axis(2, at = (min_score + max_score) / 2, labels = "Response", cex.axis = 2, tick = FALSE)
         for (i in 1:n_items) {
