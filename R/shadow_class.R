@@ -471,6 +471,7 @@ setClass("output_Shadow_all",
 #' @slot posterior_sample Numeric. A vector containing MCMC samples.
 #' @slot likelihood Numeric. A likelihood distribution.
 #' @slot shadow_test A list of vectors containing item indices of the shadow test at each position.
+#' @slot max_cat_pool the maximum number of response categories the item pool had.
 #'
 #' @export
 setClass("output_Shadow",
@@ -495,7 +496,8 @@ setClass("output_Shadow",
     posterior                   = "numeric",
     posterior_sample            = "numeric",
     likelihood                  = "numeric",
-    shadow_test                 = "list"
+    shadow_test                 = "list",
+    max_cat_pool                = "numeric"
   ),
   prototype = list(
     simulee_id                  = numeric(0),
@@ -518,7 +520,8 @@ setClass("output_Shadow",
     posterior                   = numeric(0),
     posterior_sample            = numeric(0),
     likelihood                  = numeric(0),
-    shadow_test                 = list(0)
+    shadow_test                 = list(0),
+    max_cat_pool                = numeric(0)
   ),
   validity = function(object) {
     return(TRUE)

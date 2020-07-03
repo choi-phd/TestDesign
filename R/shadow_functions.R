@@ -1279,6 +1279,7 @@ setMethod(
       output@interim_se_est          <- rep(NA_real_, max_ni)
       output@administered_stimulus_index <- NaN
       output@shadow_test <- vector(mode = "list", length = max_ni)
+      output@max_cat_pool <- pool@max_cat
 
       ##
       #  Simulee: set initial theta estimate

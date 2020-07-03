@@ -51,5 +51,7 @@ output_Shadow
 \item{\code{likelihood}}{Numeric. A likelihood distribution.}
 
 \item{\code{shadow_test}}{A list of vectors containing item indices of the shadow test at each position.}
+
+\item{\code{max_cat_pool}}{the maximum number of response categories the item pool had.}
 }}
 
