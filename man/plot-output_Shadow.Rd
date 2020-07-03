@@ -13,8 +13,6 @@
   type = "audit",
   min_theta = -5,
   max_theta = 5,
-  min_score = 0,
-  max_score = 1,
   z_ci = 1.96,
   ...
 )
@@ -51,13 +49,13 @@
 
 \item{max_theta}{For type 'audit', the upper bound of theta range to plot.}
 
-\item{min_score}{For type 'audit', the minimum item score.}
-
-\item{max_score}{For type 'audit', the maximum item score.}
-
 \item{z_ci}{For type 'audit', the quantile of the normal distribution for confidence intervals.}
 
 \item{...}{Additional options to be passed on to \code{pdf()}.}
+
+\item{min_score}{For type 'audit', the minimum item score.}
+
+\item{max_score}{For type 'audit', the maximum item score.}
 
 \item{simple}{For type 'shadow', if \code{TRUE}, simplity the chart by hiding unused items.}
 
