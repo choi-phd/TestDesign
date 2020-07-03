@@ -9,4 +9,8 @@
 ^cleanup\..*$
 ^cran-comments\.md$
 ^readme\.md$
+^readme\.rmd$
 ^\.travis\.yml$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
