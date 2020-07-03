@@ -56,3 +56,22 @@ usethis::use_data(resp_fatigue_data,    overwrite = TRUE)
 usethis::use_data(itempool_fatigue,    overwrite = TRUE)
 usethis::use_data(itemattrib_fatigue,  overwrite = TRUE)
 usethis::use_data(constraints_fatigue, overwrite = TRUE)
+
+# Bayes dataset
+
+itempool_bayes_data    <- read.csv("inst/extdata/itempool_bayes_320.csv",    header = TRUE, as.is = TRUE)
+itempool_se_bayes_data <- read.csv("inst/extdata/itempool_se_bayes_320.csv", header = TRUE, as.is = TRUE)
+itemattrib_bayes_data  <- read.csv("inst/extdata/itemattrib_bayes_320.csv",  header = TRUE, as.is = TRUE)
+constraints_bayes_data <- read.csv("inst/extdata/constraints_bayes_320.csv", header = TRUE, as.is = TRUE)
+constraints_bayes_data[["CONSTRAINT"]] <- as.character(constraints_bayes_data[["CONSTRAINT"]])
+itempool_bayes    <- loadItemPool("inst/extdata/itempool_bayes_320.csv", "inst/extdata/itempool_se_bayes_320.csv")
+itemattrib_bayes  <- loadItemAttrib("inst/extdata/itemattrib_bayes_320.csv",   itempool_bayes)
+constraints_bayes <- loadConstraints("inst/extdata/constraints_bayes_320.csv", itempool_bayes, itemattrib_bayes)
+
+usethis::use_data(itempool_bayes_data,    overwrite = TRUE)
+usethis::use_data(itempool_se_bayes_data, overwrite = TRUE)
+usethis::use_data(itemattrib_bayes_data,  overwrite = TRUE)
+usethis::use_data(constraints_bayes_data, overwrite = TRUE)
+usethis::use_data(itempool_bayes,    overwrite = TRUE)
+usethis::use_data(itemattrib_bayes,  overwrite = TRUE)
+usethis::use_data(constraints_bayes, overwrite = TRUE)
