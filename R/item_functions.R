@@ -144,12 +144,35 @@ setMethod(
 
 #' Calculate expected scores
 #'
-#' An S4 generic and its methods to calculate expected scores given a vector of thetas for different item classes.
+#' \code{\link{calcEscore}} is a function to calculate expected scores.
 #'
-#' @param object An instance of an item class.
+#' @param object An \code{\link{item}} object or an \code{\linkS4class{item_pool}} object.
 #' @param theta A vector of theta values.
 #'
 #' @return A vector of expected scores of length nq (the number of values on theta grid).
+#'
+#' @examples
+#' item_1     <- new("item_1PL", difficulty = 0.5)
+#' item_2     <- new("item_2PL", slope = 1.0, difficulty = 0.5)
+#' item_3     <- new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+#' item_4     <- new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
+#' item_5     <- new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+#' item_6     <- new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+#'
+#' ICC_item_1 <- calcEscore(item_1, seq(-3, 3, 1))
+#' ICC_item_2 <- calcEscore(item_2, seq(-3, 3, 1))
+#' ICC_item_3 <- calcEscore(item_3, seq(-3, 3, 1))
+#' ICC_item_4 <- calcEscore(item_4, seq(-3, 3, 1))
+#' ICC_item_5 <- calcEscore(item_5, seq(-3, 3, 1))
+#' ICC_item_6 <- calcEscore(item_6, seq(-3, 3, 1))
+#' TCC_pool   <- calcEscore(itempool_science, seq(-3, 3, 1))
+#'
+#' @template 1pl-ref
+#' @template 2pl-ref
+#' @template 3pl-ref
+#' @template pc-ref
+#' @template gpc-ref
+#' @template gr-ref
 #'
 #' @export
 #' @docType methods
@@ -163,10 +186,6 @@ setGeneric(
 
 #' @rdname calcEscore-methods
 #' @aliases calcEscore,item_1PL,numeric-method
-#' @examples
-#' item_1     <- new("item_1PL", difficulty = 0.5)
-#' ICC_item_1 <- calcEscore(item_1, seq(-3, 3, 1))
-#' @template 1pl-ref
 setMethod(
   f = "calcEscore",
   signature = c("item_1PL", "numeric"),
@@ -177,10 +196,6 @@ setMethod(
 
 #' @rdname calcEscore-methods
 #' @aliases calcEscore,item_2PL,numeric-method
-#' @examples
-#' item_2     <- new("item_2PL", slope = 1.0, difficulty = 0.5)
-#' ICC_item_2 <- calcEscore(item_2, seq(-3, 3, 1))
-#' @template 2pl-ref
 setMethod(
   f = "calcEscore",
   signature = c("item_2PL", "numeric"),
@@ -191,10 +206,6 @@ setMethod(
 
 #' @rdname calcEscore-methods
 #' @aliases calcEscore,item_3PL,numeric-method
-#' @examples
-#' item_3     <- new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
-#' ICC_item_3 <- calcEscore(item_3, seq(-3, 3, 1))
-#' @template 3pl-ref
 setMethod(
   f = "calcEscore",
   signature = c("item_3PL", "numeric"),
@@ -205,10 +216,6 @@ setMethod(
 
 #' @rdname calcEscore-methods
 #' @aliases calcEscore,item_PC,numeric-method
-#' @examples
-#' item_4     <- new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
-#' ICC_item_4 <- calcEscore(item_4, seq(-3, 3, 1))
-#' @template pc-ref
 setMethod(
   f = "calcEscore",
   signature = c("item_PC", "numeric"),
@@ -221,10 +228,6 @@ setMethod(
 
 #' @rdname calcEscore-methods
 #' @aliases calcEscore,item_GPC,numeric-method
-#' @examples
-#' item_5     <- new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
-#' ICC_item_5 <- calcEscore(item_5, seq(-3, 3, 1))
-#' @template gpc-ref
 setMethod(
   f = "calcEscore",
   signature = c("item_GPC", "numeric"),
@@ -237,10 +240,6 @@ setMethod(
 
 #' @rdname calcEscore-methods
 #' @aliases calcEscore,item_GR,numeric-method
-#' @examples
-#' item_6     <- new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
-#' ICC_item_6 <- calcEscore(item_6, seq(-3, 3, 1))
-#' @template gr-ref
 setMethod(
   f = "calcEscore",
   signature = c("item_GR", "numeric"),
@@ -253,8 +252,6 @@ setMethod(
 
 #' @rdname calcEscore-methods
 #' @aliases calcEscore,item_pool,numeric-method
-#' @examples
-#' TCC_itempool <- calcEscore(itempool_science, seq(-3, 3, 1))
 setMethod(
   f = "calcEscore",
   signature = c("item_pool", "numeric"),
