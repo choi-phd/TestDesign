@@ -3,16 +3,51 @@ NULL
 
 #' Calculate item response probabilities
 #'
-#' An S4 generic and its methods to calculate item response probabilities for different item classes
+#' \code{\link{calcProb}} is a function to calculate item response probabilities.
 #'
-#' @param object An instance of an item class.
+#' @param object An \code{\link{item}} object or an \code{\linkS4class{item_pool}} object.
 #' @param theta A vector of theta values.
 #'
-#' @return A matrix of probability values with a dimension (nq, ncat) for a single item or a list of matrices for an instance of "item_pool".
+#' @return
+#' \describe{
+#'   \item{\code{\link{item}} object:}{\code{\link{calcProb}} returns a (\emph{nq}, \emph{ncat}) matrix of probability values.}
+#'   \item{\code{\linkS4class{item_pool}} object:}{\code{\link{calcProb}} returns a length \emph{ni} list, each containing a matrix of probability values.}
+#' }
+#' \describe{
+#'   \item{\emph{notations}}{\itemize{
+#'     \item{\emph{nq} denotes the number of theta values.}
+#'     \item{\emph{ncat} denotes the number of response categories.}
+#'     \item{\emph{ni} denotes the number of items in an \code{\linkS4class{item_pool}} object.}
+#'   }}
+#' }
 #'
-#' @export
+#' @examples
+#' item_1      <- new("item_1PL", difficulty = 0.5)
+#' item_2      <- new("item_2PL", slope = 1.0, difficulty = 0.5)
+#' item_3      <- new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
+#' item_4      <- new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
+#' item_5      <- new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
+#' item_6      <- new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
+#'
+#' prob_item_1 <- calcProb(item_1, seq(-3, 3, 1))
+#' prob_item_2 <- calcProb(item_2, seq(-3, 3, 1))
+#' prob_item_3 <- calcProb(item_3, seq(-3, 3, 1))
+#' prob_item_4 <- calcProb(item_4, seq(-3, 3, 1))
+#' prob_item_5 <- calcProb(item_5, seq(-3, 3, 1))
+#' prob_item_6 <- calcProb(item_6, seq(-3, 3, 1))
+#' prob_pool   <- calcProb(itempool_science, seq(-3, 3, 1))
+#'
+#' @template 1pl-ref
+#' @template 2pl-ref
+#' @template 3pl-ref
+#' @template pc-ref
+#' @template gpc-ref
+#' @template gr-ref
+#'
 #' @docType methods
-#' @rdname calcProb-methods
+#' @name calcProb-methods
+#' @aliases calcProb
+#' @export
 setGeneric(
   name = "calcProb",
   def = function(object, theta) {
@@ -22,10 +57,6 @@ setGeneric(
 
 #' @rdname calcProb-methods
 #' @aliases calcProb,item_1PL,numeric-method
-#' @examples
-#' item_1      <- new("item_1PL", difficulty = 0.5)
-#' prob_item_1 <- calcProb(item_1, seq(-3, 3, 1))
-#' @template 1pl-ref
 setMethod(
   f = "calcProb",
   signature = c("item_1PL", "numeric"),
@@ -39,10 +70,6 @@ setMethod(
 
 #' @rdname calcProb-methods
 #' @aliases calcProb,item_2PL,numeric-method
-#' @examples
-#' item_2      <- new("item_2PL", slope = 1.0, difficulty = 0.5)
-#' prob_item_2 <- calcProb(item_2, seq(-3, 3, 1))
-#' @template 2pl-ref
 setMethod(
   f = "calcProb",
   signature = c("item_2PL", "numeric"),
@@ -56,10 +83,6 @@ setMethod(
 
 #' @rdname calcProb-methods
 #' @aliases calcProb,item_3PL,numeric-method
-#' @examples
-#' item_3      <- new("item_3PL", slope = 1.0, difficulty = 0.5, guessing = 0.2)
-#' prob_item_3 <- calcProb(item_3, seq(-3, 3, 1))
-#' @template 3pl-ref
 setMethod(
   f = "calcProb",
   signature = c("item_3PL", "numeric"),
@@ -73,10 +96,6 @@ setMethod(
 
 #' @rdname calcProb-methods
 #' @aliases calcProb,item_PC,numeric-method
-#' @examples
-#' item_4      <- new("item_PC", threshold = c(-1, 0, 1), ncat = 4)
-#' prob_item_4 <- calcProb(item_4, seq(-3, 3, 1))
-#' @template pc-ref
 setMethod(
   f = "calcProb",
   signature = c("item_PC", "numeric"),
@@ -88,10 +107,6 @@ setMethod(
 
 #' @rdname calcProb-methods
 #' @aliases calcProb,item_GPC,numeric-method
-#' @examples
-#' item_5      <- new("item_GPC", slope = 1.2, threshold = c(-0.8, -1.0, 0.5), ncat = 4)
-#' prob_item_5 <- calcProb(item_5, seq(-3, 3, 1))
-#' @template gpc-ref
 setMethod(
   f = "calcProb",
   signature = c("item_GPC", "numeric"),
@@ -103,10 +118,6 @@ setMethod(
 
 #' @rdname calcProb-methods
 #' @aliases calcProb,item_GR,numeric-method
-#' @examples
-#' item_6      <- new("item_GR", slope = 0.9, category = c(-1, 0, 1), ncat = 4)
-#' prob_item_6 <- calcProb(item_6, seq(-3, 3, 1))
-#' @template gr-ref
 setMethod(
   f = "calcProb",
   signature = c("item_GR", "numeric"),
@@ -118,8 +129,6 @@ setMethod(
 
 #' @rdname calcProb-methods
 #' @aliases calcProb,item_pool,numeric-method
-#' @examples
-#' prob_itempool <- calcProb(itempool_science, seq(-3, 3, 1))
 setMethod(
   f = "calcProb",
   signature = c("item_pool", "numeric"),
