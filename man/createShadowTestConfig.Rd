@@ -4,7 +4,7 @@
 \name{config_Shadow-class}
 \alias{config_Shadow-class}
 \alias{createShadowTestConfig}
-\title{createShadowTestConfig}
+\title{Create a config_Shadow object}
 \usage{
 createShadowTestConfig(
   item_selection = NULL,
@@ -21,101 +21,102 @@ createShadowTestConfig(
 )
 }
 \arguments{
-\item{item_selection}{A list containing item selection criteria.
+\item{item_selection}{a named list containing item selection criteria.
 \itemize{
-  \item{\code{method}} The type of criteria. Accepts one of \code{MFI, MPWI, FB, EB}.
-  \item{\code{info_type}} The type of information. Accepts \code{FISHER}.
-  \item{\code{initial_theta}} Initial theta value(s) for the first item selection.
-  \item{\code{fixed_theta}} Fixed theta value(s) to optimize for all items to select.
+  \item{\code{method}} the type of selection criteria. Accepts \code{MFI, MPWI, FB, EB}. (default = \code{MFI})
+  \item{\code{info_type}} the type of information. Accepts \code{FISHER}. (default = \code{FISHER})
+  \item{\code{initial_theta}} (optional) initial theta values to use.
+  \item{\code{fixed_theta}} (optional) fixed theta values to use throughout all item positions.
 }}
 
-\item{content_balancing}{A list containing content balancing options.
+\item{content_balancing}{a named list containing content balancing options.
 \itemize{
-  \item{\code{method}} The type of balancing method. Accepts one of \code{NONE, STA}.
+  \item{\code{method}} the type of balancing method. Accepts \code{NONE, STA}. (default = \code{STA})
 }}
 
-\item{MIP}{A list containing solver options.
+\item{MIP}{a named list containing solver options.
 \itemize{
-  \item{\code{solver}} The type of solver. Accepts one of \code{lpsymphony, Rsymphony, gurobi, lpSolve, Rglpk}.
-  \item{\code{verbosity}} Verbosity level.
-  \item{\code{time_limit}} Time limit to be passed onto solver. Used in solvers \code{lpsymphony, Rsymphony, gurobi, Rglpk}.
-  \item{\code{gap_limit}} Gap limit (relative) to be passed onto solver. Used in solver \code{gurobi}. Uses the solver default when \code{NULL}.
-  \item{\code{gap_limit_abs}} Gap limit (absolute) to be passed onto solver. Used in solver \code{lpsymphony, Rsymphony}. Uses the solver default when \code{NULL}.
+  \item{\code{solver}} the type of solver. Accepts \code{lpsymphony, Rsymphony, gurobi, lpSolve, Rglpk}. (default = \code{LPSOLVE})
+  \item{\code{verbosity}} verbosity level of the solver. (default = \code{-2})
+  \item{\code{time_limit}} time limit in seconds. Used in solvers \code{lpsymphony, Rsymphony, gurobi, Rglpk}. (default = \code{60})
+  \item{\code{gap_limit}} search termination criterion. Gap limit in relative scale passed onto the solver. Used in solver \code{gurobi}. (default = \code{.05})
+  \item{\code{gap_limit_abs}} search termination criterion. Gap limit in absolute scale passed onto the solver. Used in solvers \code{lpsymphony, Rsymphony}. (default = \code{0.05})
 }}
 
-\item{MCMC}{A list containing Markov-chain Monte Carlo configurations.
+\item{MCMC}{a named list containing Markov-chain Monte Carlo configurations for obtaining posterior samples.
 \itemize{
-  \item{\code{burn_in}} Numeric. The number of chains from the start to discard.
-  \item{\code{post_burn_in}}  Numeric. The number of chains to use after discarding the first \code{burn_in} chains.
-  \item{\code{thin}} Numeric. Thinning interval.
-  \item{\code{jumpfactor}} Numeric. Jump factor.
+  \item{\code{burn_in}} the number of chains from the start to discard. (default = \code{100})
+  \item{\code{post_burn_in}} the number of chains to use after discarding the first \code{burn_in} chains. (default = \code{500})
+  \item{\code{thin}} thinning interval to apply. \code{1} represents no thinning. (default = \code{1})
+  \item{\code{jump_factor}} the jump factor to use. \code{1} represents no jumping. (default = \code{1})
 }}
 
-\item{refresh_policy}{A list containing refresh policy for obtaining a new shadow test.
+\item{refresh_policy}{a named list containing the refresh policy for when to obtain a new shadow test.
 \itemize{
-  \item{\code{method}} The type of policy. Accepts one of \code{ALWAYS, POSITION, INTERVAL, THRESHOLD, INTERVAL-THRESHOLD, STIMULUS, SET, PASSAGE}.
-  \item{\code{interval}} Integer. Set to 1 to refresh at each position, 2 to refresh at every two positions, and so on.
-  \item{\code{threshold}} Numeric. The shadow test is refreshed when the absolute change in theta estimate is greater than this value.
-  \item{\code{position}} Numeric. Position(s) at which refresh to occur.
+  \item{\code{method}} the type of policy. Accepts \code{ALWAYS, POSITION, INTERVAL, THRESHOLD, INTERVAL-THRESHOLD, STIMULUS, SET, PASSAGE}. (default = \code{ALWAYS})
+  \item{\code{interval}} used in methods \code{INTERVAL, INTERVAL-THRESHOLD}. Set to 1 to refresh at each position, 2 to refresh at every two positions, and so on. (default = \code{1})
+  \item{\code{threshold}} used in methods \code{THRESHOLD, INTERVAL-THRESHOLD}. The absolute change in between interim theta estimates to trigger the refresh. (default = \code{0.1})
+  \item{\code{position}} used in methods \code{POSITION}. Item positions to trigger the refresh. (default = \code{1})
 }}
 
-\item{exposure_control}{A list containing exposure control settings.
+\item{exposure_control}{a named list containing exposure control settings.
 \itemize{
-  \item{\code{method}} Accepts one of \code{"NONE", "ELIGIBILITY", "BIGM", "BIGM-BAYESIAN"}.
-  \item{\code{M}} Big M constant.
-  \item{\code{max_exposure_rate}} Maximum target exposure rate.
-  \item{\code{acceleration_factor}} Acceleration factor.
-  \item{\code{n_segment}} Number of theta segments.
-  \item{\code{first_segment}} Theta segment assumed at the begining of test.
-  \item{\code{segment_cut}} A numeric vector of segment cuts.
-  \item{\code{initial_eligibility_stats}} A list of eligibility statistics from a previous run.
-  \item{\code{fading_factor}} Fading factor.
-  \item{\code{diagnostic_stats}} \code{TRUE} to generate diagnostic statistics.
+  \item{\code{method}} the type of exposure control method. Accepts \code{NONE, ELIGIBILITY, BIGM, BIGM-BAYESIAN}. (default = \code{ELIGIBILITY})
+  \item{\code{M}} used in methods \code{BIGM, BIGM-BAYESIAN}. the Big M penalty to use on item information.
+  \item{\code{max_exposure_rate}} target exposure rates for each segment. (default = \code{rep(0.25, 7)})
+  \item{\code{acceleration_factor}} the acceleration factor to apply. (default = \code{1})
+  \item{\code{n_segment}} the number of theta segments to use. (default = \code{7})
+  \item{\code{first_segment}} (optional) the theta segment assumed at the beginning of test for all participants.
+  \item{\code{segment_cut}} theta segment cuts. (default = \code{c(-Inf, seq(-2.5, 2.5, 1), Inf)})
+  \item{\code{initial_eligibility_stats}} (optional) initial eligibility statistics to use.
+  \item{\code{fading_factor}} the fading factor to apply. (default = \code{.999})
+  \item{\code{diagnostic_stats}} set to \code{TRUE} to generate segment-wise diagnostic statistics. (default = \code{FALSE})
 }}
 
-\item{stopping_criterion}{A list containing stopping criterion.
+\item{stopping_criterion}{a named list containing stopping criterion.
 \itemize{
-  \item{\code{method}} Accepts one of \code{"FIXED"}.
-  \item{\code{test_length}} Test length.
-  \item{\code{min_ni}} Maximum number of items to administer.
-  \item{\code{max_ni}} Minumum number of items to administer.
-  \item{\code{se_threshold}} Standard error threshold for stopping.
+  \item{\code{method}} the type of stopping criterion. Accepts \code{FIXED}. (default = \code{FIXED})
+  \item{\code{test_length}} test length.
+  \item{\code{min_ni}} the maximum number of items to administer.
+  \item{\code{max_ni}} the minimum number of items to administer.
+  \item{\code{se_threshold}} standard error threshold. Item administration is stopped when theta estimate standard error becomes lower than this value.
 }}
 
-\item{interim_theta}{A list containing interim theta estimation options.
+\item{interim_theta}{a named list containing interim theta estimation options.
 \itemize{
-  \item{\code{method}} The type of estimation. Accepts one of \code{EAP, EB, FB}.
-  \item{\code{shrinkage_correction}} Set \code{TRUE} to correct for shrinkage in EAP
-  \item{\code{prior_dist}} The type of prior distribution. Accepts one of \code{NORMAL, UNIF}.
-  \item{\code{prior_par}} Distributional parameters for the prior.
-  \item{\code{bound_ML}} Theta bound for MLE.
-  \item{\code{truncate_ML}} Set \code{TRUE} to truncate MLE within \code{bound_ML}
-  \item{\code{max_iter}} Maximum number of Newton-Raphson iterations.
-  \item{\code{crit}} Convergence criterion.
-  \item{\code{max_change}} Maximum change in ML estimates between iterations.
-  \item{\code{do_fisher}} Set \code{TRUE} to use Fisher's method of scoring.
+  \item{\code{method}} the type of estimation. Accepts \code{EAP, EB, FB}. (default = \code{EAP})
+  \item{\code{shrinkage_correction}} set \code{TRUE} to apply shrinkage correction. Used when \code{method} is \code{EAP}. (default = \code{FALSE})
+  \item{\code{prior_dist}} the type of prior distribution. Accepts \code{NORMAL, UNIFORM}. (default = \code{NORMAL})
+  \item{\code{prior_par}} distribution parameters for \code{prior_dist}. (default = \code{c(0, 1)})
+  \item{\code{bound_ML}} theta bound in \code{c(lower_bound, upper_bound)} format. Used when \code{method} is \code{MLE}. (default = \code{-4, 4})
+  \item{\code{truncate_ML}} set \code{TRUE} to truncate ML estimate within \code{bound_ML}. (default = \code{FALSE})
+  \item{\code{max_iter}} maximum number of Newton-Raphson iterations. Used when \code{method} is \code{MLE}. (default = \code{50})
+  \item{\code{crit}} convergence criterion. Used when \code{method} is \code{MLE}. (default = \code{1e-03})
+  \item{\code{max_change}} maximum change in ML estimates between iterations. Changes exceeding this value is clipped to this value. Used when \code{method} is \code{MLE}. (default = \code{1.0})
+  \item{\code{do_Fisher}} set \code{TRUE} to use Fisher's method of scoring. Used when \code{method} is \code{MLE}. (default = \code{TRUE})
 }}
 
 \item{final_theta}{A list containing final theta estimation options.
 \itemize{
-  \item{\code{method}} The type of estimation. Accepts one of \code{EAP, EB, FB}.
-  \item{\code{shrinkage_correction}} Set \code{TRUE} to correct for shrinkage in EAP.
-  \item{\code{prior_dist}} The type of prior distribution. Accepts one of \code{NORMAL, UNIF}.
-  \item{\code{prior_par}} Distributional parameters for the prior.
-  \item{\code{bound_ML}} Theta bound for MLE.
-  \item{\code{truncate_ML}} Set \code{TRUE} to truncate MLE within \code{bound_ML}
-  \item{\code{max_iter}} Maximum number of Newton-Raphson iterations.
-  \item{\code{crit}} Convergence criterion.
-  \item{\code{max_change}} Maximum change in ML estimates between iterations.
-  \item{\code{do_fisher}} Set \code{TRUE} to use Fisher's method of scoring.
+  \item{\code{method}} the type of estimation. Accepts \code{EAP, EB, FB}. (default = \code{EAP})
+  \item{\code{shrinkage_correction}} set \code{TRUE} to apply shrinkage correction. Used when \code{method} is \code{EAP}. (default = \code{FALSE})
+  \item{\code{prior_dist}} the type of prior distribution. Accepts \code{NORMAL, UNIFORM}. (default = \code{NORMAL})
+  \item{\code{prior_par}} distribution parameters for \code{prior_dist}. (default = \code{c(0, 1)})
+  \item{\code{bound_ML}} theta bound in \code{c(lower_bound, upper_bound)} format. Used when \code{method} is \code{MLE}. (default = \code{-4, 4})
+  \item{\code{truncate_ML}} set \code{TRUE} to truncate ML estimate within \code{bound_ML}. (default = \code{FALSE})
+  \item{\code{max_iter}} maximum number of Newton-Raphson iterations. Used when \code{method} is \code{MLE}. (default = \code{50})
+  \item{\code{crit}} convergence criterion. Used when \code{method} is \code{MLE}. (default = \code{1e-03})
+  \item{\code{max_change}} maximum change in ML estimates between iterations. Changes exceeding this value is clipped to this value. Used when \code{method} is \code{MLE}. (default = \code{1.0})
+  \item{\code{do_Fisher}} set \code{TRUE} to use Fisher's method of scoring. Used when \code{method} is \code{MLE}. (default = \code{TRUE})
 }}
 
-\item{theta_grid}{A numeric vector. Theta values to represent the continuum.}
+\item{theta_grid}{the theta grid to use as quadrature points.}
 
-\item{audit_trail}{Set \code{TRUE} to generate audit trails.}
+\item{audit_trail}{set \code{TRUE} to plot audit trails.}
 }
 \description{
-Create a \code{\linkS4class{config_Shadow}} object for Shadow Test Assembly (STA).
+\code{\link{createShadowTestConfig}} is a config function to create a \code{\linkS4class{config_Shadow}} object for Shadow test assembly.
+Default values are used for any unspecified parameters/slots.
 }
 \examples{
 cfg1 <- createShadowTestConfig(refresh_policy = list(

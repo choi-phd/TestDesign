@@ -7,24 +7,23 @@
 loadConstraints(object, pool, item_attrib, st_attrib = NULL, file = NULL)
 }
 \arguments{
-\item{object}{Constraint specifications. Can be a file path of a .csv file, or a data.frame. See vignette for the expected format.}
+\item{object}{constraint specifications. Can be a data.frame or the file path of a .csv file. See the vignette for the expected format.}
 
-\item{pool}{An \code{item_pool} object. Use \code{\link{loadItemPool}} for this.}
+\item{pool}{an \code{\linkS4class{item_pool}} object. Use \code{\link{loadItemPool}} for this.}
 
-\item{item_attrib}{An \code{item_attrib} object containing item attributes. Use \code{\link{loadItemAttrib}} for this.}
+\item{item_attrib}{an \code{\linkS4class{item_attrib}} object. Use \code{\link{loadItemAttrib}} for this.}
 
-\item{st_attrib}{(Optional) An \code{st_attrib} object containing stimulus attributes. Use \code{\link{loadStAttrib}} for this.}
+\item{st_attrib}{(optional) an \code{\linkS4class{st_attrib}} object. Use \code{\link{loadStAttrib}} for this.}
 
-\item{file}{(Deprecated) Use 'object' above.}
+\item{file}{(deprecated) use \code{object} argument instead.}
 }
 \value{
-A \code{constraints} object containing the parsed constraints, to be used in \code{\link{Static}} and \code{\link{Shadow}}.
+\code{\link{loadConstraints}} returns a \code{\linkS4class{constraints}} object. This object is used in \code{\link{Static}} and \code{\link{Shadow}}.
 }
 \description{
-Read constraints from specified file.
-}
-\details{
-Use \code{vignette("constraints")} for instructions on how to create the constraint file.
+\code{\link{loadConstraints}} is a data loading function to create a \code{\linkS4class{constraints}} object.
+\code{\link{loadConstraints}} can read constraints from a data.frame or a .csv file.
+The contents must be in the expected format; see the vignette in \code{vignette("constraints")}.
 }
 \examples{
 ## Read from data.frame:
@@ -48,5 +47,5 @@ loadConstraints(file   = "consts.csv", pool, item_attrib) # pre 1.1.0
 
 }
 \seealso{
-\link{dataset_science} for example usage.
+\code{\link{dataset_science}}, \code{\link{dataset_reading}}, \code{\link{dataset_fatigue}}, \code{\link{dataset_bayes}} for examples.
 }

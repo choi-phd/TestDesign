@@ -3,54 +3,54 @@
 \docType{class}
 \name{output_Shadow-class}
 \alias{output_Shadow-class}
-\title{output_Shadow}
+\title{Class 'output_Shadow': adaptive assembly solution}
 \description{
-output_Shadow
+\code{\linkS4class{output_Shadow}} is an S4 class to represent an adaptive assembly solution.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{simulee_id}}{Numeric. The index of the simulee.}
+\item{\code{simulee_id}}{the numeric ID of the simulee.}
 
-\item{\code{true_theta}}{Numeric or NULL. True theta value of the simulee if supplied in advance.}
+\item{\code{true_theta}}{the true theta of the simulee, if was specified.}
 
-\item{\code{true_theta_segment}}{Numeric or NULL. Which segment the true theta value is in.}
+\item{\code{true_theta_segment}}{the segment number of the true theta.}
 
-\item{\code{final_theta_est}}{Numeric. The estimated theta after the last administered item.}
+\item{\code{final_theta_est}}{final theta estimate.}
 
-\item{\code{final_se_est}}{Numeric. The standard error of estimation after the last administered item.}
+\item{\code{final_se_est}}{the standard error of \code{final_theta_est}.}
 
-\item{\code{administered_item_index}}{Numeric. A vector of item indices administered at each position.}
+\item{\code{administered_item_index}}{item IDs administered at each position.}
 
-\item{\code{administered_item_resp}}{Numeric. A vector of item responses at each position.}
+\item{\code{administered_item_resp}}{item responses from the simulee at each position.}
 
-\item{\code{administered_item_ncat}}{Numeric. A vector containing the number of categories for each administered item.}
+\item{\code{administered_item_ncat}}{the number of categories of each administered item.}
 
-\item{\code{administered_stimulus_index}}{Numeric. A vector of stimulus indices administered at each position.}
+\item{\code{administered_stimulus_index}}{stimulus IDs administered at each position.}
 
-\item{\code{shadow_test_refreshed}}{Logical. A vector of logical values indicating whether the shadow test was refreshed before administering an item at each position.}
+\item{\code{shadow_test_refreshed}}{\code{TRUE} indicates the shadow test was refreshed for the position.}
 
-\item{\code{shadow_test_feasible}}{Logical. A vector of logical values indicating whether a feasible solution to the shadow test was available in each position.}
+\item{\code{shadow_test_feasible}}{\code{TRUE} indicates the MIP was feasible with all constraints.}
 
-\item{\code{solve_time}}{Numeric. A vector of values indicating the time taken in obtaining a shadow test.}
+\item{\code{solve_time}}{elapsed time in running the solver at each position.}
 
-\item{\code{interim_theta_est}}{Numeric. A vector containing estimated thetas at each position.}
+\item{\code{interim_theta_est}}{interim theta estimates at each position.}
 
-\item{\code{interim_se_est}}{Numeric. A vector containing standard errors at each position.}
+\item{\code{interim_se_est}}{the standard error of the interim estimate at each position.}
 
-\item{\code{theta_segment_index}}{Numeric. A vector containing which segments the estimated thetas were in at each position.}
+\item{\code{theta_segment_index}}{segment numbers of interim theta estimates.}
 
-\item{\code{prior}}{Numeric. A prior distribution.}
+\item{\code{prior}}{prior distribution, if was specified.}
 
-\item{\code{prior_par}}{Numeric. The hyper parameters for the prior distribution.}
+\item{\code{prior_par}}{prior parameters, if were specified.}
 
-\item{\code{posterior}}{Numeric. A posterior distribution.}
+\item{\code{posterior}}{the posterior distribution after completing test.}
 
-\item{\code{posterior_sample}}{Numeric. A vector containing MCMC samples.}
+\item{\code{posterior_sample}}{foo.}
 
-\item{\code{likelihood}}{Numeric. A likelihood distribution.}
+\item{\code{likelihood}}{the likelihood distribution after completing test.}
 
-\item{\code{shadow_test}}{A list of vectors containing item indices of the shadow test at each position.}
+\item{\code{shadow_test}}{the list containing the item IDs within the shadow test used in each position.}
 
 \item{\code{max_cat_pool}}{the maximum number of response categories the item pool had.}
 }}

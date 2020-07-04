@@ -9,17 +9,22 @@
 loadStAttrib(object, item_attrib, file = NULL)
 }
 \arguments{
-\item{object}{Set attributes. Can be a file path of a .csv file, or a data.frame. The content should at least include the column 'STID' referring to the same column in item attributes.}
+\item{object}{set attributes. Can be a data.frame or the file path of a .csv file. The content should at least include the column 'STID' referring to the column 'STID' in the \code{data} slot of the \code{\linkS4class{item_attrib}} object.}
 
-\item{item_attrib}{An \code{\linkS4class{item_attrib}} object containing item attributes. Use \code{\link{loadItemAttrib}} for this.}
+\item{item_attrib}{an \code{\linkS4class{item_attrib}} object. Use \code{\link{loadItemAttrib}} for this.}
 
-\item{file}{(Deprecated) Use 'object' above.}
+\item{file}{(deprecated) use \code{object} argument instead.}
 }
 \value{
-A \code{\linkS4class{st_attrib}} object containing stimulus attributes.
+\code{\link{loadStAttrib}} returns an \code{\linkS4class{st_attrib}} object.
+
+\itemize{
+  \item{\code{data}} a data.frame containing stimulus attributes.
+}
 }
 \description{
-Read set, stimulus, or passage attributes from specified file.
+\code{\link{loadStAttrib}} is a data loading function to create an \code{\linkS4class{st_attrib}} object.
+\code{\link{loadStAttrib}} can read stimulus attributes a data.frame or a .csv file.
 }
 \examples{
 ## Read from data.frame:
@@ -41,5 +46,5 @@ loadStAttrib(file   = "satt.csv", item_attrib) # pre 1.1.0
 
 }
 \seealso{
-\link{dataset_reading} for example usage.
+\code{\link{dataset_reading}} for examples.
 }

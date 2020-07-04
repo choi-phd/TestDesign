@@ -9,7 +9,7 @@ info_1pl(x, b)
 \arguments{
 \item{x}{Numeric. A single theta value.}
 
-\item{b}{Numeric. A difficulty parameter value.}
+\item{b}{the difficulty parameter value.}
 }
 \description{
 Calculate the Fisher information at a theta value according to the 1PL model.

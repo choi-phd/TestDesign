@@ -70,11 +70,17 @@ theta_itempool <- calcLocation(itempool_science)
 
 {
   \insertRef{lord_theory_1952}{TestDesign}
+}
 
+{
   \insertRef{birnbaum_efficient_1957}{TestDesign}
+}
 
+{
   \insertRef{birnbaum_estimation_1958}{TestDesign}
+}
 
+{
   \insertRef{birnbaum_further_1958}{TestDesign}
 }
 
@@ -84,7 +90,9 @@ theta_itempool <- calcLocation(itempool_science)
 
 {
   \insertRef{masters_rasch_1982}{TestDesign}
+}
 
+{
   \insertRef{andrich_rating_1978}{TestDesign}
 }
 
