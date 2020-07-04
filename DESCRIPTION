@@ -39,7 +39,8 @@ Suggests:
     knitr,
     rmarkdown,
     kableExtra,
-    testthat (>= 2.1.0)
+    testthat (>= 2.1.0),
+    pkgdown
 LinkingTo: Rcpp, RcppArmadillo
 RoxygenNote: 7.1.1
 Encoding: UTF-8
