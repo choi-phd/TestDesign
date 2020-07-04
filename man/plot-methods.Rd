@@ -6,53 +6,97 @@
 \alias{plot,item_pool-method}
 \alias{plot,output_Static-method}
 \alias{plot,constraints-method}
+\alias{plot,output_Shadow-method}
+\alias{plot,output_Shadow_all-method}
 \title{Extension of plot() for objects in TestDesign package}
 \usage{
 \S4method{plot}{item_pool}(
   x,
   y,
-  theta = seq(-3, 3, 0.1),
   type = "info",
+  theta = seq(-3, 3, 0.1),
   info_type = "FISHER",
   plot_sum = TRUE,
   select = NULL,
+  examinee_id = 1,
+  theta_range = c(-5, 5),
   color = "blue",
-  file_pdf = NULL,
-  width = 7,
-  height = 6,
-  mfrow = c(1, 1),
+  z_ci = 1.96,
+  simple = TRUE,
+  theta_segment = "Estimated",
+  color_final = "blue",
   ...
 )
 
 \S4method{plot}{output_Static}(
   x,
   y,
-  theta = seq(-3, 3, 0.1),
   type = NULL,
+  theta = seq(-3, 3, 0.1),
   info_type = "FISHER",
   plot_sum = TRUE,
   select = NULL,
+  examinee_id = 1,
+  theta_range = c(-5, 5),
   color = "blue",
-  file_pdf = NULL,
-  width = 7,
-  height = 6,
-  mfrow = c(2, 4),
+  z_ci = 1.96,
+  simple = TRUE,
+  theta_segment = "Estimated",
+  color_final = "blue",
   ...
 )
 
 \S4method{plot}{constraints}(
   x,
   y,
-  theta = seq(-3, 3, 0.1),
   type = "info",
+  theta = seq(-3, 3, 0.1),
   info_type = "FISHER",
   plot_sum = TRUE,
   select = NULL,
-  color = "black",
-  file_pdf = NULL,
-  width = 7,
-  height = 6,
-  mfrow = c(1, 1),
+  examinee_id = 1,
+  theta_range = c(-5, 5),
+  color = "blue",
+  z_ci = 1.96,
+  simple = TRUE,
+  theta_segment = "Estimated",
+  color_final = "blue",
+  ...
+)
+
+\S4method{plot}{output_Shadow}(
+  x,
+  y,
+  type = "audit",
+  theta = seq(-3, 3, 0.1),
+  info_type = "FISHER",
+  plot_sum = TRUE,
+  select = NULL,
+  examinee_id = 1,
+  theta_range = c(-5, 5),
+  color = "blue",
+  z_ci = 1.96,
+  simple = FALSE,
+  theta_segment = "Estimated",
+  color_final = "blue",
+  ...
+)
+
+\S4method{plot}{output_Shadow_all}(
+  x,
+  y,
+  type = "audit",
+  theta = seq(-3, 3, 0.1),
+  info_type = "FISHER",
+  plot_sum = TRUE,
+  select = NULL,
+  examinee_id = 1,
+  theta_range = c(-5, 5),
+  color = "blue",
+  z_ci = 1.96,
+  simple = FALSE,
+  theta_segment = "Estimated",
+  color_final = "blue",
   ...
 )
 }
@@ -68,8 +112,6 @@
 
 \item{y}{not used, exists for compatibility with \code{\link[base]{plot}} in the base R package.}
 
-\item{theta}{the theta grid to use in plotting. (default = \code{seq(-3, 3, .1)})}
-
 \item{type}{the type of plot.
 \itemize{
    \item{\code{info} plots information from \code{\linkS4class{item_pool}} and \code{\linkS4class{output_Static}}.}
@@ -79,7 +121,9 @@
    \item{\code{exposure} plots exposure rates from \code{\linkS4class{output_Shadow_all}}.}
 }}
 
-\item{info_type}{the type of information. Currently only accepts \code{FISHER}. (default = \code{FISHER})}
+\item{theta}{the theta grid to use in plotting. (default = \code{seq(-3, 3, .1)})}
+
+\item{info_type}{the type of information. Currently accepts \code{FISHER}. (default = \code{FISHER})}
 
 \item{plot_sum}{used in \code{\linkS4class{item_pool}} objects.
 \itemize{
@@ -90,13 +134,11 @@
 
 \item{select}{used in \code{\linkS4class{item_pool}} objects. Item indices to subset.}
 
-\item{color}{the color of the curve.}
-
-\item{...}{arguments to pass onto \code{\link{plot}}.}
-
 \item{examinee_id}{used in \code{\linkS4class{output_Shadow}} and \code{\linkS4class{output_Shadow_all}} with \code{type = 'audit'} and \code{type = 'shadow'}. The examinee numeric ID to draw the plot.}
 
 \item{theta_range}{used in \code{\linkS4class{output_Shadow}} and \code{\linkS4class{output_Shadow_all}} with \code{type = 'audit'}. The theta range to plot. (default = \code{c(-5, 5)})}
+
+\item{color}{the color of the curve.}
 
 \item{z_ci}{used in \code{\linkS4class{output_Shadow}} and \code{\linkS4class{output_Shadow_all}} with \code{type = 'audit'}. The range to use for confidence intervals. (default = \code{1.96})}
 
@@ -105,15 +147,17 @@
 \item{theta_segment}{used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. The type of theta to determine exposure segments. Accepts \code{Estimated} or \code{True}. (default = \code{Estimated})}
 
 \item{color_final}{used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. The color of item-wise exposure rates, only counting the items administered in the final theta segment as exposed.}
+
+\item{...}{arguments to pass onto \code{\link{plot}}.}
 }
 \description{
 Extension of plot() for objects in TestDesign package
-
-Plot from objects in the TestDesign package.
 }
 \examples{
+
+subitempool <- itempool_science[1:8]
+
 ## Plot item information of a pool
-subitempool <- subsetItemPool(itempool_science, 1:8)
 plot(subitempool)
 plot(itempool_science, select = 1:8)
 

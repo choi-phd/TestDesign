@@ -101,11 +101,11 @@ setMethod(
 #'
 #' @examples
 #' subitempool <- subsetItemPool(itempool_science, 1:8)
-#' plotInfo(subitempool)
+#' plot(subitempool)
 #'
 #' config <- createStaticTestConfig()
 #' solution <- Static(config, constraints_science)
-#' plotInfo(solution)
+#' plot(solution)
 #'
 #' @docType methods
 #' @rdname plotInfo-methods
@@ -130,11 +130,7 @@ setMethod(
       info_type = info_type,
       plot_sum = plot_sum,
       select = select,
-      color = color,
-      file_pdf = file_pdf,
-      width = width,
-      height = height,
-      mfrow = mfrow
+      color = color
     )
     return(p)
   }
@@ -153,11 +149,7 @@ setMethod(
       info_type = info_type,
       plot_sum = plot_sum,
       select = select,
-      color = color,
-      file_pdf = file_pdf,
-      width = width,
-      height = height,
-      mfrow = mfrow
+      color = color
     )
     return(p)
   }
@@ -176,11 +168,7 @@ setMethod(
       info_type = info_type,
       plot_sum = plot_sum,
       select = select,
-      color = color,
-      file_pdf = file_pdf,
-      width = width,
-      height = height,
-      mfrow = mfrow
+      color = color
     )
     return(p)
   }

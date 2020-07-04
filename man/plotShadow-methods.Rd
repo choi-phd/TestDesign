@@ -51,10 +51,11 @@ plotShadow(
 (deprecated) Use \code{\link[TestDesign:plot-methods]{plot}} with \code{type = 'shadow'} instead.
 }
 \examples{
+\dontrun{
 config <- createShadowTestConfig()
 true_theta <- rnorm(1)
 solution <- Shadow(config, constraints_science, true_theta)
 plotShadow(solution, 1)
 plotShadow(solution, 1, simple = TRUE)
-
+}
 }

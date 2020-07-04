@@ -498,6 +498,11 @@ setClass("output_Shadow_all",
 #' @slot likelihood the likelihood distribution after completing test.
 #' @slot shadow_test the list containing the item IDs within the shadow test used in each position.
 #' @slot max_cat_pool the maximum number of response categories the item pool had.
+#' @slot ni_pool the total number of items the item pool had.
+#' @slot ns_pool the total number of stimuli the item pool had.
+#' @slot test_length_constraints the test length constraint used in assembly.
+#' @slot set_based whether the item pool was set-based.
+#' @slot item_index_by_stimulus the list of items by each stimulus the item pool had.
 #'
 #' @export
 setClass("output_Shadow",
@@ -523,7 +528,12 @@ setClass("output_Shadow",
     posterior_sample            = "numeric",
     likelihood                  = "numeric",
     shadow_test                 = "list",
-    max_cat_pool                = "numeric"
+    max_cat_pool                = "numeric",
+    ni_pool                     = "numeric",
+    ns_pool                     = "numeric",
+    test_length_constraints     = "numeric",
+    set_based                   = "logical",
+    item_index_by_stimulus      = "list_or_null"
   ),
   prototype = list(
     simulee_id                  = numeric(0),
@@ -547,7 +557,12 @@ setClass("output_Shadow",
     posterior_sample            = numeric(0),
     likelihood                  = numeric(0),
     shadow_test                 = list(0),
-    max_cat_pool                = numeric(0)
+    max_cat_pool                = numeric(0),
+    ni_pool                     = numeric(0),
+    ns_pool                     = numeric(0),
+    test_length_constraints     = numeric(0),
+    set_based                   = logical(0),
+    item_index_by_stimulus      = NULL
   ),
   validity = function(object) {
     return(TRUE)

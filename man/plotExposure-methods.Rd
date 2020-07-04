@@ -56,7 +56,7 @@ plotExposure(
 (deprecated) Use \code{\link[TestDesign:plot-methods]{plot}} with \code{type = 'exposure'} instead.
 }
 \examples{
-\donttest{
+\dontrun{
 true_theta <- runif(10, min = -3.5, max = 3.5)
 resp_science <- makeTest(itempool_science, info_type = "FISHER", true_theta = true_theta)@data
 constraints_science2 <- updateConstraints(constraints_science, off = c(14:20, 32:36))
