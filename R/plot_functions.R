@@ -304,6 +304,7 @@ setMethod(
           rect_x <- i
           rect_y <- x@administered_item_resp[i]
           if (!is.na(rect_y)) {
+
             if (x@administered_item_ncat[i] == 2) {
               if (x@administered_item_resp[i] == min_score) {
                 rect_col = "red"
@@ -313,7 +314,10 @@ setMethod(
             } else {
               rect_col = "cyan2"
             }
-            rect(rect_x - 0.25, min_score - 1, rect_x + 0.25, rect_y, col = rect_col, border = "black")
+            for (ii in 0:rect_y) {
+              rect(rect_x - 0.25, ii - 1, rect_x + 0.25, ii, col = rect_col, border = "black")
+            }
+
           }
         }
       } else {
