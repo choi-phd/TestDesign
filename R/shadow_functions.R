@@ -228,25 +228,35 @@ setMethod(
   }
 )
 
-#' Generate maximum likelihood estimates of theta
+#' Compute maximum likelihood estimates of theta
 #'
-#' Generate maximum likelihood estimates of theta.
+#' \code{\link{mle}} is a function to compute maximum likelihood estimates of theta.
 #'
-#' @param object A \code{\linkS4class{item_pool}} object.
-#' @param resp A vector (or matrix) of item responses.
-#' @param start_theta An optional vector of start theta values.
-#' @param max_iter Maximum number of iterations.
-#' @param crit Convergence criterion.
-#' @param select A vector of indices identifying the items to subset.
-#' @param theta_range A range of theta values.
-#' @param truncate Set \code{TRUE} to bound MLE to theta_range: c(minTheta, maxTheta).
-#' @param max_change Maximum change between iterations.
-#' @param do_Fisher \code{TRUE} to use Fisher's method of scoring.
+#' @param object an \code{\linkS4class{item_pool}} object.
+#' @param resp a vector of item responses from one person on all items in the \code{object} argument.
+#' @param start_theta (optional) initial theta values.
+#' @param max_iter maximum number of iterations. (default = \code{100})
+#' @param crit convergence criterion to use. (default = \code{0.001})
+#' @param select (optional) if item indices are supplied, only the specified items are used. The \code{resp} argument must have the same length with the length of this argument.
+#' @param truncate set \code{TRUE} to impose a bound on the estimate.
+#' @param theta_range a range of theta values to bound the estimate. Only effective when \code{truncate} is \code{TRUE}. (default = \code{c(-4, 4)})
+#' @param max_change upper bound to impose on the change in theta between iterations. Changes exceeding this value will be replaced by \code{max_change}. (default = \code{1.0})
+#' @param do_Fisher set \code{TRUE} to use Fisher scoring. (default = \code{TRUE})
+#'
+#' @return \code{\link{mle}} returns a list containing estimated values.
+#'
+#' \itemize{
+#'   \item{\code{th}} theta value.
+#'   \item{\code{se}} standard error.
+#'   \item{\code{conv}} \code{TRUE} if estimation converged.
+#'   \item{\code{trunc}} \code{TRUE} if truncating was applied on \code{th}.
+#' }
 #'
 #' @docType methods
 #' @rdname mle-methods
 #' @examples
-#' mle(itempool_fatigue, resp_fatigue_data[10,])
+#' mle(itempool_fatigue, resp_fatigue_data[10, ])
+#' mle(itempool_fatigue, resp_fatigue_data[10, 1:20], select = 1:20)
 #' @export
 setGeneric(
   name = "mle",
@@ -514,12 +524,12 @@ setMethod(
   }
 )
 
-#' Generate expected a posteriori estimates of theta
+#' Compute expected a posteriori estimates of theta
 #'
-#' Generate expected a posteriori estimates of theta.
+#' \code{\link{eap}} is a function to compute expected a posteriori estimates of theta.
 #'
-#' @param object An \code{\linkS4class{item_pool}} object.
-#' @param theta A theta grid.
+#' @param object an \code{\linkS4class{item_pool}} object.
+#' @param theta the theta grid to use as quadrature points.
 #' @param prior A prior distribution, a numeric vector for a common prior or a matrix for individualized priors.
 #' @param resp A numeric matrix of item responses, one row per examinee.
 #' @param select A vector of indices identifying the items to subset.
@@ -715,27 +725,30 @@ makeItemPoolCluster <- function(pools, names = NULL) {
   }
 }
 
-#' Run adaptive test assembly.
+#' Run adaptive test assembly
 #'
-#' Perform adaptive test assembly based on generalized shadow-test approach, with specified configurations.
+#' \code{\link{Shadow}} is a test assembly function to perform adaptive test assembly based on the generalized shadow-test framework.
 #'
-#' @param config A \code{\linkS4class{config_Shadow}} object.
-#' @param constraints A list representing optimization constraints. Use \code{\link{loadConstraints}} for this.
-#' @param true_theta Numeric. A vector of true theta values to be used in simulation.
-#' @param data Numeric. A matrix containing item response data.
-#' @param prior Numeric. A matrix or a vector containing priors.
-#' @param prior_par Numeric. A vector of parameters for prior distribution.
-#' @param session Used to communicate with a Shiny session.
+#' @template config_Shadow-param
+#' @template constraints-param
+#' @param true_theta (optional) true theta values to use in simulation. Either \code{true_theta} or \code{data} must be supplied.
+#' @param data (optional) a matrix containing item response data to use in simulation. Either \code{true_theta} or \code{data} must be supplied.
+#' @param prior prior density at each \code{config@theta_grid}. This overrides \code{prior_par}. Can be a vector to use the same prior for all \emph{nj} participants, or a \emph{nj}-row matrix to use a different prior for each participant.
+#' @param prior_par normal distribution parameters \code{c(mean, sd)} to use as prior. Can be a vector to use the same prior for all \emph{nj} participants, or a \emph{nj}-row matrix to use a different prior for each participant.
+#' @param session (optional) used to communicate with Shiny app \code{\link{TestDesign}}.
 #'
-#' @return An \code{\linkS4class{output_Shadow_all}} object containing results.
+#' @return \code{\link{Shadow}} returns an \code{\linkS4class{output_Shadow_all}} object containing assembly results.
 #'
 #' @references{
 #'   \insertRef{van_der_linden_model_1998}{TestDesign}
-#'
+#' }
+#' @references{
 #'   \insertRef{van_der_linden_optimal_1998}{TestDesign}
-#'
+#' }
+#' @references{
 #'   \insertRef{van_der_linden_optimal_2000}{TestDesign}
-#'
+#' }
+#' @references{
 #'   \insertRef{van_der_linden_linear_2005}{TestDesign}
 #' }
 #' @rdname Shadow-methods
