@@ -472,9 +472,9 @@ setClass("output_Shadow_all",
   }
 )
 
-#' Class 'output_Shadow': adaptive assembly solution
+#' Class 'output_Shadow': adaptive assembly solution for one simulee
 #'
-#' \code{\linkS4class{output_Shadow}} is an S4 class to represent an adaptive assembly solution.
+#' \code{\linkS4class{output_Shadow}} is an S4 class to represent the adaptive assembly solution for one simulee.
 #'
 #' @slot simulee_id the numeric ID of the simulee.
 #' @slot true_theta the true theta of the simulee, if was specified.
@@ -494,7 +494,7 @@ setClass("output_Shadow_all",
 #' @slot prior prior distribution, if was specified.
 #' @slot prior_par prior parameters, if were specified.
 #' @slot posterior the posterior distribution after completing test.
-#' @slot posterior_sample foo.
+#' @slot posterior_sample posterior samples of interim theta before the estimation of final theta. \code{mean(posterior_sample) == interim_theta_est[test_length]} holds.
 #' @slot likelihood the likelihood distribution after completing test.
 #' @slot shadow_test the list containing the item IDs within the shadow test used in each position.
 #' @slot max_cat_pool the maximum number of response categories the item pool had.

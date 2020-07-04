@@ -82,14 +82,14 @@ setClassUnion("config_ATA", c("config_Static"))
 #'
 #' @param item_selection a named list containing item selection criteria.
 #' \itemize{
-#'   \item{\code{method}} the type of selection criteria. Accepts \code{MAXINFO, TIF, TCC}.
-#'   \item{\code{info_type}} the type of information. Accepts \code{FISHER}.
-#'   \item{\code{target_location}} a numeric vector containing the locations of target theta points. (e.g. \code{c(-1, 0, 1)})
-#'   \item{\code{target_value}} a numeric vector containing the target values at each theta location. This should have the same length with \code{target_location}. Ignored if method is \code{MAXINFO}.
-#'   \item{\code{target_weight}} a numeric vector containing the weights for each theta location. This should have the same length with \code{targetlocation}. Defaults to a vector of 1s.
+#'   \item{\code{method}} the type of selection criteria. Accepts \code{MAXINFO, TIF, TCC}. (default = \code{MAXINFO})
+#'   \item{\code{info_type}} the type of information. Accepts \code{FISHER}. (default = \code{FISHER})
+#'   \item{\code{target_location}} a numeric vector containing the locations of target theta points. (e.g. \code{c(-1, 0, 1)}) (default = \code{c(-1.2, 0, 1.2)})
+#'   \item{\code{target_value}} a numeric vector containing the target values at each theta location. This should have the same length with \code{target_location}. Ignored if method is \code{MAXINFO}. (default = \code{NULL})
+#'   \item{\code{target_weight}} a numeric vector containing the weights for each theta location. This should have the same length with \code{target_location}. (default = \code{rep(1, length(target_location))}
 #' }
 #'
-#' @param MIP a list containing solver options. This should have the following entries:
+#' @param MIP a named list containing solver options.
 #' \itemize{
 #'   \item{\code{solver}} the type of solver. Accepts \code{lpsymphony, Rsymphony, gurobi, lpSolve, Rglpk}. (default = \code{LPSOLVE})
 #'   \item{\code{verbosity}} verbosity level of the solver. (default = \code{-2})
@@ -98,6 +98,9 @@ setClassUnion("config_ATA", c("config_Static"))
 #'   \item{\code{gap_limit_abs}} search termination criterion. Gap limit in absolute scale passed onto the solver. Used in solvers \code{lpsymphony, Rsymphony}. (default = \code{0.05})
 #'   \item{\code{obj_tol}} search termination criterion. Tolerance on target objective value in absolute difference scale. Used when \code{item_selection$method} is \code{TIF} or \code{TCC}. (default = \code{0.05})
 #' }
+#'
+#' @return \code{\link{createStaticTestConfig}} returns a \code{\linkS4class{config_Static}} object. This object is used in \code{\link{Static}}.
+#'
 #' @examples
 #' cfg1 <- createStaticTestConfig(
 #'   list(
@@ -165,7 +168,7 @@ createStaticTestConfig <- function(item_selection = NULL, MIP = NULL) {
 #' \code{\linkS4class{output_Static}} is an S4 class to represent a fixed-form assembly solution.
 #'
 #' @slot MIP a list containing the result from MIP solver.
-#' @slot selected a data.frame containing the selected items and their attributes.
+#' @slot selected a \code{\link{data.frame}} containing the selected items and their attributes.
 #' @slot obj_value the objective value of the solution.
 #' @slot solve_time the elapsed time in running the solver.
 #' @slot pool the \code{\linkS4class{item_pool}} used in the assembly.

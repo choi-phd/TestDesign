@@ -3,9 +3,9 @@
 \docType{class}
 \name{output_Shadow-class}
 \alias{output_Shadow-class}
-\title{Class 'output_Shadow': adaptive assembly solution}
+\title{Class 'output_Shadow': adaptive assembly solution for one simulee}
 \description{
-\code{\linkS4class{output_Shadow}} is an S4 class to represent an adaptive assembly solution.
+\code{\linkS4class{output_Shadow}} is an S4 class to represent the adaptive assembly solution for one simulee.
 }
 \section{Slots}{
 
@@ -46,7 +46,7 @@
 
 \item{\code{posterior}}{the posterior distribution after completing test.}
 
-\item{\code{posterior_sample}}{foo.}
+\item{\code{posterior_sample}}{posterior samples of interim theta before the estimation of final theta. \code{mean(posterior_sample) == interim_theta_est[test_length]} holds.}
 
 \item{\code{likelihood}}{the likelihood distribution after completing test.}
 
