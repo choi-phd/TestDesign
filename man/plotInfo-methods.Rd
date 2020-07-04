@@ -91,10 +91,10 @@ If \code{TRUE} then draw pool-level information, and if \code{FALSE} draw item-l
 }
 \examples{
 subitempool <- subsetItemPool(itempool_science, 1:8)
-plotInfo(subitempool)
+plot(subitempool)
 
 config <- createStaticTestConfig()
 solution <- Static(config, constraints_science)
-plotInfo(solution)
+plot(solution)
 
 }
