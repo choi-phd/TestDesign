@@ -31,20 +31,20 @@ setClass("test",
     data = matrix(NA, 0, 0)
   ),
   validity = function(object) {
-    errors <- NULL
+    err <- NULL
     if (length(object@prob) != object@pool@ni) {
-      errors <- c(errors, "length(@prob) must match @pool@ni.")
+      err <- c(err, "test: length(@prob) must be equal to @pool@ni")
     }
     if (ncol(object@info) != object@pool@ni) {
       errors <- c(errors, "ncol(@info) must match @pool@ni.")
     }
     if (nrow(object@info) != length(object@theta)) {
-      errors <- c(errors, "nrow(@info) must match length(@theta).")
+      err <- c(err, "test: nrow(@info) must match length(@theta)")
     }
-    if (length(errors) == 0) {
+    if (length(err) == 0) {
       return(TRUE)
     } else {
-      return(errors)
+      return(err)
     }
   }
 )
@@ -70,17 +70,17 @@ setClass("test_cluster",
     names = character(0)
   ),
   validity = function(object) {
-    errors <- NULL
+    err <- NULL
     if (length(object@tests) != object@nt) {
-      errors <- c(errors, "@nt must match length(@tests).")
+      err <- c(err, "test_cluster: @nt must be equal to length(@tests)")
     }
     if (length(object@names) != object@nt) {
-      errors <- c(errors, "@nt must match length(@names).")
+      err <- c(err, "test_cluster: @nt must be equal to length(@names)")
     }
-    if (length(errors) == 0) {
+    if (length(err) == 0) {
       return(TRUE)
     } else {
-      return(errors)
+      return(err)
     }
   }
 )
@@ -222,7 +222,7 @@ setClass("config_Shadow",
       err <- c(err, msg)
     }
     if (!length(object@exposure_control$max_exposure_rate) %in% c(1, object@exposure_control$n_segment)) {
-      msg <- sprintf("@exposure_control: unexpected length($max_exposure_rate) %s (must be 1 or $n_segment)", length(object@exposure_control$max_exposure_rate))
+      msg <- sprintf("config@exposure_control: unexpected length($max_exposure_rate) %s (must be 1 or $n_segment)", length(object@exposure_control$max_exposure_rate))
       err <- c(err, msg)
     }
     if (!object@stopping_criterion$method %in% c("FIXED")) {

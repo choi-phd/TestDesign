@@ -25,20 +25,23 @@ setClass("config_Static",
     )
   ),
   validity = function(object) {
-    errors <- NULL
+    err <- NULL
     if (!toupper(object@item_selection$method) %in% c("MAXINFO", "TIF", "TCC")) {
-      errors <- c(errors, "@item_selection$method only accepts one of MAXINFO, TIF, or TCC.")
+      msg <- sprintf("config@item_selection: unexpected $method '%s' (accepts MAXINFO, TIF, or TCC)", toupper(object@item_selection$method))
+      err <- c(err, msg)
     }
     if (toupper(object@item_selection$method) == "MAXINFO") {
       if (!is.null(object@item_selection$target_value)) {
-        errors <- c(errors, "@item_selection$target_value must be empty when @item_selection$method is MAXINFO.")
+        msg <- "config@item_selection: $target_value must be empty when $method is 'MAXINFO'"
+        err <- c(err, msg)
       }
       target_lengths <- unique(c(
         length(object@item_selection$target_location),
         length(object@item_selection$target_weight)
       ))
       if (length(target_lengths) != 1) {
-        errors <- c(errors, "@item_selection$target_location and @item_selection$target_weight must have the same length.")
+        msg <- "config@item_selection: $target_location and $target_weight must have the same length()"
+        err <- c(err, msg)
       }
     }
     if (toupper(object@item_selection$method) != "MAXINFO") {
@@ -48,20 +51,23 @@ setClass("config_Static",
         length(object@item_selection$target_weight)
       ))
       if (length(target_lengths) != 1) {
-        errors <- c(errors, "@item_selection$target_location, @item_selection$target_value, and @item_selection$target_weight must have the same length.")
+        msg <- "config@item_selection: $target_location, $target_value, and $target_weight must have the same length()"
+        err <- c(err, msg)
       }
     }
     if (toupper(object@item_selection$info_type) != "FISHER") {
-      errors <- c(errors, "@item_selection$info_type only accepts FISHER.")
+      msg <- sprintf("config@item_selection: unexpected $info_type '%s' (accepts FISHER)", toupper(object@item_selection$info_type))
+      err <- c(err, msg)
     }
     if (!toupper(object@MIP$solver) %in% c("LPSYMPHONY", "RSYMPHONY", "GUROBI", "LPSOLVE", "RGLPK")) {
-      errors <- c(errors, "@MIP$solver only accepts one of lpsymphony, Rsymphony, gurobi, lpSolve, or Rglpk.")
+      msg <- sprintf("config@MIP: unexpected $solver (accepts lpsymphony, Rsymphony, gurobi, lpSolve, or Rglpk)", object@MIP$solver)
+      err <- c(err, msg)
     }
 
-    if (length(errors) == 0) {
+    if (length(err) == 0) {
       return(TRUE)
     } else {
-      return(errors)
+      return(err)
     }
   }
 )
