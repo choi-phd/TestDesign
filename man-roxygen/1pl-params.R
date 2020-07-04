@@ -1,1 +1,1 @@
-#' @param b Numeric. A difficulty parameter value.
+#' @param b the difficulty parameter value.

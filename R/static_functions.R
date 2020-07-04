@@ -1,26 +1,14 @@
 #' @include shadow_class.R
 NULL
 
-#' Run Static Test Assembly
+#' Run fixed-form test assembly
 #'
-#' Perform static (fixed-form) test assembly with specified configurations.
+#' \code{\link{Static}} is a test assembly function to perform fixed-form test assembly based on the generalized shadow-test framework.
 #'
-#' @param config A \code{\linkS4class{config_Static}} object containing configuration options. Use \code{\link{createStaticTestConfig}} for this.
-#' @param constraints A list representing optimization constraints. Use \code{\link{loadConstraints}} for this.
+#' @template config_Static-param
+#' @template constraints-param
 #'
-#' @return A list containing the following entries:
-#' \itemize{
-#'   \item{\code{MIP}} A list containing the result from MIP solver.
-#'   \itemize{
-#'     \item{\code{solution}} Solution vector. Each value represents an item. A value of 1 indicates the item was selected.
-#'     \item{\code{objval}} Objective value of the solution.
-#'     \item{\code{status}} Status value indicating whether an optimal solution was found.
-#'   }
-#'   \item{\code{selected}} The attributes of the selected items.
-#'   \item{\code{solver}} The name of the MIP solver used in the assembly.
-#'   \item{\code{obj_value}} Objective value of the solution. Identical to the one above.
-#'   \item{\code{solve_time}} The elapsed time in running the solver.
-#' }
+#' @return \code{\link{Static}} returns a \code{\linkS4class{output_Static}} object containing the selected items.
 #'
 #' @references
 #' \insertRef{van_der_linden_linear_2005}{TestDesign}
@@ -91,20 +79,25 @@ setMethod(
   }
 )
 
-#' Draw item information plots
+#' (deprecated) Plot item/test/pool-level information
 #'
-#' (deprecated) Draw item information plots.
+#' (deprecated) Use \code{\link[TestDesign:plot-methods]{plot}}.
 #'
-#' @param object An \code{\linkS4class{item_pool}} object to draw pool-level or item-level information, or a list from \code{\link{Static}} to draw test-level information.
-#' @param theta Theta values for drawing the curve. Default is \code{seq(-3, 3, .1)}.
-#' @param info_type Type of information. Currently only accepts \code{FISHER} (default).
-#' @param plot_sum When 'object' is an \code{\linkS4class{item_pool}} object, if \code{TRUE} then draw pool-level information, and if \code{FALSE} draw item-level information for every item in the pool.
-#' @param select A vector of indices identifying the items to subset, for when 'object' is an \code{\linkS4class{item_pool}} object.
-#' @param color The color of the curve.
-#' @param file_pdf If supplied a filename, save as a PDF file.
-#' @param width Width of graphics device.
-#' @param height Width of graphics device.
-#' @param mfrow Multipanel configurations as c(nrow, ncol).
+#' @param object \itemize{
+#'   \item{\code{\linkS4class{item_pool}}: plot pool-level or item-level information.}
+#'   \item{\code{\linkS4class{output_Static}}: plot test-level information of the assembly solution.}
+#'   \item{\code{\linkS4class{constraints}}: plot attainable information range.}
+#' }
+#' @param theta the theta grid to use on the x-axis. (default = \code{seq(-3, 3, .1)})
+#' @param info_type the type of information. Accepts \code{FISHER}. (default = \code{FISHER})
+#' @param plot_sum used when the \code{object} argument is an \code{\linkS4class{item_pool}} object.
+#'   If \code{TRUE} then draw pool-level information, and if \code{FALSE} draw item-level information for every item in the pool. (default = \code{TRUE})
+#' @param select (optional) used when the \code{object} argument is an \code{\linkS4class{item_pool}} object. Items to select from the pool.
+#' @param color the color of the curve. (default = \code{blue})
+#' @param file_pdf (optional) if supplied a filename, save as a PDF file.
+#' @param width the width of the plot. (default = \code{7})
+#' @param height the height of the plot. (default = \code{6})
+#' @param mfrow multi-panel configurations to use. (default = \code{c(2, 4)})
 #'
 #' @examples
 #' subitempool <- subsetItemPool(itempool_science, 1:8)
