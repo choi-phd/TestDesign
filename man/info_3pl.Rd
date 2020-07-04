@@ -9,11 +9,11 @@ info_3pl(x, a, b, c)
 \arguments{
 \item{x}{Numeric. A single theta value.}
 
-\item{a}{Numeric. A slope parameter value.}
+\item{a}{the slope parameter value.}
 
-\item{b}{Numeric. A difficulty parameter value.}
+\item{b}{the difficulty parameter value.}
 
-\item{c}{Numeric. A guessing parameter value.}
+\item{c}{the guessing parameter value.}
 }
 \description{
 Calculate the Fisher information at a theta value according to the 3PL model.

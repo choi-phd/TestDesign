@@ -38,10 +38,5 @@ itemattrib_fatigue <- loadItemAttrib(itemattrib_fatigue_data, itempool_fatigue)
 constraints_fatigue <- loadConstraints(constraints_fatigue_data,
   itempool_fatigue, itemattrib_fatigue)
 
-\dontrun{
-  View(itemcontent_fatigue_data) ## Item contents for use in TestDesign()
-  View(resp_fatigue_data)        ## Raw item responses for reference
-}
-
 }
 \keyword{datasets}

@@ -9,7 +9,7 @@ array_info_1pl(x, b)
 \arguments{
 \item{x}{Numeric. A vector of theta values.}
 
-\item{b}{Numeric. A difficulty parameter value.}
+\item{b}{the difficulty parameter value.}
 }
 \description{
 Calculate the Fisher information at theta values according to the 1PL model.

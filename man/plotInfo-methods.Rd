@@ -6,7 +6,7 @@
 \alias{plotInfo,output_Static-method}
 \alias{plotInfo,item_pool-method}
 \alias{plotInfo,constraints-method}
-\title{Draw item information plots}
+\title{(deprecated) Plot item/test/pool-level information}
 \usage{
 plotInfo(
   object,
@@ -61,28 +61,33 @@ plotInfo(
 )
 }
 \arguments{
-\item{object}{An \code{\linkS4class{item_pool}} object to draw pool-level or item-level information, or a list from \code{\link{Static}} to draw test-level information.}
+\item{object}{\itemize{
+  \item{\code{\linkS4class{item_pool}}: plot pool-level or item-level information.}
+  \item{\code{\linkS4class{output_Static}}: plot test-level information of the assembly solution.}
+  \item{\code{\linkS4class{constraints}}: plot attainable information range.}
+}}
 
-\item{theta}{Theta values for drawing the curve. Default is \code{seq(-3, 3, .1)}.}
+\item{theta}{the theta grid to use on the x-axis. (default = \code{seq(-3, 3, .1)})}
 
-\item{info_type}{Type of information. Currently only accepts \code{FISHER} (default).}
+\item{info_type}{the type of information. Accepts \code{FISHER}. (default = \code{FISHER})}
 
-\item{plot_sum}{When 'object' is an \code{\linkS4class{item_pool}} object, if \code{TRUE} then draw pool-level information, and if \code{FALSE} draw item-level information for every item in the pool.}
+\item{plot_sum}{used when the \code{object} argument is an \code{\linkS4class{item_pool}} object.
+If \code{TRUE} then draw pool-level information, and if \code{FALSE} draw item-level information for every item in the pool. (default = \code{TRUE})}
 
-\item{select}{A vector of indices identifying the items to subset, for when 'object' is an \code{\linkS4class{item_pool}} object.}
+\item{select}{(optional) used when the \code{object} argument is an \code{\linkS4class{item_pool}} object. Items to select from the pool.}
 
-\item{color}{The color of the curve.}
+\item{color}{the color of the curve. (default = \code{blue})}
 
-\item{file_pdf}{If supplied a filename, save as a PDF file.}
+\item{file_pdf}{(optional) if supplied a filename, save as a PDF file.}
 
-\item{width}{Width of graphics device.}
+\item{width}{the width of the plot. (default = \code{7})}
 
-\item{height}{Width of graphics device.}
+\item{height}{the height of the plot. (default = \code{6})}
 
-\item{mfrow}{Multipanel configurations as c(nrow, ncol).}
+\item{mfrow}{multi-panel configurations to use. (default = \code{c(2, 4)})}
 }
 \description{
-(deprecated) Draw item information plots.
+(deprecated) Use \code{\link[TestDesign:plot-methods]{plot}}.
 }
 \examples{
 subitempool <- subsetItemPool(itempool_science, 1:8)
