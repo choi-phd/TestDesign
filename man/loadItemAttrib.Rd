@@ -9,7 +9,7 @@
 loadItemAttrib(object, pool, file = NULL)
 }
 \arguments{
-\item{object}{item attributes. Can be a data.frame or the file path of a .csv file. The content should at least include column 'ID' that matches with the \code{\linkS4class{item_pool}} object.}
+\item{object}{item attributes. Can be a \code{\link{data.frame}} or the file path of a .csv file. The content should at least include column 'ID' that matches with the \code{\linkS4class{item_pool}} object.}
 
 \item{pool}{an \code{\linkS4class{item_pool}} object. Use \code{\link{loadItemPool}} for this.}
 
@@ -19,12 +19,12 @@ loadItemAttrib(object, pool, file = NULL)
 \code{\link{loadItemAttrib}} returns an \code{\linkS4class{item_attrib}} object.
 
 \itemize{
-  \item{\code{data}} a data.frame containing item attributes.
+  \item{\code{data}} a \code{\link{data.frame}} containing item attributes.
 }
 }
 \description{
 \code{\link{loadItemAttrib}} is a data loading function to create an \code{\linkS4class{item_attrib}} object.
-\code{\link{loadItemAttrib}} can read item attributes a data.frame or a .csv file.
+\code{\link{loadItemAttrib}} can read item attributes a \code{\link{data.frame}} or a .csv file.
 }
 \examples{
 ## Read from data.frame:

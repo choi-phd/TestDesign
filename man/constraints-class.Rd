@@ -10,7 +10,7 @@
 \section{Slots}{
 
 \describe{
-\item{\code{constraints}}{a data.frame containing the constraint specifications.}
+\item{\code{constraints}}{a \code{\link{data.frame}} containing the constraint specifications.}
 
 \item{\code{list_constraints}}{a list containing the \code{\linkS4class{constraint}} object representation of each constraint.}
 

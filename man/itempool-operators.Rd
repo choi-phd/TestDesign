@@ -38,9 +38,7 @@ makeItemPoolCluster(x, ..., names = NULL)
 
 \item{select, i, j}{item indices to use in subsetting.}
 
-\item{pool1}{an \code{\linkS4class{item_pool}} object.}
-
-\item{pool2}{an \code{\linkS4class{item_pool}} object.}
+\item{pool1, pool2}{an \code{\linkS4class{item_pool}} object.}
 
 \item{x, ...}{\code{\linkS4class{item_pool}} objects.}
 

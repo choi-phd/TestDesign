@@ -4,10 +4,10 @@ NULL
 #' Load item pool
 #'
 #' \code{\link{loadItemPool}} is a data loading function to create an \code{\linkS4class{item_pool}} object.
-#' \code{\link{loadItemPool}} can read item parameters and standard errors from a data.frame or a .csv file.
+#' \code{\link{loadItemPool}} can read item parameters and standard errors from a \code{\link{data.frame}} or a .csv file.
 #'
-#' @param ipar item parameters. Can be a data.frame or the file path of a .csv file. The content should at least include columns 'ID' and 'MODEL'.
-#' @param ipar_se (optional) standard errors. Can be a data.frame or the file path of a .csv file.
+#' @param ipar item parameters. Can be a \code{\link{data.frame}} or the file path of a .csv file. The content should at least include columns 'ID' and 'MODEL'.
+#' @param ipar_se (optional) standard errors. Can be a \code{\link{data.frame}} or the file path of a .csv file.
 #' @param file (deprecated) use \code{ipar} argument instead.
 #' @param se_file (deprecated) use \code{ipar_se} argument instead.
 #'
@@ -15,17 +15,17 @@ NULL
 #'
 #' \itemize{
 #'   \item{\code{ni}} the number of items in the pool.
-#'   \item{\code{max_cat}} maximum number of response categories across all items in the pool.
-#'   \item{\code{index}} numeric item index of each item.
-#'   \item{\code{id}} item ID string of each item.
-#'   \item{\code{model}} the object class of each item representing an item model type.
+#'   \item{\code{max_cat}} the maximum number of response categories across all items in the pool.
+#'   \item{\code{index}} the numeric item index of each item.
+#'   \item{\code{id}} the item ID string of each item.
+#'   \item{\code{model}} the object class names of each item representing an item model type.
 #'   Can be \code{\linkS4class{item_1PL}}, \code{\linkS4class{item_2PL}}, \code{\linkS4class{item_3PL}},
 #'   \code{\linkS4class{item_PC}}, \code{\linkS4class{item_GPC}}, or \code{\linkS4class{item_GR}}.
 #'   \item{\code{NCAT}} the number of response categories of each item.
 #'   \item{\code{parms}} a list containing the item object of each item.
 #'   \item{\code{ipar}} a matrix containing all item parameters.
 #'   \item{\code{se}} a matrix containing all item parameter standard errors. The values will be 0 if the argument \code{ipar_se} was not supplied.
-#'   \item{\code{raw}} a data.frame containing all item parameters, model types, and item ID strings.
+#'   \item{\code{raw}} a \code{\link{data.frame}} containing all item parameters, model types, and item ID strings.
 #' }
 #'
 #' @examples
@@ -244,16 +244,16 @@ setClass("item_attrib",
 #' Load item attributes
 #'
 #' \code{\link{loadItemAttrib}} is a data loading function to create an \code{\linkS4class{item_attrib}} object.
-#' \code{\link{loadItemAttrib}} can read item attributes a data.frame or a .csv file.
+#' \code{\link{loadItemAttrib}} can read item attributes a \code{\link{data.frame}} or a .csv file.
 #'
-#' @param object item attributes. Can be a data.frame or the file path of a .csv file. The content should at least include column 'ID' that matches with the \code{\linkS4class{item_pool}} object.
+#' @param object item attributes. Can be a \code{\link{data.frame}} or the file path of a .csv file. The content should at least include column 'ID' that matches with the \code{\linkS4class{item_pool}} object.
 #' @template pool_param
 #' @template deprecated_file_object_param
 #'
 #' @return \code{\link{loadItemAttrib}} returns an \code{\linkS4class{item_attrib}} object.
 #'
 #' \itemize{
-#'   \item{\code{data}} a data.frame containing item attributes.
+#'   \item{\code{data}} a \code{\link{data.frame}} containing item attributes.
 #' }
 #'
 #' @examples
@@ -364,16 +364,16 @@ setClassUnion("stattrib_or_null", c("st_attrib", "NULL"))
 #' Load set/stimulus/passage attributes
 #'
 #' \code{\link{loadStAttrib}} is a data loading function to create an \code{\linkS4class{st_attrib}} object.
-#' \code{\link{loadStAttrib}} can read stimulus attributes a data.frame or a .csv file.
+#' \code{\link{loadStAttrib}} can read stimulus attributes a \code{\link{data.frame}} or a .csv file.
 #'
-#' @param object set attributes. Can be a data.frame or the file path of a .csv file. The content should at least include the column 'STID' referring to the column 'STID' in the \code{data} slot of the \code{\linkS4class{item_attrib}} object.
+#' @param object set attributes. Can be a \code{\link{data.frame}} or the file path of a .csv file. The content should at least include the column 'STID' referring to the column 'STID' in the \code{data} slot of the \code{\linkS4class{item_attrib}} object.
 #' @template item_attrib_param
 #' @template deprecated_file_object_param
 #'
-#' @return \code{\link{loadStAttrib}} returns an \code{\linkS4class{st_attrib}} object.
+#' @return \code{\link{loadStAttrib}} returns a \code{\linkS4class{st_attrib}} object.
 #'
 #' \itemize{
-#'   \item{\code{data}} a data.frame containing stimulus attributes.
+#'   \item{\code{data}} a \code{\link{data.frame}} containing stimulus attributes.
 #' }
 #'
 #' @examples
@@ -441,15 +441,18 @@ loadStAttrib <- function(object, item_attrib, file = NULL) {
   }
 }
 
-#' Class 'constraints': a single constraint
+#' Class 'constraint': a single constraint
 #'
 #' \code{\linkS4class{constraint}} is an S4 class to represent a single constraint.
 #'
 #' @slot constraint the constraint ID string of the constraint.
 #' @slot nc the number of MIP-format constraints translated from this constraint.
-#' @slot mat LHS coefficients to use on decision variables.
-#' @slot rhs RHS values to use.
-#' @slot dir the imposed constraint between LHS and RHS.
+#' @slot mat,dir,rhs these represent MIP-format constraints. A single MIP-format constraint is associated with a row in \code{mat}, a value in \code{rhs}, and a value in \code{dir}.
+#' \itemize{
+#'    \item{the \emph{i}-th row of \code{mat} represents LHS coefficients to use on decision variables in the \emph{i}-th MIP-format constraint.}
+#'    \item{the \emph{i}-th value of \code{rhs} represents RHS values to use in the \emph{i}-th MIP-format constraint.}
+#'    \item{the \emph{i}-th value of \code{dir} represents the imposed constraint between LHS and RHS.}
+#' }
 #' @slot suspend \code{TRUE} if the constraint is not to be imposed.
 #'
 #' @export
@@ -514,7 +517,7 @@ setClass("constraint",
 #'
 #' \code{\linkS4class{constraints}} is an S4 class to represent a set of constraints and its associated objects.
 #'
-#' @slot constraints a data.frame containing the constraint specifications.
+#' @slot constraints a \code{\link{data.frame}} containing the constraint specifications.
 #' @slot list_constraints a list containing the \code{\linkS4class{constraint}} object representation of each constraint.
 #' @slot pool the \code{\linkS4class{item_pool}} object associated with the constraints.
 #' @slot item_attrib the \code{\linkS4class{item_attrib}} object associated with the constraints.
@@ -1332,8 +1335,8 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 #' @return \code{\link{toggleConstraints}} returns the updated \code{\linkS4class{constraints}} object.
 #'
 #' @examples
-#' constraints_science2 <- updateConstraints(constraints_science, off = 32:36)
-#' constraints_science3 <- updateConstraints(constraints_science, on = 32:36)
+#' constraints_science2 <- toggleConstraints(constraints_science, off = 32:36)
+#' constraints_science3 <- toggleConstraints(constraints_science, on = 32:36)
 #'
 #' @export
 toggleConstraints <- function(object, on = NULL, off = NULL) {
@@ -1386,7 +1389,20 @@ toggleConstraints <- function(object, on = NULL, off = NULL) {
   return(object)
 }
 
-#' @rdname toggleConstraints
+#' (deprecated) Update constraints
+#'
+#' Use \code{\link{toggleConstraints}} instead.
+#'
+#' @param object a \code{\linkS4class{constraints}} object from \code{\link{loadConstraints}}.
+#' @param on constraint indices to mark as active.
+#' @param off constraint indices to mark as inactive.
+#'
+#' @return \code{\link{updateConstraints}} returns the updated \code{\linkS4class{constraints}} object.
+#'
+#' @examples
+#' constraints_science2 <- updateConstraints(constraints_science, off = 32:36)
+#' constraints_science3 <- updateConstraints(constraints_science, on = 32:36)
+#'
 #' @export
 updateConstraints <- function(object, on = NULL, off = NULL) {
   .Deprecated("toggleConstraints", msg = "updateConstraints() is deprecated. Use toggleConstraints() instead.")

@@ -7,22 +7,37 @@ NULL
 #'
 #' @param x accepts the following signatures:
 #' \itemize{
-#'   \item{\code{\linkS4class{item_pool}}}:
-#'   \item{\code{\linkS4class{constraints}}}:
-#'   \item{\code{\linkS4class{output_Static}}}:
-#'   \item{\code{\linkS4class{output_Shadow}}}:
+#'   \item{\code{\linkS4class{item_pool}}}: plot information and expected scores.
+#'   \item{\code{\linkS4class{constraints}}}: plot information range based on the test length constraint.
+#'   \item{\code{\linkS4class{output_Static}}}: plot information and expected scores based on the fixed assembly solution.
+#'   \item{\code{\linkS4class{output_Shadow_all}}}: plot audit trail, shadow test chart, and exposure rates from the adaptive assembly solution.
+#'   \item{\code{\linkS4class{output_Shadow}}}: plot audit trail and shadow test chart from the adaptive assembly solution.
 #' }
 #' @param y not used, exists for compatibility with \code{\link[base]{plot}} in the base R package.
-#' @param type the type of plot. \code{info} to plot information, \code{score} to plot expected scores, \code{shadow} to plot shadow test chart, \code{audit} to plot audit trail, and \code{exposure} to plot exposure rates.
+#' @param type the type of plot.
+#' \itemize{
+#'    \item{\code{info} plots information from \code{\linkS4class{item_pool}} and \code{\linkS4class{output_Static}}.}
+#'    \item{\code{score} plots expected scores from \code{\linkS4class{item_pool}} and \code{\linkS4class{output_Static}}.}
+#'    \item{\code{audit} plots audit trail from \code{\linkS4class{output_Shadow_all}} and \code{\linkS4class{output_Shadow}}.}
+#'    \item{\code{shadow} plots shadow test chart from \code{\linkS4class{output_Shadow_all}} and \code{\linkS4class{output_Shadow}}.}
+#'    \item{\code{exposure} plots exposure rates from \code{\linkS4class{output_Shadow_all}}.}
+#' }
 #' @param theta the theta grid to use in plotting. (default = \code{seq(-3, 3, .1)})
 #' @param info_type the type of information. Currently only accepts \code{FISHER}. (default = \code{FISHER})
-#' @param plot_sum When 'object' is an \code{\linkS4class{item_pool}} object, if \code{TRUE} then draw pool-level information, and if \code{FALSE} draw item-level information for every item in the pool.
-#' @param select A vector of indices identifying the items to subset, for when 'object' is an \code{\linkS4class{item_pool}} object.
+#' @param plot_sum used in \code{\linkS4class{item_pool}} objects.
+#' \itemize{
+#'    \item{if \code{TRUE} then plot pool-level values.}
+#'    \item{if \code{FALSE} then plot item-level values, and repeat for all items in the pool.}
+#'    \item{(default = \code{TRUE})}
+#' }
+#' @param select used in \code{\linkS4class{item_pool}} objects. Item indices to subset.
 #' @param color the color of the curve.
-#' @param file_pdf if supplied a filename, save as a PDF file.
-#' @param width the width of graphics device.
-#' @param height the height of graphics device.
-#' @param mfrow multipanel configurations in \code{c(nrow, ncol)}.
+#' @param examinee_id used in \code{\linkS4class{output_Shadow}} and \code{\linkS4class{output_Shadow_all}} with \code{type = 'audit'} and \code{type = 'shadow'}. The examinee numeric ID to draw the plot.
+#' @param theta_range used in \code{\linkS4class{output_Shadow}} and \code{\linkS4class{output_Shadow_all}} with \code{type = 'audit'}. The theta range to plot. (default = \code{c(-5, 5)})
+#' @param z_ci used in \code{\linkS4class{output_Shadow}} and \code{\linkS4class{output_Shadow_all}} with \code{type = 'audit'}. The range to use for confidence intervals. (default = \code{1.96})
+#' @param simple used in \code{\linkS4class{output_Shadow}} and \code{\linkS4class{output_Shadow_all}} with \code{type = 'shadow'}. If \code{TRUE}, simplify the chart by hiding unused items.
+#' @param theta_segment used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. The type of theta to determine exposure segments. Accepts \code{Estimated} or \code{True}. (default = \code{Estimated})
+#' @param color_final used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. The color of item-wise exposure rates, only counting the items administered in the final theta segment as exposed.
 #' @param ... arguments to pass onto \code{\link{plot}}.
 #'
 #' @examples
@@ -36,12 +51,22 @@ NULL
 #' plot(itempool_science, type = "score", select = 1:8)
 #'
 #' ## Plot assembly results from Static()
-#' config <- createStaticTestConfig()
-#' solution <- Static(config, constraints_science)
-#' plot(solution)
+#' cfg <- createStaticTestConfig()
+#' solution <- Static(cfg, constraints_science)
+#' plot(solution)                 # defaults to the objective type
+#' plot(solution, type = "score") # plot expected scores
 #'
 #' ## Plot attainable information range from constraints
 #' plot(constraints_science)
+#'
+#' ## Plot assembly results from Shadow()
+#' cfg <- createShadowTestConfig()
+#' set.seed(1)
+#' solution <- Shadow(cfg, constraints_science, true_theta = rnorm(1))
+#' plot(solution, type = 'audit' , examinee_id = 1)
+#' plot(solution, type = 'shadow', examinee_id = 1, simple = TRUE)
+#'
+#' ## plot(solution, type = 'exposure')
 #'
 #' @docType methods
 #' @rdname plot-methods
