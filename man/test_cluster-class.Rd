@@ -3,17 +3,17 @@
 \docType{class}
 \name{test_cluster-class}
 \alias{test_cluster-class}
-\title{An S4 class to represent a test cluster}
+\title{Class 'test_cluster': data for test assembly}
 \description{
-An S4 class to represent a test cluster from a list of \code{\linkS4class{test}} objects.
+\code{\linkS4class{test_cluster}} is an S4 class to represent data for test assembly.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{nt}}{Numeric. A scalar to indicate the number of \code{\linkS4class{test}} objects to be clustered.}
+\item{\code{nt}}{the number of \code{\linkS4class{test}} objects in this cluster.}
 
-\item{\code{tests}}{A list \code{\linkS4class{test}} objects.}
+\item{\code{tests}}{the list containing \code{\linkS4class{test}} objects.}
 
-\item{\code{names}}{Character. A vector of names corresponding to the \code{\linkS4class{test}} objects.}
+\item{\code{names}}{test ID strings for each \code{\linkS4class{test}} object.}
 }}
 

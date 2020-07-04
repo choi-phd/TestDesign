@@ -5,7 +5,7 @@
 \alias{plotExposure}
 \alias{plotExposure,list-method}
 \alias{plotExposure,output_Shadow_all-method}
-\title{(Deprecated) Draw an item exposure plot}
+\title{(deprecated) Plot item exposure rates}
 \usage{
 plotExposure(
   object,
@@ -53,7 +53,7 @@ plotExposure(
 \item{...}{Additional options to be passed on to \code{pdf()}.}
 }
 \description{
-(Deprecated) Draw a plot of item exposure rates
+(deprecated) Use \code{\link[TestDesign:plot-methods]{plot}} with \code{type = 'exposure'} instead.
 }
 \examples{
 \donttest{

@@ -9,17 +9,22 @@
 loadItemAttrib(object, pool, file = NULL)
 }
 \arguments{
-\item{object}{Item attributes. Can be a data.frame or the file path of a .csv file. The content should at least include column 'ID' that matches the item pool.}
+\item{object}{item attributes. Can be a data.frame or the file path of a .csv file. The content should at least include column 'ID' that matches with the \code{\linkS4class{item_pool}} object.}
 
-\item{pool}{An \code{\linkS4class{item_pool}} object. Use \code{\link{loadItemPool}} for this.}
+\item{pool}{an \code{\linkS4class{item_pool}} object. Use \code{\link{loadItemPool}} for this.}
 
-\item{file}{(Deprecated) Use 'object' above.}
+\item{file}{(deprecated) use \code{object} argument instead.}
 }
 \value{
-An \code{\linkS4class{item_attrib}} object.
+\code{\link{loadItemAttrib}} returns an \code{\linkS4class{item_attrib}} object.
+
+\itemize{
+  \item{\code{data}} a data.frame containing item attributes.
+}
 }
 \description{
-Read item attributes from specified file.
+\code{\link{loadItemAttrib}} is a data loading function to create an \code{\linkS4class{item_attrib}} object.
+\code{\link{loadItemAttrib}} can read item attributes a data.frame or a .csv file.
 }
 \examples{
 ## Read from data.frame:
@@ -40,5 +45,5 @@ loadItemAttrib(file   = "iatt.csv", pool) # pre 1.1.0
 
 }
 \seealso{
-\link{dataset_science} for example usage.
+\code{\link{dataset_science}}, \code{\link{dataset_reading}}, \code{\link{dataset_fatigue}}, \code{\link{dataset_bayes}} for examples.
 }

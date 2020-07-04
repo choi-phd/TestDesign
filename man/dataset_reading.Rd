@@ -39,12 +39,5 @@ stimattrib_reading  <- loadStAttrib(stimattrib_reading_data, itemattrib_reading)
 constraints_reading <- loadConstraints(constraints_reading_data,
   itempool_reading, itemattrib_reading, stimattrib_reading)
 
-\dontrun{
-  View(itempool_reading_data)
-  View(itemattrib_reading_data)
-  View(stimattrib_reading_data)
-  View(constraints_reading_data)
-}
-
 }
 \keyword{datasets}

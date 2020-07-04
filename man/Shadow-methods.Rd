@@ -3,7 +3,7 @@
 \name{Shadow}
 \alias{Shadow}
 \alias{Shadow,config_Shadow-method}
-\title{Run adaptive test assembly.}
+\title{Run adaptive test assembly}
 \usage{
 Shadow(
   config,
@@ -26,25 +26,25 @@ Shadow(
 )
 }
 \arguments{
-\item{config}{A \code{\linkS4class{config_Shadow}} object.}
+\item{config}{a \code{\linkS4class{config_Shadow}} object. Use \code{\link{createShadowTestConfig}} for this.}
 
-\item{constraints}{A list representing optimization constraints. Use \code{\link{loadConstraints}} for this.}
+\item{constraints}{a \code{\linkS4class{constraints}} object representing test specifications. Use \code{\link{loadConstraints}} for this.}
 
-\item{true_theta}{Numeric. A vector of true theta values to be used in simulation.}
+\item{true_theta}{(optional) true theta values to use in simulation. Either \code{true_theta} or \code{data} must be supplied.}
 
-\item{data}{Numeric. A matrix containing item response data.}
+\item{data}{(optional) a matrix containing item response data to use in simulation. Either \code{true_theta} or \code{data} must be supplied.}
 
-\item{prior}{Numeric. A matrix or a vector containing priors.}
+\item{prior}{prior density at each \code{config@theta_grid}. This overrides \code{prior_par}. Can be a vector to use the same prior for all \emph{nj} participants, or a \emph{nj}-row matrix to use a different prior for each participant.}
 
-\item{prior_par}{Numeric. A vector of parameters for prior distribution.}
+\item{prior_par}{normal distribution parameters \code{c(mean, sd)} to use as prior. Can be a vector to use the same prior for all \emph{nj} participants, or a \emph{nj}-row matrix to use a different prior for each participant.}
 
-\item{session}{Used to communicate with a Shiny session.}
+\item{session}{(optional) used to communicate with Shiny app \code{\link{TestDesign}}.}
 }
 \value{
-An \code{\linkS4class{output_Shadow_all}} object containing results.
+\code{\link{Shadow}} returns an \code{\linkS4class{output_Shadow_all}} object containing assembly results.
 }
 \description{
-Perform adaptive test assembly based on generalized shadow-test approach, with specified configurations.
+\code{\link{Shadow}} is a test assembly function to perform adaptive test assembly based on the generalized shadow-test framework.
 }
 \examples{
 config <- createShadowTestConfig()
@@ -55,11 +55,17 @@ solution@output
 \references{
 {
   \insertRef{van_der_linden_model_1998}{TestDesign}
+}
 
+{
   \insertRef{van_der_linden_optimal_1998}{TestDesign}
+}
 
+{
   \insertRef{van_der_linden_optimal_2000}{TestDesign}
+}
 
+{
   \insertRef{van_der_linden_linear_2005}{TestDesign}
 }
 }

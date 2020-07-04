@@ -11,9 +11,9 @@ calc_info_EB(x, item_parm, ncat, model)
 
 \item{item_parm}{A numeric matrix of item parameters.}
 
-\item{ncat}{A numeric vector of the number of response categories by item.}
+\item{ncat}{a numeric vector specifying the number of response categories in each item.}
 
-\item{model}{A numeric vector indicating the IRT models of each item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).}
+\item{model}{a numeric vector indicating the IRT models of each item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).}
 }
 \description{
 Calculate the Fisher information using empirical Bayes.

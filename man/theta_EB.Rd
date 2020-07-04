@@ -25,7 +25,7 @@ theta_EB(
 
 \item{item_parm}{A numeric matrix of item parameters.}
 
-\item{resp}{A numeric vector of item responses.}
+\item{resp}{a numeric vector containing item responses.}
 
 \item{ncat}{A numeric vector of the number of response categories by item.}
 

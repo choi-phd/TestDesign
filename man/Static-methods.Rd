@@ -4,34 +4,22 @@
 \name{Static}
 \alias{Static}
 \alias{Static,config_Static-method}
-\title{Run Static Test Assembly}
+\title{Run fixed-form test assembly}
 \usage{
 Static(config, constraints)
 
 \S4method{Static}{config_Static}(config, constraints)
 }
 \arguments{
-\item{config}{A \code{\linkS4class{config_Static}} object containing configuration options. Use \code{\link{createStaticTestConfig}} for this.}
+\item{config}{a \code{\linkS4class{config_Static}} object. Use \code{\link{createStaticTestConfig}} for this.}
 
-\item{constraints}{A list representing optimization constraints. Use \code{\link{loadConstraints}} for this.}
+\item{constraints}{a \code{\linkS4class{constraints}} object representing test specifications. Use \code{\link{loadConstraints}} for this.}
 }
 \value{
-A list containing the following entries:
-\itemize{
-  \item{\code{MIP}} A list containing the result from MIP solver.
-  \itemize{
-    \item{\code{solution}} Solution vector. Each value represents an item. A value of 1 indicates the item was selected.
-    \item{\code{objval}} Objective value of the solution.
-    \item{\code{status}} Status value indicating whether an optimal solution was found.
-  }
-  \item{\code{selected}} The attributes of the selected items.
-  \item{\code{solver}} The name of the MIP solver used in the assembly.
-  \item{\code{obj_value}} Objective value of the solution. Identical to the one above.
-  \item{\code{solve_time}} The elapsed time in running the solver.
-}
+\code{\link{Static}} returns a \code{\linkS4class{output_Static}} object containing the selected items.
 }
 \description{
-Perform static (fixed-form) test assembly with specified configurations.
+\code{\link{Static}} is a test assembly function to perform fixed-form test assembly based on the generalized shadow-test framework.
 }
 \examples{
 config_science <- createStaticTestConfig(
