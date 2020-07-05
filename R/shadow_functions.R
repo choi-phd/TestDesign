@@ -1670,7 +1670,14 @@ plotExposureRateBySegment <- function(object, config, max_rate = 0.25, file_pdf 
   }
 
   old_mfrow <- par()$mfrow
-  on.exit(par(mfrow = old_mfrow))
+  on.exit({
+    close_dev <- ifelse(dev.cur() == 1, TRUE, FALSE)
+    par(mfrow = old_mfrow)
+    if (close_dev) {
+      dev.off()
+    }
+  })
+
   par(mfrow = mfrow)
 
   ## FIX THIS: split EXPOSURE_RATE into ITEM_EXPOSURE_RATE and STIM_EXPOSURE_RATE
@@ -1835,7 +1842,13 @@ plotExposureRateFinal <- function(object, config = NULL, max_rate = 0.25, theta 
   }
 
   old_mfrow <- par()$mfrow
-  on.exit(par(mfrow = old_mfrow))
+  on.exit({
+    close_dev <- ifelse(dev.cur() == 1, TRUE, FALSE)
+    par(mfrow = old_mfrow)
+    if (close_dev) {
+      dev.off()
+    }
+  })
   par(mfrow = mfrow)
 
   plotER(exposure_rate, exposure_rate_final, max_rate = max_rate, title = paste0("Overall (N = ", n_retained, ")"), color = color)
@@ -1891,7 +1904,13 @@ plotExposureRateFinalFlag <- function(object, pool, theta = seq(-3, 3, .1), flag
   }
 
   old_mfrow <- par()$mfrow
-  on.exit(par(mfrow = old_mfrow))
+  on.exit({
+    close_dev <- ifelse(dev.cur() == 1, TRUE, FALSE)
+    par(mfrow = old_mfrow)
+    if (close_dev) {
+      dev.off()
+    }
+  })
   par(mfrow = mfrow)
 
   for (k in 1:n_segment) {
