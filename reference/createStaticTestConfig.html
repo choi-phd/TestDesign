@@ -147,16 +147,16 @@ Default values are used for any unspecified parameters/slots.</p>
     <tr>
       <th>item_selection</th>
       <td><p>a named list containing item selection criteria.</p><ul>
-<li><p><code>method</code> the type of selection criteria. Accepts <code>MAXINFO, TIF, TCC</code>.</p></li>
-<li><p><code>info_type</code> the type of information. Accepts <code>FISHER</code>.</p></li>
-<li><p><code>target_location</code> a numeric vector containing the locations of target theta points. (e.g. <code><a href='https://rdrr.io/r/base/c.html'>c(-1, 0, 1)</a></code>)</p></li>
-<li><p><code>target_value</code> a numeric vector containing the target values at each theta location. This should have the same length with <code>target_location</code>. Ignored if method is <code>MAXINFO</code>.</p></li>
-<li><p><code>target_weight</code> a numeric vector containing the weights for each theta location. This should have the same length with <code>targetlocation</code>. Defaults to a vector of 1s.</p></li>
+<li><p><code>method</code> the type of selection criteria. Accepts <code>MAXINFO, TIF, TCC</code>. (default = <code>MAXINFO</code>)</p></li>
+<li><p><code>info_type</code> the type of information. Accepts <code>FISHER</code>. (default = <code>FISHER</code>)</p></li>
+<li><p><code>target_location</code> a numeric vector containing the locations of target theta points. (e.g. <code><a href='https://rdrr.io/r/base/c.html'>c(-1, 0, 1)</a></code>) (default = <code><a href='https://rdrr.io/r/base/c.html'>c(-1.2, 0, 1.2)</a></code>)</p></li>
+<li><p><code>target_value</code> a numeric vector containing the target values at each theta location. This should have the same length with <code>target_location</code>. Ignored if method is <code>MAXINFO</code>. (default = <code>NULL</code>)</p></li>
+<li><p><code>target_weight</code> a numeric vector containing the weights for each theta location. This should have the same length with <code>target_location</code>. (default = <code><a href='https://rdrr.io/r/base/rep.html'>rep(1, length(target_location))</a></code></p></li>
 </ul></td>
     </tr>
     <tr>
       <th>MIP</th>
-      <td><p>a list containing solver options. This should have the following entries:</p><ul>
+      <td><p>a named list containing solver options.</p><ul>
 <li><p><code>solver</code> the type of solver. Accepts <code>lpsymphony, Rsymphony, gurobi, lpSolve, Rglpk</code>. (default = <code>LPSOLVE</code>)</p></li>
 <li><p><code>verbosity</code> verbosity level of the solver. (default = <code>-2</code>)</p></li>
 <li><p><code>time_limit</code> time limit in seconds. Used in solvers <code>lpsymphony, Rsymphony, gurobi, Rglpk</code>. (default = <code>60</code>)</p></li>
@@ -167,6 +167,9 @@ Default values are used for any unspecified parameters/slots.</p>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p><code>createStaticTestConfig</code> returns a <code>config_Static</code> object. This object is used in <code>Static</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='no'>cfg1</span> <span class='kw'>&lt;-</span> <span class='fu'>createStaticTestConfig</span>(

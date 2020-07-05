@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Class 'output_Shadow': adaptive assembly solution — output_Shadow-class • TestDesign</title>
+<title>Class 'output_Shadow': adaptive assembly solution for one simulee — output_Shadow-class • TestDesign</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Class 'output_Shadow': adaptive assembly solution — output_Shadow-class" />
-<meta property="og:description" content="output_Shadow is an S4 class to represent an adaptive assembly solution." />
+<meta property="og:title" content="Class 'output_Shadow': adaptive assembly solution for one simulee — output_Shadow-class" />
+<meta property="og:description" content="output_Shadow is an S4 class to represent the adaptive assembly solution for one simulee." />
 
 
 
@@ -128,13 +128,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Class 'output_Shadow': adaptive assembly solution</h1>
+    <h1>Class 'output_Shadow': adaptive assembly solution for one simulee</h1>
     <small class="dont-index">Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/R/shadow_class.R'><code>R/shadow_class.R</code></a></small>
     <div class="hidden name"><code>output_Shadow-class.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>output_Shadow</code> is an S4 class to represent an adaptive assembly solution.</p>
+    <p><code>output_Shadow</code> is an S4 class to represent the adaptive assembly solution for one simulee.</p>
     </div>
 
 
@@ -180,13 +180,23 @@
 
 <dt><code>posterior</code></dt><dd><p>the posterior distribution after completing test.</p></dd>
 
-<dt><code>posterior_sample</code></dt><dd><p>foo.</p></dd>
+<dt><code>posterior_sample</code></dt><dd><p>posterior samples of interim theta before the estimation of final theta. <code>mean(posterior_sample) == interim_theta_est[test_length]</code> holds.</p></dd>
 
 <dt><code>likelihood</code></dt><dd><p>the likelihood distribution after completing test.</p></dd>
 
 <dt><code>shadow_test</code></dt><dd><p>the list containing the item IDs within the shadow test used in each position.</p></dd>
 
 <dt><code>max_cat_pool</code></dt><dd><p>the maximum number of response categories the item pool had.</p></dd>
+
+<dt><code>ni_pool</code></dt><dd><p>the total number of items the item pool had.</p></dd>
+
+<dt><code>ns_pool</code></dt><dd><p>the total number of stimuli the item pool had.</p></dd>
+
+<dt><code>test_length_constraints</code></dt><dd><p>the test length constraint used in assembly.</p></dd>
+
+<dt><code>set_based</code></dt><dd><p>whether the item pool was set-based.</p></dd>
+
+<dt><code>item_index_by_stimulus</code></dt><dd><p>the list of items by each stimulus the item pool had.</p></dd>
 
 </dl>
 

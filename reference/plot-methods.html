@@ -42,8 +42,7 @@
   
 
 <meta property="og:title" content="Extension of plot() for objects in TestDesign package — plot" />
-<meta property="og:description" content="Extension of plot() for objects in TestDesign package
-Plot from objects in the TestDesign package." />
+<meta property="og:description" content="Extension of plot() for objects in TestDesign package" />
 
 
 
@@ -136,23 +135,24 @@ Plot from objects in the TestDesign package." />
 
     <div class="ref-description">
     <p>Extension of plot() for objects in TestDesign package</p>
-<p>Plot from objects in the TestDesign package.</p>
     </div>
 
     <pre class="usage"><span class='co'># S4 method for item_pool</span>
 <span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(
   <span class='no'>x</span>,
   <span class='no'>y</span>,
-  <span class='kw'>theta</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(-<span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>0.1</span>),
   <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"info"</span>,
+  <span class='kw'>theta</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(-<span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>0.1</span>),
   <span class='kw'>info_type</span> <span class='kw'>=</span> <span class='st'>"FISHER"</span>,
   <span class='kw'>plot_sum</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>examinee_id</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>theta_range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>5</span>, <span class='fl'>5</span>),
   <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"blue"</span>,
-  <span class='kw'>file_pdf</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>7</span>,
-  <span class='kw'>height</span> <span class='kw'>=</span> <span class='fl'>6</span>,
-  <span class='kw'>mfrow</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>),
+  <span class='kw'>z_ci</span> <span class='kw'>=</span> <span class='fl'>1.96</span>,
+  <span class='kw'>simple</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>theta_segment</span> <span class='kw'>=</span> <span class='st'>"Estimated"</span>,
+  <span class='kw'>color_final</span> <span class='kw'>=</span> <span class='st'>"blue"</span>,
   <span class='no'>...</span>
 )
 
@@ -160,16 +160,18 @@ Plot from objects in the TestDesign package." />
 <span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(
   <span class='no'>x</span>,
   <span class='no'>y</span>,
-  <span class='kw'>theta</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(-<span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>0.1</span>),
   <span class='kw'>type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>theta</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(-<span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>0.1</span>),
   <span class='kw'>info_type</span> <span class='kw'>=</span> <span class='st'>"FISHER"</span>,
   <span class='kw'>plot_sum</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>examinee_id</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>theta_range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>5</span>, <span class='fl'>5</span>),
   <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"blue"</span>,
-  <span class='kw'>file_pdf</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>7</span>,
-  <span class='kw'>height</span> <span class='kw'>=</span> <span class='fl'>6</span>,
-  <span class='kw'>mfrow</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>4</span>),
+  <span class='kw'>z_ci</span> <span class='kw'>=</span> <span class='fl'>1.96</span>,
+  <span class='kw'>simple</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>theta_segment</span> <span class='kw'>=</span> <span class='st'>"Estimated"</span>,
+  <span class='kw'>color_final</span> <span class='kw'>=</span> <span class='st'>"blue"</span>,
   <span class='no'>...</span>
 )
 
@@ -177,16 +179,56 @@ Plot from objects in the TestDesign package." />
 <span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(
   <span class='no'>x</span>,
   <span class='no'>y</span>,
-  <span class='kw'>theta</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(-<span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>0.1</span>),
   <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"info"</span>,
+  <span class='kw'>theta</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(-<span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>0.1</span>),
   <span class='kw'>info_type</span> <span class='kw'>=</span> <span class='st'>"FISHER"</span>,
   <span class='kw'>plot_sum</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
-  <span class='kw'>file_pdf</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>7</span>,
-  <span class='kw'>height</span> <span class='kw'>=</span> <span class='fl'>6</span>,
-  <span class='kw'>mfrow</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>),
+  <span class='kw'>examinee_id</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>theta_range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>5</span>, <span class='fl'>5</span>),
+  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"blue"</span>,
+  <span class='kw'>z_ci</span> <span class='kw'>=</span> <span class='fl'>1.96</span>,
+  <span class='kw'>simple</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>theta_segment</span> <span class='kw'>=</span> <span class='st'>"Estimated"</span>,
+  <span class='kw'>color_final</span> <span class='kw'>=</span> <span class='st'>"blue"</span>,
+  <span class='no'>...</span>
+)
+
+<span class='co'># S4 method for output_Shadow</span>
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(
+  <span class='no'>x</span>,
+  <span class='no'>y</span>,
+  <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"audit"</span>,
+  <span class='kw'>theta</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(-<span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>0.1</span>),
+  <span class='kw'>info_type</span> <span class='kw'>=</span> <span class='st'>"FISHER"</span>,
+  <span class='kw'>plot_sum</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>examinee_id</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>theta_range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>5</span>, <span class='fl'>5</span>),
+  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"blue"</span>,
+  <span class='kw'>z_ci</span> <span class='kw'>=</span> <span class='fl'>1.96</span>,
+  <span class='kw'>simple</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>theta_segment</span> <span class='kw'>=</span> <span class='st'>"Estimated"</span>,
+  <span class='kw'>color_final</span> <span class='kw'>=</span> <span class='st'>"blue"</span>,
+  <span class='no'>...</span>
+)
+
+<span class='co'># S4 method for output_Shadow_all</span>
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(
+  <span class='no'>x</span>,
+  <span class='no'>y</span>,
+  <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"audit"</span>,
+  <span class='kw'>theta</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(-<span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>0.1</span>),
+  <span class='kw'>info_type</span> <span class='kw'>=</span> <span class='st'>"FISHER"</span>,
+  <span class='kw'>plot_sum</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>examinee_id</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>theta_range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>5</span>, <span class='fl'>5</span>),
+  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"blue"</span>,
+  <span class='kw'>z_ci</span> <span class='kw'>=</span> <span class='fl'>1.96</span>,
+  <span class='kw'>simple</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>theta_segment</span> <span class='kw'>=</span> <span class='st'>"Estimated"</span>,
+  <span class='kw'>color_final</span> <span class='kw'>=</span> <span class='st'>"blue"</span>,
   <span class='no'>...</span>
 )</pre>
 
@@ -196,10 +238,11 @@ Plot from objects in the TestDesign package." />
     <tr>
       <th>x</th>
       <td><p>accepts the following signatures:</p><ul>
-<li><p><code>item_pool</code>:</p></li>
-<li><p><code>constraints</code>:</p></li>
-<li><p><code>output_Static</code>:</p></li>
-<li><p><code>output_Shadow</code>:</p></li>
+<li><p><code>item_pool</code>: plot information and expected scores.</p></li>
+<li><p><code>constraints</code>: plot information range based on the test length constraint.</p></li>
+<li><p><code>output_Static</code>: plot information and expected scores based on the fixed assembly solution.</p></li>
+<li><p><code>output_Shadow_all</code>: plot audit trail, shadow test chart, and exposure rates from the adaptive assembly solution.</p></li>
+<li><p><code>output_Shadow</code>: plot audit trail and shadow test chart from the adaptive assembly solution.</p></li>
 </ul></td>
     </tr>
     <tr>
@@ -207,44 +250,62 @@ Plot from objects in the TestDesign package." />
       <td><p>not used, exists for compatibility with <code><a href='https://rdrr.io/r/base/plot.html'>plot</a></code> in the base R package.</p></td>
     </tr>
     <tr>
+      <th>type</th>
+      <td><p>the type of plot.</p><ul>
+<li><p><code>info</code> plots information from <code>item_pool</code> and <code>output_Static</code>.</p></li>
+<li><p><code>score</code> plots expected scores from <code>item_pool</code> and <code>output_Static</code>.</p></li>
+<li><p><code>audit</code> plots audit trail from <code>output_Shadow_all</code> and <code>output_Shadow</code>.</p></li>
+<li><p><code>shadow</code> plots shadow test chart from <code>output_Shadow_all</code> and <code>output_Shadow</code>.</p></li>
+<li><p><code>exposure</code> plots exposure rates from <code>output_Shadow_all</code>.</p></li>
+</ul></td>
+    </tr>
+    <tr>
       <th>theta</th>
       <td><p>the theta grid to use in plotting. (default = <code><a href='https://rdrr.io/r/base/seq.html'>seq(-3, 3, .1)</a></code>)</p></td>
     </tr>
     <tr>
-      <th>type</th>
-      <td><p>the type of plot. <code>info</code> to plot information, <code>score</code> to plot expected scores, <code>shadow</code> to plot shadow test chart, <code>audit</code> to plot audit trail, and <code>exposure</code> to plot exposure rates.</p></td>
-    </tr>
-    <tr>
       <th>info_type</th>
-      <td><p>the type of information. Currently only accepts <code>FISHER</code>. (default = <code>FISHER</code>)</p></td>
+      <td><p>the type of information. Currently accepts <code>FISHER</code>. (default = <code>FISHER</code>)</p></td>
     </tr>
     <tr>
       <th>plot_sum</th>
-      <td><p>When 'object' is an <code>item_pool</code> object, if <code>TRUE</code> then draw pool-level information, and if <code>FALSE</code> draw item-level information for every item in the pool.</p></td>
+      <td><p>used in <code>item_pool</code> objects.</p><ul>
+<li><p>if <code>TRUE</code> then plot pool-level values.</p></li>
+<li><p>if <code>FALSE</code> then plot item-level values, and repeat for all items in the pool.</p></li>
+<li><p>(default = <code>TRUE</code>)</p></li>
+</ul></td>
     </tr>
     <tr>
       <th>select</th>
-      <td><p>A vector of indices identifying the items to subset, for when 'object' is an <code>item_pool</code> object.</p></td>
+      <td><p>used in <code>item_pool</code> objects. Item indices to subset.</p></td>
+    </tr>
+    <tr>
+      <th>examinee_id</th>
+      <td><p>used in <code>output_Shadow</code> and <code>output_Shadow_all</code> with <code>type = 'audit'</code> and <code>type = 'shadow'</code>. The examinee numeric ID to draw the plot.</p></td>
+    </tr>
+    <tr>
+      <th>theta_range</th>
+      <td><p>used in <code>output_Shadow</code> and <code>output_Shadow_all</code> with <code>type = 'audit'</code>. The theta range to plot. (default = <code><a href='https://rdrr.io/r/base/c.html'>c(-5, 5)</a></code>)</p></td>
     </tr>
     <tr>
       <th>color</th>
       <td><p>the color of the curve.</p></td>
     </tr>
     <tr>
-      <th>file_pdf</th>
-      <td><p>if supplied a filename, save as a PDF file.</p></td>
+      <th>z_ci</th>
+      <td><p>used in <code>output_Shadow</code> and <code>output_Shadow_all</code> with <code>type = 'audit'</code>. The range to use for confidence intervals. (default = <code>1.96</code>)</p></td>
     </tr>
     <tr>
-      <th>width</th>
-      <td><p>the width of graphics device.</p></td>
+      <th>simple</th>
+      <td><p>used in <code>output_Shadow</code> and <code>output_Shadow_all</code> with <code>type = 'shadow'</code>. If <code>TRUE</code>, simplify the chart by hiding unused items.</p></td>
     </tr>
     <tr>
-      <th>height</th>
-      <td><p>the height of graphics device.</p></td>
+      <th>theta_segment</th>
+      <td><p>used in <code>output_Shadow_all</code> with <code>type = 'exposure'</code>. The type of theta to determine exposure segments. Accepts <code>Estimated</code> or <code>True</code>. (default = <code>Estimated</code>)</p></td>
     </tr>
     <tr>
-      <th>mfrow</th>
-      <td><p>multipanel configurations in <code><a href='https://rdrr.io/r/base/c.html'>c(nrow, ncol)</a></code>.</p></td>
+      <th>color_final</th>
+      <td><p>used in <code>output_Shadow_all</code> with <code>type = 'exposure'</code>. The color of item-wise exposure rates, only counting the items administered in the final theta segment as exposed.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -254,8 +315,10 @@ Plot from objects in the TestDesign package." />
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'>## Plot item information of a pool</span>
-<span class='no'>subitempool</span> <span class='kw'>&lt;-</span> <span class='fu'>subsetItemPool</span>(<span class='no'>itempool_science</span>, <span class='fl'>1</span>:<span class='fl'>8</span>)
+    <pre class="examples">
+<span class='no'>subitempool</span> <span class='kw'>&lt;-</span> <span class='no'>itempool_science</span>[<span class='fl'>1</span>:<span class='fl'>8</span>]
+
+<span class='co'>## Plot item information of a pool</span>
 <span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>subitempool</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>itempool_science</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>8</span>)
 
@@ -264,12 +327,22 @@ Plot from objects in the TestDesign package." />
 <span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>itempool_science</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"score"</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>8</span>)
 
 <span class='co'>## Plot assembly results from Static()</span>
-<span class='no'>config</span> <span class='kw'>&lt;-</span> <span class='fu'>createStaticTestConfig</span>()
-<span class='no'>solution</span> <span class='kw'>&lt;-</span> <span class='fu'>Static</span>(<span class='no'>config</span>, <span class='no'>constraints_science</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>solution</span>)
+<span class='no'>cfg</span> <span class='kw'>&lt;-</span> <span class='fu'>createStaticTestConfig</span>()
+<span class='no'>solution</span> <span class='kw'>&lt;-</span> <span class='fu'>Static</span>(<span class='no'>cfg</span>, <span class='no'>constraints_science</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>solution</span>)                 <span class='co'># defaults to the objective type</span>
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>solution</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"score"</span>) <span class='co'># plot expected scores</span>
 
 <span class='co'>## Plot attainable information range from constraints</span>
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>constraints_science</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>constraints_science</span>)
+
+<span class='co'>## Plot assembly results from Shadow()</span>
+<span class='no'>cfg</span> <span class='kw'>&lt;-</span> <span class='fu'>createShadowTestConfig</span>()
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>1</span>)
+<span class='no'>solution</span> <span class='kw'>&lt;-</span> <span class='fu'>Shadow</span>(<span class='no'>cfg</span>, <span class='no'>constraints_science</span>, <span class='kw'>true_theta</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1</span>))
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>solution</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>'audit'</span> , <span class='kw'>examinee_id</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>solution</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>'shadow'</span>, <span class='kw'>examinee_id</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>simple</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='co'>## plot(solution, type = 'exposure')</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

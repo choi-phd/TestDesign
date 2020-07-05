@@ -159,6 +159,17 @@
     </table>
 
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>itempool_science</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>itemattrib_science</span>)
+
+<span class='no'>cfg</span> <span class='kw'>=</span> <span class='fu'>createStaticTestConfig</span>()
+<span class='no'>solution</span> <span class='kw'>=</span> <span class='fu'>Static</span>(<span class='no'>cfg</span>, <span class='no'>constraints_science</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>solution</span>)
+
+<span class='no'>cfg</span> <span class='kw'>=</span> <span class='fu'>createShadowTestConfig</span>()
+<span class='no'>solution</span> <span class='kw'>=</span> <span class='fu'>Shadow</span>(<span class='no'>cfg</span>, <span class='no'>constraints_science</span>, <span class='kw'>true_theta</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(-<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>))
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>solution</span>)</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

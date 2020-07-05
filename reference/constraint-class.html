@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Class 'constraints': a single constraint — constraint-class • TestDesign</title>
+<title>Class 'constraint': a single constraint — constraint-class • TestDesign</title>
 
 
 <!-- jquery -->
@@ -41,7 +41,7 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Class 'constraints': a single constraint — constraint-class" />
+<meta property="og:title" content="Class 'constraint': a single constraint — constraint-class" />
 <meta property="og:description" content="constraint is an S4 class to represent a single constraint." />
 
 
@@ -128,7 +128,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Class 'constraints': a single constraint</h1>
+    <h1>Class 'constraint': a single constraint</h1>
     <small class="dont-index">Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/R/loading_functions.R'><code>R/loading_functions.R</code></a></small>
     <div class="hidden name"><code>constraint-class.Rd</code></div>
     </div>
@@ -148,11 +148,12 @@
 
 <dt><code>nc</code></dt><dd><p>the number of MIP-format constraints translated from this constraint.</p></dd>
 
-<dt><code>mat</code></dt><dd><p>LHS coefficients to use on decision variables.</p></dd>
-
-<dt><code>rhs</code></dt><dd><p>RHS values to use.</p></dd>
-
-<dt><code>dir</code></dt><dd><p>the imposed constraint between LHS and RHS.</p></dd>
+<dt><code>mat,dir,rhs</code></dt><dd><p>these represent MIP-format constraints. A single MIP-format constraint is associated with a row in <code>mat</code>, a value in <code>rhs</code>, and a value in <code>dir</code>.
+<ul>
+<li><p>the <em>i</em>-th row of <code>mat</code> represents LHS coefficients to use on decision variables in the <em>i</em>-th MIP-format constraint.</p></li>
+<li><p>the <em>i</em>-th value of <code>rhs</code> represents RHS values to use in the <em>i</em>-th MIP-format constraint.</p></li>
+<li><p>the <em>i</em>-th value of <code>dir</code> represents the imposed constraint between LHS and RHS.</p></li>
+</ul></p></dd>
 
 <dt><code>suspend</code></dt><dd><p><code>TRUE</code> if the constraint is not to be imposed.</p></dd>
 

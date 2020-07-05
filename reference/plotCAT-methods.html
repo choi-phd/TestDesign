@@ -231,10 +231,12 @@
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='no'>config</span> <span class='kw'>&lt;-</span> <span class='fu'>createShadowTestConfig</span>()
+    <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='no'>config</span> <span class='kw'>&lt;-</span> <span class='fu'>createShadowTestConfig</span>()
 <span class='no'>true_theta</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1</span>)
 <span class='no'>solution</span> <span class='kw'>&lt;-</span> <span class='fu'>Shadow</span>(<span class='no'>config</span>, <span class='no'>constraints_science</span>, <span class='no'>true_theta</span>)
-<span class='fu'>plotCAT</span>(<span class='no'>solution</span>, <span class='fl'>1</span>)</pre>
+<span class='fu'>plotCAT</span>(<span class='no'>solution</span>, <span class='fl'>1</span>)
+}</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

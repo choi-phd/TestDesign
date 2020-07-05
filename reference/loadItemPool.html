@@ -136,7 +136,7 @@ loadItemPool can read item parameters and standard errors from a data.frame or a
 
     <div class="ref-description">
     <p><code>loadItemPool</code> is a data loading function to create an <code>item_pool</code> object.
-<code>loadItemPool</code> can read item parameters and standard errors from a data.frame or a .csv file.</p>
+<code>loadItemPool</code> can read item parameters and standard errors from a <code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></code> or a .csv file.</p>
     </div>
 
     <pre class="usage"><span class='fu'>loadItemPool</span>(<span class='no'>ipar</span>, <span class='kw'>ipar_se</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>se_file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
@@ -146,11 +146,11 @@ loadItemPool can read item parameters and standard errors from a data.frame or a
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>ipar</th>
-      <td><p>item parameters. Can be a data.frame or the file path of a .csv file. The content should at least include columns 'ID' and 'MODEL'.</p></td>
+      <td><p>item parameters. Can be a <code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></code> or the file path of a .csv file. The content should at least include columns 'ID' and 'MODEL'.</p></td>
     </tr>
     <tr>
       <th>ipar_se</th>
-      <td><p>(optional) standard errors. Can be a data.frame or the file path of a .csv file.</p></td>
+      <td><p>(optional) standard errors. Can be a <code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></code> or the file path of a .csv file.</p></td>
     </tr>
     <tr>
       <th>file</th>
@@ -167,17 +167,17 @@ loadItemPool can read item parameters and standard errors from a data.frame or a
     <p><code>loadItemPool</code> returns an <code>item_pool</code> object.</p>
 <ul>
 <li><p><code>ni</code> the number of items in the pool.</p></li>
-<li><p><code>max_cat</code> maximum number of response categories across all items in the pool.</p></li>
-<li><p><code>index</code> numeric item index of each item.</p></li>
-<li><p><code>id</code> item ID string of each item.</p></li>
-<li><p><code>model</code> the object class of each item representing an item model type.
+<li><p><code>max_cat</code> the maximum number of response categories across all items in the pool.</p></li>
+<li><p><code>index</code> the numeric item index of each item.</p></li>
+<li><p><code>id</code> the item ID string of each item.</p></li>
+<li><p><code>model</code> the object class names of each item representing an item model type.
   Can be <code>item_1PL</code>, <code>item_2PL</code>, <code>item_3PL</code>,
   <code>item_PC</code>, <code>item_GPC</code>, or <code>item_GR</code>.</p></li>
 <li><p><code>NCAT</code> the number of response categories of each item.</p></li>
 <li><p><code>parms</code> a list containing the item object of each item.</p></li>
 <li><p><code>ipar</code> a matrix containing all item parameters.</p></li>
 <li><p><code>se</code> a matrix containing all item parameter standard errors. The values will be 0 if the argument <code>ipar_se</code> was not supplied.</p></li>
-<li><p><code>raw</code> a data.frame containing all item parameters, model types, and item ID strings.</p></li>
+<li><p><code>raw</code> a <code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></code> containing all item parameters, model types, and item ID strings.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
