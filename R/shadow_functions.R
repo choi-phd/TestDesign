@@ -1036,8 +1036,8 @@ setMethod(
       if (config@interim_theta$method %in% c("EAP", "MLE")) {
         current_theta <- initial_theta[j]
       } else if (toupper(config@interim_theta$method) %in% c("EB", "FB")) {
-        output@prior_par <- parsePriorPar(prior_par, constants$nj, j, config@interim_theta$prior_par)
-        output@posterior_sample <- rnorm(posterior_constants$n_sample, mean = output@prior_par[1], sd = output@prior_par[2])
+        output@prior_par        <- parsePriorPar(prior_par, constants$nj, j, config@interim_theta$prior_par)
+        output@posterior_sample <- getPriorSample(output@prior_par[1], output@prior_par[2], posterior_constants)
         output@posterior_sample <- applyThin(output@posterior_sample, posterior_constants)
         current_theta <- mean(output@posterior_sample)
         current_se    <- sd(output@posterior_sample) * posterior_constants$jump_factor
@@ -1517,12 +1517,12 @@ setMethod(
 
       } else if (toupper(config@final_theta$method) == "EB") {
 
-        output@prior_par <- parsePriorPar(prior_par, constants$nj, j, config@final_theta$prior_par)
+        output@prior_par        <- parsePriorPar(prior_par, constants$nj, j, config@final_theta$prior_par)
 
-        output@posterior_sample <- rnorm(posterior_constants$n_sample, mean = output@prior_par[1], sd = output@prior_par[2])
+        output@posterior_sample <- getPriorSample(output@prior_par[1], output@prior_par[2], posterior_constants)
         output@posterior_sample <- applyThin(output@posterior_sample, posterior_constants)
-        current_theta <- mean(output@posterior_sample)
-        current_se    <- sd(output@posterior_sample) * posterior_constants$jump_factor
+        current_theta           <- mean(output@posterior_sample)
+        current_se              <- sd(output@posterior_sample) * posterior_constants$jump_factor
 
         output@posterior_sample <- theta_EB(
           posterior_constants$n_sample, current_theta, current_se,
@@ -1537,12 +1537,12 @@ setMethod(
 
       } else if (toupper(config@final_theta$method) == "FB") {
 
-        output@prior_par <- parsePriorPar(prior_par, constants$nj, j, config@final_theta$prior_par)
+        output@prior_par        <- parsePriorPar(prior_par, constants$nj, j, config@final_theta$prior_par)
 
-        output@posterior_sample <- rnorm(posterior_constants$n_sample, mean = output@prior_par[1], sd = output@prior_par[2])
+        output@posterior_sample <- getPriorSample(output@prior_par[1], output@prior_par[2], posterior_constants)
         output@posterior_sample <- applyThin(output@posterior_sample, posterior_constants)
-        current_theta <- mean(output@posterior_sample)
-        current_se    <- sd(output@posterior_sample) * posterior_constants$jump_factor
+        current_theta           <- mean(output@posterior_sample)
+        current_se              <- sd(output@posterior_sample) * posterior_constants$jump_factor
 
         output@posterior_sample <- theta_FB(
           posterior_constants$n_sample, current_theta, current_se, posterior_record$ipar_list[output@administered_item_index[1:position]],

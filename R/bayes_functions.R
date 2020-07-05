@@ -120,3 +120,16 @@ applyThin <- function(posterior_sample, posterior_constants) {
   return(posterior_sample)
 
 }
+
+#' @noRd
+getPriorSample <- function(arg_mean, arg_sd, posterior_constants) {
+
+  prior_sample <- rnorm(
+    posterior_constants$n_sample,
+    mean = arg_mean,
+    sd   = arg_sd
+  )
+
+  return(prior_sample)
+
+}
