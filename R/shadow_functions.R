@@ -1671,7 +1671,7 @@ setMethod(
           }
         } else if (toupper(config@interim_theta$method) == "MLE") {
           interim_EAP <- sum(posterior[j, ] * test@theta) / sum(posterior[j, ])
-          interim_MLE <- mle(pool, output@administered_item_resp[1:position], start_theta = interim_EAP, theta_range = config@interim_theta$bound_ml, max_iter = config@interim_theta$max_iter, crit = config@interim_theta$crit, select = output@administered_item_index[1:position])
+          interim_MLE <- mle(pool, output@administered_item_resp[1:position], start_theta = interim_EAP, theta_range = config@interim_theta$bound_ML, max_iter = config@interim_theta$max_iter, crit = config@interim_theta$crit, select = output@administered_item_index[1:position])
           output@interim_theta_est[position] <- interim_MLE$th
           output@interim_se_est[position]    <- interim_MLE$se
         } else if (toupper(config@interim_theta$method) %in% c("EB", "FB")) {
@@ -1755,7 +1755,7 @@ setMethod(
 
       } else if (toupper(config@final_theta$method) == "MLE") {
 
-        final_MLE <- mle(pool, output@administered_item_resp[1:max_ni], start_theta = output@interim_theta_est[max_ni], theta_range = config@final_theta$bound_ml, max_iter = config@final_theta$max_iter, crit = config@final_theta$crit, select = output@administered_item_index[1:max_ni], truncate = config@final_theta$truncateML)
+        final_MLE <- mle(pool, output@administered_item_resp[1:max_ni], start_theta = output@interim_theta_est[max_ni], theta_range = config@final_theta$bound_ML, max_iter = config@final_theta$max_iter, crit = config@final_theta$crit, select = output@administered_item_index[1:max_ni], truncate = config@final_theta$truncate_ML)
         output@final_theta_est <- final_MLE$th
         output@final_se_est    <- final_MLE$se
 
