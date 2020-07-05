@@ -1,63 +1,68 @@
 #ifndef _POSTERIOR_FUNCTIONS_H
 #define _POSTERIOR_FUNCTIONS_H
 
-double calc_likelihood(
-  const double&,
-  const NumericMatrix&,
-  const IntegerVector&,
-  const IntegerVector&,
-  const IntegerVector&);
+double calc_likelihood (
+  const arma::rowvec&,
+  const arma::mat&,
+  const arma::icolvec&,
+  const arma::icolvec&,
+  const arma::icolvec&);
 
-NumericVector calc_likelihood_function(
-  const NumericVector&,
-  const NumericMatrix&,
-  const IntegerVector&,
-  const IntegerVector&,
-  const IntegerVector&);
+arma::colvec calc_likelihood_function(
+  const arma::mat&,
+  const arma::mat&,
+  const arma::icolvec&,
+  const arma::icolvec&,
+  const arma::icolvec&);
 
 double calc_log_likelihood(
-  const double&,
-  const NumericMatrix&,
-  const IntegerVector&,
-  const IntegerVector&,
-  const IntegerVector&,
+  const arma::rowvec&,
+  const arma::mat&,
+  const arma::icolvec&,
+  const arma::icolvec&,
+  const arma::icolvec&,
   const int&,
-  const NumericVector&);
+  const arma::rowvec&);
 
-NumericVector calc_log_likelihood_function(
-  const NumericVector&,
-  const NumericMatrix&,
-  const IntegerVector&,
-  const IntegerVector&,
-  const IntegerVector&,
+arma::colvec calc_log_likelihood_function(
+  const arma::mat&,
+  const arma::mat&,
+  const arma::icolvec&,
+  const arma::icolvec&,
+  const arma::icolvec&,
   const int&,
-  const NumericVector&);
+  const arma::rowvec&);
+
+double calc_prior_multiplier(
+  const double&,
+  const int&,
+  const arma::rowvec&);
 
 double calc_posterior(
-  const double&,
-  const NumericMatrix&,
-  const IntegerVector&,
-  const IntegerVector&,
-  const IntegerVector&,
+  const arma::rowvec&,
+  const arma::mat&,
+  const arma::icolvec&,
+  const arma::icolvec&,
+  const arma::icolvec&,
   const int&,
-  const NumericVector&);
+  const arma::rowvec&);
 
-NumericVector calc_posterior_function(
-  const NumericVector&,
-  const NumericMatrix&,
-  const IntegerVector&,
-  const IntegerVector&,
-  const IntegerVector&,
+arma::colvec calc_posterior_function(
+  const arma::mat&,
+  const arma::mat&,
+  const arma::icolvec&,
+  const arma::icolvec&,
+  const arma::icolvec&,
   const int&,
-  const NumericVector&);
+  const arma::rowvec&);
 
 double calc_posterior_single(
-  const double&,
-  const NumericVector&,
+  const arma::rowvec&,
+  const arma::rowvec&,
   const int&,
   const int&,
   const int&,
   const int&,
-  const NumericVector&);
+  const arma::rowvec&);
 
 #endif

@@ -10,27 +10,33 @@
 //' @param item_parm A numeric matrix of item parameters.
 //' @template calc-params
 // [[Rcpp::export]]
-NumericVector theta_EAP(
-  const NumericVector& theta_grid,
-  const NumericMatrix& item_parm,
-  const IntegerVector& resp,
-  const IntegerVector& ncat,
-  const IntegerVector& model,
+arma::colvec theta_EAP(
+  const arma::mat& theta_grid,
+  const arma::mat& item_parm,
+  const arma::icolvec& resp,
+  const arma::icolvec& ncat,
+  const arma::icolvec& model,
   const int& prior,
-  const NumericVector& prior_parm){
-  int nq = theta_grid.size();
-  NumericVector out(2);
-  NumericVector const_term(3);
-  for(int q = 0; q < nq; q++){
-    double x = theta_grid[q];
-    double pos = calc_posterior(x,item_parm,resp,ncat,model,prior,prior_parm);
-    const_term[0] += pos;
-    const_term[1] += x*pos;
-    const_term[2] += x*x*pos;
+  const arma::rowvec& prior_parm) {
+
+  int nq = theta_grid.n_rows;
+
+  colvec out(2);
+  colvec const_term(3, fill::zeros);
+
+  for (int q = 0; q < nq; q++) {
+    rowvec x = theta_grid.row(q);
+    double pos = calc_posterior(x, item_parm, resp, ncat, model, prior, prior_parm);
+    const_term(0) += pos;
+    const_term(1) += x(0) * pos;        // unidimensional
+    const_term(2) += x(0) * x(0) * pos; // unidimensional
   }
-  out[0] = const_term[1]/const_term[0];
-  out[1] = sqrt(const_term[2]/const_term[0] - out[0]*out[0]);
+
+  out(0) = const_term(1) / const_term(0);
+  out(1) = sqrt(const_term(2) / const_term(0) - out(0) * out(0));
+
   return out;
+
 }
 
 //' Calculate EAP estimates of theta for a group of examinees
@@ -46,33 +52,35 @@ NumericVector theta_EAP(
 //' @param prior_parm A numeric vector of hyperparameters for the prior distribution, c(mu, sigma) or c(ll, ul).
 //'
 // [[Rcpp::export]]
-NumericMatrix theta_EAP_matrix(
-  const NumericVector& theta_grid,
-  const NumericMatrix& item_parm,
-  const IntegerMatrix& Resp,
-  const IntegerVector& ncat,
-  const IntegerVector& model,
+arma::mat theta_EAP_matrix(
+  const arma::mat& theta_grid,
+  const arma::mat& item_parm,
+  const arma::imat Resp,
+  const arma::icolvec& ncat,
+  const arma::icolvec& model,
   const int& prior,
-  const NumericVector& prior_parm){
-  int nq = theta_grid.size();
-  int nj = Resp.nrow();
-  int ni = Resp.ncol();
-  NumericMatrix out(nj,2);
+  const arma::rowvec& prior_parm) {
+
+  int nq = theta_grid.n_rows;
+  int nj = Resp.n_rows;
+  mat out(nj, 2);
+
   for (int j = 0; j < nj; j++) {
-    NumericVector const_term(3);
-    IntegerVector resp(ni);
-    resp = Resp(j,_);
-    for(int q = 0; q < nq; q++){
-      double x = theta_grid[q];
-      double pos = calc_posterior(x,item_parm,resp,ncat,model,prior,prior_parm);
-      const_term[0] += pos;
-      const_term[1] += x*pos;
-      const_term[2] += x*x*pos;
+    rowvec const_term(3);
+    irowvec resp = Resp.row(j);
+    for (int q = 0; q < nq; q++) {
+      rowvec x = theta_grid.row(q);
+      double pos = calc_posterior(x, item_parm, resp, ncat, model, prior, prior_parm);
+      const_term(0) += pos;
+      const_term(1) += x(0) * pos;        // unidimensional
+      const_term(2) += x(0) * x(0) * pos; // unidimensional
     }
-    out(j,0) = const_term[1]/const_term[0];
-    out(j,1) = sqrt(const_term[2]/const_term[0] - out(j,0)*out(j,0));
+    out(j, 0) = const_term(1) / const_term(0);
+    out(j, 1) = sqrt(const_term(2) / const_term(0) - out(j, 0) * out(j, 0));
   }
+
   return out;
+
 }
 
 //' Calculate an empirical Bayes estimate of theta for one examinee
@@ -85,35 +93,40 @@ NumericMatrix theta_EAP_matrix(
 //' @param item_parm A numeric matrix of item parameters.
 //' @template calc-params
 // [[Rcpp::export]]
-NumericVector theta_EB(
+arma::mat theta_EB(
   const int& nx,
-  const double& theta_init,
+  const arma::rowvec& theta_init,
   const double& theta_prop,
-  const NumericMatrix& item_parm,
-  const IntegerVector& resp,
-  const IntegerVector& ncat,
-  const IntegerVector& model,
+  const arma::mat& item_parm,
+  const arma::icolvec& resp,
+  const arma::icolvec& ncat,
+  const arma::icolvec& model,
   const int& prior,
-  const NumericVector& prior_parm){
-  NumericVector out(nx);
-  double x_0 = theta_init;
-  double density_0 = calc_posterior(x_0,item_parm,resp,ncat,model,prior,prior_parm);
-  for(int j = 0; j < nx; j++){
+  const arma::rowvec& prior_parm) {
+
+  mat out(nx, 1);
+  rowvec x_0 = theta_init;
+  double density_0 = calc_posterior(x_0, item_parm, resp, ncat, model, prior, prior_parm);
+
+  for (int j = 0; j < nx; j++) {
     GetRNGstate();
-    NumericVector x_rnorm = Rcpp::rnorm(1);
+    rowvec x_rnorm = Rcpp::rnorm(1);
     PutRNGstate();
-    double x_1 = x_rnorm[0]*theta_prop + x_0;
-    double density_1 = calc_posterior(x_1,item_parm,resp,ncat,model,prior,prior_parm);
-    double prob_alpha = density_1/density_0;
+
+    rowvec x_1 = x_rnorm * theta_prop + x_0;
+    double density_1 = calc_posterior(x_1, item_parm, resp, ncat, model, prior, prior_parm);
+    double prob_alpha = density_1 / density_0;
+
     GetRNGstate();
-    NumericVector p_accept = Rcpp::runif(1);
+    rowvec p_accept = Rcpp::runif(1);
     PutRNGstate();
-    if (p_accept[0] < prob_alpha){
+    if (p_accept(0) < prob_alpha) {
       x_0 = x_1;
       density_0 = density_1;
     }
-    out[j] = x_0;
+    out.row(j) = x_0;
   }
+
   return out;
 }
 
@@ -127,35 +140,42 @@ NumericVector theta_EB(
 //' @param item_parm A numeric matrix of item parameters.
 //' @template calc-params
 // [[Rcpp::export]]
-NumericVector theta_EB_single(
+arma::mat theta_EB_single(
   const int& nx,
-  const double& theta_init,
+  const arma::rowvec& theta_init,
   const double& theta_prop,
-  const NumericVector& item_parm,
+  const arma::rowvec& item_parm,
   const int& resp,
   const int& ncat,
   const int& model,
   const int& prior,
-  const NumericVector& prior_parm){
-  NumericVector out(nx);
-  double x_0 = theta_init;
-  double density_0 = calc_posterior_single(x_0,item_parm,resp,ncat,model,prior,prior_parm);
-  for(int j = 0; j < nx; j++){
+  const arma::rowvec& prior_parm) {
+
+  mat out(nx, 1);
+  rowvec x_0 = theta_init;
+  double density_0 = calc_posterior_single(x_0, item_parm, resp, ncat, model, prior, prior_parm);
+
+  for (int j = 0; j < nx; j++) {
+
     GetRNGstate();
-    NumericVector x_rnorm = Rcpp::rnorm(1);
+    rowvec x_rnorm = Rcpp::rnorm(1);
     PutRNGstate();
-    double x_1 = x_rnorm[0]*theta_prop + x_0;
-    double density_1 = calc_posterior_single(x_1,item_parm,resp,ncat,model,prior,prior_parm);
-    double prob_alpha = density_1/density_0;
+
+    rowvec x_1 = x_rnorm * theta_prop + x_0;
+    double density_1 = calc_posterior_single(x_1, item_parm, resp, ncat, model, prior, prior_parm);
+    double prob_alpha = density_1 / density_0;
+
     GetRNGstate();
-    NumericVector p_accept = Rcpp::runif(1);
+    rowvec p_accept = Rcpp::runif(1);
     PutRNGstate();
-    if (p_accept[0] < prob_alpha){
+    if (p_accept(0) < prob_alpha) {
       x_0 = x_1;
       density_0 = density_1;
     }
-    out[j] = x_0;
+    out.row(j) = x_0;
+
   }
+
   return out;
 }
 
@@ -170,63 +190,96 @@ NumericVector theta_EB_single(
 //' @param item_init A matrix of item parameter estimates (one row per item).
 //' @template calc-params
 // [[Rcpp::export]]
-NumericVector theta_FB(
+arma::mat theta_FB(
   const int& nx,
-  const double& theta_init,
+  const arma::rowvec& theta_init,
   const double& theta_prop,
   const List& items_list,
-  const NumericMatrix& item_init,
-  const IntegerVector& resp,
-  const IntegerVector& ncat,
-  const IntegerVector& model,
+  const arma::mat& item_init,
+  const arma::icolvec& resp,
+  const arma::icolvec& ncat,
+  const arma::icolvec& model,
   const int& prior,
-  const NumericVector& prior_parm){
-  NumericVector out(nx);
-  GetRNGstate();
-  double x_0 = theta_init;
-  int ni = item_init.nrow(), nparm = item_init.ncol();
-  NumericMatrix item_parm(ni,nparm);
-  for(int i = 0; i < ni; i++){
-    for(int k = 0; k < nparm; k++){
-      item_parm(i,k) = item_init(i,k);
-    }
-  }
+  const arma::rowvec& prior_parm) {
+
+  mat out(nx, 1);
+
+  rowvec x_0 = theta_init;
+  int ni = item_init.n_rows;
+  int nparm = item_init.n_cols;
+  mat item_parm = item_init;
+
   int nk = 0;
-  double const_0 = calc_log_likelihood(x_0,item_parm,resp,ncat,model,prior,prior_parm);
-  for(int j = 0; j < nx; j++){
-    NumericVector x_rnorm = rnorm(1);
-    double x_1 = x_rnorm[0]*theta_prop + x_0;
-    NumericMatrix item_parm(ni,nparm);
-    for(int m = 0; m < ni; m++){
-      NumericMatrix item1 = as<NumericMatrix>(items_list[m]);
-      int n3 = item1.nrow();
+  double const_0 = calc_log_likelihood(x_0, item_parm, resp, ncat, model, prior, prior_parm);
+
+  GetRNGstate();
+
+  for (int j = 0; j < nx; j++) {
+
+    GetRNGstate();
+    rowvec x_rnorm = Rcpp::rnorm(1);
+    PutRNGstate();
+
+    rowvec x_1 = x_rnorm * theta_prop + x_0;
+
+    mat item_parm(ni, nparm);
+
+    for (int m = 0; m < ni; m++) {
+
+      mat item1 = as<mat>(items_list[m]);
+      int n3 = item1.n_rows;
+
       GetRNGstate();
       NumericVector id_runif = Rcpp::runif(1);
       PutRNGstate();
-      int ids = (int) floor(id_runif[0]*n3);
-      if (model[m] <= 3){
-        nk = model[m];
-      } else if (model[m] == 4){
-        nk = ncat[m] - 1;
-      } else if (model[m] <= 6){
-        nk = ncat[m];
+
+      int ids = (int) floor(id_runif(0)*n3);
+
+      switch (model(m)) {
+        case 1:
+          nk = model(m);
+          break;
+        case 2:
+          nk = model(m);
+          break;
+        case 3:
+          nk = model(m);
+          break;
+        case 4:
+          nk = ncat(m) - 1;
+          break;
+        case 5:
+          nk = ncat(m);
+          break;
+        case 6:
+          nk = ncat(m);
+          break;
       }
-      for(int j = 0; j < nk; j++){
-        item_parm(m,j) = item1(ids,j);
+
+      for (int j = 0; j < nk; j++) {
+        item_parm(m, j) = item1(ids, j);
       }
+
     }
+
     double const_1 = calc_log_likelihood(x_1, item_parm, resp,ncat,model,prior,prior_parm);
     double prob_alpha = exp(const_1 - const_0);
+
     GetRNGstate();
-    NumericVector p1 = Rcpp::runif(1);
+    rowvec p1 = Rcpp::runif(1);
     PutRNGstate();
-    if (p1[0] <= prob_alpha){
+
+    if (p1(0) <= prob_alpha) {
       x_0 = x_1;
       const_0 = const_1;
     }
-    out[j] = x_0;
+
+    out.row(j) = x_0;
+
   }
+
   PutRNGstate();
+
   return out;
 }
 
@@ -241,55 +294,53 @@ NumericVector theta_FB(
 //' @param item_init A matrix of item parameter estimates (one row per item).
 //' @template calc-params
 // [[Rcpp::export]]
-NumericVector theta_FB_single(
+arma::mat theta_FB_single(
   const int& nx,
-  const double& theta_init,
+  const arma::rowvec& theta_init,
   const double& theta_prop,
-  const NumericMatrix& item_mcmc,
-  const NumericVector& item_init,
+  const arma::mat& item_mcmc,
+  const arma::rowvec& item_init,
   const int& resp,
   const int& ncat,
   const int& model,
   const int& prior,
-  const NumericVector& prior_parm){
-  NumericVector out(nx);
-  double x_0 = theta_init;
-  int ns = item_mcmc.nrow();
-  int nk = 0;
-  if (model == 1 || model == 2 || model == 3){
-    nk = model;
-  } else if (model == 4){
-    nk = ncat - 1;
-  } else if (model == 5 || model == 6){
-    nk = ncat;
-  }
-  NumericVector item_parm(nk);
-  for(int k = 0; k < nk; k++){
-    item_parm[k] = item_init[k];
-  }
-  double const_0 = calc_posterior_single(x_0,item_parm,resp,ncat,model,prior,prior_parm);
-  for(int j = 0; j < nx; j++){
+  const arma::rowvec& prior_parm) {
+
+  mat out(nx, 1);
+  rowvec x_0 = theta_init;
+  int ns = item_mcmc.n_rows;
+
+  rowvec item_parm = item_init;
+  double const_0 = calc_posterior_single(x_0, item_parm, resp, ncat, model, prior, prior_parm);
+
+  for (int j = 0; j < nx; j++) {
+
     GetRNGstate();
-    NumericVector x_rnorm = Rcpp::rnorm(1);
+    rowvec x_rnorm = Rcpp::rnorm(1);
     PutRNGstate();
-    double x_1 = x_rnorm[0]*theta_prop + x_0;
+
+    rowvec x_1 = x_rnorm * theta_prop + x_0;
+
     GetRNGstate();
-    NumericVector id_runif = Rcpp::runif(1);
+    rowvec id_runif = Rcpp::runif(1);
     PutRNGstate();
-    int ids = (int) floor(id_runif[0]*ns);
-    for(int k = 0; k < nk; k++){
-      item_parm[k] = item_mcmc(ids,k);
-    }
-    double const_1 = calc_posterior_single(x_1,item_parm,resp,ncat,model,prior,prior_parm);
-    double prob_alpha = const_1/const_0;
+
+    int id = (int) floor(id_runif(0) * ns);
+    item_parm = item_mcmc.row(id);
+
+    double const_1 = calc_posterior_single(x_1, item_parm, resp, ncat, model, prior, prior_parm);
+    double prob_alpha = const_1 / const_0;
+
     GetRNGstate();
-    NumericVector p_accept = Rcpp::runif(1);
+    rowvec p_accept = Rcpp::runif(1);
     PutRNGstate();
-    if (p_accept[0] < prob_alpha){
+    if (p_accept[0] < prob_alpha) {
       x_0 = x_1;
       const_0 = const_1;
     }
-    out[j] = x_0;
+    out.row(j) = x_0;
   }
+
   return out;
+
 }

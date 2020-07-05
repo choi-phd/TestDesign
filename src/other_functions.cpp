@@ -15,6 +15,7 @@ IntegerVector find_segment(
   int ns = segment.size();
   int nx = x.size();
   IntegerVector out(nx);
+
   for (int j = 0; j < nx; j++) {
     for (int k = 1; k < ns; k++) {
       if (x[j] <= segment[k]) {
@@ -23,5 +24,7 @@ IntegerVector find_segment(
       }
     }
   }
+
   return out;
+
 }

@@ -328,6 +328,9 @@ find_segment <- function(x, segment) {
     .Call('_TestDesign_find_segment', PACKAGE = 'TestDesign', x, segment)
 }
 
+#' @noRd
+NULL
+
 #' Calculate a likelihood value of theta
 #' 
 #' Calculate a likelihood value of theta.
