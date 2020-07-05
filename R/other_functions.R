@@ -197,3 +197,35 @@ initializeStimulusRecord <- function() {
   o$finished_stimulus_item_count <- NULL
   return(o)
 }
+
+#' @noRd
+shouldShadowBeRefreshed <- function(position, refresh_policy, refresh_shadow, theta_change, constants, stimulus_record) {
+
+  refresh_method <- toupper(refresh_policy$method)
+
+  if (position == 1) {
+    return(TRUE)
+  }
+  if (refresh_method == "ALWAYS") {
+    return(TRUE)
+  }
+  if (refresh_method %in% c("POSITION", "INTERVAL") && refresh_shadow[position]) {
+    return(TRUE)
+  }
+  if (refresh_method == "THRESHOLD") {
+    if (abs(theta_change) > refresh_policy$threshold) {
+      return(TRUE)
+    }
+  }
+  if (refresh_method == "INTERVAL-THRESHOLD") {
+    if (abs(theta_change) > refresh_policy$threshold && refresh_shadow[position]) {
+      return(TRUE)
+    }
+  }
+  if (constants$set_based_refresh && constants$set_based && stimulus_record$end_set) {
+    return(TRUE)
+  }
+
+  return(FALSE)
+
+}

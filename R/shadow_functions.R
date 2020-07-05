@@ -1094,12 +1094,10 @@ setMethod(
 
           # Item position / simulee: refresh shadow test
 
-          if (position == 1 ||
-            (refresh_policy == "ALWAYS") ||
-            (refresh_policy %in% c("POSITION", "INTERVAL") && refresh_shadow[position]) ||
-            (refresh_policy == "THRESHOLD" && abs(theta_change) > config@refresh_policy$threshold) ||
-            (refresh_policy == "INTERVAL-THRESHOLD" && refresh_shadow[position] && abs(theta_change) > config@refresh_policy$threshold) ||
-            (constants$set_based_refresh && constants$set_based && stimulus_record$end_set)) {
+          if (shouldShadowBeRefreshed(
+            position, config@refresh_policy, refresh_shadow,
+            theta_change, constants, stimulus_record
+          )) {
 
             output@shadow_test_refreshed[position] <- TRUE
 
