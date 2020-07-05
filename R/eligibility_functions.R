@@ -98,3 +98,28 @@ applyIneligibleFlagtoXdata <- function(xdata, ineligible_flag_in_segment, consta
   return(xdata_elg)
 
 }
+
+#' @noRd
+applyFading <- function(o, segments_to_apply, exposure_constants, constants) {
+
+  fading_factor <- exposure_constants$fading_factor
+
+  o$n_jk[segments_to_apply]    <- fading_factor * o$n_jk[segments_to_apply]
+
+  if (!is.null(o$p_jk)) {
+    o$p_jk[segments_to_apply]  <- fading_factor * o$p_jk[segments_to_apply]
+  }
+
+  o$a_ijk[segments_to_apply, ] <- fading_factor * o$a_ijk[segments_to_apply, ]
+  o$r_ijk[segments_to_apply, ] <- fading_factor * o$r_ijk[segments_to_apply, ]
+
+  if (!constants$set_based) {
+    return(o)
+  }
+
+  o$a_sjk[segments_to_apply, ] <- fading_factor * o$a_sjk[segments_to_apply, ]
+  o$r_sjk[segments_to_apply, ] <- fading_factor * o$r_sjk[segments_to_apply, ]
+
+  return(o)
+
+}
