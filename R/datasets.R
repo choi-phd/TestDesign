@@ -25,12 +25,6 @@ NULL
 #' constraints_science <- loadConstraints(constraints_science_data,
 #'   itempool_science, itemattrib_science)
 #'
-#' \dontrun{
-#'   View(itempool_science_data)
-#'   View(itemattrib_science_data)
-#'   View(constraints_science_data)
-#' }
-#'
 #' @aliases itempool_science_data itemattrib_science_data constraints_science_data itempool_science itemattrib_science constraints_science
 #' @docType data
 #' @keywords datasets
@@ -65,13 +59,6 @@ NULL
 #' constraints_reading <- loadConstraints(constraints_reading_data,
 #'   itempool_reading, itemattrib_reading, stimattrib_reading)
 #'
-#' \dontrun{
-#'   View(itempool_reading_data)
-#'   View(itemattrib_reading_data)
-#'   View(stimattrib_reading_data)
-#'   View(constraints_reading_data)
-#' }
-#'
 #' @aliases itempool_reading_data itemattrib_reading_data stimattrib_reading_data constraints_reading_data itempool_reading itemattrib_reading stimattrib_reading constraints_reading
 #' @docType data
 #' @keywords datasets
@@ -104,11 +91,6 @@ NULL
 #' itemattrib_fatigue <- loadItemAttrib(itemattrib_fatigue_data, itempool_fatigue)
 #' constraints_fatigue <- loadConstraints(constraints_fatigue_data,
 #'   itempool_fatigue, itemattrib_fatigue)
-#'
-#' \dontrun{
-#'   View(itemcontent_fatigue_data) ## Item contents for use in TestDesign()
-#'   View(resp_fatigue_data)        ## Raw item responses for reference
-#' }
 #'
 #' @aliases itempool_fatigue_data itemattrib_fatigue_data itemcontent_fatigue_data constraints_fatigue_data resp_fatigue_data itempool_fatigue itemattrib_fatigue constraints_fatigue
 #'
