@@ -11,3 +11,25 @@ initializeTheta <- function(config, constants, posterior_record) {
   }
   return(theta)
 }
+
+#' @noRd
+getInitialThetaPrior <- function(config_theta, prior_par, nj, j, posterior_constants) {
+
+  o <- list()
+
+  o$prior_par <- parsePriorPar(
+    prior_par, nj, j, config_theta$prior_par
+  )
+
+  o$posterior_sample <- getPriorSample(
+    o$prior_par[1], o$prior_par[2],
+    posterior_constants
+  )
+
+  o$posterior_sample <- applyThin(o$posterior_sample, posterior_constants)
+  o$theta            <- mean(o$posterior_sample)
+  o$se               <- sd(o$posterior_sample) * posterior_constants$jump_factor
+
+  return(o)
+
+}
