@@ -1165,7 +1165,7 @@ setMethod(
         if (config@exposure_control$diagnostic_stats) {
 
           exposure_record_detailed <- updateExposureRecordSegmentwise(
-            exposure_record_detailed, j, exposure_constants, constants
+            exposure_record_detailed, j, exposure_record, exposure_constants, constants
           )
 
         }
