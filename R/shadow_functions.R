@@ -831,28 +831,6 @@ setMethod(
       usage_matrix <- matrix(FALSE, nrow = constants$nj, ncol = constants$ni)
     }
 
-    #####
-    ###    Get info
-    #####
-
-    getInfo <- function() {
-      if (select_at_fixed_theta) {
-        info <- info_fixed_theta[[j]]
-      } else if (config@item_selection$method == "MPWI") {
-        info <- as.vector(matrix(posterior_record$posterior[j, ], nrow = 1) %*% all_data$test@info)
-      } else if (config@item_selection$method == "MFI") {
-        info <- calc_info(current_theta, pool@ipar, pool@NCAT, model)
-      } else if (config@item_selection$method == "EB") {
-        info <- calc_info_EB(output@posterior_sample, pool@ipar, pool@NCAT, model)
-      } else if (config@item_selection$method == "FB") {
-        if (config@item_selection$info_type == "FISHER") {
-          info <- calc_info_FB(output@posterior_sample, posterior_record$ipar_list, pool@NCAT, model)
-        } else if (config@item_selection$info_type %in% c("MI", "MUTUAL")) {
-          info <- calc_MI_FB(output@posterior_sample, posterior_record$ipar_list, pool@NCAT, model)
-        }
-      }
-      return(info)
-    }
 
     #####
     ###    select a non-administered item with the largest information
@@ -1152,7 +1130,10 @@ setMethod(
       while (!done) {
 
         position <- position + 1
-        info     <- getInfo()
+        info     <- getInfo(
+          config@item_selection, j, info_fixed_theta, current_theta, pool, model,
+          posterior_record, all_data$test@info
+        )
 
         # Item position / simulee: do shadow test stuff
 
