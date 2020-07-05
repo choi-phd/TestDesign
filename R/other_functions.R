@@ -23,6 +23,33 @@ getConstants <- function(constraints, config, arg_data, true_theta) {
     stop("either 'data' or 'true_theta' must be supplied")
   }
 
+  content_balancing_method <- toupper(config@content_balancing$method)
+  if (content_balancing_method %in% c("STA", "SHADOW", "SHADOWTEST", "SHADOW TEST")) {
+    if (is.null(constraints)) {
+      stop(sprintf("config@content_balancing: 'constraints' must be supplied when $method is '%s'", content_balancing_method))
+    }
+    o$use_shadow     <- TRUE
+    o$set_based      <- constraints@set_based
+    o$test_length    <- constraints@test_length
+    o$min_ni         <- constraints@test_length
+    o$max_ni         <- constraints@test_length
+    o$max_se         <- NULL
+  } else {
+    o$use_shadow     <- FALSE
+    o$set_based      <- FALSE
+    o$test_length    <- NULL
+    o$min_ni         <- config@stopping_criterion$min_ni
+    o$max_ni         <- config@stopping_criterion$max_ni
+    o$max_se         <- config@stopping_criterion$se_threshold
+  }
+
+  refresh_method <- toupper(config@refresh_policy$method)
+  if (refresh_method %in% c("STIMULUS", "SET", "PASSAGE")) {
+    o$set_based_refresh <- TRUE
+  } else {
+    o$set_based_refresh <- FALSE
+  }
+
   return(o)
 
 }
