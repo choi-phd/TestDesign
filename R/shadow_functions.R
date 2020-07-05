@@ -1111,15 +1111,13 @@ setMethod(
 
               # Get ineligibile items in the current theta segment
 
-              item_ineligible <- ineligible_flag$i[output@theta_segment_index[position], ]
-              if (constants$set_based) {
-                stimulus_ineligible <- ineligible_flag$s[output@theta_segment_index[position], ]
-              }
+              current_segment            <- output@theta_segment_index[position]
+              ineligible_flag_in_segment <- getIneligibleFlagInSegment(ineligible_flag, current_segment, constants)
 
               if (position > 1) {
-                item_ineligible[output@administered_item_index[1:(position - 1)]] <- 0
+                ineligible_flag_in_segment$i[output@administered_item_index[1:(position - 1)]] <- 0
                 if (constants$set_based) {
-                  stimulus_ineligible[output@administered_stimulus_index[1:(position - 1)]] <- 0
+                  ineligible_flag_in_segment$s[output@administered_stimulus_index[1:(position - 1)]] <- 0
                 }
               }
 
@@ -1128,20 +1126,20 @@ setMethod(
                 # Do eligibility-based exposure control
                 # get xmat representing ineligible items
 
-                if (any(item_ineligible == 1)) {
+                if (any(ineligible_flag_in_segment$i == 1)) {
 
                   xmat <- numeric(nv)
-                  xmat[1:ni] <- item_ineligible
+                  xmat[1:ni] <- ineligible_flag_in_segment$i
                   xdir <- "=="
                   xrhs <- 0
 
                   if (constants$set_based) {
-                    if (any(stimulus_ineligible == 1)) {
-                      xmat[(ni + 1):nv] <- stimulus_ineligible
-                      for (s in which(stimulus_ineligible == 1)) {
+                    if (any(ineligible_flag_in_segment$s == 1)) {
+                      xmat[(ni + 1):nv] <- ineligible_flag_in_segment$s
+                      for (s in which(ineligible_flag_in_segment$s == 1)) {
                         xmat[constraints@item_index_by_stimulus[[s]]] <- 1
                       }
-                      for (s in which(stimulus_ineligible == 0)) {
+                      for (s in which(ineligible_flag_in_segment$s == 0)) {
                         xmat[constraints@item_index_by_stimulus[[s]]] <- 0
                       }
                     }
@@ -1175,9 +1173,9 @@ setMethod(
                 # Penalize item info
 
                 if (!is.null(config@exposure_control$M)) {
-                  info[item_ineligible == 1] <- info[item_ineligible == 1] - config@exposure_control$M
+                  info[ineligible_flag_in_segment$i == 1] <- info[ineligible_flag_in_segment$i == 1] - config@exposure_control$M
                 } else {
-                  info[item_ineligible == 1] <- -1 * all_data$max_info - 1
+                  info[ineligible_flag_in_segment$i == 1] <- -1 * all_data$max_info - 1
                 }
 
                 optimal <- runAssembly(config, constraints, xdata = xdata, objective = info)
@@ -1457,6 +1455,7 @@ setMethod(
         segment_record$count_est[j] <-
         segment_record$freq_est[segment_final]
 
+        ineligible_flag_in_segment <- getIneligibleFlagInSegment(ineligible_flag, segment_final, constants)
         eligible_in_final_segment <- ineligible_flag$i[segment_final, ] == 0
         if (constants$set_based) {
           eligible_set_in_final_segment <- ineligible_flag$s[segment_final, ] == 0
@@ -1473,10 +1472,10 @@ setMethod(
           alpha_ijk[segment_final, output@administered_item_index] + 1
 
           if (length(segment_other) > 0) {
-            if (any(!eligible_in_final_segment[output@administered_item_index])) {
+            if (any(ineligible_flag_in_segment$i[output@administered_item_index])) {
               for (k in segment_other) {
                 for (i in output@administered_item_index[output@theta_segment_index == k]) {
-                  if (!eligible_in_final_segment[i]) {
+                  if (ineligible_flag_in_segment$i[i]) {
                     alpha_ijk[k, i] <- alpha_ijk[k, i] + 1
                   }
                 }
@@ -1536,10 +1535,10 @@ setMethod(
             alpha_sjk[segment_final, na.omit(output@administered_stimulus_index)] + 1
 
             if (length(segment_other) > 0) {
-              if (any(!eligible_set_in_final_segment[administered_stimulus_index])) {
+              if (any(ineligible_flag_in_segment$s[administered_stimulus_index])) {
                 for (k in segment_other) {
                   for (s in unique(output@administered_stimulus_index[output@theta_segment_index == k & output@administered_stimulus_index %in% administered_stimulus_index])) {
-                    if (!eligible_set_in_final_segment[s]) {
+                    if (ineligible_flag_in_segment$s[s]) {
                       alpha_sjk[k, s] <- alpha_sjk[k, s] + 1
                     }
                   }
@@ -1594,10 +1593,10 @@ setMethod(
 
           # Visited segments that are not the final segment
           if (length(segment_other) > 0) {
-            if (any(!eligible_in_final_segment[output@administered_item_index])) {
+            if (any(ineligible_flag_in_segment$i[output@administered_item_index])) {
               for (k in segment_other) {
                 for (i in output@administered_item_index[output@theta_segment_index == k]) {
-                  if (!eligible_in_final_segment[i]) {
+                  if (ineligible_flag_in_segment$i[i]) {
                     alpha_ijk[k, i] <- alpha_ijk[k, i] + 1
                   }
                 }
@@ -1645,10 +1644,10 @@ setMethod(
             rho_sjk[segment_final, eligible_set_in_final_segment] + 1
 
             if (length(segment_other) > 0) {
-              if (any(!eligible_set_in_final_segment[administered_stimulus_index], na.rm = T)) {
+              if (any(ineligible_flag_in_segment$s[administered_stimulus_index], na.rm = T)) {
                 for (k in segment_other) {
                   for (s in unique(output@administered_stimulus_index[output@theta_segment_index == k & output@administered_stimulus_index %in% administered_stimulus_index])) {
-                    if (!eligible_set_in_final_segment[s]) {
+                    if (ineligible_flag_in_segment$s[s]) {
                       alpha_sjk[k, s] <- alpha_sjk[k, s] + 1
                     }
                   }
@@ -1692,10 +1691,10 @@ setMethod(
           alpha_ijk[, output@administered_item_index] <- alpha_ijk[, output@administered_item_index] + segment_prob
 
           if (length(segment_other) > 0) {
-            if (any(!eligible_in_final_segment[output@administered_item_index])) {
+            if (any(ineligible_flag_in_segment$i[output@administered_item_index])) {
               for (k in segment_other) {
                 for (i in output@administered_item_index[output@theta_segment_index == k]) {
-                  if (!eligible_in_final_segment[i]) {
+                  if (ineligible_flag_in_segment$i[i]) {
                     alpha_ijk[k, i] <- alpha_ijk[k, i] + segment_prob[k]
                   }
                 }
@@ -1739,10 +1738,10 @@ setMethod(
             alpha_sjk[, output@administered_stimulus_index] <- alpha_sjk[, output@administered_stimulus_index] + segment_prob
 
             if (length(segment_other) > 0) {
-              if (any(!eligible_set_in_final_segment[administered_stimulus_index])) {
+              if (any(ineligible_flag_in_segment$s[administered_stimulus_index])) {
                 for (k in segment_other) {
                   for (s in unique(output@administered_stimulus_index[output@theta_segment_index == k & output@administered_stimulus_index %in% administered_stimulus_index])) {
-                    if (!eligible_set_in_final_segment[s]) {
+                    if (ineligible_flag_in_segment$s[s]) {
                       alpha_sjk[k, s] <- alpha_sjk[k, s] + segment_prob[k]
                     }
                   }
