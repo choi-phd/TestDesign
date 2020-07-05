@@ -163,19 +163,32 @@ setMethod(
     continuum   <- theta
     continuum   <- sort(c(continuum, config@item_selection$target_location))
     idx <- which(x@MIP[[1]]$solution[1:constraints@ni] == 1)
+
     if (toupper(config@item_selection$method) == "MAXINFO") {
-      mat_sub <- calcFisher(constraints@pool, continuum)[, idx]
-      vec_sub <- apply(mat_sub, 1, sum)
-      ylab    <- "Information"
-      title   <- "Test Information Function based on the assembled test"
+      plot_type <- "info"
     }
     if (toupper(config@item_selection$method) == "TIF") {
+      plot_type <- "info"
+    }
+    if (toupper(config@item_selection$method) == "TCC") {
+      plot_type <- "score"
+    }
+
+    type_overridden <- FALSE
+    if (!is.null(type)) {
+      if (plot_type != type) {
+        plot_type <- type
+        type_overridden <- TRUE
+      }
+    }
+
+    if (plot_type == "info") {
       mat_sub <- calcFisher(constraints@pool, continuum)[, idx]
       vec_sub <- apply(mat_sub, 1, sum)
       ylab    <- "Information"
       title   <- "Test Information Function based on the assembled test"
     }
-    if (toupper(config@item_selection$method) == "TCC") {
+    if (plot_type == "score") {
       l <- calcProb(constraints@pool, continuum)[idx]
       for (i in 1:length(l)) {
         prob_mat  <- l[[i]]
@@ -187,25 +200,35 @@ setMethod(
       ylab    <- "Expected Score"
       title   <- "Test Characteristic Curve based on the assembled test"
     }
+
     ymax <- max(vec_sub, config@item_selection$target_value)
 
     # Begin plot
+
     plot(
       continuum, vec_sub,
       xlim = c(min(continuum), max(continuum)), ylim = c(0, ymax),
       main = title, xlab = "Theta", ylab = ylab, type = "n", bty = "n", ...
     )
-    if (toupper(config@item_selection$method) != "MAXINFO") {
-      abline(h = config@item_selection$target_value, lty = 3, lwd = 1)
+
+    if (!type_overridden) {
+      if (toupper(config@item_selection$method) != "MAXINFO") {
+        abline(h = config@item_selection$target_value, lty = 3, lwd = 1)
+      }
+      abline(v = config@item_selection$target_location, lty = 3, lwd = 1)
     }
-    abline(v = config@item_selection$target_location, lty = 3, lwd = 1)
+
     lines(continuum, vec_sub, lty = 1, lwd = 1, col = color)
-    legend(
+
+    if (!type_overridden) {
+      legend(
       "topleft",
       "Target locations",
       bty = "o", bg = "white",
       box.lty = 0, box.lwd = 0, box.col = "white",
       lty = 3, lwd = 1, seg.len = 1, inset = c(0, .01))
+    }
+
     box()
 
     p <- recordPlot()
