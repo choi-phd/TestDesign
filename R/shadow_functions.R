@@ -800,7 +800,7 @@ setMethod(
 
         position <- position + 1
         info     <- getInfo(
-          config@item_selection, j, info_fixed_theta, current_theta$theta, pool, model,
+          config@item_selection, j, info_fixed_theta, current_theta, pool, model,
           posterior_record, all_data$test@info
         )
 
@@ -808,7 +808,7 @@ setMethod(
 
         if (constants$use_shadow) {
 
-          o@theta_segment_index[position] <- getThetaSegment(current_theta$theta, position, config@exposure_control, exposure_constants, o@posterior_sample)
+          o@theta_segment_index[position] <- getThetaSegment(current_theta, position, config@exposure_control, exposure_constants)
 
           if (shouldShadowBeRefreshed(
             position, config@refresh_policy, refresh_shadow,
@@ -963,27 +963,31 @@ setMethod(
 
         } else if (toupper(config@interim_theta$method) == "EB") {
           current_item <- o@administered_item_index[position]
-          o@posterior_sample <- theta_EB_single(
+          current_theta$posterior_sample <- theta_EB_single(
             posterior_record$n_sample, current_theta$theta, current_theta$se,
             pool@ipar[current_item, ],
             o@administered_item_resp[position], pool@NCAT[current_item],
             model[current_item], 1, c(current_theta$theta, current_theta$se)
           )[, 1]
-          o@posterior_sample <- o@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = posterior_record$n_sample, by = config@MCMC$thin)]
-          o@interim_theta_est[position] <- mean(o@posterior_sample)
-          o@interim_se_est[position]    <- sd(o@posterior_sample)
+          current_theta                 <- applyThin(current_theta, posterior_record)
+          o@interim_theta_est[position] <- current_theta$theta
+          o@interim_se_est[position]    <- current_theta$se
+          o@posterior_sample            <- current_theta$posterior_sample
         } else if (toupper(config@interim_theta$method) == "FB") {
           current_item <- o@administered_item_index[position]
-          o@posterior_sample <- theta_FB_single(
+          current_theta$posterior_sample <- theta_FB_single(
             posterior_record$n_sample, current_theta$theta, current_theta$se, posterior_record$ipar_list[[current_item]],
             pool@ipar[current_item, ],
             o@administered_item_resp[position], pool@NCAT[current_item],
             model[current_item], 1, c(current_theta$theta, current_theta$se)
           )[, 1]
-          o@posterior_sample <- o@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = posterior_record$n_sample, by = config@MCMC$thin)]
-          o@interim_theta_est[position] <- mean(o@posterior_sample)
-          o@interim_se_est[position]    <- sd(o@posterior_sample)
+          current_theta                 <- applyThin(current_theta, posterior_record)
+          o@interim_theta_est[position] <- current_theta$theta
+          o@interim_se_est[position]    <- current_theta$se
+          o@posterior_sample            <- current_theta$posterior_sample
         }
+
+        # should fix here: theta_change should be retained
 
         theta_change        <- o@interim_theta_est[position] - current_theta$theta
         current_theta$theta <- o@interim_theta_est[position]
@@ -1062,18 +1066,22 @@ setMethod(
         } else {
 
           o@prior_par        <- parsePriorPar(prior_par, constants$nj, j, config@final_theta$prior_par)
-          o@posterior_sample <- getPosteriorSample(posterior_record$n_sample, o@prior_par[1], o@prior_par[2], config@MCMC)
-          current_theta      <- mean(o@posterior_sample)
-          current_se         <- sd(o@posterior_sample) * config@MCMC$jump_factor
-          o@posterior_sample <- theta_EB(
-            posterior_record$n_sample, current_theta, current_se,
+          current_theta$posterior_sample <- getPosteriorSample(posterior_record$n_sample, o@prior_par[1], o@prior_par[2], config@MCMC)
+          current_theta$theta            <- mean(current_theta$posterior_sample)
+          current_theta$se               <- sd(current_theta$posterior_sample) * config@MCMC$jump_factor
+          current_theta$posterior_sample <- theta_EB(
+            posterior_record$n_sample,
+            current_theta$theta,
+            current_theta$se,
             pool@ipar[o@administered_item_index[1:position], ],
             o@administered_item_resp[1:position], pool@NCAT[o@administered_item_index[1:position]],
-            model[o@administered_item_index[1:position]], 1, c(current_theta, current_se)
+            model[o@administered_item_index[1:position]], 1,
+            c(current_theta$theta, current_theta$se)
           )
-          o@posterior_sample <- o@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = posterior_record$n_sample, by = config@MCMC$thin)]
-          o@final_theta_est  <- mean(o@posterior_sample)
-          o@final_se_est     <- sd(o@posterior_sample)
+          current_theta$posterior_sample <- current_theta$posterior_sample[seq(from = config@MCMC$burn_in + 1, to = posterior_record$n_sample, by = config@MCMC$thin)]
+          o@final_theta_est  <- mean(current_theta$posterior_sample)
+          o@final_se_est     <- sd(current_theta$posterior_sample)
+          o@posterior_sample <- current_theta$posterior_sample
 
         }
 
@@ -1088,18 +1096,23 @@ setMethod(
         } else {
 
           o@prior_par        <- parsePriorPar(prior_par, constants$nj, j, config@final_theta$prior_par)
-          o@posterior_sample <- getPosteriorSample(posterior_record$n_sample, o@prior_par[1], o@prior_par[2], config@MCMC)
-          current_theta      <- mean(o@posterior_sample)
-          current_se         <- sd(o@posterior_sample) * config@MCMC$jump_factor
-          o@posterior_sample <- theta_FB(
-            posterior_record$n_sample, current_theta, current_se, posterior_record$ipar_list[o@administered_item_index[1:position]],
+          current_theta$posterior_sample <- getPosteriorSample(posterior_record$n_sample, o@prior_par[1], o@prior_par[2], config@MCMC)
+          current_theta$theta            <- mean(current_theta$posterior_sample)
+          current_theta$se               <- sd(current_theta$posterior_sample) * config@MCMC$jump_factor
+          current_theta$posterior_sample <- theta_FB(
+            posterior_record$n_sample,
+            current_theta$theta,
+            current_theta$se,
+            posterior_record$ipar_list[o@administered_item_index[1:position]],
             pool@ipar[o@administered_item_index[1:position], ],
             o@administered_item_resp[1:position], pool@NCAT[o@administered_item_index[1:position]],
-            model[o@administered_item_index[1:position]], 1, c(current_theta, current_se)
+            model[o@administered_item_index[1:position]], 1,
+            c(current_theta$theta, current_theta$se)
           )
-          o@posterior_sample <- o@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = posterior_record$n_sample, by = config@MCMC$thin)]
-          o@final_theta_est  <- mean(o@posterior_sample)
-          o@final_se_est     <- sd(o@posterior_sample)
+          current_theta$posterior_sample <- current_theta$posterior_sample[seq(from = config@MCMC$burn_in + 1, to = posterior_record$n_sample, by = config@MCMC$thin)]
+          o@final_theta_est  <- mean(current_theta$posterior_sample)
+          o@final_se_est     <- sd(current_theta$posterior_sample)
+          o@posterior_sample <- current_theta$posterior_sample
 
         }
 

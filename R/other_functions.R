@@ -161,7 +161,7 @@ getInfo <- function(item_selection, j, info_fixed_theta, current_theta, pool, mo
     return(info)
   }
   if (item_method == "MFI") {
-    info <- calc_info(current_theta, pool@ipar, pool@NCAT, model)
+    info <- calc_info(current_theta$theta, pool@ipar, pool@NCAT, model)
     return(info)
   }
   if (item_method == "MPWI") {
@@ -170,19 +170,19 @@ getInfo <- function(item_selection, j, info_fixed_theta, current_theta, pool, mo
   }
   if (item_method == "EB") {
     info <- calc_info_EB(
-      posterior_record$posterior_sample,
+      current_theta$posterior_sample,
       pool@ipar, pool@NCAT, model)
     return(info)
   }
   if (item_method == "FB" & info_type == "FISHER") {
     info <- calc_info_FB(
-      posterior_record$posterior_sample,
+      current_theta$posterior_sample,
       posterior_record$ipar_list, pool@NCAT, model)
     return(info)
   }
   if (item_method == "FB" & info_type %in% c("MI", "MUTUAL")) {
     info <- calc_MI_FB(
-      posterior_record$posterior_sample,
+      current_theta$posterior_sample,
       posterior_record$ipar_list, pool@NCAT, model)
     return(info)
   }

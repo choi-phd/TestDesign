@@ -37,7 +37,7 @@ estimateInitialTheta <- function(config, initial_theta, prior_par, nj, j, poster
 }
 
 #' @noRd
-getThetaSegment <- function(current_theta, position, exposure_control, exposure_constants, posterior_sample) {
+getThetaSegment <- function(current_theta, position, exposure_control, exposure_constants) {
 
   exposure_control_method <- toupper(exposure_control$method)
   n_segment   <- exposure_constants$n_segment
@@ -48,13 +48,13 @@ getThetaSegment <- function(current_theta, position, exposure_control, exposure_
       segment <- exposure_control$first_segment[position]
       return(segment)
     } else {
-      segment <- find_segment(current_theta, segment_cut)
+      segment <- find_segment(current_theta$theta, segment_cut)
       return(segment)
     }
   }
 
   if (exposure_control_method %in% c("BIGM-BAYESIAN")) {
-    segment_prob <- getSegmentProb(posterior_sample, exposure_constants)
+    segment_prob <- getSegmentProb(current_theta$posterior_sample, exposure_constants)
     segment      <- which.max(segment_prob)
     return(segment)
   }
