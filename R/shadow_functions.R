@@ -1292,12 +1292,8 @@ setMethod(
 
         segment_of               <- getSegmentOf(output, exposure_constants)
         segment_record           <- updateSegmentRecord(segment_record, segment_of, j)
-
         ineligible_flag_in_segment <- getIneligibleFlagInSegment(ineligible_flag, segment_of$final_theta_est, constants)
-        eligible_in_final_segment <- ineligible_flag$i[segment_of$final_theta_est, ] == 0
-        if (constants$set_based) {
-          eligible_set_in_final_segment <- ineligible_flag$s[segment_of$final_theta_est, ] == 0
-        }
+        eligible_flag_in_segment   <- getEligibleFlagInSegment(ineligible_flag, segment_of$final_theta_est, constants)
 
         output_list[[j]]@true_theta_segment <- segment_of$true_theta
 
@@ -1332,11 +1328,11 @@ setMethod(
 
           if (segment_of$final_theta_est %in% segment_feasible) {
             phi_jk[segments_to_apply] <- phi_jk[segments_to_apply] + 1
-            rho_ijk[segments_to_apply, eligible_in_final_segment] <-
-            rho_ijk[segments_to_apply, eligible_in_final_segment] + 1
+            rho_ijk[segments_to_apply, eligible_flag_in_segment$i] <-
+            rho_ijk[segments_to_apply, eligible_flag_in_segment$i] + 1
             if (exposure_constants$fading_factor != 1) {
-              no_fading_rho_ijk[segments_to_apply, eligible_in_final_segment] <-
-              no_fading_rho_ijk[segments_to_apply, eligible_in_final_segment] + 1
+              no_fading_rho_ijk[segments_to_apply, eligible_flag_in_segment$i] <-
+              no_fading_rho_ijk[segments_to_apply, eligible_flag_in_segment$i] + 1
             }
           } else {
             rho_ijk[segments_to_apply, ] <- rho_ijk[segments_to_apply, ] + 1
@@ -1386,11 +1382,11 @@ setMethod(
               no_fading_alpha_sjk[segments_to_apply, na.omit(output@administered_stimulus_index)] + 1
             }
             if (segment_of$final_theta_est %in% segment_feasible) {
-              rho_sjk[segments_to_apply, eligible_set_in_final_segment] <-
-              rho_sjk[segments_to_apply, eligible_set_in_final_segment] + 1
+              rho_sjk[segments_to_apply, eligible_flag_in_segment$s] <-
+              rho_sjk[segments_to_apply, eligible_flag_in_segment$s] + 1
               if (exposure_constants$fading_factor != 1) {
-                no_fading_rho_sjk[segments_to_apply, eligible_set_in_final_segment] <-
-                no_fading_rho_sjk[segments_to_apply, eligible_set_in_final_segment] + 1
+                no_fading_rho_sjk[segments_to_apply, eligible_flag_in_segment$s] <-
+                no_fading_rho_sjk[segments_to_apply, eligible_flag_in_segment$s] + 1
               }
             } else {
               rho_sjk[segments_to_apply, ] <- rho_sjk[segments_to_apply, ] + 1
@@ -1440,15 +1436,15 @@ setMethod(
             }
           }
 
-          rho_ijk[segments_to_apply, eligible_in_final_segment] <-
-          rho_ijk[segments_to_apply, eligible_in_final_segment] + 1
+          rho_ijk[segments_to_apply, eligible_flag_in_segment$i] <-
+          rho_ijk[segments_to_apply, eligible_flag_in_segment$i] + 1
 
           if (exposure_constants$fading_factor != 1) {
             no_fading_n_jk[segments_to_apply] <- no_fading_n_jk[segments_to_apply] + 1
             no_fading_alpha_ijk[segments_to_apply, output@administered_item_index] <-
             no_fading_alpha_ijk[segments_to_apply, output@administered_item_index] + 1
-            no_fading_rho_ijk[segments_to_apply, eligible_in_final_segment] <-
-            no_fading_rho_ijk[segments_to_apply, eligible_in_final_segment] + 1
+            no_fading_rho_ijk[segments_to_apply, eligible_flag_in_segment$i] <-
+            no_fading_rho_ijk[segments_to_apply, eligible_flag_in_segment$i] + 1
           }
 
           if (exposure_constants$acceleration_factor > 1) {
@@ -1473,8 +1469,8 @@ setMethod(
           if (constants$set_based) {
             alpha_sjk[segments_to_apply, na.omit(output@administered_stimulus_index)] <-
             alpha_sjk[segments_to_apply, na.omit(output@administered_stimulus_index)] + 1
-            rho_sjk[segments_to_apply, eligible_set_in_final_segment] <-
-            rho_sjk[segments_to_apply, eligible_set_in_final_segment] + 1
+            rho_sjk[segments_to_apply, eligible_flag_in_segment$s] <-
+            rho_sjk[segments_to_apply, eligible_flag_in_segment$s] + 1
 
             if (length(segment_of$visited) > 0) {
               if (any(ineligible_flag_in_segment$s[administered_stimulus_index], na.rm = T)) {
@@ -1491,8 +1487,8 @@ setMethod(
             if (exposure_constants$fading_factor != 1) {
               no_fading_alpha_sjk[segments_to_apply, na.omit(output@administered_stimulus_index)] <-
               no_fading_alpha_sjk[segments_to_apply, na.omit(output@administered_stimulus_index)] + 1
-              no_fading_rho_sjk[segments_to_apply, eligible_set_in_final_segment] <-
-              no_fading_rho_sjk[segments_to_apply, eligible_set_in_final_segment] + 1
+              no_fading_rho_sjk[segments_to_apply, eligible_flag_in_segment$s] <-
+              no_fading_rho_sjk[segments_to_apply, eligible_flag_in_segment$s] + 1
             }
 
             if (exposure_constants$acceleration_factor > 1) {
