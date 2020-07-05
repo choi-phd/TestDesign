@@ -107,3 +107,16 @@ parsePriorPar <- function(prior_par, nj, j, config_prior_par) {
   return(config_prior_par)
 
 }
+
+#' @noRd
+applyThin <- function(posterior_sample, posterior_constants) {
+
+  posterior_sample <- posterior_sample[seq(
+    from = posterior_constants$burn_in + 1,
+    to   = posterior_constants$n_sample,
+    by   = posterior_constants$thin
+  )]
+
+  return(posterior_sample)
+
+}

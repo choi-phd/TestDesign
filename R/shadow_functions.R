@@ -1038,7 +1038,7 @@ setMethod(
       } else if (toupper(config@interim_theta$method) %in% c("EB", "FB")) {
         output@prior_par <- parsePriorPar(prior_par, constants$nj, j, config@interim_theta$prior_par)
         output@posterior_sample <- rnorm(posterior_constants$n_sample, mean = output@prior_par[1], sd = output@prior_par[2])
-        output@posterior_sample <- output@posterior_sample[seq(from = posterior_constants$burn_in + 1, to = posterior_constants$n_sample, by = posterior_constants$thin)]
+        output@posterior_sample <- applyThin(output@posterior_sample, posterior_constants)
         current_theta <- mean(output@posterior_sample)
         current_se    <- sd(output@posterior_sample) * posterior_constants$jump_factor
       }
@@ -1428,7 +1428,7 @@ setMethod(
             output@administered_item_resp[position], pool@NCAT[current_item],
             model[current_item], 1, c(current_theta, current_se)
           )
-          output@posterior_sample <- output@posterior_sample[seq(from = posterior_constants$burn_in + 1, to = posterior_constants$n_sample, by = posterior_constants$thin)]
+          output@posterior_sample <- applyThin(output@posterior_sample, posterior_constants)
           output@interim_theta_est[position] <- mean(output@posterior_sample)
           output@interim_se_est[position] <- sd(output@posterior_sample)
         } else if (toupper(config@interim_theta$method) == "FB") {
@@ -1439,7 +1439,7 @@ setMethod(
             output@administered_item_resp[position], pool@NCAT[current_item],
             model[current_item], 1, c(current_theta, current_se)
           )
-          output@posterior_sample <- output@posterior_sample[seq(from = posterior_constants$burn_in + 1, to = posterior_constants$n_sample, by = posterior_constants$thin)]
+          output@posterior_sample <- applyThin(output@posterior_sample, posterior_constants)
           output@interim_theta_est[position] <- mean(output@posterior_sample)
           output@interim_se_est[position] <- sd(output@posterior_sample)
         }
@@ -1520,7 +1520,7 @@ setMethod(
         output@prior_par <- parsePriorPar(prior_par, constants$nj, j, config@final_theta$prior_par)
 
         output@posterior_sample <- rnorm(posterior_constants$n_sample, mean = output@prior_par[1], sd = output@prior_par[2])
-        output@posterior_sample <- output@posterior_sample[seq(from = posterior_constants$burn_in + 1, to = posterior_constants$n_sample, by = posterior_constants$thin)]
+        output@posterior_sample <- applyThin(output@posterior_sample, posterior_constants)
         current_theta <- mean(output@posterior_sample)
         current_se    <- sd(output@posterior_sample) * posterior_constants$jump_factor
 
@@ -1531,7 +1531,7 @@ setMethod(
           model[output@administered_item_index[1:position]], 1, c(current_theta, current_se)
         )
 
-        output@posterior_sample <- output@posterior_sample[seq(from = posterior_constants$burn_in + 1, to = posterior_constants$n_sample, by = posterior_constants$thin)]
+        output@posterior_sample <- applyThin(output@posterior_sample, posterior_constants)
         output@final_theta_est  <- mean(output@posterior_sample)
         output@final_se_est     <- sd(output@posterior_sample)
 
@@ -1540,7 +1540,7 @@ setMethod(
         output@prior_par <- parsePriorPar(prior_par, constants$nj, j, config@final_theta$prior_par)
 
         output@posterior_sample <- rnorm(posterior_constants$n_sample, mean = output@prior_par[1], sd = output@prior_par[2])
-        output@posterior_sample <- output@posterior_sample[seq(from = posterior_constants$burn_in + 1, to = posterior_constants$n_sample, by = posterior_constants$thin)]
+        output@posterior_sample <- applyThin(output@posterior_sample, posterior_constants)
         current_theta <- mean(output@posterior_sample)
         current_se    <- sd(output@posterior_sample) * posterior_constants$jump_factor
 
@@ -1551,7 +1551,7 @@ setMethod(
           model[output@administered_item_index[1:position]], 1, c(current_theta, current_se)
         )
 
-        output@posterior_sample <- output@posterior_sample[seq(from = posterior_constants$burn_in + 1, to = posterior_constants$n_sample, by = posterior_constants$thin)]
+        output@posterior_sample <- applyThin(output@posterior_sample, posterior_constants)
         output@final_theta_est  <- mean(output@posterior_sample)
         output@final_se_est     <- sd(output@posterior_sample)
 
