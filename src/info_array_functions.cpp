@@ -112,7 +112,7 @@ arma::mat calc_info_matrix(
       }
       break;
       case 4: {
-        rowvec b = item_parm(i, span(0, ncat(i) - 1));
+        rowvec b = item_parm(i, span(0, ncat(i) - 2));
         for (int q = 0; q < nx; q++) {
           info_matrix(q, i) = info_pc(x.row(q), b);
         }
@@ -120,7 +120,7 @@ arma::mat calc_info_matrix(
       break;
       case 5: {
         double a = item_parm(i, 0);
-        rowvec b = item_parm(i, span(1, ncat(i)));
+        rowvec b = item_parm(i, span(1, ncat(i) - 1));
         for (int q = 0; q < nx; q++) {
           info_matrix(q, i) = info_gpc(x.row(q), a, b);
         }
@@ -128,7 +128,7 @@ arma::mat calc_info_matrix(
       break;
       case 6: {
         double a = item_parm(i, 0);
-        rowvec b = item_parm(i, span(1, ncat(i)));
+        rowvec b = item_parm(i, span(1, ncat(i) - 1));
         for (int q = 0; q < nx; q++) {
           info_matrix(q, i) = info_gr(x.row(q), a, b);
         }
@@ -149,7 +149,7 @@ arma::mat calc_info_matrix(
 //' @param item_parm A numeric matrix of item parameters.
 //' @template calc-params-mini
 // [[Rcpp::export]]
-arma::rowvec calc_info_EB (
+arma::colvec calc_info_EB (
   const arma::mat& x,
   const arma::mat& item_parm,
   const arma::icolvec& ncat,
@@ -157,10 +157,10 @@ arma::rowvec calc_info_EB (
 
   int nx = x.n_rows;
   int ni = item_parm.n_rows;
-  rowvec info_array(ni);
+  colvec info_array(ni);
 
   for (int j = 0; j < nx; j++) {
-    rowvec info = calc_info(x.row(j), item_parm, ncat, model);
+    colvec info = calc_info(x.row(j), item_parm, ncat, model);
     info_array += info;
   }
 
@@ -234,7 +234,7 @@ arma::colvec calc_info_FB (
       break;
       case 4: {
         for (int j = 0; j < nx; j++) {
-          rowvec b = item_parm(s, span(0, ncat(i) - 1));
+          rowvec b = item_parm(s, span(0, ncat(i) - 2));
           info_sum += info_pc(xx.row(j), b);
           s += 1;
           if (s >= ns) { s = 0; }
@@ -244,7 +244,7 @@ arma::colvec calc_info_FB (
       case 5: {
         for (int j = 0; j < nx; j++) {
           double a = item_parm(s, 0);
-          rowvec b = item_parm(s, span(1, ncat(i)));
+          rowvec b = item_parm(s, span(1, ncat(i) - 1));
           info_sum += info_gpc(xx.row(j), a, b);
           s += 1;
           if (s >= ns) { s = 0; }
@@ -254,7 +254,7 @@ arma::colvec calc_info_FB (
       case 6: {
         for (int j = 0; j < nx; j++) {
           double a = item_parm(s, 0);
-          rowvec b = item_parm(s, span(1, ncat(i)));
+          rowvec b = item_parm(s, span(1, ncat(i) - 1));
           info_sum += info_gr(xx.row(j), a, b);
           s += 1;
           if (s >= ns) { s = 0; }
@@ -336,7 +336,7 @@ arma::colvec calc_MI_FB (
       break;
       case 4: {
         for (int j = 0; j < nx; j++) {
-          rowvec b = item_parm(s, span(0, ncat(i) - 1));
+          rowvec b = item_parm(s, span(0, ncat(i) - 2));
           p = p_pc(x.row(j), b);
           posterior_k.row(j) = p;
           s += 1;
@@ -347,7 +347,7 @@ arma::colvec calc_MI_FB (
       case 5: {
         for (int j = 0; j < nx; j++) {
           double a = item_parm(s, 0);
-          rowvec b = item_parm(s, span(1, ncat(i)));
+          rowvec b = item_parm(s, span(1, ncat(i) - 1));
           p = p_gpc(x.row(j), a, b);
           posterior_k.row(j) = p;
           s += 1;
@@ -358,7 +358,7 @@ arma::colvec calc_MI_FB (
       case 6: {
         for (int j = 0; j < nx; j++) {
           double a = item_parm(s, 0);
-          rowvec b = item_parm(s, span(1, ncat(i)));
+          rowvec b = item_parm(s, span(1, ncat(i) - 1));
           p = p_gr(x.row(j), a, b);
           posterior_k.row(j) = p;
           s += 1;

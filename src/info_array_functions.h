@@ -13,7 +13,7 @@ arma::mat calc_info_matrix(
   const arma::icolvec&,
   const arma::icolvec&);
 
-arma::rowvec calc_info_EB (
+arma::colvec calc_info_EB (
   const arma::mat&,
   const arma::mat&,
   const arma::icolvec&,
