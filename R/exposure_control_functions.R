@@ -170,3 +170,37 @@ getSegmentsToApply <- function(n_segment, segments) {
   o[segments] <- TRUE
   return(o)
 }
+
+#' @noRd
+updateExposureRecordSegmentwise <- function(o, j, x, exposure_constants, constants) {
+
+  n_segment     <- exposure_constants$n_segment
+  fading_factor <- exposure_constants$fading_factor
+
+  ni <- constants$ni
+  for (g in 1:n_segment) {
+    o$a_g_i[j, (g - 1) * ni + 1:ni] <- x$a_ijk[g, ]
+    o$e_g_i[j, (g - 1) * ni + 1:ni] <- x$r_ijk[g, ]
+    if (fading_factor != 1) {
+      o$a_g_i_nofade[j, (g - 1) * ni + 1:ni] <- x$a_ijk_nofade[g, ]
+      o$e_g_i_nofade[j, (g - 1) * ni + 1:ni] <- x$r_ijk_nofade[g, ]
+    }
+  }
+
+  if (!constants$set_based) {
+    return(o)
+  }
+
+  ns <- constants$ns
+  for (g in 1:n_segment) {
+    o$a_g_s[j, (g - 1) * ns + 1:ns] <- x$a_sjk[g, ]
+    o$e_g_s[j, (g - 1) * ns + 1:ns] <- x$r_sjk[g, ]
+    if (fading_factor != 1) {
+      o$a_g_s_nofade[j, (g - 1) * ns + 1:ns] <- x$a_sjk_nofade[g, ]
+      o$e_g_s_nofade[j, (g - 1) * ns + 1:ns] <- x$r_sjk_nofade[g, ]
+    }
+  }
+
+  return(o)
+
+}
