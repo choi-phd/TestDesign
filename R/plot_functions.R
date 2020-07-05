@@ -600,12 +600,12 @@ setMethod(
     ...) {
 
     if (!type %in% c("audit", "shadow", "exposure")) {
-      stop("'type' must be 'audit', 'shadow', or 'exposure'")
+      stop("plot(output_Shadow_all): 'type' must be 'audit', 'shadow', or 'exposure'")
     }
     if (type == "audit") {
 
       if (!all(examinee_id %in% 1:length(x@output))) {
-        stop("'examinee_id' out of bounds")
+        stop("plot(output_Shadow_all): 'examinee_id' out of bounds")
       }
       p <- plot(
         x@output[[examinee_id]],
@@ -620,7 +620,7 @@ setMethod(
     } else if (type == "shadow") {
 
       if (!all(examinee_id %in% 1:length(x@output))) {
-        stop("'examinee_id' out of bounds")
+        stop("plot(output_Shadow_all): 'examinee_id' out of bounds")
       }
       p <- plot(
         x@output[[examinee_id]],
@@ -640,7 +640,7 @@ setMethod(
         theta_value <- x@final_theta_est
         nj          <- length(theta_value)
       } else {
-        stop("'theta_segment' must be 'true' or 'estimated'.")
+        stop("plot(output_Shadow_all): 'theta_segment' must be 'estimated' or 'true'")
       }
 
       ni <- x@pool@ni
