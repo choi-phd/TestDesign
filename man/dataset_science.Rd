@@ -34,11 +34,5 @@ itemattrib_science  <- loadItemAttrib(itemattrib_science_data, itempool_science)
 constraints_science <- loadConstraints(constraints_science_data,
   itempool_science, itemattrib_science)
 
-\dontrun{
-  View(itempool_science_data)
-  View(itemattrib_science_data)
-  View(constraints_science_data)
-}
-
 }
 \keyword{datasets}

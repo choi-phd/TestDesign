@@ -4,16 +4,16 @@
 \name{eap}
 \alias{eap}
 \alias{eap,item_pool-method}
-\title{Generate expected a posteriori estimates of theta}
+\title{Compute expected a posteriori estimates of theta}
 \usage{
 eap(object, theta, prior, resp, select = NULL)
 
 \S4method{eap}{item_pool}(object, theta, prior, resp, select = NULL)
 }
 \arguments{
-\item{object}{An \code{\linkS4class{item_pool}} object.}
+\item{object}{an \code{\linkS4class{item_pool}} object.}
 
-\item{theta}{A theta grid.}
+\item{theta}{the theta grid to use as quadrature points.}
 
 \item{prior}{A prior distribution, a numeric vector for a common prior or a matrix for individualized priors.}
 
@@ -22,5 +22,5 @@ eap(object, theta, prior, resp, select = NULL)
 \item{select}{A vector of indices identifying the items to subset.}
 }
 \description{
-Generate expected a posteriori estimates of theta.
+\code{\link{eap}} is a function to compute expected a posteriori estimates of theta.
 }

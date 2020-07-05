@@ -4,7 +4,7 @@
 \name{mle}
 \alias{mle}
 \alias{mle,item_pool-method}
-\title{Generate maximum likelihood estimates of theta}
+\title{Compute maximum likelihood estimates of theta}
 \usage{
 mle(
   object,
@@ -13,8 +13,8 @@ mle(
   max_iter = 100,
   crit = 0.001,
   select = NULL,
-  theta_range = c(-4, 4),
   truncate = FALSE,
+  theta_range = c(-4, 4),
   max_change = 1,
   do_Fisher = TRUE
 )
@@ -26,36 +26,47 @@ mle(
   max_iter = 50,
   crit = 0.005,
   select = NULL,
-  theta_range = c(-4, 4),
   truncate = FALSE,
+  theta_range = c(-4, 4),
   max_change = 1,
   do_Fisher = TRUE
 )
 }
 \arguments{
-\item{object}{A \code{\linkS4class{item_pool}} object.}
+\item{object}{an \code{\linkS4class{item_pool}} object.}
 
-\item{resp}{A vector (or matrix) of item responses.}
+\item{resp}{a vector of item responses from one person on all items in the \code{object} argument.}
 
-\item{start_theta}{An optional vector of start theta values.}
+\item{start_theta}{(optional) initial theta values.}
 
-\item{max_iter}{Maximum number of iterations.}
+\item{max_iter}{maximum number of iterations. (default = \code{100})}
 
-\item{crit}{Convergence criterion.}
+\item{crit}{convergence criterion to use. (default = \code{0.001})}
 
-\item{select}{A vector of indices identifying the items to subset.}
+\item{select}{(optional) if item indices are supplied, only the specified items are used. The \code{resp} argument must have the same length with the length of this argument.}
 
-\item{theta_range}{A range of theta values.}
+\item{truncate}{set \code{TRUE} to impose a bound on the estimate.}
 
-\item{truncate}{Set \code{TRUE} to bound MLE to theta_range: c(minTheta, maxTheta).}
+\item{theta_range}{a range of theta values to bound the estimate. Only effective when \code{truncate} is \code{TRUE}. (default = \code{c(-4, 4)})}
 
-\item{max_change}{Maximum change between iterations.}
+\item{max_change}{upper bound to impose on the change in theta between iterations. Changes exceeding this value will be replaced by \code{max_change}. (default = \code{1.0})}
 
-\item{do_Fisher}{\code{TRUE} to use Fisher's method of scoring.}
+\item{do_Fisher}{set \code{TRUE} to use Fisher scoring. (default = \code{TRUE})}
+}
+\value{
+\code{\link{mle}} returns a list containing estimated values.
+
+\itemize{
+  \item{\code{th}} theta value.
+  \item{\code{se}} standard error.
+  \item{\code{conv}} \code{TRUE} if estimation converged.
+  \item{\code{trunc}} \code{TRUE} if truncating was applied on \code{th}.
+}
 }
 \description{
-Generate maximum likelihood estimates of theta.
+\code{\link{mle}} is a function to compute maximum likelihood estimates of theta.
 }
 \examples{
-mle(itempool_fatigue, resp_fatigue_data[10,])
+mle(itempool_fatigue, resp_fatigue_data[10, ])
+mle(itempool_fatigue, resp_fatigue_data[10, 1:20], select = 1:20)
 }

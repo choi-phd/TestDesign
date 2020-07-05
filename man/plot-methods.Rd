@@ -57,31 +57,37 @@
 )
 }
 \arguments{
-\item{x}{An \code{\linkS4class{item_pool}} object to draw pool-level or item-level information, or a list from \code{\link{Static}} to draw test-level information.}
+\item{x}{accepts the following signatures:
+\itemize{
+  \item{\code{\linkS4class{item_pool}}}:
+  \item{\code{\linkS4class{constraints}}}:
+  \item{\code{\linkS4class{output_Static}}}:
+  \item{\code{\linkS4class{output_Shadow}}}:
+}}
 
-\item{y}{Unused argument, exists for compatibility with \code{\link{plot}} in the base R package.}
+\item{y}{not used, exists for compatibility with \code{\link[base]{plot}} in the base R package.}
 
-\item{theta}{Theta values for drawing the curve. Default is \code{seq(-3, 3, .1)}.}
+\item{theta}{the theta grid to use in plotting. (default = \code{seq(-3, 3, .1)})}
 
-\item{type}{Type of the plot. \code{info} to plot information, \code{score} to plot expected scores, \code{shadow} to plot shadow test chart, \code{audit} to plot audit trail, and \code{exposure} to plot exposure rates.}
+\item{type}{the type of plot. \code{info} to plot information, \code{score} to plot expected scores, \code{shadow} to plot shadow test chart, \code{audit} to plot audit trail, and \code{exposure} to plot exposure rates.}
 
-\item{info_type}{Type of information. Currently only accepts \code{FISHER} (default).}
+\item{info_type}{the type of information. Currently only accepts \code{FISHER}. (default = \code{FISHER})}
 
 \item{plot_sum}{When 'object' is an \code{\linkS4class{item_pool}} object, if \code{TRUE} then draw pool-level information, and if \code{FALSE} draw item-level information for every item in the pool.}
 
 \item{select}{A vector of indices identifying the items to subset, for when 'object' is an \code{\linkS4class{item_pool}} object.}
 
-\item{color}{The color of the curve.}
+\item{color}{the color of the curve.}
 
-\item{file_pdf}{If supplied a filename, save as a PDF file.}
+\item{file_pdf}{if supplied a filename, save as a PDF file.}
 
-\item{width}{Width of graphics device.}
+\item{width}{the width of graphics device.}
 
-\item{height}{Height of graphics device.}
+\item{height}{the height of graphics device.}
 
-\item{mfrow}{Multipanel configurations as c(nrow, ncol).}
+\item{mfrow}{multipanel configurations in \code{c(nrow, ncol)}.}
 
-\item{...}{Arguments to pass onto \code{\link{plot}}.}
+\item{...}{arguments to pass onto \code{\link{plot}}.}
 }
 \description{
 Extension of plot() for objects in TestDesign package

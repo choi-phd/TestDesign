@@ -53,11 +53,17 @@ item_6 <- new("item_GR", slope = 1.0, category = c(-2.0, -1.0, 0, 1.0, 2.0), nca
 
 {
   \insertRef{lord_theory_1952}{TestDesign}
+}
 
+{
   \insertRef{birnbaum_efficient_1957}{TestDesign}
+}
 
+{
   \insertRef{birnbaum_estimation_1958}{TestDesign}
+}
 
+{
   \insertRef{birnbaum_further_1958}{TestDesign}
 }
 
@@ -67,7 +73,9 @@ item_6 <- new("item_GR", slope = 1.0, category = c(-2.0, -1.0, 0, 1.0, 2.0), nca
 
 {
   \insertRef{masters_rasch_1982}{TestDesign}
+}
 
+{
   \insertRef{andrich_rating_1978}{TestDesign}
 }
 

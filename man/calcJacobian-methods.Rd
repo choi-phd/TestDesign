@@ -40,11 +40,11 @@ calcJacobian(object, theta, resp)
 \S4method{calcJacobian}{pool_cluster,numeric,list}(object, theta, resp)
 }
 \arguments{
-\item{object}{An \code{\link{item}} object or an \code{\linkS4class{item_pool}} object.}
+\item{object}{an \code{\link{item}} or an \code{\linkS4class{item_pool}} object.}
 
-\item{theta}{A vector of theta values.}
+\item{theta}{theta values to use.}
 
-\item{resp}{Response data.}
+\item{resp}{the response data to use.}
 }
 \value{
 \code{\link{calcJacobian}} returns first derivative values of log-likelihoods.
@@ -76,11 +76,17 @@ j_pool   <- calcJacobian(itempool_science, seq(-3, 3, 1), 0)
 
 {
   \insertRef{lord_theory_1952}{TestDesign}
+}
 
+{
   \insertRef{birnbaum_efficient_1957}{TestDesign}
+}
 
+{
   \insertRef{birnbaum_estimation_1958}{TestDesign}
+}
 
+{
   \insertRef{birnbaum_further_1958}{TestDesign}
 }
 
@@ -90,7 +96,9 @@ j_pool   <- calcJacobian(itempool_science, seq(-3, 3, 1), 0)
 
 {
   \insertRef{masters_rasch_1982}{TestDesign}
+}
 
+{
   \insertRef{andrich_rating_1978}{TestDesign}
 }
 
