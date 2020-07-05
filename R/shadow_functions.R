@@ -788,15 +788,8 @@ setMethod(
 
     if (exposure_control %in% c("ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
 
-      #####
-      ###    Initialize segment-wise exposure rates
-      #####
+      segment_record <- initializeSegmentRecord(exposure_constants, constants)
 
-
-      true_segment_freq  <- numeric(exposure_constants$n_segment)
-      est_segment_freq   <- numeric(exposure_constants$n_segment)
-      true_segment_count <- numeric(nj)
-      est_segment_count  <- numeric(nj)
       pe_i <- matrix(1, exposure_constants$n_segment, constants$ni)
 
       if (constants$set_based) {
@@ -862,9 +855,6 @@ setMethod(
       }
 
     } else {
-
-      true_segment_count <- NULL
-      est_segment_count  <- NULL
 
     }
 
@@ -1680,21 +1670,27 @@ setMethod(
         if (!is.null(true_theta)) {
           segment_true <- find_segment(output@true_theta, exposure_constants$segment_cut)
           output_list[[j]]@true_theta_segment <- segment_true
-          true_segment_freq[segment_true] <- true_segment_freq[segment_true] + 1
-          true_segment_count[j]           <- true_segment_freq[segment_true]
         }
         segment_final <- find_segment(output@final_theta_est, exposure_constants$segment_cut)
+
+        segment_record$freq_true[segment_true] <-
+        segment_record$freq_true[segment_true] + 1
+        segment_record$freq_est[segment_final] <-
+        segment_record$freq_est[segment_final] + 1
+
+        segment_record$count_true[j] <-
+        segment_record$freq_true[segment_true]
+        segment_record$count_est[j] <-
+        segment_record$freq_est[segment_final]
+
         eligible_in_final_segment <- ineligible_i[segment_final, ] == 0
-        est_segment_freq[segment_final] <- est_segment_freq[segment_final] + 1
-        est_segment_count[j]            <- est_segment_freq[segment_final]
+        if (constants$set_based) {
+          eligible_set_in_final_segment <- ineligible_s[segment_final, ] == 0
+        }
 
         # TODO: Why are we sorting segment_visited? might be better to not sort
         segment_visited <- sort(unique(output@theta_segment_index))
         segment_other   <- segment_visited[segment_visited != segment_final]
-
-        if (constants$set_based) {
-          eligible_set_in_final_segment <- ineligible_s[segment_final, ] == 0
-        }
 
         if (exposure_control %in% c("ELIGIBILITY")) {
           n_jk[segment_final] <- exposure_constants$fading_factor * n_jk[segment_final] + 1
@@ -2102,7 +2098,7 @@ setMethod(
       if (config@exposure_control$diagnostic_stats) {
 
         check_eligibility_stats <- as.data.frame(
-          cbind(1:constants$nj, true_theta, find_segment(true_theta, exposure_constants$segment_cut), true_segment_count, alpha_g_i, epsilon_g_i),
+          cbind(1:constants$nj, true_theta, find_segment(true_theta, exposure_constants$segment_cut), segment_record$count_true, alpha_g_i, epsilon_g_i),
           row.names = NULL)
 
         names(check_eligibility_stats) <- c("Examinee", "TrueTheta", "TrueSegment", "TrueSegmentCount",
@@ -2118,7 +2114,7 @@ setMethod(
         }
 
         if (exposure_constants$fading_factor != 1) {
-          no_fading_eligibility_stats <- as.data.frame(cbind(1:constants$nj, true_theta, find_segment(true_theta, exposure_constants$segment_cut), true_segment_count, no_fading_alpha_g_i, no_fading_epsilon_g_i), row.names = NULL)
+          no_fading_eligibility_stats <- as.data.frame(cbind(1:constants$nj, true_theta, find_segment(true_theta, exposure_constants$segment_cut), segment_record$count_true, no_fading_alpha_g_i, no_fading_epsilon_g_i), row.names = NULL)
           names(no_fading_eligibility_stats) <- c("Examinee", "TrueTheta", "TrueSegment", "TrueSegmentCount",
             paste("a", "g", rep(1:exposure_constants$n_segment, rep(constants$ni, exposure_constants$n_segment)), "i", rep(1:constants$ni, exposure_constants$n_segment), sep = "_"),
             paste("e", "g", rep(1:exposure_constants$n_segment, rep(constants$ni, exposure_constants$n_segment)), "i", rep(1:constants$ni, exposure_constants$n_segment), sep = "_"))
@@ -2153,8 +2149,8 @@ setMethod(
     out@final_se_est                <- final_se_est
     out@exposure_rate               <- exposure_rate
     out@usage_matrix                <- usage_matrix
-    out@true_segment_count          <- true_segment_count
-    out@est_segment_count           <- est_segment_count
+    out@true_segment_count          <- segment_record$count_true
+    out@est_segment_count           <- segment_record$count_est
     out@eligibility_stats           <- eligibility_stats
     out@check_eligibility_stats     <- check_eligibility_stats
     out@no_fading_eligibility_stats <- no_fading_eligibility_stats
