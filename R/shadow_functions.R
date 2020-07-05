@@ -782,29 +782,19 @@ setMethod(
 
     if (content_balancing %in% c("STA", "SHADOW", "SHADOWTEST", "SHADOW TEST")) {
 
-      if (is.null(constraints)) {
-        stop("'constraints' must be supplied when config@content_balancing$method is STA")
-      }
-
-      sta          <- TRUE
-      set_based    <- constraints@set_based
-      test_length  <- constraints@test_length
-      min_ni       <- constraints@test_length
-      max_ni       <- constraints@test_length
-
       #####
       ###    Mark refresh positions
       #####
 
-      refresh_shadow <- rep(FALSE, test_length)
+      refresh_shadow <- rep(FALSE, constants$test_length)
 
       if (refresh_policy %in% c("ALWAYS", "THRESHOLD")) {
 
-        refresh_shadow <- rep(TRUE, test_length)
+        refresh_shadow <- rep(TRUE, constants$test_length)
 
       } else if (refresh_policy == "POSITION") {
 
-        if (!all(config@refresh_policy$position %in% 1:test_length)) {
+        if (!all(config@refresh_policy$position %in% 1:constants$test_length)) {
           stop("config@refresh_policy$position must be within test length")
         }
 
@@ -812,15 +802,15 @@ setMethod(
 
       } else if (refresh_policy %in% c("INTERVAL", "INTERVAL-THRESHOLD")) {
 
-        if (!(config@refresh_policy$interval >= 1 && config@refresh_policy$interval <= test_length)) {
+        if (!(config@refresh_policy$interval >= 1 && config@refresh_policy$interval <= constants$test_length)) {
           stop("config@refresh_policy$interval must be not greater than test length, and be at least 1")
         }
 
-        refresh_shadow[seq(1, test_length, config@refresh_policy$interval)] <- TRUE
+        refresh_shadow[seq(1, constants$test_length, config@refresh_policy$interval)] <- TRUE
 
-      } else if (refresh_policy %in% c("STIMULUS", "SET", "PASSAGE")) {
+      } else if (constants$set_based_refresh) {
 
-        if (!set_based) {
+        if (!constants$set_based) {
           stop("constraints@set_based must be TRUE when config@refresh_policy$method is 'STIMULUS'")
         }
 
@@ -829,13 +819,6 @@ setMethod(
       refresh_shadow[1] <- TRUE
 
     } else {
-
-      sta <- FALSE
-      set_based <- FALSE
-      min_ni    <- config@stopping_criterion$min_ni
-      max_ni    <- config@stopping_criterion$max_ni
-      max_se    <- config@stopping_criterion$se_threshold
-
     }
 
     #####
@@ -939,7 +922,7 @@ setMethod(
       cut_upper    <- segment_cut[2:(n_segment + 1)]
       pe_i <- matrix(1, n_segment, constants$ni)
 
-      if (set_based) {
+      if (constants$set_based) {
         pe_s <- matrix(1, n_segment, constants$ns)
       } else {
         pe_s <- NULL
@@ -954,7 +937,7 @@ setMethod(
         alpha_g_i   <- matrix(0, nrow = constants$nj, ncol = n_segment * constants$ni)
         epsilon_g_i <- matrix(0, nrow = constants$nj, ncol = n_segment * constants$ni)
 
-        if (set_based) {
+        if (constants$set_based) {
           alpha_g_s   <- matrix(0, nrow = constants$nj, ncol = n_segment * constants$ns)
           epsilon_g_s <- matrix(0, nrow = constants$nj, ncol = n_segment * constants$ns)
         }
@@ -962,7 +945,7 @@ setMethod(
         if (fading_factor != 1) {
           no_fading_alpha_g_i   <- matrix(0, nrow = constants$nj, ncol = n_segment * constants$ni)
           no_fading_epsilon_g_i <- matrix(0, nrow = constants$nj, ncol = n_segment * constants$ni)
-          if (set_based) {
+          if (constants$set_based) {
             no_fading_alpha_g_s   <- matrix(0, nrow = constants$nj, ncol = n_segment * constants$ns)
             no_fading_epsilon_g_s <- matrix(0, nrow = constants$nj, ncol = n_segment * constants$ns)
           }
@@ -976,7 +959,7 @@ setMethod(
         alpha_ijk <- config@exposure_control$initial_eligibility_stats$alpha_ijk
         phi_jk    <- config@exposure_control$initial_eligibility_stats$phi_jk
         rho_ijk   <- config@exposure_control$initial_eligibility_stats$rho_ijk
-        if (set_based) {
+        if (constants$set_based) {
           alpha_sjk <- config@exposure_control$initial_eligibility_stats$alpha_sjk
           rho_sjk   <- config@exposure_control$initial_eligibility_stats$rho_sjk
         }
@@ -985,7 +968,7 @@ setMethod(
         alpha_ijk <- matrix(0, n_segment, constants$ni)
         phi_jk    <- numeric(n_segment)
         rho_ijk   <- matrix(0, n_segment, constants$ni)
-        if (set_based) {
+        if (constants$set_based) {
           alpha_sjk <- matrix(0, n_segment, constants$ns)
           rho_sjk   <- matrix(0, n_segment, constants$ns)
         }
@@ -995,7 +978,7 @@ setMethod(
         no_fading_n_jk      <- n_jk
         no_fading_alpha_ijk <- alpha_ijk
         no_fading_rho_ijk   <- rho_ijk
-        if (set_based) {
+        if (constants$set_based) {
           no_fading_alpha_sjk <- alpha_sjk
           no_fading_rho_sjk   <- rho_sjk
         }
@@ -1033,7 +1016,7 @@ setMethod(
     ###    Initialize usage matrix
     #####
 
-    if (set_based) {
+    if (constants$set_based) {
       usage_matrix <- matrix(FALSE, nrow = constants$nj, ncol = constants$nv)
     } else {
       usage_matrix <- matrix(FALSE, nrow = constants$nj, ncol = constants$ni)
@@ -1088,11 +1071,11 @@ setMethod(
 
     selectItemShadowTest <- function() {
 
-      n_remaining <- test_length - position
+      n_remaining <- constants$test_length - position
       new_stimulus_selected <- FALSE
       last_stimulus_index <- 0
 
-      if (!set_based) {
+      if (!constants$set_based) {
         stimulus_selected <- NA
         stimulus_finished <- FALSE
       }
@@ -1100,7 +1083,7 @@ setMethod(
       if (position == 1) {
         selected <- 1
 
-        if (set_based) {
+        if (constants$set_based) {
           stimulus_selected <- optimal$shadow_test[["STINDEX"]][1]
           new_stimulus_selected <- TRUE
 
@@ -1122,7 +1105,7 @@ setMethod(
 
         remaining <- which(!optimal$shadow_test[["INDEX"]] %in% output@administered_item_index[1:(position - 1)])
 
-        if (!set_based) {
+        if (!constants$set_based) {
 
           selected <- remaining[1]
 
@@ -1211,7 +1194,7 @@ setMethod(
 
       for (i in 1:max_ni) {
         lines(rep(i, 2), c(output@interim_theta_est[i] - 1.96 * output@interim_se_est[i], output@interim_theta_est[i] + 1.96 * output@interim_se_est[i]))
-        if (sta) {
+        if (constants$use_shadow) {
           if (output@shadow_test_refreshed[i]) {
             points(i, output@interim_theta_est[i], pch = 18, col = "red")
           }
@@ -1250,13 +1233,13 @@ setMethod(
       }
 
       output@prior <- posterior[j, ]
-      output@administered_item_index <- rep(NA_real_, max_ni)
-      output@administered_item_resp  <- rep(NA_real_, max_ni)
-      output@theta_segment_index     <- rep(NA_real_, max_ni)
-      output@interim_theta_est       <- rep(NA_real_, max_ni)
-      output@interim_se_est          <- rep(NA_real_, max_ni)
+      output@administered_item_index <- rep(NA_real_, constants$max_ni)
+      output@administered_item_resp  <- rep(NA_real_, constants$max_ni)
+      output@theta_segment_index     <- rep(NA_real_, constants$max_ni)
+      output@interim_theta_est       <- rep(NA_real_, constants$max_ni)
+      output@interim_se_est          <- rep(NA_real_, constants$max_ni)
       output@administered_stimulus_index <- NaN
-      output@shadow_test <- vector(mode = "list", length = max_ni)
+      output@shadow_test <- vector(mode = "list", length = constants$max_ni)
       output@max_cat_pool <- pool@max_cat
 
       ##
@@ -1283,8 +1266,8 @@ setMethod(
       #  Simulee: initialize stimulus tracking
       ##
 
-      if (set_based) {
-        output@administered_stimulus_index <- rep(NA_real_, max_ni)
+      if (constants$set_based) {
+        output@administered_stimulus_index <- rep(NA_real_, constants$max_ni)
         end_set <- TRUE
         finished_stimulus_index      <- NULL
         finished_stimulus_item_count <- NULL
@@ -1294,13 +1277,13 @@ setMethod(
       #  Simulee: initialize shadow test stuff
       ##
 
-      if (sta) {
-        output@shadow_test_feasible  <- logical(test_length)
-        output@shadow_test_refreshed <- logical(test_length)
+      if (constants$use_shadow) {
+        output@shadow_test_feasible  <- logical(constants$test_length)
+        output@shadow_test_refreshed <- logical(constants$test_length)
         imat <- NULL
         idir <- NULL
         irhs <- NULL
-        if (set_based) {
+        if (constants$set_based) {
           smat <- NULL
           sdir <- NULL
           srhs <- NULL
@@ -1326,7 +1309,7 @@ setMethod(
 
         # Randomly flag stimuli in each segment to be ineligible
 
-        if (set_based) {
+        if (constants$set_based) {
           ineligible_s <- matrix(0, n_segment, ns)
           prob_random <- matrix(runif(n_segment * ns), n_segment, ns)
           ineligible_s[prob_random >= pe_s] <- 1
@@ -1363,7 +1346,7 @@ setMethod(
 
         # Item position / simulee: do shadow test stuff
 
-        if (sta) {
+        if (constants$use_shadow) {
 
           if (exposure_control %in% c("ELIGIBILITY", "BIGM")) {
 
@@ -1396,7 +1379,7 @@ setMethod(
             (refresh_policy %in% c("POSITION", "INTERVAL") && refresh_shadow[position]) ||
             (refresh_policy == "THRESHOLD" && abs(theta_change) > config@refresh_policy$threshold) ||
             (refresh_policy == "INTERVAL-THRESHOLD" && refresh_shadow[position] && abs(theta_change) > config@refresh_policy$threshold) ||
-            (refresh_policy %in% c("STIMULUS", "SET", "PASSAGE") && set_based && end_set)) {
+            (constants$set_based_refresh && constants$set_based && end_set)) {
 
             output@shadow_test_refreshed[position] <- TRUE
 
@@ -1417,7 +1400,7 @@ setMethod(
 
               # Include administered stimulus in selection
 
-              if (set_based) {
+              if (constants$set_based) {
 
                 if (length(administered_stimulus_index) > 0) {
 
@@ -1434,7 +1417,7 @@ setMethod(
                   idir <-     c(idir, sdir)
                   irhs <-     c(irhs, srhs)
 
-                  if (refresh_policy %in% c("STIMULUS", "SET", "PASSAGE") && set_based && end_set) {
+                  if (constants$set_based_refresh && constants$set_based && end_set) {
 
                     n_administered_stimulus <- length(administered_stimulus_index)
                     if (n_administered_stimulus > 0) {
@@ -1478,13 +1461,13 @@ setMethod(
               # Get ineligibile items in the current theta segment
 
               item_ineligible <- ineligible_i[output@theta_segment_index[position], ]
-              if (set_based) {
+              if (constants$set_based) {
                 stimulus_ineligible <- ineligible_s[output@theta_segment_index[position], ]
               }
 
               if (position > 1) {
                 item_ineligible[output@administered_item_index[1:(position - 1)]] <- 0
-                if (set_based) {
+                if (constants$set_based) {
                   stimulus_ineligible[output@administered_stimulus_index[1:(position - 1)]] <- 0
                 }
               }
@@ -1501,7 +1484,7 @@ setMethod(
                   xdir <- "=="
                   xrhs <- 0
 
-                  if (set_based) {
+                  if (constants$set_based) {
                     if (any(stimulus_ineligible == 1)) {
                       xmat[(ni + 1):nv] <- stimulus_ineligible
                       for (s in which(stimulus_ineligible == 1)) {
@@ -1606,7 +1589,7 @@ setMethod(
 
         # Item position / simulee: record which stimulus was administered
 
-        if (set_based) {
+        if (constants$set_based) {
           output@administered_stimulus_index[position] <- selection$stimulus_selected
           if (selection$stimulus_finished) {
             end_set <- TRUE
@@ -1684,14 +1667,14 @@ setMethod(
         # Item position / simulee: trigger shadow test refresh if theta change is sufficient
 
         if (refresh_policy == "THRESHOLD") {
-          if ((abs(theta_change) > config@refresh_policy$threshold) && (position < test_length)) {
+          if ((abs(theta_change) > config@refresh_policy$threshold) && (position < constants$test_length)) {
             refresh_shadow[position + 1] <- TRUE
           }
         }
 
         # Item position / simulee: prepare for the next item position
 
-        if (position == max_ni) {
+        if (position == constants$max_ni) {
           done <- TRUE
           output@likelihood <- likelihood
           output@posterior  <- posterior[j, ]
@@ -1735,7 +1718,14 @@ setMethod(
 
       } else if (toupper(config@final_theta$method) == "MLE") {
 
-        final_MLE <- mle(pool, output@administered_item_resp[1:max_ni], start_theta = output@interim_theta_est[max_ni], theta_range = config@final_theta$bound_ML, max_iter = config@final_theta$max_iter, crit = config@final_theta$crit, select = output@administered_item_index[1:max_ni], truncate = config@final_theta$truncate_ML)
+        final_MLE <- mle(
+          pool, output@administered_item_resp[1:constants$max_ni],
+          start_theta = output@interim_theta_est[constants$max_ni],
+          theta_range = config@final_theta$bound_ML,
+          max_iter = config@final_theta$max_iter,
+          crit = config@final_theta$crit,
+          select = output@administered_item_index[1:constants$max_ni],
+          truncate = config@final_theta$truncate_ML)
         output@final_theta_est <- final_MLE$th
         output@final_se_est    <- final_MLE$se
 
@@ -1798,7 +1788,7 @@ setMethod(
       ##
 
       usage_matrix[j, output@administered_item_index] <- TRUE
-      if (set_based) {
+      if (constants$set_based) {
         usage_matrix[j, constants$ni + output@administered_stimulus_index] <- TRUE
       }
 
@@ -1824,7 +1814,7 @@ setMethod(
         segment_visited <- sort(unique(output@theta_segment_index))
         segment_other   <- segment_visited[segment_visited != segment_final]
 
-        if (set_based) {
+        if (constants$set_based) {
           eligible_set_in_final_segment <- ineligible_s[segment_final, ] == 0
         }
 
@@ -1897,7 +1887,7 @@ setMethod(
           pe_i[is.na(pe_i) | alpha_ijk == 0] <- 1
           pe_i[pe_i > 1] <- 1
 
-          if (set_based) {
+          if (constants$set_based) {
             alpha_sjk[segment_final, ] <- fading_factor * alpha_sjk[segment_final, ]
             alpha_sjk[segment_final, na.omit(output@administered_stimulus_index)] <-
             alpha_sjk[segment_final, na.omit(output@administered_stimulus_index)] + 1
@@ -2013,7 +2003,7 @@ setMethod(
           pe_i[is.na(pe_i) | alpha_ijk == 0] <- 1
           pe_i[pe_i > 1] <- 1
 
-          if (set_based) {
+          if (constants$set_based) {
             alpha_sjk[segment_final, ] <- fading_factor * alpha_sjk[segment_final, ]
             alpha_sjk[segment_final, na.omit(output@administered_stimulus_index)] <-
             alpha_sjk[segment_final, na.omit(output@administered_stimulus_index)] + 1
@@ -2124,7 +2114,7 @@ setMethod(
           pe_i[is.na(pe_i) | alpha_ijk == 0] <- 1
           pe_i[pe_i > 1] <- 1
 
-          if (set_based) {
+          if (constants$set_based) {
             alpha_sjk <- fading_factor * alpha_sjk
             rho_sjk   <- fading_factor * rho_sjk
             alpha_sjk[, output@administered_stimulus_index] <- alpha_sjk[, output@administered_stimulus_index] + segment_prob
@@ -2178,7 +2168,7 @@ setMethod(
           for (g in 1:n_segment) {
             alpha_g_i[j, (g - 1) * constants$ni + 1:constants$ni]   <- alpha_ijk[g, ]
             epsilon_g_i[j, (g - 1) * constants$ni + 1:constants$ni] <- rho_ijk[g, ]
-            if (set_based) {
+            if (constants$set_based) {
               alpha_g_s[j, (g - 1) * constants$ns + 1:constants$ns]   <- alpha_sjk[g, ]
               epsilon_g_s[j, (g - 1) * constants$ns + 1:constants$ns] <- rho_sjk[g, ]
             }
@@ -2188,7 +2178,7 @@ setMethod(
             for (g in 1:n_segment) {
               no_fading_alpha_g_i[j, (g - 1) * constants$ni + 1:constants$ni]   <- no_fading_alpha_ijk[g, ]
               no_fading_epsilon_g_i[j, (g - 1) * constants$ni + 1:constants$ni] <- no_fading_rho_ijk[g, ]
-              if (set_based) {
+              if (constants$set_based) {
                 no_fading_alpha_g_s[j, (g - 1) * constants$ns + 1:constants$ns]   <- no_fading_alpha_sjk[g, ]
                 no_fading_epsilon_g_s[j, (g - 1) * constants$ns + 1:constants$ns] <- no_fading_rho_sjk[g, ]
               }
@@ -2230,7 +2220,7 @@ setMethod(
     ###    Get exposure rate from everyone
     #####
 
-    if (!set_based) {
+    if (!constants$set_based) {
       exposure_rate <- matrix(NA, constants$ni, 2)
       colnames(exposure_rate) <- c('Item', 'Item ER')
       exposure_rate[, 1] <- 1:constants$ni
@@ -2271,7 +2261,7 @@ setMethod(
           paste("a", "g", rep(1:n_segment, rep(constants$ni, n_segment)), "i", rep(1:constants$ni, n_segment), sep = "_"),
           paste("e", "g", rep(1:n_segment, rep(constants$ni, n_segment)), "i", rep(1:constants$ni, n_segment), sep = "_"))
 
-        if (set_based) {
+        if (constants$set_based) {
           check_eligibility_stats_stimulus <- as.data.frame(cbind(alpha_g_s, epsilon_g_s), row.names = NULL)
           names(check_eligibility_stats_stimulus) <- c(
             paste("a", "g", rep(1:n_segment, rep(constants$ns, n_segment)), "s", rep(1:constants$ns, n_segment), sep = "_"),
@@ -2284,7 +2274,7 @@ setMethod(
           names(no_fading_eligibility_stats) <- c("Examinee", "TrueTheta", "TrueSegment", "TrueSegmentCount",
             paste("a", "g", rep(1:n_segment, rep(constants$ni, n_segment)), "i", rep(1:constants$ni, n_segment), sep = "_"),
             paste("e", "g", rep(1:n_segment, rep(constants$ni, n_segment)), "i", rep(1:constants$ni, n_segment), sep = "_"))
-          if (set_based) {
+          if (constants$set_based) {
             no_fading_eligibility_stats_stimulus <- as.data.frame(cbind(no_fading_alpha_g_s, no_fading_epsilon_g_s), row.names = NULL)
             names(no_fading_eligibility_stats_stimulus) <- c(
               paste("a", "g", rep(1:n_segment, rep(constants$ns, n_segment)), "s", rep(1:constants$ns, n_segment), sep = "_"),
@@ -2296,7 +2286,7 @@ setMethod(
       }
     }
 
-    if (sta) {
+    if (constants$use_shadow) {
       freq_infeasible <- table(unlist(lapply(1:constants$nj, function(j) sum(!output_list[[j]]@shadow_test_feasible))))
     } else {
       freq_infeasible <- NULL
