@@ -136,7 +136,7 @@ getEligibleFlagInSegment <- function(ineligible_flag, segment, constants) {
 }
 
 #' @noRd
-applyIncrement <- function(o, segments_to_apply, segment_prob, x, exposure_constants, constants) {
+applyIncrement <- function(o, segments_to_apply, segment_prob, theta_is_feasible, x, exposure_constants, constants) {
 
   fading_factor <- exposure_constants$fading_factor
 
@@ -144,6 +144,10 @@ applyIncrement <- function(o, segments_to_apply, segment_prob, x, exposure_const
   if (fading_factor != 1) {
     o$n_jk_nofade[segments_to_apply] <-
     o$n_jk_nofade[segments_to_apply] + segment_prob
+  }
+  if (theta_is_feasible) {
+    o$p_jk[segments_to_apply] <-
+    o$p_jk[segments_to_apply] + segment_prob
   }
 
   administered_i <- x@administered_item_index
