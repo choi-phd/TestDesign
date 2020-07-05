@@ -1602,11 +1602,12 @@ setMethod(
 
       } else if (toupper(config@final_theta$method == "EAP")) {
 
-        if (toupper(config@final_theta$prior_dist) == "NORMAL") {
-          final_prior <- dnorm(constants$theta_q, mean = config@final_theta$prior_par[1], sd = config@final_theta$prior_par[2])
-        } else if (toupper(config@final_theta$prior_dist) == "UNIFORM") {
-          final_prior <- rep(1, nq)
-        }
+        final_prior <- generateDistributionFromPriorPar(
+          toupper(config@final_theta$prior_dist),
+          config@final_theta$prior_par,
+          constants$theta_q,
+          1
+        )[1, ]
 
         output@posterior       <- output@likelihood * final_prior
         output@final_theta_est <- sum(output@posterior * constants$theta_q) / sum(output@posterior)
