@@ -41,6 +41,8 @@ initializePosterior <- function(prior, prior_par, config, constants, pool) {
   final_method   <- toupper(config@final_theta$method)
   if (any(c(interim_method, final_method) %in% c("EB", "FB"))) {
     o$n_sample  <- config@MCMC$burn_in + config@MCMC$post_burn_in
+    o$burn_in   <- config@MCMC$burn_in
+    o$thin      <- config@MCMC$thin
   }
   if (any(c(interim_method, final_method) %in% c("FB"))) {
     o$ipar_list <- iparPosteriorSample(pool, o$n_sample)
@@ -128,5 +130,24 @@ updatePosterior <- function(posterior_record, j, prob_resp) {
   posterior_record$likelihood     * prob_resp
 
   return(posterior_record)
+
+}
+
+#' @noRd
+applyThin <- function(current_theta, posterior_record) {
+
+  current_theta$posterior_sample <-
+  current_theta$posterior_sample[
+    seq(
+      posterior_record$burn_in + 1,
+      posterior_record$n_sample,
+      posterior_record$thin
+    )
+  ]
+
+  current_theta$theta <- mean(current_theta$posterior_sample)
+  current_theta$se    <- sd(current_theta$posterior_sample)
+
+  return(current_theta)
 
 }

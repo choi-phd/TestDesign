@@ -1078,9 +1078,11 @@ setMethod(
             model[o@administered_item_index[1:position]], 1,
             c(current_theta$theta, current_theta$se)
           )
-          current_theta$posterior_sample <- current_theta$posterior_sample[seq(from = config@MCMC$burn_in + 1, to = posterior_record$n_sample, by = config@MCMC$thin)]
-          o@final_theta_est  <- mean(current_theta$posterior_sample)
-          o@final_se_est     <- sd(current_theta$posterior_sample)
+
+          current_theta      <- applyThin(current_theta, posterior_record)
+
+          o@final_theta_est  <- current_theta$theta
+          o@final_se_est     <- current_theta$se
           o@posterior_sample <- current_theta$posterior_sample
 
         }
@@ -1109,9 +1111,11 @@ setMethod(
             model[o@administered_item_index[1:position]], 1,
             c(current_theta$theta, current_theta$se)
           )
-          current_theta$posterior_sample <- current_theta$posterior_sample[seq(from = config@MCMC$burn_in + 1, to = posterior_record$n_sample, by = config@MCMC$thin)]
-          o@final_theta_est  <- mean(current_theta$posterior_sample)
-          o@final_se_est     <- sd(current_theta$posterior_sample)
+
+          current_theta      <- applyThin(current_theta, posterior_record)
+
+          o@final_theta_est  <- current_theta$theta
+          o@final_se_est     <- current_theta$se
           o@posterior_sample <- current_theta$posterior_sample
 
         }
