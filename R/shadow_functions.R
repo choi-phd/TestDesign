@@ -766,7 +766,11 @@ setMethod(
       o@set_based                   <- constants$set_based
       o@item_index_by_stimulus      <- constraints@item_index_by_stimulus
 
-      current_theta <- estimateInitialTheta(config, initial_theta, prior_par, constants$nj, j, posterior_record)
+      current_theta <- estimateInitialTheta(
+        config@interim_theta, initial_theta, prior_par,
+        constants$nj, j, posterior_record,
+        config@MCMC
+      )
 
       # Simulee: initialize stimulus record
 
@@ -1065,10 +1069,12 @@ setMethod(
 
         } else {
 
-          o@prior_par        <- parsePriorPar(prior_par, constants$nj, j, config@final_theta$prior_par)
-          current_theta$posterior_sample <- getPosteriorSample(posterior_record$n_sample, o@prior_par[1], o@prior_par[2], config@MCMC)
-          current_theta$theta            <- mean(current_theta$posterior_sample)
-          current_theta$se               <- sd(current_theta$posterior_sample) * config@MCMC$jump_factor
+          current_theta <- estimateInitialTheta(
+            config@final_theta, initial_theta, prior_par,
+            constants$nj, j, posterior_record,
+            config@MCMC
+          )
+
           current_theta$posterior_sample <- theta_EB(
             posterior_record$n_sample,
             current_theta$theta,
@@ -1084,6 +1090,7 @@ setMethod(
           o@final_theta_est  <- current_theta$theta
           o@final_se_est     <- current_theta$se
           o@posterior_sample <- current_theta$posterior_sample
+          o@prior_par        <- current_theta$prior_par
 
         }
 
@@ -1097,10 +1104,12 @@ setMethod(
 
         } else {
 
-          o@prior_par        <- parsePriorPar(prior_par, constants$nj, j, config@final_theta$prior_par)
-          current_theta$posterior_sample <- getPosteriorSample(posterior_record$n_sample, o@prior_par[1], o@prior_par[2], config@MCMC)
-          current_theta$theta            <- mean(current_theta$posterior_sample)
-          current_theta$se               <- sd(current_theta$posterior_sample) * config@MCMC$jump_factor
+          current_theta <- estimateInitialTheta(
+            config@final_theta, initial_theta, prior_par,
+            constants$nj, j, posterior_record,
+            config@MCMC
+          )
+
           current_theta$posterior_sample <- theta_FB(
             posterior_record$n_sample,
             current_theta$theta,
@@ -1117,6 +1126,7 @@ setMethod(
           o@final_theta_est  <- current_theta$theta
           o@final_se_est     <- current_theta$se
           o@posterior_sample <- current_theta$posterior_sample
+          o@prior_par        <- current_theta$prior_par
 
         }
 
