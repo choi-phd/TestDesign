@@ -653,8 +653,8 @@ server <- function(input, output, session) {
         }
         if (parseText(input$refresh_position)) {
           eval(parse(text = sprintf("conf@refresh_policy$position <- c(%s)", input$refresh_position)))
-          if (conf@refresh_policy$position < 1 |
-              all(conf@refresh_policy$position != as.integer(conf@refresh_policy$position))) {
+          if (any(conf@refresh_policy$position < 1) |
+            all(conf@refresh_policy$position != as.integer(conf@refresh_policy$position))) {
             v <- updateLogs(v, "Refresh positions should be comma-separated integers larger than or equal to 1.")
             break
           }
@@ -684,7 +684,7 @@ server <- function(input, output, session) {
         )
 
         v$time <- Sys.time()
-        v$fit <- Shadow(conf, v$const, true_theta, resp_data, prior = NULL, prior_par = c(0, 1), session = session)
+        v$fit <- Shadow(conf, v$const, true_theta, resp_data, prior = NULL, prior_par = NULL, session = session)
         message("\n")
         assignObject(v$fit,
           "shiny_Shadow",
