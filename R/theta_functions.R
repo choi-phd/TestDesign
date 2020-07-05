@@ -33,3 +33,19 @@ getInitialThetaPrior <- function(config_theta, prior_par, nj, j, posterior_const
   return(o)
 
 }
+
+#' @noRd
+estimateInitialTheta <- function(config_theta, initial_theta, prior_par, nj, j, posterior_constants) {
+
+  o <- list()
+  theta_method <- toupper(config_theta$method)
+  if (theta_method %in% c("EAP", "MLE")) {
+    o$theta <- initial_theta[j]
+  }
+  if (theta_method %in% c("EB", "FB")) {
+    o <- getInitialThetaPrior(config_theta, prior_par, nj, j, posterior_constants)
+  }
+
+  return(o)
+
+}
