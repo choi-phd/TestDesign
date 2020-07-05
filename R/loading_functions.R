@@ -445,18 +445,18 @@ loadStAttrib <- function(object, item_attrib, file = NULL) {
 setClass("constraint",
   slots = c(
     constraint = "character",
+    nc         = "numeric",
     mat        = "matrix",
     dir        = "character",
     rhs        = "numeric",
-    nc         = "numeric",
     suspend    = "logical"
   ),
   prototype = list(
     constraint = character(0),
+    nc         = 0,
     mat        = matrix(NA, 0, 0),
     dir        = character(0),
     rhs        = numeric(0),
-    nc         = 0,
     suspend    = FALSE
   ),
   validity = function(object) {
