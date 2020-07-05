@@ -1036,13 +1036,7 @@ setMethod(
       if (config@interim_theta$method %in% c("EAP", "MLE")) {
         current_theta <- initial_theta[j]
       } else if (toupper(config@interim_theta$method) %in% c("EB", "FB")) {
-        if (is.vector(prior_par) && length(prior_par) == 2) {
-          output@prior_par <- prior_par
-        } else if (is.matrix(prior_par) && all(dim(prior_par) == c(constants$nj, 2))) {
-          output@prior_par <- prior_par[j, ]
-        } else {
-          output@prior_par <- config@interim_theta$prior_par
-        }
+        output@prior_par <- parsePriorPar(prior_par, constants$nj, j, config@interim_theta$prior_par)
         output@posterior_sample <- rnorm(posterior_constants$n_sample, mean = output@prior_par[1], sd = output@prior_par[2])
         output@posterior_sample <- output@posterior_sample[seq(from = posterior_constants$burn_in + 1, to = posterior_constants$n_sample, by = posterior_constants$thin)]
         current_theta <- mean(output@posterior_sample)
@@ -1523,13 +1517,7 @@ setMethod(
 
       } else if (toupper(config@final_theta$method) == "EB") {
 
-        if (is.vector(prior_par) && length(prior_par) == 2) {
-          output@prior_par <- prior_par
-        } else if (is.matrix(prior_par) && all(dim(prior_par) == c(constants$nj, 2))) {
-          output@prior_par <- prior_par[j, ]
-        } else {
-          output@prior_par <- config@final_theta$prior_par
-        }
+        output@prior_par <- parsePriorPar(prior_par, constants$nj, j, config@final_theta$prior_par)
 
         output@posterior_sample <- rnorm(posterior_constants$n_sample, mean = output@prior_par[1], sd = output@prior_par[2])
         output@posterior_sample <- output@posterior_sample[seq(from = posterior_constants$burn_in + 1, to = posterior_constants$n_sample, by = posterior_constants$thin)]
@@ -1549,13 +1537,7 @@ setMethod(
 
       } else if (toupper(config@final_theta$method) == "FB") {
 
-        if (is.vector(prior_par) && length(prior_par) == 2) {
-          output@prior_par <- prior_par
-        } else if (is.matrix(prior_par) && all(dim(prior_par) == c(constants$nj, 2))) {
-          output@prior_par <- prior_par[j, ]
-        } else {
-          output@prior_par <- config@final_theta$prior_par
-        }
+        output@prior_par <- parsePriorPar(prior_par, constants$nj, j, config@final_theta$prior_par)
 
         output@posterior_sample <- rnorm(posterior_constants$n_sample, mean = output@prior_par[1], sd = output@prior_par[2])
         output@posterior_sample <- output@posterior_sample[seq(from = posterior_constants$burn_in + 1, to = posterior_constants$n_sample, by = posterior_constants$thin)]
