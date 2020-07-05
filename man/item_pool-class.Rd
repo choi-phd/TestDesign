@@ -7,6 +7,9 @@
 \description{
 \code{\linkS4class{item_pool}} is an S4 class to represent an item pool.
 }
+\details{
+See \code{\link{item_pool-operators}} for object manipulation functions.
+}
 \section{Slots}{
 
 \describe{
