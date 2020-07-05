@@ -98,3 +98,28 @@ initializeShadowEngine <- function(constants, refresh_policy) {
   return(refresh_shadow)
 
 }
+
+#' @noRd
+makeData <- function(pool, true_theta, arg_data, constants) {
+
+  o <- list()
+  theta_grid <- constants$theta_q
+
+  if (!is.null(arg_data)) {
+    o$test <- makeTest(pool, theta_grid, info_type = "FISHER", true_theta = NULL)
+    o$test@data <- as.matrix(arg_data)
+    for (i in 1:constants$ni) {
+      invalid_resp <- !(o$test@data[, i] %in% 0:(pool@NCAT[i] - 1))
+      o$test@data[invalid_resp, i] <- NA
+    }
+  } else if (!is.null(true_theta)) {
+    o$test <- makeTest(pool, theta_grid, info_type = "FISHER", true_theta)
+  } else {
+    stop("either 'data' or 'true_theta' must be supplied")
+  }
+
+  o$max_info <- max(o$test@info)
+
+  return(o)
+
+}
