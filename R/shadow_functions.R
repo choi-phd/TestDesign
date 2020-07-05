@@ -1029,17 +1029,10 @@ setMethod(
       output@shadow_test <- vector(mode = "list", length = constants$max_ni)
       output@max_cat_pool <- pool@max_cat
 
-      ##
-      #  Simulee: set initial theta estimate
-      ##
-
-      if (config@interim_theta$method %in% c("EAP", "MLE")) {
-        current_theta <- initial_theta[j]
-      } else if (toupper(config@interim_theta$method) %in% c("EB", "FB")) {
-        current_theta <- getInitialPrior(
-          config@interim_theta, prior_par, constants$nj, j,
-          posterior_constants)
-      }
+      current_theta <- estimateInitialTheta(
+        config@interim_theta, initial_theta, prior_par,
+        constants$nj, j,
+        posterior_constants)
 
       ##
       #  Simulee: initialize stimulus tracking
@@ -1141,12 +1134,12 @@ setMethod(
               all(config@exposure_control$first_segment <= exposure_constants$n_segment)) {
               output@theta_segment_index[position] <- config@exposure_control$first_segment[position]
             } else {
-              output@theta_segment_index[position] <- find_segment(current_theta, exposure_constants$segment_cut)
+              output@theta_segment_index[position] <- find_segment(current_theta$theta, exposure_constants$segment_cut)
             }
 
           } else if (exposure_control %in% c("BIGM-BAYESIAN")) {
 
-            sample_segment <- find_segment(output@posterior_sample, exposure_constants$segment_cut)
+            sample_segment <- find_segment(current_theta$posterior_sample, exposure_constants$segment_cut)
             segment_distribution <- table(sample_segment) / length(sample_segment)
             segment_classified <- as.numeric(names(segment_distribution))
             segment_prob <- numeric(exposure_constants$n_segment)
@@ -1419,32 +1412,45 @@ setMethod(
           output@interim_theta_est[position] <- interim_MLE$th
           output@interim_se_est[position]    <- interim_MLE$se
         } else if (toupper(config@interim_theta$method) == "EB") {
+
           current_item <- output@administered_item_index[position]
-          output@posterior_sample <- theta_EB_single(
-            posterior_constants$n_sample, current_theta, current_se,
+
+          interim_EB <- theta_EB_single(
+            posterior_constants$n_sample, current_theta$theta, current_theta$se,
             pool@ipar[current_item, ],
             output@administered_item_resp[position], pool@NCAT[current_item],
-            model[current_item], 1, c(current_theta, current_se)
+            model[current_item], 1, c(current_theta$theta, current_theta$se)
           )
-          output@posterior_sample <- applyThin(output@posterior_sample, posterior_constants)
-          output@interim_theta_est[position] <- mean(output@posterior_sample)
-          output@interim_se_est[position] <- sd(output@posterior_sample)
+
+          interim_EB                         <- applyThin(interim_EB, posterior_constants)
+
+          output@posterior_sample            <- interim_EB
+          output@interim_theta_est[position] <- mean(interim_EB)
+          output@interim_se_est[position]    <- sd(interim_EB)
+
         } else if (toupper(config@interim_theta$method) == "FB") {
+
           current_item <- output@administered_item_index[position]
-          output@posterior_sample <- theta_FB_single(
-            posterior_constants$n_sample, current_theta, current_se, posterior_record$ipar_list[[current_item]],
+
+          interim_FB <- theta_FB_single(
+            posterior_constants$n_sample, current_theta$theta, current_theta$se, posterior_record$ipar_list[[current_item]],
             pool@ipar[current_item, ],
             output@administered_item_resp[position], pool@NCAT[current_item],
-            model[current_item], 1, c(current_theta, current_se)
+            model[current_item], 1, c(current_theta$theta, current_theta$se)
           )
-          output@posterior_sample <- applyThin(output@posterior_sample, posterior_constants)
-          output@interim_theta_est[position] <- mean(output@posterior_sample)
-          output@interim_se_est[position] <- sd(output@posterior_sample)
+
+          interim_FB                         <- applyThin(interim_FB, posterior_constants)
+
+          output@posterior_sample            <- interim_FB
+          output@interim_theta_est[position] <- mean(interim_FB)
+          output@interim_se_est[position]    <- sd(interim_FB)
+
         }
 
-        theta_change  <- output@interim_theta_est[position] - current_theta
-        current_theta <- output@interim_theta_est[position]
-        current_se    <- output@interim_se_est[position]
+        theta_change                   <- output@interim_theta_est[position] - current_theta$theta
+        current_theta$posterior_sample <- output@posterior_sample
+        current_theta$theta            <- output@interim_theta_est[position]
+        current_theta$se               <- output@interim_se_est[position]
 
 
         # Item position / simulee: trigger shadow test refresh if theta change is sufficient
@@ -1526,11 +1532,12 @@ setMethod(
           model[output@administered_item_index[1:position]], 1, c(final_prior$theta, final_prior$se)
         )
 
-        output@posterior_sample <- applyThin(output@posterior_sample, posterior_constants)
+        final_EB                <- applyThin(final_EB, posterior_constants)
 
         output@prior_par        <- final_prior$prior_par
-        output@final_theta_est  <- mean(output@posterior_sample)
-        output@final_se_est     <- sd(output@posterior_sample)
+        output@posterior_sample <- final_EB
+        output@final_theta_est  <- mean(final_EB)
+        output@final_se_est     <- sd(final_EB)
 
       } else if (toupper(config@final_theta$method) == "FB") {
 
@@ -1546,11 +1553,12 @@ setMethod(
           model[output@administered_item_index[1:position]], 1, c(final_prior$theta, final_prior$se)
         )
 
-        output@posterior_sample <- applyThin(output@posterior_sample, posterior_constants)
+        final_FB                <- applyThin(final_FB, posterior_constants)
 
         output@prior_par        <- final_prior$prior_par
-        output@final_theta_est  <- mean(output@posterior_sample)
-        output@final_se_est     <- sd(output@posterior_sample)
+        output@posterior_sample <- final_FB
+        output@final_theta_est  <- mean(final_FB)
+        output@final_se_est     <- sd(final_FB)
 
       }
 
@@ -1813,7 +1821,7 @@ setMethod(
         } else if (exposure_control %in% c("BIGM-BAYESIAN")) {
 
           segment_visited <- sort(unique(output@theta_segment_index))
-          sample_segment  <- find_segment(output@posterior_sample, exposure_constants$segment_cut)
+          sample_segment  <- find_segment(current_theta$posterior_sample, exposure_constants$segment_cut)
           segment_distribution <- table(sample_segment) / length(sample_segment)
           segment_classified   <- as.numeric(names(segment_distribution))
           segment_prob <- numeric(exposure_constants$n_segment)
