@@ -196,3 +196,39 @@ getEligibleFlag <- function(ineligible_flag, constants, force_true) {
   if (force_true) o$s <- TRUE
   return(o)
 }
+
+#' @noRd
+applyIncrementVisitedSegments <- function(o, segment_prob, segment_visited, ineligible_flag_in_segment, x, exposure_constants, constants) {
+
+  segments_to_apply <- getSegmentsToApply(exposure_constants$n_segment, segment_visited)
+
+  administered_i <- x@administered_item_index
+  if (any(segments_to_apply)) {
+    if (any(ineligible_flag_in_segment$i[administered_i] == 1)) {
+      items_visited  <- administered_i[
+        x@theta_segment_index %in% segment_visited
+      ]
+      items_to_apply <- items_visited[ineligible_flag_in_segment$i[items_visited] == 1]
+      o$a_ijk[, items_to_apply] <- o$a_ijk[, items_to_apply] + segments_to_apply * segment_prob
+    }
+  }
+
+  if (!constants$set_based) {
+    return(o)
+  }
+
+  administered_s <- na.omit(x@administered_stimulus_index)
+  if (any(segments_to_apply)) {
+    if (any(ineligible_flag_in_segment$s[administered_s] == 1)) {
+      stimuli_visited  <- administered_s[
+        x@theta_segment_index %in% segment_visited &
+        x@administered_stimulus_index %in% administered_s
+      ]
+      stimuli_to_apply <- stimuli_visited[ineligible_flag_in_segment$s[stimuli_visited] == 1]
+      o$a_sjk[, stimuli_to_apply] <- o$a_sjk[, stimuli_to_apply] + segments_to_apply * segment_prob
+    }
+  }
+
+  return(o)
+
+}
