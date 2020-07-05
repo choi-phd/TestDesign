@@ -50,3 +50,16 @@ getIneligibleFlagInSegment <- function(ineligible_flag, segment, constants) {
   o$s <- ineligible_flag$s[segment, ]
   return(o)
 }
+
+#' @noRd
+flagAdministeredAsEligible <- function(o, x, position, constants) {
+
+  o$i[x@administered_item_index[0:(position - 1)]] <- 0
+  if (!constants$set_based) {
+    return(o)
+  }
+
+  o$s[x@administered_stimulus_index[0:(position - 1)]] <- 0
+  return(o)
+
+}
