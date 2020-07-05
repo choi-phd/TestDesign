@@ -86,3 +86,11 @@ isFirstSegmentValid <- function(first_segment, n_segment, position) {
   }
   return(FALSE)
 }
+
+#' @noRd
+estimateThetaEAP <- function(posterior, theta_grid) {
+  o <- list()
+  o$theta <- sum(posterior * theta_grid) / sum(posterior)
+  o$se    <- sqrt(sum(posterior * (theta_grid - o$theta)^2) / sum(posterior))
+  return(o)
+}
