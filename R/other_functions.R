@@ -229,3 +229,19 @@ shouldShadowBeRefreshed <- function(position, refresh_policy, refresh_shadow, th
   return(FALSE)
 
 }
+
+#' @noRd
+selectItem <- function(info, position, o) {
+
+  info[o@administered_item_index[0:(position - 1)]] <- -1
+
+  info_index    <- order(info, decreasing = TRUE)
+  item_selected <- info_index[1]
+
+  if (item_selected %in% o@administered_item_index[0:(position - 1)]) {
+    stop(sprintf("item %i has been already administered", item_selected))
+  }
+
+  return(item_selected)
+
+}
