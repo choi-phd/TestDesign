@@ -9,7 +9,7 @@ p_1pl(x, b)
 \arguments{
 \item{x}{Numeric. A single theta value.}
 
-\item{b}{Numeric. A difficulty parameter value.}
+\item{b}{the difficulty parameter value.}
 }
 \description{
 Calculate the probability of correct response at a theta value, under the 1PL model.

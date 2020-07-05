@@ -28,7 +28,7 @@ theta_FB(
 
 \item{item_init}{A matrix of item parameter estimates (one row per item).}
 
-\item{resp}{A numeric vector of item responses.}
+\item{resp}{a numeric vector containing item responses.}
 
 \item{ncat}{A numeric vector of the number of response categories by item.}
 

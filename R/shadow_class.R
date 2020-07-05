@@ -15,20 +15,20 @@ NULL
 #' @export
 setClass("test",
   slots = c(
-    pool = "item_pool",
-    theta = "numeric",
-    prob = "list",
-    info = "matrix",
+    pool       = "item_pool",
+    theta      = "numeric",
+    prob       = "list",
+    info       = "matrix",
     true_theta = "numeric_or_null",
-    data = "matrix_or_null"
+    data       = "matrix_or_null"
   ),
   prototype = list(
-    pool = new("item_pool"),
-    theta = numeric(0),
-    prob = list(0),
-    info = matrix(0),
+    pool       = new("item_pool"),
+    theta      = numeric(0),
+    prob       = list(0),
+    info       = matrix(0),
     true_theta = numeric(0),
-    data = matrix(NA, 0, 0)
+    data       = matrix(NA, 0, 0)
   ),
   validity = function(object) {
     err <- NULL
@@ -36,7 +36,7 @@ setClass("test",
       err <- c(err, "test: length(@prob) must be equal to @pool@ni")
     }
     if (ncol(object@info) != object@pool@ni) {
-      errors <- c(errors, "ncol(@info) must match @pool@ni.")
+      err <- c(err, "test: ncol(@info) must match @pool@ni")
     }
     if (nrow(object@info) != length(object@theta)) {
       err <- c(err, "test: nrow(@info) must match length(@theta)")
@@ -60,14 +60,14 @@ setClass("test",
 #' @export
 setClass("test_cluster",
   slots = c(
-    nt = "numeric",
-    tests = "list",
-    names = "character"
+    nt      = "numeric",
+    tests   = "list",
+    names   = "character"
   ),
   prototype = list(
-    nt = numeric(0),
-    tests = list(0),
-    names = character(0)
+    nt      = numeric(0),
+    tests   = list(0),
+    names   = character(0)
   ),
   validity = function(object) {
     err <- NULL
@@ -88,90 +88,92 @@ setClass("test_cluster",
 #' @rdname createShadowTestConfig
 setClass("config_Shadow",
   slots = c(
-    item_selection = "list",
-    content_balancing = "list",
-    MIP = "list",
-    MCMC = "list",
-    refresh_policy = "list",
-    exposure_control = "list",
+    item_selection     = "list",
+    content_balancing  = "list",
+    MIP                = "list",
+    MCMC               = "list",
+    refresh_policy     = "list",
+    exposure_control   = "list",
     stopping_criterion = "list",
-    interim_theta = "list",
-    final_theta = "list",
-    theta_grid = "numeric",
-    audit_trail = "logical"
+    interim_theta      = "list",
+    final_theta        = "list",
+    theta_grid         = "numeric",
+    audit_trail        = "logical"
   ),
   prototype = list(
     item_selection = list(
-      method = "MFI",
-      info_type = "FISHER",
-      initial_theta = NULL,
-      fixed_theta = NULL
+      method                    = "MFI",
+      info_type                 = "FISHER",
+      initial_theta             = NULL,
+      fixed_theta               = NULL
     ),
-    content_balancing = list(method = "STA"),
+    content_balancing = list(
+      method                    = "STA"
+    ),
     MIP = list(
-      solver = "LPSOLVE",
-      verbosity = -2,
-      time_limit = 60,
-      gap_limit = .05,
-      gap_limit_abs = .05
+      solver                    = "LPSOLVE",
+      verbosity                 = -2,
+      time_limit                = 60,
+      gap_limit                 = .05,
+      gap_limit_abs             = .05
     ),
     MCMC = list(
-      burn_in = 100,
-      post_burn_in = 500,
-      thin = 1,
-      jump_factor = 1
+      burn_in                   = 100,
+      post_burn_in              = 500,
+      thin                      = 1,
+      jump_factor               = 1
     ),
     refresh_policy = list(
-      method = "ALWAYS",
-      interval = 1,
-      threshold = 0.1,
-      position = 1
+      method                    = "ALWAYS",
+      interval                  = 1,
+      threshold                 = 0.1,
+      position                  = 1
     ),
     exposure_control = list(
-      method = "ELIGIBILITY",
-      M = NULL,
-      max_exposure_rate = 0.25,
-      acceleration_factor = 1.0,
-      n_segment = 7,
-      first_segment = NULL,
-      segment_cut = c(-Inf, -2.5, -1.5, -0.5, 0.5, 1.5, 2.5, Inf),
+      method                    = "ELIGIBILITY",
+      M                         = NULL,
+      max_exposure_rate         = 0.25,
+      acceleration_factor       = 1.0,
+      n_segment                 = 7,
+      first_segment             = NULL,
+      segment_cut               = c(-Inf, -2.5, -1.5, -0.5, 0.5, 1.5, 2.5, Inf),
       initial_eligibility_stats = NULL,
-      fading_factor = 0.999,
-      diagnostic_stats = FALSE
+      fading_factor             = 0.999,
+      diagnostic_stats          = FALSE
     ),
     stopping_criterion = list(
-      method = "FIXED",
-      test_length = NULL,
-      min_ni = NULL,
-      max_ni = NULL,
-      se_threshold = NULL
+      method                    = "FIXED",
+      test_length               = NULL,
+      min_ni                    = NULL,
+      max_ni                    = NULL,
+      se_threshold              = NULL
     ),
     interim_theta = list(
-      method = "EAP",
-      shrinkage_correction = FALSE,
-      prior_dist = "NORMAL",
-      prior_par = c(0, 1),
-      bound_ML = c(-4, 4),
-      truncate_ML = FALSE,
-      max_iter = 50,
-      crit = 0.001,
-      max_change = 1.0,
-      do_Fisher = TRUE
+      method                    = "EAP",
+      shrinkage_correction      = FALSE,
+      prior_dist                = "NORMAL",
+      prior_par                 = c(0, 1),
+      bound_ML                  = c(-4, 4),
+      truncate_ML               = FALSE,
+      max_iter                  = 50,
+      crit                      = 0.001,
+      max_change                = 1.0,
+      do_Fisher                 = TRUE
     ),
     final_theta = list(
-      method = "EAP",
-      shrinkage_correction = FALSE,
-      prior_dist = "NORMAL",
-      prior_par = c(0, 1),
-      bound_ML = c(-4, 4),
-      truncate_ML = FALSE,
-      max_iter = 50,
-      crit = 0.001,
-      max_change = 1.0,
-      do_Fisher = TRUE
+      method                    = "EAP",
+      shrinkage_correction      = FALSE,
+      prior_dist                = "NORMAL",
+      prior_par                 = c(0, 1),
+      bound_ML                  = c(-4, 4),
+      truncate_ML               = FALSE,
+      max_iter                  = 50,
+      crit                      = 0.001,
+      max_change                = 1.0,
+      do_Fisher                 = TRUE
     ),
-    theta_grid = seq(-4, 4, .1),
-    audit_trail = FALSE
+    theta_grid                  = seq(-4, 4, .1),
+    audit_trail                 = FALSE
   ),
   validity = function(object) {
     err <- NULL
@@ -357,9 +359,10 @@ setClass("config_Shadow",
 #' ))
 #' @rdname createShadowTestConfig
 #' @export
-createShadowTestConfig <- function(item_selection = NULL, content_balancing = NULL, MIP = NULL, MCMC = NULL,
-                          refresh_policy = NULL, exposure_control = NULL, stopping_criterion = NULL,
-                          interim_theta = NULL, final_theta = NULL, theta_grid = seq(-4, 4, .1), audit_trail = F) {
+createShadowTestConfig <- function(
+  item_selection = NULL, content_balancing = NULL, MIP = NULL, MCMC = NULL,
+  refresh_policy = NULL, exposure_control = NULL, stopping_criterion = NULL,
+  interim_theta = NULL, final_theta = NULL, theta_grid = seq(-4, 4, .1), audit_trail = F) {
   cfg <- new("config_Shadow")
 
   arg_names <- c(
@@ -423,17 +426,9 @@ createShadowTestConfig <- function(item_selection = NULL, content_balancing = NU
 #' @slot prior_par the \code{prior_par} argument used in the assembly.
 #'
 #' @export
-
 setClass("output_Shadow_all",
   slots = c(
     output                      = "list_or_null",
-    pool                        = "item_pool",
-    config                      = "config_Shadow",
-    true_theta                  = "numeric_or_null",
-    constraints                 = "constraints",
-    prior                       = "numeric_or_null",
-    prior_par                   = "numeric_or_null",
-    data                        = "matrix_or_null",
     final_theta_est             = "numeric_or_null",
     final_se_est                = "numeric_or_null",
     exposure_rate               = "matrix_or_null",
@@ -443,17 +438,17 @@ setClass("output_Shadow_all",
     eligibility_stats           = "list_or_null",
     check_eligibility_stats     = "list_or_null",
     no_fading_eligibility_stats = "list_or_null",
-    freq_infeasible             = "table"
+    freq_infeasible             = "table",
+    pool                        = "item_pool",
+    config                      = "config_Shadow",
+    constraints                 = "constraints",
+    data                        = "matrix_or_null",
+    true_theta                  = "numeric_or_null",
+    prior                       = "matrix_or_numeric_or_null",
+    prior_par                   = "numeric_or_null"
   ),
   prototype = list(
     output                      = NULL,
-    pool                        = new("item_pool"),
-    config                      = new("config_Shadow"),
-    true_theta                  = NULL,
-    constraints                 = new("constraints"),
-    prior                       = NULL,
-    prior_par                   = NULL,
-    data                        = NULL,
     final_theta_est             = NULL,
     final_se_est                = NULL,
     exposure_rate               = NULL,
@@ -463,7 +458,14 @@ setClass("output_Shadow_all",
     eligibility_stats           = NULL,
     check_eligibility_stats     = NULL,
     no_fading_eligibility_stats = NULL,
-    freq_infeasible             = new("table")
+    freq_infeasible             = new("table"),
+    pool                        = new("item_pool"),
+    config                      = new("config_Shadow"),
+    constraints                 = new("constraints"),
+    data                        = NULL,
+    true_theta                  = NULL,
+    prior                       = NULL,
+    prior_par                   = NULL
   ),
   validity = function(object) {
     return(TRUE)

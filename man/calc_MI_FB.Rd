@@ -11,9 +11,9 @@ calc_MI_FB(x, items_list, ncat, model)
 
 \item{items_list}{A list of item parameter matrices.}
 
-\item{ncat}{A numeric vector of the number of response categories by item.}
+\item{ncat}{a numeric vector specifying the number of response categories in each item.}
 
-\item{model}{A numeric vector indicating the IRT models of each item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).}
+\item{model}{a numeric vector indicating the IRT models of each item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).}
 }
 \description{
 Calculate the mutual information using full Bayesian.

@@ -13,9 +13,9 @@ calc_likelihood_function(theta_grid, item_parm, resp, ncat, model)
 
 \item{resp}{A numeric vector of item responses.}
 
-\item{ncat}{A numeric vector of the number of response categories by item.}
+\item{ncat}{a numeric vector specifying the number of response categories in each item.}
 
-\item{model}{A numeric vector indicating the IRT models of each item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).}
+\item{model}{a numeric vector indicating the IRT models of each item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).}
 }
 \description{
 Calculate a likelihood function of theta.

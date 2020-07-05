@@ -3,32 +3,18 @@
 \docType{class}
 \name{output_Shadow_all-class}
 \alias{output_Shadow_all-class}
-\title{An S4 class to represent the output from Shadow()}
+\title{Class 'output_Shadow_all': a set of adaptive assembly solutions}
 \description{
-An S4 class to represent the output from Shadow()
+\code{\linkS4class{output_Shadow_all}} is an S4 class to represent a set of adaptive assembly solutions.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{output}}{List of \code{\linkS4class{output_Shadow}} objects. The list of assembled test for each examinee.}
+\item{\code{output}}{list of \code{\linkS4class{output_Shadow}} objects, containing the assembly results for each participant.}
 
-\item{\code{pool}}{A \code{\linkS4class{item_pool}} object. The item pool used in assembly.}
+\item{\code{final_theta_est}}{final theta estimates for each participant.}
 
-\item{\code{config}}{A \code{\linkS4class{config_Shadow}} object. The config used in assembly.}
-
-\item{\code{true_theta}}{True theta values if were supplied.}
-
-\item{\code{constraints}}{A \code{\linkS4class{constraints}} object. The constraints used in assembly.}
-
-\item{\code{prior}}{Prior}
-
-\item{\code{prior_par}}{foo}
-
-\item{\code{data}}{The response data used in assembly.}
-
-\item{\code{final_theta_est}}{Final (i.e. not interim) estimates of theta for each examinee.}
-
-\item{\code{final_se_est}}{Final (i.e. not interim) standard error estimates of theta for each examinee.}
+\item{\code{final_se_est}}{standard errors of final theta estimates for each participant.}
 
 \item{\code{exposure_rate}}{Exposure rate of each item in the pool.}
 
@@ -45,5 +31,19 @@ An S4 class to represent the output from Shadow()
 \item{\code{no_fading_eligibility_stats}}{foo}
 
 \item{\code{freq_infeasible}}{foo}
+
+\item{\code{pool}}{the \code{\linkS4class{item_pool}} used in the assembly.}
+
+\item{\code{config}}{the \code{\linkS4class{config_Shadow}} used in the assembly.}
+
+\item{\code{constraints}}{the \code{\linkS4class{constraints}} used in the assembly.}
+
+\item{\code{true_theta}}{the \code{true_theta} argument used in the assembly.}
+
+\item{\code{data}}{the \code{data} argument used in the assembly.}
+
+\item{\code{prior}}{the \code{prior} argument used in the assembly.}
+
+\item{\code{prior_par}}{the \code{prior_par} argument used in the assembly.}
 }}
 

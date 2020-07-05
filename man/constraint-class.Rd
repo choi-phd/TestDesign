@@ -3,23 +3,23 @@
 \docType{class}
 \name{constraint-class}
 \alias{constraint-class}
-\title{An S4 class to represent a single constraint}
+\title{Class 'constraints': a single constraint}
 \description{
-An S4 class to represent a single constraint.
+\code{\linkS4class{constraint}} is an S4 class to represent a single constraint.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{constraint}}{Character. The index of the constraint.}
+\item{\code{constraint}}{the constraint ID string of the constraint.}
 
-\item{\code{mat}}{A matrix representing the left-hand side weights. Has nc rows.}
+\item{\code{nc}}{the number of MIP-format constraints translated from this constraint.}
 
-\item{\code{dir}}{A vector of length nc. Each entry represents a logical operator relating the left-hand side to the right-hand side.}
+\item{\code{mat}}{LHS coefficients to use on decision variables.}
 
-\item{\code{rhs}}{A vector of length nc. Each entry represents the right-hand side of the constraint.}
+\item{\code{rhs}}{RHS values to use.}
 
-\item{\code{nc}}{Numeric. The number of constraints represented in the constraint set.}
+\item{\code{dir}}{the imposed constraint between LHS and RHS.}
 
-\item{\code{suspend}}{\code{TRUE} if the constraint is to be turned off.}
+\item{\code{suspend}}{\code{TRUE} if the constraint is not to be imposed.}
 }}
 
