@@ -2,7 +2,7 @@
 NULL
 
 #' @noRd
-initializePosterior <- function(prior, prior_par, config, constants, pool) {
+initializePosterior <- function(prior, prior_par, config, constants, pool, posterior_constants) {
 
   theta_grid <- constants$theta_q
   nj         <- constants$nj
@@ -50,11 +50,27 @@ initializePosterior <- function(prior, prior_par, config, constants, pool) {
 
   interim_method <- toupper(config@interim_theta$method)
   final_method   <- toupper(config@final_theta$method)
-  if (any(c(interim_method, final_method) %in% c("EB", "FB"))) {
-    o$n_sample  <- config@MCMC$burn_in + config@MCMC$post_burn_in
-  }
   if (any(c(interim_method, final_method) %in% c("FB"))) {
-    o$ipar_list <- iparPosteriorSample(pool, o$n_sample)
+    o$ipar_list <- iparPosteriorSample(pool, posterior_constants$n_sample)
+  }
+
+  return(o)
+
+}
+
+#' @noRd
+getPosteriorConstants <- function(config) {
+
+  o <- list()
+
+  interim_method <- toupper(config@interim_theta$method)
+  final_method   <- toupper(config@final_theta$method)
+
+  if (any(c(interim_method, final_method) %in% c("EB", "FB"))) {
+    o$n_sample    <- config@MCMC$burn_in + config@MCMC$post_burn_in
+    o$burn_in     <- config@MCMC$burn_in
+    o$thin        <- config@MCMC$thin
+    o$jump_factor <- config@MCMC$jump_factor
   }
 
   return(o)

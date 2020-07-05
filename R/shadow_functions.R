@@ -768,11 +768,12 @@ setMethod(
       stop("'constraints' must be supplied.")
     }
 
-    pool             <- constraints@pool
-    model            <- sanitizeModel(pool@model)
-    constants        <- getConstants(constraints, config, data, true_theta)
-    all_data         <- makeData(pool, true_theta, data, constants)
-    posterior_record <- initializePosterior(prior, prior_par, config, constants, pool)
+    pool                <- constraints@pool
+    model               <- sanitizeModel(pool@model)
+    constants           <- getConstants(constraints, config, data, true_theta)
+    all_data            <- makeData(pool, true_theta, data, constants)
+    posterior_constants <- getPosteriorConstants(config)
+    posterior_record    <- initializePosterior(prior, prior_par, config, constants, pool, posterior_constants)
 
     if (constants$use_shadow) {
       refresh_shadow <- initializeShadowEngine(constants, config@refresh_policy)
@@ -1157,10 +1158,10 @@ setMethod(
         } else {
           output@prior_par <- config@interim_theta$prior_par
         }
-        output@posterior_sample <- rnorm(posterior_record$n_sample, mean = output@prior_par[1], sd = output@prior_par[2])
-        output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = posterior_record$n_sample, by = config@MCMC$thin)]
+        output@posterior_sample <- rnorm(posterior_constants$n_sample, mean = output@prior_par[1], sd = output@prior_par[2])
+        output@posterior_sample <- output@posterior_sample[seq(from = posterior_constants$burn_in + 1, to = posterior_constants$n_sample, by = posterior_constants$thin)]
         current_theta <- mean(output@posterior_sample)
-        current_se <- sd(output@posterior_sample) * config@MCMC$jump_factor
+        current_se    <- sd(output@posterior_sample) * posterior_constants$jump_factor
       }
 
       ##
@@ -1540,23 +1541,23 @@ setMethod(
         } else if (toupper(config@interim_theta$method) == "EB") {
           current_item <- output@administered_item_index[position]
           output@posterior_sample <- theta_EB_single(
-            posterior_record$n_sample, current_theta, current_se,
+            posterior_constants$n_sample, current_theta, current_se,
             pool@ipar[current_item, ],
             output@administered_item_resp[position], pool@NCAT[current_item],
             model[current_item], 1, c(current_theta, current_se)
           )
-          output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = posterior_record$n_sample, by = config@MCMC$thin)]
+          output@posterior_sample <- output@posterior_sample[seq(from = posterior_constants$burn_in + 1, to = posterior_constants$n_sample, by = posterior_constants$thin)]
           output@interim_theta_est[position] <- mean(output@posterior_sample)
           output@interim_se_est[position] <- sd(output@posterior_sample)
         } else if (toupper(config@interim_theta$method) == "FB") {
           current_item <- output@administered_item_index[position]
           output@posterior_sample <- theta_FB_single(
-            posterior_record$n_sample, current_theta, current_se, posterior_record$ipar_list[[current_item]],
+            posterior_constants$n_sample, current_theta, current_se, posterior_record$ipar_list[[current_item]],
             pool@ipar[current_item, ],
             output@administered_item_resp[position], pool@NCAT[current_item],
             model[current_item], 1, c(current_theta, current_se)
           )
-          output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = posterior_record$n_sample, by = config@MCMC$thin)]
+          output@posterior_sample <- output@posterior_sample[seq(from = posterior_constants$burn_in + 1, to = posterior_constants$n_sample, by = posterior_constants$thin)]
           output@interim_theta_est[position] <- mean(output@posterior_sample)
           output@interim_se_est[position] <- sd(output@posterior_sample)
         }
@@ -1641,19 +1642,19 @@ setMethod(
           output@prior_par <- config@final_theta$prior_par
         }
 
-        output@posterior_sample <- rnorm(posterior_record$n_sample, mean = output@prior_par[1], sd = output@prior_par[2])
-        output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = posterior_record$n_sample, by = config@MCMC$thin)]
+        output@posterior_sample <- rnorm(posterior_constants$n_sample, mean = output@prior_par[1], sd = output@prior_par[2])
+        output@posterior_sample <- output@posterior_sample[seq(from = posterior_constants$burn_in + 1, to = posterior_constants$n_sample, by = posterior_constants$thin)]
         current_theta <- mean(output@posterior_sample)
-        current_se    <- sd(output@posterior_sample) * config@MCMC$jump_factor
+        current_se    <- sd(output@posterior_sample) * posterior_constants$jump_factor
 
         output@posterior_sample <- theta_EB(
-          posterior_record$n_sample, current_theta, current_se,
+          posterior_constants$n_sample, current_theta, current_se,
           pool@ipar[output@administered_item_index[1:position], ],
           output@administered_item_resp[1:position], pool@NCAT[output@administered_item_index[1:position]],
           model[output@administered_item_index[1:position]], 1, c(current_theta, current_se)
         )
 
-        output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = posterior_record$n_sample, by = config@MCMC$thin)]
+        output@posterior_sample <- output@posterior_sample[seq(from = posterior_constants$burn_in + 1, to = posterior_constants$n_sample, by = posterior_constants$thin)]
         output@final_theta_est  <- mean(output@posterior_sample)
         output@final_se_est     <- sd(output@posterior_sample)
 
@@ -1667,19 +1668,19 @@ setMethod(
           output@prior_par <- config@final_theta$prior_par
         }
 
-        output@posterior_sample <- rnorm(posterior_record$n_sample, mean = output@prior_par[1], sd = output@prior_par[2])
-        output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = posterior_record$n_sample, by = config@MCMC$thin)]
+        output@posterior_sample <- rnorm(posterior_constants$n_sample, mean = output@prior_par[1], sd = output@prior_par[2])
+        output@posterior_sample <- output@posterior_sample[seq(from = posterior_constants$burn_in + 1, to = posterior_constants$n_sample, by = posterior_constants$thin)]
         current_theta <- mean(output@posterior_sample)
-        current_se    <- sd(output@posterior_sample) * config@MCMC$jump_factor
+        current_se    <- sd(output@posterior_sample) * posterior_constants$jump_factor
 
         output@posterior_sample <- theta_FB(
-          posterior_record$n_sample, current_theta, current_se, posterior_record$ipar_list[output@administered_item_index[1:position]],
+          posterior_constants$n_sample, current_theta, current_se, posterior_record$ipar_list[output@administered_item_index[1:position]],
           pool@ipar[output@administered_item_index[1:position], ],
           output@administered_item_resp[1:position], pool@NCAT[output@administered_item_index[1:position]],
           model[output@administered_item_index[1:position]], 1, c(current_theta, current_se)
         )
 
-        output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = posterior_record$n_sample, by = config@MCMC$thin)]
+        output@posterior_sample <- output@posterior_sample[seq(from = posterior_constants$burn_in + 1, to = posterior_constants$n_sample, by = posterior_constants$thin)]
         output@final_theta_est  <- mean(output@posterior_sample)
         output@final_se_est     <- sd(output@posterior_sample)
 
