@@ -838,109 +838,6 @@ setMethod(
 
 
     #####
-    ###    select a non-administered item with the largest information
-    #####
-
-    selectItemShadowTest <- function() {
-
-      n_remaining <- constants$test_length - position
-      new_stimulus_selected <- FALSE
-      last_stimulus_index <- 0
-
-      if (!constants$set_based) {
-        stimulus_selected <- NA
-        stimulus_finished <- FALSE
-      }
-
-      if (position == 1) {
-        selected <- 1
-
-        if (constants$set_based) {
-          stimulus_selected <- optimal$shadow_test[["STINDEX"]][1]
-          new_stimulus_selected <- TRUE
-
-          if (!is.na(stimulus_selected)) {
-            # If the selected item is not a discrete item
-            if (sum(optimal$shadow_test[["STINDEX"]] == stimulus_selected, na.rm = TRUE) == 1) {
-              stimulus_finished <- TRUE
-            } else {
-              stimulus_finished <- FALSE
-            }
-          } else {
-            # If the selected item is a discrete item, mark it as the last item of its belonging stimulus
-            stimulus_finished <- TRUE
-          }
-
-        }
-
-      } else {
-
-        remaining <- which(!optimal$shadow_test[["INDEX"]] %in% output@administered_item_index[1:(position - 1)])
-
-        if (!constants$set_based) {
-
-          selected <- remaining[1]
-
-        } else {
-
-          last_stimulus_index <- output@administered_stimulus_index[position - 1]
-
-          if (!is.na(last_stimulus_index)) {
-            # If the previous item was not a discrete item
-
-            # If there are any items left within the stimulus
-            if (any(optimal$shadow_test[["STINDEX"]][remaining] == last_stimulus_index, na.rm = TRUE)) {
-              remaining_in_stimulus <- remaining[which(optimal$shadow_test[["STINDEX"]][remaining] == last_stimulus_index)]
-              selected <- remaining_in_stimulus[1]
-            } else {
-              selected <- remaining[1]
-            }
-          } else {
-            # If the previous item was a discrete item
-            selected <- remaining[1]
-          }
-
-          stimulus_selected <- optimal$shadow_test[["STINDEX"]][selected]
-
-          if (last_stimulus_index != stimulus_selected | is.na(last_stimulus_index != stimulus_selected)) {
-            new_stimulus_selected <- TRUE
-          }
-
-          if (n_remaining == 0) {
-            stimulus_finished <- TRUE
-          } else {
-
-            if (!is.na(stimulus_selected)) {
-
-              # If the selected item is not a discrete item
-              if (sum(optimal$shadow_test[["STINDEX"]][remaining] == stimulus_selected, na.rm = TRUE) == 1) {
-                stimulus_finished <- TRUE
-              } else {
-                stimulus_finished <- FALSE
-              }
-            } else {
-              stimulus_finished <- TRUE
-            }
-          }
-        }
-      }
-
-      item_selected <- optimal$shadow_test[["INDEX"]][selected]
-
-      return(
-        list(
-          item_selected = item_selected,
-          stimulus_selected = stimulus_selected,
-          stimulus_finished = stimulus_finished,
-          last_stimulus_index = last_stimulus_index,
-          new_stimulus_selected = new_stimulus_selected,
-          n_remaining = n_remaining
-        )
-      )
-
-    }
-
-    #####
     ###    plot audit trail
     #####
 
@@ -1160,7 +1057,7 @@ setMethod(
 
           # Select an item from shadow test
 
-          selection <- selectItemShadowTest()
+          selection <- selectItemFromShadowTest(optimal$shadow_test, position, constants, output)
           output@administered_item_index[position] <- selection$item_selected
           output@shadow_test[[position]]           <- optimal$shadow_test[["INDEX"]]
 
@@ -1180,12 +1077,12 @@ setMethod(
             stimulus_record$end_set <- FALSE
           }
 
-          # TODO: why is selection$last_stimulus_index == 0 at position 1?
+          # TODO: why is selection$stimulus_of_previous_item == 0 at position 1?
 
-          if (!is.na(selection$last_stimulus_index)) {
-            if (selection$new_stimulus_selected && selection$last_stimulus_index > 0) {
-              stimulus_record$finished_stimulus_index      <- c(stimulus_record$finished_stimulus_index, selection$last_stimulus_index)
-              stimulus_record$finished_stimulus_item_count <- c(stimulus_record$finished_stimulus_item_count, sum(output@administered_stimulus_index[1:(position - 1)] == selection$last_stimulus_index, na.rm = TRUE))
+          if (!is.na(selection$stimulus_of_previous_item)) {
+            if (selection$new_stimulus_selected && selection$stimulus_of_previous_item > 0) {
+              stimulus_record$finished_stimulus_index      <- c(stimulus_record$finished_stimulus_index, selection$stimulus_of_previous_item)
+              stimulus_record$finished_stimulus_item_count <- c(stimulus_record$finished_stimulus_item_count, sum(output@administered_stimulus_index[1:(position - 1)] == selection$stimulus_of_previous_item, na.rm = TRUE))
             }
           }
 

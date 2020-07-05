@@ -245,3 +245,69 @@ selectItem <- function(info, position, o) {
   return(item_selected)
 
 }
+
+#' @noRd
+selectItemFromShadowTest <- function(shadow_test, position, constants, x) {
+
+  o <- list()
+
+  o$n_remaining <- constants$test_length - position
+  o$stimulus_finished     <- FALSE
+  o$new_stimulus_selected <- FALSE
+
+  o$stimulus_of_previous_item <- 0
+
+  remaining <- which(!shadow_test[["INDEX"]] %in% x@administered_item_index[0:(position - 1)])
+
+  if (position == 1 & !constants$set_based) {
+    idx                 <- remaining[1]
+    o$item_selected     <- shadow_test[["INDEX"]][idx]
+    o$stimulus_selected <- NA
+  }
+  if (position == 1 & constants$set_based) {
+    idx                 <- remaining[1]
+    o$item_selected     <- shadow_test[["INDEX"]][idx]
+    o$stimulus_selected <- shadow_test[["STINDEX"]][idx]
+  }
+  if (position > 1 & !constants$set_based) {
+    idx                 <- remaining[1]
+    o$item_selected     <- shadow_test[["INDEX"]][idx]
+    o$stimulus_selected <- NA
+  }
+  if (position > 1 & constants$set_based) {
+    o$stimulus_of_previous_item <- x@administered_stimulus_index[position - 1]
+    if (!is.na(o$stimulus_of_previous_item)) {
+      remaining_items_within_stimulus <- shadow_test[["STINDEX"]][remaining] == o$stimulus_of_previous_item
+      if (any(remaining_items_within_stimulus, na.rm = TRUE)) {
+        idx <- remaining[which(remaining_items_within_stimulus)][1]
+      } else {
+        idx <- remaining[1]
+      }
+    }
+    if (is.na(o$stimulus_of_previous_item)) {
+      idx <- remaining[1]
+    }
+    o$item_selected     <- shadow_test[["INDEX"]][idx]
+    o$stimulus_selected <- shadow_test[["STINDEX"]][idx]
+  }
+
+
+  if (is.na(
+    o$stimulus_of_previous_item != o$stimulus_selected) |
+    o$stimulus_of_previous_item != o$stimulus_selected) {
+    o$new_stimulus_selected <- TRUE
+  }
+
+  if (sum(shadow_test[["STINDEX"]][remaining] == o$stimulus_selected, na.rm = TRUE) == 1) {
+    o$stimulus_finished <- TRUE
+  }
+  if (is.na(o$stimulus_selected)) {
+    o$stimulus_finished <- TRUE
+  }
+  if (o$n_remaining == 0) {
+    o$stimulus_finished <- TRUE
+  }
+
+  return(o)
+
+}
