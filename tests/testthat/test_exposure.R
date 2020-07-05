@@ -2,7 +2,7 @@ test_that("exposure control", {
   set.seed(1)
   true_theta <- seq(-3, 3, .5)
   resp_science <- makeTest(itempool_science, info_type = "FISHER", true_theta = true_theta)@data
-  constraints_science2 <- updateConstraints(constraints_science, off = c(14:20, 32:36))
+  constraints_science2 <- toggleConstraints(constraints_science, off = c(14:20, 32:36))
 
   config_science <- createShadowTestConfig(MIP = list(solver = "LPSOLVE"), exposure_control = list(method = "ELIGIBILITY"))
   solution <- Shadow(config_science, constraints_science2, true_theta, data = resp_science)
