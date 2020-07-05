@@ -210,9 +210,9 @@ setClass("item_GR",
   }
 )
 
-#' An S4 class to represent an item pool
+#' Class 'item_pool': an item pool
 #'
-#' \code{\linkS4class{item_pool}} class represents an item pool.
+#' \code{\linkS4class{item_pool}} is an S4 class to represent an item pool.
 #'
 #' @slot ni the number of items in the pool.
 #' @slot max_cat the maximum number of response categories across the pool.

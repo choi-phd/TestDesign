@@ -5,8 +5,8 @@ NULL
 #'
 #' \code{\link{calcProb}} is a function to calculate item response probabilities.
 #'
-#' @param object An \code{\link{item}} object or an \code{\linkS4class{item_pool}} object.
-#' @param theta A vector of theta values.
+#' @param object an \code{\link{item}} or an \code{\linkS4class{item_pool}} object.
+#' @param theta theta values to use.
 #'
 #' @return
 #' \describe{
@@ -146,8 +146,8 @@ setMethod(
 #'
 #' \code{\link{calcEscore}} is a function to calculate expected scores.
 #'
-#' @param object An \code{\link{item}} object or an \code{\linkS4class{item_pool}} object.
-#' @param theta A vector of theta values.
+#' @param object an \code{\link{item}} or an \code{\linkS4class{item_pool}} object.
+#' @param theta theta values to use.
 #'
 #' @return A vector of expected scores of length nq (the number of values on theta grid).
 #'
@@ -269,8 +269,8 @@ setMethod(
 #'
 #' \code{\link{calcFisher}} is a function to calculate Fisher information.
 #'
-#' @param object An \code{\link{item}} object or an \code{\linkS4class{item_pool}} object.
-#' @param theta A vector of theta values.
+#' @param object an \code{\link{item}} or an \code{\linkS4class{item_pool}} object.
+#' @param theta theta values to use.
 #'
 #' @return A vector of Fisher information values over theta (nq values) for a single item or a matrix of dimension (nq, ni) for an "item_pool".
 #'
@@ -572,8 +572,8 @@ setMethod(
 #'
 #' \code{\link{calcDerivative}} is a function to calculate the first derivative of the probability function.
 #'
-#' @param object An \code{\link{item}} object or an \code{\linkS4class{item_pool}} object.
-#' @param theta A vector of theta values.
+#' @param object an \code{\link{item}} or an \code{\linkS4class{item_pool}} object.
+#' @param theta theta values to use.
 #'
 #' @return \code{\link{calcDerivative}} returns first derivative values.
 #'
@@ -739,8 +739,8 @@ setMethod(
 #'
 #' \code{\link{calcDerivative}} is a function to calculate the second derivative of the probability function.
 #'
-#' @param object An \code{\link{item}} object or an \code{\linkS4class{item_pool}} object.
-#' @param theta A vector of theta values.
+#' @param object an \code{\link{item}} or an \code{\linkS4class{item_pool}} object.
+#' @param theta theta values to use.
 #'
 #' @return \code{\link{calcDerivative2}} returns second derivative values.
 #'
@@ -906,9 +906,9 @@ setMethod(
 #'
 #' \code{\link{calcJacobian}} is a function to calculate the first derivative of the log-likelihood function.
 #'
-#' @param object An \code{\link{item}} object or an \code{\linkS4class{item_pool}} object.
-#' @param theta A vector of theta values.
-#' @param resp Response data.
+#' @param object an \code{\link{item}} or an \code{\linkS4class{item_pool}} object.
+#' @param theta theta values to use.
+#' @param resp the response data to use.
 #'
 #' @return \code{\link{calcJacobian}} returns first derivative values of log-likelihoods.
 #'
@@ -1072,9 +1072,9 @@ setMethod(
 #'
 #' \code{\link{calcHessian}} is a function to calculate the second derivative of the log-likelihood function.
 #'
-#' @param object An \code{\link{item}} object or an \code{\linkS4class{item_pool}} object.
-#' @param theta A vector of theta values.
-#' @param resp Response data.
+#' @param object an \code{\link{item}} or an \code{\linkS4class{item_pool}} object.
+#' @param theta theta values to use.
+#' @param resp the response data to use.
 #'
 #' @return \code{\link{calcHessian}} returns second derivative values of log-likelihoods.
 #'
@@ -1245,8 +1245,8 @@ setMethod(
 #'
 #' \code{\link{simResp}} is a function to simulate item response data.
 #'
-#' @param object An \code{\link{item}} object or an \code{\linkS4class{item_pool}} object.
-#' @param theta A vector of theta values.
+#' @param object an \code{\link{item}} or an \code{\linkS4class{item_pool}} object.
+#' @param theta theta values to use.
 #'
 #' @return \code{\link{simResp}} returns simulated item response data.
 #'
