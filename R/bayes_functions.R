@@ -133,3 +133,16 @@ getPriorSample <- function(arg_mean, arg_sd, posterior_constants) {
   return(prior_sample)
 
 }
+
+#' @noRd
+getSegmentProb <- function(posterior_sample, exposure_constants) {
+
+  sample_segment                   <- find_segment(posterior_sample, exposure_constants$segment_cut)
+  segment_distribution             <- table(sample_segment) / length(sample_segment)
+  segment_classified               <- as.numeric(names(segment_distribution))
+  segment_prob                     <- numeric(exposure_constants$n_segment)
+  segment_prob[segment_classified] <- segment_distribution
+
+  return(segment_prob)
+
+}
