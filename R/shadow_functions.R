@@ -1674,23 +1674,25 @@ setMethod(
           interim_MLE <- mle(pool, output@administered_item_resp[1:position], start_theta = interim_EAP, theta_range = config@interim_theta$bound_ML, max_iter = config@interim_theta$max_iter, crit = config@interim_theta$crit, select = output@administered_item_index[1:position])
           output@interim_theta_est[position] <- interim_MLE$th
           output@interim_se_est[position]    <- interim_MLE$se
-        } else if (toupper(config@interim_theta$method) %in% c("EB", "FB")) {
+        } else if (toupper(config@interim_theta$method) == "EB") {
           current_item <- output@administered_item_index[position]
-          if (toupper(config@interim_theta$method == "EB")) {
-            output@posterior_sample <- theta_EB_single(
-              n_sample, current_theta, current_se,
-              pool@ipar[current_item, ],
-              output@administered_item_resp[position], pool@NCAT[current_item],
-              model[current_item], 1, c(current_theta, current_se)
-            )
-          } else {
-            output@posterior_sample <- theta_FB_single(
-              n_sample, current_theta, current_se, ipar_list[[current_item]],
-              pool@ipar[current_item, ],
-              output@administered_item_resp[position], pool@NCAT[current_item],
-              model[current_item], 1, c(current_theta, current_se)
-            )
-          }
+          output@posterior_sample <- theta_EB_single(
+            n_sample, current_theta, current_se,
+            pool@ipar[current_item, ],
+            output@administered_item_resp[position], pool@NCAT[current_item],
+            model[current_item], 1, c(current_theta, current_se)
+          )
+          output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = n_sample, by = config@MCMC$thin)]
+          output@interim_theta_est[position] <- mean(output@posterior_sample)
+          output@interim_se_est[position] <- sd(output@posterior_sample)
+        } else if (toupper(config@interim_theta$method) == "FB") {
+          current_item <- output@administered_item_index[position]
+          output@posterior_sample <- theta_FB_single(
+            n_sample, current_theta, current_se, ipar_list[[current_item]],
+            pool@ipar[current_item, ],
+            output@administered_item_resp[position], pool@NCAT[current_item],
+            model[current_item], 1, c(current_theta, current_se)
+          )
           output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = n_sample, by = config@MCMC$thin)]
           output@interim_theta_est[position] <- mean(output@posterior_sample)
           output@interim_se_est[position] <- sd(output@posterior_sample)
@@ -1759,51 +1761,57 @@ setMethod(
         output@final_theta_est <- final_MLE$th
         output@final_se_est    <- final_MLE$se
 
-      } else if (toupper(config@final_theta$method) %in% c("EB", "FB")) {
+      } else if (toupper(config@final_theta$method) == "EB") {
 
-        if (toupper(config@interim_theta$method) == toupper(config@final_theta$method) && identical(config@interim_theta$prior_par, config@final_theta$prior_par)) {
-
-          output@final_theta_est <- output@interim_theta_est[position]
-          output@final_se_est    <- output@interim_se_est[position]
-
+        if (is.vector(prior_par) && length(prior_par) == 2) {
+          output@prior_par <- prior_par
+        } else if (is.matrix(prior_par) && all(dim(prior_par) == c(nj, 2))) {
+          output@prior_par <- prior_par[j, ]
         } else {
-
-          if (toupper(config@final_theta$method) %in% c("EB", "FB")) {
-            if (is.vector(prior_par) && length(prior_par) == 2) {
-              output@prior_par <- prior_par
-            } else if (is.matrix(prior_par) && all(dim(prior_par) == c(nj, 2))) {
-              output@prior_par <- prior_par[j, ]
-            } else {
-              output@prior_par <- config@final_theta$prior_par
-            }
-          }
-
-          output@posterior_sample <- rnorm(n_sample, mean = output@prior_par[1], sd = output@prior_par[2])
-          output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = n_sample, by = config@MCMC$thin)]
-          current_theta <- mean(output@posterior_sample)
-          current_se    <- sd(output@posterior_sample) * config@MCMC$jump_factor
-
-          if (toupper(config@final_theta$method == "EB")) {
-            output@posterior_sample <- theta_EB(
-              n_sample, current_theta, current_se,
-              pool@ipar[output@administered_item_index[1:position], ],
-              output@administered_item_resp[1:position], pool@NCAT[output@administered_item_index[1:position]],
-              model[output@administered_item_index[1:position]], 1, c(current_theta, current_se)
-            )
-          } else if (toupper(config@final_theta$method == "FB")) {
-            output@posterior_sample <- theta_FB(
-              n_sample, current_theta, current_se, ipar_list[output@administered_item_index[1:position]],
-              pool@ipar[output@administered_item_index[1:position], ],
-              output@administered_item_resp[1:position], pool@NCAT[output@administered_item_index[1:position]],
-              model[output@administered_item_index[1:position]], 1, c(current_theta, current_se)
-            )
-          }
-
-          output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = n_sample, by = config@MCMC$thin)]
-          output@final_theta_est  <- mean(output@posterior_sample)
-          output@final_se_est     <- sd(output@posterior_sample)
-
+          output@prior_par <- config@final_theta$prior_par
         }
+
+        output@posterior_sample <- rnorm(n_sample, mean = output@prior_par[1], sd = output@prior_par[2])
+        output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = n_sample, by = config@MCMC$thin)]
+        current_theta <- mean(output@posterior_sample)
+        current_se    <- sd(output@posterior_sample) * config@MCMC$jump_factor
+
+        output@posterior_sample <- theta_EB(
+          n_sample, current_theta, current_se,
+          pool@ipar[output@administered_item_index[1:position], ],
+          output@administered_item_resp[1:position], pool@NCAT[output@administered_item_index[1:position]],
+          model[output@administered_item_index[1:position]], 1, c(current_theta, current_se)
+        )
+
+        output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = n_sample, by = config@MCMC$thin)]
+        output@final_theta_est  <- mean(output@posterior_sample)
+        output@final_se_est     <- sd(output@posterior_sample)
+
+      } else if (toupper(config@final_theta$method) == "FB") {
+
+        if (is.vector(prior_par) && length(prior_par) == 2) {
+          output@prior_par <- prior_par
+        } else if (is.matrix(prior_par) && all(dim(prior_par) == c(nj, 2))) {
+          output@prior_par <- prior_par[j, ]
+        } else {
+          output@prior_par <- config@final_theta$prior_par
+        }
+
+        output@posterior_sample <- rnorm(n_sample, mean = output@prior_par[1], sd = output@prior_par[2])
+        output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = n_sample, by = config@MCMC$thin)]
+        current_theta <- mean(output@posterior_sample)
+        current_se    <- sd(output@posterior_sample) * config@MCMC$jump_factor
+
+        output@posterior_sample <- theta_FB(
+          n_sample, current_theta, current_se, ipar_list[output@administered_item_index[1:position]],
+          pool@ipar[output@administered_item_index[1:position], ],
+          output@administered_item_resp[1:position], pool@NCAT[output@administered_item_index[1:position]],
+          model[output@administered_item_index[1:position]], 1, c(current_theta, current_se)
+        )
+
+        output@posterior_sample <- output@posterior_sample[seq(from = config@MCMC$burn_in + 1, to = n_sample, by = config@MCMC$thin)]
+        output@final_theta_est  <- mean(output@posterior_sample)
+        output@final_se_est     <- sd(output@posterior_sample)
 
       }
 
