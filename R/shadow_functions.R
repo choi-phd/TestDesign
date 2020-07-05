@@ -1113,11 +1113,14 @@ setMethod(
           interim_EAP <- estimateThetaEAP(posterior_record$posterior[j, ], constants$theta_q)
           interim_MLE <- mle(pool, output@administered_item_resp[1:position],
             start_theta = interim_EAP$theta,
-            theta_range = config@interim_theta$bound_ML,
             max_iter    = config@interim_theta$max_iter,
             crit        = config@interim_theta$crit,
-            select      = output@administered_item_index[1:position])
-
+            select      = output@administered_item_index[1:position],
+            theta_range = config@interim_theta$bound_ML,
+            truncate    = config@interim_theta$truncate_ML,
+            max_change  = config@interim_theta$max_change,
+            do_Fisher   = config@interim_theta$do_Fisher
+          )
           output@interim_theta_est[position] <- interim_MLE$th
           output@interim_se_est[position]    <- interim_MLE$se
 
@@ -1213,14 +1216,17 @@ setMethod(
 
       } else if (toupper(config@final_theta$method) == "MLE") {
 
-        final_MLE <- mle(
-          pool, output@administered_item_resp[1:constants$max_ni],
+        final_MLE <- mle(pool, output@administered_item_resp[1:constants$max_ni],
           start_theta = output@interim_theta_est[constants$max_ni],
+          max_iter    = config@final_theta$max_iter,
+          crit        = config@final_theta$crit,
+          select      = output@administered_item_index[1:constants$max_ni],
           theta_range = config@final_theta$bound_ML,
-          max_iter = config@final_theta$max_iter,
-          crit = config@final_theta$crit,
-          select = output@administered_item_index[1:constants$max_ni],
-          truncate = config@final_theta$truncate_ML)
+          truncate    = config@final_theta$truncate_ML,
+          max_change  = config@final_theta$max_change,
+          do_Fisher   = config@final_theta$do_Fisher
+        )
+
         output@final_theta_est <- final_MLE$th
         output@final_se_est    <- final_MLE$se
 
