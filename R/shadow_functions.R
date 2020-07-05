@@ -774,23 +774,13 @@ setMethod(
     all_data            <- makeData(pool, true_theta, data, constants)
     posterior_constants <- getPosteriorConstants(config)
     posterior_record    <- initializePosterior(prior, prior_par, config, constants, pool, posterior_constants)
+    initial_theta       <- initializeTheta(config, constants, posterior_record)
 
     if (constants$use_shadow) {
       refresh_shadow <- initializeShadowEngine(constants, config@refresh_policy)
     }
 
     exposure_control <- toupper(config@exposure_control$method)
-
-    #####
-    ###    Get initial theta estimate
-    #####
-
-    if (!is.null(config@item_selection$initial_theta)) {
-      initial_theta <- rep(config@item_selection$initial_theta, constants$nj)
-    } else {
-      initial_theta <- as.vector(posterior %*% matrix(constants$theta_q, ncol = 1))
-    }
-
 
     #####
     ###    Initialize exposure rate control
