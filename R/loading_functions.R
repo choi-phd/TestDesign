@@ -460,8 +460,42 @@ setClass("constraint",
     suspend    = FALSE
   ),
   validity = function(object) {
-    # add validity checks
-    return(TRUE)
+    err <- c()
+    if (dim(object@mat)[1] != object@nc) {
+      msg <- sprintf(
+        "constraint %s: nrow(@mat) does not match @nc",
+        object@constraint
+      )
+      err <- c(err, msg)
+    }
+    if (length(object@dir) != object@nc) {
+      msg <- sprintf(
+        "constraint %s: length(@dir) does not match @nc",
+        object@constraint
+      )
+      err <- c(err, msg)
+    }
+    if (length(object@rhs) != object@nc) {
+      msg <- sprintf(
+        "constraint %s: length(@rhs) does not match @nc",
+        object@constraint
+      )
+      err <- c(err, msg)
+    }
+    tmp <- !object@dir %in% c("==", "<=", ">=")
+    if (any(tmp)) {
+      msg <- sprintf(
+        "constraint %s @dir: unexpected logical operator '%s'",
+        object@constraint,
+        object@dir[tmp]
+      )
+      err <- c(err, msg)
+    }
+    if (length(err) == 0) {
+      return(TRUE)
+    } else {
+      return(err)
+    }
   }
 )
 
