@@ -48,7 +48,7 @@ double calc_likelihood (
       }
       break;
       case 4: {
-        rowvec b = item_parm(i, span(0, ncat(i) - 1));
+        rowvec b = item_parm(i, span(0, ncat(i) - 2));
         rowvec pp(ncat(i));
         pp = p_pc(x, b);
         lh *= pp(resp(i));
@@ -57,7 +57,7 @@ double calc_likelihood (
       break;
       case 5: {
         double a = item_parm(i, 0);
-        rowvec b = item_parm(i, span(1, ncat(i)));
+        rowvec b = item_parm(i, span(1, ncat(i) - 1));
         rowvec pp(ncat(i));
         pp = p_gpc(x, a, b);
         lh *= pp(resp(i));
@@ -65,7 +65,7 @@ double calc_likelihood (
       break;
       case 6: {
         double a = item_parm(i, 0);
-        rowvec b = item_parm(i, span(1, ncat(i)));
+        rowvec b = item_parm(i, span(1, ncat(i) - 1));
         rowvec pp(ncat(i));
         pp = p_gr(x, a, b);
         lh *= pp(resp(i));
@@ -126,19 +126,19 @@ arma::colvec calc_likelihood_function(
       }
       break;
       case 4: {
-        rowvec b = item_parm(i, span(0, ncat(i) - 1));
+        rowvec b = item_parm(i, span(0, ncat(i) - 2));
         pp = array_p_pc(theta_grid,b);
       }
       break;
       case 5: {
         double a = item_parm(i, 0);
-        rowvec b = item_parm(i, span(1, ncat(i)));
+        rowvec b = item_parm(i, span(1, ncat(i) - 1));
         pp = array_p_gpc(theta_grid, a, b);
       }
       break;
       case 6: {
         double a = item_parm(i, 0);
-        rowvec b = item_parm(i, span(1, ncat(i)));
+        rowvec b = item_parm(i, span(1, ncat(i) - 1));
         pp = array_p_gr(theta_grid, a, b);
       }
       break;
@@ -200,7 +200,7 @@ double calc_log_likelihood(
       }
       break;
       case 4: {
-        rowvec b = item_parm(i, span(0, ncat(i) - 1));
+        rowvec b = item_parm(i, span(0, ncat(i) - 2));
         rowvec pp(ncat(i));
         pp = p_pc(x, b);
         llh += log(pp(resp(i)));
@@ -208,7 +208,7 @@ double calc_log_likelihood(
       break;
       case 5: {
         double a = item_parm(i, 0);
-        rowvec b = item_parm(i, span(1, ncat(i)));
+        rowvec b = item_parm(i, span(1, ncat(i) - 1));
         rowvec pp(ncat(i));
         pp = p_gpc(x, a, b);
         llh += log(pp(resp(i)));
@@ -216,7 +216,7 @@ double calc_log_likelihood(
       break;
       case 6: {
         double a = item_parm(i, 0);
-        rowvec b = item_parm(i, span(1, ncat(i)));
+        rowvec b = item_parm(i, span(1, ncat(i) - 1));
         rowvec pp(ncat(i));
         pp = p_gr(x, a, b);
         llh += log(pp(resp(i)));
@@ -278,26 +278,26 @@ arma::colvec calc_log_likelihood_function(
       }
       break;
       case 4: {
-        rowvec b = item_parm(i, span(0, ncat(i) - 1));
+        rowvec b = item_parm(i, span(0, ncat(i) - 2));
         pp = array_p_pc(theta_grid, b);
       }
       break;
       case 5: {
         double a = item_parm(i, 0);
-        rowvec b = item_parm(i, span(1, ncat(i)));
+        rowvec b = item_parm(i, span(1, ncat(i) - 1));
         pp = array_p_gpc(theta_grid, a, b);
       }
       break;
       case 6: {
         double a = item_parm(i, 0);
-        rowvec b = item_parm(i, span(1, ncat(i)));
+        rowvec b = item_parm(i, span(1, ncat(i) - 1));
         pp = array_p_gr(theta_grid, a, b);
       }
       break;
     }
 
     for (int q = 0; q < nq; q++) {
-      llh[q] += log(pp(q, resp(i)));
+      llh(q) += log(pp(q, resp(i)));
     }
 
   }
@@ -431,21 +431,21 @@ double calc_posterior_single(
     }
     break;
     case 4: {
-      rowvec b = item_parm(span(0, ncat - 1));
+      rowvec b = item_parm(span(0, ncat - 2));
       rowvec p = p_pc(x, b);
       pos = p(resp);
     }
     break;
     case 5: {
       double a = item_parm(0);
-      rowvec b = item_parm(span(1, ncat));
+      rowvec b = item_parm(span(1, ncat - 1));
       rowvec p = p_gpc(x, a, b);
       pos = p(resp);
     }
     break;
     case 6: {
       double a = item_parm(0);
-      rowvec b = item_parm(span(1, ncat));
+      rowvec b = item_parm(span(1, ncat - 1));
       rowvec p = p_gr(x, a, b);
       pos = p(resp);
     }

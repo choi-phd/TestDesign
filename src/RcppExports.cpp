@@ -35,7 +35,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // calc_info_EB
-arma::rowvec calc_info_EB(const arma::mat& x, const arma::mat& item_parm, const arma::icolvec& ncat, const arma::icolvec& model);
+arma::colvec calc_info_EB(const arma::mat& x, const arma::mat& item_parm, const arma::icolvec& ncat, const arma::icolvec& model);
 RcppExport SEXP _TestDesign_calc_info_EB(SEXP xSEXP, SEXP item_parmSEXP, SEXP ncatSEXP, SEXP modelSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
