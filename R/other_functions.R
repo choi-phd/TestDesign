@@ -316,7 +316,13 @@ plotAuditTrail <- function(o, j, constants, config) {
 
   old_mar   <- par()$mar
   old_mfrow <- par()$mfrow
-  on.exit(par(mar = old_mar, mfrow = old_mfrow))
+  on.exit({
+    close_dev <- ifelse(dev.cur() == 1, TRUE, FALSE)
+    par(mar = old_mar, mfrow = old_mfrow)
+    if (close_dev) {
+      dev.off()
+    }
+  })
   par(mar = c(2, 3, 1, 1) + 0.1, mfrow = c(2, 1))
 
   max_ni     <- constants$max_ni

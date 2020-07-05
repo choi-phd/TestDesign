@@ -322,7 +322,13 @@ setMethod(
       max_theta <- theta_range[2]
 
       old_mar <- par()$mar
-      on.exit(par(mar = old_mar))
+      on.exit({
+        close_dev <- ifelse(dev.cur() == 1, TRUE, FALSE)
+        par(mar = old_mar)
+        if (close_dev) {
+          dev.off()
+        }
+      })
       par(mar = c(2, 3, 1, 1) + 0.1)
 
       layout(rbind(c(1, 1), c(1, 1), c(1, 1), c(1, 1), c(2, 2)))
@@ -399,7 +405,13 @@ setMethod(
 
       old_mar   <- par()$mar
       old_mfrow <- par()$mfrow
-      on.exit(par(mar = old_mar, mfrow = old_mfrow))
+      on.exit({
+        close_dev <- ifelse(dev.cur() == 1, TRUE, FALSE)
+        par(mar = old_mar, mfrow = old_mfrow)
+        if (close_dev) {
+          dev.off()
+        }
+      })
       par(mar = c(2, 3, 1, 1) + 0.1, mfrow = c(1, 1))
 
       max_position <- sum(!is.na(x@administered_item_resp))
@@ -743,7 +755,13 @@ setMethod(
 
       old_oma <- par()$oma
       old_mar <- par()$mar
-      on.exit(par(oma = old_oma, mar = old_mar))
+      on.exit({
+        close_dev <- ifelse(dev.cur() == 1, TRUE, FALSE)
+        par(oma = old_oma, mar = old_mar)
+        if (close_dev) {
+          dev.off()
+        }
+      })
       par(oma = c(3, 3, 0, 0), mar = c(3, 3, 2, 2))
 
       plotER(
