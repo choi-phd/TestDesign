@@ -1069,28 +1069,28 @@ setMethod(
 
         } else {
 
-          current_theta <- estimateInitialTheta(
+          final_theta <- estimateInitialTheta(
             config@final_theta, initial_theta, prior_par,
             constants$nj, j, posterior_record,
             config@MCMC
           )
 
-          current_theta$posterior_sample <- theta_EB(
+          final_theta$posterior_sample <- theta_EB(
             posterior_record$n_sample,
-            current_theta$theta,
-            current_theta$se,
+            final_theta$theta,
+            final_theta$se,
             pool@ipar[o@administered_item_index[1:position], ],
             o@administered_item_resp[1:position], pool@NCAT[o@administered_item_index[1:position]],
             model[o@administered_item_index[1:position]], 1,
-            c(current_theta$theta, current_theta$se)
+            c(final_theta$theta, final_theta$se)
           )
 
-          current_theta      <- applyThin(current_theta, posterior_record)
+          final_theta        <- applyThin(final_theta, posterior_record)
 
-          o@final_theta_est  <- current_theta$theta
-          o@final_se_est     <- current_theta$se
-          o@posterior_sample <- current_theta$posterior_sample
-          o@prior_par        <- current_theta$prior_par
+          o@final_theta_est  <- final_theta$theta
+          o@final_se_est     <- final_theta$se
+          o@posterior_sample <- final_theta$posterior_sample
+          o@prior_par        <- final_theta$prior_par
 
         }
 
@@ -1104,29 +1104,29 @@ setMethod(
 
         } else {
 
-          current_theta <- estimateInitialTheta(
+          final_theta <- estimateInitialTheta(
             config@final_theta, initial_theta, prior_par,
             constants$nj, j, posterior_record,
             config@MCMC
           )
 
-          current_theta$posterior_sample <- theta_FB(
+          final_theta$posterior_sample <- theta_FB(
             posterior_record$n_sample,
-            current_theta$theta,
-            current_theta$se,
+            final_theta$theta,
+            final_theta$se,
             posterior_record$ipar_list[o@administered_item_index[1:position]],
             pool@ipar[o@administered_item_index[1:position], ],
             o@administered_item_resp[1:position], pool@NCAT[o@administered_item_index[1:position]],
             model[o@administered_item_index[1:position]], 1,
-            c(current_theta$theta, current_theta$se)
+            c(final_theta$theta, final_theta$se)
           )
 
-          current_theta      <- applyThin(current_theta, posterior_record)
+          final_theta        <- applyThin(final_theta, posterior_record)
 
-          o@final_theta_est  <- current_theta$theta
-          o@final_se_est     <- current_theta$se
-          o@posterior_sample <- current_theta$posterior_sample
-          o@prior_par        <- current_theta$prior_par
+          o@final_theta_est  <- final_theta$theta
+          o@final_se_est     <- final_theta$se
+          o@posterior_sample <- final_theta$posterior_sample
+          o@prior_par        <- final_theta$prior_par
 
         }
 
