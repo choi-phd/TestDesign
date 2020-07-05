@@ -50,11 +50,11 @@ NULL
 loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL) {
 
   if (!missing("se_file")){
-    warning("Argument deprecated. Use 'ipar_se' instead.")
+    warning("argument 'se_file' is deprecated. Use 'ipar_se' instead.")
     ipar_se <- se_file
   }
   if (!missing("file")){
-    warning("Argument deprecated. Use 'ipar' instead.")
+    warning("argument 'file' is deprecated. Use 'ipar' instead.")
     ipar <- file
   }
 
@@ -604,22 +604,42 @@ setClass("constraints",
     stimulus_index_by_item = numeric(0)
   ),
   validity = function(object) {
-    if (!all(names(object@constraints) %in% c("CONSTRAINT", "TYPE", "WHAT", "CONDITION", "LB", "UB", "ONOFF"))) {
-      stop("Column names must include all of CONSTRAINT, TYPE, WHAT, CONDITION, LB, UB, and ONOFF. See vignette('constraints') for details.")
+    err <- c()
+    if (!all(c("CONSTRAINT", "TYPE", "WHAT", "CONDITION", "LB", "UB", "ONOFF") %in% names(object@constraints))) {
+      msg <- "constraints: must include columns CONSTRAINT, TYPE, WHAT, CONDITION, LB, UB, and ONOFF (see vignette('constraints') for details)"
+      err <- c(err, msg)
     }
-    if (!any(is.na(object@constraints[["LB"]]) | is.na(object@constraints[["UB"]]))) {
-      if (any(object@constraints[["LB"]] > object@constraints[["UB"]])) {
-        stop("Specified UBs must be equal to or larger than LBs.")
+    for (i in 1:dim(object@constraints)[1]) {
+      if (xor(
+        is.na(object@constraints[i, ]$LB),
+        is.na(object@constraints[i, ]$UB))) {
+        msg <- sprintf("constraint %s: missing LB/UB", i)
+        err <- c(err, msg)
       }
-    } else if (any(is.na(object@constraints[["LB"]]) + is.na(object@constraints[["UB"]]) == 1)) {
-      stop("In each constraint, LB and UB must be specified together or omitted together.")
+      if (!any(is.na(c(object@constraints[i, ]$LB, object@constraints[i, ]$UB)))) {
+        if (object@constraints[i, ]$LB > object@constraints[i, ]$UB) {
+          msg <- sprintf(
+            "constraint %s: unexpectedly larger LB than UB %s > %s", i,
+            object@constraints[i, ]$LB,
+            object@constraints[i, ]$UB)
+          err <- c(err, msg)
+        }
+      }
+      if (!object@constraints[i, ]$TYPE %in% c(
+        "NUMBER", "COUNT", "ALLORNONE", "ALL OR NONE", "IIF", "MUTUALLYEXCLUSIVE", "MUTUALLY EXCLUSIVE",
+        "XOR", "ENEMY", "SUM", "AVERAGE", "MEAN", "INCLUDE", "EXCLUDE", "NOT", "ORDER")) {
+        msg <- sprintf(
+          "constraint %s: unexpected TYPE '%s' (see vignette('constraints') for details)", i,
+          object@constraints[i, ]$TYPE
+        )
+        err <- c(err, msg)
+      }
     }
-    if (!all(object@constraints[["TYPE"]] %in% c(
-      "NUMBER", "COUNT", "ALLORNONE", "ALL OR NONE", "IIF", "MUTUALLYEXCLUSIVE", "MUTUALLY EXCLUSIVE",
-      "XOR", "ENEMY", "SUM", "AVERAGE", "MEAN", "INCLUDE", "EXCLUDE", "NOT", "ORDER"))) {
-      stop("The 'TYPE' values must be from accepted values. See vignette('constraints') for details.")
+    if (length(err) == 0) {
+      return(TRUE)
+    } else {
+      return(err)
     }
-    return(TRUE)
   }
 )
 
@@ -663,14 +683,14 @@ setClass("constraints",
 loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = NULL) {
 
   if (!inherits(pool, "item_pool")) {
-    stop("'pool' must be an 'item_pool' object.")
+    stop("'pool' argument must be an 'item_pool' object")
   }
   if (!inherits(item_attrib, "item_attrib")) {
-    stop("'item_attrib' must be an 'item_attrib' object.")
+    stop("'item_attrib' argument must be an 'item_attrib' object")
   }
   if (!is.null(st_attrib)) {
     if (!inherits(st_attrib, "st_attrib")) {
-      stop("'st_attrib' must be a 'st_attrib' object.")
+      stop("'st_attrib' argument must be a 'st_attrib' object")
     }
   }
 
@@ -706,7 +726,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
     if (any(constraints[["CONSTRAINT"]] != as.character(1:dim(constraints)[1])) |
       !inherits(constraints[["CONSTRAINT"]], "character")) {
       constraints[["CONSTRAINT"]] <- as.character(1:dim(constraints)[1])
-      warning("The 'CONSTRAINT' column was ignored and replaced with valid values.")
+      warning("the 'CONSTRAINT' column was ignored and replaced with valid indices")
     }
   }
 
@@ -718,10 +738,10 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
   nc <- nrow(constraints)
 
   if (nrow(item_attrib@data) != ni) {
-    stop("Number of rows of 'item_attrib' must match pool@ni.")
+    stop("item_attrib@data: nrow() must match pool@ni")
   }
   if (!all(pool@id == item_attrib@data[["ID"]])) {
-    stop("'ID' entries in 'item_attrib' must match pool@id.")
+    stop("item_attrib@data: 'ID' must match pool@id")
   }
   list_constraints <- vector(mode = "list", length = nc)
   item_constraints <- which(constraints[["WHAT"]] == "ITEM")
@@ -731,10 +751,10 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 
   if (length(stim_constraints) > 0) {
     if (is.null(st_attrib)) {
-      stop("'st_attrib' must be supplied to load stimulus-based constraints.")
+      stop("constraints: stimulus-based constraints require 'st_attrib' argument")
     }
     if (!("STID" %in% names(item_attrib@data))) {
-      stop("'item_attrib' content must include 'STID' column to load stimulus-based constraints.")
+      stop("constraints: stimulus-based constraints require 'STID' column in item_attrib@data")
     }
 
     set_based <- TRUE
