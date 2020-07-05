@@ -72,5 +72,6 @@ Collate:
     'runshiny.R'
     'summary_functions.R'
     'show_functions.R'
+    'st_attrib_operators.R'
     'theta_functions.R'
     'xdata_functions.R'
