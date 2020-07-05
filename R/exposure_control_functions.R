@@ -89,6 +89,25 @@ initializeExposureRecord <- function(exposure_control, exposure_constants, const
 }
 
 #' @noRd
+getInitialEligibilityStats <- function(o, initial_stats, constants) {
+
+  o$n_jk  <- initial_stats$n_jk
+  o$p_jk  <- initial_stats$p_jk
+  o$a_ijk <- initial_stats$a_ijk
+  o$r_ijk <- initial_stats$r_ijk
+
+  if (!constants$set_based) {
+    return(o)
+  }
+
+  o$a_sjk <- initial_stats$a_sjk
+  o$r_sjk <- initial_stats$r_sjk
+
+  return(o)
+
+}
+
+#' @noRd
 initializeExposureRecordSegmentwise <- function(exposure_constants, constants) {
 
   o <- list()
