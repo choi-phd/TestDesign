@@ -334,7 +334,7 @@ setMethod(
             if (!is.na(resp[j, i])) {
               deriv1 <- deriv1 + calcJacobian(object@parms[[items[i]]], theta_0, resp[j, i])
               if (do_Fisher) {
-                deriv2 <- deriv2 + calcFisher(object@parms[[items[i]]], theta_0)
+                deriv2 <- deriv2 + calcFisher(object@parms[[items[i]]], theta_0)[, 1]
               } else {
                 deriv2 <- deriv2 - calcHessian(object@parms[[items[i]]], theta_0, resp[j, i])
               }
@@ -1062,7 +1062,7 @@ setMethod(
             pool@ipar[current_item, ],
             o@administered_item_resp[position], pool@NCAT[current_item],
             model[current_item], 1, c(current_theta$theta, current_theta$se)
-          )
+          )[, 1]
 
           interim_EB                    <- applyThin(interim_EB, posterior_constants)
 
@@ -1079,7 +1079,7 @@ setMethod(
             pool@ipar[current_item, ],
             o@administered_item_resp[position], pool@NCAT[current_item],
             model[current_item], 1, c(current_theta$theta, current_theta$se)
-          )
+          )[, 1]
 
           interim_FB                    <- applyThin(interim_FB, posterior_constants)
 

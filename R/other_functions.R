@@ -171,20 +171,20 @@ getInfo <- function(item_selection, j, info_fixed_theta, current_theta, pool, mo
   }
   if (item_method == "EB") {
     info <- calc_info_EB(
-      current_theta$posterior_sample,
-      pool@ipar, pool@NCAT, model)
+      matrix(current_theta$posterior_sample),
+      pool@ipar, pool@NCAT, model)[, 1]
     return(info)
   }
   if (item_method == "FB" & info_type == "FISHER") {
     info <- calc_info_FB(
-      current_theta$posterior_sample,
-      posterior_record$ipar_list, pool@NCAT, model)
+      matrix(current_theta$posterior_sample),
+      posterior_record$ipar_list, pool@NCAT, model)[, 1]
     return(info)
   }
   if (item_method == "FB" & info_type %in% c("MI", "MUTUAL")) {
     info <- calc_MI_FB(
-      current_theta$posterior_sample,
-      posterior_record$ipar_list, pool@NCAT, model)
+      matrix(current_theta$posterior_sample),
+      posterior_record$ipar_list, pool@NCAT, model)[, 1]
     return(info)
   }
 }

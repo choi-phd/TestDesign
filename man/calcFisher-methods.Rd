@@ -10,6 +10,13 @@
 \alias{calcFisher,item_GPC,numeric-method}
 \alias{calcFisher,item_GR,numeric-method}
 \alias{calcFisher,item_pool,numeric-method}
+\alias{calcFisher,item_1PL,matrix-method}
+\alias{calcFisher,item_2PL,matrix-method}
+\alias{calcFisher,item_3PL,matrix-method}
+\alias{calcFisher,item_PC,matrix-method}
+\alias{calcFisher,item_GPC,matrix-method}
+\alias{calcFisher,item_GR,matrix-method}
+\alias{calcFisher,item_pool,matrix-method}
 \alias{calcFisher,pool_cluster,numeric-method}
 \title{Calculate Fisher information}
 \usage{
@@ -28,6 +35,20 @@ calcFisher(object, theta)
 \S4method{calcFisher}{item_GR,numeric}(object, theta)
 
 \S4method{calcFisher}{item_pool,numeric}(object, theta)
+
+\S4method{calcFisher}{item_1PL,matrix}(object, theta)
+
+\S4method{calcFisher}{item_2PL,matrix}(object, theta)
+
+\S4method{calcFisher}{item_3PL,matrix}(object, theta)
+
+\S4method{calcFisher}{item_PC,matrix}(object, theta)
+
+\S4method{calcFisher}{item_GPC,matrix}(object, theta)
+
+\S4method{calcFisher}{item_GR,matrix}(object, theta)
+
+\S4method{calcFisher}{item_pool,matrix}(object, theta)
 
 \S4method{calcFisher}{pool_cluster,numeric}(object, theta)
 }
