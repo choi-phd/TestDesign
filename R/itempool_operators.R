@@ -1,10 +1,10 @@
 #' @include item_class.R
 NULL
 
-#' Operators for item pool objects
+#' Basic operators for item pool objects
 #'
 #' @param select,i,j item indices to use in subsetting.
-#' @param drop not used, exists for compatibility with \code{\link[base]{Extract}} in the base R package.
+#' @param drop not used, exists for compatibility.
 #'
 #' @name itempool-operators
 NULL

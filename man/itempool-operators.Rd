@@ -13,7 +13,7 @@
 \alias{makeItemPoolCluster}
 \alias{makeItemPoolCluster,item_pool-method}
 \alias{==.pool_cluster}
-\title{Operators for item pool objects}
+\title{Basic operators for item pool objects}
 \usage{
 subsetItemPool(pool, select = NULL)
 
@@ -42,7 +42,7 @@ makeItemPoolCluster(x, ..., names = NULL)
 
 \item{x, ...}{\code{\linkS4class{item_pool}} objects.}
 
-\item{drop}{not used, exists for compatibility with \code{\link[base]{Extract}} in the base R package.}
+\item{drop}{not used, exists for compatibility.}
 
 \item{names}{(optional) names to use for \code{\linkS4class{item_pool}}.}
 
