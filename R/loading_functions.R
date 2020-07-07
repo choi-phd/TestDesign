@@ -913,26 +913,26 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 
       constraint_type_is_valid <- TRUE
 
-        if (constraints[["LB"]][index] == constraints[["UB"]][index]) {
-          list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
-          list_constraints[[index]]@dir <- "<="
-          list_constraints[[index]]@rhs <- constraints[["UB"]][index]
-          if (constraints[["TYPE"]][index] == "SUM") {
-            list_constraints[[index]]@mat[1, 1:ni] <- item_attrib@data[[constraints[["CONDITION"]][index]]]
-          } else if (constraints[["TYPE"]][index] %in% c("AVERAGE", "MEAN")) {
-            list_constraints[[index]]@mat[1, 1:ni] <- item_attrib@data[[constraints[["CONDITION"]][index]]] / test_length_UB
-          }
-        } else {
-          list_constraints[[index]]@mat <- matrix(0, nrow = 2, ncol = nv)
-          list_constraints[[index]]@dir <- c(">=", "<=")
-          list_constraints[[index]]@rhs <- c(constraints[["LB"]][index], constraints[["UB"]][index])
-          if (constraints[["TYPE"]][index] == "SUM") {
-            list_constraints[[index]]@mat[, 1:ni] <- item_attrib@data[[constraints[["CONDITION"]][index]]]
-          } else if (constraints[["TYPE"]][index] %in% c("AVERAGE", "MEAN")) {
-            list_constraints[[index]]@mat[1, 1:ni] <- item_attrib@data[[constraints[["CONDITION"]][index]]] / test_length_UB
-            list_constraints[[index]]@mat[2, 1:ni] <- item_attrib@data[[constraints[["CONDITION"]][index]]] / test_length_LB
-          }
+      if (constraints[["LB"]][index] == constraints[["UB"]][index]) {
+        list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
+        list_constraints[[index]]@dir <- "<="
+        list_constraints[[index]]@rhs <- constraints[["UB"]][index]
+        if (constraints[["TYPE"]][index] == "SUM") {
+          list_constraints[[index]]@mat[1, 1:ni] <- item_attrib@data[[constraints[["CONDITION"]][index]]]
+        } else if (constraints[["TYPE"]][index] %in% c("AVERAGE", "MEAN")) {
+          list_constraints[[index]]@mat[1, 1:ni] <- item_attrib@data[[constraints[["CONDITION"]][index]]] / test_length_UB
         }
+      } else {
+        list_constraints[[index]]@mat <- matrix(0, nrow = 2, ncol = nv)
+        list_constraints[[index]]@dir <- c(">=", "<=")
+        list_constraints[[index]]@rhs <- c(constraints[["LB"]][index], constraints[["UB"]][index])
+        if (constraints[["TYPE"]][index] == "SUM") {
+          list_constraints[[index]]@mat[, 1:ni] <- item_attrib@data[[constraints[["CONDITION"]][index]]]
+        } else if (constraints[["TYPE"]][index] %in% c("AVERAGE", "MEAN")) {
+          list_constraints[[index]]@mat[1, 1:ni] <- item_attrib@data[[constraints[["CONDITION"]][index]]] / test_length_UB
+          list_constraints[[index]]@mat[2, 1:ni] <- item_attrib@data[[constraints[["CONDITION"]][index]]] / test_length_LB
+        }
+      }
 
     }
 
@@ -944,17 +944,17 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
       n_condition_met <- sum(match_vec)
       constraints[["COUNT"]][index] <- n_condition_met
 
-        list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
-        list_constraints[[index]]@mat[1, condition_met] <- 1
-        list_constraints[[index]]@dir <- "=="
-        if (set_based) {
-          stimulus_to_include <- unique(stimulus_index_by_item[condition_met])
-          stimulus_to_include <- stimulus_to_include[!is.na(stimulus_to_include)]
-          list_constraints[[index]]@mat[1, ni + stimulus_to_include] <- 1
-          list_constraints[[index]]@rhs <- length(condition_met) + length(stimulus_to_include)
-        } else {
-          list_constraints[[index]]@rhs <- length(condition_met)
-        }
+      list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
+      list_constraints[[index]]@mat[1, condition_met] <- 1
+      list_constraints[[index]]@dir <- "=="
+      if (set_based) {
+        stimulus_to_include <- unique(stimulus_index_by_item[condition_met])
+        stimulus_to_include <- stimulus_to_include[!is.na(stimulus_to_include)]
+        list_constraints[[index]]@mat[1, ni + stimulus_to_include] <- 1
+        list_constraints[[index]]@rhs <- length(condition_met) + length(stimulus_to_include)
+      } else {
+        list_constraints[[index]]@rhs <- length(condition_met)
+      }
 
     }
     if (constraints[["TYPE"]][index] %in% c("EXCLUDE", "NOT", "NOT INCLUDE")) {
@@ -982,18 +982,18 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 
       n_met <- n_condition_met
 
-        list_constraints[[index]]@mat <- matrix(0, nrow = (n_met * (n_met - 1)) / 2, ncol = nv)
-        list_constraints[[index]]@dir <- rep("==", (n_met * (n_met - 1)) / 2)
-        list_constraints[[index]]@rhs <- rep(0, (n_met * (n_met - 1)) / 2)
-        tmp_index <- 0
-        for (i in condition_met) {
-          for (j in condition_met) {
-            if (i < j) {
-              tmp_index <- tmp_index + 1
-              list_constraints[[index]]@mat[tmp_index, c(i, j)] <- c(1, -1)
-            }
+      list_constraints[[index]]@mat <- matrix(0, nrow = (n_met * (n_met - 1)) / 2, ncol = nv)
+      list_constraints[[index]]@dir <- rep("==", (n_met * (n_met - 1)) / 2)
+      list_constraints[[index]]@rhs <- rep(0, (n_met * (n_met - 1)) / 2)
+      tmp_index <- 0
+      for (i in condition_met) {
+        for (j in condition_met) {
+          if (i < j) {
+            tmp_index <- tmp_index + 1
+            list_constraints[[index]]@mat[tmp_index, c(i, j)] <- c(1, -1)
           }
         }
+      }
 
     }
 
@@ -1005,10 +1005,10 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
       n_condition_met <- sum(match_vec)
       constraints[["COUNT"]][index] <- n_condition_met
 
-        list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
-        list_constraints[[index]]@mat[1, condition_met] <- 1
-        list_constraints[[index]]@dir <- "<="
-        list_constraints[[index]]@rhs <- 1
+      list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
+      list_constraints[[index]]@mat[1, condition_met] <- 1
+      list_constraints[[index]]@dir <- "<="
+      list_constraints[[index]]@rhs <- 1
 
     }
 
@@ -1017,8 +1017,8 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
       constraint_type_is_valid <- TRUE
 
       if (!list_constraints[[index]]@suspend) {
-          item_order <- item_attrib@data[[constraints[["CONDITION"]][index]]]
-          item_order_by <- constraints[["CONDITION"]][index]
+        item_order <- item_attrib@data[[constraints[["CONDITION"]][index]]]
+        item_order_by <- constraints[["CONDITION"]][index]
       }
 
     }
