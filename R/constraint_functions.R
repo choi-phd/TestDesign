@@ -24,6 +24,24 @@ validateLBUB <- function(x) {
 }
 
 #' @noRd
+validateExpression <- function(x, attrib, unit_name, use_lt) {
+
+  try_parse <- try(parse(text = x$CONDITION))
+  if (inherits(try_parse, "try-error")) {
+    stop(sprintf("constraint %s: '%s' is not a valid expression", x$CONSTRAINT, x$CONDITION))
+  }
+
+  idx <- with(attrib@data, eval(try_parse))
+  if (use_lt & length(which(idx)) < 2) {
+    stop(sprintf("constraint %s: '%s' has < 2 %s", x$CONSTRAINT, x$CONDITION, unit_name))
+  }
+  if (!use_lt & length(which(idx)) == 0) {
+    stop(sprintf("constraint %s: '%s' does not match any %s", x$CONSTRAINT, x$CONDITION, unit_name))
+  }
+
+}
+
+#' @noRd
 validateConstraintData <- function(x, attrib) {
 
   if (inherits(attrib, "item_attrib")) {
@@ -59,14 +77,7 @@ validateConstraintData <- function(x, attrib) {
       return()
     }
 
-    try_parse <- try(parse(text = x$CONDITION))
-    if (inherits(try_parse, "try-error")) {
-      stop(sprintf("constraint %s: '%s' is not a valid expression", x$CONSTRAINT, x$CONDITION))
-    }
-    idx <- with(attrib@data, eval(try_parse))
-    if (length(which(idx)) == 0) {
-      stop(sprintf("constraint %s: '%s' does not match any %s", x$CONSTRAINT, x$CONDITION, unit_name))
-    }
+    validateExpression(x, attrib, unit_name, FALSE)
 
     return()
 
@@ -90,60 +101,28 @@ validateConstraintData <- function(x, attrib) {
 
   if (x$TYPE == "INCLUDE") {
 
-    try_parse <- try(parse(text = x$CONDITION))
-    if (inherits(try_parse, "try-error")) {
-      stop(sprintf("constraint %s: '%s' is not a valid expression", x$CONSTRAINT, x$CONDITION))
-    }
-    idx <- with(attrib@data, eval(try_parse))
-    if (length(which(idx)) == 0) {
-      stop(sprintf("constraint %s: '%s' does not match any %s", x$CONSTRAINT, x$CONDITION, unit_name))
-    }
-
+    validateExpression(x, attrib, unit_name, FALSE)
     return()
 
   }
 
   if (x$TYPE %in% c("EXCLUDE", "NOT", "NOT INCLUDE")) {
 
-    try_parse <- try(parse(text = x$CONDITION))
-    if (inherits(try_parse, "try-error")) {
-      stop(sprintf("constraint %s: '%s' is not a valid expression", x$CONSTRAINT, x$CONDITION))
-    }
-    idx <- with(attrib@data, eval(try_parse))
-    if (length(which(idx)) == 0) {
-      stop(sprintf("constraint %s: '%s' does not match any %s", x$CONSTRAINT, x$CONDITION, unit_name))
-    }
-
+    validateExpression(x, attrib, unit_name, FALSE)
     return()
 
   }
 
   if (x$TYPE %in% c("ALLORNONE", "ALL OR NONE", "IIF")) {
 
-    try_parse <- try(parse(text = x$CONDITION))
-    if (inherits(try_parse, "try-error")) {
-      stop(sprintf("constraint %s: '%s' is not a valid expression", x$CONSTRAINT, x$CONDITION))
-    }
-    idx <- with(attrib@data, eval(try_parse))
-    if (length(which(idx)) < 2) {
-      stop(sprintf("constraint %s: '%s' has < 2 %s", x$CONSTRAINT, x$CONDITION, unit_name))
-    }
-
+    validateExpression(x, attrib, unit_name, TRUE)
     return()
 
   }
 
   if (x$TYPE %in% c("MUTUALLYEXCLUSIVE", "MUTUALLY EXCLUSIVE", "XOR", "ENEMY")) {
 
-    try_parse <- try(parse(text = x$CONDITION))
-    if (inherits(try_parse, "try-error")) {
-      stop(sprintf("constraint %s: '%s' is not a valid expression", x$CONSTRAINT, x$CONDITION))
-    }
-    idx <- with(attrib@data, eval(try_parse))
-    if (length(which(idx)) < 2) {
-      stop(sprintf("constraint %s: '%s' has < 2 %s", x$CONSTRAINT, x$CONDITION, unit_name))
-    }
-
+    validateExpression(x, attrib, unit_name, TRUE)
     return()
 
   }
