@@ -423,3 +423,66 @@ parseConstraintData <- function(x, attrib, constants) {
   return(o)
 
 }
+
+#' @noRd
+addCountsToConstraintData <- function(x, attrib) {
+
+  if (inherits(attrib, "item_attrib")) {
+    count_name <- "COUNT"
+  }
+  if (inherits(attrib, "st_attrib")) {
+    count_name <- "ST_COUNT"
+  }
+
+  if (x$TYPE %in% c("NUMBER", "COUNT")) {
+
+    if (toupper(x$CONDITION) %in% c("", " ", "PER TEST", "TEST")) {
+      x[[count_name]] <- dim(attrib@data)[1]
+      return(x)
+    }
+
+    if (toupper(x$CONDITION) %in% c("PER STIMULUS", "PER PASSAGE", "PER SET", "PER TESTLET")) {
+      return(x)
+    }
+
+    if (x$CONDITION %in% names(attrib@data)) {
+      condition <- attrib@data[x$CONDITION]
+      x[[count_name]] <- sum(!is.na(condition))
+      return(x)
+    }
+
+    if (TRUE) {
+      match_vec       <- with(attrib@data, eval(parse(text = x$CONDITION)))
+      x[[count_name]] <- sum(match_vec)
+      return(x)
+    }
+
+  }
+
+  if (x$TYPE == "INCLUDE") {
+    match_vec       <- with(attrib@data, eval(parse(text = x$CONDITION)))
+    x[[count_name]] <- sum(match_vec)
+    return(x)
+  }
+
+  if (x$TYPE %in% c("EXCLUDE", "NOT", "NOT INCLUDE")) {
+    match_vec       <- with(attrib@data, eval(parse(text = x$CONDITION)))
+    x[[count_name]] <- sum(match_vec)
+    return(x)
+  }
+
+  if (x$TYPE %in% c("ALLORNONE", "ALL OR NONE", "IIF")) {
+    match_vec       <- with(attrib@data, eval(parse(text = x$CONDITION)))
+    x[[count_name]] <- sum(match_vec)
+    return(x)
+  }
+
+  if (x$TYPE %in% c("MUTUALLYEXCLUSIVE", "MUTUALLY EXCLUSIVE", "XOR", "ENEMY")) {
+    match_vec       <- with(attrib@data, eval(parse(text = x$CONDITION)))
+    x[[count_name]] <- sum(match_vec)
+    return(x)
+  }
+
+  return(x)
+
+}
