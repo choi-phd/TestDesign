@@ -150,12 +150,12 @@ validateConstraintData <- function(x, attrib) {
 
   if (x$TYPE == "ORDER") {
 
-    if (!(x$CONDITION %in% names(item_attrib@data))) {
-      stop(sprintf("constraint %s: column '%s' not found in item_attrib", x$CONSTRAINT, x$CONDITION))
+    if (!(x$CONDITION %in% names(attrib@data))) {
+      stop(sprintf("constraint %s: column '%s' not found in %s", x$CONSTRAINT, x$CONDITION, class_name))
     }
 
-    if (any(is.na(item_attrib@data[[x$CONDITION]]))) {
-      stop(sprintf("constraint %s: item_attrib '%s' must not have any missing values", x$CONSTRAINT, x$CONDITION))
+    if (any(is.na(attrib@data[[x$CONDITION]]))) {
+      stop(sprintf("constraint %s: %s '%s' must not have any missing values", x$CONSTRAINT, class_name, x$CONDITION))
     }
 
     return()
