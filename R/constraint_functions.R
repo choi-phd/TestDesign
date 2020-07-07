@@ -144,6 +144,31 @@ validateConstraintData <- function(x, attrib) {
 }
 
 #' @noRd
+getLBUBInConstraintData <- function(o, x, item_constraints, stim_constraints) {
+
+  for (i in item_constraints) {
+    if (x$TYPE[i] %in% c("NUMBER", "COUNT")) {
+      if (toupper(x$CONDITION[i]) %in% c("", " ", "PER TEST", "TEST")) {
+        o$i_count$LB <- round(x$LB[i])
+        o$i_count$UB <- round(x$UB[i])
+      }
+    }
+  }
+
+  for (s in stim_constraints) {
+    if (x$TYPE[s] %in% c("NUMBER", "COUNT")) {
+      if (toupper(x$CONDITION[s]) %in% c("", " ", "PER TEST", "TEST")) {
+        o$s_count$LB <- round(x$LB[s])
+        o$s_count$UB <- round(x$UB[s])
+      }
+    }
+  }
+
+  return(o)
+
+}
+
+#' @noRd
 parseConstraintData <- function(x, attrib, constants) {
 
   if (inherits(attrib, "item_attrib")) {
@@ -161,6 +186,8 @@ parseConstraintData <- function(x, attrib, constants) {
   set_based <- constants$set_based
   i_by_s    <- constants$i_by_s
   s_by_i    <- constants$s_by_i
+  i_count   <- constants$i_count
+  s_count   <- constants$s_count
 
   o <- new("constraint")
   o@constraint <- x$CONSTRAINT

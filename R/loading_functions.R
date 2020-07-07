@@ -793,6 +793,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
   constants$set_based <- set_based
   constants$i_by_s    <- item_index_by_stimulus
   constants$s_by_i    <- stimulus_index_by_item
+  constants <- getLBUBInConstraintData(constants, constraints, item_constraints, stim_constraints)
 
   for (index in item_constraints) {
 
@@ -804,8 +805,6 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 
         constraints[["COUNT"]][index] <- dim(item_attrib@data)[1]
 
-        test_length_LB <- round(constraints[["LB"]][index])
-        test_length_UB <- round(constraints[["UB"]][index])
         if (test_length_LB == test_length_UB) {
           test_length <- test_length_UB
           list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
@@ -1034,8 +1033,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
         constraints[["ST_COUNT"]][index] <- dim(st_attrib@data)[1]
 
         if (toupper(constraints[["CONDITION"]][index]) %in% c("", " ", "PER TEST")) {
-          number_stimulus_LB <- round(constraints[["LB"]][index])
-          number_stimulus_UB <- round(constraints[["UB"]][index])
+
           if (number_stimulus_LB == number_stimulus_UB) {
             list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
             list_constraints[[index]]@mat[1, (ni + 1):nv] <- 1
@@ -1216,7 +1214,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
   out@pool             <- pool
   out@item_attrib      <- item_attrib
   out@st_attrib        <- st_attrib
-  out@test_length      <- test_length
+  out@test_length      <- constants$i_count$LB
   out@nv    <- nv
   out@ni    <- ni
   out@ns    <- ns
