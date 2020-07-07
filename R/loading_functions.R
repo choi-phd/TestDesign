@@ -1023,10 +1023,8 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 
     }
 
-    if (!constraint_type_is_valid) {
-      stop(sprintf("Constraint %s has an invalid 'TYPE': %s", index, constraints[["TYPE"]][index]))
-    }
     list_constraints[[index]]@nc <- nrow(list_constraints[[index]]@mat)
+
   }
 
   if (set_based) {
@@ -1207,9 +1205,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
             stim_order_by <- constraints[["CONDITION"]][index]
         }
       }
-      if (!constraint_type_is_valid) {
-        stop(sprintf("Constraint %s, %s is not a valid constraint type", index, constraints[["TYPE"]][index]))
-      }
+
       list_constraints[[index]]@nc <- nrow(list_constraints[[index]]@mat)
     }
   }
