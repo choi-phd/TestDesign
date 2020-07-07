@@ -796,9 +796,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 
         test_length_LB <- round(constraints[["LB"]][index])
         test_length_UB <- round(constraints[["UB"]][index])
-        if (any(c(test_length_LB, test_length_UB) < 0) || test_length_LB > test_length_UB) {
-          stop(sprintf("constraint %s has invalid LB/UB", index))
-        } else if (test_length_LB == test_length_UB) {
+        if (test_length_LB == test_length_UB) {
           test_length <- test_length_UB
           list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
           list_constraints[[index]]@mat[1, 1:ni] <- 1
@@ -842,9 +840,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
         }
         stimulus_length_LB <- round(constraints[["LB"]][index])
         stimulus_length_UB <- round(constraints[["UB"]][index])
-        if (any(c(stimulus_length_LB, stimulus_length_UB) < 0) || stimulus_length_LB > stimulus_length_UB) {
-          stop(sprintf("Constraint %s has invalid LB/UB", index))
-        } else if (stimulus_length_LB == stimulus_length_UB) {
+        if (stimulus_length_LB == stimulus_length_UB) {
           list_constraints[[index]]@mat <- matrix(0, nrow = ns, ncol = nv)
           list_constraints[[index]]@dir <- rep("==", ns)
           list_constraints[[index]]@rhs <- rep(0, ns)
@@ -872,9 +868,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
         if (length(condition) == 0) {
           stop(sprintf("Constraint %s has 0 items meeting CONDITION: %s", index, constraints[["CONDITION"]][index]))
         }
-        if (any(c(constraints[["LB"]][index], constraints[["UB"]][index]) < 0) || constraints[["LB"]][index] > constraints[["UB"]][index]) {
-          stop(sprintf("Constraint %s has invalid LB/UB", index))
-        } else if (constraints[["LB"]][index] == constraints[["UB"]][index]) {
+        if (constraints[["LB"]][index] == constraints[["UB"]][index]) {
           list_constraints[[index]]@mat <- matrix(0, nrow = length(condition), ncol = nv)
           list_constraints[[index]]@dir <- rep("==", length(condition))
           list_constraints[[index]]@rhs <- rep(constraints[["UB"]][index], length(condition))
@@ -902,9 +896,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
         if (length(condition_met) == 0) {
           stop(sprintf("Constraint %s has 0 items meeting CONDITION: %s", index, constraints[["CONDITION"]][index]))
         }
-        if (any(c(constraints[["LB"]][index], constraints[["UB"]][index]) < 0) || constraints[["LB"]][index] > constraints[["UB"]][index]) {
-          stop(sprintf("Constraint %s has invalid LB/UB", index))
-        } else if (constraints[["LB"]][index] == constraints[["UB"]][index]) {
+        if (constraints[["LB"]][index] == constraints[["UB"]][index]) {
           list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
           list_constraints[[index]]@mat[1, condition_met] <- 1
           list_constraints[[index]]@dir <- "=="
@@ -1087,9 +1079,8 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
             list_constraints[[index]]@mat[, (ni + 1):nv] <- 1
             list_constraints[[index]]@dir <- c(">=", "<=")
             list_constraints[[index]]@rhs <- c(number_stimulus_LB, number_stimulus_UB)
-          } else {
-            stop(sprintf("constraint %s has invalid LB/UB", index))
           }
+
         } else if (constraints[["CONDITION"]][index] %in% names(st_attrib@data)) {
 
           condition <- st_attrib@data[constraints[["CONDITION"]][index]]
@@ -1099,9 +1090,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
           if (length(condition) == 0) {
             stop(sprintf("Constraint %s has 0 stimuli meeting CONDITION: %s", index, constraints[["CONDITION"]][index]))
           }
-          if (any(c(constraints[["LB"]][index], constraints[["UB"]][index]) < 0) || constraints[["LB"]][index] > constraints[["UB"]][index]) {
-            stop(sprintf("constraint %s has invalid LB/UB", index))
-          } else if (constraints[["LB"]][index] == constraints[["UB"]][index]) {
+          if (constraints[["LB"]][index] == constraints[["UB"]][index]) {
             list_constraints[[index]]@mat <- matrix(0, nrow = length(condition), ncol = nv)
             list_constraints[[index]]@dir <- rep("==", length(condition))
             list_constraints[[index]]@rhs <- rep(constraints[["UB"]][index], length(condition))
@@ -1129,9 +1118,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
           if (length(condition_met) == 0) {
             stop(sprintf("Constraint %s has 0 stimuli meeting CONDITION: %s", index, constraints[["CONDITION"]][index]))
           }
-          if (any(c(constraints[["LB"]][index], constraints[["UB"]][index]) < 0) || constraints[["LB"]][index] > constraints[["UB"]][index]) {
-            stop(sprintf("Constraint %s has invalid LB/UB", index))
-          } else if (constraints[["LB"]][index] == constraints[["UB"]][index]) {
+          if (constraints[["LB"]][index] == constraints[["UB"]][index]) {
             list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
             list_constraints[[index]]@mat[1, ni + condition_met] <- 1
             list_constraints[[index]]@dir <- "=="
