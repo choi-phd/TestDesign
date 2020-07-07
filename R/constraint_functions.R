@@ -142,3 +142,30 @@ validateConstraintData <- function(x, attrib) {
   stop(sprintf("constraint %s: unrecognized type '%s'", x$CONSTRAINT, x$TYPE))
 
 }
+
+#' @noRd
+parseConstraintData <- function(x, attrib, constants) {
+
+  if (inherits(attrib, "item_attrib")) {
+    nx_pad <- 0
+    nx     <- constants$ni
+  }
+  if (inherits(attrib, "st_attrib")) {
+    nx_pad <- constants$ni
+    nx     <- constants$ns
+  }
+
+  ni        <- constants$ni
+  ns        <- constants$ns
+  nv        <- constants$nv
+  set_based <- constants$set_based
+  i_by_s    <- constants$i_by_s
+  s_by_i    <- constants$s_by_i
+
+  o <- new("constraint")
+  o@constraint <- x$CONSTRAINT
+  o@suspend    <- x$ONOFF == "OFF"
+
+  return(o)
+
+}

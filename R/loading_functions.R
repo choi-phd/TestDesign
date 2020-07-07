@@ -795,9 +795,8 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
   constants$s_by_i    <- stimulus_index_by_item
 
   for (index in item_constraints) {
-    list_constraints[[index]] <- new("constraint")
-    list_constraints[[index]]@constraint <- constraints[["CONSTRAINT"]][index]
-    list_constraints[[index]]@suspend <- constraints[["ONOFF"]][index] == "OFF"
+
+    list_constraints[[index]] <- parseConstraintData(constraints[index, ], item_attrib)
 
     if (constraints[["TYPE"]][index] %in% c("NUMBER", "COUNT")) {
 
@@ -1027,9 +1026,8 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 
   if (set_based) {
     for (index in stim_constraints) {
-      list_constraints[[index]] <- new("constraint")
-      list_constraints[[index]]@constraint <- constraints[["CONSTRAINT"]][index]
-      list_constraints[[index]]@suspend <- constraints[["ONOFF"]][index] == "OFF"
+
+      list_constraints[[index]] <- parseConstraintData(constraints[index, ], st_attrib)
 
       if (constraints[["TYPE"]][index] %in% c("NUMBER", "COUNT")) {
 
