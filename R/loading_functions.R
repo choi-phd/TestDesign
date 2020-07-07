@@ -851,17 +851,6 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
         n_condition_met <- sum(match_vec)
         constraints[["COUNT"]][index] <- n_condition_met
 
-        if (constraints[["LB"]][index] == constraints[["UB"]][index]) {
-          list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
-          list_constraints[[index]]@mat[1, condition_met] <- 1
-          list_constraints[[index]]@dir <- "=="
-          list_constraints[[index]]@rhs <- constraints[["UB"]][index]
-        } else {
-          list_constraints[[index]]@mat <- matrix(0, nrow = 2, ncol = nv)
-          list_constraints[[index]]@mat[, condition_met] <- 1
-          list_constraints[[index]]@dir <- c(">=", "<=")
-          list_constraints[[index]]@rhs <- c(constraints[["LB"]][index], constraints[["UB"]][index])
-        }
       }
     }
 
@@ -996,17 +985,6 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
           n_condition_met <- sum(match_vec)
           constraints[["ST_COUNT"]][index] <- n_condition_met
 
-          if (constraints[["LB"]][index] == constraints[["UB"]][index]) {
-            list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
-            list_constraints[[index]]@mat[1, ni + condition_met] <- 1
-            list_constraints[[index]]@dir <- "=="
-            list_constraints[[index]]@rhs <- constraints[["UB"]][index]
-          } else {
-            list_constraints[[index]]@mat <- matrix(0, nrow = 2, ncol = nv)
-            list_constraints[[index]]@mat[, ni + condition_met] <- 1
-            list_constraints[[index]]@dir <- c(">=", "<=")
-            list_constraints[[index]]@rhs <- c(constraints[["LB"]][index], constraints[["UB"]][index])
-          }
         }
       }
 

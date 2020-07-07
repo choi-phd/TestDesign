@@ -284,6 +284,27 @@ parseConstraintData <- function(x, attrib, constants) {
 
     }
 
+    if (TRUE) {
+
+      flag <- with(attrib@data, eval(parse(text = x$CONDITION)))
+      idx  <- which(flag)
+
+      if (x$LB == x$UB) {
+        o@mat <- matrix(0, nrow = 1, ncol = nv)
+        o@mat[1, nx_pad + idx] <- 1
+        o@dir <- "=="
+        o@rhs <- x$UB
+      } else {
+        o@mat <- matrix(0, nrow = 2, ncol = nv)
+        o@mat[, nx_pad + idx] <- 1
+        o@dir <- c(">=", "<=")
+        o@rhs <- c(x$LB, x$UB)
+      }
+
+      return(o)
+
+    }
+
   }
 
   return(o)
