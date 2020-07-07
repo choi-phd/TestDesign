@@ -341,6 +341,26 @@ parseConstraintData <- function(x, attrib, constants) {
 
   }
 
+  if (x$TYPE == "INCLUDE") {
+
+    flag <- with(attrib@data, eval(parse(text = x$CONDITION)))
+    idx  <- which(flag)
+
+    o@mat <- matrix(0, nrow = 1, ncol = nv)
+    o@mat[1, nx_pad + idx] <- 1
+    o@dir <- "=="
+    o@rhs <- length(idx)
+
+    if (nx == ni && set_based) {
+      s <- na.omit(unique(s_by_i[idx]))
+      o@mat[1, nx_pad + s] <- 1
+      o@rhs <- o@rhs + length(s)
+    }
+
+    return(o)
+
+  }
+
   return(o)
 
 }
