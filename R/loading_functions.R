@@ -843,25 +843,6 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 
         condition <- item_attrib@data[constraints[["CONDITION"]][index]]
         constraints[["COUNT"]][index] <- sum(!is.na(condition))
-        condition <- condition[!is.na(unique(condition))]
-
-        if (constraints[["LB"]][index] == constraints[["UB"]][index]) {
-          list_constraints[[index]]@mat <- matrix(0, nrow = length(condition), ncol = nv)
-          list_constraints[[index]]@dir <- rep("==", length(condition))
-          list_constraints[[index]]@rhs <- rep(constraints[["UB"]][index], length(condition))
-          for (m in 1:length(condition)) {
-            condition_met <- which(item_attrib@data[constraints[["CONDITION"]][index]] == condition[m])
-            list_constraints[[index]]@mat[m, condition_met] <- 1
-          }
-        } else if (constraints[["LB"]][index] <= constraints[["UB"]][index]) {
-          list_constraints[[index]]@mat <- matrix(0, nrow = 2 * length(condition), ncol = nv)
-          list_constraints[[index]]@dir <- rep(c(">=", "<="), length(condition))
-          list_constraints[[index]]@rhs <- rep(c(constraints[["LB"]][index], constraints[["UB"]][index]), length(condition))
-          for (m in 1:length(condition)) {
-            condition_met <- which(item_attrib@data[constraints[["CONDITION"]][index]] == condition[m])
-            list_constraints[[index]]@mat[c(m * 2 - 1, m * 2), condition_met] <- 1
-          }
-        }
 
       } else {
 
@@ -1007,25 +988,6 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 
           condition <- st_attrib@data[constraints[["CONDITION"]][index]]
           constraints[["ST_COUNT"]][index] <- sum(!is.na(condition))
-          condition <- condition[!is.na(unique(condition))]
-
-          if (constraints[["LB"]][index] == constraints[["UB"]][index]) {
-            list_constraints[[index]]@mat <- matrix(0, nrow = length(condition), ncol = nv)
-            list_constraints[[index]]@dir <- rep("==", length(condition))
-            list_constraints[[index]]@rhs <- rep(constraints[["UB"]][index], length(condition))
-            for (m in 1:length(condition)) {
-              condition_met <- which(st_attrib@data[constraints[["CONDITION"]][index]] == condition[m])
-              list_constraints[[index]]@mat[m, ni + condition_met] <- 1
-            }
-          } else if (constraints[["LB"]][index] <= constraints[["UB"]][index]) {
-            list_constraints[[index]]@mat <- matrix(0, nrow = 2 * length(condition), ncol = nv)
-            list_constraints[[index]]@dir <- rep(c(">=", "<="), length(condition))
-            list_constraints[[index]]@rhs <- rep(c(constraints[["LB"]][index], constraints[["UB"]][index]), length(condition))
-            for (m in 1:length(condition)) {
-              condition_met <- which(item_attrib@data[constraints[["CONDITION"]][index]] == condition[m])
-              list_constraints[[index]]@mat[c(m * 2 - 1, m * 2), ni + condition_met] <- 1
-            }
-          }
 
         } else {
 
