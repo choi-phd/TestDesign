@@ -88,4 +88,19 @@ validateConstraintData <- function(x, attrib) {
 
   }
 
+  if (x$TYPE == "INCLUDE") {
+
+    try_parse <- try(parse(text = x$CONDITION))
+    if (inherits(try_parse, "try-error")) {
+      stop(sprintf("constraint %s: '%s' is not a valid expression", x$CONSTRAINT, x$CONDITION))
+    }
+    idx <- with(attrib@data, eval(try_parse))
+    if (length(which(idx)) == 0) {
+      stop(sprintf("constraint %s: '%s' does not match any %s", x$CONSTRAINT, x$CONDITION, unit_name))
+    }
+
+    return()
+
+  }
+
 }
