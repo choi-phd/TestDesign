@@ -879,21 +879,6 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
       n_condition_met <- sum(match_vec)
       constraints[["COUNT"]][index] <- n_condition_met
 
-      n_met <- n_condition_met
-
-      list_constraints[[index]]@mat <- matrix(0, nrow = (n_met * (n_met - 1)) / 2, ncol = nv)
-      list_constraints[[index]]@dir <- rep("==", (n_met * (n_met - 1)) / 2)
-      list_constraints[[index]]@rhs <- rep(0, (n_met * (n_met - 1)) / 2)
-      tmp_index <- 0
-      for (i in condition_met) {
-        for (j in condition_met) {
-          if (i < j) {
-            tmp_index <- tmp_index + 1
-            list_constraints[[index]]@mat[tmp_index, c(i, j)] <- c(1, -1)
-          }
-        }
-      }
-
     }
 
     if (constraints[["TYPE"]][index] %in% c("MUTUALLYEXCLUSIVE", "MUTUALLY EXCLUSIVE", "XOR", "ENEMY")) {
@@ -972,22 +957,8 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
         n_condition_met <- sum(match_vec)
         constraints[["ST_COUNT"]][index] <- n_condition_met
 
-        n_met <- n_condition_met
-
-          list_constraints[[index]]@mat <- matrix(0, nrow = (n_met * (n_met - 1)) / 2, ncol = nv)
-          list_constraints[[index]]@dir <- rep("==", (n_met * (n_met - 1)) / 2)
-          list_constraints[[index]]@rhs <- rep(0, (n_met * (n_met - 1)) / 2)
-          tmp_index <- 0
-          for (i in condition_met) {
-            for (j in condition_met) {
-              if (i < j) {
-                tmp_index <- tmp_index + 1
-                list_constraints[[index]]@mat[tmp_index, ni + c(i, j)] <- c(1, -1)
-              }
-            }
-          }
-
       }
+
       if (constraints[["TYPE"]][index] %in% c("MUTUALLYEXCLUSIVE", "MUTUALLY EXCLUSIVE", "XOR", "ENEMY")) {
 
         match_vec       <- with(st_attrib@data, eval(parse(text = constraints[["CONDITION"]][index])))
