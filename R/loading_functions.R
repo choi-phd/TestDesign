@@ -854,31 +854,6 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
       }
     }
 
-    if (constraints[["TYPE"]][index] %in% c("SUM", "AVERAGE", "MEAN")) {
-
-      if (constraints[["LB"]][index] == constraints[["UB"]][index]) {
-        list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
-        list_constraints[[index]]@dir <- "<="
-        list_constraints[[index]]@rhs <- constraints[["UB"]][index]
-        if (constraints[["TYPE"]][index] == "SUM") {
-          list_constraints[[index]]@mat[1, 1:ni] <- item_attrib@data[[constraints[["CONDITION"]][index]]]
-        } else if (constraints[["TYPE"]][index] %in% c("AVERAGE", "MEAN")) {
-          list_constraints[[index]]@mat[1, 1:ni] <- item_attrib@data[[constraints[["CONDITION"]][index]]] / test_length_UB
-        }
-      } else {
-        list_constraints[[index]]@mat <- matrix(0, nrow = 2, ncol = nv)
-        list_constraints[[index]]@dir <- c(">=", "<=")
-        list_constraints[[index]]@rhs <- c(constraints[["LB"]][index], constraints[["UB"]][index])
-        if (constraints[["TYPE"]][index] == "SUM") {
-          list_constraints[[index]]@mat[, 1:ni] <- item_attrib@data[[constraints[["CONDITION"]][index]]]
-        } else if (constraints[["TYPE"]][index] %in% c("AVERAGE", "MEAN")) {
-          list_constraints[[index]]@mat[1, 1:ni] <- item_attrib@data[[constraints[["CONDITION"]][index]]] / test_length_UB
-          list_constraints[[index]]@mat[2, 1:ni] <- item_attrib@data[[constraints[["CONDITION"]][index]]] / test_length_LB
-        }
-      }
-
-    }
-
     if (constraints[["TYPE"]][index] == "INCLUDE") {
 
       match_vec       <- with(item_attrib@data, eval(parse(text = constraints[["CONDITION"]][index])))
@@ -987,30 +962,6 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 
         }
       }
-
-      if (constraints[["TYPE"]][index] %in% c("SUM", "AVERAGE", "MEAN")) {
-
-          if (constraints[["LB"]][index] == constraints[["UB"]][index]) {
-            list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
-            list_constraints[[index]]@dir <- "<="
-            list_constraints[[index]]@rhs <- constraints[["UB"]][index]
-            if (constraints[["TYPE"]][index] == "SUM") {
-              list_constraints[[index]]@mat[1, (ni + 1):nv] <- st_attrib@data[[constraints[["CONDITION"]][index]]]
-            } else if (constraints[["TYPE"]][index] %in% c("AVERAGE", "MEAN")) {
-              list_constraints[[index]]@mat[1, (ni + 1):nv] <- st_attrib@data[[constraints[["CONDITION"]][index]]] / number_stimulus_UB
-            }
-          } else {
-            list_constraints[[index]]@mat <- matrix(0, nrow = 2, ncol = nv)
-            list_constraints[[index]]@dir <- c(">=", "<=")
-            list_constraints[[index]]@rhs <- c(constraints[["LB"]][index], constraints[["UB"]][index])
-            if (constraints[["TYPE"]][index] == "SUM") {
-              list_constraints[[index]]@mat[, (ni + 1):nv] <- st_attrib@data[[constraints[["CONDITION"]][index]]]
-            } else if (constraints[["TYPE"]][index] %in% c("AVERAGE", "MEAN")) {
-              list_constraints[[index]]@mat[1, (ni + 1):nv] <- st_attrib@data[[constraints[["CONDITION"]][index]]] / number_stimulus_UB
-              list_constraints[[index]]@mat[2, (ni + 1):nv] <- st_attrib@data[[constraints[["CONDITION"]][index]]] / number_stimulus_LB
-            }
-          }
-        }
 
       if (constraints[["TYPE"]][index] == "INCLUDE") {
 
