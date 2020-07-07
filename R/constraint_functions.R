@@ -42,6 +42,19 @@ validateExpression <- function(x, attrib, unit_name, use_lt) {
 }
 
 #' @noRd
+validateFullColumn <- function(x, attrib, class_name) {
+
+  if (!(x$CONDITION %in% names(attrib@data))) {
+    stop(sprintf("constraint %s: column '%s' not found in %s", x$CONSTRAINT, x$CONDITION, class_name))
+  }
+
+  if (any(is.na(attrib@data[[x$CONDITION]]))) {
+    stop(sprintf("constraint %s: %s '%s' must not have any missing values", x$CONSTRAINT, class_name, x$CONDITION))
+  }
+
+}
+
+#' @noRd
 validateConstraintData <- function(x, attrib) {
 
   if (inherits(attrib, "item_attrib")) {
@@ -86,15 +99,7 @@ validateConstraintData <- function(x, attrib) {
   if (x$TYPE %in% c("SUM", "AVERAGE", "MEAN")) {
 
     validateLBUB(x)
-
-    if (!(x$CONDITION %in% names(attrib@data))) {
-      stop(sprintf("constraint %s: column '%s' not found in %s", x$CONSTRAINT, x$CONDITION, class_name))
-    }
-
-    if (any(is.na(attrib@data[[x$CONDITION]]))) {
-      stop(sprintf("constraint %s: %s '%s' must not have any missing values", x$CONSTRAINT, class_name, x$CONDITION))
-    }
-
+    validateFullColumn(x, attrib, class_name)
     return()
 
   }
@@ -129,14 +134,7 @@ validateConstraintData <- function(x, attrib) {
 
   if (x$TYPE == "ORDER") {
 
-    if (!(x$CONDITION %in% names(attrib@data))) {
-      stop(sprintf("constraint %s: column '%s' not found in %s", x$CONSTRAINT, x$CONDITION, class_name))
-    }
-
-    if (any(is.na(attrib@data[[x$CONDITION]]))) {
-      stop(sprintf("constraint %s: %s '%s' must not have any missing values", x$CONSTRAINT, class_name, x$CONDITION))
-    }
-
+    validateFullColumn(x, attrib, class_name)
     return()
 
   }
