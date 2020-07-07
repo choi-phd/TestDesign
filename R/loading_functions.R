@@ -701,13 +701,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
     }
   }
 
-  names(constraints)     <- toupper(names(constraints))
-  constraints[["TYPE"]]  <- toupper(constraints[["TYPE"]])
-  constraints[["WHAT"]]  <- toupper(constraints[["WHAT"]])
-  constraints[["COUNT"]] <- NA
-  constraints[["ONOFF"]] <- toupper(constraints[["ONOFF"]])
-  constraints[["ONOFF"]][is.na(constraints[["ONOFF"]])] <- ""
-  ONOFF <- TRUE
+  constraints <- normalizeConstraintData(constraints)
 
   if ("CONSTRAINT" %in% names(constraints)) {
     if (any(constraints[["CONSTRAINT"]] != as.character(1:dim(constraints)[1])) |
