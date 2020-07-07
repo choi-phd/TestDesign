@@ -1017,17 +1017,12 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
       constraint_type_is_valid <- TRUE
 
       if (!list_constraints[[index]]@suspend) {
-        if (constraints[["CONDITION"]][index] %in% names(item_attrib@data)) {
-          if (any(is.na(item_attrib@data[[constraints[["CONDITION"]][index]]]))) {
-            stop(sprintf("Constraint %s: %s must not have a missing value", index, constraints[["CONDITION"]][index]))
-          }
           item_order <- item_attrib@data[[constraints[["CONDITION"]][index]]]
           item_order_by <- constraints[["CONDITION"]][index]
-        } else {
-          stop(sprintf("Constraint %s is invalid: column '%s' not found in 'item_attrib'", index, constraints[["CONDITION"]][index]))
-        }
       }
+
     }
+
     if (!constraint_type_is_valid) {
       stop(sprintf("Constraint %s has an invalid 'TYPE': %s", index, constraints[["TYPE"]][index]))
     }
@@ -1208,15 +1203,8 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
         constraint_type_is_valid <- TRUE
 
         if (!list_constraints[[index]]@suspend) {
-          if (constraints[["CONDITION"]][index] %in% names(st_attrib@data)) {
-            if (any(is.na(st_attrib@data[[constraints[["CONDITION"]][index]]]))) {
-              stop(sprintf("Constraint %s: %s must not have a missing value", index, constraints[["CONDITION"]][index]))
-            }
             stim_order <- st_attrib@data[[constraints[["CONDITION"]][index]]]
             stim_order_by <- constraints[["CONDITION"]][index]
-          } else {
-            stop(sprintf("Constraint %s is invalid: %s not found in st_attrib", index, constraints[["CONDITION"]][index]))
-          }
         }
       }
       if (!constraint_type_is_valid) {
