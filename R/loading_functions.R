@@ -545,83 +545,90 @@ setClass("constraint",
 #' @export
 setClass("constraints",
   slots = c(
-    constraints = "data.frame",
-    list_constraints = "list",
-    pool = "item_pool",
-    item_attrib = "item_attrib",
-    st_attrib = "stattrib_or_null",
-    test_length = "numeric",
-    nv = "numeric",
-    ni = "numeric",
-    ns = "numeric",
-    id = "character",
-    index = "character",
-    mat = "matrix",
-    dir = "character",
-    rhs = "numeric",
-    set_based = "logical",
-    item_order = "numeric_or_null",
-    item_order_by = "character_or_null",
-    stim_order = "numeric_or_null",
-    stim_order_by = "character_or_null",
+    constraints            = "data.frame",
+    list_constraints       = "list",
+    pool                   = "item_pool",
+    item_attrib            = "item_attrib",
+    st_attrib              = "stattrib_or_null",
+    test_length            = "numeric",
+    nv                     = "numeric",
+    ni                     = "numeric",
+    ns                     = "numeric",
+    id                     = "character",
+    index                  = "character",
+    mat                    = "matrix",
+    dir                    = "character",
+    rhs                    = "numeric",
+    set_based              = "logical",
+    item_order             = "numeric_or_null",
+    item_order_by          = "character_or_null",
+    stim_order             = "numeric_or_null",
+    stim_order_by          = "character_or_null",
     item_index_by_stimulus = "list_or_null",
     stimulus_index_by_item = "numeric_or_null"
   ),
   prototype = list(
-    constraints = data.frame(0),
-    list_constraints = list(0),
-    pool = new("item_pool"),
-    item_attrib = new("item_attrib"),
-    st_attrib = NULL,
-    test_length = numeric(0),
-    nv = numeric(0),
-    ni = numeric(0),
-    ns = numeric(0),
-    id = character(0),
-    index = character(0),
-    mat = matrix(0),
-    dir = character(0),
-    rhs = numeric(0),
-    set_based = logical(0),
-    item_order = NULL,
-    item_order_by = NULL,
-    stim_order = NULL,
-    stim_order_by = NULL,
+    constraints            = data.frame(0),
+    list_constraints       = list(0),
+    pool                   = new("item_pool"),
+    item_attrib            = new("item_attrib"),
+    st_attrib              = NULL,
+    test_length            = numeric(0),
+    nv                     = numeric(0),
+    ni                     = numeric(0),
+    ns                     = numeric(0),
+    id                     = character(0),
+    index                  = character(0),
+    mat                    = matrix(0),
+    dir                    = character(0),
+    rhs                    = numeric(0),
+    set_based              = logical(0),
+    item_order             = NULL,
+    item_order_by          = NULL,
+    stim_order             = NULL,
+    stim_order_by          = NULL,
     item_index_by_stimulus = list(0),
     stimulus_index_by_item = numeric(0)
   ),
   validity = function(object) {
-    err <- c()
-    if (!all(c("CONSTRAINT", "TYPE", "WHAT", "CONDITION", "LB", "UB", "ONOFF") %in% names(object@constraints))) {
-      msg <- "constraints: must include columns CONSTRAINT, TYPE, WHAT, CONDITION, LB, UB, and ONOFF (see vignette('constraints') for details)"
-      err <- c(err, msg)
-    }
-    for (i in 1:dim(object@constraints)[1]) {
-      if (xor(
-        is.na(object@constraints[i, ]$LB),
-        is.na(object@constraints[i, ]$UB))) {
-        msg <- sprintf("constraint %s: missing LB/UB", i)
-        err <- c(err, msg)
-      }
-      if (!any(is.na(c(object@constraints[i, ]$LB, object@constraints[i, ]$UB)))) {
-        if (object@constraints[i, ]$LB > object@constraints[i, ]$UB) {
-          msg <- sprintf(
-            "constraint %s: unexpectedly larger LB than UB %s > %s", i,
-            object@constraints[i, ]$LB,
-            object@constraints[i, ]$UB)
-          err <- c(err, msg)
+
+    tmp <- try(
+      loadConstraints(
+        object@constraints,
+        object@pool,
+        object@item_attrib,
+        object@st_attrib
+      ),
+      silent = TRUE
+    )
+
+    if (inherits(tmp, "try-error")) {
+
+      err <- as.character(tmp)
+
+    } else {
+
+      err <- c()
+
+      for (x in slotNames(tmp)) {
+        slot_recreated <- slot(tmp, x)
+        slot_origin    <- slot(object, x)
+        if (inherits(slot_recreated, "integer")) {
+          slot_recreated <- as.numeric(slot_recreated)
+        }
+        if (inherits(slot_origin, "integer")) {
+          slot_origin <- as.numeric(slot_origin)
+        }
+        if (!identical(slot_recreated, slot_origin)) {
+          err <- c(
+            err,
+            sprintf("constraints: slot '%s' recreated from @constraints does not match @%s", x, x)
+          )
         }
       }
-      if (!object@constraints[i, ]$TYPE %in% c(
-        "NUMBER", "COUNT", "ALLORNONE", "ALL OR NONE", "IIF", "MUTUALLYEXCLUSIVE", "MUTUALLY EXCLUSIVE",
-        "XOR", "ENEMY", "SUM", "AVERAGE", "MEAN", "INCLUDE", "EXCLUDE", "NOT", "ORDER")) {
-        msg <- sprintf(
-          "constraint %s: unexpected TYPE '%s' (see vignette('constraints') for details)", i,
-          object@constraints[i, ]$TYPE
-        )
-        err <- c(err, msg)
-      }
+
     }
+
     if (length(err) == 0) {
       return(TRUE)
     } else {
