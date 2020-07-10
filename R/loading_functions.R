@@ -530,7 +530,9 @@ setClass("constraint",
 #'
 #' \code{\linkS4class{constraints}} is an S4 class to represent a set of constraints and its associated objects.
 #'
-#' @slot constraints a data.frame containing the constraint specifications.
+#' See \code{\link{constraints-operators}} for object manipulation functions.
+#'
+#' @slot constraints a \code{\link{data.frame}} containing the constraint specifications.
 #' @slot list_constraints a list containing the \code{\linkS4class{constraint}} object representation of each constraint.
 #' @slot pool the \code{\linkS4class{item_pool}} object associated with the constraints.
 #' @slot item_attrib the \code{\linkS4class{item_attrib}} object associated with the constraints.
