@@ -330,12 +330,13 @@ setMethod("print", "exposure_rate_plot", function(x) {
 #' @rdname print-methods
 setMethod("print", "summary_item_pool", function(x) {
   if (length(x@ni) > 0) {
-    n_digits = max(floor(log(x@ni, 10)) + 2, 5)
+    n_digits = max(floor(log(x@ni, 10)) + 3, 6)
     cat("Item pool\n")
     cat(sprintf("  # of items :% *i\n", n_digits, x@ni))
     for (i in 1:nrow(x@ni_per_model)) {
         cat(sprintf(" %11s :% *i\n", x@ni_per_model[i, 1], n_digits, x@ni_per_model[i, 2]))
     }
+    cat(sprintf("      has SE : %5s\n", x@has_se))
   } else {
     cat("empty 'summary_item_pool' object\n")
   }

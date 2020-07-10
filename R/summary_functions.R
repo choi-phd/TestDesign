@@ -10,6 +10,7 @@ setMethod("summary", "item_pool", function(object) {
   tmp              <- as.data.frame(table(object@model))
   colnames(tmp)    <- c("model", "items")
   out@ni_per_model <- tmp
+  out@has_se       <- any(na.omit(object@se) > 0)
   return(out)
 })
 
