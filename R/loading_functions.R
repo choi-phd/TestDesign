@@ -108,6 +108,7 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL) {
       load_se <- TRUE
     } else if (inherits(ipar_se, "character")) {
       ipar_se <- read.csv(ipar_se, header = TRUE, as.is = TRUE)
+      load_se <- TRUE
     }
   }
 
@@ -122,9 +123,11 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL) {
       pool@model[i] <- "item_1PL"
       parms[[i]] <- new("item_1PL", difficulty = b)
       valid[i] <- TRUE
-      pool@ipar[i, 1] <- b
+
+      j <- 1
+      pool@ipar[i, j] <- b
       if (load_se) {
-        se[i, 1] <- ipar_se[[3]][i]
+        se[i, j] <- as.matrix(ipar_se[i, 2 + j])
       }
     } else if (model[i] == 2 | model[i] == "2PL") {
       NCAT[i] <- 2
@@ -134,9 +137,11 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL) {
         pool@model[i] <- "item_2PL"
         parms[[i]] <- new("item_2PL", slope = a, difficulty = b)
         valid[i] <- TRUE
-        pool@ipar[i, 1:2] <- c(a, b)
+
+        j <- 1:2
+        pool@ipar[i, j] <- c(a, b)
         if (load_se) {
-          se[i, 1:2] <- c(ipar_se[[3]][i], ipar_se[[4]][i])
+          se[i, j] <- as.matrix(ipar_se[i, 2 + j])
         }
       }
     } else if (model[i] == 3 | model[i] == "3PL") {
@@ -148,9 +153,11 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL) {
         pool@model[i] <- "item_3PL"
         parms[[i]] <- new("item_3PL", slope = a, difficulty = b, guessing = c)
         valid[i] <- TRUE
-        pool@ipar[i, 1:3] <- c(a, b, c)
+
+        j <- 1:3
+        pool@ipar[i, j] <- c(a, b, c)
         if (load_se) {
-          se[i, 1:3] <- c(ipar_se[[3]][i], ipar_se[[4]][i], ipar_se[[5]][i])
+          se[i, j] <- as.matrix(ipar_se[i, 2 + j])
         }
       }
     } else if (model[i] == 4 | model[i] == "PC") {
@@ -159,9 +166,11 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL) {
       pool@model[i] <- "item_PC"
       parms[[i]] <- new("item_PC", threshold = b, ncat = NCAT[i])
       valid[i] <- TRUE
-      pool@ipar[i, 1:(NCAT[i] - 1)] <- b
+
+      j <- 1:(NCAT[i] - 1)
+      pool@ipar[i, j] <- b
       if (load_se) {
-        se[i, 1:(NCAT[i] - 1)] <- ipar_se[i, 3:nfields[i]]
+        se[i, j] <- as.matrix(ipar_se[i, 2 + j])
       }
     } else if (model[i] == 5 | model[i] == "GPC") {
       NCAT[i] <- nfields[i] - 2
@@ -171,9 +180,11 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL) {
         pool@model[i] <- "item_GPC"
         parms[[i]] <- new("item_GPC", slope = a, threshold = b, ncat = NCAT[i])
         valid[i] <- TRUE
-        pool@ipar[i, 1:NCAT[i]] <- c(a, b)
+
+        j <- 1:NCAT[i]
+        pool@ipar[i, j] <- c(a, b)
         if (load_se) {
-          se[i, 1:NCAT[i]] <- c(ipar_se[[3]][i], as.numeric(ipar_se[i, 4:nfields[i]]))
+          se[i, j] <- as.matrix(ipar_se[i, 2 + j])
         }
       }
     } else if (model[i] == 6 | model[i] == "GR") {
@@ -184,9 +195,11 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL) {
         pool@model[i] <- "item_GR"
         parms[[i]] <- new("item_GR", slope = a, category = b, ncat = NCAT[i])
         valid[i] <- TRUE
-        pool@ipar[i, 1:NCAT[i]] <- c(a, b)
+
+        j <- 1:NCAT[i]
+        pool@ipar[i, j] <- c(a, b)
         if (load_se) {
-          se[i, 1:NCAT[i]] <- c(ipar[[3]][i], as.numeric(ipar_se[i, 4:nfields[i]]))
+          se[i, j] <- as.matrix(ipar_se[i, 2 + j])
         }
       }
     } else {
@@ -210,6 +223,10 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL) {
   if (max(rowSums(!is.na(pool@ipar))) != max(nfields) - 2) {
     pool@ipar <- pool@ipar[, 1:max(rowSums(!is.na(pool@ipar)))]
   }
+
+  tmp <- pool@raw
+  tmp[, 3:max(nfields)] <- pool@se
+  pool@raw_se <- tmp
 
   if (validObject(pool)) {
     return(pool)
