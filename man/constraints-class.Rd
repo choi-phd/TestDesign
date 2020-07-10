@@ -7,10 +7,13 @@
 \description{
 \code{\linkS4class{constraints}} is an S4 class to represent a set of constraints and its associated objects.
 }
+\details{
+See \code{\link{constraints-operators}} for object manipulation functions.
+}
 \section{Slots}{
 
 \describe{
-\item{\code{constraints}}{a data.frame containing the constraint specifications.}
+\item{\code{constraints}}{a \code{\link{data.frame}} containing the constraint specifications.}
 
 \item{\code{list_constraints}}{a list containing the \code{\linkS4class{constraint}} object representation of each constraint.}
 
