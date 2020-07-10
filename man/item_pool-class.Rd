@@ -29,5 +29,7 @@
 \item{\code{se}}{a matrix containing item parameter standard errors.}
 
 \item{\code{raw}}{the raw input \code{\link{data.frame}} used in \code{\link{loadItemPool}} to create this object.}
+
+\item{\code{raw_se}}{the raw input \code{\link{data.frame}} used in \code{\link{loadItemPool}} to create this object.}
 }}
 

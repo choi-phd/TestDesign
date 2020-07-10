@@ -224,6 +224,7 @@ setClass("item_GR",
 #' @slot ipar a matrix containing item parameters.
 #' @slot se a matrix containing item parameter standard errors.
 #' @slot raw the raw input \code{\link{data.frame}} used in \code{\link{loadItemPool}} to create this object.
+#' @slot raw_se the raw input \code{\link{data.frame}} used in \code{\link{loadItemPool}} to create this object.
 #'
 #' @export
 setClass("item_pool",
@@ -237,7 +238,8 @@ setClass("item_pool",
     parms   = "list",
     ipar    = "matrix",
     se      = "matrix",
-    raw     = "data.frame"
+    raw     = "data.frame",
+    raw_se  = "dataframe_or_null"
   ),
   prototype = list(
     ni      = numeric(0),
@@ -249,7 +251,8 @@ setClass("item_pool",
     parms   = list(0),
     ipar    = matrix(0),
     se      = matrix(0),
-    raw     = data.frame()
+    raw     = data.frame(),
+    raw_se  = NULL
   ),
   validity = function(object) {
     if (length(unique(object@id)) != length(object@id)) {
