@@ -75,7 +75,7 @@ subsetTest <- function(test, select = NULL) {
   } else if (all(select %in% 1:test@pool@ni) && anyDuplicated(select) == 0) {
     n_select            <- length(select)
     sub_test            <- new("test")
-    sub_test@pool       <- subsetItemPool(test@pool, select = select)
+    sub_test@pool       <- subsetItemPool(test@pool, select)
     sub_test@theta      <- test@theta
     sub_test@prob       <- test@prob[select]
     sub_test@info       <- test@info[, select, drop = FALSE]

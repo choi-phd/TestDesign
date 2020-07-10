@@ -53,7 +53,7 @@ setMethod("summary", "output_Static", function(object) {
   if (out@set_based) {
     out@n_selected_sets <- length(unique(object@selected[['STID']]))
   }
-  subpool   <- subsetItemPool(object@pool, select = out@selected_items)
+  subpool   <- subsetItemPool(object@pool, out@selected_items)
   info      <- calcFisher(subpool, out@target_location)
   out@info  <- rowSums(info)
   out@score <- calcEscore(subpool, out@target_location)
