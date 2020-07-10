@@ -37,6 +37,26 @@ setClass(
 
 #' @rdname summary-classes
 setClass(
+  "summary_constraints",
+  slots = c(
+    n_constraints     = "numeric",
+    n_mip_constraints = "numeric",
+    test_length       = "numeric",
+    set_based         = "logical"
+  ),
+  prototype = list(
+    n_constraints     = numeric(0),
+    n_mip_constraints = numeric(0),
+    test_length       = numeric(0),
+    set_based         = logical(0)
+  ),
+  validity = function(object) {
+    return(TRUE)
+  }
+)
+
+#' @rdname summary-classes
+setClass(
   "summary_output_Static",
   slots = c(
    n_targets       = "numeric",

@@ -343,6 +343,24 @@ setMethod("print", "summary_item_pool", function(x) {
   return(invisible(x))
 })
 
+#' @aliases print,summary_item_pool-method
+#' @docType methods
+#' @rdname print-methods
+setMethod("print", "summary_constraints", function(x) {
+  if (length(x@n_constraints) > 0) {
+    n_digits = max(floor(log(x@n_constraints, 10)) + 3, 6)
+    cat("Constraints\n")
+    cat(sprintf("  # of constraints :% *i\n", n_digits, x@n_constraints))
+    cat(sprintf("      (MIP-format) :% *i\n", n_digits, x@n_mip_constraints))
+    cat("\n")
+    cat(sprintf("       test length :% *i\n", n_digits, x@test_length))
+    cat(sprintf("         set-based :% *s\n", n_digits, x@set_based))
+  } else {
+    cat("empty 'summary_constraints' object\n")
+  }
+  return(invisible(x))
+})
+
 #' @aliases print,summary_output_Static-method
 #' @docType methods
 #' @rdname print-methods

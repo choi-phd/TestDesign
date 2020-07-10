@@ -27,6 +27,18 @@ setMethod("summary", "item_attrib", function(object) {
   return(out)
 })
 
+#' @aliases summary,constraints-method
+#' @docType methods
+#' @rdname summary-methods
+setMethod("summary", "constraints", function(object) {
+  out <- new("summary_constraints")
+  out@n_constraints     <- dim(object@constraints)[1]
+  out@n_mip_constraints <- sum(unlist(lapply(object@list_constraints, function(x) x@nc)))
+  out@test_length       <- object@test_length
+  out@set_based         <- object@set_based
+  return(out)
+})
+
 #' @aliases summary,output_Static-method
 #' @docType methods
 #' @rdname summary-methods
