@@ -66,6 +66,7 @@ Collate:
     'solver_functions.R'
     'helper_functions.R'
     'itemattrib_operators.R'
+    'itempool_cluster_operators.R'
     'itempool_operators.R'
     'other_functions.R'
     'plot_functions.R'
