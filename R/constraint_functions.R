@@ -257,6 +257,33 @@ parseConstraintData <- function(x, attrib, constants) {
 
     }
 
+    if (x$CONDITION %in% names(attrib@data)) {
+
+      levels <- attrib@data[, x$CONDITION]
+      levels <- na.omit(unique(levels))
+
+      if (x$LB == x$UB) {
+        o@mat <- matrix(0, nrow = length(levels), ncol = nv)
+        o@dir <- rep("==", length(levels))
+        o@rhs <- rep(x$LB, length(levels))
+        for (m in 1:length(levels)) {
+          idx_match <- which(attrib@data[x$CONDITION] == levels[m])
+          o@mat[m, nx_pad + idx_match] <- 1
+        }
+      } else {
+        o@mat <- matrix(0, nrow = 2 * length(levels), ncol = nv)
+        o@dir <- rep(c(">=", "<="), length(levels))
+        o@rhs <- rep(c(x$LB, x$UB), length(levels))
+        for (m in 1:length(levels)) {
+          idx_match <- which(attrib@data[x$CONDITION] == levels[m])
+          o@mat[c(m * 2 - 1, m * 2), nx_pad + idx_match] <- 1
+        }
+      }
+
+      return(o)
+
+    }
+
   }
 
   return(o)
