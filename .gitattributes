@@ -1,1 +1,2 @@
 */*.eps linguist-vendored
+*/*.R linguist-language=R
