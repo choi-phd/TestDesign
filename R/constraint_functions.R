@@ -17,10 +17,12 @@ normalizeConstraintData <- function(x) {
 validateConstraintData <- function(x, attrib) {
 
   if (inherits(attrib, "item_attrib")) {
-    unit_name <- "items"
+    unit_name  <- "items"
+    class_name <- "item_attrib"
   }
   if (inherits(attrib, "st_attrib")) {
-    unit_name <- "stimuli"
+    unit_name  <- "stimuli"
+    class_name <- "st_attrib"
   }
 
   if (x$TYPE %in% c("NUMBER", "COUNT")) {
@@ -59,6 +61,27 @@ validateConstraintData <- function(x, attrib) {
     idx <- with(attrib@data, eval(try_parse))
     if (length(which(idx)) == 0) {
       stop(sprintf("constraint %s: '%s' does not match any %s", x$CONSTRAINT, x$CONDITION, unit_name))
+    }
+
+    return()
+
+  }
+
+  if (x$TYPE %in% c("SUM", "AVERAGE", "MEAN")) {
+
+    if (any(c(x$LB, x$UB) < 0)) {
+      stop(sprintf("constraint %s: LB and UB must be >= 0", x$CONSTRAINT))
+    }
+    if (x$LB > x$UB) {
+      stop(sprintf("constraint %s: LB <= UB must be TRUE", x$CONSTRAINT))
+    }
+
+    if (!(x$CONDITION %in% names(attrib@data))) {
+      stop(sprintf("constraint %s: column '%s' not found in %s", x$CONSTRAINT, x$CONDITION, class_name))
+    }
+
+    if (any(is.na(attrib@data[[x$CONDITION]]))) {
+      stop(sprintf("constraint %s: %s '%s' must not have any missing values", x$CONSTRAINT, class_name, x$CONDITION))
     }
 
     return()
