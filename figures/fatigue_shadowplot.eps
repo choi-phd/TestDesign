@@ -54,11 +54,48 @@
            >>
          ] setcolorspace } bind def
 /srgb { setcolor } bind def
+% begin encoding
+/WinAnsiEncoding [
+ /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+ /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+ /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+ /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+ /space /exclam /quotedbl /numbersign /dollar /percent /ampersand /quoteright
+ /parenleft /parenright /asterisk /plus /comma /minus /period /slash
+ /zero /one /two /three /four /five /six /seven
+ /eight /nine /colon /semicolon /less /equal /greater /question
+ /at /A /B /C /D /E /F /G
+ /H /I /J /K /L /M /N /O
+ /P /Q /R /S /T /U /V /W
+ /X /Y /Z /bracketleft /backslash /bracketright /asciicircum /underscore
+ /grave /a /b /c /d /e /f /g
+ /h /i /j /k /l /m /n /o
+ /p /q /r /s /t /u /v /w
+ /x /y /z /braceleft /bar /braceright /asciitilde /.notdef
+ /Euro /.notdef /quotesinglbase /florin /quotedblbase /ellipsis /dagger /daggerdbl
+ /circumflex /perthousand /Scaron /guilsinglleft /OE /.notdef /Zcaron /.notdef
+ /.notdef /quoteleft /quoteright /quotedblleft /quotedblright /bullet /endash /emdash
+ /tilde /trademark /scaron /guilsinglright /oe /.notdef /zcaron /Ydieresis
+ /space /exclamdown /cent /sterling /currency /yen /brokenbar /section
+ /dieresis /copyright /ordfeminine /guillemotleft /logicalnot /hyphen /registered /macron
+ /degree /plusminus /twosuperior /threesuperior /acute /mu /paragraph /periodcentered
+ /cedilla /onesuperior /ordmasculine /guillemotright /onequarter /onehalf /threequarters /questiondown
+ /Agrave /Aacute /Acircumflex /Atilde /Adieresis /Aring /AE /Ccedilla
+ /Egrave /Eacute /Ecircumflex /Edieresis /Igrave /Iacute /Icircumflex /Idieresis
+ /Eth /Ntilde /Ograve /Oacute /Ocircumflex /Otilde /Odieresis /multiply
+ /Oslash /Ugrave /Uacute /Ucircumflex /Udieresis /Yacute /Thorn /germandbls
+ /agrave /aacute /acircumflex /atilde /adieresis /aring /ae /ccedilla
+ /egrave /eacute /ecircumflex /edieresis /igrave /iacute /icircumflex /idieresis
+ /eth /ntilde /ograve /oacute /ocircumflex /otilde /odieresis /divide
+ /oslash /ugrave /uacute /ucircumflex /udieresis /yacute /thorn /ydieresis
+]
+ def
+% end encoding
 %%IncludeResource: font Helvetica
 /Helvetica findfont
 dup length dict begin
   {1 index /FID ne {def} {pop pop} ifelse} forall
-  /Encoding ISOLatin1Encoding def
+  /Encoding WinAnsiEncoding def
   currentdict
   end
 /Font1 exch definefont pop
@@ -66,7 +103,7 @@ dup length dict begin
 /Helvetica-Bold findfont
 dup length dict begin
   {1 index /FID ne {def} {pop pop} ifelse} forall
-  /Encoding ISOLatin1Encoding def
+  /Encoding WinAnsiEncoding def
   currentdict
   end
 /Font2 exch definefont pop
@@ -74,7 +111,7 @@ dup length dict begin
 /Helvetica-Oblique findfont
 dup length dict begin
   {1 index /FID ne {def} {pop pop} ifelse} forall
-  /Encoding ISOLatin1Encoding def
+  /Encoding WinAnsiEncoding def
   currentdict
   end
 /Font3 exch definefont pop
@@ -82,7 +119,7 @@ dup length dict begin
 /Helvetica-BoldOblique findfont
 dup length dict begin
   {1 index /FID ne {def} {pop pop} ifelse} forall
-  /Encoding ISOLatin1Encoding def
+  /Encoding WinAnsiEncoding def
   currentdict
   end
 /Font4 exch definefont pop
@@ -96,6 +133,8 @@ dup length dict begin
 %%EndProlog
 %%Page: 1 1
 bp
+/bg { 1 1 1 srgb } def
+0.00 0.00 576.00 504.00 r p2
 0.00 0.00 576.00 504.00 cl
 0 0 0 srgb
 0.75 setlinewidth
@@ -1525,7 +1564,6 @@ o
 531.12 338.42 19.89 2.23 r p1
 /bg { 0.3294 0.3294 0.3294 srgb } def
 0.3294 0.3294 0.3294 srgb
-93.57 347.35 19.89 2.23 r p3
 133.34 347.35 19.89 2.23 r p3
 173.12 347.35 19.89 2.23 r p3
 212.90 347.35 19.89 2.23 r p3
@@ -1542,7 +1580,6 @@ o
 93.57 347.35 19.89 2.23 r p3
 /bg { 0.3294 0.3294 0.3294 srgb } def
 0.3294 0.3294 0.3294 srgb
-133.34 253.62 19.89 2.23 r p3
 173.12 253.62 19.89 2.23 r p3
 212.90 253.62 19.89 2.23 r p3
 252.68 253.62 19.89 2.23 r p3
@@ -1558,7 +1595,6 @@ o
 133.34 253.62 19.89 2.23 r p3
 /bg { 0.3294 0.3294 0.3294 srgb } def
 0.3294 0.3294 0.3294 srgb
-173.12 204.53 19.89 2.23 r p3
 212.90 204.53 19.89 2.23 r p3
 252.68 204.53 19.89 2.23 r p3
 292.46 204.53 19.89 2.23 r p3
@@ -1573,7 +1609,6 @@ o
 173.12 204.53 19.89 2.23 r p3
 /bg { 0.3294 0.3294 0.3294 srgb } def
 0.3294 0.3294 0.3294 srgb
-212.90 267.01 19.89 2.23 r p3
 252.68 267.01 19.89 2.23 r p3
 292.46 267.01 19.89 2.23 r p3
 332.23 267.01 19.89 2.23 r p3
@@ -1587,7 +1622,6 @@ o
 212.90 267.01 19.89 2.23 r p3
 /bg { 0.3294 0.3294 0.3294 srgb } def
 0.3294 0.3294 0.3294 srgb
-252.68 249.16 19.89 2.23 r p3
 292.46 249.16 19.89 2.23 r p3
 332.23 249.16 19.89 2.23 r p3
 372.01 249.16 19.89 2.23 r p3
@@ -1600,7 +1634,6 @@ o
 252.68 249.16 19.89 2.23 r p3
 /bg { 0.3294 0.3294 0.3294 srgb } def
 0.3294 0.3294 0.3294 srgb
-292.46 66.17 19.89 2.23 r p3
 332.23 66.17 19.89 2.23 r p3
 372.01 66.17 19.89 2.23 r p3
 411.79 66.17 19.89 2.23 r p3
@@ -1612,7 +1645,6 @@ o
 292.46 66.17 19.89 2.23 r p3
 /bg { 0.3294 0.3294 0.3294 srgb } def
 0.3294 0.3294 0.3294 srgb
-332.23 383.05 19.89 2.23 r p3
 372.01 383.05 19.89 2.23 r p3
 411.79 383.05 19.89 2.23 r p3
 451.57 383.05 19.89 2.23 r p3
@@ -1623,7 +1655,6 @@ o
 332.23 383.05 19.89 2.23 r p3
 /bg { 0.3294 0.3294 0.3294 srgb } def
 0.3294 0.3294 0.3294 srgb
-372.01 400.91 19.89 2.23 r p3
 411.79 400.91 19.89 2.23 r p3
 451.57 400.91 19.89 2.23 r p3
 491.34 400.91 19.89 2.23 r p3
@@ -1633,7 +1664,6 @@ o
 372.01 400.91 19.89 2.23 r p3
 /bg { 0.3294 0.3294 0.3294 srgb } def
 0.3294 0.3294 0.3294 srgb
-411.79 57.24 19.89 2.23 r p3
 451.57 57.24 19.89 2.23 r p3
 491.34 57.24 19.89 2.23 r p3
 531.12 57.24 19.89 2.23 r p3
@@ -1642,7 +1672,6 @@ o
 411.79 57.24 19.89 2.23 r p3
 /bg { 0.3294 0.3294 0.3294 srgb } def
 0.3294 0.3294 0.3294 srgb
-451.57 356.27 19.89 2.23 r p3
 491.34 356.27 19.89 2.23 r p3
 531.12 356.27 19.89 2.23 r p3
 /bg { 0 0.9333 0.9333 srgb } def
@@ -1650,16 +1679,10 @@ o
 451.57 356.27 19.89 2.23 r p3
 /bg { 0.3294 0.3294 0.3294 srgb } def
 0.3294 0.3294 0.3294 srgb
-491.34 338.42 19.89 2.23 r p3
 531.12 338.42 19.89 2.23 r p3
 /bg { 0 0.9333 0.9333 srgb } def
 0 0.9333 0.9333 srgb
 491.34 338.42 19.89 2.23 r p3
-/bg { 0.3294 0.3294 0.3294 srgb } def
-0.3294 0.3294 0.3294 srgb
-531.12 432.15 19.89 2.23 r p3
-/bg { 0 0.9333 0.9333 srgb } def
-0 0.9333 0.9333 srgb
 531.12 432.15 19.89 2.23 r p3
 ep
 %%Trailer
