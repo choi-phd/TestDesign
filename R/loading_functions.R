@@ -931,15 +931,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 
       constraint_type_is_valid <- TRUE
 
-      if (!(constraints[["CONDITION"]][index] %in% names(item_attrib@data))) {
-        stop(sprintf("constraint %s: %s not found in item_attrib:", index, constraints[["CONDITION"]][index]))
-      } else {
-        if (any(is.na(item_attrib@data[[constraints[["CONDITION"]][index]]]))) {
-          stop(sprintf("constraint %s: %s must not have a missing value", index, constraints[["CONDITION"]][index]))
-        }
-        if (any(c(constraints[["LB"]][index], constraints[["UB"]][index]) < 0) || constraints[["LB"]][index] > constraints[["UB"]][index]) {
-          stop(sprintf("constraint %s has invalid LB/UB", index))
-        } else if (constraints[["LB"]][index] == constraints[["UB"]][index]) {
+        if (constraints[["LB"]][index] == constraints[["UB"]][index]) {
           list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
           list_constraints[[index]]@dir <- "<="
           list_constraints[[index]]@rhs <- constraints[["UB"]][index]
@@ -959,7 +951,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
             list_constraints[[index]]@mat[2, 1:ni] <- item_attrib@data[[constraints[["CONDITION"]][index]]] / test_length_LB
           }
         }
-      }
+
     }
 
     if (constraints[["TYPE"]][index] == "INCLUDE") {
@@ -1147,15 +1139,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 
         constraint_type_is_valid <- TRUE
 
-        if (!(constraints[["CONDITION"]][index] %in% names(st_attrib@data))) {
-          stop(sprintf("Constraint %s has invalid: %s not found in item_attrib:", index, constraints[["CONDITION"]][index]))
-        } else {
-          if (any(is.na(st_attrib@data[[constraints[["CONDITION"]][index]]]))) {
-            stop(sprintf("Constraint %s: %s must not have a missing value", index, constraints[["CONDITION"]][index]))
-          }
-          if (any(c(constraints[["LB"]][index], constraints[["UB"]][index]) < 0) || constraints[["LB"]][index] > constraints[["UB"]][index]) {
-            stop(sprintf("Constraint %s has invalid LB/UB", index))
-          } else if (constraints[["LB"]][index] == constraints[["UB"]][index]) {
+          if (constraints[["LB"]][index] == constraints[["UB"]][index]) {
             list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
             list_constraints[[index]]@dir <- "<="
             list_constraints[[index]]@rhs <- constraints[["UB"]][index]
@@ -1176,7 +1160,6 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
             }
           }
         }
-      }
 
       if (constraints[["TYPE"]][index] == "INCLUDE") {
 
