@@ -3,7 +3,7 @@
 \docType{class}
 \name{constraint-class}
 \alias{constraint-class}
-\title{Class 'constraints': a single constraint}
+\title{Class 'constraint': a single constraint}
 \description{
 \code{\linkS4class{constraint}} is an S4 class to represent a single constraint.
 }
@@ -14,11 +14,12 @@
 
 \item{\code{nc}}{the number of MIP-format constraints translated from this constraint.}
 
-\item{\code{mat}}{LHS coefficients to use on decision variables.}
-
-\item{\code{rhs}}{RHS values to use.}
-
-\item{\code{dir}}{the imposed constraint between LHS and RHS.}
+\item{\code{mat,dir,rhs}}{these represent MIP-format constraints. A single MIP-format constraint is associated with a row in \code{mat}, a value in \code{rhs}, and a value in \code{dir}.
+\itemize{
+   \item{the \emph{i}-th row of \code{mat} represents LHS coefficients to use on decision variables in the \emph{i}-th MIP-format constraint.}
+   \item{the \emph{i}-th value of \code{rhs} represents RHS values to use in the \emph{i}-th MIP-format constraint.}
+   \item{the \emph{i}-th value of \code{dir} represents the imposed constraint between LHS and RHS.}
+}}
 
 \item{\code{suspend}}{\code{TRUE} if the constraint is not to be imposed.}
 }}

@@ -34,9 +34,9 @@ Shadow(
 
 \item{data}{(optional) a matrix containing item response data to use in simulation. Either \code{true_theta} or \code{data} must be supplied.}
 
-\item{prior}{prior density at each \code{config@theta_grid}. This overrides \code{prior_par}. Can be a vector to use the same prior for all \emph{nj} participants, or a \emph{nj}-row matrix to use a different prior for each participant.}
+\item{prior}{(optional) prior density at each \code{config@theta_grid}. This overrides \code{prior_par}. Can be a vector to use the same prior for all \emph{nj} participants, or a \emph{nj}-row matrix to use a different prior for each participant.}
 
-\item{prior_par}{normal distribution parameters \code{c(mean, sd)} to use as prior. Can be a vector to use the same prior for all \emph{nj} participants, or a \emph{nj}-row matrix to use a different prior for each participant.}
+\item{prior_par}{(optional) normal distribution parameters \code{c(mean, sd)} to use as prior. Can be a vector to use the same prior for all \emph{nj} participants, or a \emph{nj}-row matrix to use a different prior for each participant.}
 
 \item{session}{(optional) used to communicate with Shiny app \code{\link{TestDesign}}.}
 }

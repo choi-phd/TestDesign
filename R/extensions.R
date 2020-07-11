@@ -42,6 +42,18 @@ NULL
 #'
 #' @param object an object to summarize.
 #'
+#' @examples
+#' summary(itempool_science)
+#' summary(itemattrib_science)
+#'
+#' cfg = createStaticTestConfig()
+#' solution = Static(cfg, constraints_science)
+#' summary(solution)
+#'
+#' cfg = createShadowTestConfig()
+#' solution = Shadow(cfg, constraints_science, true_theta = seq(-1, 1, 1))
+#' summary(solution)
+#'
 #' @docType methods
 #' @rdname summary-methods
 #' @export
