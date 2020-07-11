@@ -12,3 +12,8 @@ normalizeConstraintData <- function(x) {
   return(x)
 
 }
+
+#' @noRd
+validateConstraintData <- function(x) {
+
+}
