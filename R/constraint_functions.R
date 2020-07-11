@@ -14,6 +14,16 @@ normalizeConstraintData <- function(x) {
 }
 
 #' @noRd
+validateLBUB <- function(x) {
+  if (any(c(x$LB, x$UB) < 0)) {
+      stop(sprintf("constraint %s: LB and UB must be >= 0", x$CONSTRAINT))
+    }
+  if (x$LB > x$UB) {
+    stop(sprintf("constraint %s: LB <= UB must be TRUE", x$CONSTRAINT))
+  }
+}
+
+#' @noRd
 validateConstraintData <- function(x, attrib) {
 
   if (inherits(attrib, "item_attrib")) {
@@ -27,12 +37,7 @@ validateConstraintData <- function(x, attrib) {
 
   if (x$TYPE %in% c("NUMBER", "COUNT")) {
 
-    if (any(c(x$LB, x$UB) < 0)) {
-      stop(sprintf("constraint %s: LB and UB must be >= 0", x$CONSTRAINT))
-    }
-    if (x$LB > x$UB) {
-      stop(sprintf("constraint %s: LB <= UB must be TRUE", x$CONSTRAINT))
-    }
+    validateLBUB(x)
 
     if (
       toupper(x$CONDITION) %in%
@@ -69,12 +74,7 @@ validateConstraintData <- function(x, attrib) {
 
   if (x$TYPE %in% c("SUM", "AVERAGE", "MEAN")) {
 
-    if (any(c(x$LB, x$UB) < 0)) {
-      stop(sprintf("constraint %s: LB and UB must be >= 0", x$CONSTRAINT))
-    }
-    if (x$LB > x$UB) {
-      stop(sprintf("constraint %s: LB <= UB must be TRUE", x$CONSTRAINT))
-    }
+    validateLBUB(x)
 
     if (!(x$CONDITION %in% names(attrib@data))) {
       stop(sprintf("constraint %s: column '%s' not found in %s", x$CONSTRAINT, x$CONDITION, class_name))
