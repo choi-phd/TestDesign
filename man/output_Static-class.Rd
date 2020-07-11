@@ -12,7 +12,7 @@
 \describe{
 \item{\code{MIP}}{a list containing the result from MIP solver.}
 
-\item{\code{selected}}{a data.frame containing the selected items and their attributes.}
+\item{\code{selected}}{a \code{\link{data.frame}} containing the selected items and their attributes.}
 
 \item{\code{obj_value}}{the objective value of the solution.}
 

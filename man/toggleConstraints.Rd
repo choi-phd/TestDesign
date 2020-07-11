@@ -2,12 +2,9 @@
 % Please edit documentation in R/loading_functions.R
 \name{toggleConstraints}
 \alias{toggleConstraints}
-\alias{updateConstraints}
 \title{Toggle constraints}
 \usage{
 toggleConstraints(object, on = NULL, off = NULL)
-
-updateConstraints(object, on = NULL, off = NULL)
 }
 \arguments{
 \item{object}{a \code{\linkS4class{constraints}} object from \code{\link{loadConstraints}}.}
@@ -23,7 +20,7 @@ updateConstraints(object, on = NULL, off = NULL)
 \code{\link{toggleConstraints}} is a function to toggle individual constraints in a \code{\linkS4class{constraints}} object.
 }
 \examples{
-constraints_science2 <- updateConstraints(constraints_science, off = 32:36)
-constraints_science3 <- updateConstraints(constraints_science, on = 32:36)
+constraints_science2 <- toggleConstraints(constraints_science, off = 32:36)
+constraints_science3 <- toggleConstraints(constraints_science, on = 32:36)
 
 }

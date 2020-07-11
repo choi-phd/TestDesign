@@ -7,9 +7,9 @@
 loadItemPool(ipar, ipar_se = NULL, file = NULL, se_file = NULL)
 }
 \arguments{
-\item{ipar}{item parameters. Can be a data.frame or the file path of a .csv file. The content should at least include columns 'ID' and 'MODEL'.}
+\item{ipar}{item parameters. Can be a \code{\link{data.frame}} or the file path of a .csv file. The content should at least include columns 'ID' and 'MODEL'.}
 
-\item{ipar_se}{(optional) standard errors. Can be a data.frame or the file path of a .csv file.}
+\item{ipar_se}{(optional) standard errors. Can be a \code{\link{data.frame}} or the file path of a .csv file.}
 
 \item{file}{(deprecated) use \code{ipar} argument instead.}
 
@@ -20,22 +20,22 @@ loadItemPool(ipar, ipar_se = NULL, file = NULL, se_file = NULL)
 
 \itemize{
   \item{\code{ni}} the number of items in the pool.
-  \item{\code{max_cat}} maximum number of response categories across all items in the pool.
-  \item{\code{index}} numeric item index of each item.
-  \item{\code{id}} item ID string of each item.
-  \item{\code{model}} the object class of each item representing an item model type.
+  \item{\code{max_cat}} the maximum number of response categories across all items in the pool.
+  \item{\code{index}} the numeric item index of each item.
+  \item{\code{id}} the item ID string of each item.
+  \item{\code{model}} the object class names of each item representing an item model type.
   Can be \code{\linkS4class{item_1PL}}, \code{\linkS4class{item_2PL}}, \code{\linkS4class{item_3PL}},
   \code{\linkS4class{item_PC}}, \code{\linkS4class{item_GPC}}, or \code{\linkS4class{item_GR}}.
   \item{\code{NCAT}} the number of response categories of each item.
   \item{\code{parms}} a list containing the item object of each item.
   \item{\code{ipar}} a matrix containing all item parameters.
   \item{\code{se}} a matrix containing all item parameter standard errors. The values will be 0 if the argument \code{ipar_se} was not supplied.
-  \item{\code{raw}} a data.frame containing all item parameters, model types, and item ID strings.
+  \item{\code{raw}} a \code{\link{data.frame}} containing all item parameters, model types, and item ID strings.
 }
 }
 \description{
 \code{\link{loadItemPool}} is a data loading function to create an \code{\linkS4class{item_pool}} object.
-\code{\link{loadItemPool}} can read item parameters and standard errors from a data.frame or a .csv file.
+\code{\link{loadItemPool}} can read item parameters and standard errors from a \code{\link{data.frame}} or a .csv file.
 }
 \examples{
 ## Read from data.frame:
