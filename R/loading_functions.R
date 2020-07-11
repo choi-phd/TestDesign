@@ -815,13 +815,12 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 
   for (index in item_constraints) {
 
-    list_constraints[[index]] <- parseConstraintData(constraints[index, ], item_attrib)
+    list_constraints[[index]] <- parseConstraintData(constraints[index, ], item_attrib, constants)
+    constraints[index, ]      <- addCountsToConstraintData(constraints[index, ], item_attrib)
 
     if (constraints[["TYPE"]][index] %in% c("NUMBER", "COUNT")) {
 
       if (toupper(constraints[["CONDITION"]][index]) %in% c("", " ", "PER TEST", "TEST")) {
-
-        constraints[["COUNT"]][index] <- dim(item_attrib@data)[1]
 
         if (set_based && !common_stimulus_length) {
           n_LB_eq_UB <- sum(stimulus_length_LB == stimulus_length_UB)
@@ -857,54 +856,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
           stop(sprintf("Constraints must include at least one 'STIMULUS' under WHAT for CONDITION: %s", toupper(constraints[["CONDITION"]][index])))
         }
 
-      } else if (constraints[["CONDITION"]][index] %in% names(item_attrib@data)) {
-
-        condition <- item_attrib@data[constraints[["CONDITION"]][index]]
-        constraints[["COUNT"]][index] <- sum(!is.na(condition))
-
-      } else {
-
-        match_vec       <- with(item_attrib@data, eval(parse(text = constraints[["CONDITION"]][index])))
-        condition_met   <- which(match_vec)
-        n_condition_met <- sum(match_vec)
-        constraints[["COUNT"]][index] <- n_condition_met
-
       }
-    }
-
-    if (constraints[["TYPE"]][index] == "INCLUDE") {
-
-      match_vec       <- with(item_attrib@data, eval(parse(text = constraints[["CONDITION"]][index])))
-      condition_met   <- which(match_vec)
-      n_condition_met <- sum(match_vec)
-      constraints[["COUNT"]][index] <- n_condition_met
-
-    }
-
-    if (constraints[["TYPE"]][index] %in% c("EXCLUDE", "NOT", "NOT INCLUDE")) {
-
-      match_vec       <- with(item_attrib@data, eval(parse(text = constraints[["CONDITION"]][index])))
-      condition_met   <- which(match_vec)
-      n_condition_met <- sum(match_vec)
-      constraints[["COUNT"]][index] <- n_condition_met
-
-    }
-
-    if (constraints[["TYPE"]][index] %in% c("ALLORNONE", "ALL OR NONE", "IIF")) {
-
-      match_vec       <- with(item_attrib@data, eval(parse(text = constraints[["CONDITION"]][index])))
-      condition_met   <- which(match_vec)
-      n_condition_met <- sum(match_vec)
-      constraints[["COUNT"]][index] <- n_condition_met
-
-    }
-
-    if (constraints[["TYPE"]][index] %in% c("MUTUALLYEXCLUSIVE", "MUTUALLY EXCLUSIVE", "XOR", "ENEMY")) {
-
-      match_vec       <- with(item_attrib@data, eval(parse(text = constraints[["CONDITION"]][index])))
-      condition_met   <- which(match_vec)
-      n_condition_met <- sum(match_vec)
-      constraints[["COUNT"]][index] <- n_condition_met
 
     }
 
@@ -924,62 +876,8 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
   if (set_based) {
     for (index in stim_constraints) {
 
-      list_constraints[[index]] <- parseConstraintData(constraints[index, ], st_attrib)
-
-      if (constraints[["TYPE"]][index] %in% c("NUMBER", "COUNT")) {
-
-        constraints[["ST_COUNT"]][index] <- dim(st_attrib@data)[1]
-
-        if (constraints[["CONDITION"]][index] %in% names(st_attrib@data)) {
-
-          condition <- st_attrib@data[constraints[["CONDITION"]][index]]
-          constraints[["ST_COUNT"]][index] <- sum(!is.na(condition))
-
-        } else {
-
-          match_vec       <- with(st_attrib@data, eval(parse(text = constraints[["CONDITION"]][index])))
-          condition_met   <- which(match_vec)
-          n_condition_met <- sum(match_vec)
-          constraints[["ST_COUNT"]][index] <- n_condition_met
-
-        }
-      }
-
-      if (constraints[["TYPE"]][index] == "INCLUDE") {
-
-        match_vec       <- with(st_attrib@data, eval(parse(text = constraints[["CONDITION"]][index])))
-        condition_met   <- which(match_vec)
-        n_condition_met <- sum(match_vec)
-        constraints[["ST_COUNT"]][index] <- n_condition_met
-
-      }
-
-      if (constraints[["TYPE"]][index] %in% c("EXCLUDE", "NOT", "NOT INCLUDE")) {
-
-        match_vec       <- with(st_attrib@data, eval(parse(text = constraints[["CONDITION"]][index])))
-        condition_met   <- which(match_vec)
-        n_condition_met <- sum(match_vec)
-        constraints[["ST_COUNT"]][index] <- n_condition_met
-
-      }
-
-      if (constraints[["TYPE"]][index] %in% c("ALLORNONE", "ALL OR NONE", "IIF")) {
-
-        match_vec       <- with(st_attrib@data, eval(parse(text = constraints[["CONDITION"]][index])))
-        condition_met   <- which(match_vec)
-        n_condition_met <- sum(match_vec)
-        constraints[["ST_COUNT"]][index] <- n_condition_met
-
-      }
-
-      if (constraints[["TYPE"]][index] %in% c("MUTUALLYEXCLUSIVE", "MUTUALLY EXCLUSIVE", "XOR", "ENEMY")) {
-
-        match_vec       <- with(st_attrib@data, eval(parse(text = constraints[["CONDITION"]][index])))
-        condition_met   <- which(match_vec)
-        n_condition_met <- sum(match_vec)
-        constraints[["ST_COUNT"]][index] <- n_condition_met
-
-      }
+      list_constraints[[index]] <- parseConstraintData(constraints[index, ], st_attrib, constants)
+      constraints[index, ]      <- addCountsToConstraintData(constraints[index, ], st_attrib)
 
       if (constraints[["TYPE"]][index] == "ORDER") {
 
