@@ -983,14 +983,11 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
       n_condition_met <- sum(match_vec)
       constraints[["COUNT"]][index] <- n_condition_met
 
-      if (length(condition_met) == 0) {
-        stop(sprintf("Constraint %s has 0 items meeting CONDITION: %s", index, constraints[["CONDITION"]][index]))
-      } else {
         list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
         list_constraints[[index]]@mat[1, condition_met] <- 1
         list_constraints[[index]]@dir <- "=="
         list_constraints[[index]]@rhs <- 0
-      }
+
     }
 
     if (constraints[["TYPE"]][index] %in% c("ALLORNONE", "ALL OR NONE", "IIF")) {
@@ -1181,9 +1178,6 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
         n_condition_met <- sum(match_vec)
         constraints[["ST_COUNT"]][index] <- n_condition_met
 
-        if (length(condition_met) == 0) {
-          stop(sprintf("Constraint %s has 0 stimuli meeting CONDITION: %s", index, constraints[["CONDITION"]][index]))
-        } else {
           list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
           list_constraints[[index]]@mat[1, ni + condition_met] <- 1
           list_constraints[[index]]@dir <- "=="
@@ -1191,8 +1185,9 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
           for (s in condition_met) {
             list_constraints[[index]]@mat[1, item_index_by_stimulus[[s]]] <- 1
           }
-        }
+
       }
+
       if (constraints[["TYPE"]][index] %in% c("ALLORNONE", "ALL OR NONE", "IIF")) {
 
         constraint_type_is_valid <- TRUE
