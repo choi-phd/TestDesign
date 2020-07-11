@@ -1360,14 +1360,14 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 toggleConstraints <- function(object, on = NULL, off = NULL) {
   nc <- nrow(object@constraints)
   if (length(intersect(on, off)) > 0) {
-    stop("'on' and 'off' must not have a common value.")
+    stop("toggleConstraints: 'on' and 'off' must have no values in common")
   }
   if (!"ONOFF" %in% names(object@constraints)) {
     object@constraints[["ONOFF"]] <- ""
   }
   if (!is.null(on)) {
     if (any(!is.element(on, 1:nc))) {
-      stop("'on' values should refer to constraint indices in 'object'.")
+      stop(sprintf("toggleConstraints: 'on' should be within c(1:nc), nc = %s", nc))
     }
     for (index in on) {
       object@list_constraints[[index]]@suspend <- FALSE
@@ -1376,7 +1376,7 @@ toggleConstraints <- function(object, on = NULL, off = NULL) {
   }
   if (!is.null(off)) {
     if (any(!is.element(off, 1:nc))) {
-      stop("'off' values should refer to constraint indices in 'object'.")
+      stop(sprintf("toggleConstraints: 'off' should be within c(1:nc), nc = %s", nc))
     }
     for (index in off) {
       object@list_constraints[[index]]@suspend <- TRUE
