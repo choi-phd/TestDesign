@@ -381,6 +381,30 @@ parseConstraintData <- function(x, attrib, constants) {
 
   }
 
+  if (x$TYPE %in% c("ALLORNONE", "ALL OR NONE", "IIF")) {
+
+    flag  <- with(attrib@data, eval(parse(text = x$CONDITION)))
+    idx   <- which(flag)
+    n_idx <- sum(flag)
+
+    o@mat <- matrix(0, nrow = (n_idx * (n_idx - 1)) / 2, ncol = nv)
+    o@dir <- rep("==", (n_idx * (n_idx - 1)) / 2)
+    o@rhs <- rep(0, (n_idx * (n_idx - 1)) / 2)
+
+    tmp_idx <- 0
+    for (i in idx) {
+      for (j in idx) {
+        if (i < j) {
+          tmp_idx <- tmp_idx + 1
+          o@mat[tmp_idx, nx_pad + c(i, j)] <- c(1, -1)
+        }
+      }
+    }
+
+    return(o)
+
+  }
+
   return(o)
 
 }
