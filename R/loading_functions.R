@@ -823,15 +823,6 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 
         constraints[["COUNT"]][index] <- dim(item_attrib@data)[1]
 
-        if (test_length_LB == test_length_UB) {
-          test_length <- test_length_UB
-          list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
-          list_constraints[[index]]@mat[1, 1:ni] <- 1
-          list_constraints[[index]]@dir <- "=="
-          list_constraints[[index]]@rhs <- test_length_UB
-        } else {
-          stop("LB and UB for ITEM NUMBER must be set equal.")
-        }
         if (set_based && !common_stimulus_length) {
           n_LB_eq_UB <- sum(stimulus_length_LB == stimulus_length_UB)
           n_LB_ne_UB <- sum(stimulus_length_LB != stimulus_length_UB)
@@ -864,26 +855,6 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 
         if (!set_based) {
           stop(sprintf("Constraints must include at least one 'STIMULUS' under WHAT for CONDITION: %s", toupper(constraints[["CONDITION"]][index])))
-        }
-        stimulus_length_LB <- round(constraints[["LB"]][index])
-        stimulus_length_UB <- round(constraints[["UB"]][index])
-        if (stimulus_length_LB == stimulus_length_UB) {
-          list_constraints[[index]]@mat <- matrix(0, nrow = ns, ncol = nv)
-          list_constraints[[index]]@dir <- rep("==", ns)
-          list_constraints[[index]]@rhs <- rep(0, ns)
-          for (s in 1:ns) {
-            list_constraints[[index]]@mat[s, item_index_by_stimulus[[s]]] <- 1
-            list_constraints[[index]]@mat[s, ni + s] <- -stimulus_length_UB
-          }
-        } else {
-          list_constraints[[index]]@mat <- matrix(0, nrow = ns * 2, ncol = nv)
-          list_constraints[[index]]@dir <- rep(c(">=", "<="), ns)
-          list_constraints[[index]]@rhs <- rep(0, ns * 2)
-          for (s in 1:ns) {
-            list_constraints[[index]]@mat[c(s * 2 - 1, s * 2), item_index_by_stimulus[[s]]] <- 1
-            list_constraints[[index]]@mat[c(s * 2 - 1), ni + s] <- -stimulus_length_LB
-            list_constraints[[index]]@mat[c(s * 2), ni + s] <- -stimulus_length_UB
-          }
         }
 
       } else if (constraints[["CONDITION"]][index] %in% names(item_attrib@data)) {
@@ -1050,21 +1021,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 
         constraints[["ST_COUNT"]][index] <- dim(st_attrib@data)[1]
 
-        if (toupper(constraints[["CONDITION"]][index]) %in% c("", " ", "PER TEST")) {
-
-          if (number_stimulus_LB == number_stimulus_UB) {
-            list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
-            list_constraints[[index]]@mat[1, (ni + 1):nv] <- 1
-            list_constraints[[index]]@dir <- "=="
-            list_constraints[[index]]@rhs <- number_stimulus_UB
-          } else if (number_stimulus_LB < number_stimulus_UB) {
-            list_constraints[[index]]@mat <- matrix(0, nrow = 2, ncol = nv)
-            list_constraints[[index]]@mat[, (ni + 1):nv] <- 1
-            list_constraints[[index]]@dir <- c(">=", "<=")
-            list_constraints[[index]]@rhs <- c(number_stimulus_LB, number_stimulus_UB)
-          }
-
-        } else if (constraints[["CONDITION"]][index] %in% names(st_attrib@data)) {
+        if (constraints[["CONDITION"]][index] %in% names(st_attrib@data)) {
 
           condition <- st_attrib@data[constraints[["CONDITION"]][index]]
           constraints[["ST_COUNT"]][index] <- sum(!is.na(condition))
