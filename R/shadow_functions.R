@@ -677,14 +677,19 @@ setMethod(
       }
 
       o@prior <- posterior_record$posterior[j, ]
-      o@administered_item_index <- rep(NA_real_, constants$max_ni)
-      o@administered_item_resp  <- rep(NA_real_, constants$max_ni)
-      o@theta_segment_index     <- rep(NA_real_, constants$max_ni)
-      o@interim_theta_est       <- rep(NA_real_, constants$max_ni)
-      o@interim_se_est          <- rep(NA_real_, constants$max_ni)
+      o@administered_item_index     <- rep(NA_real_, constants$max_ni)
+      o@administered_item_resp      <- rep(NA_real_, constants$max_ni)
       o@administered_stimulus_index <- NaN
-      o@shadow_test <- vector("list", constants$max_ni)
-      o@max_cat_pool <- pool@max_cat
+      o@theta_segment_index         <- rep(NA_real_, constants$max_ni)
+      o@interim_theta_est           <- rep(NA_real_, constants$max_ni)
+      o@interim_se_est              <- rep(NA_real_, constants$max_ni)
+      o@shadow_test                 <- vector("list", constants$max_ni)
+      o@max_cat_pool                <- pool@max_cat
+      o@test_length_constraints     <- constants$max_ni
+      o@ni_pool                     <- constants$ni
+      o@ns_pool                     <- constants$ns
+      o@set_based                   <- constants$set_based
+      o@item_index_by_stimulus      <- constraints@item_index_by_stimulus
 
       current_theta <- estimateInitialTheta(
         config@interim_theta, initial_theta, prior_par,
@@ -816,7 +821,8 @@ setMethod(
 
           selection <- selectItemFromShadowTest(optimal$shadow_test, position, constants, o)
           o@administered_item_index[position] <- selection$item_selected
-          o@shadow_test[[position]]           <- optimal$shadow_test[["INDEX"]]
+          o@shadow_test[[position]]$i         <- optimal$shadow_test$INDEX
+          o@shadow_test[[position]]$s         <- optimal$shadow_test$STINDEX
 
         } else {
 
@@ -1638,7 +1644,7 @@ plotExposureRateBySegment <- function(object, config, max_rate = 0.25, file_pdf 
 #' @param retain An optional vector of indices identifying the simulees to retain.
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' true_theta <- runif(10, min = -3.5, max = 3.5)
 #' resp_science <- makeTest(itempool_science, info_type = "FISHER", true_theta = true_theta)@data
 #' constraints_science2 <- updateConstraints(constraints_science, off = c(14:20, 32:36))
@@ -2051,12 +2057,13 @@ saveOutput <- function(object_list, file = NULL) {
 #' @param ... Additional options to be passed on to \code{pdf()}.
 #'
 #' @examples
+#' \dontrun{
 #' config <- createShadowTestConfig()
 #' true_theta <- rnorm(1)
 #' solution <- Shadow(config, constraints_science, true_theta)
 #' plotShadow(solution, 1)
 #' plotShadow(solution, 1, simple = TRUE)
-#'
+#' }
 #' @docType methods
 #' @rdname plotShadow-methods
 #' @export
@@ -2127,11 +2134,12 @@ setMethod(
 #' @param ... Additional options to be passed on to \code{pdf()}.
 #'
 #' @examples
+#' \dontrun{
 #' config <- createShadowTestConfig()
 #' true_theta <- rnorm(1)
 #' solution <- Shadow(config, constraints_science, true_theta)
 #' plotCAT(solution, 1)
-#'
+#' }
 #' @docType methods
 #' @rdname plotCAT-methods
 #' @export
@@ -2153,12 +2161,8 @@ setMethod(
     p <- plot(object,
       type = 'audit',
       examinee_id = examinee_id,
-      min_theta = min_theta,
-      max_theta = max_theta,
-      min_score = min_score,
-      max_score = max_score,
+      theta_range = c(min_theta, max_theta),
       z_ci = z_ci,
-      file_pdf = file_pdf,
       ...
     )
     return(p)
@@ -2181,12 +2185,8 @@ setMethod(
     p <- plot(new_object,
       type = 'audit',
       examinee_id = examinee_id,
-      min_theta = min_theta,
-      max_theta = max_theta,
-      min_score = min_score,
-      max_score = max_score,
+      theta_range = c(min_theta, max_theta),
       z_ci = z_ci,
-      file_pdf = file_pdf,
       ...
     )
     return(p)
@@ -2204,12 +2204,8 @@ setMethod(
     plot(object,
       type = 'audit',
       examinee_id = examinee_id,
-      min_theta = min_theta,
-      max_theta = max_theta,
-      min_score = min_score,
-      max_score = max_score,
+      theta_range = c(min_theta, max_theta),
       z_ci = z_ci,
-      file_pdf = file_pdf,
       ...
     )
   }
@@ -2228,7 +2224,7 @@ setMethod(
 #' @param ... Additional options to be passed on to \code{pdf()}.
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' true_theta <- runif(10, min = -3.5, max = 3.5)
 #' resp_science <- makeTest(itempool_science, info_type = "FISHER", true_theta = true_theta)@data
 #' constraints_science2 <- updateConstraints(constraints_science, off = c(14:20, 32:36))
@@ -2267,7 +2263,6 @@ setMethod(
       theta_segment = theta_segment,
       color = color,
       color_final = color_final,
-      file_pdf = file_pdf,
       ...
     )
     return(p)
@@ -2287,7 +2282,6 @@ setMethod(
       theta_segment = theta_segment,
       color = color,
       color_final = color_final,
-      file_pdf = file_pdf,
       ...
     )
     return(p)
