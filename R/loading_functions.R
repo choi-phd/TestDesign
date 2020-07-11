@@ -794,6 +794,12 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
   }
 
   for (index in item_constraints) {
+    x <- constraints[index, ]
+    validate_constraints <- validateConstraintData(x)
+
+  }
+
+  for (index in item_constraints) {
     list_constraints[[index]] <- new("constraint")
     list_constraints[[index]]@constraint <- constraints[["CONSTRAINT"]][index]
     constraint_type_is_valid <- FALSE
