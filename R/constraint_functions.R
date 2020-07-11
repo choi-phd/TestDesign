@@ -361,6 +361,26 @@ parseConstraintData <- function(x, attrib, constants) {
 
   }
 
+  if (x$TYPE %in% c("EXCLUDE", "NOT", "NOT INCLUDE")) {
+
+    flag <- with(attrib@data, eval(parse(text = x$CONDITION)))
+    idx  <- which(flag)
+
+    o@mat <- matrix(0, nrow = 1, ncol = nv)
+    o@mat[1, nx_pad + idx] <- 1
+    o@dir <- "=="
+    o@rhs <- 0
+
+    if (nx == ns) {
+      for (s in idx) {
+        o@mat[1, i_by_s[[s]]] <- 1
+      }
+    }
+
+    return(o)
+
+  }
+
   return(o)
 
 }
