@@ -55,23 +55,6 @@ setMethod(
   }
 )
 
-#' @description \code{pool_cluster1 == pool_cluster2} tests equality of the two pool_cluster objects.
-#'
-#' @param pool_cluster1 A \code{\linkS4class{pool_cluster}} object.
-#' @param pool_cluster2 A \code{\linkS4class{pool_cluster}} object.
-#'
-#' @examples
-#' cluster1 <- makeItemPoolCluster(c(itempool_science, itempool_reading))
-#' cluster2 <- makeItemPoolCluster(c(cluster1@pools[[1]], cluster1@pools[[2]]))
-#' cluster1 == cluster2  ## TRUE
-#'
-#' @rdname item_pool.operators
-#' @export
-`==.pool_cluster` <- function(pool_cluster1, pool_cluster2) {
-  if (!inherits(pool_cluster1, "pool_cluster") || !inherits(pool_cluster2, "pool_cluster")) stop("Operands must be 'pool_cluster' objects.")
-  return(identical(pool_cluster1, pool_cluster2))
-}
-
 #' Extract
 #'
 #' @param x x
@@ -688,43 +671,6 @@ setMethod(
     return(EAP_cluster)
   }
 )
-
-#' Create an item pool cluster object
-#'
-#' Create a \code{\linkS4class{pool_cluster}} object.
-#'
-#' @param pools A list of \code{\linkS4class{item_pool}} objects.
-#' @param names An optional vector of \code{\linkS4class{item_pool}} names.
-#' @examples
-#'
-#' cluster <- makeItemPoolCluster(c(itempool_science, itempool_reading))
-#' @export
-makeItemPoolCluster <- function(pools, names = NULL) {
-  np <- length(pools)
-  if (np == 0) {
-    stop("pools is empty")
-  } else if (np == 1) {
-    stop("only one pool found in pools - expecting 2 or more")
-  }
-  if (is.null(names)) {
-    names <- paste0("Pool_", 1:np)
-  } else {
-    if (length(names) != np) stop("pools and names are of different lengths")
-  }
-  pool_cluster <- new("pool_cluster")
-  pool_cluster@np <- np
-  pool_cluster@pools <- vector(mode = "list", length = np)
-  pool_cluster@names <- names
-  for (i in 1:np) {
-    if (!inherits(pools[[i]], "item_pool")) {
-      stop(paste0("pool.list[[", i, "]] is not of class \"item_pool\""))
-    }
-    pool_cluster@pools[[i]] <- pools[[i]]
-  }
-  if (validObject(pool_cluster)) {
-    return(pool_cluster)
-  }
-}
 
 #' Run adaptive test assembly
 #'
