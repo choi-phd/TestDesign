@@ -807,11 +807,9 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
   for (index in item_constraints) {
     list_constraints[[index]] <- new("constraint")
     list_constraints[[index]]@constraint <- constraints[["CONSTRAINT"]][index]
-    constraint_type_is_valid <- FALSE
     list_constraints[[index]]@suspend <- constraints[["ONOFF"]][index] == "OFF"
 
     if (constraints[["TYPE"]][index] %in% c("NUMBER", "COUNT")) {
-      constraint_type_is_valid <- TRUE
 
       if (toupper(constraints[["CONDITION"]][index]) %in% c("", " ", "PER TEST", "TEST")) {
 
@@ -929,8 +927,6 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 
     if (constraints[["TYPE"]][index] %in% c("SUM", "AVERAGE", "MEAN")) {
 
-      constraint_type_is_valid <- TRUE
-
       if (constraints[["LB"]][index] == constraints[["UB"]][index]) {
         list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
         list_constraints[[index]]@dir <- "<="
@@ -956,7 +952,6 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 
     if (constraints[["TYPE"]][index] == "INCLUDE") {
 
-      constraint_type_is_valid <- TRUE
       match_vec       <- with(item_attrib@data, eval(parse(text = constraints[["CONDITION"]][index])))
       condition_met   <- which(match_vec)
       n_condition_met <- sum(match_vec)
@@ -977,7 +972,6 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
     }
     if (constraints[["TYPE"]][index] %in% c("EXCLUDE", "NOT", "NOT INCLUDE")) {
 
-      constraint_type_is_valid <- TRUE
       match_vec       <- with(item_attrib@data, eval(parse(text = constraints[["CONDITION"]][index])))
       condition_met   <- which(match_vec)
       n_condition_met <- sum(match_vec)
@@ -992,7 +986,6 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 
     if (constraints[["TYPE"]][index] %in% c("ALLORNONE", "ALL OR NONE", "IIF")) {
 
-      constraint_type_is_valid <- TRUE
       match_vec       <- with(item_attrib@data, eval(parse(text = constraints[["CONDITION"]][index])))
       condition_met   <- which(match_vec)
       n_condition_met <- sum(match_vec)
@@ -1017,7 +1010,6 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 
     if (constraints[["TYPE"]][index] %in% c("MUTUALLYEXCLUSIVE", "MUTUALLY EXCLUSIVE", "XOR", "ENEMY")) {
 
-      constraint_type_is_valid <- TRUE
       match_vec       <- with(item_attrib@data, eval(parse(text = constraints[["CONDITION"]][index])))
       condition_met   <- which(match_vec)
       n_condition_met <- sum(match_vec)
@@ -1031,8 +1023,6 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
     }
 
     if (constraints[["TYPE"]][index] == "ORDER") {
-
-      constraint_type_is_valid <- TRUE
 
       if (!list_constraints[[index]]@suspend) {
         item_order <- item_attrib@data[[constraints[["CONDITION"]][index]]]
@@ -1049,12 +1039,10 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
     for (index in stim_constraints) {
       list_constraints[[index]] <- new("constraint")
       list_constraints[[index]]@constraint <- constraints[["CONSTRAINT"]][index]
-      constraint_type_is_valid <- FALSE
       list_constraints[[index]]@suspend <- constraints[["ONOFF"]][index] == "OFF"
 
       if (constraints[["TYPE"]][index] %in% c("NUMBER", "COUNT")) {
 
-        constraint_type_is_valid <- TRUE
         constraints[["ST_COUNT"]][index] <- dim(st_attrib@data)[1]
 
         if (toupper(constraints[["CONDITION"]][index]) %in% c("", " ", "PER TEST")) {
@@ -1119,8 +1107,6 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 
       if (constraints[["TYPE"]][index] %in% c("SUM", "AVERAGE", "MEAN")) {
 
-        constraint_type_is_valid <- TRUE
-
           if (constraints[["LB"]][index] == constraints[["UB"]][index]) {
             list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
             list_constraints[[index]]@dir <- "<="
@@ -1145,7 +1131,6 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 
       if (constraints[["TYPE"]][index] == "INCLUDE") {
 
-        constraint_type_is_valid <- TRUE
         match_vec       <- with(st_attrib@data, eval(parse(text = constraints[["CONDITION"]][index])))
         condition_met   <- which(match_vec)
         n_condition_met <- sum(match_vec)
@@ -1160,7 +1145,6 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 
       if (constraints[["TYPE"]][index] %in% c("EXCLUDE", "NOT", "NOT INCLUDE")) {
 
-        constraint_type_is_valid <- TRUE
         match_vec       <- with(st_attrib@data, eval(parse(text = constraints[["CONDITION"]][index])))
         condition_met   <- which(match_vec)
         n_condition_met <- sum(match_vec)
@@ -1178,7 +1162,6 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 
       if (constraints[["TYPE"]][index] %in% c("ALLORNONE", "ALL OR NONE", "IIF")) {
 
-        constraint_type_is_valid <- TRUE
         match_vec       <- with(st_attrib@data, eval(parse(text = constraints[["CONDITION"]][index])))
         condition_met   <- which(match_vec)
         n_condition_met <- sum(match_vec)
@@ -1202,7 +1185,6 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
       }
       if (constraints[["TYPE"]][index] %in% c("MUTUALLYEXCLUSIVE", "MUTUALLY EXCLUSIVE", "XOR", "ENEMY")) {
 
-        constraint_type_is_valid <- TRUE
         match_vec       <- with(st_attrib@data, eval(parse(text = constraints[["CONDITION"]][index])))
         condition_met   <- which(match_vec)
         n_condition_met <- sum(match_vec)
@@ -1215,8 +1197,6 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 
       }
       if (constraints[["TYPE"]][index] == "ORDER") {
-
-        constraint_type_is_valid <- TRUE
 
         if (!list_constraints[[index]]@suspend) {
             stim_order <- st_attrib@data[[constraints[["CONDITION"]][index]]]
