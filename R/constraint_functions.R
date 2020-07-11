@@ -193,6 +193,72 @@ parseConstraintData <- function(x, attrib, constants) {
   o@constraint <- x$CONSTRAINT
   o@suspend    <- x$ONOFF == "OFF"
 
+  if (x$TYPE %in% c("NUMBER", "COUNT")) {
+
+    if (toupper(x$CONDITION) %in% c("", " ", "PER TEST", "TEST")) {
+
+      if (nx == ni) {
+
+        LB <- round(x$LB)
+        o@mat <- matrix(0, nrow = 1, ncol = nv)
+        o@mat[1, 1:ni] <- 1
+        o@dir <- "=="
+        o@rhs <- LB
+
+      }
+
+      if (nx == ns) {
+
+        LB <- round(x$LB)
+        UB <- round(x$UB)
+        if (LB == UB) {
+          o@mat <- matrix(0, nrow = 1, ncol = nv)
+          o@mat[1, ni + (1:ns)] <- 1
+          o@dir <- "=="
+          o@rhs <- LB
+        } else {
+          o@mat <- matrix(0, nrow = 2, ncol = nv)
+          o@mat[, ni + (1:ns)] <- 1
+          o@dir <- c(">=", "<=")
+          o@rhs <- c(LB, UB)
+        }
+
+      }
+
+      return(o)
+
+    }
+
+    if (nx == ni & toupper(x$CONDITION) %in% c("PER STIMULUS", "PER PASSAGE", "PER SET", "PER TESTLET")) {
+
+      LB <- round(x$LB)
+      UB <- round(x$UB)
+
+      if (LB == UB) {
+        o@mat <- matrix(0, nrow = ns, ncol = nv)
+        o@dir <- rep("==", ns)
+        o@rhs <- rep(0   , ns)
+        for (s in 1:ns) {
+          o@mat[s, i_by_s[[s]]] <- 1
+          o@mat[s, ni + s] <- -LB
+        }
+      } else {
+        o@mat <- matrix(0, nrow = ns * 2, ncol = nv)
+        o@dir <- rep(c(">=", "<="), ns)
+        o@rhs <- rep(0            , ns * 2)
+        for (s in 1:ns) {
+          o@mat[c(s * 2 - 1, s * 2), i_by_s[[s]]] <- 1
+          o@mat[c(s * 2 - 1), ni + s] <- -LB
+          o@mat[c(s * 2)    , ni + s] <- -UB
+        }
+      }
+
+      return(o)
+
+    }
+
+  }
+
   return(o)
 
 }
