@@ -12,7 +12,7 @@ NULL
 #' @param y not used, exists for compatibility with \code{\link[base]{plot}} in the base R package.
 #' @param type the type of plot.
 #' \itemize{
-#'    \item{\code{info} plots information from \code{\linkS4class{item_pool}} and \code{\linkS4class{output_Static}}.}
+#'    \item{\code{info} plots information from \code{\linkS4class{item_pool}}, \code{\linkS4class{output_Static}}, and \code{\linkS4class{output_Shadow_all}}.}
 #'    \item{\code{score} plots expected scores from \code{\linkS4class{item_pool}} and \code{\linkS4class{output_Static}}.}
 #'    \item{\code{audit} plots audit trail from \code{\linkS4class{output_Shadow_all}} and \code{\linkS4class{output_Shadow}}.}
 #'    \item{\code{shadow} plots shadow test chart from \code{\linkS4class{output_Shadow_all}} and \code{\linkS4class{output_Shadow}}.}
@@ -29,6 +29,7 @@ NULL
 #' @param select used in \code{\linkS4class{item_pool}} objects. Item indices to subset.
 #' @param color the color of the curve.
 #' @param examinee_id used in \code{\linkS4class{output_Shadow}} and \code{\linkS4class{output_Shadow_all}} with \code{type = 'audit'} and \code{type = 'shadow'}. The examinee numeric ID to draw the plot.
+#' @param position used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'info'}. The item position to draw the plot.
 #' @param theta_range used in \code{\linkS4class{output_Shadow}} and \code{\linkS4class{output_Shadow_all}} with \code{type = 'audit'}. The theta range to plot. (default = \code{c(-5, 5)})
 #' @param z_ci used in \code{\linkS4class{output_Shadow}} and \code{\linkS4class{output_Shadow_all}} with \code{type = 'audit'}. The range to use for confidence intervals. (default = \code{1.96})
 #' @param simple used in \code{\linkS4class{output_Shadow}} and \code{\linkS4class{output_Shadow_all}} with \code{type = 'shadow'}. If \code{TRUE}, simplify the chart by hiding unused items.
@@ -79,6 +80,7 @@ setMethod(
     plot_sum = TRUE,
     select = NULL,
     examinee_id = 1,
+    position = NULL,
     theta_range = c(-5, 5),
     color = "blue",
     z_ci = 1.96,
@@ -150,6 +152,7 @@ setMethod(
     plot_sum = TRUE,
     select = NULL,
     examinee_id = 1,
+    position = NULL,
     theta_range = c(-5, 5),
     color = "blue",
     z_ci = 1.96,
@@ -251,6 +254,7 @@ setMethod(
     plot_sum = TRUE,
     select = NULL,
     examinee_id = 1,
+    position = NULL,
     theta_range = c(-5, 5),
     color = "blue",
     z_ci = 1.96,
@@ -603,6 +607,7 @@ setMethod(
     plot_sum = TRUE,
     select = NULL,
     examinee_id = 1,
+    position = NULL,
     theta_range = c(-5, 5),
     color = "blue",
     z_ci = 1.96,
@@ -611,9 +616,85 @@ setMethod(
     color_final = "blue",
     ...) {
 
-    if (!type %in% c("audit", "shadow", "exposure")) {
-      stop("plot(output_Shadow_all): 'type' must be 'audit', 'shadow', or 'exposure'")
+    if (!type %in% c("audit", "shadow", "info", "score", "exposure")) {
+      stop("plot(output_Shadow_all): 'type' must be 'audit', 'shadow', 'info', 'score', or 'exposure'")
     }
+
+    if (type == "info") {
+
+      o <- x@output[[examinee_id]]
+      if (is.null(position)) {
+        i <- o@administered_item_index
+        txt <- "administered items"
+      } else {
+        i <- o@shadow_test[[position]]$i
+        txt <- sprintf("shadow test at position %s", position)
+      }
+
+      p <- x@pool[i]
+      if (toupper(info_type) == "FISHER") {
+        y <- calcFisher(p, theta)
+        y <- rowSums(y)
+      } else {
+        stop("Invalid info_type specified")
+      }
+
+      plot(
+        theta, y, xlab = "Theta", ylab = "Information",
+        main = sprintf("Examinee ID: %s (%s)", examinee_id, txt),
+        type = "n", ylim = c(0, max(y)))
+
+      grid()
+
+      lines(theta, y, col = color)
+
+      legend_label = c()
+      legend_lty   = c()
+      legend_col   = c()
+
+      if (!is.null(o@true_theta)) {
+        abline(v = o@true_theta, col = "red", lty = 1)
+        legend_label <- c(legend_label, sprintf("True theta = %.3f", o@true_theta))
+        legend_lty   <- c(legend_lty, 1)
+        legend_col   <- c(legend_col, "red")
+      }
+
+      abline(v = o@final_theta_est, col = "red", lty = 2)
+      legend_label <- c(legend_label, sprintf("Final theta = %.3f", o@final_theta_est))
+      legend_lty   <- c(legend_lty, 2)
+      legend_col   <- c(legend_col, "red")
+
+      if (!is.null(position)) {
+        abline(v = o@interim_theta_est[position], col = "black", lty = 1)
+        legend_label <- c(legend_label, sprintf("Interim @ %s = %.3f", position, o@interim_theta_est[position]))
+        legend_lty   <- c(legend_lty, 1)
+        legend_col   <- c(legend_col, "black")
+
+        if (position > 1) {
+
+          abline(v = o@interim_theta_est[position - 1], col = "black", lty = 2)
+          legend_label <- c(legend_label, sprintf("Interim @ %s = %.3f", position - 1, o@interim_theta_est[position - 1]))
+          legend_lty   <- c(legend_lty, 2)
+          legend_col   <- c(legend_col, "black")
+
+        }
+      }
+
+      legend(
+        "topleft",
+        legend = legend_label,
+        lty    = legend_lty,
+        col    = legend_col
+      )
+
+      box()
+
+      p <- recordPlot()
+      dev.off()
+      return(p)
+
+    }
+
     if (type == "audit") {
 
       if (!all(examinee_id %in% 1:length(x@output))) {

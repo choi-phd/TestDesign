@@ -19,6 +19,7 @@
   plot_sum = TRUE,
   select = NULL,
   examinee_id = 1,
+  position = NULL,
   theta_range = c(-5, 5),
   color = "blue",
   z_ci = 1.96,
@@ -37,6 +38,7 @@
   plot_sum = TRUE,
   select = NULL,
   examinee_id = 1,
+  position = NULL,
   theta_range = c(-5, 5),
   color = "blue",
   z_ci = 1.96,
@@ -55,6 +57,7 @@
   plot_sum = TRUE,
   select = NULL,
   examinee_id = 1,
+  position = NULL,
   theta_range = c(-5, 5),
   color = "blue",
   z_ci = 1.96,
@@ -91,6 +94,7 @@
   plot_sum = TRUE,
   select = NULL,
   examinee_id = 1,
+  position = NULL,
   theta_range = c(-5, 5),
   color = "blue",
   z_ci = 1.96,
@@ -114,7 +118,7 @@
 
 \item{type}{the type of plot.
 \itemize{
-   \item{\code{info} plots information from \code{\linkS4class{item_pool}} and \code{\linkS4class{output_Static}}.}
+   \item{\code{info} plots information from \code{\linkS4class{item_pool}}, \code{\linkS4class{output_Static}}, and \code{\linkS4class{output_Shadow_all}}.}
    \item{\code{score} plots expected scores from \code{\linkS4class{item_pool}} and \code{\linkS4class{output_Static}}.}
    \item{\code{audit} plots audit trail from \code{\linkS4class{output_Shadow_all}} and \code{\linkS4class{output_Shadow}}.}
    \item{\code{shadow} plots shadow test chart from \code{\linkS4class{output_Shadow_all}} and \code{\linkS4class{output_Shadow}}.}
@@ -135,6 +139,8 @@
 \item{select}{used in \code{\linkS4class{item_pool}} objects. Item indices to subset.}
 
 \item{examinee_id}{used in \code{\linkS4class{output_Shadow}} and \code{\linkS4class{output_Shadow_all}} with \code{type = 'audit'} and \code{type = 'shadow'}. The examinee numeric ID to draw the plot.}
+
+\item{position}{used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'info'}. The item position to draw the plot.}
 
 \item{theta_range}{used in \code{\linkS4class{output_Shadow}} and \code{\linkS4class{output_Shadow_all}} with \code{type = 'audit'}. The theta range to plot. (default = \code{c(-5, 5)})}
 
