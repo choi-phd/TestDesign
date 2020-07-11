@@ -59,6 +59,7 @@ Collate:
     'static_functions.R'
     'shadow_functions.R'
     'bayes_functions.R'
+    'constraint_functions.R'
     'constraints_operators.R'
     'datasets.R'
     'eligibility_functions.R'
