@@ -14,7 +14,14 @@ normalizeConstraintData <- function(x) {
 }
 
 #' @noRd
-validateConstraintData <- function(x) {
+validateConstraintData <- function(x, attrib) {
+
+  if (inherits(attrib, "item_attrib")) {
+    unit_name <- "items"
+  }
+  if (inherits(attrib, "st_attrib")) {
+    unit_name <- "stimuli"
+  }
 
   if (x$TYPE %in% c("NUMBER", "COUNT")) {
 
@@ -24,6 +31,37 @@ validateConstraintData <- function(x) {
     if (x$LB > x$UB) {
       stop(sprintf("constraint %s: LB <= UB must be TRUE", x$CONSTRAINT))
     }
+
+    if (
+      toupper(x$CONDITION) %in%
+      c("", " ", "PER TEST", "TEST")) {
+      return()
+    }
+
+    if (inherits(attrib, "item_attrib")) {
+      if (
+        toupper(x$CONDITION) %in%
+        c("PER STIMULUS", "PER PASSAGE", "PER SET", "PER TESTLET")) {
+        return()
+      }
+    }
+
+    if (
+      toupper(x$CONDITION) %in%
+      names(attrib@data)) {
+      return()
+    }
+
+    try_parse <- try(parse(text = x$CONDITION))
+    if (inherits(try_parse, "try-error")) {
+      stop(sprintf("constraint %s: '%s' is not a valid expression", x$CONSTRAINT, x$CONDITION))
+    }
+    idx <- with(attrib@data, eval(try_parse))
+    if (length(which(idx)) == 0) {
+      stop(sprintf("constraint %s: '%s' does not match any %s", x$CONSTRAINT, x$CONDITION, unit_name))
+    }
+
+    return()
 
   }
 
