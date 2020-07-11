@@ -804,6 +804,14 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
     }
   }
 
+  constants           <- list()
+  constants$ni        <- ni
+  constants$ns        <- ns
+  constants$nv        <- nv
+  constants$set_based <- set_based
+  constants$i_by_s    <- item_index_by_stimulus
+  constants$s_by_i    <- stimulus_index_by_item
+
   for (index in item_constraints) {
     list_constraints[[index]] <- new("constraint")
     list_constraints[[index]]@constraint <- constraints[["CONSTRAINT"]][index]
