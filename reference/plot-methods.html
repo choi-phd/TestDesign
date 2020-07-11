@@ -147,6 +147,7 @@
   <span class='kw'>plot_sum</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>examinee_id</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>position</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>theta_range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>5</span>, <span class='fl'>5</span>),
   <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"blue"</span>,
   <span class='kw'>z_ci</span> <span class='kw'>=</span> <span class='fl'>1.96</span>,
@@ -166,6 +167,7 @@
   <span class='kw'>plot_sum</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>examinee_id</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>position</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>theta_range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>5</span>, <span class='fl'>5</span>),
   <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"blue"</span>,
   <span class='kw'>z_ci</span> <span class='kw'>=</span> <span class='fl'>1.96</span>,
@@ -185,6 +187,7 @@
   <span class='kw'>plot_sum</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>examinee_id</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>position</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>theta_range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>5</span>, <span class='fl'>5</span>),
   <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"blue"</span>,
   <span class='kw'>z_ci</span> <span class='kw'>=</span> <span class='fl'>1.96</span>,
@@ -223,6 +226,7 @@
   <span class='kw'>plot_sum</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>examinee_id</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>position</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>theta_range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>5</span>, <span class='fl'>5</span>),
   <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"blue"</span>,
   <span class='kw'>z_ci</span> <span class='kw'>=</span> <span class='fl'>1.96</span>,
@@ -252,7 +256,7 @@
     <tr>
       <th>type</th>
       <td><p>the type of plot.</p><ul>
-<li><p><code>info</code> plots information from <code>item_pool</code> and <code>output_Static</code>.</p></li>
+<li><p><code>info</code> plots information from <code>item_pool</code>, <code>output_Static</code>, and <code>output_Shadow_all</code>.</p></li>
 <li><p><code>score</code> plots expected scores from <code>item_pool</code> and <code>output_Static</code>.</p></li>
 <li><p><code>audit</code> plots audit trail from <code>output_Shadow_all</code> and <code>output_Shadow</code>.</p></li>
 <li><p><code>shadow</code> plots shadow test chart from <code>output_Shadow_all</code> and <code>output_Shadow</code>.</p></li>
@@ -282,6 +286,10 @@
     <tr>
       <th>examinee_id</th>
       <td><p>used in <code>output_Shadow</code> and <code>output_Shadow_all</code> with <code>type = 'audit'</code> and <code>type = 'shadow'</code>. The examinee numeric ID to draw the plot.</p></td>
+    </tr>
+    <tr>
+      <th>position</th>
+      <td><p>used in <code>output_Shadow_all</code> with <code>type = 'info'</code>. The item position to draw the plot.</p></td>
     </tr>
     <tr>
       <th>theta_range</th>

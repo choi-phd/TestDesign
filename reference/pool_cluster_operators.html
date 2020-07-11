@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Open TestDesign app — TestDesign • TestDesign</title>
+<title>Create an item pool cluster object — makeItemPoolCluster • TestDesign</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Open TestDesign app — TestDesign" />
-<meta property="og:description" content="TestDesign is a caller function to open the Shiny interface of TestDesign package." />
+<meta property="og:title" content="Create an item pool cluster object — makeItemPoolCluster" />
+<meta property="og:description" content="Create a pool_cluster object.
+pool_cluster1 == pool_cluster2 tests equality of the two pool_cluster objects." />
 
 
 
@@ -128,26 +129,52 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Open TestDesign app</h1>
-    <small class="dont-index">Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/R/runshiny.R'><code>R/runshiny.R</code></a></small>
-    <div class="hidden name"><code>TestDesign.Rd</code></div>
+    <h1>Create an item pool cluster object</h1>
+    <small class="dont-index">Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/R/itempool_cluster_operators.R'><code>R/itempool_cluster_operators.R</code></a></small>
+    <div class="hidden name"><code>pool_cluster_operators.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>TestDesign</code> is a caller function to open the Shiny interface of TestDesign package.</p>
+    <p>Create a <code>pool_cluster</code> object.</p>
+<p><code>pool_cluster1 == pool_cluster2</code> tests equality of the two pool_cluster objects.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>TestDesign</span>()</pre>
+    <pre class="usage">makeItemPoolCluster(x, ..., names = NULL)
 
+# S4 method for item_pool
+makeItemPoolCluster(x, ..., names = NULL)
+
+# S3 method for pool_cluster
+==(pool_cluster1, pool_cluster2)</pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x, ...</th>
+      <td><p><code>item_pool</code> objects.</p></td>
+    </tr>
+    <tr>
+      <th>names</th>
+      <td><p>(optional) names to use for <code>item_pool</code>.</p></td>
+    </tr>
+    <tr>
+      <th>pool_cluster1</th>
+      <td><p>a <code>pool_cluster</code> object.</p></td>
+    </tr>
+    <tr>
+      <th>pool_cluster2</th>
+      <td><p>a <code>pool_cluster</code> object.</p></td>
+    </tr>
+    </table>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>()) {
-  <span class='fu'>TestDesign</span>()
-}
-}</pre>
+<span class='no'>cluster</span> <span class='kw'>&lt;-</span> <span class='fu'>makeItemPoolCluster</span>(<span class='no'>itempool_science</span>, <span class='no'>itempool_reading</span>)
+<span class='no'>cluster1</span> <span class='kw'>&lt;-</span> <span class='fu'>makeItemPoolCluster</span>(<span class='no'>itempool_science</span>, <span class='no'>itempool_reading</span>)
+<span class='no'>cluster2</span> <span class='kw'>&lt;-</span> <span class='fu'>makeItemPoolCluster</span>(<span class='no'>cluster1</span>@<span class='kw'>pools</span><span class='kw'>[[</span><span class='fl'>1</span>]], <span class='no'>cluster1</span>@<span class='kw'>pools</span><span class='kw'>[[</span><span class='fl'>2</span>]])
+<span class='no'>cluster1</span> <span class='kw'>==</span> <span class='no'>cluster2</span>  <span class='co'>## TRUE</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

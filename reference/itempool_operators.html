@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Open TestDesign app — TestDesign • TestDesign</title>
+<title>Basic operators for item pool objects — itempool_operators • TestDesign</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,22 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Open TestDesign app — TestDesign" />
-<meta property="og:description" content="TestDesign is a caller function to open the Shiny interface of TestDesign package." />
+<meta property="og:title" content="Basic operators for item pool objects — itempool_operators" />
+<meta property="og:description" content="Create a subset of an item_pool object:
+
+pool[i]
+subsetItemPool(pool, i)
+
+
+Combine two item_pool objects:
+
+c(pool1, pool2)
+combineItemPool(pool1, pool2)
+pool1 + pool2
+
+
+pool1 - pool2 excludes items in pool2 from pool1.
+pool1 == pool2 tests whether two item_pool objects are identical." />
 
 
 
@@ -128,26 +142,78 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Open TestDesign app</h1>
-    <small class="dont-index">Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/R/runshiny.R'><code>R/runshiny.R</code></a></small>
-    <div class="hidden name"><code>TestDesign.Rd</code></div>
+    <h1>Basic operators for item pool objects</h1>
+    <small class="dont-index">Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/R/itempool_operators.R'><code>R/itempool_operators.R</code></a></small>
+    <div class="hidden name"><code>itempool_operators.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>TestDesign</code> is a caller function to open the Shiny interface of TestDesign package.</p>
+    <p>Create a subset of an <code>item_pool</code> object:</p>
+<ul>
+<li><p><code>pool[i]</code></p></li>
+<li><p><code>subsetItemPool(pool, i)</code></p></li>
+</ul>
+
+<p>Combine two <code>item_pool</code> objects:</p>
+<ul>
+<li><p><code><a href='https://rdrr.io/r/base/c.html'>c(pool1, pool2)</a></code></p></li>
+<li><p><code>combineItemPool(pool1, pool2)</code></p></li>
+<li><p><code>pool1 + pool2</code></p></li>
+</ul>
+
+<p><code>pool1 - pool2</code> excludes items in <code>pool2</code> from <code>pool1</code>.</p>
+<p><code>pool1 == pool2</code> tests whether two <code>item_pool</code> objects are identical.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>TestDesign</span>()</pre>
+    <pre class="usage">subsetItemPool(x, i = NULL)
 
+combineItemPool(x1, x2)
+
+# S4 method for item_pool,numeric
+[(x, i, j, ..., drop = TRUE)
+
+# S4 method for item_pool
+c(x, ...)
+
+# S3 method for item_pool
++(x1, x2)
+
+# S3 method for item_pool
+-(x1, x2)
+
+# S3 method for item_pool
+==(x1, x2)</pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x, x1, x2</th>
+      <td><p>an <code>item_pool</code> object.</p></td>
+    </tr>
+    <tr>
+      <th>i</th>
+      <td><p>item indices to use in subsetting.</p></td>
+    </tr>
+    <tr>
+      <th>j, drop, ...</th>
+      <td><p>not used, exists for compatibility.</p></td>
+    </tr>
+    </table>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples">
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>()) {
-  <span class='fu'>TestDesign</span>()
-}
-}</pre>
+    <pre class="examples"><span class='no'>p1</span> <span class='kw'>&lt;-</span> <span class='no'>itempool_science</span>[<span class='fl'>1</span>:<span class='fl'>100</span>]
+<span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>itempool_science</span>, <span class='no'>itempool_reading</span>)
+<span class='no'>p3</span> <span class='kw'>&lt;-</span> <span class='no'>p2</span> - <span class='no'>p1</span>
+
+<span class='no'>p1</span> <span class='kw'>&lt;-</span> <span class='no'>itempool_science</span>[<span class='fl'>1</span>:<span class='fl'>500</span>]
+<span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='no'>itempool_science</span> - <span class='no'>p1</span>
+<span class='no'>p3</span> <span class='kw'>&lt;-</span> <span class='no'>itempool_science</span>[<span class='fl'>501</span>:<span class='fl'>1000</span>]
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='no'>p2</span>, <span class='no'>p3</span>)  <span class='co'>## TRUE</span>
+
+<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='no'>p1</span> + <span class='no'>p3</span>
+<span class='no'>p</span> <span class='kw'>==</span> <span class='no'>itempool_science</span> <span class='co'>## TRUE</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
