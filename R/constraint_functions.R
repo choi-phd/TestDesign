@@ -162,4 +162,6 @@ validateConstraintData <- function(x, attrib) {
 
   }
 
+  stop(sprintf("constraint %s: unrecognized type '%s'", x$CONSTRAINT, x$TYPE))
+
 }
