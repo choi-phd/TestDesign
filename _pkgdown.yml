@@ -1,0 +1,70 @@
+destination: docs
+
+template:
+  params:
+    bootswatch: cosmo
+
+authors:
+  Seung W. Choi:
+    href: https://education.utexas.edu/faculty/seung_choi
+  Sangdon Lim:
+    href: https://sdlim.com/
+
+reference:
+  - title: "Data loading functions"
+    desc: "Functions for reading in data"
+    contents:
+      - loadItemPool
+      - loadItemAttrib
+      - loadStAttrib
+      - loadConstraints
+      - buildConstraints
+      - toggleConstraints
+  - title: "Test assembly functions"
+    desc: "Functions for perfoming test assembly"
+    contents:
+      - createStaticTestConfig
+      - createShadowTestConfig
+      - Static
+      - Shadow
+  - title: "Summary functions"
+    contents:
+      - summary
+      - plot
+      - plotInfo
+      - plotCAT
+      - plotShadow
+      - plotExposure
+      - getSolution
+  - title: "Web GUI"
+    contents:
+      - TestDesign
+  - title: "Datasets"
+    contents:
+      - dataset_science
+      - dataset_reading
+      - dataset_fatigue
+      - dataset_bayes
+  - title: "Item functions"
+    desc: "Functions for obtaining item information"
+    contents:
+      - calcProb
+      - calcEscore
+      - calcFisher
+      - calcJacobian
+      - calcHessian
+  - title: "Helper functions"
+    contents:
+      - simResp
+      - makeTest
+      - subsetItemPool
+      - combineItemPool
+  - title: "Object classes"
+    contents:
+      - item-classes
+      - constraint-class
+      - constraints-class
+      - test-class
+      - output_Static-class
+      - output_Shadow-class
+      - output_Shadow_all-class
