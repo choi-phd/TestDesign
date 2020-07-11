@@ -79,9 +79,10 @@ plotCAT(
 (deprecated) Use \code{\link[TestDesign:plot-methods]{plot}} with \code{type = 'audit'} instead.
 }
 \examples{
+\dontrun{
 config <- createShadowTestConfig()
 true_theta <- rnorm(1)
 solution <- Shadow(config, constraints_science, true_theta)
 plotCAT(solution, 1)
-
+}
 }

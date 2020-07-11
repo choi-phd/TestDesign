@@ -53,5 +53,15 @@
 \item{\code{shadow_test}}{the list containing the item IDs within the shadow test used in each position.}
 
 \item{\code{max_cat_pool}}{the maximum number of response categories the item pool had.}
+
+\item{\code{ni_pool}}{the total number of items the item pool had.}
+
+\item{\code{ns_pool}}{the total number of stimuli the item pool had.}
+
+\item{\code{test_length_constraints}}{the test length constraint used in assembly.}
+
+\item{\code{set_based}}{whether the item pool was set-based.}
+
+\item{\code{item_index_by_stimulus}}{the list of items by each stimulus the item pool had.}
 }}
 
