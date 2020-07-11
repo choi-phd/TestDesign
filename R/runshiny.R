@@ -10,12 +10,9 @@ NULL
 #' \dontrun{
 #' if (interactive()) {
 #'   TestDesign()
-#'   ## or
-#'   app()
 #' }
 #' }
 #'
-#' @aliases app
 #' @rdname TestDesign
 #' @export
 TestDesign <- function() {
@@ -48,13 +45,27 @@ TestDesign <- function() {
   }
 }
 
-#' @rdname TestDesign
+#' Open TestDesign app
+#'
+#' \code{\link{app}} and \code{\link{OAT}} are aliases of \code{\link{TestDesign}}.
+#'
+#' \code{\link{TestDesign}} is a caller function to open the Shiny interface of TestDesign package.
+#'
+#' @examples
+#'
+#' \dontrun{
+#' if (interactive()) {
+#'   TestDesign()
+#' }
+#' }
+#'
+#' @rdname TestDesign_alias
 #' @export
 app <- function() {
   TestDesign()
 }
 
-#' @rdname TestDesign
+#' @rdname TestDesign_alias
 #' @export
 OAT <- function() {
   TestDesign()
