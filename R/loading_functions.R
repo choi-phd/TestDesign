@@ -999,9 +999,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
       constraints[["COUNT"]][index] <- n_condition_met
 
       n_met <- n_condition_met
-      if (n_met < 2) {
-        stop(sprintf("Constraint %s has < 2 items meeting CONDITION: %s", index, constraints[["CONDITION"]][index]))
-      } else {
+
         list_constraints[[index]]@mat <- matrix(0, nrow = (n_met * (n_met - 1)) / 2, ncol = nv)
         list_constraints[[index]]@dir <- rep("==", (n_met * (n_met - 1)) / 2)
         list_constraints[[index]]@rhs <- rep(0, (n_met * (n_met - 1)) / 2)
@@ -1014,7 +1012,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
             }
           }
         }
-      }
+
     }
 
     if (constraints[["TYPE"]][index] %in% c("MUTUALLYEXCLUSIVE", "MUTUALLY EXCLUSIVE", "XOR", "ENEMY")) {
@@ -1197,9 +1195,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
         constraints[["ST_COUNT"]][index] <- n_condition_met
 
         n_met <- n_condition_met
-        if (n_met < 2) {
-          stop(sprintf("Constraint %s has < 2 stimuli meeting CONDITION: %s", index, constraints[["CONDITION"]][index]))
-        } else {
+
           list_constraints[[index]]@mat <- matrix(0, nrow = (n_met * (n_met - 1)) / 2, ncol = nv)
           list_constraints[[index]]@dir <- rep("==", (n_met * (n_met - 1)) / 2)
           list_constraints[[index]]@rhs <- rep(0, (n_met * (n_met - 1)) / 2)
@@ -1212,7 +1208,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
               }
             }
           }
-        }
+
       }
       if (constraints[["TYPE"]][index] %in% c("MUTUALLYEXCLUSIVE", "MUTUALLY EXCLUSIVE", "XOR", "ENEMY")) {
 

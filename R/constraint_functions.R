@@ -118,4 +118,19 @@ validateConstraintData <- function(x, attrib) {
 
   }
 
+  if (x$TYPE %in% c("ALLORNONE", "ALL OR NONE", "IIF")) {
+
+    try_parse <- try(parse(text = x$CONDITION))
+    if (inherits(try_parse, "try-error")) {
+      stop(sprintf("constraint %s: '%s' is not a valid expression", x$CONSTRAINT, x$CONDITION))
+    }
+    idx <- with(attrib@data, eval(try_parse))
+    if (length(which(idx)) < 2) {
+      stop(sprintf("constraint %s: '%s' has < 2 %s", x$CONSTRAINT, x$CONDITION, unit_name))
+    }
+
+    return()
+
+  }
+
 }
