@@ -906,11 +906,6 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
       n_condition_met <- sum(match_vec)
       constraints[["COUNT"]][index] <- n_condition_met
 
-      list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
-      list_constraints[[index]]@mat[1, condition_met] <- 1
-      list_constraints[[index]]@dir <- "<="
-      list_constraints[[index]]@rhs <- 1
-
     }
 
     if (constraints[["TYPE"]][index] == "ORDER") {
@@ -984,12 +979,8 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
         n_condition_met <- sum(match_vec)
         constraints[["ST_COUNT"]][index] <- n_condition_met
 
-          list_constraints[[index]]@mat <- matrix(0, nrow = 1, ncol = nv)
-          list_constraints[[index]]@mat[1, ni + condition_met] <- 1
-          list_constraints[[index]]@dir <- "<="
-          list_constraints[[index]]@rhs <- 1
-
       }
+
       if (constraints[["TYPE"]][index] == "ORDER") {
 
         if (!list_constraints[[index]]@suspend) {
