@@ -34,6 +34,15 @@ ui <- fluidPage(
         circle = FALSE, icon = icon("file-import"), width = "100%"
       ),
 
+      dropdownButton(
+        inputId = "solvertype_dropdown", label = "Solver settings",
+        radioGroupButtons(
+          inputId = "solvertype", justified = TRUE, direction = "vertical",
+          choices = c("lpSolve", "Rsymphony", "lpsymphony", "gurobi", "rglpk")
+        ),
+        circle = FALSE, icon = icon("drafting-compass"), width = "100%"
+      ),
+
       disabled(
         checkboxGroupButtons(
           inputId = "run_solver", justified = TRUE,
@@ -46,10 +55,6 @@ ui <- fluidPage(
       radioGroupButtons(
         inputId = "problemtype", justified = TRUE,
         choiceNames = c("Static", "Adaptive"), choiceValues = 1:2, selected = 1
-      ),
-      radioGroupButtons(
-        inputId = "solvertype", justified = TRUE,
-        choices = c("lpSolve", "Rsymphony", "lpsymphony", "gurobi", "Rglpk"), checkIcon = list(yes = icon("drafting-compass"), no = icon("drafting-compass"))
       ),
       radioGroupButtons(
         inputId = "objtype", justified = TRUE, label = h3("Objective type:"),
@@ -117,10 +122,6 @@ ui <- fluidPage(
       radioGroupButtons(
         inputId = "item_selection_method", justified = TRUE, label = h3("Item selection method"),
         choices = c("MFI", "MPWI", "FB", "EB")
-      ),
-      radioGroupButtons(
-        inputId = "content_balancing_method", justified = TRUE, label = h3("Content balancing method"),
-        choices = c("NONE", "STA")
       ),
 
       dropdownButton(
@@ -276,8 +277,10 @@ server <- function(input, output, session) {
         v$const <- try(loadConstraints(input$const_file$datapath, v$itempool, v$itemattrib))
       }
       if (class(v$const) == "constraints") {
+
         v$const_exists <- TRUE
-        v <- updateLogs(v, "Step 3. Constraints: OK. Press the button to run solver.")
+        v <- updateLogs(v, "Step 3. Constraints: OK.")
+
         v$constraints <- v$const@constraints
         assignObject(v$const,
           "shiny_const",
@@ -285,11 +288,19 @@ server <- function(input, output, session) {
         assignObject(v$constraints,
           "shiny_constraints",
           "Constraints (raw data.frame)")
+
+        if (isolate(v$const@set_based & !input$solvertype %in% c("lpsymphony", "Rsymphony", "gurobi"))) {
+          v <- updateLogs(v, "Warning: set-based assembly requires 'lpsymphony', 'Rsymphony' or 'gurobi'.")
+        }
+
       } else {
         v$const_exists <- FALSE
         v <- updateLogs(v, "Error: Constraints are not in the expected format. See ?dataset_science for details.")
       }
+
+      v <- updateLogs(v, "Press the button to run solver.")
       shinyjs::toggleState("run_solver", v$const_exists)
+
     }
   })
 
@@ -343,7 +354,6 @@ server <- function(input, output, session) {
     shinyjs::toggle("exposure_dropdown",        condition = input$problemtype == 2)
     shinyjs::toggle("theta_settings",           condition = input$problemtype == 2)
     shinyjs::toggle("item_selection_method",    condition = input$problemtype == 2)
-    shinyjs::toggle("content_balancing_method", condition = input$problemtype == 2)
     shinyjs::toggle("refresh_policy_dropdown",  condition = input$problemtype == 2)
     shinyjs::toggle("simulation_dropdown",      condition = input$problemtype == 2)
     if (input$problemtype == 2) {
@@ -383,12 +393,12 @@ server <- function(input, output, session) {
         if (input$simulee_id != "") {
           v <- updateLogs(v, sprintf("Created plots for simulee %i", v$simulee_id))
 
-          v$plot_output <- plotCAT(v$fit, v$simulee_id)
+          v$plot_output <- plot(v$fit, v$simulee_id, type = 'audit')
           assignObject(v$plot_output,
             sprintf("shiny_audit_plot_%i", v$simulee_id),
             sprintf("Audit trail plot for simulee %i", v$simulee_id)
           )
-          v$shadow_chart <- plotShadow(v$fit, v$simulee_id, simple = TRUE)
+          v$shadow_chart <- plot(v$fit, v$simulee_id, type = 'shadow', simple = TRUE)
           assignObject(v$shadow_chart,
             sprintf("shiny_shadow_chart_%i", v$simulee_id),
             sprintf("Shadow test chart for simulee %i", v$simulee_id)
@@ -400,7 +410,7 @@ server <- function(input, output, session) {
 
   observeEvent(input$maxinfo_button, {
     if (v$itempool_exists & v$const_exists) {
-      v$info_range_plot <- plotInfo(v$const)
+      v$info_range_plot <- plot(v$const)
       v$plot_output <- v$info_range_plot
       assignObject(v$info_range_plot,
         "shiny_info_range_plot",
@@ -466,13 +476,13 @@ server <- function(input, output, session) {
           "Static() solution object"
         )
 
-        if (is.null(v$fit$MIP)) {
+        if (is.null(v$fit@MIP)) {
           v <- updateLogs(v, "Solver did not find a solution. Try relaxing the target values.")
         } else {
-          v$plot_output <- plotInfo(v$fit)
+          v$plot_output <- plot(v$fit)
 
-          v <- updateLogs(v, sprintf("%-10s: solved in %3.3fs", conf@MIP$solver, v$fit$solve_time))
-          v$selected_index <- which(v$fit$MIP$solution == 1)
+          v <- updateLogs(v, sprintf("%-10s: solved in %3.3fs", conf@MIP$solver, v$fit@solve_time))
+          v$selected_index <- which(v$fit@MIP[[1]]$solution == 1)
           v$selected_index <- v$selected_index[v$selected_index <= v$itempool@ni]
 
           v$selected_item_names <- v$itemattrib@data[v$selected_index, ][["ID"]]
@@ -643,8 +653,8 @@ server <- function(input, output, session) {
         }
         if (parseText(input$refresh_position)) {
           eval(parse(text = sprintf("conf@refresh_policy$position <- c(%s)", input$refresh_position)))
-          if (conf@refresh_policy$position < 1 |
-              all(conf@refresh_policy$position != as.integer(conf@refresh_policy$position))) {
+          if (any(conf@refresh_policy$position < 1) |
+            all(conf@refresh_policy$position != as.integer(conf@refresh_policy$position))) {
             v <- updateLogs(v, "Refresh positions should be comma-separated integers larger than or equal to 1.")
             break
           }
@@ -674,7 +684,7 @@ server <- function(input, output, session) {
         )
 
         v$time <- Sys.time()
-        v$fit <- Shadow(conf, v$const, true_theta, resp_data, prior = NULL, prior_par = c(0, 1), session = session)
+        v$fit <- Shadow(conf, v$const, true_theta, resp_data, prior = NULL, prior_par = NULL, session = session)
         message("\n")
         assignObject(v$fit,
           "shiny_Shadow",
