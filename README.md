@@ -4,7 +4,7 @@
 <!-- badges: start -->
 
 [![Travis build
-status](https://travis-ci.org/choi-phd/TestDesign.svg?branch=master)](https://travis-ci.org/choi-phd/TestDesign)
+status](https://travis-ci.com/choi-phd/TestDesign.svg?branch=master)](https://travis-ci.com/choi-phd/TestDesign)
 [![Number of
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/TestDesign?color=lightgrey)](https://cran.r-project.org/package=TestDesign)
 <!-- badges: end -->
@@ -20,13 +20,23 @@ real-world testing scenarios are provided as examples.
 
 ## Installation
 
-Install the latest release from CRAN:
+Install the latest release (1.0.2) from CRAN:
 
 ``` r
 install.packages("TestDesign")
 ```
 
+Install the development version (1.1.0) from
+[GitHub](https://github.com/):
+
+``` r
+# install.packages("devtools")
+devtools::install_github("choi-phd/TestDesign@main")
+```
+
 ## Quick start
+
+These examples use the development version (1.1.0).
 
 ``` r
 itempool    <- loadItemPool(itempool_science_data)
