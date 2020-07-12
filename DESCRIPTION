@@ -1,8 +1,8 @@
 Package: TestDesign
 Type: Package
 Title: Optimal Test Design Approach to Fixed and Adaptive Test Construction
-Version: 1.0.2
-Date: 2020-01-25
+Version: 1.1.0
+Date: 2020-07-11
 Authors@R: c(
     person("Seung W.", "Choi",
         email = "schoi@austin.utexas.edu",
@@ -18,7 +18,7 @@ Description: Use the optimal test design approach by Birnbaum (1968, ISBN:978159
     mixed-integer programming (MIP) solver packages: 'lpsymphony', 'Rsymphony', 'gurobi', 'lpSolve', and 'Rglpk'. The 'gurobi' package
     is not available from CRAN; see <https://www.gurobi.com/downloads>. See vignette for installing 'Rsymphony' package
     on Mac systems.
-URL: https://github.com/choi-phd/TestDesign
+URL: https://choi-phd.github.io/TestDesign
 BugReports: https://github.com/choi-phd/TestDesign/issues
 License: GPL (>= 2)
 Depends: R (>= 2.10)

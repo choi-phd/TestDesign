@@ -1,3 +1,38 @@
+# TestDesign 1.1.0
+
+## QoL updates
+
+* Web documentation is now available at [https://choi-phd.github.io/TestDesign](https://choi-phd.github.io/TestDesign)
+* `loadItemPool()`, `loadItemAttrib()`, `loadStAttrib()`, `loadConstraints()`, `buildConstraints()` are now capable of reading from data frame objects.
+* `loadItemPool()` is now capable of reading from `SingleGroupClass` objects from `mirt` package.
+* `item_pool` objects can be now subsetted and combined with `[` and `c()`.
+* `constraints` objects can be now subsetted and combined with `[` and `c()`.
+* `Static()` now returns an `output_Static` object.
+* `Shadow()` now returns an `output_Shadow_all` object.
+* `Shadow()` now uses `progress` package if available.
+* Added `print()` extensions for most objects.
+* Added `summary()` extensions for most objects.
+* Added `plot()` extensions for most objects.
+* Added `dataset_bayes` example dataset.
+* Now checks whether each solver returns solution properly on package load.
+
+## Deprecated functions
+* `updateConstraints()` is now `toggleConstraints()`.
+* `plotInfo()` is now `plot(type = 'info')`.
+* `plotCAT()` is now `plot(type = 'audit')`.
+* `plotShadow()` is now `plot(type = 'shadow')`.
+* `plotExposure()` is now `plot(type = 'exposure')`.
+* `calcDerivative()` is removed.
+* `calcDerivative2()` is removed.
+* `calcLocation()` is removed.
+
+## Bug fixes
+* Fixed a rare bug where `Shadow()` was marking eligible items as ineligible when using `ELIGIBILITY` exposure control.
+* Fixed where `loadItemPool()` was parsing standard errors incorrectly for `GR` models.
+* Fixed where `loadConstraints()` was creating unnecessarily large numbers of constraints when `TYPE = 'NUMBER'` and `CONDITION` was an item/stimulus attribute name, and the attribute did not have NA values.
+* Fixed where `loadConstraints()` was creating constraints incorrectly when `TYPE = 'NUMBER'` and `CONDITION` was an item/stimulus attribute name, and the attribute had NA values.
+* Fixed where `loadConstraints()` was creating constraints incorrectly when `TYPE = 'NUMBER'` and `CONDITION` was a stimulus attribute name, and `LB` and `UB` were not equal.
+
 # TestDesign 1.0.2
 
 ## Default solver
