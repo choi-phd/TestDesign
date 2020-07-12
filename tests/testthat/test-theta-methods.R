@@ -1,6 +1,6 @@
 set.seed(1)
 true_theta <- runif(10, -3, 3)
-resp_bayes <- makeTest(itempool_bayes, info_type = "FISHER", true_theta = true_theta)@data
+resp_bayes <- simResp(itempool_bayes, true_theta)
 
 methods <- c("EAP", "MLE", "EB", "FB")
 

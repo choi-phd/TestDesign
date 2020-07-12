@@ -5,7 +5,7 @@ test_that("exposure control works", {
 
   set.seed(1)
   true_theta <- runif(100, -3.5, 3.5)
-  resp_bayes <- makeTest(itempool_bayes, info_type = "FISHER", true_theta = true_theta)@data
+  resp_bayes <- simResp(itempool_bayes, true_theta)
 
   cfg <- createShadowTestConfig(
     MIP = list(solver = "LPSOLVE"),

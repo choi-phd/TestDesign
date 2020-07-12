@@ -555,8 +555,7 @@ server <- function(input, output, session) {
           "Simulation: true theta values"
         )
 
-        theta_grid <- seq(-3, 3, 1)
-        resp_data <- makeTest(v$itempool, theta_grid, info_type = "FISHER", true_theta = true_theta)@data
+        resp_data <- simResp(v$itempool, true_theta)
         assignObject(resp_data,
           "shiny_respdata",
           "Simulation: response data"
