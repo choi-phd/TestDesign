@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Basic functions for stimulus attribute objects — stimattrib-operators • TestDesign</title>
+<title>Basic functions for item attribute objects — itemattrib_operators • TestDesign</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Basic functions for stimulus attribute objects — stimattrib-operators" />
-<meta property="og:description" content="Basic functions for stimulus attribute objects" />
+<meta property="og:title" content="Basic functions for item attribute objects — itemattrib_operators" />
+<meta property="og:description" content="Basic functions for item attribute objects" />
 
 
 
@@ -128,31 +128,31 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Basic functions for stimulus attribute objects</h1>
-    <small class="dont-index">Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/R/stimattrib_operators.R'><code>R/stimattrib_operators.R</code></a></small>
-    <div class="hidden name"><code>stimattrib-operators.Rd</code></div>
+    <h1>Basic functions for item attribute objects</h1>
+    <small class="dont-index">Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/R/itemattrib_operators.R'><code>R/itemattrib_operators.R</code></a></small>
+    <div class="hidden name"><code>itemattrib_operators.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Basic functions for stimulus attribute objects</p>
+    <p>Basic functions for item attribute objects</p>
     </div>
 
-    <pre class="usage"># S4 method for st_attrib,numeric
+    <pre class="usage"># S4 method for item_attrib,numeric
 [(x, i, j, ..., drop = TRUE)
 
-# S4 method for st_attrib
+# S4 method for item_attrib
 dim(x)
 
-# S4 method for st_attrib
+# S4 method for item_attrib
 colnames(x)
 
-# S4 method for st_attrib
+# S4 method for item_attrib
 rownames(x)
 
-# S4 method for st_attrib
+# S4 method for item_attrib
 names(x)
 
-# S4 method for st_attrib
+# S4 method for item_attrib
 as.data.frame(x, row.names = NULL, optional = FALSE, ...)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -160,7 +160,7 @@ as.data.frame(x, row.names = NULL, optional = FALSE, ...)</pre>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>a <code>st_attrib</code> object.</p></td>
+      <td><p>an <code>item_attrib</code> object.</p></td>
     </tr>
     <tr>
       <th>i, j</th>
@@ -186,7 +186,7 @@ as.data.frame(x, row.names = NULL, optional = FALSE, ...)</pre>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='no'>stimattrib_reading</span>
+    <pre class="examples"><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='no'>itemattrib_science</span>
 <span class='no'>x</span>[<span class='fl'>1</span>:<span class='fl'>10</span>]
 <span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='no'>x</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='no'>x</span>)

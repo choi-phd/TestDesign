@@ -139,29 +139,59 @@
 <h2 class="hasAnchor">
 <a href="#qol-updates" class="anchor"></a>QoL updates</h2>
 <ul>
+<li>Web documentation is now available at <a href="https://choi-phd.github.io/TestDesign" class="uri">https://choi-phd.github.io/TestDesign</a>
+</li>
 <li>
 <code>loadItemPool()</code>, <code>loadItemAttrib()</code>, <code>loadStAttrib()</code>, <code>loadConstraints()</code>, <code>buildConstraints()</code> are now capable of reading from data frame objects.</li>
+<li>
+<code>loadItemPool()</code> is now capable of reading from <code>SingleGroupClass</code> objects from <code>mirt</code> package.</li>
+<li>
+<code>item_pool</code> objects can be now subsetted and combined with <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code> and <code><a href="https://rdrr.io/r/base/c.html">c()</a></code>.</li>
+<li>
+<code>constraints</code> objects can be now subsetted and combined with <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code> and <code><a href="https://rdrr.io/r/base/c.html">c()</a></code>.</li>
 <li>
 <code>Static()</code> now returns an <code>output_Static</code> object.</li>
 <li>
 <code>Shadow()</code> now returns an <code>output_Shadow_all</code> object.</li>
-<li>Added <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> extensions for item objects, <code>item_pool</code>, <code>pool_cluster</code>, <code>item_attrib</code>, <code>st_attrib</code>, <code>constraints</code>, <code>config_Static</code>, <code>output_Static</code>, <code>output_Shadow_all</code> and <code>output_Shadow</code> objects.</li>
-<li>Added <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> extensions for <code>item_pool</code>, <code>item_attrib</code>, <code>output_Static</code>, and <code>output_Shadow_all</code> objects.</li>
-<li>Added <code><a href="https://rdrr.io/r/base/plot.html">plot()</a></code> extensions for <code>item_pool</code>, <code>constraints</code>, <code>output_Static</code>, and <code>output_Shadow_all</code> objects.</li>
-<li>
-<code>loadItemPool()</code> is now capable of reading from <code>SingleGroupClass</code> objects from <code>mirt</code> package.</li>
 <li>
 <code>Shadow()</code> now uses <code>progress</code> package if available.</li>
-<li>
-<code>item_pool</code> objects can now be subsetted and combined with <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code> and <code><a href="https://rdrr.io/r/base/c.html">c()</a></code>.</li>
+<li>Added <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> extensions for most objects.</li>
+<li>Added <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> extensions for most objects.</li>
+<li>Added <code><a href="https://rdrr.io/r/base/plot.html">plot()</a></code> extensions for most objects.</li>
 <li>Added <code>dataset_bayes</code> example dataset.</li>
+</ul>
+</div>
+<div id="deprecated-functions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#deprecated-functions" class="anchor"></a>Deprecated functions</h2>
+<ul>
+<li>
+<code>updateConstraints()</code> is now <code>toggleConstraints()</code>.</li>
+<li>
+<code>plotInfo()</code> is now <code><a href="https://rdrr.io/r/base/plot.html">plot(type = 'info')</a></code>.</li>
+<li>
+<code>plotCAT()</code> is now <code><a href="https://rdrr.io/r/base/plot.html">plot(type = 'audit')</a></code>.</li>
+<li>
+<code>plotShadow()</code> is now <code><a href="https://rdrr.io/r/base/plot.html">plot(type = 'shadow')</a></code>.</li>
+<li>
+<code>plotExposure()</code> is now <code><a href="https://rdrr.io/r/base/plot.html">plot(type = 'exposure')</a></code>.</li>
+<li>
+<code>calcDerivative()</code> is removed.</li>
+<li>
+<code>calcDerivative2()</code> is removed.</li>
+<li>
+<code>calcLocation()</code> is removed.</li>
 </ul>
 </div>
 <div id="bug-fixes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
 <ul>
-<li>Fixed a rare bug where <code>Shadow()</code> marked eligible items as ineligible when using <code>ELIGIBILITY</code> exposure control.</li>
+<li>Fixed a rare bug where <code>Shadow()</code> was marking eligible items as ineligible when using <code>ELIGIBILITY</code> exposure control.</li>
+<li>Fixed where <code>loadItemPool()</code> was parsing standard errors incorrectly for <code>GR</code> models.</li>
+<li>Fixed where <code>loadConstraints()</code> was creating unnecessarily large numbers of constraints when <code>TYPE = 'NUMBER'</code> and <code>CONDITION</code> was an item/stimulus attribute name, and the attribute did not have NA values.</li>
+<li>Fixed where <code>loadConstraints()</code> was creating constraints incorrectly when <code>TYPE = 'NUMBER'</code> and <code>CONDITION</code> was an item/stimulus attribute name, and the attribute had NA values.</li>
+<li>Fixed where <code>loadConstraints()</code> was creating constraints incorrectly when <code>TYPE = 'NUMBER'</code> and <code>CONDITION</code> was a stimulus attribute name, and <code>LB</code> and <code>UB</code> were not equal.</li>
 </ul>
 </div>
 </div>
