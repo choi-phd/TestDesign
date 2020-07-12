@@ -43,22 +43,62 @@ NULL
   for (s in solver_names) {
     x <- find.package(s, quiet = TRUE)
     if (length(x) > 0) {
-      status <- green("v")
       v <- packageVersion(s)
+      e <- testSolver(s)
+      if (e == "") {
+        status <- green("v")
+      } else {
+        status <- yellow("?")
+      }
     } else {
-      status <- red("x")
       v <- ""
+      status <- red("x")
     }
-    packageStartupMessage(status, " ", s, paste0(rep(" ", 11 - nchar(s)), collapse = ""), white(v))
+    msg <- sprintf("%s %-10s %s %s", status, s, white(sprintf("%-7s", v)), white(e))
+    packageStartupMessage(msg)
   }
 
-  s <- "TestDesign"
-  v <- packageVersion(s)
+  s      <- "TestDesign"
+  v      <- packageVersion(s)
+  status <- ">"
+  msg    <- sprintf("%s %-10s %s", status, s, sprintf("%-7s", v))
+  packageStartupMessage(cyan(msg))
 
-  packageStartupMessage(cyan(">"), " ", cyan(s), paste0(rep(" ", 11 - nchar(s)), collapse = ""), cyan(packageVersion('TestDesign')))
+}
 
-  packageStartupMessage(cyan("  Please report any issues to:"))
-  packageStartupMessage(cyan(paste0("  ", packageDescription('TestDesign')$BugReports)))
+#' @noRd
+testSolver <- function(solver) {
+
+  obj   <- seq(.1, .5, .1)
+  mat   <- matrix(
+    c(1, 1, 1, 1, 1,
+      0, 0, 0, 1, 0),
+    2, 5,
+    byrow = TRUE)
+  dir   <- rep("==", 2)
+  rhs   <- c(2, 0)
+  types <- "B"
+
+  solver <- toupper(solver)
+  o <- try(
+    runMIP(
+      solver,
+      obj, mat, dir, rhs,
+      TRUE, types,
+      verbosity = -2,
+      time_limit = 5,
+      gap_limit_abs = 0.05,
+      gap_limit = 0.05
+    ),
+    silent = TRUE
+  )
+
+  if (inherits(o, "try-error")) {
+    return(trimws(as.character(o)))
+  }
+
+  return("")
+
 }
 
 setClassUnion("dataframe_or_null"   , c("data.frame"  , "NULL"))
