@@ -1,6 +1,6 @@
 set.seed(1)
 true_theta <- seq(-2, 2, 1)
-resp_bayes <- makeTest(itempool_bayes, info_type = "FISHER", true_theta = true_theta)@data
+resp_bayes <- simResp(itempool_bayes, true_theta)
 
 test_that("item selection MFI works", {
 

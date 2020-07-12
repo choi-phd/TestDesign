@@ -2,7 +2,7 @@ test_that("refresh methods work", {
 
   set.seed(1)
   true_theta <- 0
-  resp_science <- makeTest(itempool_science, info_type = "FISHER", true_theta = true_theta)@data
+  resp_science <- simResp(itempool_science, true_theta)
   constraints_science2 <- toggleConstraints(constraints_science, off = c(14:20, 32:36))
 
   cfg <- createShadowTestConfig(

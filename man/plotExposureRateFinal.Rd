@@ -50,7 +50,7 @@ Draw exposure rate plots by final theta segment.
 \examples{
 \dontrun{
 true_theta <- runif(10, min = -3.5, max = 3.5)
-resp_science <- makeTest(itempool_science, info_type = "FISHER", true_theta = true_theta)@data
+resp_science <- simResp(itempool_science, true_theta)
 constraints_science2 <- updateConstraints(constraints_science, off = c(14:20, 32:36))
 config_science <- createShadowTestConfig(
   MIP = list(solver = "LPSOLVE"),
