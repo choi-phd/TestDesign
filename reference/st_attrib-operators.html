@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate a posterior value of theta — calc_posterior • TestDesign</title>
+<title>Basic functions for stimulus attribute objects — st_attrib-operators • TestDesign</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Calculate a posterior value of theta — calc_posterior" />
-<meta property="og:description" content="Calculate a posterior value of theta." />
+<meta property="og:title" content="Basic functions for stimulus attribute objects — st_attrib-operators" />
+<meta property="og:description" content="Basic functions for stimulus attribute objects" />
 
 
 
@@ -128,51 +128,73 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate a posterior value of theta</h1>
-    <small class="dont-index">Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/R/RcppExports.R'><code>R/RcppExports.R</code></a></small>
-    <div class="hidden name"><code>calc_posterior.Rd</code></div>
+    <h1>Basic functions for stimulus attribute objects</h1>
+    <small class="dont-index">Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/R/st_attrib_operators.R'><code>R/st_attrib_operators.R</code></a></small>
+    <div class="hidden name"><code>st_attrib-operators.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Calculate a posterior value of theta.</p>
+    <p>Basic functions for stimulus attribute objects</p>
     </div>
 
-    <pre class="usage"><span class='fu'>calc_posterior</span>(<span class='no'>x</span>, <span class='no'>item_parm</span>, <span class='no'>resp</span>, <span class='no'>ncat</span>, <span class='no'>model</span>, <span class='no'>prior</span>, <span class='no'>prior_parm</span>)</pre>
+    <pre class="usage"># S4 method for st_attrib,numeric
+[(x, i, j, ..., drop = TRUE)
+
+# S4 method for st_attrib
+dim(x)
+
+# S4 method for st_attrib
+colnames(x)
+
+# S4 method for st_attrib
+rownames(x)
+
+# S4 method for st_attrib
+names(x)
+
+# S4 method for st_attrib
+as.data.frame(x, row.names = NULL, optional = FALSE, ...)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>A length-one numeric vector for a theta value.</p></td>
+      <td><p>a <code>st_attrib</code> object.</p></td>
     </tr>
     <tr>
-      <th>item_parm</th>
-      <td><p>A numeric matrix of item parameters.</p></td>
+      <th>i, j</th>
+      <td><p>indices to use in subsetting.</p></td>
     </tr>
     <tr>
-      <th>resp</th>
-      <td><p>a numeric vector containing item responses.</p></td>
+      <th>...</th>
+      <td><p>not used, exists for compatibility.</p></td>
     </tr>
     <tr>
-      <th>ncat</th>
-      <td><p>A numeric vector of the number of response categories by item.</p></td>
+      <th>drop</th>
+      <td><p>not used, exists for compatibility.</p></td>
     </tr>
     <tr>
-      <th>model</th>
-      <td><p>A numeric vector indicating the IRT models of each item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).</p></td>
+      <th>row.names</th>
+      <td><p>not used, exists for compatibility.</p></td>
     </tr>
     <tr>
-      <th>prior</th>
-      <td><p>The type of prior distribution (1: normal, 2: uniform).</p></td>
-    </tr>
-    <tr>
-      <th>prior_parm</th>
-      <td><p>A numeric vector of hyperparameters for the prior distribution, c(mu, sigma) or c(ll, ul).</p></td>
+      <th>optional</th>
+      <td><p>not used, exists for compatibility.</p></td>
     </tr>
     </table>
 
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='no'>stimattrib_reading</span>
+<span class='no'>x</span>[<span class='fl'>1</span>:<span class='fl'>10</span>]
+<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='no'>x</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='no'>x</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>x</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>x</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>x</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>x</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span>(<span class='no'>x</span>)</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
