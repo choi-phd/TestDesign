@@ -12,7 +12,7 @@ vignette: >
 
 ### Introduction
 
-This document explains how to create constraints for `loadConstraints()`. In test assembly, practitioners often want to select the items that satify various types of constraints. As of *TestDesign* version 1.1.0, constraints can be read in from a data.frame object or a `.csv` spreadsheet file. Constraints are expected to be in the following structure:
+This document explains how to create constraints data for `loadConstraints()`. In test assembly, practitioners often want to select items satisfying various types of constraints. As of *TestDesign* version 1.1.0, constraints can be read in from `data.frame` objects or `.csv` spreadsheet files. Data is expected to be in the following structure:
 
 ```{r echo = FALSE, message = FALSE}
 library(knitr)
@@ -32,7 +32,7 @@ knitr::kable(constraints_science_data[1:5, ]) %>%
   column_spec(7, "3em")
 ```
 
-Constraints should be structured in seven columns, named as `CONSTRAINT`, `TYPE`, `WHAT`, `CONDITION`, `LB`, `UB`, `ONOFF` on the first row. Beginning from the second row, each row should have the corresponding values for the 7 columns. A convenient way to creating constraints is to use a spreadsheet application (e.g. Excel), work on the contents from there, and then saving it as a `.csv` file.
+Constraints data must have seven columns, named as `CONSTRAINT`, `TYPE`, `WHAT`, `CONDITION`, `LB`, `UB`, `ONOFF` on the first row. Beginning from the second row, each row must have corresponding values for each column. A convenient way to creating constraints is to use a spreadsheet application (e.g. Excel) and work on the content from there.
 
 <br/>
 
@@ -40,7 +40,7 @@ Constraints should be structured in seven columns, named as `CONSTRAINT`, `TYPE`
 
 #### CONSTRAINT
 
-This column serves as indices for the constraints. A single numeric value should be put into each row, incrementing by 1. Indices will be recreated in `loadConstraints()` if necessary.
+This column serves as indices. One number must be put into each row, beginning from 1 and incrementing by 1. Indices will be recreated in `loadConstraints()` if necessary.
 
 <br/>
 
@@ -103,7 +103,7 @@ knitr::kable(constraints_science_data[33, ], row.names = FALSE) %>%
 <br/>
 <br/>
 
-* `Include` specifies the items matching the condition to be included in selection. For example, the following row tells the solver to include the two items `SC00003` and `SC00004`:
+* `Include` specifies the items matching the condition to be included in selection. For example, the following row tells the solver to include items `SC00003` and `SC00004`:
 
 ```{r, echo = FALSE}
 knitr::kable(constraints_science_data[34, ], row.names = FALSE) %>%
@@ -120,7 +120,7 @@ knitr::kable(constraints_science_data[34, ], row.names = FALSE) %>%
 <br/>
 <br/>
 
-* `Exclude` specifies the items matching the condition to be excluded in selection. The following row tells the solver to exclude the items satisfying `PTBIS < 0.15`, based on the supplied item attributes.
+* `Exclude` specifies the items matching the condition to be excluded in selection. The following row tells the solver to exclude items that match `PTBIS < 0.15`, based on the supplied item attributes.
 
 ```{r, echo = FALSE}
 knitr::kable(constraints_science_data[35, ], row.names = FALSE) %>%
@@ -137,7 +137,7 @@ knitr::kable(constraints_science_data[35, ], row.names = FALSE) %>%
 <br/>
 <br/>
 
-* `AllOrNone` specifies the items matching the condition to be either all included or all excluded. To tell the solver to either select the items `SC00005` and `SC00006` at the same time or exclude them at the same time:
+* `AllOrNone` specifies the items matching the condition to be either all included or all excluded. To tell the solver to either select items `SC00005` and `SC00006` at the same time or exclude them at the same time:
 
 ```{r, echo = FALSE}
 knitr::kable(constraints_science_data[36, ], row.names = FALSE) %>%
@@ -165,7 +165,7 @@ This column specifies where the constraint is applied. The expected values are `
 
 #### CONDITION
 
-This column specifies the condition of the constraint. An R expression returning a logical value (`TRUE` or `FALSE`) is expected. The variables supplied in item attributes can be used in the expression as variable names.
+This column specifies the condition of the constraint. An R expression returning logical values (`TRUE` or `FALSE`) is expected. The variables supplied in item attributes can be used in the expression as variable names.
 
 Some examples are:
 
@@ -194,7 +194,7 @@ knitr::kable(constraints_reading_data[3, ], row.names = FALSE) %>%
 
 #### LB and UB
 
-These two columns specify the lower and upper bounds on the number of selected items. These columns should be specified when `TYPE` is `Number`, and should be left empty otherwise.
+These two columns specify lower and upper bounds on the number of selected items. These must be specified when `TYPE` is `Number`, and otherwise must be left empty.
 
 Some example rows are provided.
 
