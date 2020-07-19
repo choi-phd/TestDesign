@@ -1,51 +1,31 @@
 #include "item_functions.h"
 
-//' Calculate probability at a single theta (1PL)
-//'
-//' Calculate the probability of correct response at a theta value, under the 1PL model.
-//'
-//' @template x-single
-//' @template 1pl-params
-//' @template 1pl-ref
+//' @rdname p_item
+//' @export
 // [[Rcpp::export]]
 double p_1pl(const arma::rowvec& x, const double& b) {
   double xmul = x(0);
   return 1 / (1 + std::exp(b - xmul));
 }
 
-//' Calculate probability at a single theta (2PL)
-//'
-//' Calculate the probability of correct response at a theta value, under the 2PL model.
-//'
-//' @template x-single
-//' @template 2pl-params
-//' @template 2pl-ref
+//' @rdname p_item
+//' @export
 // [[Rcpp::export]]
 double p_2pl(const arma::rowvec& x, const double& a, const double& b) {
   double xmul = x(0);
   return 1 / (1 + std::exp(-a * (xmul - b)));
 }
 
-//' Calculate probability at a single theta (3PL)
-//'
-//' Calculate the probability of correct response at a theta value, under the 3PL model.
-//'
-//' @template x-single
-//' @template 3pl-params
-//' @template 3pl-ref
+//' @rdname p_item
+//' @export
 // [[Rcpp::export]]
 double p_3pl(const arma::rowvec& x, const double& a, const double& b, const double& c) {
   double xmul = x(0);
   return c + (1 - c) / (1 + std::exp(-a * (xmul - b)));
 }
 
-//' Calculate probability at a single theta (PC)
-//'
-//' Calculate the probability of correct response at a theta value, under the partial credit model.
-//'
-//' @template x-single
-//' @template pc-params
-//' @template pc-ref
+//' @rdname p_item
+//' @export
 // [[Rcpp::export]]
 arma::rowvec p_pc(const arma::rowvec& x, const arma::rowvec& b) {
 
@@ -66,13 +46,8 @@ arma::rowvec p_pc(const arma::rowvec& x, const arma::rowvec& b) {
 
 }
 
-//' Calculate probability at a single theta (GPC)
-//'
-//' Calculate the probability of correct response at a theta value, under the generalized partial credit model.
-//'
-//' @template x-single
-//' @template gpc-params
-//' @template gpc-ref
+//' @rdname p_item
+//' @export
 // [[Rcpp::export]]
 arma::rowvec p_gpc(const arma::rowvec& x, const double& a, const arma::rowvec& b) {
 
@@ -93,13 +68,8 @@ arma::rowvec p_gpc(const arma::rowvec& x, const double& a, const arma::rowvec& b
 
 }
 
-//' Calculate probability at a single theta (GR)
-//'
-//' Calculate the probability of correct response at a theta value, under the graded response model.
-//'
-//' @template x-single
-//' @template gr-params
-//' @template gr-ref
+//' @rdname p_item
+//' @export
 // [[Rcpp::export]]
 arma::rowvec p_gr(const arma::rowvec& x, const double& a, const arma::rowvec& b) {
 
@@ -119,13 +89,8 @@ arma::rowvec p_gr(const arma::rowvec& x, const double& a, const arma::rowvec& b)
 
 }
 
-//' Calculate probability at multiple thetas (1PL)
-//'
-//' Calculate the probability of correct response at theta values, under the 1PL model.
-//'
-//' @template x-vector
-//' @template 1pl-params
-//' @template 1pl-ref
+//' @rdname p_item
+//' @export
 // [[Rcpp::export]]
 arma::colvec array_p_1pl(const arma::mat& x, const double& b) {
 
@@ -140,13 +105,8 @@ arma::colvec array_p_1pl(const arma::mat& x, const double& b) {
 
 }
 
-//' Calculate probability at multiple thetas (2PL)
-//'
-//' Calculate the probability of correct response at theta values, under the 2PL model.
-//'
-//' @template x-vector
-//' @template 2pl-params
-//' @template 2pl-ref
+//' @rdname p_item
+//' @export
 // [[Rcpp::export]]
 arma::colvec array_p_2pl(const arma::mat& x, const double& a, const double& b) {
 
@@ -161,13 +121,8 @@ arma::colvec array_p_2pl(const arma::mat& x, const double& a, const double& b) {
 
 }
 
-//' Calculate probability at multiple thetas (3PL)
-//'
-//' Calculate the probability of correct response at theta values, under the 3PL model.
-//'
-//' @template x-vector
-//' @template 3pl-params
-//' @template 3pl-ref
+//' @rdname p_item
+//' @export
 // [[Rcpp::export]]
 arma::colvec array_p_3pl(const arma::mat& x, const double& a, const double& b, const double& c) {
 
@@ -182,13 +137,8 @@ arma::colvec array_p_3pl(const arma::mat& x, const double& a, const double& b, c
 
 }
 
-//' Calculate probability at multiple thetas (PC)
-//'
-//' Calculate the probability of correct response at theta values, under the partial credit model.
-//'
-//' @template x-vector
-//' @template pc-params
-//' @template pc-ref
+//' @rdname p_item
+//' @export
 // [[Rcpp::export]]
 arma::mat array_p_pc(const arma::mat& x, const arma::rowvec& b) {
 
@@ -203,13 +153,8 @@ arma::mat array_p_pc(const arma::mat& x, const arma::rowvec& b) {
   return p_array;
 }
 
-//' Calculate probability at multiple thetas (GPC)
-//'
-//' Calculate the probability of correct response at theta values, under the generalized partial credit model.
-//'
-//' @template x-vector
-//' @template gpc-params
-//' @template gpc-ref
+//' @rdname p_item
+//' @export
 // [[Rcpp::export]]
 arma::mat array_p_gpc(const arma::mat& x, const double& a, const arma::rowvec& b) {
 
@@ -225,13 +170,8 @@ arma::mat array_p_gpc(const arma::mat& x, const double& a, const arma::rowvec& b
 
 }
 
-//' Calculate probability at multiple thetas (GR)
-//'
-//' Calculate the probability of correct response at theta values, under the graded response model.
-//'
-//' @template x-vector
-//' @template gr-params
-//' @template gr-ref
+//' @rdname p_item
+//' @export
 // [[Rcpp::export]]
 arma::mat array_p_gr(const arma::mat& x, const double& a, const arma::rowvec& b) {
 
@@ -247,52 +187,32 @@ arma::mat array_p_gr(const arma::mat& x, const double& a, const arma::rowvec& b)
 
 }
 
-//' Calculate Fisher information at a single theta (1PL)
-//'
-//' Calculate the Fisher information at a theta value according to the 1PL model.
-//'
-//' @template x-single
-//' @template 1pl-params
-//' @template 1pl-ref
+//' @rdname info_item
+//' @export
 // [[Rcpp::export]]
 double info_1pl(const arma::rowvec& x, const double& b) {
   double p = p_1pl(x, b);
   return p * (1 - p);
 }
 
-//' Calculate Fisher information at a single theta (2PL)
-//'
-//' Calculate the Fisher information at a theta value according to the 2PL model.
-//'
-//' @template x-single
-//' @template 2pl-params
-//' @template 2pl-ref
+//' @rdname info_item
+//' @export
 // [[Rcpp::export]]
 double info_2pl(const arma::rowvec& x, const double& a, const double& b) {
   double p = p_2pl(x, a, b);
   return pow(a, 2) * p * (1 - p);
 }
 
-//' Calculate Fisher information at a single theta (3PL)
-//'
-//' Calculate the Fisher information at a theta value according to the 3PL model.
-//'
-//' @template x-single
-//' @template 3pl-params
-//' @template 3pl-ref
+//' @rdname info_item
+//' @export
 // [[Rcpp::export]]
 double info_3pl(const arma::rowvec& x, const double& a, const double& b, const double& c) {
   double p = p_3pl(x, a, b, c);
   return pow(a, 2) * (1 - p) / p * pow((p - c) / (1 - c), 2);
 }
 
-//' Calculate Fisher information at a single theta (PC)
-//'
-//' Calculate the Fisher information at a theta value according to the partial credit model.
-//'
-//' @template x-single
-//' @template pc-params
-//' @template pc-ref
+//' @rdname info_item
+//' @export
 // [[Rcpp::export]]
 double info_pc(const arma::rowvec& x, const arma::rowvec& b) {
 
@@ -309,13 +229,8 @@ double info_pc(const arma::rowvec& x, const arma::rowvec& b) {
 
 }
 
-//' Calculate Fisher information at a single theta (GPC).
-//'
-//' Calculate the Fisher information at a theta value according to the generalizied partial credit model.
-//'
-//' @template x-single
-//' @template gpc-params
-//' @template gpc-ref
+//' @rdname info_item
+//' @export
 // [[Rcpp::export]]
 double info_gpc(const arma::rowvec& x, const double& a, const arma::rowvec& b) {
 
@@ -332,13 +247,8 @@ double info_gpc(const arma::rowvec& x, const double& a, const arma::rowvec& b) {
 
 }
 
-//' Calculate Fisher information at a single theta (GR).
-//'
-//' Calculate the Fisher information at a theta value according to the graded resposne model.
-//'
-//' @template x-single
-//' @template gr-params
-//' @template gr-ref
+//' @rdname info_item
+//' @export
 // [[Rcpp::export]]
 double info_gr(const arma::rowvec& x, const double& a, const arma::rowvec& b) {
 
@@ -361,13 +271,8 @@ double info_gr(const arma::rowvec& x, const double& a, const arma::rowvec& b) {
 
 }
 
-//' Calculate Fisher information at multiple thetas (1PL)
-//'
-//' Calculate the Fisher information at theta values according to the 1PL model.
-//'
-//' @template x-vector
-//' @template 1pl-params
-//' @template 1pl-ref
+//' @rdname info_item
+//' @export
 // [[Rcpp::export]]
 arma::colvec array_info_1pl(const arma::mat& x, const double& b) {
 
@@ -382,13 +287,8 @@ arma::colvec array_info_1pl(const arma::mat& x, const double& b) {
 
 }
 
-//' Calculate Fisher information at multiple thetas (2PL)
-//'
-//' Calculate the Fisher information at theta values according to the 2PL model.
-//'
-//' @template x-vector
-//' @template 2pl-params
-//' @template 2pl-ref
+//' @rdname info_item
+//' @export
 // [[Rcpp::export]]
 arma::colvec array_info_2pl(const arma::mat& x, const double& a, const double& b) {
 
@@ -402,13 +302,8 @@ arma::colvec array_info_2pl(const arma::mat& x, const double& a, const double& b
   return info_array;
 }
 
-//' Calculate Fisher information at multiple thetas (3PL)
-//'
-//' Calculate the Fisher information at theta values according to the 3PL model.
-//'
-//' @template x-vector
-//' @template 3pl-params
-//' @template 3pl-ref
+//' @rdname info_item
+//' @export
 // [[Rcpp::export]]
 arma::colvec array_info_3pl(const arma::mat& x, const double& a, const double& b, const double& c) {
 
@@ -424,13 +319,8 @@ arma::colvec array_info_3pl(const arma::mat& x, const double& a, const double& b
 }
 
 
-//' Calculate Fisher information at multiple thetas (PC)
-//'
-//' Calculate the Fisher information at theta values according to the partial credit model.
-//'
-//' @template x-vector
-//' @template pc-params
-//' @template pc-ref
+//' @rdname info_item
+//' @export
 // [[Rcpp::export]]
 arma::colvec array_info_pc(const arma::mat& x, const arma::rowvec& b) {
 
@@ -445,13 +335,8 @@ arma::colvec array_info_pc(const arma::mat& x, const arma::rowvec& b) {
 
 }
 
-//' Calculate Fisher information at multiple thetas (GPC)
-//'
-//' Calculate the Fisher information at theta values according to the generalized partial credit model.
-//'
-//' @template x-vector
-//' @template gpc-params
-//' @template gpc-ref
+//' @rdname info_item
+//' @export
 // [[Rcpp::export]]
 arma::colvec array_info_gpc(const arma::mat& x, const double& a, const arma::rowvec& b) {
 
@@ -466,13 +351,8 @@ arma::colvec array_info_gpc(const arma::mat& x, const double& a, const arma::row
 
 }
 
-//' Calculate Fisher information at multiple thetas (GR)
-//'
-//' Calculate the Fisher information at theta values according to the graded response model.
-//'
-//' @template x-vector
-//' @template gr-params
-//' @template gr-ref
+//' @rdname info_item
+//' @export
 // [[Rcpp::export]]
 arma::colvec array_info_gr(const arma::mat& x, const double& a, const arma::rowvec& b) {
 
