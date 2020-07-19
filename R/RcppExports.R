@@ -53,266 +53,146 @@ calc_MI_FB <- function(x, items_list, ncat, model) {
     .Call('_TestDesign_calc_MI_FB', PACKAGE = 'TestDesign', x, items_list, ncat, model)
 }
 
-#' Calculate probability at a single theta (1PL)
-#'
-#' Calculate the probability of correct response at a theta value, under the 1PL model.
-#'
-#' @template x-single
-#' @template 1pl-params
-#' @template 1pl-ref
+#' @rdname p_item
+#' @export
 p_1pl <- function(x, b) {
     .Call('_TestDesign_p_1pl', PACKAGE = 'TestDesign', x, b)
 }
 
-#' Calculate probability at a single theta (2PL)
-#'
-#' Calculate the probability of correct response at a theta value, under the 2PL model.
-#'
-#' @template x-single
-#' @template 2pl-params
-#' @template 2pl-ref
+#' @rdname p_item
+#' @export
 p_2pl <- function(x, a, b) {
     .Call('_TestDesign_p_2pl', PACKAGE = 'TestDesign', x, a, b)
 }
 
-#' Calculate probability at a single theta (3PL)
-#'
-#' Calculate the probability of correct response at a theta value, under the 3PL model.
-#'
-#' @template x-single
-#' @template 3pl-params
-#' @template 3pl-ref
+#' @rdname p_item
+#' @export
 p_3pl <- function(x, a, b, c) {
     .Call('_TestDesign_p_3pl', PACKAGE = 'TestDesign', x, a, b, c)
 }
 
-#' Calculate probability at a single theta (PC)
-#'
-#' Calculate the probability of correct response at a theta value, under the partial credit model.
-#'
-#' @template x-single
-#' @template pc-params
-#' @template pc-ref
+#' @rdname p_item
+#' @export
 p_pc <- function(x, b) {
     .Call('_TestDesign_p_pc', PACKAGE = 'TestDesign', x, b)
 }
 
-#' Calculate probability at a single theta (GPC)
-#'
-#' Calculate the probability of correct response at a theta value, under the generalized partial credit model.
-#'
-#' @template x-single
-#' @template gpc-params
-#' @template gpc-ref
+#' @rdname p_item
+#' @export
 p_gpc <- function(x, a, b) {
     .Call('_TestDesign_p_gpc', PACKAGE = 'TestDesign', x, a, b)
 }
 
-#' Calculate probability at a single theta (GR)
-#'
-#' Calculate the probability of correct response at a theta value, under the graded response model.
-#'
-#' @template x-single
-#' @template gr-params
-#' @template gr-ref
+#' @rdname p_item
+#' @export
 p_gr <- function(x, a, b) {
     .Call('_TestDesign_p_gr', PACKAGE = 'TestDesign', x, a, b)
 }
 
-#' Calculate probability at multiple thetas (1PL)
-#'
-#' Calculate the probability of correct response at theta values, under the 1PL model.
-#'
-#' @template x-vector
-#' @template 1pl-params
-#' @template 1pl-ref
+#' @rdname p_item
+#' @export
 array_p_1pl <- function(x, b) {
     .Call('_TestDesign_array_p_1pl', PACKAGE = 'TestDesign', x, b)
 }
 
-#' Calculate probability at multiple thetas (2PL)
-#'
-#' Calculate the probability of correct response at theta values, under the 2PL model.
-#'
-#' @template x-vector
-#' @template 2pl-params
-#' @template 2pl-ref
+#' @rdname p_item
+#' @export
 array_p_2pl <- function(x, a, b) {
     .Call('_TestDesign_array_p_2pl', PACKAGE = 'TestDesign', x, a, b)
 }
 
-#' Calculate probability at multiple thetas (3PL)
-#'
-#' Calculate the probability of correct response at theta values, under the 3PL model.
-#'
-#' @template x-vector
-#' @template 3pl-params
-#' @template 3pl-ref
+#' @rdname p_item
+#' @export
 array_p_3pl <- function(x, a, b, c) {
     .Call('_TestDesign_array_p_3pl', PACKAGE = 'TestDesign', x, a, b, c)
 }
 
-#' Calculate probability at multiple thetas (PC)
-#'
-#' Calculate the probability of correct response at theta values, under the partial credit model.
-#'
-#' @template x-vector
-#' @template pc-params
-#' @template pc-ref
+#' @rdname p_item
+#' @export
 array_p_pc <- function(x, b) {
     .Call('_TestDesign_array_p_pc', PACKAGE = 'TestDesign', x, b)
 }
 
-#' Calculate probability at multiple thetas (GPC)
-#'
-#' Calculate the probability of correct response at theta values, under the generalized partial credit model.
-#'
-#' @template x-vector
-#' @template gpc-params
-#' @template gpc-ref
+#' @rdname p_item
+#' @export
 array_p_gpc <- function(x, a, b) {
     .Call('_TestDesign_array_p_gpc', PACKAGE = 'TestDesign', x, a, b)
 }
 
-#' Calculate probability at multiple thetas (GR)
-#'
-#' Calculate the probability of correct response at theta values, under the graded response model.
-#'
-#' @template x-vector
-#' @template gr-params
-#' @template gr-ref
+#' @rdname p_item
+#' @export
 array_p_gr <- function(x, a, b) {
     .Call('_TestDesign_array_p_gr', PACKAGE = 'TestDesign', x, a, b)
 }
 
-#' Calculate Fisher information at a single theta (1PL)
-#'
-#' Calculate the Fisher information at a theta value according to the 1PL model.
-#'
-#' @template x-single
-#' @template 1pl-params
-#' @template 1pl-ref
+#' @rdname info_item
+#' @export
 info_1pl <- function(x, b) {
     .Call('_TestDesign_info_1pl', PACKAGE = 'TestDesign', x, b)
 }
 
-#' Calculate Fisher information at a single theta (2PL)
-#'
-#' Calculate the Fisher information at a theta value according to the 2PL model.
-#'
-#' @template x-single
-#' @template 2pl-params
-#' @template 2pl-ref
+#' @rdname info_item
+#' @export
 info_2pl <- function(x, a, b) {
     .Call('_TestDesign_info_2pl', PACKAGE = 'TestDesign', x, a, b)
 }
 
-#' Calculate Fisher information at a single theta (3PL)
-#'
-#' Calculate the Fisher information at a theta value according to the 3PL model.
-#'
-#' @template x-single
-#' @template 3pl-params
-#' @template 3pl-ref
+#' @rdname info_item
+#' @export
 info_3pl <- function(x, a, b, c) {
     .Call('_TestDesign_info_3pl', PACKAGE = 'TestDesign', x, a, b, c)
 }
 
-#' Calculate Fisher information at a single theta (PC)
-#'
-#' Calculate the Fisher information at a theta value according to the partial credit model.
-#'
-#' @template x-single
-#' @template pc-params
-#' @template pc-ref
+#' @rdname info_item
+#' @export
 info_pc <- function(x, b) {
     .Call('_TestDesign_info_pc', PACKAGE = 'TestDesign', x, b)
 }
 
-#' Calculate Fisher information at a single theta (GPC).
-#'
-#' Calculate the Fisher information at a theta value according to the generalizied partial credit model.
-#'
-#' @template x-single
-#' @template gpc-params
-#' @template gpc-ref
+#' @rdname info_item
+#' @export
 info_gpc <- function(x, a, b) {
     .Call('_TestDesign_info_gpc', PACKAGE = 'TestDesign', x, a, b)
 }
 
-#' Calculate Fisher information at a single theta (GR).
-#'
-#' Calculate the Fisher information at a theta value according to the graded resposne model.
-#'
-#' @template x-single
-#' @template gr-params
-#' @template gr-ref
+#' @rdname info_item
+#' @export
 info_gr <- function(x, a, b) {
     .Call('_TestDesign_info_gr', PACKAGE = 'TestDesign', x, a, b)
 }
 
-#' Calculate Fisher information at multiple thetas (1PL)
-#'
-#' Calculate the Fisher information at theta values according to the 1PL model.
-#'
-#' @template x-vector
-#' @template 1pl-params
-#' @template 1pl-ref
+#' @rdname info_item
+#' @export
 array_info_1pl <- function(x, b) {
     .Call('_TestDesign_array_info_1pl', PACKAGE = 'TestDesign', x, b)
 }
 
-#' Calculate Fisher information at multiple thetas (2PL)
-#'
-#' Calculate the Fisher information at theta values according to the 2PL model.
-#'
-#' @template x-vector
-#' @template 2pl-params
-#' @template 2pl-ref
+#' @rdname info_item
+#' @export
 array_info_2pl <- function(x, a, b) {
     .Call('_TestDesign_array_info_2pl', PACKAGE = 'TestDesign', x, a, b)
 }
 
-#' Calculate Fisher information at multiple thetas (3PL)
-#'
-#' Calculate the Fisher information at theta values according to the 3PL model.
-#'
-#' @template x-vector
-#' @template 3pl-params
-#' @template 3pl-ref
+#' @rdname info_item
+#' @export
 array_info_3pl <- function(x, a, b, c) {
     .Call('_TestDesign_array_info_3pl', PACKAGE = 'TestDesign', x, a, b, c)
 }
 
-#' Calculate Fisher information at multiple thetas (PC)
-#'
-#' Calculate the Fisher information at theta values according to the partial credit model.
-#'
-#' @template x-vector
-#' @template pc-params
-#' @template pc-ref
+#' @rdname info_item
+#' @export
 array_info_pc <- function(x, b) {
     .Call('_TestDesign_array_info_pc', PACKAGE = 'TestDesign', x, b)
 }
 
-#' Calculate Fisher information at multiple thetas (GPC)
-#'
-#' Calculate the Fisher information at theta values according to the generalized partial credit model.
-#'
-#' @template x-vector
-#' @template gpc-params
-#' @template gpc-ref
+#' @rdname info_item
+#' @export
 array_info_gpc <- function(x, a, b) {
     .Call('_TestDesign_array_info_gpc', PACKAGE = 'TestDesign', x, a, b)
 }
 
-#' Calculate Fisher information at multiple thetas (GR)
-#'
-#' Calculate the Fisher information at theta values according to the graded response model.
-#'
-#' @template x-vector
-#' @template gr-params
-#' @template gr-ref
+#' @rdname info_item
+#' @export
 array_info_gr <- function(x, a, b) {
     .Call('_TestDesign_array_info_gr', PACKAGE = 'TestDesign', x, a, b)
 }
