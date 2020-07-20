@@ -171,3 +171,22 @@ NULL
 #'
 #' @name calc_info
 NULL
+
+#' Classify theta into segments
+#'
+#' \code{find_segment} is a function to classify theta values into segments based on supplied cutpoints.
+#'
+#' @param x the theta value. This can be a vector.
+#' @param segment segment cutpoints.
+#'
+#' @examples
+#' cuts <- c(-Inf, -2, 0, 2, Inf)
+#'
+#' find_segment(-3, cuts)
+#' find_segment(-1, cuts)
+#' find_segment(1, cuts)
+#' find_segment(3, cuts)
+#' find_segment(seq(-3, 3, 2), cuts)
+#'
+#' @name find_segment
+NULL
