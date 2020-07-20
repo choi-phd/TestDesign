@@ -212,24 +212,14 @@ calc_likelihood_function <- function(theta_grid, item_parm, resp, ncat, model) {
     .Call('_TestDesign_calc_likelihood_function', PACKAGE = 'TestDesign', theta_grid, item_parm, resp, ncat, model)
 }
 
-#' Calculate a log-likelihood value of theta
-#'
-#' Calculate a log-likelihood value of theta.
-#'
-#' @param x A length-one numeric vector for a theta value.
-#' @param item_parm A numeric matrix of item parameters.
-#' @template calc-params
+#' @rdname calc_likelihood
+#' @export
 calc_log_likelihood <- function(x, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_calc_log_likelihood', PACKAGE = 'TestDesign', x, item_parm, resp, ncat, model, prior, prior_parm)
 }
 
-#' Calculate a log-likelihood function of theta
-#'
-#' Calculate a log-likelihood function of theta.
-#'
-#' @param theta_grid An equi-spaced grid of theta values.
-#' @param item_parm A numeric matrix of item parameters.
-#' @template calc-params
+#' @rdname calc_likelihood
+#' @export
 calc_log_likelihood_function <- function(theta_grid, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_calc_log_likelihood_function', PACKAGE = 'TestDesign', theta_grid, item_parm, resp, ncat, model, prior, prior_parm)
 }

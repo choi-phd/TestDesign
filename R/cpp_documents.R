@@ -176,13 +176,15 @@ NULL
 #'
 #' \code{calc_likelihood} and \code{calc_likelihood_function} are functions to calculate likelihoods.
 #'
+#' \code{calc_log_likelihood} and \code{calc_log_likelihood_function} are functions to calculate log likelihoods.
+#'
 #' These functions are designed for multiple items.
 #'
-#' \code{calc_likelihood} accepts a single theta value, and \code{calc_likelihood_function} accepts multiple theta values.
+#' \code{calc_*} functions accept a single theta value, and \code{calc_*_function} functions accept multiple theta values.
 #'
 #' Currently supports unidimensional models.
 #'
-#' @param x,theta_grid the theta value. This must be a column vector in matrix form for \code{calc_likelihood_function}.
+#' @param x,theta_grid the theta value. This must be a column vector in matrix form for \code{calc_*_function} functions.
 #' @param item_parm a matrix containing item parameters. Each row represents each item.
 #' @param resp a vector containing responses on each item.
 #' @param ncat a vector containing the number of response categories of each item.
@@ -194,6 +196,11 @@ NULL
 #'   \item{\code{5}}: GPC model
 #'   \item{\code{6}}: GR model
 #' }
+#' @param prior an integer indicating the type of prior distribution, using \itemize{
+#'   \item{\code{1}}: normal distribution
+#'   \item{\code{2}}: uniform distribution
+#' }
+#' @param prior_parm a vector containing parameters for the prior distribution.
 #'
 #' @examples
 #' # item parameters
@@ -213,10 +220,14 @@ NULL
 #' resp  <- c(0, 1, 0, 1, 0, 1)
 #'
 #' x <- 3
-#' calc_likelihood(x, item_parm, resp, ncat, model)
+#' l  <- calc_likelihood(x, item_parm, resp, ncat, model)
+#' ll <- calc_log_likelihood(x, item_parm, resp, ncat, model, 2, NA)
+#' log(l) == ll
 #'
 #' theta_grid <- matrix(seq(-3, 3, .1))
-#' calc_likelihood_function(theta_grid, item_parm, resp, ncat, model)
+#' l  <- calc_likelihood_function(theta_grid, item_parm, resp, ncat, model)
+#' ll <- calc_log_likelihood_function(theta_grid, item_parm, resp, ncat, model, 2, NA)
+#' all(log(l) == ll)
 #'
 #' @template 1pl-ref
 #' @template 2pl-ref
