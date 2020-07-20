@@ -1,11 +1,8 @@
 #include "item_functions.h"
 #include "info_array_functions.h"
 
-//' Calculate the Fisher information matrix for a single theta value and a set of items, potentially with a mixture of different models
-//'
-//' @param x Numeric. A single theta value.
-//' @param item_parm A matrix of item parameters.
-//' @template calc-params-mini
+//' @rdname calc_info
+//' @export
 // [[Rcpp::export]]
 arma::colvec calc_info(
   const arma::rowvec& x,
@@ -60,11 +57,8 @@ arma::colvec calc_info(
 
 }
 
-//' Calculate the Fisher information matrix for a vector of theta values and a set of items, potentially with a mixture of different models
-//'
-//' @param x Numeric. A vector of theta values.
-//' @param item_parm A matrix of item parameters.
-//' @template calc-params-mini
+//' @rdname calc_info
+//' @export
 // [[Rcpp::export]]
 arma::mat calc_info_matrix(
   const arma::mat& x,
