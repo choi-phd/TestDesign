@@ -1473,48 +1473,6 @@ plotER <- function(
   }
 }
 
-#' Overlay item information plots
-#'
-#' Overlay item information plots.
-#'
-#' @param object An \code{\linkS4class{item_pool}} object.
-#' @param theta A theta grid.
-#' @param info_type Type of information.
-#' @param select A vector of indices identifying the items to subset.
-#' @param file_pdf If supplied a filename, save as a PDF file.
-#' @param color Plotting color.
-#' @param width Width of the graphics device.
-#' @param height Height of the graphics device.
-plotInfoOverlay <- function(object, theta, info_type = "FISHER", select = NULL, file_pdf = NULL, color = "red", width = 7, height = 6) {
-
-  if (toupper(info_type) == "FISHER") {
-    info <- calcFisher(object, theta)
-  } else {
-    stop("Invalid info_type specified")
-  }
-
-  if (!is.null(file_pdf)) {
-    pdf(file = file_pdf, width = width, height = height)
-  }
-
-  items <- 1:object@ni
-  if (!is.null(select) && all(select %in% items)) {
-    items <- select
-  }
-
-  plot(theta, info[, 1], xlab = "Theta", ylab = "Info", main = "", type = "n", ylim = c(0, max(info)))
-  for (i in 1:object@ni) {
-    lines(theta, info[, i], col = "light grey", lwd = 0.5)
-  }
-  for (i in items) {
-    lines(theta, info[, i], col = color, lwd = 2)
-  }
-
-  if (!is.null(file_pdf)) {
-    dev.off()
-  }
-}
-
 #' Calculate hyperparameters for log-normal distribution
 #'
 #' Calculate hyperparameters for log-normal distribution.
