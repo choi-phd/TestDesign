@@ -200,27 +200,14 @@ find_segment <- function(x, segment) {
 #' @noRd
 NULL
 
-#' Calculate a likelihood value of theta
-#' 
-#' Calculate a likelihood value of theta.
-#' 
-#' @param x Numeric. A single theta value.
-#' @param item_parm A numeric matrix of item parameters.
-#' @param resp A numeric vector of item responses.
-#' @template calc-params-mini
+#' @rdname calc_likelihood
+#' @export
 calc_likelihood <- function(x, item_parm, resp, ncat, model) {
     .Call('_TestDesign_calc_likelihood', PACKAGE = 'TestDesign', x, item_parm, resp, ncat, model)
 }
 
-#' Calculate a likelihood function of theta
-#' 
-#' Calculate a likelihood function of theta.
-#' 
-#' @param theta_grid An equi-spaced grid of theta values.
-#' @param item_parm A numeric matrix of item parameters.
-#' @param resp A numeric vector of item responses.
-#' @template calc-params-mini
-#' 
+#' @rdname calc_likelihood
+#' @export
 calc_likelihood_function <- function(theta_grid, item_parm, resp, ncat, model) {
     .Call('_TestDesign_calc_likelihood_function', PACKAGE = 'TestDesign', theta_grid, item_parm, resp, ncat, model)
 }
