@@ -172,6 +172,62 @@ NULL
 #' @name calc_info
 NULL
 
+#' Calculate likelihoods
+#'
+#' \code{calc_likelihood} and \code{calc_likelihood_function} are functions to calculate likelihoods.
+#'
+#' These functions are designed for multiple items.
+#'
+#' \code{calc_likelihood} accepts a single theta value, and \code{calc_likelihood_function} accepts multiple theta values.
+#'
+#' Currently supports unidimensional models.
+#'
+#' @param x,theta_grid the theta value. This must be a column vector in matrix form for \code{calc_likelihood_function}.
+#' @param item_parm a matrix containing item parameters. Each row represents each item.
+#' @param resp a vector containing responses on each item.
+#' @param ncat a vector containing the number of response categories of each item.
+#' @param model a vector indicating item models of each item, using \itemize{
+#'   \item{\code{1}}: 1PL model
+#'   \item{\code{2}}: 2PL model
+#'   \item{\code{3}}: 3PL model
+#'   \item{\code{4}}: PC model
+#'   \item{\code{5}}: GPC model
+#'   \item{\code{6}}: GR model
+#' }
+#'
+#' @examples
+#' # item parameters
+#' item_parm <- matrix(c(
+#'   1, NA,   NA,
+#'   1,  2,   NA,
+#'   1,  2, 0.25,
+#'   0,  1,   NA,
+#'   2,  0,    1,
+#'   2,  0,    2),
+#'   nrow = 6,
+#'   byrow = TRUE
+#' )
+#'
+#' ncat  <- c(2, 2, 2, 3, 3, 3)
+#' model <- c(1, 2, 3, 4, 5, 6)
+#' resp  <- c(0, 1, 0, 1, 0, 1)
+#'
+#' x <- 3
+#' calc_likelihood(x, item_parm, resp, ncat, model)
+#'
+#' theta_grid <- matrix(seq(-3, 3, .1))
+#' calc_likelihood_function(theta_grid, item_parm, resp, ncat, model)
+#'
+#' @template 1pl-ref
+#' @template 2pl-ref
+#' @template 3pl-ref
+#' @template pc-ref
+#' @template gpc-ref
+#' @template gr-ref
+#'
+#' @name calc_likelihood
+NULL
+
 #' Classify theta into segments
 #'
 #' \code{find_segment} is a function to classify theta values into segments based on supplied cutpoints.
