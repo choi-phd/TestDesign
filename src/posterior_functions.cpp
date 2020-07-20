@@ -239,7 +239,8 @@ arma::colvec calc_log_likelihood_function(
   int ni = resp.n_cols;
   int nq = theta_grid.n_rows;
   mat pp(nq, max(ncat));
-  colvec llh(nq);
+  colvec llh(nq, fill::zeros);
+
   for (int i = 0; i < ni; i++) {
 
     switch (model(i)) {
