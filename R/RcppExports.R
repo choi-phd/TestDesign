@@ -225,9 +225,9 @@ calc_log_likelihood_function <- function(theta_grid, item_parm, resp, ncat, mode
 }
 
 #' Calculate a posterior value of theta
-#' 
+#'
 #' Calculate a posterior value of theta.
-#' 
+#'
 #' @param x A length-one numeric vector for a theta value.
 #' @param item_parm A numeric matrix of item parameters.
 #' @template calc-params
@@ -236,9 +236,9 @@ calc_posterior <- function(x, item_parm, resp, ncat, model, prior, prior_parm) {
 }
 
 #' Calculate a posterior distribution of theta
-#' 
+#'
 #' Calculate a posterior distribution of theta.
-#' 
+#'
 #' @param theta_grid An equi-spaced grid of theta values.
 #' @param item_parm A numeric matrix of item parameters.
 #' @template calc-params
@@ -247,9 +247,9 @@ calc_posterior_function <- function(theta_grid, item_parm, resp, ncat, model, pr
 }
 
 #' Calculate a posterior value of theta for a single item
-#' 
+#'
 #' Calculate a posterior value of theta for a single item.
-#' 
+#'
 #' @param x A length-one numeric vector for a theta value.
 #' @param item_parm A numeric vector of item parameters (for one item).
 #' @param resp A length-one numeric vector of item responses.
@@ -257,15 +257,15 @@ calc_posterior_function <- function(theta_grid, item_parm, resp, ncat, model, pr
 #' @param model A length-one numeric vector of the IRT model by item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).
 #' @param prior The type of prior distribution (1: normal, 2: uniform).
 #' @param prior_parm A numeric vector of hyperparameters for the prior distribution, c(mu, sigma) or c(ll, ul).
-#' 
+#'
 calc_posterior_single <- function(x, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_calc_posterior_single', PACKAGE = 'TestDesign', x, item_parm, resp, ncat, model, prior, prior_parm)
 }
 
 #' Calculate an EAP estimate of theta for one examinee
-#' 
+#'
 #' Calculate an expected a posterior estimate of theta for one examinee.
-#' 
+#'
 #' @param theta_grid An equi-spaced theta grid.
 #' @param item_parm A numeric matrix of item parameters.
 #' @template calc-params
@@ -274,9 +274,9 @@ theta_EAP <- function(theta_grid, item_parm, resp, ncat, model, prior, prior_par
 }
 
 #' Calculate EAP estimates of theta for a group of examinees
-#' 
+#'
 #' Calculate expected a posteriori estimates of theta for a group of examinees.
-#' 
+#'
 #' @param theta_grid An equi-spaced theta grid.
 #' @param item_parm A numeric matrix of item parameters.
 #' @param resp A numeric matrix of item responses.
@@ -304,7 +304,7 @@ theta_EB_single <- function(nx, theta_init, theta_prop, item_parm, resp, ncat, m
 #' Calculate a fully Bayesian estimate of theta for an examinee
 #'
 #' Calculate a fully Bayesian estimate of theta for an examinee.
-#' 
+#'
 #' @param nx The number of MCMC draws.
 #' @param theta_init A value for initial estimate of theta.
 #' @param theta_prop SD of the proposal distribution.
@@ -316,9 +316,9 @@ theta_FB <- function(nx, theta_init, theta_prop, items_list, item_init, resp, nc
 }
 
 #' Calculate a fully Bayesian estimate of theta for a single item
-#' 
+#'
 #' Calculate a fully Bayesian estimate of theta for a single item.
-#' 
+#'
 #' @param nx The number of MCMC draws.
 #' @param theta_init A value for initial estimate of theta.
 #' @param theta_prop SD of the proposal distribution.
