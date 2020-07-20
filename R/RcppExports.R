@@ -299,28 +299,14 @@ theta_EAP_matrix <- function(theta_grid, item_parm, resp, ncat, model, prior, pr
     .Call('_TestDesign_theta_EAP_matrix', PACKAGE = 'TestDesign', theta_grid, item_parm, resp, ncat, model, prior, prior_parm)
 }
 
-#' Calculate an empirical Bayes estimate of theta for one examinee
-#' 
-#' Calculate an empirical Bayes estimate of theta for one examinee.
-#' 
-#' @param nx The number of MCMC draws.
-#' @param theta_init A value for initial estimate of theta.
-#' @param theta_prop SD of the proposal distribution.
-#' @param item_parm A numeric matrix of item parameters.
-#' @template calc-params
+#' @rdname theta_EB
+#' @export
 theta_EB <- function(nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_theta_EB', PACKAGE = 'TestDesign', nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm)
 }
 
-#' Calculate an empirical Bayes estimate of theta for a single item
-#' 
-#' Calculate an empirical Bayes estimate of theta for a single item.
-#' 
-#' @param nx The number of MCMC draws.
-#' @param theta_init A value for initial estimate of theta.
-#' @param theta_prop SD of the proposal distribution.
-#' @param item_parm A numeric matrix of item parameters.
-#' @template calc-params
+#' @rdname theta_EB
+#' @export
 theta_EB_single <- function(nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_theta_EB_single', PACKAGE = 'TestDesign', nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm)
 }

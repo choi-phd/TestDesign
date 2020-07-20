@@ -83,15 +83,8 @@ arma::mat theta_EAP_matrix(
 
 }
 
-//' Calculate an empirical Bayes estimate of theta for one examinee
-//'
-//' Calculate an empirical Bayes estimate of theta for one examinee.
-//'
-//' @param nx The number of MCMC draws.
-//' @param theta_init A value for initial estimate of theta.
-//' @param theta_prop SD of the proposal distribution.
-//' @param item_parm A numeric matrix of item parameters.
-//' @template calc-params
+//' @rdname theta_EB
+//' @export
 // [[Rcpp::export]]
 arma::mat theta_EB(
   const int& nx,
@@ -130,15 +123,8 @@ arma::mat theta_EB(
   return out;
 }
 
-//' Calculate an empirical Bayes estimate of theta for a single item
-//'
-//' Calculate an empirical Bayes estimate of theta for a single item.
-//'
-//' @param nx The number of MCMC draws.
-//' @param theta_init A value for initial estimate of theta.
-//' @param theta_prop SD of the proposal distribution.
-//' @param item_parm A numeric matrix of item parameters.
-//' @template calc-params
+//' @rdname theta_EB
+//' @export
 // [[Rcpp::export]]
 arma::mat theta_EB_single(
   const int& nx,
