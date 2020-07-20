@@ -1,14 +1,8 @@
 #include "item_functions.h"
 #include "posterior_functions.h"
 
-//' Calculate a likelihood value of theta
-//'
-//' Calculate a likelihood value of theta.
-//'
-//' @param x Numeric. A single theta value.
-//' @param item_parm A numeric matrix of item parameters.
-//' @param resp A numeric vector of item responses.
-//' @template calc-params-mini
+//' @rdname calc_likelihood
+//' @export
 // [[Rcpp::export]]
 double calc_likelihood (
   const arma::rowvec& x,
@@ -78,15 +72,8 @@ double calc_likelihood (
 
 }
 
-//' Calculate a likelihood function of theta
-//'
-//' Calculate a likelihood function of theta.
-//'
-//' @param theta_grid An equi-spaced grid of theta values.
-//' @param item_parm A numeric matrix of item parameters.
-//' @param resp A numeric vector of item responses.
-//' @template calc-params-mini
-//'
+//' @rdname calc_likelihood
+//' @export
 // [[Rcpp::export]]
 arma::colvec calc_likelihood_function(
   const arma::mat& theta_grid,
