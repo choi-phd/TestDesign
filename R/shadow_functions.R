@@ -1,38 +1,6 @@
 #' @include static_functions.R
 NULL
 
-#' Find matching theta to supplied probability
-#'
-#' Find theta corresponding to a response probability value for each item.
-#'
-#' @param object An \code{\linkS4class{item_pool}} object.
-#' @param rp A response probability value.
-#' @param max_iter A maximum number of iterations.
-#' @param conv A convergence criterion.
-#' @param start_theta A starting theta value.
-calcRP <- function(object, rp = .50, max_iter = 100, conv = 0.0001, start_theta = 0) {
-  # calcRP does not run, needs review
-  RP <- numeric(object@ni)
-  for (i in 1:object@ni) {
-    max_score <- object@NCAT[i] - 1
-    theta <- start_theta
-    ep    <- as.vector(calcEscore(object@parms[[i]], theta)) / max_score
-    gap   <- abs(rp - ep)
-    done  <- gap < conv
-    iter  <- 0
-    while (!done && iter < max_iter) {
-      iter  <- iter + 1
-      h     <- gap / -calcFisher(object@parms[[i]], theta)
-      theta <- theta - h
-      ep    <- as.vector(calcEscore(object@parms[[i]], theta)) / max_score
-      gap   <- abs(rp - ep)
-      done  <- gap < conv
-    }
-    RP[i] <- theta
-  }
-  return(RP)
-}
-
 #' @rdname simResp-methods
 #' @aliases simResp,pool_cluster,numeric-method
 setMethod(
