@@ -139,13 +139,8 @@ arma::colvec calc_likelihood_function(
   return lh;
 }
 
-//' Calculate a log-likelihood value of theta
-//'
-//' Calculate a log-likelihood value of theta.
-//'
-//' @param x A length-one numeric vector for a theta value.
-//' @param item_parm A numeric matrix of item parameters.
-//' @template calc-params
+//' @rdname calc_likelihood
+//' @export
 // [[Rcpp::export]]
 double calc_log_likelihood(
   const arma::rowvec& x,
@@ -219,13 +214,8 @@ double calc_log_likelihood(
   return llh;
 }
 
-//' Calculate a log-likelihood function of theta
-//'
-//' Calculate a log-likelihood function of theta.
-//'
-//' @param theta_grid An equi-spaced grid of theta values.
-//' @param item_parm A numeric matrix of item parameters.
-//' @template calc-params
+//' @rdname calc_likelihood
+//' @export
 // [[Rcpp::export]]
 arma::colvec calc_log_likelihood_function(
   const arma::mat& theta_grid,
