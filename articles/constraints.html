@@ -101,7 +101,7 @@
 <div id="introduction" class="section level3">
 <h3 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h3>
-<p>This document explains how to create constraints for <code>loadConstraints()</code>. In test assembly, practitioners often want to select the items that satify various types of constraints. As of <em>TestDesign</em> version 1.1.0, constraints can be read in from a data.frame object or a <code>.csv</code> spreadsheet file. Constraints are expected to be in the following structure:</p>
+<p>This document explains how to create constraints data for <code>loadConstraints()</code>. In test assembly, practitioners often want to select items satisfying various types of constraints. As of <em>TestDesign</em> version 1.1.0, constraints can be read in from <code>data.frame</code> objects or <code>.csv</code> spreadsheet files. Data is expected to be in the following structure:</p>
 <table class="table table table-striped table-hover table-condensed table-responsive">
 <thead><tr>
 <th style="text-align:left;">
@@ -243,13 +243,13 @@ NA
 </tr>
 </tbody>
 </table>
-<p>Constraints should be structured in seven columns, named as <code>CONSTRAINT</code>, <code>TYPE</code>, <code>WHAT</code>, <code>CONDITION</code>, <code>LB</code>, <code>UB</code>, <code>ONOFF</code> on the first row. Beginning from the second row, each row should have the corresponding values for the 7 columns. A convenient way to creating constraints is to use a spreadsheet application (e.g. Excel), work on the contents from there, and then saving it as a <code>.csv</code> file.</p>
+<p>Constraints data must have seven columns, named as <code>CONSTRAINT</code>, <code>TYPE</code>, <code>WHAT</code>, <code>CONDITION</code>, <code>LB</code>, <code>UB</code>, <code>ONOFF</code> on the first row. Beginning from the second row, each row must have corresponding values for each column. A convenient way to creating constraints is to use a spreadsheet application (e.g. Excel) and work on the content from there.</p>
 <p><br></p>
 <hr>
 <div id="constraint" class="section level4">
 <h4 class="hasAnchor">
 <a href="#constraint" class="anchor"></a>CONSTRAINT</h4>
-<p>This column serves as indices for the constraints. A single numeric value should be put into each row, incrementing by 1. Indices will be recreated in <code>loadConstraints()</code> if necessary.</p>
+<p>This column serves as indices. One number must be put into each row, beginning from 1 and incrementing by 1. Indices will be recreated in <code>loadConstraints()</code> if necessary.</p>
 <p><br></p>
 <hr>
 </div>
@@ -418,7 +418,7 @@ NA
 <p><br><br></p>
 <ul>
 <li>
-<code>Include</code> specifies the items matching the condition to be included in selection. For example, the following row tells the solver to include the two items <code>SC00003</code> and <code>SC00004</code>:</li>
+<code>Include</code> specifies the items matching the condition to be included in selection. For example, the following row tells the solver to include items <code>SC00003</code> and <code>SC00004</code>:</li>
 </ul>
 <table class="table table table-striped table-hover table-condensed table-responsive">
 <thead><tr>
@@ -471,7 +471,7 @@ NA
 <p><br><br></p>
 <ul>
 <li>
-<code>Exclude</code> specifies the items matching the condition to be excluded in selection. The following row tells the solver to exclude the items satisfying <code>PTBIS &lt; 0.15</code>, based on the supplied item attributes.</li>
+<code>Exclude</code> specifies the items matching the condition to be excluded in selection. The following row tells the solver to exclude items that match <code>PTBIS &lt; 0.15</code>, based on the supplied item attributes.</li>
 </ul>
 <table class="table table table-striped table-hover table-condensed table-responsive">
 <thead><tr>
@@ -524,7 +524,7 @@ NA
 <p><br><br></p>
 <ul>
 <li>
-<code>AllOrNone</code> specifies the items matching the condition to be either all included or all excluded. To tell the solver to either select the items <code>SC00005</code> and <code>SC00006</code> at the same time or exclude them at the same time:</li>
+<code>AllOrNone</code> specifies the items matching the condition to be either all included or all excluded. To tell the solver to either select items <code>SC00005</code> and <code>SC00006</code> at the same time or exclude them at the same time:</li>
 </ul>
 <table class="table table table-striped table-hover table-condensed table-responsive">
 <thead><tr>
@@ -587,7 +587,7 @@ NA
 <div id="condition" class="section level4">
 <h4 class="hasAnchor">
 <a href="#condition" class="anchor"></a>CONDITION</h4>
-<p>This column specifies the condition of the constraint. An R expression returning a logical value (<code>TRUE</code> or <code>FALSE</code>) is expected. The variables supplied in item attributes can be used in the expression as variable names.</p>
+<p>This column specifies the condition of the constraint. An R expression returning logical values (<code>TRUE</code> or <code>FALSE</code>) is expected. The variables supplied in item attributes can be used in the expression as variable names.</p>
 <p>Some examples are:</p>
 <ul>
 <li>
@@ -652,7 +652,7 @@ Per Stimulus
 <div id="lb-and-ub" class="section level4">
 <h4 class="hasAnchor">
 <a href="#lb-and-ub" class="anchor"></a>LB and UB</h4>
-<p>These two columns specify the lower and upper bounds on the number of selected items. These columns should be specified when <code>TYPE</code> is <code>Number</code>, and should be left empty otherwise.</p>
+<p>These two columns specify lower and upper bounds on the number of selected items. These must be specified when <code>TYPE</code> is <code>Number</code>, and otherwise must be left empty.</p>
 <p>Some example rows are provided.</p>
 <ul>
 <li>To select a total of 12 items:</li>
