@@ -530,19 +530,19 @@ BEGIN_RCPP
 END_RCPP
 }
 // theta_EAP_matrix
-arma::mat theta_EAP_matrix(const arma::mat& theta_grid, const arma::mat& item_parm, const arma::imat Resp, const arma::icolvec& ncat, const arma::icolvec& model, const int& prior, const arma::rowvec& prior_parm);
-RcppExport SEXP _TestDesign_theta_EAP_matrix(SEXP theta_gridSEXP, SEXP item_parmSEXP, SEXP RespSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP priorSEXP, SEXP prior_parmSEXP) {
+arma::mat theta_EAP_matrix(const arma::mat& theta_grid, const arma::mat& item_parm, const arma::imat& resp, const arma::icolvec& ncat, const arma::icolvec& model, const int& prior, const arma::rowvec& prior_parm);
+RcppExport SEXP _TestDesign_theta_EAP_matrix(SEXP theta_gridSEXP, SEXP item_parmSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP priorSEXP, SEXP prior_parmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::mat& >::type theta_grid(theta_gridSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type item_parm(item_parmSEXP);
-    Rcpp::traits::input_parameter< const arma::imat >::type Resp(RespSEXP);
+    Rcpp::traits::input_parameter< const arma::imat& >::type resp(respSEXP);
     Rcpp::traits::input_parameter< const arma::icolvec& >::type ncat(ncatSEXP);
     Rcpp::traits::input_parameter< const arma::icolvec& >::type model(modelSEXP);
     Rcpp::traits::input_parameter< const int& >::type prior(priorSEXP);
     Rcpp::traits::input_parameter< const arma::rowvec& >::type prior_parm(prior_parmSEXP);
-    rcpp_result_gen = Rcpp::wrap(theta_EAP_matrix(theta_grid, item_parm, Resp, ncat, model, prior, prior_parm));
+    rcpp_result_gen = Rcpp::wrap(theta_EAP_matrix(theta_grid, item_parm, resp, ncat, model, prior, prior_parm));
     return rcpp_result_gen;
 END_RCPP
 }
