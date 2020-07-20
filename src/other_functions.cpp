@@ -1,13 +1,8 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-//' Find the segment to which each theta value belongs
-//'
-//' Find the segment to which each theta value belongs.
-//'
-//' @param x A numeric vector of theta values.
-//' @param segment A numeric vector of segment cuts.
-//'
+//' @rdname find_segment
+//' @export
 // [[Rcpp::export]]
 IntegerVector find_segment(
   NumericVector x,

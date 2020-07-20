@@ -191,13 +191,8 @@ array_info_gr <- function(x, a, b) {
     .Call('_TestDesign_array_info_gr', PACKAGE = 'TestDesign', x, a, b)
 }
 
-#' Find the segment to which each theta value belongs
-#'
-#' Find the segment to which each theta value belongs.
-#'
-#' @param x A numeric vector of theta values.
-#' @param segment A numeric vector of segment cuts.
-#'
+#' @rdname find_segment
+#' @export
 find_segment <- function(x, segment) {
     .Call('_TestDesign_find_segment', PACKAGE = 'TestDesign', x, segment)
 }
