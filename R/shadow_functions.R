@@ -1429,54 +1429,6 @@ checkConstraints <- function(constraints, usage_matrix, true_theta = NULL) {
     groupHIT = groupHIT[numberIndex, ]))
 }
 
-#' Draw RMSE plots
-#'
-#' Draw RMSE plots.
-#'
-#' @param ... A series of RMSE values.
-#' @param title A plot title.
-#' @param legend_title A legend title.
-#' @param legend_labels A vector of labels for the series.
-#' @param lty_set A vector of line types for the series.
-#' @param col_set A vector of colors for the series.
-#' @param theta A theta grid.
-plotRMSE <- function(..., title = NULL, legend_title = NULL, legend_labels = NULL, lty_set = NULL, col_set = NULL, theta = seq(-2, 2, 1)) {
-
-  output_list <- list(...)
-  n_output <- length(output_list)
-
-  if (is.null(lty_set)) {
-    lty_set <- 1:n_output
-  } else if (length(lty_set) != n_output) {
-    warning("... and lty_set are of different lengths")
-    lty_set <- 1:n_output
-  }
-
-  if (is.null(col_set)) {
-    col_set <- 1:n_output
-  } else if (length(col_set) != n_output) {
-    warning("... and col_set are of different lengths")
-    col_set <- 1:n_output
-  }
-
-  plot(unique(output_list[[1]]$true_theta), RMSE(output_list[[1]]$true_theta, output_list[[1]]$final_theta_est), xlim = range(theta), ylim = c(0, 1), xlab = "Theta", ylab = "RMSE", type = "n", xaxt = "n", yaxt = "n", main = title)
-  axis(1, at = theta, labels = theta)
-  axis(2, at = seq(0, 1.0, .2), labels = format(seq(0, 1.0, .2), digits = 1), las = 2)
-  grid()
-
-  for (i in 1:n_output) {
-    lines(unique(output_list[[i]]$true_theta), RMSE(output_list[[i]]$true_theta, output_list[[i]]$final_theta_est), lty = lty_set[i], col = col_set[i], lwd = 2)
-  }
-
-  if (!is.null(legend_labels)) {
-    if (length(legend_labels) != n_output) {
-      warning("... and legend_labels are of different lengths")
-      legend_labels <- 1:n_output
-    }
-    legend("top", labels, lty = lty_set, col = col_set, title = legend_title, bg = "white")
-  }
-}
-
 #' @noRd
 plotER <- function(
   item_exposure_rate, item_exposure_rate_final = NULL,
