@@ -45,7 +45,7 @@ arma::colvec theta_EAP(
 //'
 //' @param theta_grid An equi-spaced theta grid.
 //' @param item_parm A numeric matrix of item parameters.
-//' @param Resp A numeric matrix of item responses.
+//' @param resp A numeric matrix of item responses.
 //' @param ncat A numeric vector of the number of response categories by item.
 //' @param model A numeric vector of the IRT model by item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).
 //' @param prior The type of prior distribution (1: normal, 2: uniform).
@@ -55,22 +55,22 @@ arma::colvec theta_EAP(
 arma::mat theta_EAP_matrix(
   const arma::mat& theta_grid,
   const arma::mat& item_parm,
-  const arma::imat Resp,
+  const arma::imat& resp,
   const arma::icolvec& ncat,
   const arma::icolvec& model,
   const int& prior,
   const arma::rowvec& prior_parm) {
 
   int nq = theta_grid.n_rows;
-  int nj = Resp.n_rows;
+  int nj = resp.n_rows;
   mat out(nj, 2);
 
   for (int j = 0; j < nj; j++) {
     rowvec const_term(3);
-    irowvec resp = Resp.row(j);
+    irowvec resp_single = resp.row(j);
     for (int q = 0; q < nq; q++) {
       rowvec x = theta_grid.row(q);
-      double pos = calc_posterior(x, item_parm, resp, ncat, model, prior, prior_parm);
+      double pos = calc_posterior(x, item_parm, resp_single, ncat, model, prior, prior_parm);
       const_term(0) += pos;
       const_term(1) += x(0) * pos;        // unidimensional
       const_term(2) += x(0) * x(0) * pos; // unidimensional

@@ -4,14 +4,14 @@
 \alias{theta_EAP_matrix}
 \title{Calculate EAP estimates of theta for a group of examinees}
 \usage{
-theta_EAP_matrix(theta_grid, item_parm, Resp, ncat, model, prior, prior_parm)
+theta_EAP_matrix(theta_grid, item_parm, resp, ncat, model, prior, prior_parm)
 }
 \arguments{
 \item{theta_grid}{An equi-spaced theta grid.}
 
 \item{item_parm}{A numeric matrix of item parameters.}
 
-\item{Resp}{A numeric matrix of item responses.}
+\item{resp}{A numeric matrix of item responses.}
 
 \item{ncat}{A numeric vector of the number of response categories by item.}
 

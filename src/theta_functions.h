@@ -13,7 +13,7 @@ arma::colvec theta_EAP(
 arma::mat theta_EAP_matrix(
   const arma::mat&,
   const arma::mat&,
-  const arma::imat Resp,
+  const arma::imat&,
   const arma::icolvec&,
   const arma::icolvec&,
   const int&,
