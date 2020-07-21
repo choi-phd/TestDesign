@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Find the segment to which each theta value belongs — find_segment • TestDesign</title>
+<title>Classify theta into segments — find_segment • TestDesign</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Find the segment to which each theta value belongs — find_segment" />
-<meta property="og:description" content="Find the segment to which each theta value belongs." />
+<meta property="og:title" content="Classify theta into segments — find_segment" />
+<meta property="og:description" content="find_segment is a function to classify theta values into segments based on supplied cutpoints." />
 
 
 
@@ -128,13 +128,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Find the segment to which each theta value belongs</h1>
-    <small class="dont-index">Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/R/RcppExports.R'><code>R/RcppExports.R</code></a></small>
+    <h1>Classify theta into segments</h1>
+    <small class="dont-index">Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/R/RcppExports.R'><code>R/RcppExports.R</code></a>, <a href='https://github.com/choi-phd/TestDesign/blob/master/R/cpp_documents.R'><code>R/cpp_documents.R</code></a></small>
     <div class="hidden name"><code>find_segment.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Find the segment to which each theta value belongs.</p>
+    <p><code>find_segment</code> is a function to classify theta values into segments based on supplied cutpoints.</p>
     </div>
 
     <pre class="usage"><span class='fu'>find_segment</span>(<span class='no'>x</span>, <span class='no'>segment</span>)</pre>
@@ -144,15 +144,23 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>A numeric vector of theta values.</p></td>
+      <td><p>the theta value. This can be a vector.</p></td>
     </tr>
     <tr>
       <th>segment</th>
-      <td><p>A numeric vector of segment cuts.</p></td>
+      <td><p>segment cutpoints.</p></td>
     </tr>
     </table>
 
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='no'>cuts</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>Inf</span>, -<span class='fl'>2</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>Inf</span>)
+
+<span class='fu'>find_segment</span>(-<span class='fl'>3</span>, <span class='no'>cuts</span>)
+<span class='fu'>find_segment</span>(-<span class='fl'>1</span>, <span class='no'>cuts</span>)
+<span class='fu'>find_segment</span>(<span class='fl'>1</span>, <span class='no'>cuts</span>)
+<span class='fu'>find_segment</span>(<span class='fl'>3</span>, <span class='no'>cuts</span>)
+<span class='fu'>find_segment</span>(<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(-<span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>2</span>), <span class='no'>cuts</span>)</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

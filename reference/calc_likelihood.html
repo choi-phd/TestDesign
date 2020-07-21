@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate a likelihood value of theta — calc_likelihood • TestDesign</title>
+<title>Calculate likelihoods — calc_likelihood • TestDesign</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Calculate a likelihood value of theta — calc_likelihood" />
-<meta property="og:description" content="Calculate a likelihood value of theta." />
+<meta property="og:title" content="Calculate likelihoods — calc_likelihood" />
+<meta property="og:description" content="calc_likelihood and calc_likelihood_function are functions to calculate likelihoods." />
 
 
 
@@ -128,43 +128,140 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate a likelihood value of theta</h1>
-    <small class="dont-index">Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/R/RcppExports.R'><code>R/RcppExports.R</code></a></small>
+    <h1>Calculate likelihoods</h1>
+    <small class="dont-index">Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/R/RcppExports.R'><code>R/RcppExports.R</code></a>, <a href='https://github.com/choi-phd/TestDesign/blob/master/R/cpp_documents.R'><code>R/cpp_documents.R</code></a></small>
     <div class="hidden name"><code>calc_likelihood.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Calculate a likelihood value of theta.</p>
+    <p><code>calc_likelihood</code> and <code>calc_likelihood_function</code> are functions to calculate likelihoods.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>calc_likelihood</span>(<span class='no'>x</span>, <span class='no'>item_parm</span>, <span class='no'>resp</span>, <span class='no'>ncat</span>, <span class='no'>model</span>)</pre>
+    <pre class="usage"><span class='fu'>calc_likelihood</span>(<span class='no'>x</span>, <span class='no'>item_parm</span>, <span class='no'>resp</span>, <span class='no'>ncat</span>, <span class='no'>model</span>)
+
+<span class='fu'>calc_likelihood_function</span>(<span class='no'>theta_grid</span>, <span class='no'>item_parm</span>, <span class='no'>resp</span>, <span class='no'>ncat</span>, <span class='no'>model</span>)
+
+<span class='fu'>calc_log_likelihood</span>(<span class='no'>x</span>, <span class='no'>item_parm</span>, <span class='no'>resp</span>, <span class='no'>ncat</span>, <span class='no'>model</span>, <span class='no'>prior</span>, <span class='no'>prior_parm</span>)
+
+<span class='fu'>calc_log_likelihood_function</span>(
+  <span class='no'>theta_grid</span>,
+  <span class='no'>item_parm</span>,
+  <span class='no'>resp</span>,
+  <span class='no'>ncat</span>,
+  <span class='no'>model</span>,
+  <span class='no'>prior</span>,
+  <span class='no'>prior_parm</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>Numeric. A single theta value.</p></td>
+      <th>x, theta_grid</th>
+      <td><p>the theta value. This must be a column vector in matrix form for <code>calc_*_function</code> functions.</p></td>
     </tr>
     <tr>
       <th>item_parm</th>
-      <td><p>A numeric matrix of item parameters.</p></td>
+      <td><p>a matrix containing item parameters. Each row represents each item.</p></td>
     </tr>
     <tr>
       <th>resp</th>
-      <td><p>A numeric vector of item responses.</p></td>
+      <td><p>a vector containing responses on each item.</p></td>
     </tr>
     <tr>
       <th>ncat</th>
-      <td><p>a numeric vector specifying the number of response categories in each item.</p></td>
+      <td><p>a vector containing the number of response categories of each item.</p></td>
     </tr>
     <tr>
       <th>model</th>
-      <td><p>a numeric vector indicating the IRT models of each item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).</p></td>
+      <td><p>a vector indicating item models of each item, using</p><ul>
+<li><p><code>1</code>: 1PL model</p></li>
+<li><p><code>2</code>: 2PL model</p></li>
+<li><p><code>3</code>: 3PL model</p></li>
+<li><p><code>4</code>: PC model</p></li>
+<li><p><code>5</code>: GPC model</p></li>
+<li><p><code>6</code>: GR model</p></li>
+</ul></td>
+    </tr>
+    <tr>
+      <th>prior</th>
+      <td><p>an integer indicating the type of prior distribution, using</p><ul>
+<li><p><code>1</code>: normal distribution</p></li>
+<li><p><code>2</code>: uniform distribution</p></li>
+</ul></td>
+    </tr>
+    <tr>
+      <th>prior_parm</th>
+      <td><p>a vector containing parameters for the prior distribution.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
+    <p><code>calc_log_likelihood</code> and <code>calc_log_likelihood_function</code> are functions to calculate log likelihoods.</p>
+<p>These functions are designed for multiple items.</p>
+<p><code>calc_*</code> functions accept a single theta value, and <code>calc_*_function</code> functions accept multiple theta values.</p>
+<p>Currently supports unidimensional models.</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Rasch G (1960).
+<em>Probabilistic models for some intelligence and attainment tests</em>.
+Copenhagen: Danish Institute for Educational Research.</p>
+<p>Lord FM (1952).
+&#8220;A theory of test scores.&#8221;
+<em>Psychometric Monograph</em>, <b>7</b>.</p>
+<p>Birnbaum A (1957).
+&#8220;Efficient design and use of tests of mental ability for various decision-making problems (Series Report No. 58-16. Project No. 7755-23).&#8221;
+Randolph Air Force Base, TX: USAF School of Aviation Medicine.</p>
+<p>Birnbaum A (1958).
+&#8220;On the estimation of mental ability (Series Report No. 15. Project No. 7755-23).&#8221;
+Randolph Air Force Base, TX: USAF School of Aviation Medicine.</p>
+<p>Birnbaum A (1958).
+&#8220;Further considerations of efficiency in tests of a mental ability (Series Report No. 17. Project No. 7755-23).&#8221;
+Randolph Air Force Base, TX: USAF School of Aviation Medicine.</p>
+<p>Birnbaum A (1968).
+&#8220;Some latent trait models and their use in inferring an examinee's ability.&#8221;
+In Lord FM, Novick MR (eds.), <em>Statistical Theories of Mental Test Scores</em>, 397--479.
+Addison-Wesley, Reading, MA.</p>
+<p>Masters GN (1982).
+&#8220;A Rasch model for partial credit scoring.&#8221;
+<em>Psychometrika</em>, <b>47</b>(2), 149--174.</p>
+<p>Andrich D (1978).
+&#8220;A rating formulation for ordered response categories.&#8221;
+<em>Psychometrika</em>, <b>43</b>(4), 561--573.</p>
+<p>Muraki E (1992).
+&#8220;A generalized partial credit model: Application of an EM algorithm.&#8221;
+<em>Applied Psychological Measurement</em>, <b>16</b>(2), 159--176.</p>
+<p>Samejima F (1969).
+&#8220;Estimation of latent ability using a response pattern of graded scores.&#8221;
+<em>Psychometrika Monograph</em>, <b>17</b>.</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># item parameters</span>
+<span class='no'>item_parm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
+  <span class='fl'>1</span>, <span class='fl'>NA</span>,   <span class='fl'>NA</span>,
+  <span class='fl'>1</span>,  <span class='fl'>2</span>,   <span class='fl'>NA</span>,
+  <span class='fl'>1</span>,  <span class='fl'>2</span>, <span class='fl'>0.25</span>,
+  <span class='fl'>0</span>,  <span class='fl'>1</span>,   <span class='fl'>NA</span>,
+  <span class='fl'>2</span>,  <span class='fl'>0</span>,    <span class='fl'>1</span>,
+  <span class='fl'>2</span>,  <span class='fl'>0</span>,    <span class='fl'>2</span>),
+  <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>6</span>,
+  <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)
+
+<span class='no'>ncat</span>  <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>3</span>)
+<span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>)
+<span class='no'>resp</span>  <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>)
+
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fl'>3</span>
+<span class='no'>l</span>  <span class='kw'>&lt;-</span> <span class='fu'>calc_likelihood</span>(<span class='no'>x</span>, <span class='no'>item_parm</span>, <span class='no'>resp</span>, <span class='no'>ncat</span>, <span class='no'>model</span>)
+<span class='no'>ll</span> <span class='kw'>&lt;-</span> <span class='fu'>calc_log_likelihood</span>(<span class='no'>x</span>, <span class='no'>item_parm</span>, <span class='no'>resp</span>, <span class='no'>ncat</span>, <span class='no'>model</span>, <span class='fl'>2</span>, <span class='fl'>NA</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>l</span>) <span class='kw'>==</span> <span class='no'>ll</span>
+
+<span class='no'>theta_grid</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(-<span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>.1</span>))
+<span class='no'>l</span>  <span class='kw'>&lt;-</span> <span class='fu'>calc_likelihood_function</span>(<span class='no'>theta_grid</span>, <span class='no'>item_parm</span>, <span class='no'>resp</span>, <span class='no'>ncat</span>, <span class='no'>model</span>)
+<span class='no'>ll</span> <span class='kw'>&lt;-</span> <span class='fu'>calc_log_likelihood_function</span>(<span class='no'>theta_grid</span>, <span class='no'>item_parm</span>, <span class='no'>resp</span>, <span class='no'>ncat</span>, <span class='no'>model</span>, <span class='fl'>2</span>, <span class='fl'>NA</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/all.html'>all</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>l</span>) <span class='kw'>==</span> <span class='no'>ll</span>)</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
