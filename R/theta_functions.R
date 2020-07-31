@@ -57,7 +57,7 @@ getThetaSegment <- function(current_theta, position, exposure_control, exposure_
   n_segment   <- exposure_constants$n_segment
   segment_cut <- exposure_constants$segment_cut
 
-  if (exposure_control_method %in% c("ELIGIBILITY", "BIGM")) {
+  if (exposure_control_method %in% c("NONE", "ELIGIBILITY", "BIGM")) {
     if (isFirstSegmentValid(exposure_control$first_segment, n_segment, position)) {
       segment <- exposure_control$first_segment[position]
       return(segment)

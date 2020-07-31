@@ -604,7 +604,7 @@ setMethod(
     items_administered <- matrix(FALSE, constants$nj, constants$ni)
     o_list <- vector(mode = "list", length = constants$nj)
 
-    if (exposure_control %in% c("ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
+    if (exposure_control %in% c("NONE", "ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
 
       segment_record           <- initializeSegmentRecord(exposure_constants, constants)
       exposure_record          <- initializeExposureRecord(config@exposure_control, exposure_constants, constants)
