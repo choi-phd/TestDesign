@@ -332,7 +332,8 @@ parseConstraintData <- function(x, attrib, constants) {
       o@dir <- c(">=", "<=")
       o@rhs <- c(x$LB, x$UB)
       if (x$TYPE == "SUM") {
-        o@mat[, nx_pad + (1:nx)] <- attrib@data[[x$CONDITION]]
+        o@mat[1, nx_pad + (1:nx)] <- attrib@data[[x$CONDITION]]
+        o@mat[2, nx_pad + (1:nx)] <- attrib@data[[x$CONDITION]]
       } else if (x$TYPE %in% c("AVERAGE", "MEAN")) {
         o@mat[1, nx_pad + (1:nx)] <- attrib@data[[x$CONDITION]] / denom_UB
         o@mat[2, nx_pad + (1:nx)] <- attrib@data[[x$CONDITION]] / denom_LB
