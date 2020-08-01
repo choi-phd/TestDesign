@@ -6,14 +6,16 @@
 \alias{Static,config_Static-method}
 \title{Run fixed-form test assembly}
 \usage{
-Static(config, constraints)
+Static(config, constraints, force_solver = FALSE)
 
-\S4method{Static}{config_Static}(config, constraints)
+\S4method{Static}{config_Static}(config, constraints, force_solver = FALSE)
 }
 \arguments{
 \item{config}{a \code{\linkS4class{config_Static}} object. Use \code{\link{createStaticTestConfig}} for this.}
 
 \item{constraints}{a \code{\linkS4class{constraints}} object representing test specifications. Use \code{\link{loadConstraints}} for this.}
+
+\item{force_solver}{if \code{TRUE}, do not check whether the solver is one of recommended solvers for doing set-based assembly. Has no effect on discrete assembly. (default = \code{FALSE})}
 }
 \value{
 \code{\link{Static}} returns a \code{\linkS4class{output_Static}} object containing the selected items.

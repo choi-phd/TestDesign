@@ -7,6 +7,7 @@ NULL
 #'
 #' @template config_Static-param
 #' @template constraints-param
+#' @template force_solver_param
 #'
 #' @return \code{\link{Static}} returns a \code{\linkS4class{output_Static}} object containing the selected items.
 #'
@@ -27,7 +28,7 @@ NULL
 #' @export
 setGeneric(
   name = "Static",
-  def = function(config, constraints) {
+  def = function(config, constraints, force_solver = FALSE) {
     standardGeneric("Static")
   }
 )
@@ -38,10 +39,17 @@ setGeneric(
 setMethod(
   f = "Static",
   signature = c("config_Static"),
-  definition = function(config, constraints) {
+  definition = function(config, constraints, force_solver = FALSE) {
 
     if (!validObject(config)) {
       stop("'config' object is not valid.")
+    }
+
+    if (!force_solver) {
+      o <- validateSolver(config, constraints)
+      if (!o) {
+        return(invisible())
+      }
     }
 
     pool <- constraints@pool

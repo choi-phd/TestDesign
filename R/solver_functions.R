@@ -310,3 +310,40 @@ notOptimal <- function(status, solver) {
   }
   return(tmp)
 }
+
+#' @noRd
+validateSolver <- function(config, constraints) {
+
+  if (constraints@set_based) {
+    if (!toupper(config@MIP$solver) %in%  c("LPSYMPHONY", "RSYMPHONY", "GUROBI")) {
+
+      if (!interactive()) {
+        txt <- txt <- paste0(
+          sprintf("Set-based assembly with %s is not allowed in non-interactive mode", config@MIP$solver),
+          "(allowed solvers: LPSYMPHONY, RSYMPHONY, or GUROBI)",
+          sep = " "
+        )
+        warning(txt)
+        return(FALSE)
+      }
+
+      txt <- paste0(
+        sprintf("Set-based assembly with %s takes a long time.", config@MIP$solver),
+        "Recommended solvers: LPSYMPHONY, RSYMPHONY, or GUROBI",
+        sep = "\n"
+      )
+
+      choices <- c(
+        sprintf("Proceed with %s", config@MIP$solver),
+        "Abort"
+      )
+      input <- menu(choices, FALSE, txt)
+
+      return(input == 1)
+
+    }
+  }
+
+  return(TRUE)
+
+}

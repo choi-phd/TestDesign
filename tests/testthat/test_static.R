@@ -29,14 +29,14 @@ test_that("static", {
         item_selection = list(method = "MAXINFO", target_location = c(-2, 2)),
         MIP = list(solver = solver_names[i])
       )
-      solution <- Static(config_reading, constraints_reading)
+      solution <- Static(config_reading, constraints_reading, force_solver = TRUE)
       expect_equal(dim(solution@selected)[1], 30)
 
       config_reading <- createStaticTestConfig(
         item_selection = list(method = "TIF", target_location = c(1, 2), target_value = c(10, 30)),
         MIP = list(solver = solver_names[i])
       )
-      solution <- Static(config_reading, constraints_reading)
+      solution <- Static(config_reading, constraints_reading, force_solver = TRUE)
       expect_equal(dim(solution@selected)[1], 30)
     }
   }
