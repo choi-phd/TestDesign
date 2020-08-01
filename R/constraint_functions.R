@@ -99,7 +99,22 @@ validateConstraintData <- function(x, attrib) {
   if (x$TYPE %in% c("SUM", "AVERAGE", "MEAN")) {
 
     validateLBUB(x)
+
+    if (
+      toupper(x$CONDITION) %in%
+      names(attrib@data)) {
+      return()
+    }
+
+    if (
+      grepl("\\[", x$CONDITION) |
+      grepl(",", x$CONDITION)
+    ) {
+      return()
+    }
+
     validateFullColumn(x, attrib, class_name)
+
     return()
 
   }
@@ -318,26 +333,74 @@ parseConstraintData <- function(x, attrib, constants) {
       denom_UB <- s_count$UB
     }
 
-    if (x$LB == x$UB) {
-      o@mat <- matrix(0, nrow = 1, ncol = nv)
-      o@dir <- "<="
-      o@rhs <- x$LB
-      if (x$TYPE == "SUM") {
-        o@mat[1, nx_pad + (1:nx)] <- attrib@data[[x$CONDITION]]
-      } else if (x$TYPE %in% c("AVERAGE", "MEAN")) {
-        o@mat[1, nx_pad + (1:nx)] <- attrib@data[[x$CONDITION]] / denom_LB
+    if (x$CONDITION %in% names(attrib@data)) {
+
+      if (x$LB == x$UB) {
+        o@mat <- matrix(0, nrow = 1, ncol = nv)
+        o@dir <- "=="
+        o@rhs <- x$LB
+        if (x$TYPE == "SUM") {
+          o@mat[1, nx_pad + (1:nx)] <- attrib@data[[x$CONDITION]]
+        } else if (x$TYPE %in% c("AVERAGE", "MEAN")) {
+          o@mat[1, nx_pad + (1:nx)] <- attrib@data[[x$CONDITION]] / denom_LB
+        }
+      } else {
+        o@mat <- matrix(0, nrow = 2, ncol = nv)
+        o@dir <- c(">=", "<=")
+        o@rhs <- c(x$LB, x$UB)
+        if (x$TYPE == "SUM") {
+          o@mat[1, nx_pad + (1:nx)] <- attrib@data[[x$CONDITION]]
+          o@mat[2, nx_pad + (1:nx)] <- attrib@data[[x$CONDITION]]
+        } else if (x$TYPE %in% c("AVERAGE", "MEAN")) {
+          o@mat[1, nx_pad + (1:nx)] <- attrib@data[[x$CONDITION]] / denom_UB
+          o@mat[2, nx_pad + (1:nx)] <- attrib@data[[x$CONDITION]] / denom_LB
+        }
       }
-    } else {
-      o@mat <- matrix(0, nrow = 2, ncol = nv)
-      o@dir <- c(">=", "<=")
-      o@rhs <- c(x$LB, x$UB)
-      if (x$TYPE == "SUM") {
-        o@mat[1, nx_pad + (1:nx)] <- attrib@data[[x$CONDITION]]
-        o@mat[2, nx_pad + (1:nx)] <- attrib@data[[x$CONDITION]]
-      } else if (x$TYPE %in% c("AVERAGE", "MEAN")) {
-        o@mat[1, nx_pad + (1:nx)] <- attrib@data[[x$CONDITION]] / denom_UB
-        o@mat[2, nx_pad + (1:nx)] <- attrib@data[[x$CONDITION]] / denom_LB
+
+      return(o)
+
+    }
+
+    if (
+      grepl(",", x$CONDITION) |
+      grepl("\\[", x$CONDITION)) {
+
+      if (grepl(",", x$CONDITION)) {
+        selector_pos <- regexpr(",", x$CONDITION)
       }
+      if (grepl("\\[", x$CONDITION)) {
+        selector_pos <- regexpr("\\[", x$CONDITION)
+      }
+
+      variable     <- substr(x$CONDITION, 1, selector_pos - 1)
+      condition    <- substr(x$CONDITION, selector_pos + 1, nchar(x$CONDITION) - 1)
+      flag <- with(attrib@data, eval(parse(text = condition)))
+      idx  <- which(flag)
+      tmp  <- attrib@data[[variable]]
+      tmp[!flag] <- 0
+
+      if (x$LB == x$UB) {
+        o@mat <- matrix(0, nrow = 1, ncol = nv)
+        o@dir <- "=="
+        o@rhs <- x$LB
+        if (x$TYPE == "SUM") {
+          o@mat[1, nx_pad + (1:nx)] <- tmp
+        } else if (x$TYPE %in% c("AVERAGE", "MEAN")) {
+          o@mat[1, nx_pad + (1:nx)] <- tmp / denom_LB
+        }
+      } else {
+        o@mat <- matrix(0, nrow = 2, ncol = nv)
+        o@dir <- c(">=", "<=")
+        o@rhs <- c(x$LB, x$UB)
+        if (x$TYPE == "SUM") {
+          o@mat[1, nx_pad + (1:nx)] <- tmp
+          o@mat[2, nx_pad + (1:nx)] <- tmp
+        } else if (x$TYPE %in% c("AVERAGE", "MEAN")) {
+          o@mat[1, nx_pad + (1:nx)] <- tmp / denom_UB
+          o@mat[2, nx_pad + (1:nx)] <- tmp / denom_LB
+        }
+      }
+
     }
 
   }
