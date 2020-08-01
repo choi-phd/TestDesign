@@ -368,13 +368,15 @@ parseConstraintData <- function(x, attrib, constants) {
 
       if (grepl(",", x$CONDITION)) {
         selector_pos <- regexpr(",", x$CONDITION)
+        variable     <- substr(x$CONDITION, 1, selector_pos - 1)
+        condition    <- substr(x$CONDITION, selector_pos + 1, nchar(x$CONDITION))
       }
       if (grepl("\\[", x$CONDITION)) {
         selector_pos <- regexpr("\\[", x$CONDITION)
+        variable     <- substr(x$CONDITION, 1, selector_pos - 1)
+        condition    <- substr(x$CONDITION, selector_pos + 1, nchar(x$CONDITION) - 1)
       }
 
-      variable     <- substr(x$CONDITION, 1, selector_pos - 1)
-      condition    <- substr(x$CONDITION, selector_pos + 1, nchar(x$CONDITION) - 1)
       flag <- with(attrib@data, eval(parse(text = condition)))
       idx  <- which(flag)
       tmp  <- attrib@data[[variable]]
