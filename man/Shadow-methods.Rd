@@ -12,6 +12,7 @@ Shadow(
   data = NULL,
   prior = NULL,
   prior_par = NULL,
+  force_solver = FALSE,
   session = NULL
 )
 
@@ -22,6 +23,7 @@ Shadow(
   data = NULL,
   prior = NULL,
   prior_par = NULL,
+  force_solver = FALSE,
   session = NULL
 )
 }
@@ -37,6 +39,8 @@ Shadow(
 \item{prior}{(optional) prior density at each \code{config@theta_grid}. This overrides \code{prior_par}. Can be a vector to use the same prior for all \emph{nj} participants, or a \emph{nj}-row matrix to use a different prior for each participant.}
 
 \item{prior_par}{(optional) normal distribution parameters \code{c(mean, sd)} to use as prior. Can be a vector to use the same prior for all \emph{nj} participants, or a \emph{nj}-row matrix to use a different prior for each participant.}
+
+\item{force_solver}{if \code{TRUE}, do not check whether the solver is one of recommended solvers for doing set-based assembly. Has no effect on discrete assembly. (default = \code{FALSE})}
 
 \item{session}{(optional) used to communicate with Shiny app \code{\link{TestDesign}}.}
 }
