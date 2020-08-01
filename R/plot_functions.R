@@ -425,50 +425,97 @@ setMethod(
       item_ncat     <- x@administered_item_ncat
 
       if (simple) {
+
         used_items <- sort(unique(unlist(lapply(x@shadow_test, function(x) x$i))))
-        new_y <- 1:length(used_items)
-        y_map <- rep(1, used_items[1] - 1)
-        for (i in 1:(length(used_items) - 1)) {
-          y_map <- c(y_map, rep(new_y[i], used_items[i + 1] - used_items[i]))
-        }
-        y_map <- c(y_map, rep(new_y[i + 1], ni_pool - used_items[i + 1] + 1))
+        ni_used <- length(used_items)
+
+        i_sorted <- unlist(x@item_index_by_stimulus)
+        i_na     <- setdiff(1:ni_pool, i_sorted)
+        i_sorted <- c(i_sorted, i_na)
+
+        i_sorted <- i_sorted[i_sorted %in% used_items]
+
+        y_map <- rep(NA, ni_pool)
+        y_map[i_sorted] <- 1:ni_used
+
       } else {
+
         used_items <- 1:ni_pool
-        y_map <- 1:ni_pool
+
+        i_sorted <- unlist(x@item_index_by_stimulus)
+        i_na     <- setdiff(1:ni_pool, i_sorted)
+        i_sorted <- c(i_sorted, i_na)
+
+        y_map <- numeric(ni_pool)
+        y_map[i_sorted] <- 1:ni_pool
+
       }
 
       plot(
         c(0.5, test_length + 0.5),
-        c(0.5, y_map[ni_pool] + 0.5),
+        c(0.5, max(y_map, na.rm = TRUE) + 0.5),
         type = "n", las = 1, xlim = c(0, test_length),
         xaxt = "n", yaxt = "n", ylab = "")
 
       y_adj_3 <- (strheight("S") / 3)
       usr <- par("usr")
 
-      text(test_length / 2, (usr[3] / 2), "Position", adj = c(0.5, 0), cex = 1.0)
-      axis(2, at = y_map[ni_pool] / 2, labels = "Items", cex.axis = 1.5, tick = FALSE, line = 0)
-      text(test_length / 2, mean(c(usr[4], y_map[ni_pool])), paste0("Examinee ID: ", x@simulee_id), adj = c(0.5, 0.5), cex = 1)
-      axis(1, at = 1:test_length, tick = TRUE, labels = 1:test_length, cex.axis = 0.7)
+      text(
+        test_length / 2,
+        (usr[3] / 2),
+        "Position",
+        adj = c(0.5, 0), cex = 1.0
+      )
+      axis(
+        2, at = max(y_map, na.rm = TRUE) / 2,
+        labels = "Items", cex.axis = 1.5, tick = FALSE, line = 0
+      )
+      text(
+        test_length / 2,
+        mean(c(usr[4], max(y_map, na.rm = TRUE))),
+        paste0("Examinee ID: ", x@simulee_id),
+        adj = c(0.5, 0.5), cex = 1
+      )
+      axis(
+        1,
+        at = 1:test_length,
+        tick = TRUE,
+        labels = 1:test_length,
+        cex.axis = 0.7
+      )
 
-      if (!simple) {
-        text(0, seq(10, y_map[ni_pool], 10), seq(10, y_map[ni_pool], 10), adj = c(0.5, 0.5), cex = 0.7)
+      if (simple) {
+        text(
+          0,
+          1:ni_used,
+          used_items,
+          adj = c(0.5, 0.5), cex = 0.7
+        )
       } else {
-        text(0, new_y, used_items, adj = c(0.5, 0.5), cex = 0.7)
+        y_grid <- floor(seq(1, ni_pool, length = 80))
+        idx <- y_map %in% y_grid
+        text(
+          0,
+          y_map[idx],
+          used_items[idx],
+          adj = c(0.5, 0.5), cex = 0.7
+        )
       }
 
       # item grid
 
-      for (i in 1:max_position) {
-        for (j in unique(y_map)) {
+      for (p in 1:max_position) {
+        for (y in na.omit(unique(y_map))) {
           rect(
-            i - 0.25, j - 0.25,
-            i + 0.25, j + 0.25,
+            p - 0.25, y - 0.25,
+            p + 0.25, y + 0.25,
             border = "gray88", lwd = 0.3
           )
         }
-        if (x@shadow_test_refreshed[i]) {
-          mtext("S", at = i, side = 1, line = 0.3, col = "red", adj = c(0.5, 0.5), cex = 0.7)
+        if (x@shadow_test_refreshed[p]) {
+          mtext(
+            "S", at = p,
+            side = 1, line = 0.3, col = "red", adj = c(0.5, 0.5), cex = 0.7)
         }
       }
 
@@ -476,17 +523,17 @@ setMethod(
 
       if (x@set_based) {
 
-        for (p in 1:x@ns_pool) {
+        for (s in 1:x@ns_pool) {
 
-          items_in_stimulus <- x@item_index_by_stimulus[[p]]
+          i_in_s <- x@item_index_by_stimulus[[s]]
 
-          if (!is.null(items_in_stimulus)) {
-            items_in_stimulus = items_in_stimulus[items_in_stimulus %in% used_items]
-            if (length(items_in_stimulus) > 0) {
-              for (i in 1:max_position) {
+          if (!is.null(i_in_s)) {
+            i_in_s <- i_in_s[i_in_s %in% used_items]
+            if (length(i_in_s) > 0) {
+              for (p in 1:max_position) {
                 rect(
-                  i - 0.35, y_map[min(items_in_stimulus)] - 0.5,
-                  i + 0.35, y_map[max(items_in_stimulus)] + 0.5,
+                  p - 0.35, min(y_map[i_in_s]) - 0.5,
+                  p + 0.35, max(y_map[i_in_s]) + 0.5,
                   border = "gray88", lwd = 0.5
                 )
               }
@@ -502,36 +549,32 @@ setMethod(
 
         for (p in 1:max_position) {
 
-          selected_items        <- x@shadow_test[[p]]$i
-          administered_item     <- x@administered_item_index[p]
-          selected_stimuli      <- x@shadow_test[[p]]$s
-          administered_stimulus <- x@administered_stimulus_index[p]
+          selected_i      <- x@shadow_test[[p]]$i
+          administered_i  <- x@administered_item_index[p]
+          selected_s      <- x@shadow_test[[p]]$s
+          administered_s  <- x@administered_stimulus_index[p]
 
-          for (s in selected_stimuli) {
+          for (s in na.omit(unique(selected_s))) {
 
-            if (!is.na(s)) {
-
-              sub_items <- x@item_index_by_stimulus[[s]]
-              sub_items <- sub_items[sub_items %in% used_items]
-              if (!is.na(administered_stimulus)) {
-                if (s == administered_stimulus) {
-                  rect(
-                    p - 0.35, y_map[min(sub_items)] - 0.5,
-                    p + 0.35, y_map[max(sub_items)] + 0.5, border = "blue", col = "khaki", lwd = 0.5)
-                } else {
-                  rect(
-                    p - 0.35, y_map[min(sub_items)] - 0.5,
-                    p + 0.35, y_map[max(sub_items)] + 0.5, border = "blue", col = "gray50", lwd = 0.5)
-                }
+            i_in_s <- x@item_index_by_stimulus[[s]]
+            i_in_s <- i_in_s[i_in_s %in% used_items]
+            if (!is.na(administered_s)) {
+              if (s == administered_s) {
+                col = "khaki"
               } else {
-                rect(
-                  p - 0.35, y_map[min(sub_items)] - 0.5,
-                  p + 0.35, y_map[max(sub_items)] + 0.5, border = "blue", col = "gray50", lwd = 0.5)
+                col = "gray50"
               }
-
+            } else {
+              col = "gray50"
             }
 
+            rect(
+              p - 0.35, min(y_map[i_in_s]) - 0.5,
+              p + 0.35, max(y_map[i_in_s]) + 0.5,
+              border = "blue", col = col, lwd = 0.5)
+
           }
+
         }
       }
 
@@ -539,11 +582,10 @@ setMethod(
 
       for (p in 1:max_position) {
 
-        selected_items    <- x@shadow_test[[p]]$i
-        administered_item <- x@administered_item_index[p]
-        selected_items    <- selected_items[!selected_items %in% administered_item]
+        selected_i     <- x@shadow_test[[p]]$i
+        administered_i <- x@administered_item_index[p]
 
-        for (i in selected_items) {
+        for (i in selected_i) {
           rect(
             p - 0.25, y_map[i] - 0.25,
             p + 0.25, y_map[i] + 0.25,
