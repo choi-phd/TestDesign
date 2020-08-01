@@ -300,7 +300,7 @@ loadItemAttrib <- function(object, pool, file = NULL) {
   }
 
   if (!missing("file")){
-    warning("Argument deprecated. Use 'object' instead.")
+    warning("argument 'file' is deprecated. Use 'object' instead.")
     object <- file
   }
   if (!is.null(object)) {
@@ -323,11 +323,6 @@ loadItemAttrib <- function(object, pool, file = NULL) {
     item_attrib <- merge(data.frame(ID = pool@id), item_attrib, by = "ID")[, names(item_attrib)] # re-ordering cols in attrib
   }
 
-  if ("INDEX" %in% names(item_attrib)) {
-    warning("The 'INDEX' column was ignored and replaced with valid values.")
-  }
-  item_attrib <- data.frame(cbind(INDEX = 1:nrow(item_attrib), item_attrib))
-
   if (nrow(item_attrib) != pool@ni) {
     stop("The number of rows must match pool@ni.")
   }
@@ -341,6 +336,11 @@ loadItemAttrib <- function(object, pool, file = NULL) {
       item_attrib[["STID"]] <- as.character(item_attrib[["STID"]])
     }
   }
+
+  if ("INDEX" %in% names(item_attrib)) {
+    warning("The 'INDEX' column was ignored and replaced with valid values.")
+  }
+  item_attrib <- data.frame(cbind(INDEX = 1:nrow(item_attrib), item_attrib))
 
   out <- new("item_attrib")
   out@data <- item_attrib
@@ -707,7 +707,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
   }
 
   if (!missing("file")){
-    warning("Argument deprecated. Use 'object' instead.")
+    warning("argument 'file' is deprecated. Use 'object' instead.")
     object <- file
   }
 
