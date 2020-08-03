@@ -7,16 +7,20 @@
 * `loadItemPool()` is now capable of reading from `SingleGroupClass` objects from `mirt` package.
 * `item_pool` objects can be now subsetted and combined with `[` and `c()`.
 * `constraints` objects can be now subsetted and combined with `[` and `c()`.
+* `SUM` constraints now accept `VARIABLE, EXPRESSION` in `CONDITION` for imposing constraints on conditional sums (e.g. `WORDCOUNT, DOK == 1`).
+* `Static()` and `Shadow()` now asks for confirmation when attempting to use solvers other than `Rsymphony`, `lpsymphony` and `gurobi` for set-based assembly.
+* `Shadow()` now uses `progress` package if available.
 * `Static()` now returns an `output_Static` object.
 * `Shadow()` now returns an `output_Shadow_all` object.
-* `Shadow()` now uses `progress` package if available.
 * Added `print()` extensions for most objects.
 * Added `summary()` extensions for most objects.
 * Added `plot()` extensions for most objects.
 * Added `dataset_bayes` example dataset.
-* Now checks whether each solver returns solution properly on package load.
+* Now checks whether each solver returns solution properly upon loading the package.
+* `plot(type = 'shadow')` (formerly `plotShadow()`) now groups items by stimulus.
 
 ## Deprecated functions
+
 * `updateConstraints()` is now `toggleConstraints()`.
 * `plotInfo()` is now `plot(type = 'info')`.
 * `plotCAT()` is now `plot(type = 'audit')`.
@@ -32,6 +36,7 @@
 * Fixed where `loadConstraints()` was creating unnecessarily large numbers of constraints when `TYPE = 'NUMBER'` and `CONDITION` was an item/stimulus attribute name, and the attribute did not have NA values.
 * Fixed where `loadConstraints()` was creating constraints incorrectly when `TYPE = 'NUMBER'` and `CONDITION` was an item/stimulus attribute name, and the attribute had NA values.
 * Fixed where `loadConstraints()` was creating constraints incorrectly when `TYPE = 'NUMBER'` and `CONDITION` was a stimulus attribute name, and `LB` and `UB` were not equal.
+* Fixed where `loadConstraints()` was creating constraints incorrectly when `TYPE = 'SUM'`.
 
 # TestDesign 1.0.2
 
