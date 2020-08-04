@@ -150,6 +150,8 @@
 <li>
 <code>constraints</code> objects can be now subsetted and combined with <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code> and <code><a href="https://rdrr.io/r/base/c.html">c()</a></code>.</li>
 <li>
+<code>SUM</code> constraints now accept <code>VARIABLE, EXPRESSION</code> in <code>CONDITION</code> for imposing constraints on conditional sums (e.g. <code>WORDCOUNT, DOK == 1</code>).</li>
+<li>
 <code>Static()</code> and <code>Shadow()</code> now asks for confirmation when attempting to use solvers other than <code>Rsymphony</code>, <code>lpsymphony</code> and <code>gurobi</code> for set-based assembly.</li>
 <li>
 <code>Shadow()</code> now uses <code>progress</code> package if available.</li>
@@ -161,7 +163,7 @@
 <li>Added <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> extensions for most objects.</li>
 <li>Added <code><a href="https://rdrr.io/r/base/plot.html">plot()</a></code> extensions for most objects.</li>
 <li>Added <code>dataset_bayes</code> example dataset.</li>
-<li>Now checks whether each solver returns solution properly on package load.</li>
+<li>Now checks whether each solver returns solution properly upon loading the package.</li>
 <li>
 <code><a href="https://rdrr.io/r/base/plot.html">plot(type = 'shadow')</a></code> (formerly <code>plotShadow()</code>) now groups items by stimulus.</li>
 </ul>
