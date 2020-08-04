@@ -40,7 +40,7 @@ Constraints data must have seven columns, named as `CONSTRAINT`, `TYPE`, `WHAT`,
 
 #### CONSTRAINT
 
-This column serves as indices. One number must be put into each row, beginning from 1 and incrementing by 1. Indices will be recreated in `loadConstraints()` if necessary.
+This column serves as indices. One number must be put into each row, beginning from 1 and incrementing by 1. `loadConstraints()` recreates these if necessary.
 
 <br/>
 
@@ -69,7 +69,24 @@ knitr::kable(constraints_science_data[1, ], row.names = FALSE) %>%
 <br/>
 <br/>
 
-* `Order` specifies the selection to be made in ascending order. The following row tells the solver to select the items in ascending `LEVEL`, based on the supplied item attributes.
+* `Sum` specifies the constraint to be applied to the sum of attributes of selected items (if `WHAT` column is `Item`), or of selected item sets (if `WHAT` column is `Stimulus`). For example, the following row tells the solver to keep the sum of `WORDS` between 500--600.
+
+```{r, echo = FALSE}
+knitr::kable(constraints_bayes_data[2, ], row.names = FALSE) %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  column_spec(1, "5em") %>%
+  column_spec(2, "5em", background = 'cyan') %>%
+  column_spec(3, "5em") %>%
+  column_spec(4, "10em") %>%
+  column_spec(5, "3em") %>%
+  column_spec(6, "3em") %>%
+  column_spec(7, "3em")
+```
+
+<br/>
+<br/>
+
+* `Order` specifies the selection to be made in ascending order. The following row tells the solver to select the items in ascending `LEVEL`, based on supplied attributes.
 
 ```{r, echo = FALSE}
 knitr::kable(constraints_science_data[32, ], row.names = FALSE) %>%
@@ -103,7 +120,7 @@ knitr::kable(constraints_science_data[33, ], row.names = FALSE) %>%
 <br/>
 <br/>
 
-* `Include` specifies the items matching the condition to be included in selection. For example, the following row tells the solver to include items `SC00003` and `SC00004`:
+* `Include` specifies the items matching the condition to be always included in selection. For example, the following row tells the solver to include items `SC00003` and `SC00004`:
 
 ```{r, echo = FALSE}
 knitr::kable(constraints_science_data[34, ], row.names = FALSE) %>%
@@ -120,7 +137,7 @@ knitr::kable(constraints_science_data[34, ], row.names = FALSE) %>%
 <br/>
 <br/>
 
-* `Exclude` specifies the items matching the condition to be excluded in selection. The following row tells the solver to exclude items that match `PTBIS < 0.15`, based on the supplied item attributes.
+* `Exclude` specifies the items matching the condition to be always excluded from selection. The following row tells the solver to exclude items that match `PTBIS < 0.15`, based on supplied item attributes.
 
 ```{r, echo = FALSE}
 knitr::kable(constraints_science_data[35, ], row.names = FALSE) %>%
@@ -157,7 +174,7 @@ knitr::kable(constraints_science_data[36, ], row.names = FALSE) %>%
 
 #### WHAT
 
-This column specifies where the constraint is applied. The expected values are `Item` or `Stimulus`.
+This column specifies the unit of assembly the constraint uses. Expected values are `Item` or `Stimulus`.
 
 <br/>
 
@@ -174,7 +191,35 @@ Some examples are:
 * `!is.na(FACIT)` tells the solver to select when `FACIT` is not empty.
 * Leave it empty to not specify any condition. This is useful in constraining the total number of items.
 
-Also, `Per Stimulus` can be used to specify the number of items to select in each stimulus. For example, the following row tells the solver to select 4 to 6 items per stimulus:
+For `TYPE == SUM`, using a variable name imposes the constraint on the sum of the variable. The following row tells the solver to keep the sum of `WORDS` between 500--600.
+
+```{r, echo = FALSE}
+knitr::kable(constraints_bayes_data[2, ], row.names = FALSE) %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  column_spec(1, "5em") %>%
+  column_spec(2, "5em") %>%
+  column_spec(3, "5em") %>%
+  column_spec(4, "10em", background = 'cyan') %>%
+  column_spec(5, "3em") %>%
+  column_spec(6, "3em") %>%
+  column_spec(7, "3em")
+```
+
+For `TYPE == SUM`, constraints on conditional sums can be imposed by using a variable name, placing a comma, and then giving an R expression returning logical values. The following row tells the solver to keep the sum of `WORDS` within `DOK == 1` items between 50--80.
+
+```{r, echo = FALSE}
+knitr::kable(constraints_bayes_data[3, ], row.names = FALSE) %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  column_spec(1, "5em") %>%
+  column_spec(2, "5em") %>%
+  column_spec(3, "5em") %>%
+  column_spec(4, "10em", background = 'cyan') %>%
+  column_spec(5, "3em") %>%
+  column_spec(6, "3em") %>%
+  column_spec(7, "3em")
+```
+
+In set-based assembly, `Per Stimulus` can be used to specify the number of items to select in each stimulus. For example, the following row tells the solver to select 4 to 6 items per stimulus:
 
 ```{r, echo = FALSE}
 knitr::kable(constraints_reading_data[3, ], row.names = FALSE) %>%
