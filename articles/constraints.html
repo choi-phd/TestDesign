@@ -249,7 +249,7 @@ NA
 <div id="constraint" class="section level4">
 <h4 class="hasAnchor">
 <a href="#constraint" class="anchor"></a>CONSTRAINT</h4>
-<p>This column serves as indices. One number must be put into each row, beginning from 1 and incrementing by 1. Indices will be recreated in <code>loadConstraints()</code> if necessary.</p>
+<p>This column serves as indices. One number must be put into each row, beginning from 1 and incrementing by 1. <code>loadConstraints()</code> recreates these if necessary.</p>
 <p><br></p>
 <hr>
 </div>
@@ -312,7 +312,60 @@ NA
 <p><br><br></p>
 <ul>
 <li>
-<code>Order</code> specifies the selection to be made in ascending order. The following row tells the solver to select the items in ascending <code>LEVEL</code>, based on the supplied item attributes.</li>
+<code>Sum</code> specifies the constraint to be applied to the sum of attributes of selected items (if <code>WHAT</code> column is <code>Item</code>), or of selected item sets (if <code>WHAT</code> column is <code>Stimulus</code>). For example, the following row tells the solver to keep the sum of <code>WORDS</code> between 500–600.</li>
+</ul>
+<table class="table table table-striped table-hover table-condensed table-responsive">
+<thead><tr>
+<th style="text-align:left;">
+CONSTRAINT
+</th>
+<th style="text-align:left;">
+TYPE
+</th>
+<th style="text-align:left;">
+WHAT
+</th>
+<th style="text-align:left;">
+CONDITION
+</th>
+<th style="text-align:right;">
+LB
+</th>
+<th style="text-align:right;">
+UB
+</th>
+<th style="text-align:left;">
+ONOFF
+</th>
+</tr></thead>
+<tbody><tr>
+<td style="text-align:left;width: 5em; ">
+2
+</td>
+<td style="text-align:left;width: 5em; background-color: cyan !important;">
+Sum
+</td>
+<td style="text-align:left;width: 5em; ">
+Item
+</td>
+<td style="text-align:left;width: 10em; ">
+WORDS
+</td>
+<td style="text-align:right;width: 3em; ">
+500
+</td>
+<td style="text-align:right;width: 3em; ">
+600
+</td>
+<td style="text-align:left;width: 3em; ">
+NA
+</td>
+</tr></tbody>
+</table>
+<p><br><br></p>
+<ul>
+<li>
+<code>Order</code> specifies the selection to be made in ascending order. The following row tells the solver to select the items in ascending <code>LEVEL</code>, based on supplied attributes.</li>
 </ul>
 <table class="table table table-striped table-hover table-condensed table-responsive">
 <thead><tr>
@@ -418,7 +471,7 @@ NA
 <p><br><br></p>
 <ul>
 <li>
-<code>Include</code> specifies the items matching the condition to be included in selection. For example, the following row tells the solver to include items <code>SC00003</code> and <code>SC00004</code>:</li>
+<code>Include</code> specifies the items matching the condition to be always included in selection. For example, the following row tells the solver to include items <code>SC00003</code> and <code>SC00004</code>:</li>
 </ul>
 <table class="table table table-striped table-hover table-condensed table-responsive">
 <thead><tr>
@@ -471,7 +524,7 @@ NA
 <p><br><br></p>
 <ul>
 <li>
-<code>Exclude</code> specifies the items matching the condition to be excluded in selection. The following row tells the solver to exclude items that match <code>PTBIS &lt; 0.15</code>, based on the supplied item attributes.</li>
+<code>Exclude</code> specifies the items matching the condition to be always excluded from selection. The following row tells the solver to exclude items that match <code>PTBIS &lt; 0.15</code>, based on supplied item attributes.</li>
 </ul>
 <table class="table table table-striped table-hover table-condensed table-responsive">
 <thead><tr>
@@ -580,7 +633,7 @@ NA
 <div id="what" class="section level4">
 <h4 class="hasAnchor">
 <a href="#what" class="anchor"></a>WHAT</h4>
-<p>This column specifies where the constraint is applied. The expected values are <code>Item</code> or <code>Stimulus</code>.</p>
+<p>This column specifies the unit of assembly the constraint uses. Expected values are <code>Item</code> or <code>Stimulus</code>.</p>
 <p><br></p>
 <hr>
 </div>
@@ -598,7 +651,105 @@ NA
 <code>!is.na(FACIT)</code> tells the solver to select when <code>FACIT</code> is not empty.</li>
 <li>Leave it empty to not specify any condition. This is useful in constraining the total number of items.</li>
 </ul>
-<p>Also, <code>Per Stimulus</code> can be used to specify the number of items to select in each stimulus. For example, the following row tells the solver to select 4 to 6 items per stimulus:</p>
+<p>For <code>TYPE == SUM</code>, using a variable name imposes the constraint on the sum of the variable. The following row tells the solver to keep the sum of <code>WORDS</code> between 500–600.</p>
+<table class="table table table-striped table-hover table-condensed table-responsive">
+<thead><tr>
+<th style="text-align:left;">
+CONSTRAINT
+</th>
+<th style="text-align:left;">
+TYPE
+</th>
+<th style="text-align:left;">
+WHAT
+</th>
+<th style="text-align:left;">
+CONDITION
+</th>
+<th style="text-align:right;">
+LB
+</th>
+<th style="text-align:right;">
+UB
+</th>
+<th style="text-align:left;">
+ONOFF
+</th>
+</tr></thead>
+<tbody><tr>
+<td style="text-align:left;width: 5em; ">
+2
+</td>
+<td style="text-align:left;width: 5em; ">
+Sum
+</td>
+<td style="text-align:left;width: 5em; ">
+Item
+</td>
+<td style="text-align:left;width: 10em; background-color: cyan !important;">
+WORDS
+</td>
+<td style="text-align:right;width: 3em; ">
+500
+</td>
+<td style="text-align:right;width: 3em; ">
+600
+</td>
+<td style="text-align:left;width: 3em; ">
+NA
+</td>
+</tr></tbody>
+</table>
+<p>For <code>TYPE == SUM</code>, constraints on conditional sums can be imposed by using a variable name, placing a comma, and then giving an R expression returning logical values. The following row tells the solver to keep the sum of <code>WORDS</code> within <code>DOK == 1</code> items between 50–80.</p>
+<table class="table table table-striped table-hover table-condensed table-responsive">
+<thead><tr>
+<th style="text-align:left;">
+CONSTRAINT
+</th>
+<th style="text-align:left;">
+TYPE
+</th>
+<th style="text-align:left;">
+WHAT
+</th>
+<th style="text-align:left;">
+CONDITION
+</th>
+<th style="text-align:right;">
+LB
+</th>
+<th style="text-align:right;">
+UB
+</th>
+<th style="text-align:left;">
+ONOFF
+</th>
+</tr></thead>
+<tbody><tr>
+<td style="text-align:left;width: 5em; ">
+3
+</td>
+<td style="text-align:left;width: 5em; ">
+Sum
+</td>
+<td style="text-align:left;width: 5em; ">
+Item
+</td>
+<td style="text-align:left;width: 10em; background-color: cyan !important;">
+WORDS, DOK == 1
+</td>
+<td style="text-align:right;width: 3em; ">
+50
+</td>
+<td style="text-align:right;width: 3em; ">
+80
+</td>
+<td style="text-align:left;width: 3em; ">
+NA
+</td>
+</tr></tbody>
+</table>
+<p>In set-based assembly, <code>Per Stimulus</code> can be used to specify the number of items to select in each stimulus. For example, the following row tells the solver to select 4 to 6 items per stimulus:</p>
 <table class="table table table-striped table-hover table-condensed table-responsive">
 <thead><tr>
 <th style="text-align:left;">

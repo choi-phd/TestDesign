@@ -150,16 +150,20 @@
 <li>
 <code>constraints</code> objects can be now subsetted and combined with <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code> and <code><a href="https://rdrr.io/r/base/c.html">c()</a></code>.</li>
 <li>
+<code>Static()</code> and <code>Shadow()</code> now asks for confirmation when attempting to use solvers other than <code>Rsymphony</code>, <code>lpsymphony</code> and <code>gurobi</code> for set-based assembly.</li>
+<li>
+<code>Shadow()</code> now uses <code>progress</code> package if available.</li>
+<li>
 <code>Static()</code> now returns an <code>output_Static</code> object.</li>
 <li>
 <code>Shadow()</code> now returns an <code>output_Shadow_all</code> object.</li>
-<li>
-<code>Shadow()</code> now uses <code>progress</code> package if available.</li>
 <li>Added <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> extensions for most objects.</li>
 <li>Added <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> extensions for most objects.</li>
 <li>Added <code><a href="https://rdrr.io/r/base/plot.html">plot()</a></code> extensions for most objects.</li>
 <li>Added <code>dataset_bayes</code> example dataset.</li>
 <li>Now checks whether each solver returns solution properly on package load.</li>
+<li>
+<code><a href="https://rdrr.io/r/base/plot.html">plot(type = 'shadow')</a></code> (formerly <code>plotShadow()</code>) now groups items by stimulus.</li>
 </ul>
 </div>
 <div id="deprecated-functions" class="section level2">
@@ -193,6 +197,7 @@
 <li>Fixed where <code>loadConstraints()</code> was creating unnecessarily large numbers of constraints when <code>TYPE = 'NUMBER'</code> and <code>CONDITION</code> was an item/stimulus attribute name, and the attribute did not have NA values.</li>
 <li>Fixed where <code>loadConstraints()</code> was creating constraints incorrectly when <code>TYPE = 'NUMBER'</code> and <code>CONDITION</code> was an item/stimulus attribute name, and the attribute had NA values.</li>
 <li>Fixed where <code>loadConstraints()</code> was creating constraints incorrectly when <code>TYPE = 'NUMBER'</code> and <code>CONDITION</code> was a stimulus attribute name, and <code>LB</code> and <code>UB</code> were not equal.</li>
+<li>Fixed where <code>loadConstraints()</code> was creating constraints incorrectly when <code>TYPE = 'SUM'</code>.</li>
 </ul>
 </div>
 </div>
