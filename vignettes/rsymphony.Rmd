@@ -24,7 +24,7 @@ ERROR: configuration failed for package ‘Rsymphony’
 
 This document describes a potential fix to this problem. An admin account is required.
 
-Or alternatively, lpsymphony from Bioconductor repository is supported from TestDesign 1.0.0.
+Or alternatively, [lpsymphony](https://www.bioconductor.org/packages/release/bioc/html/lpsymphony.html) from Bioconductor repository is supported from TestDesign 1.0.0.
 
 <br/>
 <br/>
