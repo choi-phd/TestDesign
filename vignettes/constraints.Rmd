@@ -4,8 +4,10 @@ author: Sangdon Lim
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Creating constraints in TestDesign package}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 <br/>
@@ -18,6 +20,11 @@ This document explains how to create constraints data for `loadConstraints()`. I
 library(knitr)
 library(kableExtra)
 library(TestDesign)
+
+constraints_science_data[is.na(constraints_science_data)] <- ""
+constraints_reading_data[is.na(constraints_reading_data)] <- ""
+constraints_fatigue_data[is.na(constraints_fatigue_data)] <- ""
+constraints_bayes_data[is.na(constraints_bayes_data)] <- ""
 ```
 
 ```{r echo = FALSE}
@@ -72,7 +79,9 @@ knitr::kable(constraints_science_data[1, ], row.names = FALSE) %>%
 * `Sum` specifies the constraint to be applied to the sum of attributes of selected items (if `WHAT` column is `Item`), or of selected item sets (if `WHAT` column is `Stimulus`). For example, the following row tells the solver to keep the sum of `WORDS` between 500--600.
 
 ```{r, echo = FALSE}
-knitr::kable(constraints_bayes_data[2, ], row.names = FALSE) %>%
+tmp = constraints_bayes_data[2, ]
+tmp$ONOFF = ""
+knitr::kable(tmp, row.names = FALSE) %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
   column_spec(1, "5em") %>%
   column_spec(2, "5em", background = 'cyan') %>%
@@ -194,7 +203,9 @@ Some examples are:
 For `TYPE == SUM`, using a variable name imposes the constraint on the sum of the variable. The following row tells the solver to keep the sum of `WORDS` between 500--600.
 
 ```{r, echo = FALSE}
-knitr::kable(constraints_bayes_data[2, ], row.names = FALSE) %>%
+tmp = constraints_bayes_data[2, ]
+tmp$ONOFF = ""
+knitr::kable(tmp, row.names = FALSE) %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
   column_spec(1, "5em") %>%
   column_spec(2, "5em") %>%
@@ -208,7 +219,9 @@ knitr::kable(constraints_bayes_data[2, ], row.names = FALSE) %>%
 For `TYPE == SUM`, constraints on conditional sums can be imposed by using a variable name, placing a comma, and then giving an R expression returning logical values. The following row tells the solver to keep the sum of `WORDS` within `DOK == 1` items between 50--80.
 
 ```{r, echo = FALSE}
-knitr::kable(constraints_bayes_data[3, ], row.names = FALSE) %>%
+tmp = constraints_bayes_data[3, ]
+tmp$ONOFF = ""
+knitr::kable(tmp, row.names = FALSE) %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
   column_spec(1, "5em") %>%
   column_spec(2, "5em") %>%
