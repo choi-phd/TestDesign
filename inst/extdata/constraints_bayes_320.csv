@@ -1,7 +1,7 @@
 CONSTRAINT,TYPE,WHAT,CONDITION,LB,UB,ONOFF
 1,Number,Item,,30,30,
-2,Sum,Item,WORDS,500,600,
-3,Sum,Item,"WORDS, DOK == 1",50,80,
+2,Sum,Item,WORDS,500,600,OFF
+3,Sum,Item,"WORDS, DOK == 1",50,80,OFF
 4,Number,Item,"RC == ""EMI""",7,11,
 5,Number,Item,"RC == ""IOD""",13,17,
 6,Number,Item,"RC == ""SIN""",6,9,
