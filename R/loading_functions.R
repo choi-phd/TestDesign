@@ -728,15 +728,6 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 
   constraints <- normalizeConstraintData(constraints)
 
-  if ("CONSTRAINT" %in% names(constraints)) {
-    if (any(constraints[["CONSTRAINT"]] != as.character(1:dim(constraints)[1])) |
-      !inherits(constraints[["CONSTRAINT"]], "character")) {
-      constraints[["CONSTRAINT"]] <- as.character(1:dim(constraints)[1])
-      warning("the 'CONSTRAINT' column was ignored and replaced with valid indices")
-    }
-  }
-
-
   # Validation: Pool
   ni <- pool@ni
   ns <- 0

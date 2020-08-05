@@ -3,6 +3,19 @@
 normalizeConstraintData <- function(x) {
 
   names(x)    <- toupper(names(x))
+
+  validCONSTRAINT <- as.character(1:dim(x)[1])
+  if (is.null(x$CONSTRAINT)) {
+    CONSTRAINT <- validCONSTRAINT
+    x <- cbind(CONSTRAINT, x)
+  }
+  if (
+    any(x$CONSTRAINT != validCONSTRAINT) |
+    !inherits(x$CONSTRAINT, "character")) {
+    x$CONSTRAINT <- validCONSTRAINT
+    warning("the 'CONSTRAINT' column was ignored and replaced with valid indices")
+  }
+
   x$TYPE      <- toupper(x$TYPE)
   x$WHAT      <- toupper(x$WHAT)
   x$COUNT     <- NA
