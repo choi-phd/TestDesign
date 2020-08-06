@@ -57,6 +57,17 @@ setMethod("summary", "output_Static", function(object) {
   info      <- calcFisher(subpool, out@target_location)
   out@info  <- rowSums(info)
   out@score <- calcEscore(subpool, out@target_location)
+
+  tmp <- countConstraints(object@constraints, object@selected$INDEX)
+  tmp <- lapply(tmp, function(x) {
+    if (is.null(x)) {
+      x <- NA
+    }
+    return(x)
+  })
+  tmp <- do.call("c", tmp)
+  out@count <- cbind(object@constraints@constraints, solution = tmp)
+
   return(out)
 })
 

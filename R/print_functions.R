@@ -382,6 +382,8 @@ setMethod("print", "summary_output_Static", function(x) {
       x@score[i]
     ))
   }
+  cat("\n")
+  print(x@count)
   return(invisible(x))
 })
 
