@@ -58,17 +58,25 @@ setMethod("summary", "output_Static", function(object) {
   out@info  <- rowSums(info)
   out@score <- calcEscore(subpool, out@target_location)
 
-  tmp <- countConstraints(object@constraints, object@selected$INDEX)
-  tmp <- lapply(tmp, function(x) {
+  counts <- countConstraints(object@constraints, object@selected$INDEX)
+  counts <- lapply(counts, function(x) {
     if (is.null(x)) {
       x <- NA
     }
     return(x)
   })
-  tmp <- do.call("c", tmp)
-  out@count <- cbind(object@constraints@constraints, solution = tmp)
+  c_mean <- lapply(counts, mean)
+  c_sd   <- lapply(counts, sd)
+  c_mean <- do.call("c", c_mean)
+  c_sd   <- do.call("c", c_sd)
 
+  tmp <- object@constraints@constraints
+  tmp <- tmp[, !names(tmp) %in% c("COUNT", "ST_COUNT")]
+  tmp <- cbind(tmp, solution = c_mean, sd = c_sd)
+
+  out@count <- tmp
   return(out)
+
 })
 
 #' @aliases summary,output_Shadow_all-method
