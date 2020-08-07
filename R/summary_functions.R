@@ -85,7 +85,7 @@ setMethod("summary", "output_Shadow_all", function(object) {
   # achieved attribute matching each constraint
   nc <- length(object@constraints@list_constraints)
   tmp <- sapply(object@output, function(x) {
-    addSolutionToAllConstraints(
+    getSolutionAttributes(
       object@constraints,
       x@administered_item_index,
       TRUE

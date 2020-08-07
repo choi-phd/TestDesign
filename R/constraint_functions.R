@@ -687,8 +687,37 @@ addSolutionToConstraintData <- function(x, attrib, item_idx, all_values) {
 
 }
 
-#' @noRd
-addSolutionToAllConstraints <- function(constraints, item_idx, all_values) {
+#' Retrieve constraints-related attributes from solution
+#'
+#' \code{\link{getSolutionAttributes}} is a helper function to retrieve constraints-related attributes from a solution.
+#'
+#' @param constraints a \code{\linkS4class{constraints}} object.
+#' @param item_idx item indices from a solution.
+#' @param all_values if \code{TRUE}, return all values as-is without taking the mean when there are multiple values. If \code{FALSE}, return the mean when there are multiple values.
+#' This has an effect when there is a constraint on items per stimulus, where there are multiple values of number of items per stimulus.
+#' In this case, if \code{TRUE}, the number of items for every stimuli are returned as-is. If \code{FALSE}, the average number of items across stimuli is returned.
+#' (default = \code{FALSE})
+#'
+#' @return
+#' \itemize{
+#'   \item{If \code{all_values == FALSE}, \code{\link{getSolutionAttributes}} returns a \code{\link{data.frame}} containing constraints data and their associated attributes.}
+#'   \item{If \code{all_values == TRUE}, \code{\link{getSolutionAttributes}} returns a \code{\link{list}} containing attributes associated to each constraint.}
+#' }
+#'
+#' @examples
+#' item_idx <-
+#'   c( 29,  33,  26,  36,  34,
+#'     295, 289, 296, 291, 126,
+#'     133, 124, 134, 129,  38,
+#'      47,  39,  41,  46,  45,
+#'     167, 166, 170, 168, 113,
+#'     116, 119, 117, 118, 114)
+#'
+#' getSolutionAttributes(constraints_reading, item_idx, FALSE)
+#' getSolutionAttributes(constraints_reading, item_idx, TRUE)
+#'
+#' @export
+getSolutionAttributes <- function(constraints, item_idx, all_values = FALSE) {
 
   nc  <- length(constraints@list_constraints)
 
