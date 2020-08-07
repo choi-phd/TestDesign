@@ -569,3 +569,82 @@ addCountsToConstraintData <- function(x, attrib) {
   return(x)
 
 }
+
+#' @noRd
+addSolutionToConstraintData <- function(x, attrib, item_idx) {
+
+  # attrib must be item_attrib
+
+  solution_name <- "solution"
+
+  if (x$TYPE %in% c("NUMBER", "COUNT")) {
+
+    if (toupper(x$CONDITION) %in% c("", " ", "PER TEST", "TEST")) {
+      if (x$WHAT == "ITEM") {
+        x[[solution_name]] <- length(item_idx)
+      }
+      if (x$WHAT == "STIMULUS") {
+        x[[solution_name]] <- length(unique(attrib@data$STID[item_idx]))
+      }
+      return(x)
+    }
+
+    if (toupper(x$CONDITION) %in% c("PER STIMULUS", "PER PASSAGE", "PER SET", "PER TESTLET")) {
+      tmp     <- attrib@data[item_idx, ]
+      i_per_s <- aggregate(tmp$INDEX, by = list(tmp$STID), function(x) length(x))$x
+      x$mean  <- mean(i_per_s)
+      x$sd    <- sd(i_per_s)
+      x$min   <- min(i_per_s)
+      x$max   <- max(i_per_s)
+      return(x)
+    }
+
+    if (x$CONDITION %in% names(attrib@data)) {
+      return(x)
+    }
+
+    if (TRUE) {
+      match_vec          <- with(attrib@data, eval(parse(text = x$CONDITION)))
+      x[[solution_name]] <- sum(item_idx %in% which(match_vec))
+      return(x)
+    }
+
+  }
+
+  if (x$TYPE == "SUM") {
+
+    if (x$CONDITION %in% names(attrib@data)) {
+      values <- with(attrib@data, eval(parse(text = x$CONDITION)))
+      x[[solution_name]] <- sum(values[item_idx])
+      return(x)
+    }
+
+    if (
+      grepl(",", x$CONDITION) |
+      grepl("\\[", x$CONDITION)) {
+
+      if (grepl(",", x$CONDITION)) {
+        selector_pos <- regexpr(",", x$CONDITION)
+        variable     <- substr(x$CONDITION, 1, selector_pos - 1)
+        condition    <- substr(x$CONDITION, selector_pos + 1, nchar(x$CONDITION))
+      }
+      if (grepl("\\[", x$CONDITION)) {
+        selector_pos <- regexpr("\\[", x$CONDITION)
+        variable     <- substr(x$CONDITION, 1, selector_pos - 1)
+        condition    <- substr(x$CONDITION, selector_pos + 1, nchar(x$CONDITION) - 1)
+      }
+
+      flag <- with(attrib@data, eval(parse(text = condition)))
+      idx  <- which(flag)
+      tmp  <- attrib@data[[variable]]
+      tmp[!flag] <- 0
+
+      x[[solution_name]] <- sum(tmp[item_idx])
+      return(x)
+    }
+
+  }
+
+  return(x)
+
+}
