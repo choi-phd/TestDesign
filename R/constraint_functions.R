@@ -571,7 +571,7 @@ addCountsToConstraintData <- function(x, attrib) {
 }
 
 #' @noRd
-addSolutionToConstraintData <- function(x, attrib, item_idx) {
+addSolutionToConstraintData <- function(x, attrib, item_idx, all_values) {
 
   # attrib must be item_attrib
 
@@ -580,33 +580,57 @@ addSolutionToConstraintData <- function(x, attrib, item_idx) {
   if (x$TYPE %in% c("NUMBER", "COUNT")) {
 
     if (toupper(x$CONDITION) %in% c("", " ", "PER TEST", "TEST")) {
+
       if (x$WHAT == "ITEM") {
         x[[solution_name]] <- length(item_idx)
       }
       if (x$WHAT == "STIMULUS") {
         x[[solution_name]] <- length(unique(attrib@data$STID[item_idx]))
       }
+
+      if (all_values) {
+        return(x[[solution_name]])
+      }
       return(x)
+
     }
 
     if (toupper(x$CONDITION) %in% c("PER STIMULUS", "PER PASSAGE", "PER SET", "PER TESTLET")) {
+
       tmp     <- attrib@data[item_idx, ]
       i_per_s <- aggregate(tmp$INDEX, by = list(tmp$STID), function(x) length(x))$x
+
+      if (all_values) {
+        return(i_per_s)
+      }
+
       x$mean  <- mean(i_per_s)
       x$sd    <- sd(i_per_s)
       x$min   <- min(i_per_s)
       x$max   <- max(i_per_s)
       return(x)
+
     }
 
     if (x$CONDITION %in% names(attrib@data)) {
+
+      if (all_values) {
+        return(NA)
+      }
       return(x)
+
     }
 
     if (TRUE) {
+
       match_vec          <- with(attrib@data, eval(parse(text = x$CONDITION)))
       x[[solution_name]] <- sum(item_idx %in% which(match_vec))
+
+      if (all_values) {
+        return(x[[solution_name]])
+      }
       return(x)
+
     }
 
   }
@@ -614,9 +638,15 @@ addSolutionToConstraintData <- function(x, attrib, item_idx) {
   if (x$TYPE == "SUM") {
 
     if (x$CONDITION %in% names(attrib@data)) {
+
       values <- with(attrib@data, eval(parse(text = x$CONDITION)))
       x[[solution_name]] <- sum(values[item_idx])
+
+      if (all_values) {
+        return(x[[solution_name]])
+      }
       return(x)
+
     }
 
     if (
@@ -640,11 +670,19 @@ addSolutionToConstraintData <- function(x, attrib, item_idx) {
       tmp[!flag] <- 0
 
       x[[solution_name]] <- sum(tmp[item_idx])
+
+      if (all_values) {
+        return(x[[solution_name]])
+      }
       return(x)
+
     }
 
   }
 
+  if (all_values) {
+    return(NA)
+  }
   return(x)
 
 }
@@ -665,7 +703,8 @@ addSolutionToAllConstraints <- function(constraints, item_idx) {
       addSolutionToConstraintData(
         tmp[i, ],
         constraints@item_attrib,
-        item_idx
+        item_idx,
+        FALSE
       )
   }
 
