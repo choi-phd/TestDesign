@@ -648,3 +648,27 @@ addSolutionToConstraintData <- function(x, attrib, item_idx) {
   return(x)
 
 }
+
+#' @noRd
+addSolutionToAllConstraints <- function(constraints, item_idx) {
+
+  nc  <- length(constraints@list_constraints)
+  tmp <- constraints@constraints
+  tmp$solution <- NA
+  tmp$mean     <- NA
+  tmp$sd       <- NA
+  tmp$min      <- NA
+  tmp$max      <- NA
+
+  for (i in 1:nc) {
+    tmp[i, ] <-
+      addSolutionToConstraintData(
+        tmp[i, ],
+        constraints@item_attrib,
+        item_idx
+      )
+  }
+
+  return(tmp)
+
+}
