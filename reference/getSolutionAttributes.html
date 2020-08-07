@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extension of print() for objects in TestDesign package — print • TestDesign</title>
+<title>Retrieve constraints-related attributes from solution — getSolutionAttributes • TestDesign</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Extension of print() for objects in TestDesign package — print" />
-<meta property="og:description" content="Extension of print() for objects in TestDesign package" />
+<meta property="og:title" content="Retrieve constraints-related attributes from solution — getSolutionAttributes" />
+<meta property="og:description" content="getSolutionAttributes is a helper function to retrieve constraints-related attributes from a solution." />
 
 
 
@@ -128,93 +128,57 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extension of print() for objects in TestDesign package</h1>
-    <small class="dont-index">Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/R/extensions.R'><code>R/extensions.R</code></a>, <a href='https://github.com/choi-phd/TestDesign/blob/master/R/print_functions.R'><code>R/print_functions.R</code></a></small>
-    <div class="hidden name"><code>print-methods.Rd</code></div>
+    <h1>Retrieve constraints-related attributes from solution</h1>
+    <small class="dont-index">Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/R/constraint_functions.R'><code>R/constraint_functions.R</code></a></small>
+    <div class="hidden name"><code>getSolutionAttributes.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Extension of print() for objects in TestDesign package</p>
+    <p><code>getSolutionAttributes</code> is a helper function to retrieve constraints-related attributes from a solution.</p>
     </div>
 
-    <pre class="usage"><span class='co'># S4 method for item_1PL</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)
-
-<span class='co'># S4 method for item_2PL</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)
-
-<span class='co'># S4 method for item_3PL</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)
-
-<span class='co'># S4 method for item_PC</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)
-
-<span class='co'># S4 method for item_GPC</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)
-
-<span class='co'># S4 method for item_GR</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)
-
-<span class='co'># S4 method for item_pool</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)
-
-<span class='co'># S4 method for item_attrib</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)
-
-<span class='co'># S4 method for st_attrib</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)
-
-<span class='co'># S4 method for summary_item_attrib</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)
-
-<span class='co'># S4 method for constraints</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)
-
-<span class='co'># S4 method for config_Static</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)
-
-<span class='co'># S4 method for config_Shadow</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)
-
-<span class='co'># S4 method for output_Static</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>, <span class='kw'>index_only</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-<span class='co'># S4 method for output_Shadow</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)
-
-<span class='co'># S4 method for exposure_rate_plot</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)
-
-<span class='co'># S4 method for summary_item_pool</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)
-
-<span class='co'># S4 method for summary_constraints</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)
-
-<span class='co'># S4 method for summary_output_Static</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>)
-
-<span class='co'># S4 method for summary_output_Shadow_all</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>)</pre>
+    <pre class="usage"><span class='fu'>getSolutionAttributes</span>(<span class='no'>constraints</span>, <span class='no'>item_idx</span>, <span class='kw'>all_values</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>an object to print.</p></td>
+      <th>constraints</th>
+      <td><p>a <code>constraints</code> object.</p></td>
     </tr>
     <tr>
-      <th>index_only</th>
-      <td><p>if <code>TRUE</code> (default), only print item indices. Otherwise, print all item attributes.</p></td>
+      <th>item_idx</th>
+      <td><p>item indices from a solution.</p></td>
     </tr>
     <tr>
-      <th>digits</th>
-      <td><p>minimal number of *significant* digits, see <code><a href='https://rdrr.io/r/base/print.default.html'>print.default</a></code>.</p></td>
+      <th>all_values</th>
+      <td><p>if <code>TRUE</code>, return all values as-is without taking the mean when there are multiple values. If <code>FALSE</code>, return the mean when there are multiple values.
+This has an effect when there is a constraint on items per stimulus, where there are multiple values of number of items per stimulus.
+In this case, if <code>TRUE</code>, the number of items for every stimuli are returned as-is. If <code>FALSE</code>, the average number of items across stimuli is returned.
+(default = <code>FALSE</code>)</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    
+<ul>
+<li><p>If <code>all_values == FALSE</code>, <code>getSolutionAttributes</code> returns a <code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></code> containing constraints data and their associated attributes.</p></li>
+<li><p>If <code>all_values == TRUE</code>, <code>getSolutionAttributes</code> returns a <code><a href='https://rdrr.io/r/base/list.html'>list</a></code> containing attributes associated to each constraint.</p></li>
+</ul>
+
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='no'>item_idx</span> <span class='kw'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>( <span class='fl'>29</span>,  <span class='fl'>33</span>,  <span class='fl'>26</span>,  <span class='fl'>36</span>,  <span class='fl'>34</span>,
+    <span class='fl'>295</span>, <span class='fl'>289</span>, <span class='fl'>296</span>, <span class='fl'>291</span>, <span class='fl'>126</span>,
+    <span class='fl'>133</span>, <span class='fl'>124</span>, <span class='fl'>134</span>, <span class='fl'>129</span>,  <span class='fl'>38</span>,
+     <span class='fl'>47</span>,  <span class='fl'>39</span>,  <span class='fl'>41</span>,  <span class='fl'>46</span>,  <span class='fl'>45</span>,
+    <span class='fl'>167</span>, <span class='fl'>166</span>, <span class='fl'>170</span>, <span class='fl'>168</span>, <span class='fl'>113</span>,
+    <span class='fl'>116</span>, <span class='fl'>119</span>, <span class='fl'>117</span>, <span class='fl'>118</span>, <span class='fl'>114</span>)
+
+<span class='fu'>getSolutionAttributes</span>(<span class='no'>constraints_reading</span>, <span class='no'>item_idx</span>, <span class='fl'>FALSE</span>)
+<span class='fu'>getSolutionAttributes</span>(<span class='no'>constraints_reading</span>, <span class='no'>item_idx</span>, <span class='fl'>TRUE</span>)</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
