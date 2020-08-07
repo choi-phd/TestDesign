@@ -361,10 +361,12 @@ setMethod("print", "summary_constraints", function(x) {
   return(invisible(x))
 })
 
+#' @param digits minimal number of *significant* digits, see \code{\link{print.default}}.
+#'
 #' @aliases print,summary_output_Static-method
 #' @docType methods
 #' @rdname print-methods
-setMethod("print", "summary_output_Static", function(x) {
+setMethod("print", "summary_output_Static", function(x, digits = 3) {
   cat("Static assembly\n\n")
   cat(sprintf("         # of targets: %7i\n", x@n_targets))
   cat(sprintf("    type of objective: %7s\n", x@obj_type))
@@ -383,12 +385,10 @@ setMethod("print", "summary_output_Static", function(x) {
     ))
   }
   cat("\n")
-  print(x@count)
+  print(x@achieved, digits = digits)
   return(invisible(x))
 })
 
-#' @param digits minimal number of *significant* digits, see \code{\link{print.default}}.
-#'
 #' @aliases print,summary_output_Shadow_all-method
 #' @docType methods
 #' @rdname print-methods

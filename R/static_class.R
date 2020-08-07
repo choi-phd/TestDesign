@@ -171,6 +171,7 @@ createStaticTestConfig <- function(item_selection = NULL, MIP = NULL) {
 #' @slot selected a \code{\link{data.frame}} containing the selected items and their attributes.
 #' @slot obj_value the objective value of the solution.
 #' @slot solve_time the elapsed time in running the solver.
+#' @slot achieved a \code{\link{data.frame}} containing attributes of the assembled test, by each constraint.
 #' @slot pool the \code{\linkS4class{item_pool}} used in the assembly.
 #' @slot config the \code{\linkS4class{config_Static}} used in the assembly.
 #' @slot constraints the \code{\linkS4class{constraints}} used in the assembly.
@@ -182,6 +183,7 @@ setClass("output_Static",
     selected    = "dataframe_or_null",
     obj_value   = "numeric_or_null",
     solve_time  = "numeric_or_null",
+    achieved    = "dataframe_or_null",
     pool        = "item_pool",
     config      = "config_Static",
     constraints = "constraints"
@@ -191,6 +193,7 @@ setClass("output_Static",
     selected    = NULL,
     obj_value   = -1,
     solve_time  = -1,
+    achieved    = NULL,
     pool        = new("item_pool"),
     config      = new("config_Static"),
     constraints = new("constraints")

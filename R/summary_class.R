@@ -67,7 +67,7 @@ setClass(
    n_selected_sets = "numeric_or_null",
    info            = "numeric",
    score           = "numeric",
-   count           = "dataframe_or_null"
+   achieved        = "dataframe_or_null"
   ),
   prototype = list(
    n_targets       = numeric(0),
@@ -78,7 +78,7 @@ setClass(
    n_selected_sets = numeric(0),
    info            = numeric(0),
    score           = numeric(0),
-   count           = NULL
+   achieved        = NULL
   ),
   validity = function(object) {
    return(TRUE)
