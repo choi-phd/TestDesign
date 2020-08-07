@@ -99,7 +99,7 @@ setClass(
     bias            = "numeric_or_null",
     corr            = "numeric_or_null",
     average_se      = "numeric",
-    count           = "dataframe_or_null"
+    achieved        = "dataframe_or_null"
   ),
   prototype = list(
     n_simulee       = numeric(0),
@@ -112,7 +112,7 @@ setClass(
     bias            = numeric(0),
     corr            = numeric(0),
     average_se      = numeric(0),
-    count           = NULL
+    achieved        = NULL
   ),
   validity = function(object) {
     return(TRUE)
