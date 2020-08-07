@@ -81,24 +81,31 @@ setMethod("summary", "output_Shadow_all", function(object) {
     out@corr <- cor(out@est_theta, out@true_theta)
   }
   out@average_se <- mean(out@est_theta_se)
-  # number of items matching each constraint
-  tmp    <- sapply(object@output, function(x) countConstraints(object@constraints, x@administered_item_index))
-  nc     <- dim(object@constraints@constraints)[1]
-  counts <- vector("list", nc)
+
+  # achieved attribute matching each constraint
+  nc <- length(object@constraints@list_constraints)
+  tmp <- sapply(object@output, function(x) {
+    addSolutionToAllConstraints(
+      object@constraints,
+      x@administered_item_index,
+      TRUE
+    )
+  })
+
+  achieved <- vector("list", nc)
   for (i in 1:nc) {
-    counts[[i]] <- NA
-    count <- do.call("c", tmp[i, ])
-    if (!is.null(count)) {
-      counts[[i]] <- count
+    achieved[[i]] <- NA
+    x <- do.call("c", tmp[i, ])
+    if (!is.null(achieved)) {
+      achieved[[i]] <- x
     }
   }
-  c_mean <- sapply(counts, mean)
-  c_sd   <- sapply(counts, sd)
-  c_min  <- sapply(counts, min)
-  c_max  <- sapply(counts, max)
+  a_mean <- sapply(achieved, mean)
+  a_sd   <- sapply(achieved, sd)
+  a_min  <- sapply(achieved, min)
+  a_max  <- sapply(achieved, max)
   tmp <- object@constraints@constraints
-  tmp <- tmp[, !names(tmp) %in% "COUNT"]
-  tmp <- cbind(tmp, mean = c_mean, sd = c_sd, min = c_min, max = c_max)
-  out@count <- tmp
+  tmp <- cbind(tmp, mean = a_mean, sd = a_sd, min = a_min, max = a_max)
+  out@achieved <- tmp
   return(out)
 })
