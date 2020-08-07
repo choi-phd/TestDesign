@@ -73,11 +73,29 @@ setMethod(
 
     results <- runAssembly(config, constraints, objective = objective)
 
+    nc  <- length(constraints@list_constraints)
+    tmp <- constraints@constraints
+    tmp$solution <- NA
+    tmp$mean     <- NA
+    tmp$sd       <- NA
+    tmp$min      <- NA
+    tmp$max      <- NA
+
+    for (i in 1:nc) {
+      tmp[i, ] <-
+      addSolutionToConstraintData(
+        tmp[i, ],
+        constraints@item_attrib,
+        results$shadow_test$INDEX
+      )
+    }
+
     out             <- new("output_Static")
     out@MIP         <- list(results$MIP)
     out@selected    <- results$shadow_test
     out@obj_value   <- results$obj_value
     out@solve_time  <- results$solve_time
+    out@achieved    <- tmp
     out@pool        <- pool
     out@config      <- config
     out@constraints <- constraints

@@ -18,6 +18,8 @@
 
 \item{\code{solve_time}}{the elapsed time in running the solver.}
 
+\item{\code{achieved}}{a \code{\link{data.frame}} containing attributes of the assembled test, by each constraint.}
+
 \item{\code{pool}}{the \code{\linkS4class{item_pool}} used in the assembly.}
 
 \item{\code{config}}{the \code{\linkS4class{config_Static}} used in the assembly.}

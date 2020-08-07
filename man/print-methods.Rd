@@ -61,7 +61,7 @@
 
 \S4method{print}{summary_constraints}(x)
 
-\S4method{print}{summary_output_Static}(x)
+\S4method{print}{summary_output_Static}(x, digits = 3)
 
 \S4method{print}{summary_output_Shadow_all}(x, digits = 3)
 }
