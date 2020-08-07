@@ -73,9 +73,10 @@ setMethod(
 
     results <- runAssembly(config, constraints, objective = objective)
 
-    tmp <- addSolutionToAllConstraints(
+    tmp <- getSolutionAttributes(
       constraints,
-      results$shadow_test$INDEX
+      results$shadow_test$INDEX,
+      FALSE
     )
 
     out             <- new("output_Static")
