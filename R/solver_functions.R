@@ -318,7 +318,7 @@ validateSolver <- function(config, constraints) {
     if (!toupper(config@MIP$solver) %in%  c("LPSYMPHONY", "RSYMPHONY", "GUROBI")) {
 
       if (!interactive()) {
-        txt <- txt <- paste0(
+        txt <- paste(
           sprintf("Set-based assembly with %s is not allowed in non-interactive mode", config@MIP$solver),
           "(allowed solvers: LPSYMPHONY, RSYMPHONY, or GUROBI)",
           sep = " "
@@ -327,7 +327,7 @@ validateSolver <- function(config, constraints) {
         return(FALSE)
       }
 
-      txt <- paste0(
+      txt <- paste(
         sprintf("Set-based assembly with %s takes a long time.", config@MIP$solver),
         "Recommended solvers: LPSYMPHONY, RSYMPHONY, or GUROBI",
         sep = "\n"
