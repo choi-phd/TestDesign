@@ -75,7 +75,7 @@ setMethod(
 
     is_optimal <- isOptimal(results$status, config@MIP$solver)
     if (!is_optimal) {
-      msg <- notOptimal(results$status, config@MIP$solver)
+      msg <- getSolverStatusMessage(results$status, config@MIP$solver)
       warning(msg)
     }
 

@@ -778,7 +778,8 @@ setMethod(
 
             is_optimal <- isOptimal(optimal$status, config@MIP$solver)
             if (!is_optimal) {
-              warning(notOptimal(optimal$status, config@MIP$solver))
+              msg <- getSolverStatusMessage(optimal$status, config@MIP$solver)
+              warning(msg)
               stop(sprintf("MIP solver returned non-zero status at examinee %i position %i", j, position))
             }
 
