@@ -213,7 +213,6 @@ runMIP <- function(solver, obj, mat, dir, rhs, maximize, types,
         time_limit = time_limit,
         gap_limit = gap_limit_abs
       )
-      cat("\r")
     } else {
       MIP <- lpsymphony::lpsymphony_solve_LP(
         obj, mat, dir, rhs,
@@ -221,7 +220,6 @@ runMIP <- function(solver, obj, mat, dir, rhs, maximize, types,
         verbosity = verbosity,
         time_limit = time_limit
       )
-      cat("\r")
     }
 
   } else if (solver == "RSYMPHONY") {
