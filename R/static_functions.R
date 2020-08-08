@@ -73,11 +73,20 @@ setMethod(
 
     results <- runAssembly(config, constraints, objective = objective)
 
-    tmp <- getSolutionAttributes(
-      constraints,
-      results$shadow_test$INDEX,
-      FALSE
-    )
+    is_optimal <- isOptimal(results$status, config@MIP$solver)
+    if (!is_optimal) {
+      msg <- notOptimal(results$status, config@MIP$solver)
+      warning(msg)
+    }
+
+    tmp <- NULL
+    if (is_optimal) {
+      tmp <- getSolutionAttributes(
+        constraints,
+        results$shadow_test$INDEX,
+        FALSE
+      )
+    }
 
     out             <- new("output_Static")
     out@MIP         <- list(results$MIP)
