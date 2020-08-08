@@ -294,7 +294,7 @@ isOptimal <- function(status, solver) {
 }
 
 #' @noRd
-notOptimal <- function(status, solver) {
+getSolverStatusMessage <- function(status, solver) {
   if (toupper(solver) == "LPSYMPHONY") {
     tmp <- sprintf("MIP solver returned non-zero status: %s", names(status))
   } else if (toupper(solver) == "RSYMPHONY") {
