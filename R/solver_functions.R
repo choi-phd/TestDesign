@@ -310,6 +310,15 @@ getSolverStatusMessage <- function(status, solver) {
 }
 
 #' @noRd
+printSolverNewline <- function(solver) {
+  if (toupper(solver) == "LPSYMPHONY") {
+    cat("\n")
+  } else if (toupper(solver) == "RSYMPHONY") {
+    cat("\n")
+  }
+}
+
+#' @noRd
 validateSolver <- function(config, constraints) {
 
   if (constraints@set_based) {
