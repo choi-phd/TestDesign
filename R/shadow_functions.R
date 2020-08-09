@@ -633,9 +633,14 @@ setMethod(
 
     has_progress_pkg <- requireNamespace("progress")
     if (has_progress_pkg) {
+      w <- options()$width - 50
+      if (w <= 20) {
+        w <- options()$width - 2
+      }
       pb <- progress::progress_bar$new(
-        format = "[:bar] :spin :current/:total (:percent) eta :eta",
-        total = constants$nj, clear = FALSE)
+        format = "[:bar] :spin :current/:total (:percent) eta :eta | ",
+        total = constants$nj, clear = FALSE,
+        width = w)
       pb$tick(0)
     } else {
       pb <- txtProgressBar(0, constants$nj, char = "|", style = 3)
