@@ -4,9 +4,9 @@
 arma::colvec theta_EAP(
   const arma::mat&,
   const arma::mat&,
-  const arma::icolvec&,
-  const arma::icolvec&,
-  const arma::icolvec&,
+  const arma::irowvec&,
+  const arma::irowvec&,
+  const arma::irowvec&,
   const int&,
   const arma::rowvec&);
 
@@ -14,8 +14,8 @@ arma::mat theta_EAP_matrix(
   const arma::mat&,
   const arma::mat&,
   const arma::imat&,
-  const arma::icolvec&,
-  const arma::icolvec&,
+  const arma::irowvec&,
+  const arma::irowvec&,
   const int&,
   const arma::rowvec&);
 
@@ -24,9 +24,9 @@ arma::mat theta_EB(
   const arma::rowvec&,
   const double&,
   const arma::mat&,
-  const arma::icolvec&,
-  const arma::icolvec&,
-  const arma::icolvec&,
+  const arma::irowvec&,
+  const arma::irowvec&,
+  const arma::irowvec&,
   const int&,
   const arma::rowvec&);
 
@@ -47,9 +47,9 @@ arma::mat theta_FB(
   const double&,
   const List&,
   const arma::mat&,
-  const arma::icolvec&,
-  const arma::icolvec&,
-  const arma::icolvec&,
+  const arma::irowvec&,
+  const arma::irowvec&,
+  const arma::irowvec&,
   const int&,
   const arma::rowvec&);
 
