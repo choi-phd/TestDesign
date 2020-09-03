@@ -4,23 +4,58 @@
 \name{eap}
 \alias{eap}
 \alias{eap,item_pool-method}
+\alias{EAP}
+\alias{EAP,test-method}
+\alias{EAP,test_cluster-method}
 \title{Compute expected a posteriori estimates of theta}
 \usage{
-eap(object, theta, prior, resp, select = NULL)
+eap(
+  object,
+  select = NULL,
+  resp,
+  theta_grid = seq(-4, 4, 0.1),
+  prior = rep(1/81, 81)
+)
 
-\S4method{eap}{item_pool}(object, theta, prior, resp, select = NULL)
+\S4method{eap}{item_pool}(
+  object,
+  select = NULL,
+  resp,
+  theta_grid = seq(-4, 4, 0.1),
+  prior = rep(1/81, 81)
+)
+
+EAP(object, select = NULL, prior, reset_prior = FALSE)
+
+\S4method{EAP}{test}(object, select = NULL, prior, reset_prior = FALSE)
+
+\S4method{EAP}{test_cluster}(object, select = NULL, prior, reset_prior = FALSE)
 }
 \arguments{
 \item{object}{an \code{\linkS4class{item_pool}} object.}
 
-\item{theta}{the theta grid to use as quadrature points.}
+\item{select}{(optional) if item indices are supplied, only the specified items are used.}
 
-\item{prior}{A prior distribution, a numeric vector for a common prior or a matrix for individualized priors.}
+\item{resp}{item response on all (or selected) items in the \code{object} argument. Can be a vector, a matrix, or a data frame. \code{length(resp)} or \code{ncol(resp)} must be equal to the number of all (or selected) items.}
 
-\item{resp}{A numeric matrix of item responses, one row per examinee.}
+\item{theta_grid}{the theta grid to use as quadrature points. (default = \code{seq(-4, 4, .1)})}
 
-\item{select}{A vector of indices identifying the items to subset.}
+\item{prior}{a prior distribution, a numeric vector for a common prior or a matrix for individualized priors. (default = \code{rep(1 / 81, 81)})}
+
+\item{reset_prior}{used for \code{\linkS4class{test_cluster}} objects. If \code{TRUE}, to reset the prior distribution before each test.}
+}
+\value{
+\code{\link{eap}} returns a list containing estimated values.
+\itemize{
+  \item{\code{th}} theta value.
+  \item{\code{se}} standard error.
+}
 }
 \description{
 \code{\link{eap}} is a function to compute expected a posteriori estimates of theta.
+}
+\examples{
+eap(itempool_fatigue, resp = resp_fatigue_data[10, ])
+eap(itempool_fatigue, select = 1:20, resp = resp_fatigue_data[10, 1:20])
+
 }
