@@ -201,7 +201,11 @@ setMethod(
 
     if (is.null(start_theta)) {
       prior <- rep(1 / nq, nq)
-      start_theta <- EAP(object, prior, select = select)$th
+      start_theta <- EAP(object,
+        select = select,
+        prior  = prior
+      )
+      start_theta <- start_theta$th
     } else if (length(start_theta) == 1) {
       start_theta <- rep(start_theta, nj)
     } else if (length(start_theta) != nj) {
@@ -298,17 +302,28 @@ setMethod(
 #' \code{\link{eap}} is a function to compute expected a posteriori estimates of theta.
 #'
 #' @param object an \code{\linkS4class{item_pool}} object.
-#' @param theta the theta grid to use as quadrature points.
-#' @param prior A prior distribution, a numeric vector for a common prior or a matrix for individualized priors.
-#' @param resp A numeric matrix of item responses, one row per examinee.
-#' @param select A vector of indices identifying the items to subset.
+#' @param select (optional) if item indices are supplied, only the specified items are used.
+#' @param resp item response on all (or selected) items in the \code{object} argument. Can be a vector, a matrix, or a data frame. \code{length(resp)} or \code{ncol(resp)} must be equal to the number of all (or selected) items.
+#' @param theta_grid the theta grid to use as quadrature points. (default = \code{seq(-4, 4, .1)})
+#' @param prior a prior distribution, a numeric vector for a common prior or a matrix for individualized priors. (default = \code{rep(1 / 81, 81)})
+#' @param reset_prior used for \code{\linkS4class{test_cluster}} objects. If \code{TRUE}, to reset the prior distribution before each test.
+#'
+#' @return \code{\link{eap}} returns a list containing estimated values.
+#' \itemize{
+#'   \item{\code{th}} theta value.
+#'   \item{\code{se}} standard error.
+#' }
+#'
+#' @examples
+#' eap(itempool_fatigue, resp = resp_fatigue_data[10, ])
+#' eap(itempool_fatigue, select = 1:20, resp = resp_fatigue_data[10, 1:20])
 #'
 #' @docType methods
 #' @rdname eap-methods
 #' @export
 setGeneric(
   name = "eap",
-  def = function(object, theta, prior, resp, select = NULL) {
+  def = function(object, select = NULL, resp, theta_grid = seq(-4, 4, .1), prior = rep(1 / 81, 81)) {
     standardGeneric("eap")
   }
 )
@@ -319,10 +334,11 @@ setGeneric(
 setMethod(
   f = "eap",
   signature = "item_pool",
-  definition = function(object, theta, prior, resp, select = NULL) {
+  definition = function(object, select = NULL, resp, theta_grid = seq(-4, 4, .1), prior = rep(1 / 81, 81)) {
     ni <- object@ni
-    nq <- length(theta)
-    prob <- calcProb(object, theta)
+    nq <- length(theta_grid)
+    prob <- calcProb(object, theta_grid)
+
     if (is.vector(resp)) {
       nj <- 1
     } else if (is.matrix(resp)) {
@@ -333,19 +349,14 @@ setMethod(
     } else {
       stop("'resp' must be a vector or a matrix")
     }
+
     posterior <- matrix(rep(prior, nj), nj, nq, byrow = TRUE)
+
     if (length(prior) != nq) {
-      stop("length(theta) and length(prior) must be equal")
+      stop("length(theta_grid) and length(prior) must be equal")
     }
+
     if (!is.null(select)) {
-      if (length(resp) != length(select)) {
-        stop("resp and select must be equal in length when select is not NULL")
-      }
-      if (anyDuplicated(select) > 0) {
-        warning("'select' contains duplicated indices")
-        select <- select[-duplicated(select)]
-        resp   <- resp[-duplicated(select)]
-      }
       if (!all(select %in% 1:ni)) {
         stop("item indices in 'select' must be in 1:ni")
       }
@@ -353,14 +364,25 @@ setMethod(
     } else {
       items <- 1:ni
     }
+
+    if (ncol(resp) != length(items)) {
+      stop("ncol(resp) or length(resp) must be equal to the number of all (or selected) items")
+    }
+
+    if (anyDuplicated(select) > 0) {
+      warning("'select' contains duplicated item indices. Removed duplicates from 'select' and 'resp'")
+      select <- select[-duplicated(select)]
+      resp   <- resp[-duplicated(select)]
+    }
+
     if (nj == 1) {
       for (i in 1:length(items)) {
         if (resp[i] >= 0 && resp[i] < object@max_cat) {
           posterior <- posterior * prob[[items[i]]][, resp[i] + 1]
         }
       }
-      th <- sum(posterior * theta) / sum(posterior)
-      se <- sqrt(sum(posterior * (theta - th)^2) / sum(posterior))
+      th <- sum(posterior * theta_grid) / sum(posterior)
+      se <- sqrt(sum(posterior * (theta_grid - th)^2) / sum(posterior))
     } else {
       for (i in items) {
         response <- matrix(resp[, i] + 1, nj, 1)
@@ -370,37 +392,28 @@ setMethod(
           posterior <- posterior * prob
         }
       }
-      th <- as.vector(posterior %*% theta / rowSums(posterior))
-      se <- as.vector(sqrt(rowSums(posterior * (matrix(theta, nj, nq, byrow = TRUE) - matrix(th, nj, nq))^2) / rowSums(posterior)))
+      th <- as.vector(posterior %*% theta_grid / rowSums(posterior))
+      se <- as.vector(sqrt(rowSums(posterior * (matrix(theta_grid, nj, nq, byrow = TRUE) - matrix(th, nj, nq))^2) / rowSums(posterior)))
     }
     return(list(th = th, se = se))
   }
 )
 
-#' Generate expected a posteriori estimates of theta
-#'
-#' Generate expected a posteriori estimates of theta.
-#'
-#' @param object A \code{\linkS4class{test}} or a \code{\linkS4class{test_cluster}} object.
-#' @param prior A prior distribution, a numeric vector for a common prior or a matrix for individualized priors.
-#' @param select A vector of indices identifying the items to subset.
-#' @param reset_prior Set \code{TRUE} to reset the prior distribution for each test when object is of class \code{\linkS4class{test_cluster}}.
-#'
 #' @docType methods
-#' @rdname eaparray-methods
+#' @rdname eap-methods
 setGeneric(
   name = "EAP",
-  def = function(object, prior, select = NULL, reset_prior = FALSE) {
+  def = function(object, select = NULL, prior, reset_prior = FALSE) {
     standardGeneric("EAP")
   }
 )
 
 #' @docType methods
-#' @rdname eaparray-methods
+#' @rdname eap-methods
 setMethod(
   f = "EAP",
   signature = "test",
-  definition = function(object, prior, select = NULL, reset_prior = FALSE) {
+  definition = function(object, select = NULL, prior, reset_prior = FALSE) {
     nj <- nrow(object@data)
     if (is.matrix(prior)) {
       nq <- ncol(prior)
@@ -437,20 +450,20 @@ setMethod(
 )
 
 #' @docType methods
-#' @rdname eaparray-methods
+#' @rdname eap-methods
 setMethod(
   f = "EAP",
   signature = "test_cluster",
-  definition = function(object, prior, select = NULL, reset_prior = FALSE) {
+  definition = function(object, select = NULL, prior, reset_prior = FALSE) {
     EAP_cluster <- vector(mode = "list", length = object@nt)
-    EAP_cluster[[1]] <- EAP(object@tests[[1]], prior, select)
+    EAP_cluster[[1]] <- EAP(object@tests[[1]], select = select, prior = prior)
     if (reset_prior) {
       for (t in 2:object@nt) {
-        EAP_cluster[[t]] <- EAP(object@tests[[t]], prior, select)
+        EAP_cluster[[t]] <- EAP(object@tests[[t]], select = select, prior = prior)
       }
     } else {
       for (t in 2:object@nt) {
-        EAP_cluster[[t]] <- EAP(object@tests[[t]], EAP_cluster[[t - 1]]@posterior, select)
+        EAP_cluster[[t]] <- EAP(object@tests[[t]], select = select, prior = EAP_cluster[[t - 1]]@posterior)
       }
     }
     return(EAP_cluster)
