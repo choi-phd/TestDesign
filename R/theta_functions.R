@@ -6,15 +6,15 @@ NULL
 #' \code{\link{mle}} is a function to compute maximum likelihood estimates of theta.
 #'
 #' @param object an \code{\linkS4class{item_pool}} object.
-#' @param resp a vector of item responses from one person on all items in the \code{object} argument.
-#' @param start_theta (optional) initial theta values.
+#' @param select (optional) if item indices are supplied, only the specified items are used.
+#' @param resp item response on all (or selected) items in the \code{object} argument. Can be a vector, a matrix, or a data frame. \code{length(resp)} or \code{ncol(resp)} must be equal to the number of all (or selected) items.
+#' @param start_theta (optional) initial theta values. If not supplied, EAP estimates using uniform priors are used as initial values. Uniform priors are computed using the \code{theta_range} argument below, with increments of \code{.1}.
 #' @param max_iter maximum number of iterations. (default = \code{100})
 #' @param crit convergence criterion to use. (default = \code{0.001})
-#' @param select (optional) if item indices are supplied, only the specified items are used. The \code{resp} argument must have the same length with the length of this argument.
-#' @param truncate set \code{TRUE} to impose a bound on the estimate.
+#' @param truncate set \code{TRUE} to impose a bound on the estimate. (default = \code{FALSE})
 #' @param theta_range a range of theta values to bound the estimate. Only effective when \code{truncate} is \code{TRUE}. (default = \code{c(-4, 4)})
-#' @param max_change upper bound to impose on the change in theta between iterations. Changes exceeding this value will be replaced by \code{max_change}. (default = \code{1.0})
-#' @param do_Fisher set \code{TRUE} to use Fisher scoring. (default = \code{TRUE})
+#' @param max_change upper bound to impose on the absolute change in theta between iterations. Absolute changes exceeding this value will be capped to \code{max_change}. (default = \code{1.0})
+#' @param do_Fisher set \code{TRUE} to use Fisher scoring instead of Newton-Raphson method. (default = \code{TRUE})
 #'
 #' @return \code{\link{mle}} returns a list containing estimated values.
 #'
@@ -22,18 +22,18 @@ NULL
 #'   \item{\code{th}} theta value.
 #'   \item{\code{se}} standard error.
 #'   \item{\code{conv}} \code{TRUE} if estimation converged.
-#'   \item{\code{trunc}} \code{TRUE} if truncating was applied on \code{th}.
+#'   \item{\code{trunc}} \code{TRUE} if truncation was applied on \code{th}.
 #' }
 #'
 #' @docType methods
 #' @rdname mle-methods
 #' @examples
-#' mle(itempool_fatigue, resp_fatigue_data[10, ])
-#' mle(itempool_fatigue, resp_fatigue_data[10, 1:20], select = 1:20)
+#' mle(itempool_fatigue, resp = resp_fatigue_data[10, ])
+#' mle(itempool_fatigue, select = 1:20, resp = resp_fatigue_data[10, 1:20])
 #' @export
 setGeneric(
   name = "mle",
-  def = function(object, resp, start_theta = NULL, max_iter = 100, crit = 0.001, select = NULL, truncate = FALSE, theta_range = c(-4, 4), max_change = 1.0, do_Fisher = TRUE) {
+  def = function(object, select = NULL, resp, start_theta = NULL, max_iter = 100, crit = 0.001, truncate = FALSE, theta_range = c(-4, 4), max_change = 1.0, do_Fisher = TRUE) {
     standardGeneric("mle")
   }
 )
@@ -43,10 +43,12 @@ setGeneric(
 setMethod(
   f = "mle",
   signature = "item_pool",
-  definition = function(object, resp, start_theta = NULL, max_iter = 50, crit = 0.005, select = NULL, truncate = FALSE, theta_range = c(-4, 4), max_change = 1.0, do_Fisher = TRUE) {
-    ni <- object@ni
-    theta <- seq(min(theta_range), max(theta_range), .1)
-    nq <- length(theta)
+  definition = function(object, select = NULL, resp, start_theta = NULL, max_iter = 50, crit = 0.005, truncate = FALSE, theta_range = c(-4, 4), max_change = 1.0, do_Fisher = TRUE) {
+
+    ni         <- object@ni
+    theta_grid <- seq(min(theta_range), max(theta_range), .1)
+    nq         <- length(theta_grid)
+
     if (is.vector(resp)) {
       nj <- 1
       resp <- matrix(resp, 1)
@@ -56,28 +58,36 @@ setMethod(
       nj <- nrow(resp)
       resp <- as.matrix(resp)
     } else {
-      stop("'resp' must be a vector, a matrix, or a data.frame.")
+      stop("'resp' must be a vector, a matrix, or a data.frame")
     }
+
     if (!is.null(select)) {
-      if (length(resp) != length(select)) {
-        stop("'resp' and 'select' must have equal length when 'select' is supplied.")
-      }
-      if (anyDuplicated(select) > 0) {
-        warning("'select' contains duplicate indices.")
-        select <- select[-duplicated(select)]
-      }
       if (!all(select %in% 1:ni)) {
-        stop("'select' contains invalid indices.")
+        stop("'select' contains invalid indices not present in item pool")
       }
       items <- select
     } else {
       items <- 1:ni
     }
+
     if (ncol(resp) != length(items)) {
-      stop("'resp' must be of length ni or match the length of select")
+      stop("ncol(resp) or length(resp) must be equal to the number of all (or selected) items")
     }
+
+    if (anyDuplicated(select) > 0) {
+      warning("'select' contains duplicate item indices. Removed duplicates from 'select' and 'resp'")
+      select <- select[-duplicated(select)]
+      resp   <- resp[-duplicated(select)]
+    }
+
     if (is.null(start_theta)) {
-      start_theta <- eap(object, theta, rep(1 / nq, nq), resp, select = select)$th
+      start_theta <- eap(object,
+        select     = select,
+        resp       = resp,
+        theta_grid = theta_grid,
+        prior      = rep(1 / nq, nq)
+      )
+      start_theta <- start_theta$th
     } else if (length(start_theta) == 1) {
       start_theta <- rep(start_theta, nj)
     } else if (length(start_theta) != nj) {
@@ -147,35 +157,21 @@ setMethod(
   }
 )
 
-#' Generate maximum likelihood estimates of theta
-#'
-#' Generate maximum likelihood estimates of theta.
-#'
-#' @param object A \code{\linkS4class{test}} object.
-#' @param start_theta An optional vector of start theta values.
-#' @param max_iter Maximum number of iterations.
-#' @param crit Convergence criterion.
-#' @param select A vector of indices identifying the items to subset.
-#' @param theta_range A range of theta values: c(minTheta, maxTheta).
-#' @param truncate Set \code{TRUE} to bound MLE to theta_range.
-#' @param max_change Maximum change between iterations.
-#' @param do_Fisher Set \code{TRUE} to use Fisher's method of scoring.
-#'
 #' @docType methods
-#' @rdname mlearray-methods
+#' @rdname mle-methods
 setGeneric(
   name = "MLE",
-  def = function(object, start_theta = NULL, max_iter = 100, crit = 0.001, select = NULL, theta_range = c(-4, 4), truncate = FALSE, max_change = 1.0, do_Fisher = TRUE) {
+  def = function(object, select = NULL, start_theta = NULL, max_iter = 100, crit = 0.001, theta_range = c(-4, 4), truncate = FALSE, max_change = 1.0, do_Fisher = TRUE) {
     standardGeneric("MLE")
   }
 )
 
 #' @docType methods
-#' @rdname mlearray-methods
+#' @rdname mle-methods
 setMethod(
   f = "MLE",
   signature = "test",
-  definition = function(object, start_theta = NULL, max_iter = 100, crit = 0.001, select = NULL, theta_range = c(-4, 4), truncate = FALSE, max_change = 1.0, do_Fisher = TRUE) {
+  definition = function(object, select = NULL, start_theta = NULL, max_iter = 100, crit = 0.001, theta_range = c(-4, 4), truncate = FALSE, max_change = 1.0, do_Fisher = TRUE) {
     ni <- ncol(object@data)
     nj <- nrow(object@data)
     nq <- length(object@theta)
@@ -284,14 +280,14 @@ setMethod(
 )
 
 #' @docType methods
-#' @rdname mlearray-methods
+#' @rdname mle-methods
 setMethod(
   f = "MLE",
   signature = "test_cluster",
-  definition = function(object, start_theta = NULL, max_iter = 100, crit = 0.001, select = NULL) {
+  definition = function(object, select = NULL, start_theta = NULL, max_iter = 100, crit = 0.001) {
     MLE_cluster <- vector(mode = "list", length = object@nt)
     for (t in 1:object@nt) {
-      MLE_cluster[[t]] <- MLE(object@tests[[t]], start_theta = start_theta, max_iter = max_iter, crit = crit, select = NULL)
+      MLE_cluster[[t]] <- MLE(object@tests[[t]], select = NULL, start_theta = start_theta, max_iter = max_iter, crit = crit)
     }
     return(MLE_cluster)
   }
