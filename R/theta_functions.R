@@ -297,6 +297,183 @@ setMethod(
   }
 )
 
+#' Compute maximum likelihood estimates of theta using fence items
+#'
+#' \code{\link{mlef}} is a function to compute maximum likelihood estimates of theta using fence items.
+#'
+#' @param object an \code{\linkS4class{item_pool}} object.
+#' @param select (optional) if item indices are supplied, only the specified items are used.
+#' @param resp item response on all (or selected) items in the \code{object} argument. Can be a vector, a matrix, or a data frame. \code{length(resp)} or \code{ncol(resp)} must be equal to the number of all (or selected) items.
+#' @param fence_slope the slope parameter to use on fence items. (default = \code{5})
+#' @param fence_difficulty the difficulty parameter to use on fence items. Must have two values for the lower and the upper fence respectively. (default = \code{c(-5, 5)})
+#' @param start_theta (optional) initial theta values. If not supplied, EAP estimates using uniform priors are used as initial values. Uniform priors are computed using the \code{theta_range} argument below, with increments of \code{.1}.
+#' @param max_iter maximum number of iterations. (default = \code{100})
+#' @param crit convergence criterion to use. (default = \code{0.001})
+#' @param truncate set \code{TRUE} to impose a bound on the estimate. (default = \code{FALSE})
+#' @param theta_range a range of theta values to bound the estimate. Only effective when \code{truncate} is \code{TRUE}. (default = \code{c(-4, 4)})
+#' @param max_change upper bound to impose on the absolute change in theta between iterations. Absolute changes exceeding this value will be capped to \code{max_change}. (default = \code{1.0})
+#' @param do_Fisher set \code{TRUE} to use Fisher scoring instead of Newton-Raphson method. (default = \code{TRUE})
+#'
+#' @return \code{\link{mlef}} returns a list containing estimated values.
+#'
+#' \itemize{
+#'   \item{\code{th}} theta value.
+#'   \item{\code{se}} standard error.
+#'   \item{\code{conv}} \code{TRUE} if estimation converged.
+#'   \item{\code{trunc}} \code{TRUE} if truncation was applied on \code{th}.
+#' }
+#'
+#' @references{
+#'   \insertRef{han_maximum_2016}{TestDesign}
+#' }
+#'
+#' @docType methods
+#' @rdname mlef-methods
+#' @examples
+#' mlef(itempool_fatigue, resp = resp_fatigue_data[10, ])
+#' mlef(itempool_fatigue, select = 1:20, resp = resp_fatigue_data[10, 1:20])
+#' @export
+setGeneric(
+  name = "mlef",
+  def = function(object, select = NULL, resp, fence_slope = 5, fence_difficulty = c(-5, 5), start_theta = NULL, max_iter = 100, crit = 0.001, truncate = FALSE, theta_range = c(-4, 4), max_change = 1.0, do_Fisher = TRUE) {
+    standardGeneric("mlef")
+  }
+)
+
+#' @docType methods
+#' @rdname mlef-methods
+setMethod(
+  f = "mlef",
+  signature = "item_pool",
+  definition = function(object, select = NULL, resp, fence_slope = 5, fence_difficulty = c(-5, 5), start_theta = NULL, max_iter = 50, crit = 0.005, truncate = FALSE, theta_range = c(-4, 4), max_change = 1.0, do_Fisher = TRUE) {
+
+    ni         <- object@ni
+    theta_grid <- seq(min(theta_range), max(theta_range), .1)
+    nq         <- length(theta_grid)
+
+    if (is.vector(resp)) {
+      nj <- 1
+      resp <- matrix(resp, 1)
+    } else if (is.matrix(resp)) {
+      nj <- nrow(resp)
+    } else if (is.data.frame(resp)) {
+      nj <- nrow(resp)
+      resp <- as.matrix(resp)
+    } else {
+      stop("'resp' must be a vector, a matrix, or a data.frame")
+    }
+
+    if (!is.null(select)) {
+      if (!all(select %in% 1:ni)) {
+        stop("'select' contains invalid indices not present in item pool")
+      }
+      items <- select
+    } else {
+      items <- 1:ni
+    }
+
+    if (ncol(resp) != length(items)) {
+      stop("ncol(resp) or length(resp) must be equal to the number of all (or selected) items")
+    }
+
+    if (anyDuplicated(select) > 0) {
+      warning("'select' contains duplicate item indices. Removed duplicates from 'select' and 'resp'")
+      select <- select[-duplicated(select)]
+      resp   <- resp[-duplicated(select)]
+    }
+
+    if (is.null(start_theta)) {
+      start_theta <- eap(
+        object,
+        select     = select,
+        resp       = resp,
+        theta_grid = theta_grid,
+        prior      = rep(1 / nq, nq)
+      )
+      start_theta <- start_theta$th
+    } else if (length(start_theta) == 1) {
+      start_theta <- rep(start_theta, nj)
+    } else if (length(start_theta) != nj) {
+      stop("'start_theta' must be a single value or have a value for each examinee.")
+    }
+
+    # add fence items
+    ipar_fence <- data.frame(
+      ID    = c("FENCE_LB", "FENCE_UB"),
+      MODEL = rep("2PL", 2),
+      PAR1  = rep(fence_slope, 2),
+      PAR2  = fence_difficulty
+    )
+    item_fence <- loadItemPool(ipar_fence)
+    object     <- object + item_fence
+    resp       <- cbind(resp, 1)
+    resp       <- cbind(resp, 0)
+    items      <- c(items, ni + 1:2)
+    ni         <- ni + 2
+
+    th    <- numeric(nj)
+    se    <- numeric(nj)
+    conv  <- logical(nj)
+    trunc <- logical(nj)
+
+    for (j in 1:nj) {
+      theta_1 <- start_theta[j]
+      max_raw_score <- sum(object@NCAT[items[!is.na(resp[j, ])]] - 1)
+      raw_score <- sum(resp[j, ], na.rm = TRUE)
+      if (raw_score > 0 && raw_score < max_raw_score) {
+        converged <- FALSE
+        done <- FALSE
+        iteration <- 0
+        while (!converged && !done && iteration <= max_iter) {
+          iteration <- iteration + 1
+          theta_0 <- theta_1
+          deriv1 <- 0
+          deriv2 <- 0
+          for (i in 1:length(items)) {
+            if (!is.na(resp[j, i])) {
+              deriv1 <- deriv1 + calcJacobian(object@parms[[items[i]]], theta_0, resp[j, i])
+              if (do_Fisher) {
+                deriv2 <- deriv2 + calcFisher(object@parms[[items[i]]], theta_0)[, 1]
+              } else {
+                deriv2 <- deriv2 - calcHessian(object@parms[[items[i]]], theta_0, resp[j, i])
+              }
+            }
+          }
+          change <- deriv1 / deriv2
+          if (is.nan(change)) {
+            done <- TRUE
+          } else {
+            if (abs(change) > max_change) {
+              change <- sign(change) * max_change
+            } else if (abs(change) < crit) {
+              converged <- conv[j] <- TRUE
+            }
+            theta_1 <- theta_0 + change
+          }
+        }
+      }
+      if (conv[j]) {
+        th[j] <- theta_1
+        se[j] <- 1 / sqrt(abs(deriv2))
+      } else {
+        th[j] <- start_theta[j]
+        sum_fisher <- 0
+        for (i in 1:length(items)) {
+          sum_fisher <- sum_fisher + calcFisher(object@parms[[items[i]]], th[j])
+        }
+        se[j] <- 1 / sqrt(sum_fisher)
+      }
+    }
+    if (truncate) {
+      min_theta <- min(theta_range)
+      max_theta <- max(theta_range)
+      th[th > max_theta] <- max_theta
+      th[th < min_theta] <- min_theta
+    }
+    return(list(th = th, se = se, conv = conv, trunc = trunc))
+  }
+)
+
 #' Compute expected a posteriori estimates of theta
 #'
 #' \code{\link{eap}} is a function to compute expected a posteriori estimates of theta.
