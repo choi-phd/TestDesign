@@ -13,9 +13,9 @@
 arma::colvec theta_EAP(
   const arma::mat& theta_grid,
   const arma::mat& item_parm,
-  const arma::icolvec& resp,
-  const arma::icolvec& ncat,
-  const arma::icolvec& model,
+  const arma::irowvec& resp,
+  const arma::irowvec& ncat,
+  const arma::irowvec& model,
   const int& prior,
   const arma::rowvec& prior_parm) {
 
@@ -56,8 +56,8 @@ arma::mat theta_EAP_matrix(
   const arma::mat& theta_grid,
   const arma::mat& item_parm,
   const arma::imat& resp,
-  const arma::icolvec& ncat,
-  const arma::icolvec& model,
+  const arma::irowvec& ncat,
+  const arma::irowvec& model,
   const int& prior,
   const arma::rowvec& prior_parm) {
 
@@ -91,9 +91,9 @@ arma::mat theta_EB(
   const arma::rowvec& theta_init,
   const double& theta_prop,
   const arma::mat& item_parm,
-  const arma::icolvec& resp,
-  const arma::icolvec& ncat,
-  const arma::icolvec& model,
+  const arma::irowvec& resp,
+  const arma::irowvec& ncat,
+  const arma::irowvec& model,
   const int& prior,
   const arma::rowvec& prior_parm) {
 
@@ -182,9 +182,9 @@ arma::mat theta_FB(
   const double& theta_prop,
   const List& items_list,
   const arma::mat& item_init,
-  const arma::icolvec& resp,
-  const arma::icolvec& ncat,
-  const arma::icolvec& model,
+  const arma::irowvec& resp,
+  const arma::irowvec& ncat,
+  const arma::irowvec& model,
   const int& prior,
   const arma::rowvec& prior_parm) {
 

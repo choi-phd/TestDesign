@@ -7,9 +7,9 @@
 double calc_likelihood (
   const arma::rowvec& x,
   const arma::mat& item_parm,
-  const arma::icolvec& resp,
-  const arma::icolvec& ncat,
-  const arma::icolvec& model) {
+  const arma::irowvec& resp,
+  const arma::irowvec& ncat,
+  const arma::irowvec& model) {
 
   int ni = resp.n_cols;
   double lh = 1;
@@ -78,9 +78,9 @@ double calc_likelihood (
 arma::colvec calc_likelihood_function(
   const arma::mat& theta_grid,
   const arma::mat& item_parm,
-  const arma::icolvec& resp,
-  const arma::icolvec& ncat,
-  const arma::icolvec& model) {
+  const arma::irowvec& resp,
+  const arma::irowvec& ncat,
+  const arma::irowvec& model) {
 
   int ni = resp.n_cols;
   int nq = theta_grid.n_rows;
@@ -145,9 +145,9 @@ arma::colvec calc_likelihood_function(
 double calc_log_likelihood(
   const arma::rowvec& x,
   const arma::mat& item_parm,
-  const arma::icolvec& resp,
-  const arma::icolvec& ncat,
-  const arma::icolvec& model,
+  const arma::irowvec& resp,
+  const arma::irowvec& ncat,
+  const arma::irowvec& model,
   const int& prior,
   const arma::rowvec& prior_parm) {
 
@@ -220,9 +220,9 @@ double calc_log_likelihood(
 arma::colvec calc_log_likelihood_function(
   const arma::mat& theta_grid,
   const arma::mat& item_parm,
-  const arma::icolvec& resp,
-  const arma::icolvec& ncat,
-  const arma::icolvec& model,
+  const arma::irowvec& resp,
+  const arma::irowvec& ncat,
+  const arma::irowvec& model,
   const int& prior,
   const arma::rowvec& prior_parm) {
 
@@ -318,9 +318,9 @@ double calc_prior_multiplier(
 double calc_posterior(
   const arma::rowvec& x,
   const arma::mat& item_parm,
-  const arma::icolvec& resp,
-  const arma::icolvec& ncat,
-  const arma::icolvec& model,
+  const arma::irowvec& resp,
+  const arma::irowvec& ncat,
+  const arma::irowvec& model,
   const int& prior,
   const arma::rowvec& prior_parm) {
 
@@ -342,9 +342,9 @@ double calc_posterior(
 arma::colvec calc_posterior_function(
   const arma::mat& theta_grid,
   const arma::mat& item_parm,
-  const arma::icolvec& resp,
-  const arma::icolvec& ncat,
-  const arma::icolvec& model,
+  const arma::irowvec& resp,
+  const arma::irowvec& ncat,
+  const arma::irowvec& model,
   const int& prior,
   const arma::rowvec& prior_parm) {
 
