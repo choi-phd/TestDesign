@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generate expected a posteriori estimates of theta — EAP • TestDesign</title>
+<title>Calculate log-likelihood — calcLogLikelihood • TestDesign</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Generate expected a posteriori estimates of theta — EAP" />
-<meta property="og:description" content="Generate expected a posteriori estimates of theta." />
+<meta property="og:title" content="Calculate log-likelihood — calcLogLikelihood" />
+<meta property="og:description" content="calcLogLikelihood is a function to calculate log-likelihood values." />
 
 
 
@@ -128,45 +128,85 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Generate expected a posteriori estimates of theta</h1>
-    <small class="dont-index">Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/R/shadow_functions.R'><code>R/shadow_functions.R</code></a></small>
-    <div class="hidden name"><code>eaparray-methods.Rd</code></div>
+    <h1>Calculate log-likelihood</h1>
+    <small class="dont-index">Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/R/item_functions.R'><code>R/item_functions.R</code></a></small>
+    <div class="hidden name"><code>calcLogLikelihood-methods.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Generate expected a posteriori estimates of theta.</p>
+    <p><code>calcLogLikelihood</code> is a function to calculate log-likelihood values.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>EAP</span>(<span class='no'>object</span>, <span class='no'>prior</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>reset_prior</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+    <pre class="usage"><span class='fu'>calcLogLikelihood</span>(<span class='no'>object</span>, <span class='no'>theta</span>, <span class='no'>resp</span>)
 
-<span class='co'># S4 method for test</span>
-<span class='fu'>EAP</span>(<span class='no'>object</span>, <span class='no'>prior</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>reset_prior</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='co'># S4 method for item_pool,numeric,numeric</span>
+<span class='fu'>calcLogLikelihood</span>(<span class='no'>object</span>, <span class='no'>theta</span>, <span class='no'>resp</span>)
 
-<span class='co'># S4 method for test_cluster</span>
-<span class='fu'>EAP</span>(<span class='no'>object</span>, <span class='no'>prior</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>reset_prior</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+<span class='co'># S4 method for item_pool,numeric,matrix</span>
+<span class='fu'>calcLogLikelihood</span>(<span class='no'>object</span>, <span class='no'>theta</span>, <span class='no'>resp</span>)
+
+<span class='co'># S4 method for item_pool,matrix,numeric</span>
+<span class='fu'>calcLogLikelihood</span>(<span class='no'>object</span>, <span class='no'>theta</span>, <span class='no'>resp</span>)
+
+<span class='co'># S4 method for item_pool,matrix,matrix</span>
+<span class='fu'>calcLogLikelihood</span>(<span class='no'>object</span>, <span class='no'>theta</span>, <span class='no'>resp</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>A <code>test</code> or a <code>test_cluster</code> object.</p></td>
+      <td><p>an <code>item_pool</code> object.</p></td>
     </tr>
     <tr>
-      <th>prior</th>
-      <td><p>A prior distribution, a numeric vector for a common prior or a matrix for individualized priors.</p></td>
+      <th>theta</th>
+      <td><p>theta values to use.</p></td>
     </tr>
     <tr>
-      <th>select</th>
-      <td><p>A vector of indices identifying the items to subset.</p></td>
-    </tr>
-    <tr>
-      <th>reset_prior</th>
-      <td><p>Set <code>TRUE</code> to reset the prior distribution for each test when object is of class <code>test_cluster</code>.</p></td>
+      <th>resp</th>
+      <td><p>the response data to use.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p><code>calcLogLikelihood</code> returns values of log-likelihoods.</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Rasch G (1960).
+<em>Probabilistic models for some intelligence and attainment tests</em>.
+Copenhagen: Danish Institute for Educational Research.</p>
+<p>Lord FM (1952).
+&#8220;A theory of test scores.&#8221;
+<em>Psychometric Monograph</em>, <b>7</b>.</p>
+<p>Birnbaum A (1957).
+&#8220;Efficient design and use of tests of mental ability for various decision-making problems (Series Report No. 58-16. Project No. 7755-23).&#8221;
+Randolph Air Force Base, TX: USAF School of Aviation Medicine.</p>
+<p>Birnbaum A (1958).
+&#8220;On the estimation of mental ability (Series Report No. 15. Project No. 7755-23).&#8221;
+Randolph Air Force Base, TX: USAF School of Aviation Medicine.</p>
+<p>Birnbaum A (1958).
+&#8220;Further considerations of efficiency in tests of a mental ability (Series Report No. 17. Project No. 7755-23).&#8221;
+Randolph Air Force Base, TX: USAF School of Aviation Medicine.</p>
+<p>Birnbaum A (1968).
+&#8220;Some latent trait models and their use in inferring an examinee's ability.&#8221;
+In Lord FM, Novick MR (eds.), <em>Statistical Theories of Mental Test Scores</em>, 397--479.
+Addison-Wesley, Reading, MA.</p>
+<p>Masters GN (1982).
+&#8220;A Rasch model for partial credit scoring.&#8221;
+<em>Psychometrika</em>, <b>47</b>(2), 149--174.</p>
+<p>Andrich D (1978).
+&#8220;A rating formulation for ordered response categories.&#8221;
+<em>Psychometrika</em>, <b>43</b>(4), 561--573.</p>
+<p>Muraki E (1992).
+&#8220;A generalized partial credit model: Application of an EM algorithm.&#8221;
+<em>Applied Psychological Measurement</em>, <b>16</b>(2), 159--176.</p>
+<p>Samejima F (1969).
+&#8220;Estimation of latent ability using a response pattern of graded scores.&#8221;
+<em>Psychometrika Monograph</em>, <b>17</b>.</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='no'>j_pool</span>   <span class='kw'>&lt;-</span> <span class='fu'>calcLogLikelihood</span>(<span class='no'>itempool_science</span>, <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(-<span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>1</span>), <span class='fl'>0</span>)</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

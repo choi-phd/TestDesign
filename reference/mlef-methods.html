@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generate maximum likelihood estimates of theta — MLE • TestDesign</title>
+<title>Compute maximum likelihood estimates of theta using fence items — mlef • TestDesign</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Generate maximum likelihood estimates of theta — MLE" />
-<meta property="og:description" content="Generate maximum likelihood estimates of theta." />
+<meta property="og:title" content="Compute maximum likelihood estimates of theta using fence items — mlef" />
+<meta property="og:description" content="mlef is a function to compute maximum likelihood estimates of theta using fence items." />
 
 
 
@@ -128,85 +128,120 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Generate maximum likelihood estimates of theta</h1>
-    <small class="dont-index">Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/R/shadow_functions.R'><code>R/shadow_functions.R</code></a></small>
-    <div class="hidden name"><code>mlearray-methods.Rd</code></div>
+    <h1>Compute maximum likelihood estimates of theta using fence items</h1>
+    <small class="dont-index">Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/R/theta_functions.R'><code>R/theta_functions.R</code></a></small>
+    <div class="hidden name"><code>mlef-methods.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Generate maximum likelihood estimates of theta.</p>
+    <p><code>mlef</code> is a function to compute maximum likelihood estimates of theta using fence items.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>MLE</span>(
+    <pre class="usage"><span class='fu'>mlef</span>(
   <span class='no'>object</span>,
+  <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>resp</span>,
+  <span class='kw'>fence_slope</span> <span class='kw'>=</span> <span class='fl'>5</span>,
+  <span class='kw'>fence_difficulty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>5</span>, <span class='fl'>5</span>),
   <span class='kw'>start_theta</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>max_iter</span> <span class='kw'>=</span> <span class='fl'>100</span>,
   <span class='kw'>crit</span> <span class='kw'>=</span> <span class='fl'>0.001</span>,
-  <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>theta_range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>4</span>, <span class='fl'>4</span>),
   <span class='kw'>truncate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>theta_range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>4</span>, <span class='fl'>4</span>),
   <span class='kw'>max_change</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>do_Fisher</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )
 
-<span class='co'># S4 method for test</span>
-<span class='fu'>MLE</span>(
+<span class='co'># S4 method for item_pool</span>
+<span class='fu'>mlef</span>(
   <span class='no'>object</span>,
-  <span class='kw'>start_theta</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>max_iter</span> <span class='kw'>=</span> <span class='fl'>100</span>,
-  <span class='kw'>crit</span> <span class='kw'>=</span> <span class='fl'>0.001</span>,
   <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>theta_range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>4</span>, <span class='fl'>4</span>),
+  <span class='no'>resp</span>,
+  <span class='kw'>fence_slope</span> <span class='kw'>=</span> <span class='fl'>5</span>,
+  <span class='kw'>fence_difficulty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>5</span>, <span class='fl'>5</span>),
+  <span class='kw'>start_theta</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>max_iter</span> <span class='kw'>=</span> <span class='fl'>50</span>,
+  <span class='kw'>crit</span> <span class='kw'>=</span> <span class='fl'>0.005</span>,
   <span class='kw'>truncate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>theta_range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>4</span>, <span class='fl'>4</span>),
   <span class='kw'>max_change</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>do_Fisher</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)
-
-<span class='co'># S4 method for test_cluster</span>
-<span class='fu'>MLE</span>(<span class='no'>object</span>, <span class='kw'>start_theta</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>max_iter</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>crit</span> <span class='kw'>=</span> <span class='fl'>0.001</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>A <code>test</code> object.</p></td>
-    </tr>
-    <tr>
-      <th>start_theta</th>
-      <td><p>An optional vector of start theta values.</p></td>
-    </tr>
-    <tr>
-      <th>max_iter</th>
-      <td><p>Maximum number of iterations.</p></td>
-    </tr>
-    <tr>
-      <th>crit</th>
-      <td><p>Convergence criterion.</p></td>
+      <td><p>an <code>item_pool</code> object.</p></td>
     </tr>
     <tr>
       <th>select</th>
-      <td><p>A vector of indices identifying the items to subset.</p></td>
+      <td><p>(optional) if item indices are supplied, only the specified items are used.</p></td>
     </tr>
     <tr>
-      <th>theta_range</th>
-      <td><p>A range of theta values: c(minTheta, maxTheta).</p></td>
+      <th>resp</th>
+      <td><p>item response on all (or selected) items in the <code>object</code> argument. Can be a vector, a matrix, or a data frame. <code><a href='https://rdrr.io/r/base/length.html'>length(resp)</a></code> or <code><a href='https://rdrr.io/r/base/nrow.html'>ncol(resp)</a></code> must be equal to the number of all (or selected) items.</p></td>
+    </tr>
+    <tr>
+      <th>fence_slope</th>
+      <td><p>the slope parameter to use on fence items. (default = <code>5</code>)</p></td>
+    </tr>
+    <tr>
+      <th>fence_difficulty</th>
+      <td><p>the difficulty parameter to use on fence items. Must have two values for the lower and the upper fence respectively. (default = <code><a href='https://rdrr.io/r/base/c.html'>c(-5, 5)</a></code>)</p></td>
+    </tr>
+    <tr>
+      <th>start_theta</th>
+      <td><p>(optional) initial theta values. If not supplied, EAP estimates using uniform priors are used as initial values. Uniform priors are computed using the <code>theta_range</code> argument below, with increments of <code>.1</code>.</p></td>
+    </tr>
+    <tr>
+      <th>max_iter</th>
+      <td><p>maximum number of iterations. (default = <code>100</code>)</p></td>
+    </tr>
+    <tr>
+      <th>crit</th>
+      <td><p>convergence criterion to use. (default = <code>0.001</code>)</p></td>
     </tr>
     <tr>
       <th>truncate</th>
-      <td><p>Set <code>TRUE</code> to bound MLE to theta_range.</p></td>
+      <td><p>set <code>TRUE</code> to impose a bound on the estimate. (default = <code>FALSE</code>)</p></td>
+    </tr>
+    <tr>
+      <th>theta_range</th>
+      <td><p>a range of theta values to bound the estimate. Only effective when <code>truncate</code> is <code>TRUE</code>. (default = <code><a href='https://rdrr.io/r/base/c.html'>c(-4, 4)</a></code>)</p></td>
     </tr>
     <tr>
       <th>max_change</th>
-      <td><p>Maximum change between iterations.</p></td>
+      <td><p>upper bound to impose on the absolute change in theta between iterations. Absolute changes exceeding this value will be capped to <code>max_change</code>. (default = <code>1.0</code>)</p></td>
     </tr>
     <tr>
       <th>do_Fisher</th>
-      <td><p>Set <code>TRUE</code> to use Fisher's method of scoring.</p></td>
+      <td><p>set <code>TRUE</code> to use Fisher scoring instead of Newton-Raphson method. (default = <code>TRUE</code>)</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p><code>mlef</code> returns a list containing estimated values.</p>
+<ul>
+<li><p><code>th</code> theta value.</p></li>
+<li><p><code>se</code> standard error.</p></li>
+<li><p><code>conv</code> <code>TRUE</code> if estimation converged.</p></li>
+<li><p><code>trunc</code> <code>TRUE</code> if truncation was applied on <code>th</code>.</p></li>
+</ul>
+
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Han KT (2016).
+&#8220;Maximum likelihood score estimation method with fences for short-length tests and computerized adaptive tests.&#8221;
+<em>Applied Psychological Measurement</em>, <b>40</b>(4), 289--301.
+doi: <a href='https://doi.org/10.1177/0146621616631317'>10.1177/0146621616631317</a>
+.</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='fu'>mlef</span>(<span class='no'>itempool_fatigue</span>, <span class='kw'>resp</span> <span class='kw'>=</span> <span class='no'>resp_fatigue_data</span>[<span class='fl'>10</span>, ])
+<span class='fu'>mlef</span>(<span class='no'>itempool_fatigue</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>20</span>, <span class='kw'>resp</span> <span class='kw'>=</span> <span class='no'>resp_fatigue_data</span>[<span class='fl'>10</span>, <span class='fl'>1</span>:<span class='fl'>20</span>])</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
