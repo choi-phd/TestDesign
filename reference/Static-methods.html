@@ -137,21 +137,21 @@
     <p><code>Static</code> is a test assembly function to perform fixed-form test assembly based on the generalized shadow-test framework.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>Static</span>(<span class='no'>config</span>, <span class='no'>constraints</span>, <span class='kw'>force_solver</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+    <pre class="usage"><span class='fu'>Static</span>(<span class='kw'>config</span>, <span class='kw'>constraints</span>, force_solver = <span class='fl'>FALSE</span>)
 
 <span class='co'># S4 method for config_Static</span>
-<span class='fu'>Static</span>(<span class='no'>config</span>, <span class='no'>constraints</span>, <span class='kw'>force_solver</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+<span class='fu'>Static</span>(<span class='kw'>config</span>, <span class='kw'>constraints</span>, force_solver = <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>config</th>
-      <td><p>a <code>config_Static</code> object. Use <code>createStaticTestConfig</code> for this.</p></td>
+      <td><p>a <code><a href='config_Static-class.html'>config_Static</a></code> object. Use <code><a href='config_Static-class.html'>createStaticTestConfig</a></code> for this.</p></td>
     </tr>
     <tr>
       <th>constraints</th>
-      <td><p>a <code>constraints</code> object representing test specifications. Use <code>loadConstraints</code> for this.</p></td>
+      <td><p>a <code><a href='constraints-class.html'>constraints</a></code> object representing test specifications. Use <code><a href='loadConstraints.html'>loadConstraints</a></code> for this.</p></td>
     </tr>
     <tr>
       <th>force_solver</th>
@@ -161,7 +161,7 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>Static</code> returns a <code>output_Static</code> object containing the selected items.</p>
+    <p><code>Static</code> returns a <code><a href='output_Static-class.html'>output_Static</a></code> object containing the selected items.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>van der
@@ -170,13 +170,15 @@ Linden WJ (2005).
 Springer Science &amp; Business Media.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='no'>config_science</span> <span class='kw'>&lt;-</span> <span class='fu'>createStaticTestConfig</span>(
+    <pre class="examples"><span class='kw'>config_science</span> <span class='op'>&lt;-</span> <span class='fu'><a href='config_Static-class.html'>createStaticTestConfig</a></span>(
   <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-    <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"MAXINFO"</span>,
-    <span class='kw'>target_location</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>1</span>, <span class='fl'>1</span>)
+    method = <span class='st'>"MAXINFO"</span>,
+    target_location = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='op'>-</span><span class='fl'>1</span>, <span class='fl'>1</span>)
   )
 )
-<span class='no'>solution</span> <span class='kw'>&lt;-</span> <span class='fu'>Static</span>(<span class='no'>config_science</span>, <span class='no'>constraints_science</span>)</pre>
+<span class='kw'>solution</span> <span class='op'>&lt;-</span> <span class='fu'>Static</span>(<span class='kw'>config_science</span>, <span class='kw'>constraints_science</span>)
+
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -192,7 +194,7 @@ Springer Science &amp; Business Media.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

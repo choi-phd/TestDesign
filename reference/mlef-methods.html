@@ -138,34 +138,34 @@
     </div>
 
     <pre class="usage"><span class='fu'>mlef</span>(
-  <span class='no'>object</span>,
-  <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>resp</span>,
-  <span class='kw'>fence_slope</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>fence_difficulty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>5</span>, <span class='fl'>5</span>),
-  <span class='kw'>start_theta</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>max_iter</span> <span class='kw'>=</span> <span class='fl'>100</span>,
-  <span class='kw'>crit</span> <span class='kw'>=</span> <span class='fl'>0.001</span>,
-  <span class='kw'>truncate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>theta_range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>4</span>, <span class='fl'>4</span>),
-  <span class='kw'>max_change</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>do_Fisher</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>object</span>,
+  select = <span class='kw'>NULL</span>,
+  <span class='kw'>resp</span>,
+  fence_slope = <span class='fl'>5</span>,
+  fence_difficulty = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='op'>-</span><span class='fl'>5</span>, <span class='fl'>5</span>),
+  start_theta = <span class='kw'>NULL</span>,
+  max_iter = <span class='fl'>100</span>,
+  crit = <span class='fl'>0.001</span>,
+  truncate = <span class='fl'>FALSE</span>,
+  theta_range = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='op'>-</span><span class='fl'>4</span>, <span class='fl'>4</span>),
+  max_change = <span class='fl'>1</span>,
+  do_Fisher = <span class='fl'>TRUE</span>
 )
 
 <span class='co'># S4 method for item_pool</span>
 <span class='fu'>mlef</span>(
-  <span class='no'>object</span>,
-  <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>resp</span>,
-  <span class='kw'>fence_slope</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>fence_difficulty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>5</span>, <span class='fl'>5</span>),
-  <span class='kw'>start_theta</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>max_iter</span> <span class='kw'>=</span> <span class='fl'>50</span>,
-  <span class='kw'>crit</span> <span class='kw'>=</span> <span class='fl'>0.005</span>,
-  <span class='kw'>truncate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>theta_range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>4</span>, <span class='fl'>4</span>),
-  <span class='kw'>max_change</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>do_Fisher</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>object</span>,
+  select = <span class='kw'>NULL</span>,
+  <span class='kw'>resp</span>,
+  fence_slope = <span class='fl'>5</span>,
+  fence_difficulty = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='op'>-</span><span class='fl'>5</span>, <span class='fl'>5</span>),
+  start_theta = <span class='kw'>NULL</span>,
+  max_iter = <span class='fl'>50</span>,
+  crit = <span class='fl'>0.005</span>,
+  truncate = <span class='fl'>FALSE</span>,
+  theta_range = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='op'>-</span><span class='fl'>4</span>, <span class='fl'>4</span>),
+  max_change = <span class='fl'>1</span>,
+  do_Fisher = <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -173,7 +173,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>an <code>item_pool</code> object.</p></td>
+      <td><p>an <code><a href='item_pool-class.html'>item_pool</a></code> object.</p></td>
     </tr>
     <tr>
       <th>select</th>
@@ -240,8 +240,9 @@ doi: <a href='https://doi.org/10.1177/0146621616631317'>10.1177/0146621616631317
 .</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='fu'>mlef</span>(<span class='no'>itempool_fatigue</span>, <span class='kw'>resp</span> <span class='kw'>=</span> <span class='no'>resp_fatigue_data</span>[<span class='fl'>10</span>, ])
-<span class='fu'>mlef</span>(<span class='no'>itempool_fatigue</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>20</span>, <span class='kw'>resp</span> <span class='kw'>=</span> <span class='no'>resp_fatigue_data</span>[<span class='fl'>10</span>, <span class='fl'>1</span>:<span class='fl'>20</span>])</pre>
+    <pre class="examples"><span class='fu'>mlef</span>(<span class='kw'>itempool_fatigue</span>, resp = <span class='kw'>resp_fatigue_data</span>[<span class='fl'>10</span>, ])
+<span class='fu'>mlef</span>(<span class='kw'>itempool_fatigue</span>, select = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>20</span>, resp = <span class='kw'>resp_fatigue_data</span>[<span class='fl'>10</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>20</span>])
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -257,7 +258,7 @@ doi: <a href='https://doi.org/10.1177/0146621616631317'>10.1177/0146621616631317
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

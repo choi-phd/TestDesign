@@ -136,18 +136,18 @@ The constraints must be in the expected format; see the vignette in vignette(&qu
     </div>
 
     <div class="ref-description">
-    <p><code>buildConstraints</code> is a data loading function to create a <code>constraints</code> object.
+    <p><code>buildConstraints</code> is a data loading function to create a <code><a href='constraints-class.html'>constraints</a></code> object.
 <code>buildConstraints</code> is a shortcut that calls other data loading functions.
-The constraints must be in the expected format; see the vignette in <code>vignette("constraints")</code>.</p>
+The constraints must be in the expected format; see the vignette in <code><a href='../articles/constraints.html'>vignette("constraints")</a></code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>buildConstraints</span>(
-  <span class='no'>object</span>,
-  <span class='no'>item_pool</span>,
-  <span class='no'>item_attrib</span>,
-  <span class='kw'>st_attrib</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>pool</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>constraints</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+  <span class='kw'>object</span>,
+  <span class='kw'>item_pool</span>,
+  <span class='kw'>item_attrib</span>,
+  st_attrib = <span class='kw'>NULL</span>,
+  pool = <span class='kw'>NULL</span>,
+  constraints = <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -159,15 +159,15 @@ The constraints must be in the expected format; see the vignette in <code>vignet
     </tr>
     <tr>
       <th>item_pool</th>
-      <td><p>item parameters. Can be a <code>item_pool</code> object, a data.frame or the file path of a .csv file.</p></td>
+      <td><p>item parameters. Can be a <code><a href='item_pool-class.html'>item_pool</a></code> object, a data.frame or the file path of a .csv file.</p></td>
     </tr>
     <tr>
       <th>item_attrib</th>
-      <td><p>item attributes. Can be an <code>item_attrib</code> object, a data.frame or the file path of a .csv file.</p></td>
+      <td><p>item attributes. Can be an <code><a href='item_attrib-class.html'>item_attrib</a></code> object, a data.frame or the file path of a .csv file.</p></td>
     </tr>
     <tr>
       <th>st_attrib</th>
-      <td><p>(optional) stimulus attributes. Can be an <code>st_attrib</code> object, a data.frame or the file path of a .csv file.</p></td>
+      <td><p>(optional) stimulus attributes. Can be an <code><a href='st_attrib-class.html'>st_attrib</a></code> object, a data.frame or the file path of a .csv file.</p></td>
     </tr>
     <tr>
       <th>pool</th>
@@ -181,32 +181,33 @@ The constraints must be in the expected format; see the vignette in <code>vignet
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>buildConstraints</code> returns a <code>constraints</code> object. This object is used in <code>Static</code> and <code>Shadow</code>.</p>
+    <p><code>buildConstraints</code> returns a <code><a href='constraints-class.html'>constraints</a></code> object. This object is used in <code><a href='Static.html'>Static</a></code> and <code><a href='Shadow.html'>Shadow</a></code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'>## Read from objects:</span>
-<span class='no'>constraints_science</span> <span class='kw'>&lt;-</span> <span class='fu'>buildConstraints</span>(<span class='no'>constraints_science_data</span>,
-  <span class='no'>itempool_science</span>, <span class='no'>itemattrib_science</span>)
-<span class='no'>constraints_reading</span> <span class='kw'>&lt;-</span> <span class='fu'>buildConstraints</span>(<span class='no'>constraints_reading_data</span>,
-  <span class='no'>itempool_reading</span>, <span class='no'>itemattrib_reading</span>, <span class='no'>stimattrib_reading</span>)
+<span class='kw'>constraints_science</span> <span class='op'>&lt;-</span> <span class='fu'>buildConstraints</span>(<span class='kw'>constraints_science_data</span>,
+  <span class='kw'>itempool_science</span>, <span class='kw'>itemattrib_science</span>)
+<span class='kw'>constraints_reading</span> <span class='op'>&lt;-</span> <span class='fu'>buildConstraints</span>(<span class='kw'>constraints_reading_data</span>,
+  <span class='kw'>itempool_reading</span>, <span class='kw'>itemattrib_reading</span>, <span class='kw'>stimattrib_reading</span>)
 
 <span class='co'>## Read from data.frame:</span>
-<span class='no'>constraints_science</span> <span class='kw'>&lt;-</span> <span class='fu'>buildConstraints</span>(<span class='no'>constraints_science_data</span>,
-  <span class='no'>itempool_science_data</span>, <span class='no'>itemattrib_science_data</span>)
-<span class='no'>constraints_reading</span> <span class='kw'>&lt;-</span> <span class='fu'>buildConstraints</span>(<span class='no'>constraints_reading_data</span>,
-  <span class='no'>itempool_reading_data</span>, <span class='no'>itemattrib_reading_data</span>, <span class='no'>stimattrib_reading_data</span>)
+<span class='kw'>constraints_science</span> <span class='op'>&lt;-</span> <span class='fu'>buildConstraints</span>(<span class='kw'>constraints_science_data</span>,
+  <span class='kw'>itempool_science_data</span>, <span class='kw'>itemattrib_science_data</span>)
+<span class='kw'>constraints_reading</span> <span class='op'>&lt;-</span> <span class='fu'>buildConstraints</span>(<span class='kw'>constraints_reading_data</span>,
+  <span class='kw'>itempool_reading_data</span>, <span class='kw'>itemattrib_reading_data</span>, <span class='kw'>stimattrib_reading_data</span>)
 
 <span class='co'>## Read from file: write to tempdir() for illustration and clean afterwards</span>
-<span class='no'>f1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(), <span class='st'>"constraints_science.csv"</span>)
-<span class='no'>f2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(), <span class='st'>"itempool_science.csv"</span>)
-<span class='no'>f3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(), <span class='st'>"itemattrib_science.csv"</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/write.table.html'>write.csv</a></span>(<span class='no'>constraints_science_data</span>, <span class='no'>f1</span>, <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/write.table.html'>write.csv</a></span>(<span class='no'>itempool_science_data</span>   , <span class='no'>f2</span>, <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/write.table.html'>write.csv</a></span>(<span class='no'>itemattrib_science_data</span> , <span class='no'>f3</span>, <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='no'>constraints_science</span> <span class='kw'>&lt;-</span> <span class='fu'>buildConstraints</span>(<span class='no'>f1</span>, <span class='no'>f2</span>, <span class='no'>f3</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.remove</a></span>(<span class='no'>f1</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.remove</a></span>(<span class='no'>f2</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.remove</a></span>(<span class='no'>f3</span>)</pre>
+<span class='kw'>f1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(), <span class='st'>"constraints_science.csv"</span>)
+<span class='kw'>f2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(), <span class='st'>"itempool_science.csv"</span>)
+<span class='kw'>f3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(), <span class='st'>"itemattrib_science.csv"</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/write.table.html'>write.csv</a></span>(<span class='kw'>constraints_science_data</span>, <span class='kw'>f1</span>, row.names = <span class='fl'>FALSE</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/write.table.html'>write.csv</a></span>(<span class='kw'>itempool_science_data</span>   , <span class='kw'>f2</span>, row.names = <span class='fl'>FALSE</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/write.table.html'>write.csv</a></span>(<span class='kw'>itemattrib_science_data</span> , <span class='kw'>f3</span>, row.names = <span class='fl'>FALSE</span>)
+<span class='kw'>constraints_science</span> <span class='op'>&lt;-</span> <span class='fu'>buildConstraints</span>(<span class='kw'>f1</span>, <span class='kw'>f2</span>, <span class='kw'>f3</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.remove</a></span>(<span class='kw'>f1</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.remove</a></span>(<span class='kw'>f2</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.remove</a></span>(<span class='kw'>f3</span>)
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -222,7 +223,7 @@ The constraints must be in the expected format; see the vignette in <code>vignet
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

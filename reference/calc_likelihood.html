@@ -137,20 +137,20 @@
     <p><code>calc_likelihood</code> and <code>calc_likelihood_function</code> are functions to calculate likelihoods.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>calc_likelihood</span>(<span class='no'>x</span>, <span class='no'>item_parm</span>, <span class='no'>resp</span>, <span class='no'>ncat</span>, <span class='no'>model</span>)
+    <pre class="usage"><span class='fu'>calc_likelihood</span>(<span class='kw'>x</span>, <span class='kw'>item_parm</span>, <span class='kw'>resp</span>, <span class='kw'>ncat</span>, <span class='kw'>model</span>)
 
-<span class='fu'>calc_likelihood_function</span>(<span class='no'>theta_grid</span>, <span class='no'>item_parm</span>, <span class='no'>resp</span>, <span class='no'>ncat</span>, <span class='no'>model</span>)
+<span class='fu'>calc_likelihood_function</span>(<span class='kw'>theta_grid</span>, <span class='kw'>item_parm</span>, <span class='kw'>resp</span>, <span class='kw'>ncat</span>, <span class='kw'>model</span>)
 
-<span class='fu'>calc_log_likelihood</span>(<span class='no'>x</span>, <span class='no'>item_parm</span>, <span class='no'>resp</span>, <span class='no'>ncat</span>, <span class='no'>model</span>, <span class='no'>prior</span>, <span class='no'>prior_parm</span>)
+<span class='fu'>calc_log_likelihood</span>(<span class='kw'>x</span>, <span class='kw'>item_parm</span>, <span class='kw'>resp</span>, <span class='kw'>ncat</span>, <span class='kw'>model</span>, <span class='kw'>prior</span>, <span class='kw'>prior_parm</span>)
 
 <span class='fu'>calc_log_likelihood_function</span>(
-  <span class='no'>theta_grid</span>,
-  <span class='no'>item_parm</span>,
-  <span class='no'>resp</span>,
-  <span class='no'>ncat</span>,
-  <span class='no'>model</span>,
-  <span class='no'>prior</span>,
-  <span class='no'>prior_parm</span>
+  <span class='kw'>theta_grid</span>,
+  <span class='kw'>item_parm</span>,
+  <span class='kw'>resp</span>,
+  <span class='kw'>ncat</span>,
+  <span class='kw'>model</span>,
+  <span class='kw'>prior</span>,
+  <span class='kw'>prior_parm</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -238,30 +238,32 @@ Addison-Wesley, Reading, MA.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># item parameters</span>
-<span class='no'>item_parm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
+<span class='kw'>item_parm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
   <span class='fl'>1</span>, <span class='fl'>NA</span>,   <span class='fl'>NA</span>,
   <span class='fl'>1</span>,  <span class='fl'>2</span>,   <span class='fl'>NA</span>,
   <span class='fl'>1</span>,  <span class='fl'>2</span>, <span class='fl'>0.25</span>,
   <span class='fl'>0</span>,  <span class='fl'>1</span>,   <span class='fl'>NA</span>,
   <span class='fl'>2</span>,  <span class='fl'>0</span>,    <span class='fl'>1</span>,
   <span class='fl'>2</span>,  <span class='fl'>0</span>,    <span class='fl'>2</span>),
-  <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>6</span>,
-  <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  nrow = <span class='fl'>6</span>,
+  byrow = <span class='fl'>TRUE</span>
 )
 
-<span class='no'>ncat</span>  <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>3</span>)
-<span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>)
-<span class='no'>resp</span>  <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>)
+<span class='kw'>ncat</span>  <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>3</span>)
+<span class='kw'>model</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>)
+<span class='kw'>resp</span>  <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>)
 
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fl'>3</span>
-<span class='no'>l</span>  <span class='kw'>&lt;-</span> <span class='fu'>calc_likelihood</span>(<span class='no'>x</span>, <span class='no'>item_parm</span>, <span class='no'>resp</span>, <span class='no'>ncat</span>, <span class='no'>model</span>)
-<span class='no'>ll</span> <span class='kw'>&lt;-</span> <span class='fu'>calc_log_likelihood</span>(<span class='no'>x</span>, <span class='no'>item_parm</span>, <span class='no'>resp</span>, <span class='no'>ncat</span>, <span class='no'>model</span>, <span class='fl'>2</span>, <span class='fl'>NA</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>l</span>) <span class='kw'>==</span> <span class='no'>ll</span>
+<span class='kw'>x</span> <span class='op'>&lt;-</span> <span class='fl'>3</span>
+<span class='kw'>l</span>  <span class='op'>&lt;-</span> <span class='fu'>calc_likelihood</span>(<span class='kw'>x</span>, <span class='kw'>item_parm</span>, <span class='kw'>resp</span>, <span class='kw'>ncat</span>, <span class='kw'>model</span>)
+<span class='kw'>ll</span> <span class='op'>&lt;-</span> <span class='fu'>calc_log_likelihood</span>(<span class='kw'>x</span>, <span class='kw'>item_parm</span>, <span class='kw'>resp</span>, <span class='kw'>ncat</span>, <span class='kw'>model</span>, <span class='fl'>2</span>, <span class='fl'>NA</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='kw'>l</span>) <span class='op'>==</span> <span class='kw'>ll</span>
 
-<span class='no'>theta_grid</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(-<span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>.1</span>))
-<span class='no'>l</span>  <span class='kw'>&lt;-</span> <span class='fu'>calc_likelihood_function</span>(<span class='no'>theta_grid</span>, <span class='no'>item_parm</span>, <span class='no'>resp</span>, <span class='no'>ncat</span>, <span class='no'>model</span>)
-<span class='no'>ll</span> <span class='kw'>&lt;-</span> <span class='fu'>calc_log_likelihood_function</span>(<span class='no'>theta_grid</span>, <span class='no'>item_parm</span>, <span class='no'>resp</span>, <span class='no'>ncat</span>, <span class='no'>model</span>, <span class='fl'>2</span>, <span class='fl'>NA</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/all.html'>all</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>l</span>) <span class='kw'>==</span> <span class='no'>ll</span>)</pre>
+<span class='kw'>theta_grid</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='op'>-</span><span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>.1</span>))
+<span class='kw'>l</span>  <span class='op'>&lt;-</span> <span class='fu'>calc_likelihood_function</span>(<span class='kw'>theta_grid</span>, <span class='kw'>item_parm</span>, <span class='kw'>resp</span>, <span class='kw'>ncat</span>, <span class='kw'>model</span>)
+<span class='kw'>ll</span> <span class='op'>&lt;-</span> <span class='fu'>calc_log_likelihood_function</span>(<span class='kw'>theta_grid</span>, <span class='kw'>item_parm</span>, <span class='kw'>resp</span>, <span class='kw'>ncat</span>, <span class='kw'>model</span>, <span class='fl'>2</span>, <span class='fl'>NA</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/all.html'>all</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='kw'>l</span>) <span class='op'>==</span> <span class='kw'>ll</span>)
+
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -277,7 +279,7 @@ Addison-Wesley, Reading, MA.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

@@ -137,49 +137,49 @@
     <p><code>calcLocation</code> is a function to calculate the central location (overall difficulty) of items.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>calcLocation</span>(<span class='no'>object</span>)
+    <pre class="usage"><span class='fu'>calcLocation</span>(<span class='kw'>object</span>)
 
 <span class='co'># S4 method for item_1PL</span>
-<span class='fu'>calcLocation</span>(<span class='no'>object</span>)
+<span class='fu'>calcLocation</span>(<span class='kw'>object</span>)
 
 <span class='co'># S4 method for item_2PL</span>
-<span class='fu'>calcLocation</span>(<span class='no'>object</span>)
+<span class='fu'>calcLocation</span>(<span class='kw'>object</span>)
 
 <span class='co'># S4 method for item_3PL</span>
-<span class='fu'>calcLocation</span>(<span class='no'>object</span>)
+<span class='fu'>calcLocation</span>(<span class='kw'>object</span>)
 
 <span class='co'># S4 method for item_PC</span>
-<span class='fu'>calcLocation</span>(<span class='no'>object</span>)
+<span class='fu'>calcLocation</span>(<span class='kw'>object</span>)
 
 <span class='co'># S4 method for item_GPC</span>
-<span class='fu'>calcLocation</span>(<span class='no'>object</span>)
+<span class='fu'>calcLocation</span>(<span class='kw'>object</span>)
 
 <span class='co'># S4 method for item_GR</span>
-<span class='fu'>calcLocation</span>(<span class='no'>object</span>)
+<span class='fu'>calcLocation</span>(<span class='kw'>object</span>)
 
 <span class='co'># S4 method for item_pool</span>
-<span class='fu'>calcLocation</span>(<span class='no'>object</span>)</pre>
+<span class='fu'>calcLocation</span>(<span class='kw'>object</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>an <code>item</code> or an <code>item_pool</code> object.</p></td>
+      <td><p>an <code><a href='item-classes.html'>item</a></code> or an <code><a href='item_pool-class.html'>item_pool</a></code> object.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     
-<dl'>
-  <dt><code>item</code> object:</dt><dd><p><code>calcLocation</code> returns a theta value representing the central location.</p></dd>
-  <dt><code>item_pool</code> object:</dt><dd><p><code>calcProb</code> returns a length <em>ni</em> list, each containing the central location of the item.</p></dd>
+<dl>
+  <dt><code><a href='item-classes.html'>item</a></code> object:</dt><dd><p><code>calcLocation</code> returns a theta value representing the central location.</p></dd>
+  <dt><code><a href='item_pool-class.html'>item_pool</a></code> object:</dt><dd><p><code><a href='calcProb-methods.html'>calcProb</a></code> returns a length <em>ni</em> list, each containing the central location of the item.</p></dd>
 
 </dl>
-<dl'>
+<dl>
   <dt><em>notations</em></dt><dd><p><ul>
-<li><p><em>ni</em> denotes the number of items in an <code>item_pool</code> object.</p></li>
+<li><p><em>ni</em> denotes the number of items in an <code><a href='item_pool-class.html'>item_pool</a></code> object.</p></li>
 </ul></p></dd>
 
 </dl>
@@ -219,20 +219,22 @@ Addison-Wesley, Reading, MA.</p>
 <em>Psychometrika Monograph</em>, <b>17</b>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='no'>item_1</span>      <span class='kw'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"item_1PL"</span>, <span class='kw'>difficulty</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
-<span class='no'>item_2</span>      <span class='kw'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"item_2PL"</span>, <span class='kw'>slope</span> <span class='kw'>=</span> <span class='fl'>1.0</span>, <span class='kw'>difficulty</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
-<span class='no'>item_3</span>      <span class='kw'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"item_3PL"</span>, <span class='kw'>slope</span> <span class='kw'>=</span> <span class='fl'>1.0</span>, <span class='kw'>difficulty</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>guessing</span> <span class='kw'>=</span> <span class='fl'>0.2</span>)
-<span class='no'>item_4</span>      <span class='kw'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"item_PC"</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>), <span class='kw'>ncat</span> <span class='kw'>=</span> <span class='fl'>4</span>)
-<span class='no'>item_5</span>      <span class='kw'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"item_GPC"</span>, <span class='kw'>slope</span> <span class='kw'>=</span> <span class='fl'>1.2</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>0.8</span>, -<span class='fl'>1.0</span>, <span class='fl'>0.5</span>), <span class='kw'>ncat</span> <span class='kw'>=</span> <span class='fl'>4</span>)
-<span class='no'>item_6</span>      <span class='kw'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"item_GR"</span>, <span class='kw'>slope</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>category</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>), <span class='kw'>ncat</span> <span class='kw'>=</span> <span class='fl'>4</span>)
+    <pre class="examples"><span class='kw'>item_1</span>      <span class='op'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"item_1PL"</span>, difficulty = <span class='fl'>0.5</span>)
+<span class='kw'>item_2</span>      <span class='op'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"item_2PL"</span>, slope = <span class='fl'>1.0</span>, difficulty = <span class='fl'>0.5</span>)
+<span class='kw'>item_3</span>      <span class='op'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"item_3PL"</span>, slope = <span class='fl'>1.0</span>, difficulty = <span class='fl'>0.5</span>, guessing = <span class='fl'>0.2</span>)
+<span class='kw'>item_4</span>      <span class='op'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"item_PC"</span>, threshold = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='op'>-</span><span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>), ncat = <span class='fl'>4</span>)
+<span class='kw'>item_5</span>      <span class='op'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"item_GPC"</span>, slope = <span class='fl'>1.2</span>, threshold = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='op'>-</span><span class='fl'>0.8</span>, <span class='op'>-</span><span class='fl'>1.0</span>, <span class='fl'>0.5</span>), ncat = <span class='fl'>4</span>)
+<span class='kw'>item_6</span>      <span class='op'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"item_GR"</span>, slope = <span class='fl'>0.9</span>, category = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='op'>-</span><span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>), ncat = <span class='fl'>4</span>)
 
-<span class='no'>loc_item_1</span> <span class='kw'>&lt;-</span> <span class='fu'>calcLocation</span>(<span class='no'>item_1</span>)
-<span class='no'>loc_item_2</span> <span class='kw'>&lt;-</span> <span class='fu'>calcLocation</span>(<span class='no'>item_2</span>)
-<span class='no'>loc_item_3</span> <span class='kw'>&lt;-</span> <span class='fu'>calcLocation</span>(<span class='no'>item_3</span>)
-<span class='no'>loc_item_4</span> <span class='kw'>&lt;-</span> <span class='fu'>calcLocation</span>(<span class='no'>item_4</span>)
-<span class='no'>loc_item_5</span> <span class='kw'>&lt;-</span> <span class='fu'>calcLocation</span>(<span class='no'>item_5</span>)
-<span class='no'>loc_item_6</span> <span class='kw'>&lt;-</span> <span class='fu'>calcLocation</span>(<span class='no'>item_6</span>)
-<span class='no'>loc_pool</span>   <span class='kw'>&lt;-</span> <span class='fu'>calcLocation</span>(<span class='no'>itempool_science</span>)</pre>
+<span class='kw'>loc_item_1</span> <span class='op'>&lt;-</span> <span class='fu'>calcLocation</span>(<span class='kw'>item_1</span>)
+<span class='kw'>loc_item_2</span> <span class='op'>&lt;-</span> <span class='fu'>calcLocation</span>(<span class='kw'>item_2</span>)
+<span class='kw'>loc_item_3</span> <span class='op'>&lt;-</span> <span class='fu'>calcLocation</span>(<span class='kw'>item_3</span>)
+<span class='kw'>loc_item_4</span> <span class='op'>&lt;-</span> <span class='fu'>calcLocation</span>(<span class='kw'>item_4</span>)
+<span class='kw'>loc_item_5</span> <span class='op'>&lt;-</span> <span class='fu'>calcLocation</span>(<span class='kw'>item_5</span>)
+<span class='kw'>loc_item_6</span> <span class='op'>&lt;-</span> <span class='fu'>calcLocation</span>(<span class='kw'>item_6</span>)
+<span class='kw'>loc_pool</span>   <span class='op'>&lt;-</span> <span class='fu'>calcLocation</span>(<span class='kw'>itempool_science</span>)
+
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -248,7 +250,7 @@ Addison-Wesley, Reading, MA.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

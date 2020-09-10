@@ -140,17 +140,17 @@ Default values are used for any unspecified parameters/slots.</p>
     </div>
 
     <pre class="usage"><span class='fu'>createShadowTestConfig</span>(
-  <span class='kw'>item_selection</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>content_balancing</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>MIP</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>MCMC</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>refresh_policy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>exposure_control</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>stopping_criterion</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>interim_theta</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>final_theta</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>theta_grid</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(-<span class='fl'>4</span>, <span class='fl'>4</span>, <span class='fl'>0.1</span>),
-  <span class='kw'>audit_trail</span> <span class='kw'>=</span> <span class='no'>F</span>
+  item_selection = <span class='kw'>NULL</span>,
+  content_balancing = <span class='kw'>NULL</span>,
+  MIP = <span class='kw'>NULL</span>,
+  MCMC = <span class='kw'>NULL</span>,
+  refresh_policy = <span class='kw'>NULL</span>,
+  exposure_control = <span class='kw'>NULL</span>,
+  stopping_criterion = <span class='kw'>NULL</span>,
+  interim_theta = <span class='kw'>NULL</span>,
+  final_theta = <span class='kw'>NULL</span>,
+  theta_grid = <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='op'>-</span><span class='fl'>4</span>, <span class='fl'>4</span>, <span class='fl'>0.1</span>),
+  audit_trail = <span class='kw'>F</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -266,13 +266,14 @@ Default values are used for any unspecified parameters/slots.</p>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='no'>cfg1</span> <span class='kw'>&lt;-</span> <span class='fu'>createShadowTestConfig</span>(<span class='kw'>refresh_policy</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"STIMULUS"</span>
+    <pre class="examples"><span class='kw'>cfg1</span> <span class='op'>&lt;-</span> <span class='fu'>createShadowTestConfig</span>(refresh_policy = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+  method = <span class='st'>"STIMULUS"</span>
 ))
-<span class='no'>cfg2</span> <span class='kw'>&lt;-</span> <span class='fu'>createShadowTestConfig</span>(<span class='kw'>refresh_policy</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"POSITION"</span>,
-  <span class='kw'>position</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>5</span>, <span class='fl'>9</span>)
-))</pre>
+<span class='kw'>cfg2</span> <span class='op'>&lt;-</span> <span class='fu'>createShadowTestConfig</span>(refresh_policy = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+  method = <span class='st'>"POSITION"</span>,
+  position = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>5</span>, <span class='fl'>9</span>)
+))
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -288,7 +289,7 @@ Default values are used for any unspecified parameters/slots.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

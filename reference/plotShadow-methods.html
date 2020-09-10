@@ -138,32 +138,32 @@
     </div>
 
     <pre class="usage"><span class='fu'>plotShadow</span>(
-  <span class='no'>object</span>,
-  <span class='kw'>examinee_id</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>sort_by_difficulty</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>file_pdf</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>simple</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>
+  <span class='kw'>object</span>,
+  examinee_id = <span class='fl'>1</span>,
+  sort_by_difficulty = <span class='fl'>FALSE</span>,
+  file_pdf = <span class='kw'>NULL</span>,
+  simple = <span class='fl'>FALSE</span>,
+  <span class='kw'>...</span>
 )
 
 <span class='co'># S4 method for output_Shadow_all</span>
 <span class='fu'>plotShadow</span>(
-  <span class='no'>object</span>,
-  <span class='kw'>examinee_id</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>sort_by_difficulty</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>file_pdf</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>simple</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>
+  <span class='kw'>object</span>,
+  examinee_id = <span class='fl'>1</span>,
+  sort_by_difficulty = <span class='fl'>FALSE</span>,
+  file_pdf = <span class='kw'>NULL</span>,
+  simple = <span class='fl'>FALSE</span>,
+  <span class='kw'>...</span>
 )
 
 <span class='co'># S4 method for list</span>
 <span class='fu'>plotShadow</span>(
-  <span class='no'>object</span>,
-  <span class='kw'>examinee_id</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>sort_by_difficulty</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>file_pdf</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>simple</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>
+  <span class='kw'>object</span>,
+  examinee_id = <span class='fl'>1</span>,
+  sort_by_difficulty = <span class='fl'>FALSE</span>,
+  file_pdf = <span class='kw'>NULL</span>,
+  simple = <span class='fl'>FALSE</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -171,7 +171,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>An output from <code>Shadow</code> function.</p></td>
+      <td><p>An output from <code><a href='Shadow.html'>Shadow</a></code> function.</p></td>
     </tr>
     <tr>
       <th>examinee_id</th>
@@ -197,13 +197,14 @@
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='no'>config</span> <span class='kw'>&lt;-</span> <span class='fu'>createShadowTestConfig</span>()
-<span class='no'>true_theta</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1</span>)
-<span class='no'>solution</span> <span class='kw'>&lt;-</span> <span class='fu'>Shadow</span>(<span class='no'>config</span>, <span class='no'>constraints_science</span>, <span class='no'>true_theta</span>)
-<span class='fu'>plotShadow</span>(<span class='no'>solution</span>, <span class='fl'>1</span>)
-<span class='fu'>plotShadow</span>(<span class='no'>solution</span>, <span class='fl'>1</span>, <span class='kw'>simple</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-}</pre>
+    <pre class="examples"><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='kw'>config</span> <span class='op'>&lt;-</span> <span class='fu'><a href='config_Shadow-class.html'>createShadowTestConfig</a></span>()
+<span class='kw'>true_theta</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1</span>)
+<span class='kw'>solution</span> <span class='op'>&lt;-</span> <span class='fu'><a href='Shadow.html'>Shadow</a></span>(<span class='kw'>config</span>, <span class='kw'>constraints_science</span>, <span class='kw'>true_theta</span>)
+<span class='fu'>plotShadow</span>(<span class='kw'>solution</span>, <span class='fl'>1</span>)
+<span class='fu'>plotShadow</span>(<span class='kw'>solution</span>, <span class='fl'>1</span>, simple = <span class='fl'>TRUE</span>)
+}
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -219,7 +220,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

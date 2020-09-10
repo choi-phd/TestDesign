@@ -138,36 +138,36 @@
     </div>
 
     <pre class="usage"><span class='fu'>eap</span>(
-  <span class='no'>object</span>,
-  <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>resp</span>,
-  <span class='kw'>theta_grid</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(-<span class='fl'>4</span>, <span class='fl'>4</span>, <span class='fl'>0.1</span>),
-  <span class='kw'>prior</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>/<span class='fl'>81</span>, <span class='fl'>81</span>)
+  <span class='kw'>object</span>,
+  select = <span class='kw'>NULL</span>,
+  <span class='kw'>resp</span>,
+  theta_grid = <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='op'>-</span><span class='fl'>4</span>, <span class='fl'>4</span>, <span class='fl'>0.1</span>),
+  prior = <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span><span class='op'>/</span><span class='fl'>81</span>, <span class='fl'>81</span>)
 )
 
 <span class='co'># S4 method for item_pool</span>
 <span class='fu'>eap</span>(
-  <span class='no'>object</span>,
-  <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>resp</span>,
-  <span class='kw'>theta_grid</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(-<span class='fl'>4</span>, <span class='fl'>4</span>, <span class='fl'>0.1</span>),
-  <span class='kw'>prior</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>/<span class='fl'>81</span>, <span class='fl'>81</span>)
+  <span class='kw'>object</span>,
+  select = <span class='kw'>NULL</span>,
+  <span class='kw'>resp</span>,
+  theta_grid = <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='op'>-</span><span class='fl'>4</span>, <span class='fl'>4</span>, <span class='fl'>0.1</span>),
+  prior = <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span><span class='op'>/</span><span class='fl'>81</span>, <span class='fl'>81</span>)
 )
 
-<span class='fu'>EAP</span>(<span class='no'>object</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>prior</span>, <span class='kw'>reset_prior</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>EAP</span>(<span class='kw'>object</span>, select = <span class='kw'>NULL</span>, <span class='kw'>prior</span>, reset_prior = <span class='fl'>FALSE</span>)
 
 <span class='co'># S4 method for test</span>
-<span class='fu'>EAP</span>(<span class='no'>object</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>prior</span>, <span class='kw'>reset_prior</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>EAP</span>(<span class='kw'>object</span>, select = <span class='kw'>NULL</span>, <span class='kw'>prior</span>, reset_prior = <span class='fl'>FALSE</span>)
 
 <span class='co'># S4 method for test_cluster</span>
-<span class='fu'>EAP</span>(<span class='no'>object</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>prior</span>, <span class='kw'>reset_prior</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+<span class='fu'>EAP</span>(<span class='kw'>object</span>, select = <span class='kw'>NULL</span>, <span class='kw'>prior</span>, reset_prior = <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>an <code>item_pool</code> object.</p></td>
+      <td><p>an <code><a href='item_pool-class.html'>item_pool</a></code> object.</p></td>
     </tr>
     <tr>
       <th>select</th>
@@ -187,7 +187,7 @@
     </tr>
     <tr>
       <th>reset_prior</th>
-      <td><p>used for <code>test_cluster</code> objects. If <code>TRUE</code>, to reset the prior distribution before each test.</p></td>
+      <td><p>used for <code><a href='test_cluster-class.html'>test_cluster</a></code> objects. If <code>TRUE</code>, to reset the prior distribution before each test.</p></td>
     </tr>
     </table>
 
@@ -200,8 +200,10 @@
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='fu'>eap</span>(<span class='no'>itempool_fatigue</span>, <span class='kw'>resp</span> <span class='kw'>=</span> <span class='no'>resp_fatigue_data</span>[<span class='fl'>10</span>, ])
-<span class='fu'>eap</span>(<span class='no'>itempool_fatigue</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>20</span>, <span class='kw'>resp</span> <span class='kw'>=</span> <span class='no'>resp_fatigue_data</span>[<span class='fl'>10</span>, <span class='fl'>1</span>:<span class='fl'>20</span>])</pre>
+    <pre class="examples"><span class='fu'>eap</span>(<span class='kw'>itempool_fatigue</span>, resp = <span class='kw'>resp_fatigue_data</span>[<span class='fl'>10</span>, ])
+<span class='fu'>eap</span>(<span class='kw'>itempool_fatigue</span>, select = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>20</span>, resp = <span class='kw'>resp_fatigue_data</span>[<span class='fl'>10</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>20</span>])
+
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -217,7 +219,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

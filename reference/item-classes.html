@@ -161,7 +161,7 @@ item_GR class represents a graded response item.
 
     
 
-<dl'>
+<dl>
 <dt><code>slope</code></dt><dd><p>a slope parameter value</p></dd>
 
 <dt><code>difficulty</code></dt><dd><p>a difficulty parameter value</p></dd>
@@ -210,12 +210,14 @@ Addison-Wesley, Reading, MA.</p>
 <em>Psychometrika Monograph</em>, <b>17</b>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='no'>item_1</span> <span class='kw'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"item_1PL"</span>, <span class='kw'>difficulty</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
-<span class='no'>item_2</span> <span class='kw'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"item_2PL"</span>, <span class='kw'>slope</span> <span class='kw'>=</span> <span class='fl'>1.0</span>, <span class='kw'>difficulty</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
-<span class='no'>item_3</span> <span class='kw'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"item_3PL"</span>, <span class='kw'>slope</span> <span class='kw'>=</span> <span class='fl'>1.0</span>, <span class='kw'>difficulty</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>guessing</span> <span class='kw'>=</span> <span class='fl'>0.2</span>)
-<span class='no'>item_4</span> <span class='kw'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"item_PC"</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>0.5</span>, <span class='fl'>0.5</span>), <span class='kw'>ncat</span> <span class='kw'>=</span> <span class='fl'>3</span>)
-<span class='no'>item_5</span> <span class='kw'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"item_GPC"</span>, <span class='kw'>slope</span> <span class='kw'>=</span> <span class='fl'>1.0</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>0.5</span>, <span class='fl'>0.0</span>, <span class='fl'>0.5</span>), <span class='kw'>ncat</span> <span class='kw'>=</span> <span class='fl'>4</span>)
-<span class='no'>item_6</span> <span class='kw'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"item_GR"</span>, <span class='kw'>slope</span> <span class='kw'>=</span> <span class='fl'>1.0</span>, <span class='kw'>category</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>2.0</span>, -<span class='fl'>1.0</span>, <span class='fl'>0</span>, <span class='fl'>1.0</span>, <span class='fl'>2.0</span>), <span class='kw'>ncat</span> <span class='kw'>=</span> <span class='fl'>6</span>)</pre>
+    <pre class="examples"><span class='kw'>item_1</span> <span class='op'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"item_1PL"</span>, difficulty = <span class='fl'>0.5</span>)
+<span class='kw'>item_2</span> <span class='op'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"item_2PL"</span>, slope = <span class='fl'>1.0</span>, difficulty = <span class='fl'>0.5</span>)
+<span class='kw'>item_3</span> <span class='op'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"item_3PL"</span>, slope = <span class='fl'>1.0</span>, difficulty = <span class='fl'>0.5</span>, guessing = <span class='fl'>0.2</span>)
+<span class='kw'>item_4</span> <span class='op'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"item_PC"</span>, threshold = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='op'>-</span><span class='fl'>0.5</span>, <span class='fl'>0.5</span>), ncat = <span class='fl'>3</span>)
+<span class='kw'>item_5</span> <span class='op'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"item_GPC"</span>, slope = <span class='fl'>1.0</span>, threshold = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='op'>-</span><span class='fl'>0.5</span>, <span class='fl'>0.0</span>, <span class='fl'>0.5</span>), ncat = <span class='fl'>4</span>)
+<span class='kw'>item_6</span> <span class='op'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"item_GR"</span>, slope = <span class='fl'>1.0</span>, category = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='op'>-</span><span class='fl'>2.0</span>, <span class='op'>-</span><span class='fl'>1.0</span>, <span class='fl'>0</span>, <span class='fl'>1.0</span>, <span class='fl'>2.0</span>), ncat = <span class='fl'>6</span>)
+
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -231,7 +233,7 @@ Addison-Wesley, Reading, MA.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>
