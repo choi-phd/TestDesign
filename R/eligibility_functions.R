@@ -235,14 +235,15 @@ applyIncrementVisitedSegments <- function(o, segment_prob, segment_visited, inel
     return(o)
   }
 
-  administered_s <- na.omit(x@administered_stimulus_index)
+  administered_s <- x@administered_stimulus_index
   if (any(segments_to_apply)) {
-    if (any(ineligible_flag_in_segment$s[administered_s] == 1)) {
+    if (any(ineligible_flag_in_segment$s[administered_s] == 1, na.rm = TRUE)) {
       stimuli_visited  <- administered_s[
         x@theta_segment_index %in% segment_visited &
         x@administered_stimulus_index %in% administered_s
       ]
       stimuli_to_apply <- stimuli_visited[ineligible_flag_in_segment$s[stimuli_visited] == 1]
+      stimuli_to_apply <- na.omit(stimuli_to_apply)
       o$a_sjk[, stimuli_to_apply] <- o$a_sjk[, stimuli_to_apply] + segments_to_apply * segment_prob
     }
   }
