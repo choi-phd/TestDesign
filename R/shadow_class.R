@@ -115,7 +115,8 @@ setClass("config_Shadow",
       verbosity                 = -2,
       time_limit                = 60,
       gap_limit                 = .05,
-      gap_limit_abs             = .05
+      gap_limit_abs             = .05,
+      retry                     = 5
     ),
     MCMC = list(
       burn_in                   = 100,
@@ -284,6 +285,7 @@ setClass("config_Shadow",
 #'   \item{\code{time_limit}} time limit in seconds. Used in solvers \code{lpsymphony, Rsymphony, gurobi, Rglpk}. (default = \code{60})
 #'   \item{\code{gap_limit}} search termination criterion. Gap limit in relative scale passed onto the solver. Used in solver \code{gurobi}. (default = \code{.05})
 #'   \item{\code{gap_limit_abs}} search termination criterion. Gap limit in absolute scale passed onto the solver. Used in solvers \code{lpsymphony, Rsymphony}. (default = \code{0.05})
+#'   \item{\code{retry}} number of times to retry running the solver if the solver returns no solution. Some solvers incorrectly return no solution even when a solution exists. This is the number of attempts to verify that the problem is indeed infeasible in such cases. Set to \code{0} to not retry. (default = \code{5})
 #' }
 #' @param MCMC a named list containing Markov-chain Monte Carlo configurations for obtaining posterior samples.
 #' \itemize{

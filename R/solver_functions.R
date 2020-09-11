@@ -111,10 +111,30 @@ runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
 
   solve_time <- proc.time()
 
-  MIP <- runMIP(solver, obj, mat, dir, rhs,
-                maximize, types,
-                verbosity, time_limit,
-                gap_limit_abs, gap_limit)
+  MIP <- runMIP(
+    solver, obj, mat, dir, rhs,
+    maximize, types,
+    verbosity, time_limit,
+    gap_limit_abs, gap_limit
+  )
+
+  if (config@MIP$retry > 0 & !isOptimal(MIP$status, solver)) {
+    # if errors, run again to check if it is indeed an error
+    # some solvers error even when a solution exists
+    n_retry <- 0
+    while (TRUE) {
+      n_retry <- n_retry + 1
+      MIP <- runMIP(
+        solver, obj, mat, dir, rhs,
+        maximize, types,
+        verbosity, time_limit,
+        gap_limit_abs, gap_limit
+      )
+      if (isOptimal(MIP$status, solver) | n_retry == config@MIP$retry) {
+        break
+      }
+    }
+  }
 
   if (!isOptimal(MIP$status, solver)) {
     return(list(status = MIP$status, MIP = MIP, selected = NULL))
