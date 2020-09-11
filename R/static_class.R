@@ -21,7 +21,8 @@ setClass("config_Static",
       time_limit      = 60,
       gap_limit       = 0.05,
       gap_limit_abs   = 0.05,
-      obj_tol         = 0.05
+      obj_tol         = 0.05,
+      retry           = 5
     )
   ),
   validity = function(object) {
@@ -97,6 +98,7 @@ setClassUnion("config_ATA", c("config_Static"))
 #'   \item{\code{gap_limit}} search termination criterion. Gap limit in relative scale passed onto the solver. Used in solver \code{gurobi}. (default = \code{.05})
 #'   \item{\code{gap_limit_abs}} search termination criterion. Gap limit in absolute scale passed onto the solver. Used in solvers \code{lpsymphony, Rsymphony}. (default = \code{0.05})
 #'   \item{\code{obj_tol}} search termination criterion. Tolerance on target objective value in absolute difference scale. Used when \code{item_selection$method} is \code{TIF} or \code{TCC}. (default = \code{0.05})
+#'   \item{\code{retry}} number of times to retry running the solver if the solver returns no solution. Some solvers incorrectly return no solution even when a solution exists. This is the number of attempts to verify that the problem is indeed infeasible in such cases. Set to \code{0} to not retry. (default = \code{5})
 #' }
 #'
 #' @return \code{\link{createStaticTestConfig}} returns a \code{\linkS4class{config_Static}} object. This object is used in \code{\link{Static}}.
