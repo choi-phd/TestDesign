@@ -126,9 +126,11 @@ setMethod(
       stop("'constraints' must be supplied")
     }
 
-    o <- validateSolver(config, constraints)
-    if (!o) {
-      return(invisible())
+    if (!force_solver) {
+      o <- validateSolver(config, constraints)
+      if (!o) {
+        return(invisible())
+      }
     }
 
     pool                <- constraints@pool
