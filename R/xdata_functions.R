@@ -92,3 +92,52 @@ getXdataOfAdministered <- function(constants, position, output, stimulus_record,
   return(o)
 
 }
+
+#' @noRd
+getIndexOfExcludedItems <- function(excluded_items, item_pool) {
+
+  if (is.null(excluded_items)) {
+    return(excluded_items)
+  }
+
+  o <- lapply(
+    excluded_items,
+    function(x) {
+      which(item_pool@id %in% x)
+    }
+  )
+
+  return(o)
+
+}
+
+#' @noRd
+getXdataOfExcludedItems <- function(constants, excluded_items) {
+
+  o <- list()
+
+  nv <- constants$nv
+  ni <- constants$ni
+
+  # Exclude specified items
+
+  o$xmat <- matrix(0, 1, nv)
+  o$xdir <- rep("==", 1)
+  o$xrhs <- rep(0   , 1)
+  o$xmat[1, excluded_items] <- 1
+
+  return(o)
+
+}
+
+#' @noRd
+combineXdata <- function(x1, x2) {
+
+  o <- list()
+  o$xmat <- rbind(x1$xmat, x2$xmat)
+  o$xdir <-     c(x1$xdir, x2$xdir)
+  o$xrhs <-     c(x1$xrhs, x2$xrhs)
+
+  return(o)
+
+}
