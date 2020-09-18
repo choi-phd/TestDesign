@@ -8,7 +8,7 @@
 * `item_pool` objects can be now subsetted and combined with `[` and `c()`.
 * `constraints` objects can be now subsetted and combined with `[` and `c()`.
 * `SUM` constraints now accept `VARIABLE, EXPRESSION` in `CONDITION` for imposing constraints on conditional sums (e.g. `WORDCOUNT, DOK == 1`).
-* `Static()` and `Shadow()` now asks for confirmation when attempting to use solvers other than `Rsymphony`, `lpsymphony` and `gurobi` for set-based assembly.
+* `Static()` and `Shadow()` now asks for confirmation when attempting to use solvers other than `Rsymphony`, `lpsymphony` and `gurobi` for set-based assembly. This can be overridden by passing `force_solver = TRUE`.
 * `Shadow()` now uses `progress` package if available.
 * `Static()` now returns an `output_Static` object.
 * `Shadow()` now returns an `output_Shadow_all` object.
@@ -18,6 +18,10 @@
 * Added `dataset_bayes` example dataset.
 * Now checks whether each solver returns solution properly upon loading the package.
 * `plot(type = 'shadow')` (formerly `plotShadow()`) now groups items by stimulus.
+
+## New features
+* `config_*` objects now have a new `MIP$retry` slot. This specifies the number of retry attempts when the solver encounters a 'no solution' error. The error is incorrect in some cases. The intent of retrying is to verify whether the 'no solution' error indeed indicates a true error.
+* `Shadow()` now has a new `excluded_items` argument.
 
 ## Deprecated functions
 
