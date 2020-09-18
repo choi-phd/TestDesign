@@ -152,7 +152,7 @@
 <li>
 <code>SUM</code> constraints now accept <code>VARIABLE, EXPRESSION</code> in <code>CONDITION</code> for imposing constraints on conditional sums (e.g. <code>WORDCOUNT, DOK == 1</code>).</li>
 <li>
-<code><a href="../reference/Static.html">Static()</a></code> and <code><a href="../reference/Shadow.html">Shadow()</a></code> now asks for confirmation when attempting to use solvers other than <code>Rsymphony</code>, <code>lpsymphony</code> and <code>gurobi</code> for set-based assembly.</li>
+<code><a href="../reference/Static.html">Static()</a></code> and <code><a href="../reference/Shadow.html">Shadow()</a></code> now asks for confirmation when attempting to use solvers other than <code>Rsymphony</code>, <code>lpsymphony</code> and <code>gurobi</code> for set-based assembly. This can be overridden by passing <code>force_solver = TRUE</code>.</li>
 <li>
 <code><a href="../reference/Shadow.html">Shadow()</a></code> now uses <code>progress</code> package if available.</li>
 <li>
@@ -166,6 +166,16 @@
 <li>Now checks whether each solver returns solution properly upon loading the package.</li>
 <li>
 <code><a href="../reference/plot.html">plot(type = 'shadow')</a></code> (formerly <code><a href="../reference/plotShadow.html">plotShadow()</a></code>) now groups items by stimulus.</li>
+</ul>
+</div>
+<div id="new-features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features" class="anchor"></a>New features</h2>
+<ul>
+<li>
+<code>config_*</code> objects now have a new <code>MIP$retry</code> slot. This specifies the number of retry attempts when the solver encounters a ‘no solution’ error. The error is incorrect in some cases. The intent of retrying is to verify whether the ‘no solution’ error indeed indicates a true error.</li>
+<li>
+<code><a href="../reference/Shadow.html">Shadow()</a></code> now has a new <code>excluded_items</code> argument.</li>
 </ul>
 </div>
 <div id="deprecated-functions" class="section level2">
@@ -294,9 +304,9 @@
 <code>ATA()</code> and <code>STA()</code> are removed. Deprecating the functions was not feasible because of the structural changes.</li>
 </ul>
 </div>
-<div id="new-features" class="section level2">
+<div id="new-features-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features" class="anchor"></a>New features</h2>
+<a href="#new-features-1" class="anchor"></a>New features</h2>
 <ul>
 <li>Now supports item pools that include both set-based and discrete items.</li>
 <li>Now supports <code>lpsymphony</code> solver package from Bioconductor repository. Note: The current version 1.12.0 of <code>lpsymphony</code> will not install on R-devel due to <code>R CMD config F77</code> being deprecated. Installs normally on R 3.6.1.</li>

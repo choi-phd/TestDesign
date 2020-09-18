@@ -144,6 +144,7 @@
   data = <span class='kw'>NULL</span>,
   prior = <span class='kw'>NULL</span>,
   prior_par = <span class='kw'>NULL</span>,
+  excluded_items = <span class='kw'>NULL</span>,
   force_solver = <span class='fl'>FALSE</span>,
   session = <span class='kw'>NULL</span>
 )
@@ -156,6 +157,7 @@
   data = <span class='kw'>NULL</span>,
   prior = <span class='kw'>NULL</span>,
   prior_par = <span class='kw'>NULL</span>,
+  excluded_items = <span class='kw'>NULL</span>,
   force_solver = <span class='fl'>FALSE</span>,
   session = <span class='kw'>NULL</span>
 )</pre>
@@ -186,6 +188,10 @@
     <tr>
       <th>prior_par</th>
       <td><p>(optional) normal distribution parameters <code><a href='https://rdrr.io/r/base/c.html'>c(mean, sd)</a></code> to use as prior. Can be a vector to use the same prior for all <em>nj</em> participants, or a <em>nj</em>-row matrix to use a different prior for each participant.</p></td>
+    </tr>
+    <tr>
+      <th>excluded_items</th>
+      <td><p>(optional) a list containing item names to exclude from selection for each participant.</p></td>
     </tr>
     <tr>
       <th>force_solver</th>
