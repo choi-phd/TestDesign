@@ -173,7 +173,7 @@
 <a href="#new-features" class="anchor"></a>New features</h2>
 <ul>
 <li>
-<code>config_*</code> objects now have a new <code>MIP$retry</code> slot. This specifies the number of retry attempts when the solver encounters a ‘no solution’ error. The error is incorrect in some cases. The intent of retrying is to verify whether the ‘no solution’ error indeed indicates a true error.</li>
+<code>config_*</code> objects now have a new <code>MIP$retry</code> slot. This specifies the number of retry attempts when the solver encounters a ‘no solution’ error. This error is incorrect in some cases. The intent of retrying is to verify whether the ‘no solution’ error indeed indicates a true error.</li>
 <li>
 <code><a href="../reference/Shadow.html">Shadow()</a></code> now has a new <code>excluded_items</code> argument.</li>
 </ul>
@@ -196,8 +196,6 @@
 <code>calcDerivative()</code> is removed.</li>
 <li>
 <code>calcDerivative2()</code> is removed.</li>
-<li>
-<code><a href="../reference/calcLocation-methods.html">calcLocation()</a></code> is removed.</li>
 </ul>
 </div>
 <div id="bug-fixes" class="section level2">
