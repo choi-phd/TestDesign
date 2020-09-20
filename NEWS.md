@@ -1,8 +1,8 @@
-# TestDesign 1.1.1
+# TestDesign 1.1.2
 
 ## QoL updates
 
-* Web documentation is now available at [https://choi-phd.github.io/TestDesign](https://choi-phd.github.io/TestDesign)
+* Web documentation is now available at [https://choi-phd.github.io/TestDesign/](https://choi-phd.github.io/TestDesign/)
 * `loadItemPool()`, `loadItemAttrib()`, `loadStAttrib()`, `loadConstraints()`, `buildConstraints()` are now capable of reading from data frame objects.
 * `loadItemPool()` is now capable of reading from `SingleGroupClass` objects from `mirt` package.
 * `item_pool` objects can be now subsetted and combined with `[` and `c()`.
