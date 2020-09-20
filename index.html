@@ -99,21 +99,15 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>Install the latest release (1.0.2) from CRAN:</p>
+<p>Install the latest release (1.1.2) from CRAN:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"TestDesign"</span>)
-</pre></div>
-<p>Install the development version (1.1.0) from <a href="https://github.com/">GitHub</a>:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="co"># install.packages("devtools")</span>
-<span class="kw">devtools</span>::<span class="fu">install_github</span>(<span class="st">"choi-phd/TestDesign@main"</span>)
 </pre></div>
 </div>
 <div id="quick-start" class="section level2">
 <h2 class="hasAnchor">
 <a href="#quick-start" class="anchor"></a>Quick start</h2>
-<p>These examples use the development version (1.1.0).</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
+<div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="kw">itempool</span>    <span class="op">&lt;-</span> <span class="fu"><a href="reference/loadItemPool.html">loadItemPool</a></span>(<span class="kw">itempool_science_data</span>)
 <span class="kw">itemattrib</span>  <span class="op">&lt;-</span> <span class="fu"><a href="reference/item_attrib-class.html">loadItemAttrib</a></span>(<span class="kw">itemattrib_science_data</span>, <span class="kw">itempool</span>)
 <span class="kw">constraints</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/loadConstraints.html">loadConstraints</a></span>(<span class="kw">constraints_science_data</span>, <span class="kw">itempool</span>, <span class="kw">itemattrib</span>)
@@ -122,7 +116,7 @@
 <div id="static-fixed-form-assembly" class="section level2">
 <h2 class="hasAnchor">
 <a href="#static-fixed-form-assembly" class="anchor"></a>Static (fixed-form) assembly</h2>
-<div class="sourceCode" id="cb4"><pre class="downlit">
+<div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="kw">cfg</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/config_Static-class.html">createStaticTestConfig</a></span>(
   item_selection = <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
     method          = <span class="st">"TIF"</span>,
@@ -141,7 +135,7 @@
 <div id="shadow-adaptive-assembly" class="section level2">
 <h2 class="hasAnchor">
 <a href="#shadow-adaptive-assembly" class="anchor"></a>Shadow (adaptive) assembly</h2>
-<div class="sourceCode" id="cb5"><pre class="downlit">
+<div class="sourceCode" id="cb4"><pre class="downlit">
 <span class="kw">cfg</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/config_Shadow-class.html">createShadowTestConfig</a></span>()
 
 <span class="kw">solution</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/Shadow.html">Shadow</a></span>(<span class="kw">cfg</span>, <span class="kw">constraints</span>, true_theta = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">1</span>))
