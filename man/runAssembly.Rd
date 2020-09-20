@@ -29,5 +29,9 @@ A list containing the following entries:
 Perform test assembly with specified configurations. This function is used internally in \code{\link{Static}} and \code{\link{Shadow}}.
 }
 \references{
-\insertRef{van_der_linden_linear_2005}{TestDesign}
+
+
+van der Linden, W. J. (2005).
+\emph{Linear models for optimal test design.}
+Springer Science & Business Media.
 }

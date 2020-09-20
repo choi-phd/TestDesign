@@ -79,7 +79,6 @@ mlef(itempool_fatigue, resp = resp_fatigue_data[10, ])
 mlef(itempool_fatigue, select = 1:20, resp = resp_fatigue_data[10, 1:20])
 }
 \references{
-{
-  \insertRef{han_maximum_2016}{TestDesign}
-}
+Han, K. T. (2016). Maximum likelihood score estimation method with fences for short-length tests and computerized adaptive tests.
+\emph{Applied Psychological Measurement, 40}(4), 289-301.
 }
