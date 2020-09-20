@@ -1,8 +1,8 @@
-# TestDesign 1.1.1
+# TestDesign 1.1.2
 
-This is a resubmission of TestDesign 1.1.0
+This is a resubmission of TestDesign 1.1.1
 
-* Trailing slashes were added to URLs.
+* Removed 'Rdpack' from imports to resolve a WARNING.
 
 ## Test environments
 
@@ -16,6 +16,7 @@ This is a resubmission of TestDesign 1.1.0
 ```
 Status: 1 NOTE
 
+* checking CRAN incoming feasibility ... NOTE
 Suggests or Enhances not in mainstream repositories:
   gurobi
 ```
