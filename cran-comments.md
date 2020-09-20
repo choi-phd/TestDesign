@@ -1,4 +1,8 @@
-# TestDesign 1.1.0
+# TestDesign 1.1.1
+
+This is a resubmission of TestDesign 1.1.0
+
+* Trailing slashes were added to URLs.
 
 ## Test environments
 

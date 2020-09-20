@@ -39,7 +39,7 @@ The cause of the error is that Rsymphony requires SYMPHONY libraries, but the li
 su username
 ```
 
-**Step 2.** Install the `homebrew` package manager by following the instructions on http://brew.sh/. The purpose of this step is to allow installing SYMPHONY with it.
+**Step 2.** Install the `homebrew` package manager by following the instructions on https://brew.sh/. The purpose of this step is to allow installing SYMPHONY with it.
 
 **Step 3.** Install SYMPHONY and its dependencies by running the following in terminal. Each line must be run separately.
 
