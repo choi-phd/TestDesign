@@ -20,23 +20,13 @@ real-world testing scenarios are provided as examples.
 
 ## Installation
 
-Install the latest release (1.0.2) from CRAN:
+Install the latest release (1.1.2) from CRAN:
 
 ``` r
 install.packages("TestDesign")
 ```
 
-Install the development version (1.1.0) from
-[GitHub](https://github.com/):
-
-``` r
-# install.packages("devtools")
-devtools::install_github("choi-phd/TestDesign@main")
-```
-
 ## Quick start
-
-These examples use the development version (1.1.0).
 
 ``` r
 itempool    <- loadItemPool(itempool_science_data)

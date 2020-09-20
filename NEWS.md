@@ -1,8 +1,8 @@
-# TestDesign 1.1.1
+# TestDesign 1.1.2
 
 ## QoL updates
 
-* Web documentation is now available at [https://choi-phd.github.io/TestDesign](https://choi-phd.github.io/TestDesign)
+* Web documentation is now available at [https://choi-phd.github.io/TestDesign/](https://choi-phd.github.io/TestDesign/)
 * `loadItemPool()`, `loadItemAttrib()`, `loadStAttrib()`, `loadConstraints()`, `buildConstraints()` are now capable of reading from data frame objects.
 * `loadItemPool()` is now capable of reading from `SingleGroupClass` objects from `mirt` package.
 * `item_pool` objects can be now subsetted and combined with `[` and `c()`.
@@ -47,11 +47,6 @@
 
 * Reverted the default solver to `lpSolve` to address `lpsymphony` being unavailable on Solaris.
 
-## Bug fixes
-
-* Fixed where using diagnostic stats was preventing `Shadow()` to run.
-* Fixed an error affecting `BIGM` exposure control method on set-based items.
-
 # TestDesign 1.0.1
 
 ## Default solver
@@ -72,17 +67,17 @@
 
 # TestDesign 1.0.0
 
-TestDesign 1.0.0 is a major release that provides structural changes to better streamline the usage of the functions, and also achieve more structured abstraction.
+TestDesign 1.0.0 is a major release that provides structural changes to better streamline the usage of the functions and also achieve more structured abstraction.
 
 ## User-visible structural changes
 
-* The function for fixed-length assembly `ATA()` is now named `Static()` to match with `Shadow()` for adaptive assembly.
+* The function for fixed-test assembly `ATA()` is now named `Static()` to match with `Shadow()` for adaptive assembly.
 * `Shadow()` now uses fewer arguments to match with `Static()` and to reduce redundant information in the arguments.
-* `plotMaxInfo()` is removed. The functionality is merged to `plotInfo()`, which can be used by supplying a `constriants` class object to the function.
-* `Static()` now does not return the plot by itself. The plotting should be done with `plotInfo()`.
-* `plotInfo()` is now a S4 method.
+* `plotMaxInfo()` is removed. The functionality is subsumed under `plotInfo()`, which can be used by supplying a `constriants` class object to the function.
+* `Static()` now does not return the information plot by itself. The plotting should be done with `plotInfo()`.
+* `plotInfo()` is now an S4 method.
 * * Supplying `item_pool` object gives pool-level information plot.
-* * Supplying the result from `Static` gives information plot from the selected items.
+* * Supplying the result from `Static` gives information plot based on the selected items.
 * * Supplying `constraints` object gives information range plot from the test length specified in the constraints.
 * * The comparison in the information range plot is now based on *k* randomly drawn items instead of the *k* worst items.
 
