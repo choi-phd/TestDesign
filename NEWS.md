@@ -1,4 +1,4 @@
-# TestDesign 1.1.0
+# TestDesign 1.1.1
 
 ## QoL updates
 
