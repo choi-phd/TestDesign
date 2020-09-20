@@ -20,7 +20,7 @@ NULL
 #' }
 #'
 #' @references
-#' \insertRef{van_der_linden_linear_2005}{TestDesign}
+#' @template mipbook-ref
 runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
 
   ni    <- constraints@ni

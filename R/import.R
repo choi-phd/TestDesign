@@ -26,7 +26,6 @@
 #' @import Rcpp methods
 #' @import foreach
 #' @import crayon
-#' @importFrom Rdpack reprompt
 #' @importFrom methods new show validObject
 #' @importFrom logitnorm logit rlogitnorm
 #' @importFrom grDevices col2rgb dev.control dev.new dev.off pdf recordPlot dev.cur

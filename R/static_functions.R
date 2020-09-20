@@ -11,9 +11,7 @@ NULL
 #'
 #' @return \code{\link{Static}} returns a \code{\linkS4class{output_Static}} object containing the selected items.
 #'
-#' @references
-#' \insertRef{van_der_linden_linear_2005}{TestDesign}
-#'
+#' @template mipbook-ref
 #' @examples
 #' config_science <- createStaticTestConfig(
 #'   list(
