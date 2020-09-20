@@ -39,7 +39,7 @@ The cause of the error is that Rsymphony requires SYMPHONY libraries, but the li
 su username
 ```
 
-**Step 2.** Install the `homebrew` package manager by following the instructions on http://brew.sh/. The purpose of this step is to allow installing SYMPHONY with it.
+**Step 2.** Install the `homebrew` package manager by following the instructions on https://brew.sh/. The purpose of this step is to allow installing SYMPHONY with it.
 
 **Step 3.** Install SYMPHONY and its dependencies by running the following in terminal. Each line must be run separately.
 
@@ -95,10 +95,10 @@ sudo nano -c ./Rsymphony/configure
 Comment out lines 51-55 by inserting `#`s at the beginning of each line, as shown below. Save it as the same file with Control + O, and when prompted for file name to write press Enter. Exit `nano` with Control + X.
 
 ```
-#if test ${status} -ne 0; then 
-# echo "Cannot find SYMPHONY libraries and headers." 
+#if test ${status} -ne 0; then
+# echo "Cannot find SYMPHONY libraries and headers."
 # echo "See https://projects.coin-or.org/SYMPHONY."
-# exit 1 
+# exit 1
 #fi
 ```
 
