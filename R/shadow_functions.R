@@ -84,18 +84,10 @@ setMethod(
 #'
 #' @return \code{\link{Shadow}} returns an \code{\linkS4class{output_Shadow_all}} object containing assembly results.
 #'
-#' @references{
-#'   \insertRef{van_der_linden_model_1998}{TestDesign}
-#' }
-#' @references{
-#'   \insertRef{van_der_linden_optimal_1998}{TestDesign}
-#' }
-#' @references{
-#'   \insertRef{van_der_linden_optimal_2000}{TestDesign}
-#' }
-#' @references{
-#'   \insertRef{van_der_linden_linear_2005}{TestDesign}
-#' }
+#' @template mip-ref
+#' @template mipversus-ref
+#' @template mipset-ref
+#' @template mipbook-ref
 #' @rdname Shadow-methods
 #'
 #' @examples

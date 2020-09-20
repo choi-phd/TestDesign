@@ -92,43 +92,36 @@ theta_EB(nx, theta_init, theta_prop, item_parm, resp, ncat, model, 1, c(0, 1))
 
 }
 \references{
-{
-  \insertRef{rasch_probabilistic_1960}{TestDesign}
-}
+Rasch, G. (1960). \emph{Probabilistic models for some intelligence and attainment tests.}
+Copenhagen: Danish Institute for Educational Research.
 
-{
-  \insertRef{lord_theory_1952}{TestDesign}
-}
+Lord, F. M. (1952). A theory of test scores (Psychometric Monograph No. 7). Richmond, VA: Psychometric Corporation.
 
-{
-  \insertRef{birnbaum_efficient_1957}{TestDesign}
-}
+Birnbaum, A. (1957). \emph{Efficient design and use of tests of mental ability for various decision-making problems}
+(Series Report No. 58-16. Project No. 7755-23).
+Randolph Air Force Base, TX: USAF School of Aviation Medicine.
 
-{
-  \insertRef{birnbaum_estimation_1958}{TestDesign}
-}
+Birnbaum, A. (1958). \emph{On the estimation of mental ability}
+(Series Report No. 15. Project No. 7755-23).
+Randolph Air Force Base, TX: USAF School of Aviation Medicine.
 
-{
-  \insertRef{birnbaum_further_1958}{TestDesign}
-}
+Birnbaum, A. (1958). \emph{Further considerations of efficiency in tests of a mental ability}
+(Series Report No. 17. Project No. 7755-23).
+Randolph Air Force Base, TX: USAF School of Aviation Medicine.
 
-{
-  \insertRef{birnbaum_latent_1968}{TestDesign}
-}
+Birnbaum, A. (1968). Some latent trait models and their use in inferring an examinee's ability.
+In Lord, F. M., Novick, M. R. (eds.), \emph{Statistical Theories of Mental Test Scores}, 397–479.
+Reading, MA: Addison-Wesley.
 
-{
-  \insertRef{masters_rasch_1982}{TestDesign}
-}
+Masters, G. N. (1982). A Rasch model for partial credit scoring.
+\emph{Psychometrika, 47}(2), 149–174.
 
-{
-  \insertRef{andrich_rating_1978}{TestDesign}
-}
+Andrich, D. (1978). A rating formulation for ordered response categories.
+\emph{Psychometrika, 43}(4), 561–573.
 
-{
-  \insertRef{muraki_generalized_1992}{TestDesign}
-}
+Muraki, E. (1992). A generalized partial credit model: Application of an EM algorithm.
+\emph{Applied Psychological Measurement, 16}(2), 159–176.
 
-{
-  \insertRef{samejima_estimation_1969}{TestDesign}
-}
+Samejima, F. (1969). Estimation of latent ability using a response pattern of graded scores.
+\emph{Psychometrika Monograph, 17}.
 }

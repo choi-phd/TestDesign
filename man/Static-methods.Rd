@@ -34,5 +34,7 @@ solution <- Static(config_science, constraints_science)
 
 }
 \references{
-\insertRef{van_der_linden_linear_2005}{TestDesign}
+van der Linden, W. J. (2005).
+\emph{Linear models for optimal test design.}
+Springer Science & Business Media.
 }

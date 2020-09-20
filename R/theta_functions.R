@@ -323,9 +323,7 @@ setMethod(
 #'   \item{\code{trunc}} \code{TRUE} if truncation was applied on \code{th}.
 #' }
 #'
-#' @references{
-#'   \insertRef{han_maximum_2016}{TestDesign}
-#' }
+#' @template mlef-ref
 #'
 #' @docType methods
 #' @rdname mlef-methods
