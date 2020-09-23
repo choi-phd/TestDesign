@@ -304,7 +304,7 @@ setMethod(
 #' @param object an \code{\linkS4class{item_pool}} object.
 #' @param select (optional) if item indices are supplied, only the specified items are used.
 #' @param resp item response on all (or selected) items in the \code{object} argument. Can be a vector, a matrix, or a data frame. \code{length(resp)} or \code{ncol(resp)} must be equal to the number of all (or selected) items.
-#' @param fence_slope the slope parameter to use on fence items. (default = \code{5})
+#' @param fence_slope the slope parameter to use on fence items. Can be one value, or two values for the lower and the upper fence respectively. (default = \code{5})
 #' @param fence_difficulty the difficulty parameter to use on fence items. Must have two values for the lower and the upper fence respectively. (default = \code{c(-5, 5)})
 #' @param start_theta (optional) initial theta values. If not supplied, EAP estimates using uniform priors are used as initial values. Uniform priors are computed using the \code{theta_range} argument below, with increments of \code{.1}.
 #' @param max_iter maximum number of iterations. (default = \code{100})
@@ -399,7 +399,7 @@ setMethod(
     ipar_fence <- data.frame(
       ID    = c("FENCE_LB", "FENCE_UB"),
       MODEL = rep("2PL", 2),
-      PAR1  = rep(fence_slope, 2),
+      PAR1  = rep(fence_slope, length.out = 2),
       PAR2  = fence_difficulty
     )
     item_fence <- loadItemPool(ipar_fence)
@@ -683,7 +683,7 @@ estimateInitialTheta <- function(config_theta, initial_theta, prior_par, nj, j, 
 
   o <- list()
   theta_method <- toupper(config_theta$method)
-  if (theta_method %in% c("EAP", "MLE")) {
+  if (theta_method %in% c("EAP", "MLE", "MLEF")) {
     o$theta <- initial_theta[j]
   }
   if (theta_method %in% c("EB", "FB")) {
