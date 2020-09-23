@@ -17,7 +17,7 @@ See \code{\link{item_pool-operators}} for object manipulation functions.
 
 \item{\code{max_cat}}{the maximum number of response categories across the pool.}
 
-\item{\code{index}}{the numeric ID of each item.}
+\item{\code{index}}{the numeric index of each item.}
 
 \item{\code{id}}{the ID string of each item.}
 

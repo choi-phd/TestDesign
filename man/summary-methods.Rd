@@ -30,12 +30,12 @@ Extension of summary() for objects in TestDesign package
 summary(itempool_science)
 summary(itemattrib_science)
 
-cfg = createStaticTestConfig()
-solution = Static(cfg, constraints_science)
+cfg <- createStaticTestConfig()
+solution <- Static(cfg, constraints_science)
 summary(solution)
 
-cfg = createShadowTestConfig()
-solution = Shadow(cfg, constraints_science, true_theta = seq(-1, 1, 1))
+cfg <- createShadowTestConfig()
+solution <- Shadow(cfg, constraints_science, true_theta = seq(-1, 1, 1))
 summary(solution)
 
 }

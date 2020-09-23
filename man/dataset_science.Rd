@@ -16,16 +16,16 @@ Item-based example item pool (1000 items).
 \details{
 This pool is associated with the following objects:
 \itemize{
-  \item \code{itempool_science} An \code{\linkS4class{item_pool}} object containing 1000 items.
-  \item \code{itemattrib_science} A \code{\linkS4class{item_attrib}} object containing 9 item-level attributes.
-  \item \code{constraints_science} A \code{\linkS4class{constraints}} object containing 36 constraints.
+  \item \code{itempool_science} an \code{\linkS4class{item_pool}} object containing 1000 items.
+  \item \code{itemattrib_science} an \code{\linkS4class{item_attrib}} object containing 9 item-level attributes.
+  \item \code{constraints_science} a \code{\linkS4class{constraints}} object containing 36 constraints.
 }
 
 Also, the following objects are intended for illustrating expected data structures.
 \itemize{
-  \item \code{itempool_science_data} A \code{\link{data.frame}} containing item parameters.
-  \item \code{itemattrib_science_data} A \code{\link{data.frame}} containing item attributes.
-  \item \code{constraints_science_data} A \code{\link{data.frame}} containing constraint specifications.
+  \item \code{itempool_science_data} a \code{\link{data.frame}} containing item parameters.
+  \item \code{itemattrib_science_data} a \code{\link{data.frame}} containing item attributes.
+  \item \code{constraints_science_data} a \code{\link{data.frame}} containing constraint specifications.
 }
 }
 \examples{

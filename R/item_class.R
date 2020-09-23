@@ -218,7 +218,7 @@ setClass("item_GR",
 #'
 #' @slot ni the number of items in the pool.
 #' @slot max_cat the maximum number of response categories across the pool.
-#' @slot index the numeric ID of each item.
+#' @slot index the numeric index of each item.
 #' @slot id the ID string of each item.
 #' @slot model the item class name of each item. See \code{\link{item-classes}}.
 #' @slot NCAT the number of response categories of each item.
@@ -267,13 +267,13 @@ setClass("item_pool",
   }
 )
 
-#' An S4 class to represent a cluster of item pools
+#' Class 'item_pool_cluster': an item pool
 #'
-#' An S4 class to represent a cluster of item pools.
+#' \code{\linkS4class{item_pool_cluster}} is an S4 class to represent a group of item pools.
 #'
-#' @slot np A scalar to indicate the number of item pools in the cluster.
-#' @slot pools A list of \code{\linkS4class{item_pool}} objects.
-#' @slot names A character vector of item pool names of length np.
+#' @slot np the number of item pools.
+#' @slot pools a list of \code{\linkS4class{item_pool}} objects.
+#' @slot names a vector containing item pool names.
 setClass("pool_cluster",
   slots = c(
     np = "numeric",

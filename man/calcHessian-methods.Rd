@@ -44,13 +44,24 @@ calcHessian(object, theta, resp)
 
 \item{theta}{theta values to use.}
 
-\item{resp}{the response data to use.}
+\item{resp}{the response data to use. This must be a single value for an \code{\link{item}}, or a length \emph{ni} vector for an \code{\linkS4class{item_pool}}.}
 }
 \value{
-\code{\link{calcHessian}} returns second derivative values of log-likelihoods.
+\describe{
+  \item{\code{\link{item}} object:}{\code{\link{calcHessian}} returns a length \emph{nq} vector containing the second derivative of the log-likelihood function, of observing the response at each theta.}
+  \item{\code{\linkS4class{item_pool}} object:}{\code{\link{calcHessian}} returns a (\emph{nq}, \emph{ni}) matrix containing the second derivative of the log-likelihood function, of observing the response at each theta.}
+}
 }
 \description{
 \code{\link{calcHessian}} is a function to calculate the second derivative of the log-likelihood function.
+}
+\details{
+\describe{
+  \item{\emph{notations}}{\itemize{
+    \item{\emph{nq} denotes the number of theta values.}
+    \item{\emph{ni} denotes the number of items in the \code{\linkS4class{item_pool}} object.}
+  }}
+}
 }
 \examples{
 

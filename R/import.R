@@ -1,5 +1,5 @@
-# Program: Shadow
-# Author: Seung Choi
+# Program: TestDesign
+# Original Author: Seung Choi
 # Assumptions: D = 1.0; the minimum score is 0 for all items
 
 # Naming conventions

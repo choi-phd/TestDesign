@@ -97,7 +97,7 @@ createShadowTestConfig(
   \item{\code{do_Fisher}} set \code{TRUE} to use Fisher's method of scoring. Used when \code{method} is \code{MLE}. (default = \code{TRUE})
 }}
 
-\item{final_theta}{A list containing final theta estimation options.
+\item{final_theta}{a named list containing final theta estimation options.
 \itemize{
   \item{\code{method}} the type of estimation. Accepts \code{EAP, EB, FB}. (default = \code{EAP})
   \item{\code{shrinkage_correction}} set \code{TRUE} to apply shrinkage correction. Used when \code{method} is \code{EAP}. (default = \code{FALSE})

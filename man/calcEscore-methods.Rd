@@ -58,7 +58,10 @@ calcEscore(object, theta)
 \item{theta}{theta values to use.}
 }
 \value{
-A vector of expected scores of length nq (the number of values on theta grid).
+\describe{
+  \item{\code{\link{item}} object:}{\code{\link{calcEscore}} a vector containing expected score of the item at the theta values.}
+  \item{\code{\linkS4class{item_pool}} object:}{\code{\link{calcEscore}} returns a vector containing the pool-level expected score at the theta values.}
+}
 }
 \description{
 \code{\link{calcEscore}} is a function to calculate expected scores.

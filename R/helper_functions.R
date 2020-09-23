@@ -3,10 +3,10 @@ NULL
 
 #' Print solution items
 #'
-#' @param object Output from \code{\link{Static}} or \code{\link{Shadow}}.
-#' @param examinee Examinee id to display the solution. Used when 'object' is from \code{\link{Shadow}}.
-#' @param position If supplied, display the item attributes of the shadow test at that item position. If not supplied, display the item attributes of the administered items. Applied when 'object' is from \code{\link{Shadow}}.
-#' @param index_only If \code{TRUE} (default), print the item indexes only. Otherwise, print all item attributes.
+#' @param object an \code{\linkS4class{output_Static}} object or an \code{\linkS4class{output_Shadow}} object.
+#' @param examinee (optional) the examinee index to display the solution. Used when the 'object' argument is an \code{\linkS4class{output_Shadow}} object.
+#' @param position (optional) if supplied, display the item attributes of the assembled test at that item position. If not supplied, display the item attributes of the administered items. Used when the 'object' argument is an \code{\linkS4class{output_Shadow}} object.
+#' @param index_only if \code{TRUE}, only print item indices. if \code{FALSE}, print all item attributes. (default = {TRUE})
 #'
 #' @return Item attributes of solution items.
 #'
