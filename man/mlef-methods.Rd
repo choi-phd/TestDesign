@@ -43,7 +43,7 @@ mlef(
 
 \item{resp}{item response on all (or selected) items in the \code{object} argument. Can be a vector, a matrix, or a data frame. \code{length(resp)} or \code{ncol(resp)} must be equal to the number of all (or selected) items.}
 
-\item{fence_slope}{the slope parameter to use on fence items. (default = \code{5})}
+\item{fence_slope}{the slope parameter to use on fence items. Can be one value, or two values for the lower and the upper fence respectively. (default = \code{5})}
 
 \item{fence_difficulty}{the difficulty parameter to use on fence items. Must have two values for the lower and the upper fence respectively. (default = \code{c(-5, 5)})}
 

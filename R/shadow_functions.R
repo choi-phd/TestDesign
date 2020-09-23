@@ -413,6 +413,26 @@ setMethod(
           o@interim_theta_est[position] <- interim_MLE$th
           o@interim_se_est[position]    <- interim_MLE$se
 
+        } else if (toupper(config@interim_theta$method) == "MLEF") {
+
+          interim_EAP <- estimateThetaEAP(posterior_record$posterior[j, ], constants$theta_q)
+          interim_MLEF <- mlef(pool,
+            select           = o@administered_item_index[1:position],
+            resp             = o@administered_item_resp[1:position],
+            fence_slope      = config@interim_theta$fence_slope,
+            fence_difficulty = config@interim_theta$fence_difficulty,
+            start_theta      = interim_EAP$theta,
+            max_iter         = config@interim_theta$max_iter,
+            crit             = config@interim_theta$crit,
+            theta_range      = config@interim_theta$bound_ML,
+            truncate         = config@interim_theta$truncate_ML,
+            max_change       = config@interim_theta$max_change,
+            do_Fisher        = config@interim_theta$do_Fisher
+          )
+
+          o@interim_theta_est[position] <- interim_MLEF$th
+          o@interim_se_est[position]    <- interim_MLEF$se
+
         } else if (toupper(config@interim_theta$method) == "EB") {
 
           current_item <- o@administered_item_index[position]
@@ -517,6 +537,26 @@ setMethod(
 
         o@final_theta_est <- final_MLE$th
         o@final_se_est    <- final_MLE$se
+
+      } else if (toupper(config@final_theta$method) == "MLEF") {
+
+        final_MLEF <- mlef(
+          pool,
+          select           = o@administered_item_index[1:constants$max_ni],
+          resp             = o@administered_item_resp[1:constants$max_ni],
+          fence_slope      = config@final_theta$fence_slope,
+          fence_difficulty = config@final_theta$fence_difficulty,
+          start_theta      = o@interim_theta_est[constants$max_ni],
+          max_iter         = config@final_theta$max_iter,
+          crit             = config@final_theta$crit,
+          theta_range      = config@final_theta$bound_ML,
+          truncate         = config@final_theta$truncate_ML,
+          max_change       = config@final_theta$max_change,
+          do_Fisher        = config@final_theta$do_Fisher
+        )
+
+        o@final_theta_est <- final_MLEF$th
+        o@final_se_est    <- final_MLEF$se
 
       } else if (toupper(config@final_theta$method) == "EB") {
 
