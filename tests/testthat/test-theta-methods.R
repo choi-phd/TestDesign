@@ -2,7 +2,7 @@ set.seed(1)
 true_theta <- runif(10, -3, 3)
 resp_bayes <- simResp(itempool_bayes, true_theta)
 
-methods <- c("EAP", "MLE", "EB", "FB")
+methods <- c("EAP", "MLE", "MLEF", "EB", "FB")
 
 for (m in methods) {
 
