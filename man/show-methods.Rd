@@ -21,6 +21,7 @@
 \alias{show,config_Shadow-method}
 \alias{show,output_Static-method}
 \alias{show,output_Shadow-method}
+\alias{show,output_Shadow_all-method}
 \alias{show,summary_output_Static-method}
 \alias{show,summary_output_Shadow_all-method}
 \alias{show,exposure_rate_plot-method}
@@ -61,6 +62,8 @@
 \S4method{show}{output_Static}(object)
 
 \S4method{show}{output_Shadow}(object)
+
+\S4method{show}{output_Shadow_all}(object)
 
 \S4method{show}{summary_output_Static}(object)
 

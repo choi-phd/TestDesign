@@ -155,6 +155,14 @@ setMethod("show", "output_Shadow", function(object) {
   return(invisible(NULL))
 })
 
+#' @aliases show,output_Shadow_all-method
+#' @docType methods
+#' @rdname show-methods
+setMethod("show", "output_Shadow_all", function(object) {
+  print(object)
+  return(invisible(NULL))
+})
+
 #' @aliases show,summary_output_Static-method
 #' @docType methods
 #' @rdname show-methods
