@@ -21,16 +21,17 @@ makeTest(
 )
 }
 \arguments{
-\item{object}{An \code{\linkS4class{item_pool}} object.}
+\item{object}{an \code{\linkS4class{item_pool}} object.}
 
-\item{theta}{A grid of theta values.}
+\item{theta}{a grid of theta values.}
 
-\item{info_type}{An information type.}
+\item{info_type}{the type of information.}
 
-\item{true_theta}{An optional vector of true theta values to simulate response data.}
+\item{true_theta}{(optional) true theta values to simulate response data.}
 }
 \description{
-Generate a \code{\linkS4class{test}} object
+\code{\link{makeTest}} is a function for creating a \code{\linkS4class{test}} object.
+This is used in \code{\link{Shadow}} to determine all necessary data prior to the main simulation, so that they are not affected by random number generation.
 }
 \examples{
 test <- makeTest(itempool_science, seq(-3, 3, 1))

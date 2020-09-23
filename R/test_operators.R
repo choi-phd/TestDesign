@@ -3,12 +3,13 @@ NULL
 
 #' Generate a test object
 #'
-#' Generate a \code{\linkS4class{test}} object
+#' \code{\link{makeTest}} is a function for creating a \code{\linkS4class{test}} object.
+#' This is used in \code{\link{Shadow}} to determine all necessary data prior to the main simulation, so that they are not affected by random number generation.
 #'
-#' @param object An \code{\linkS4class{item_pool}} object.
-#' @param theta A grid of theta values.
-#' @param info_type An information type.
-#' @param true_theta An optional vector of true theta values to simulate response data.
+#' @param object an \code{\linkS4class{item_pool}} object.
+#' @param theta a grid of theta values.
+#' @param info_type the type of information.
+#' @param true_theta (optional) true theta values to simulate response data.
 #'
 #' @docType methods
 #' @rdname makeTest-methods

@@ -47,7 +47,16 @@ calcJacobian(object, theta, resp)
 \item{resp}{the response data to use.}
 }
 \value{
-\code{\link{calcJacobian}} returns first derivative values of log-likelihoods.
+\describe{
+  \item{\code{\link{item}} object:}{\code{\link{calcJacobian}} returns a length \emph{nq} vector containing the first derivative of the log-likelihood function, of observing the response at each theta.}
+  \item{\code{\linkS4class{item_pool}} object:}{\code{\link{calcJacobian}} returns a (\emph{nq}, \emph{ni}) matrix containing the first derivative of the log-likelihood function, of observing the response at each theta.}
+}
+\describe{
+  \item{\emph{notations}}{\itemize{
+    \item{\emph{nq} denotes the number of theta values.}
+    \item{\emph{ni} denotes the number of items in the \code{\linkS4class{item_pool}} object.}
+  }}
+}
 }
 \description{
 \code{\link{calcJacobian}} is a function to calculate the first derivative of the log-likelihood function.
@@ -66,7 +75,10 @@ j_item_3 <- calcJacobian(item_3, seq(-3, 3, 1), 0)
 j_item_4 <- calcJacobian(item_4, seq(-3, 3, 1), 0)
 j_item_5 <- calcJacobian(item_5, seq(-3, 3, 1), 0)
 j_item_6 <- calcJacobian(item_6, seq(-3, 3, 1), 0)
-j_pool   <- calcJacobian(itempool_science, seq(-3, 3, 1), 0)
+j_pool   <- calcJacobian(
+  itempool_science, seq(-3, 3, 1),
+  rep(0, itempool_science@ni)
+)
 
 }
 \references{

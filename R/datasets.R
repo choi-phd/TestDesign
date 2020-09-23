@@ -7,16 +7,16 @@ NULL
 #'
 #' This pool is associated with the following objects:
 #' \itemize{
-#'   \item \code{itempool_science} An \code{\linkS4class{item_pool}} object containing 1000 items.
-#'   \item \code{itemattrib_science} A \code{\linkS4class{item_attrib}} object containing 9 item-level attributes.
-#'   \item \code{constraints_science} A \code{\linkS4class{constraints}} object containing 36 constraints.
+#'   \item \code{itempool_science} an \code{\linkS4class{item_pool}} object containing 1000 items.
+#'   \item \code{itemattrib_science} an \code{\linkS4class{item_attrib}} object containing 9 item-level attributes.
+#'   \item \code{constraints_science} a \code{\linkS4class{constraints}} object containing 36 constraints.
 #' }
 #'
 #' Also, the following objects are intended for illustrating expected data structures.
 #' \itemize{
-#'   \item \code{itempool_science_data} A \code{\link{data.frame}} containing item parameters.
-#'   \item \code{itemattrib_science_data} A \code{\link{data.frame}} containing item attributes.
-#'   \item \code{constraints_science_data} A \code{\link{data.frame}} containing constraint specifications.
+#'   \item \code{itempool_science_data} a \code{\link{data.frame}} containing item parameters.
+#'   \item \code{itemattrib_science_data} a \code{\link{data.frame}} containing item attributes.
+#'   \item \code{constraints_science_data} a \code{\link{data.frame}} containing constraint specifications.
 #' }
 #'
 #' @examples
@@ -34,22 +34,22 @@ NULL
 
 #' Reading dataset
 #'
-#' Stimulus-based example item pool (303 items).
+#' Stimulus-based example item pool (303 items, 35 stimuli).
 #'
 #' This pool is associated with the following objects:
 #' \itemize{
-#'   \item \code{itempool_reading} An \code{\linkS4class{item_pool}} object.
-#'   \item \code{itemattrib_reading} An \code{\linkS4class{item_attrib}} object containing item attributes.
-#'   \item \code{stimattrib_reading} A \code{\linkS4class{st_attrib}} object containing stimulus attributes.
-#'   \item \code{constraints_reading} A \code{\linkS4class{constraints}} object containing 18 constraints.
+#'   \item \code{itempool_reading} an \code{\linkS4class{item_pool}} object containing 303 items.
+#'   \item \code{itemattrib_reading} an \code{\linkS4class{item_attrib}} object containing 12 item-level attributes.
+#'   \item \code{stimattrib_reading} a \code{\linkS4class{st_attrib}} object containing 4 stimulus-level attributes.
+#'   \item \code{constraints_reading} a \code{\linkS4class{constraints}} object containing 18 constraints.
 #' }
 #'
 #' Also, the following objects are intended for illustrating expected data structures.
 #' \itemize{
-#'   \item \code{itempool_reading_data} A \code{\link{data.frame}} containing item parameters.
-#'   \item \code{itemattrib_reading_data} A \code{\link{data.frame}} containing item attributes.
-#'   \item \code{stimattrib_reading_data} A \code{\link{data.frame}} containing stimulus attributes.
-#'   \item \code{constraints_reading_data} A \code{\link{data.frame}} containing constraint specifications.
+#'   \item \code{itempool_reading_data} a \code{\link{data.frame}} containing item parameters.
+#'   \item \code{itemattrib_reading_data} a \code{\link{data.frame}} containing item attributes.
+#'   \item \code{stimattrib_reading_data} a \code{\link{data.frame}} containing stimulus attributes.
+#'   \item \code{constraints_reading_data} a \code{\link{data.frame}} containing constraint specifications.
 #' }
 #'
 #' @examples
@@ -72,18 +72,18 @@ NULL
 #'
 #' This pool is associated with the following objects:
 #' \itemize{
-#'   \item \code{itempool_fatigue} An \code{\linkS4class{item_pool}} object.
-#'   \item \code{itemattrib_fatigue} An \code{\linkS4class{item_attrib}} object containing item attributes.
-#'   \item \code{constraints_fatigue} A \code{\linkS4class{constraints}} object containing 111 constraints.
+#'   \item \code{itempool_fatigue} an \code{\linkS4class{item_pool}} object containing 95 items.
+#'   \item \code{itemattrib_fatigue} an \code{\linkS4class{item_attrib}} object containing 7 item-level attributes.
+#'   \item \code{constraints_fatigue} a \code{\linkS4class{constraints}} object containing 111 constraints.
 #' }
 #'
 #' Also, the following objects are intended for illustrating expected data structures.
 #' \itemize{
-#'   \item \code{itempool_fatigue_data} A \code{\link{data.frame}} containing item parameters.
-#'   \item \code{itemattrib_fatigue_data} A \code{\link{data.frame}} containing item attributes.
-#'   \item \code{itemcontent_fatigue_data} A \code{\link{data.frame}} containing item contents.
-#'   \item \code{constraints_fatigue_data} A \code{\link{data.frame}} containing constraint specifications.
-#'   \item \code{resp_fatigue_data} A \code{\link{data.frame}} containing raw response data.
+#'   \item \code{itempool_fatigue_data} a \code{\link{data.frame}} containing item parameters.
+#'   \item \code{itemattrib_fatigue_data} a \code{\link{data.frame}} containing item attributes.
+#'   \item \code{itemcontent_fatigue_data} a \code{\link{data.frame}} containing item contents.
+#'   \item \code{constraints_fatigue_data} a \code{\link{data.frame}} containing constraint specifications.
+#'   \item \code{resp_fatigue_data} a \code{\link{data.frame}} containing raw response data.
 #' }
 #'
 #' @examples
@@ -106,17 +106,17 @@ NULL
 #'
 #' This pool is associated with the following objects:
 #' \itemize{
-#'   \item \code{itempool_bayes} An \code{\linkS4class{item_pool}} object containing 320 items.
-#'   \item \code{itemattrib_bayes} A \code{\linkS4class{item_attrib}} object containing 5 item-level attributes.
-#'   \item \code{constraints_bayes} A \code{\linkS4class{constraints}} object containing 14 constraints.
+#'   \item \code{itempool_bayes} an \code{\linkS4class{item_pool}} object containing 320 items.
+#'   \item \code{itemattrib_bayes} a \code{\linkS4class{item_attrib}} object containing 5 item-level attributes.
+#'   \item \code{constraints_bayes} a \code{\linkS4class{constraints}} object containing 14 constraints.
 #' }
 #'
 #' Also, the following objects are intended for illustrating expected data structures.
 #' \itemize{
-#'   \item \code{itempool_bayes_data} A \code{\link{data.frame}} containing item parameters.
-#'   \item \code{itempool_se_bayes_data} A \code{\link{data.frame}} containing item parameter standard errors.
-#'   \item \code{itemattrib_bayes_data} A \code{\link{data.frame}} containing item attributes.
-#'   \item \code{constraints_bayes_data} A \code{\link{data.frame}} containing constraint specifications.
+#'   \item \code{itempool_bayes_data} a \code{\link{data.frame}} containing item parameters.
+#'   \item \code{itempool_se_bayes_data} a \code{\link{data.frame}} containing item parameter standard errors.
+#'   \item \code{itemattrib_bayes_data} a \code{\link{data.frame}} containing item attributes.
+#'   \item \code{constraints_bayes_data} a \code{\link{data.frame}} containing constraint specifications.
 #' }
 #'
 #' @examples
@@ -124,13 +124,6 @@ NULL
 #' itemattrib_bayes  <- loadItemAttrib(itemattrib_bayes_data, itempool_bayes)
 #' constraints_bayes <- loadConstraints(constraints_bayes_data,
 #'   itempool_bayes, itemattrib_bayes)
-#'
-#' \dontrun{
-#'   View(itempool_bayes_data)
-#'   View(itempool_se_bayes_data)
-#'   View(itemattrib_bayes_data)
-#'   View(constraints_bayes_data)
-#' }
 #'
 #' @aliases itempool_bayes_data itempool_se_bayes_data itemattrib_bayes_data constraints_bayes_data itempool_bayes itemattrib_bayes constraints_bayes
 #' @docType data

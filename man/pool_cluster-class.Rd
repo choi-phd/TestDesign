@@ -3,17 +3,17 @@
 \docType{class}
 \name{pool_cluster-class}
 \alias{pool_cluster-class}
-\title{An S4 class to represent a cluster of item pools}
+\title{Class 'item_pool_cluster': an item pool}
 \description{
-An S4 class to represent a cluster of item pools.
+\code{\linkS4class{item_pool_cluster}} is an S4 class to represent a group of item pools.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{np}}{A scalar to indicate the number of item pools in the cluster.}
+\item{\code{np}}{the number of item pools.}
 
-\item{\code{pools}}{A list of \code{\linkS4class{item_pool}} objects.}
+\item{\code{pools}}{a list of \code{\linkS4class{item_pool}} objects.}
 
-\item{\code{names}}{A character vector of item pool names of length np.}
+\item{\code{names}}{a vector containing item pool names.}
 }}
 

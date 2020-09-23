@@ -7,13 +7,13 @@
 runAssembly(config, constraints, xdata = NULL, objective = NULL)
 }
 \arguments{
-\item{config}{A \code{\linkS4class{config_Static}} or a \code{\linkS4class{config_Shadow}} object containing configuration options. Use \code{\link{createStaticTestConfig}} and \code{\link{createShadowTestConfig}} for this.}
+\item{config}{a \code{\linkS4class{config_Static}} or a \code{\linkS4class{config_Shadow}} object containing configuration options. Use \code{\link{createStaticTestConfig}} and \code{\link{createShadowTestConfig}} for this.}
 
-\item{constraints}{A list representing optimization constraints. Use \code{\link{loadConstraints}} for this.}
+\item{constraints}{a \code{\linkS4class{constraints}} object. Use \code{\link{loadConstraints}} for this.}
 
-\item{xdata}{A list containing extra data to be used in \code{\link{Shadow}}, representing the constraints for force-including previously administered items.}
+\item{xdata}{a list containing extra constraints in MIP form, to force-include previously administered items.}
 
-\item{objective}{Information for each item in the pool.}
+\item{objective}{the information value for each item in the pool.}
 }
 \value{
 A list containing the following entries:
@@ -26,7 +26,7 @@ A list containing the following entries:
 }
 }
 \description{
-Perform test assembly with specified configurations. This function is used internally in \code{\link{Static}} and \code{\link{Shadow}}.
+\code{\link{runAssembly}} is a function to perform test assembly. This function is used internally in \code{\link{Static}} and \code{\link{Shadow}}.
 }
 \references{
 

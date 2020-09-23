@@ -17,17 +17,17 @@ Item-based example item pool with standard errors (320 items).
 \details{
 This pool is associated with the following objects:
 \itemize{
-  \item \code{itempool_bayes} An \code{\linkS4class{item_pool}} object containing 320 items.
-  \item \code{itemattrib_bayes} A \code{\linkS4class{item_attrib}} object containing 5 item-level attributes.
-  \item \code{constraints_bayes} A \code{\linkS4class{constraints}} object containing 14 constraints.
+  \item \code{itempool_bayes} an \code{\linkS4class{item_pool}} object containing 320 items.
+  \item \code{itemattrib_bayes} a \code{\linkS4class{item_attrib}} object containing 5 item-level attributes.
+  \item \code{constraints_bayes} a \code{\linkS4class{constraints}} object containing 14 constraints.
 }
 
 Also, the following objects are intended for illustrating expected data structures.
 \itemize{
-  \item \code{itempool_bayes_data} A \code{\link{data.frame}} containing item parameters.
-  \item \code{itempool_se_bayes_data} A \code{\link{data.frame}} containing item parameter standard errors.
-  \item \code{itemattrib_bayes_data} A \code{\link{data.frame}} containing item attributes.
-  \item \code{constraints_bayes_data} A \code{\link{data.frame}} containing constraint specifications.
+  \item \code{itempool_bayes_data} a \code{\link{data.frame}} containing item parameters.
+  \item \code{itempool_se_bayes_data} a \code{\link{data.frame}} containing item parameter standard errors.
+  \item \code{itemattrib_bayes_data} a \code{\link{data.frame}} containing item attributes.
+  \item \code{constraints_bayes_data} a \code{\link{data.frame}} containing constraint specifications.
 }
 }
 \examples{
@@ -35,13 +35,6 @@ itempool_bayes    <- loadItemPool(itempool_bayes_data, itempool_se_bayes_data)
 itemattrib_bayes  <- loadItemAttrib(itemattrib_bayes_data, itempool_bayes)
 constraints_bayes <- loadConstraints(constraints_bayes_data,
   itempool_bayes, itemattrib_bayes)
-
-\dontrun{
-  View(itempool_bayes_data)
-  View(itempool_se_bayes_data)
-  View(itemattrib_bayes_data)
-  View(constraints_bayes_data)
-}
 
 }
 \keyword{datasets}

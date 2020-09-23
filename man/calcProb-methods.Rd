@@ -67,7 +67,7 @@ calcProb(object, theta)
   \item{\emph{notations}}{\itemize{
     \item{\emph{nq} denotes the number of theta values.}
     \item{\emph{ncat} denotes the number of response categories.}
-    \item{\emph{ni} denotes the number of items in an \code{\linkS4class{item_pool}} object.}
+    \item{\emph{ni} denotes the number of items in the \code{\linkS4class{item_pool}} object.}
   }}
 }
 }

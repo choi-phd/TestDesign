@@ -25,7 +25,7 @@ NULL
 #'   \item{\code{parms}} a list containing the item object of each item.
 #'   \item{\code{ipar}} a matrix containing all item parameters.
 #'   \item{\code{se}} a matrix containing all item parameter standard errors. The values will be 0 if the argument \code{ipar_se} was not supplied.
-#'   \item{\code{raw}} a \code{\link{data.frame}} containing all item parameters, model types, and item ID strings.
+#'   \item{\code{raw}} the original input \code{\link{data.frame}} used to create this object.
 #' }
 #'
 #' @examples
@@ -661,7 +661,7 @@ setClass("constraints",
 #' \code{\link{loadConstraints}} can read constraints from a data.frame or a .csv file.
 #' The contents must be in the expected format; see the vignette in \code{vignette("constraints")}.
 #'
-#' @param object constraint specifications. Can be a data.frame or the file path of a .csv file. See the vignette for the expected format.
+#' @param object constraint specifications. Can be a \code{\link{data.frame}} or the file path of a .csv file. See the vignette for the expected format.
 #' @template pool_param
 #' @template item_attrib_param
 #' @template st_attrib_param

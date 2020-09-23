@@ -18,18 +18,18 @@ Item-based example pool with item contents (95 items).
 \details{
 This pool is associated with the following objects:
 \itemize{
-  \item \code{itempool_fatigue} An \code{\linkS4class{item_pool}} object.
-  \item \code{itemattrib_fatigue} An \code{\linkS4class{item_attrib}} object containing item attributes.
-  \item \code{constraints_fatigue} A \code{\linkS4class{constraints}} object containing 111 constraints.
+  \item \code{itempool_fatigue} an \code{\linkS4class{item_pool}} object containing 95 items.
+  \item \code{itemattrib_fatigue} an \code{\linkS4class{item_attrib}} object containing 7 item-level attributes.
+  \item \code{constraints_fatigue} a \code{\linkS4class{constraints}} object containing 111 constraints.
 }
 
 Also, the following objects are intended for illustrating expected data structures.
 \itemize{
-  \item \code{itempool_fatigue_data} A \code{\link{data.frame}} containing item parameters.
-  \item \code{itemattrib_fatigue_data} A \code{\link{data.frame}} containing item attributes.
-  \item \code{itemcontent_fatigue_data} A \code{\link{data.frame}} containing item contents.
-  \item \code{constraints_fatigue_data} A \code{\link{data.frame}} containing constraint specifications.
-  \item \code{resp_fatigue_data} A \code{\link{data.frame}} containing raw response data.
+  \item \code{itempool_fatigue_data} a \code{\link{data.frame}} containing item parameters.
+  \item \code{itemattrib_fatigue_data} a \code{\link{data.frame}} containing item attributes.
+  \item \code{itemcontent_fatigue_data} a \code{\link{data.frame}} containing item contents.
+  \item \code{constraints_fatigue_data} a \code{\link{data.frame}} containing constraint specifications.
+  \item \code{resp_fatigue_data} a \code{\link{data.frame}} containing raw response data.
 }
 }
 \examples{

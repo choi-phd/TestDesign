@@ -71,9 +71,9 @@
 \arguments{
 \item{x}{an object to print.}
 
-\item{index_only}{if \code{TRUE} (default), only print item indices. Otherwise, print all item attributes.}
+\item{index_only}{if \code{TRUE} then only print item indices. If \code{FALSE} then print all item attributes. (default = \code{TRUE})}
 
-\item{digits}{minimal number of *significant* digits, see \code{\link{print.default}}.}
+\item{digits}{minimal number of *significant* digits. See \code{\link{print.default}}.}
 }
 \description{
 Extension of print() for objects in TestDesign package

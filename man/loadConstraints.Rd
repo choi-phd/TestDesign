@@ -7,7 +7,7 @@
 loadConstraints(object, pool, item_attrib, st_attrib = NULL, file = NULL)
 }
 \arguments{
-\item{object}{constraint specifications. Can be a data.frame or the file path of a .csv file. See the vignette for the expected format.}
+\item{object}{constraint specifications. Can be a \code{\link{data.frame}} or the file path of a .csv file. See the vignette for the expected format.}
 
 \item{pool}{an \code{\linkS4class{item_pool}} object. Use \code{\link{loadItemPool}} for this.}
 
