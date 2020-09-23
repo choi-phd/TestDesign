@@ -317,6 +317,14 @@ setMethod("print", "output_Shadow", function(x) {
   return(invisible(x))
 })
 
+#' @aliases print,output_Shadow_all-method
+#' @docType methods
+#' @rdname print-methods
+setMethod("print", "output_Shadow_all", function(x) {
+  print(summary(x))
+  return(invisible(x))
+})
+
 #' @aliases print,exposure_rate_plot-method
 #' @docType methods
 #' @rdname print-methods
