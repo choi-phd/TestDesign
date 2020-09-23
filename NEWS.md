@@ -60,14 +60,14 @@
 
 ## New helper functions
 
-* `getSolution()` prints the indexes of the selected items from the results of `Static()` or `Shadow()`.
+* `getSolution()` prints the indices of the selected items from the results of `Static()` or `Shadow()`.
 * `showConstraints()` returns the constraints table from a `constraints` object. This is a shortcut to access the `@constraints` slot.
 
 ## Bug fixes
 
 * Now recognizes `TM_TARGET_GAP_ACHIEVED` as a valid status message in `lpsymphony` and `Rsymphony` solvers.
-* `loadItemAttrib()` now ignores malformatted values in 'INDEX' column and regenerates correct indexes.
-* `loadStAttrib()` now ignores malformatted values in 'STINDEX' column and regenerates correct indexes.
+* `loadItemAttrib()` now ignores malformatted values in 'INDEX' column and regenerates correct indices.
+* `loadStAttrib()` now ignores malformatted values in 'STINDEX' column and regenerates correct indices.
 * `config_Static` object now shows the objective tolerance value in slot `@MIP$obj_tol`.
 
 # TestDesign 1.0.0

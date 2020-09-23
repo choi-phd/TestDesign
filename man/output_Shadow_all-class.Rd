@@ -7,30 +7,39 @@
 \description{
 \code{\linkS4class{output_Shadow_all}} is an S4 class to represent a set of adaptive assembly solutions.
 }
+\details{
+\describe{
+  \item{\emph{notations}}{\itemize{
+    \item{\emph{ni} denotes the number of items in the \code{\linkS4class{item_pool}} object.}
+    \item{\emph{ns} denotes the number of stimuli.}
+    \item{\emph{nj} denotes the number of participants.}
+  }}
+}
+}
 \section{Slots}{
 
 \describe{
-\item{\code{output}}{list of \code{\linkS4class{output_Shadow}} objects, containing the assembly results for each participant.}
+\item{\code{output}}{a length-*nj* list of \code{\linkS4class{output_Shadow}} objects, containing the assembly results for each participant.}
 
-\item{\code{final_theta_est}}{final theta estimates for each participant.}
+\item{\code{final_theta_est}}{a length-*nj* vector containing final theta estimates for each participant.}
 
-\item{\code{final_se_est}}{standard errors of final theta estimates for each participant.}
+\item{\code{final_se_est}}{a length-*nj* vector standard errors of the final theta estimates for each participant.}
 
-\item{\code{exposure_rate}}{Exposure rate of each item in the pool.}
+\item{\code{exposure_rate}}{a matrix containing item-level exposure rates of all items in the pool. Also contains stimulus-level exposure rates if the assembly was set-based.}
 
-\item{\code{usage_matrix}}{The matrix representing which items were used in each item position.}
+\item{\code{usage_matrix}}{a *nj* by (*ni* + *ns*) matrix representing whether the item/stimulus was administered to each participant. Stimuli representations are appended to the right side of the matrix.}
 
-\item{\code{true_segment_count}}{foo}
+\item{\code{true_segment_count}}{a length-*nj* vector containing the how many examinees are now in their segment based on the true theta. This will tend to increase. This can be reproduced with true theta values alone.}
 
-\item{\code{est_segment_count}}{foo}
+\item{\code{est_segment_count}}{a length-*nj* vector containing the how many examinees are now in their segment based on the estimated theta. This will tend to increase. This can be reproduced with estimated theta values alone.}
 
-\item{\code{eligibility_stats}}{foo}
+\item{\code{eligibility_stats}}{exposure record for diagnostics.}
 
-\item{\code{check_eligibility_stats}}{foo}
+\item{\code{check_eligibility_stats}}{detailed segment-wise exposure record for diagnostics. available when \code{config_Shadow@exposure_control$diagnostic_stats} is \code{TRUE}.}
 
-\item{\code{no_fading_eligibility_stats}}{foo}
+\item{\code{no_fading_eligibility_stats}}{detailed segment-wise exposure record without fading for diagnostics. available when \code{config_Shadow@exposure_control$diagnostic_stats} is \code{TRUE}.}
 
-\item{\code{freq_infeasible}}{foo}
+\item{\code{freq_infeasible}}{a table representing the number of times the assembly was initially infeasible.}
 
 \item{\code{pool}}{the \code{\linkS4class{item_pool}} used in the assembly.}
 

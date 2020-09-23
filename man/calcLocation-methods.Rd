@@ -39,7 +39,7 @@ calcLocation(object)
 }
 \describe{
   \item{\emph{notations}}{\itemize{
-    \item{\emph{ni} denotes the number of items in an \code{\linkS4class{item_pool}} object.}
+    \item{\emph{ni} denotes the number of items in the \code{\linkS4class{item_pool}} object.}
   }}
 }
 }

@@ -129,21 +129,21 @@ setMethod("print", "constraints", function(x) {
 #' @rdname print-methods
 setMethod("print", "config_Static", function(x) {
   cat("Static assembly configurations \n\n")
-  cat("  Item selection criterion \n")
-  cat("    Method         :", x@item_selection$method, "\n")
-  cat("    Info type      :", x@item_selection$info_type, "\n")
-  cat("    Theta location :", x@item_selection$target_location, "\n")
-  cat("    Target value   :", x@item_selection$target_value, "\n")
-  cat("    Target weight  :", x@item_selection$target_weight, "\n")
+  cat("  item_selection \n")
+  cat("    method          :", x@item_selection$method, "\n")
+  cat("    info_type       :", x@item_selection$info_type, "\n")
+  cat("    target_location :", x@item_selection$target_location, "\n")
+  cat("    target_value    :", x@item_selection$target_value, "\n")
+  cat("    target_weight   :", x@item_selection$target_weight, "\n")
   cat("\n")
   cat("  MIP \n")
-  cat("    Solver         :", x@MIP$solver, "\n")
-  cat("    Verbosity      :", x@MIP$verbosity, "\n")
-  cat("    Time limit     :", x@MIP$time_limit, "\n")
-  cat("    Gap limit \n")
-  cat("      Relative     :", x@MIP$gap_limit, "\n")
-  cat("      Absolute     :", x@MIP$gap_limit_abs, "\n")
-  cat("    Obj. tolerance :", x@MIP$obj_tol, "\n")
+  cat("    solver          :", x@MIP$solver, "\n")
+  cat("    verbosity       :", x@MIP$verbosity, "\n")
+  cat("    time_limit      :", x@MIP$time_limit, "\n")
+  cat("    gap_limit       :", x@MIP$gap_limit, "(relative)\n")
+  cat("    gap_limit_abs   :", x@MIP$gap_limit_abs, "(absolute)\n")
+  cat("    obj_tol         :", x@MIP$obj_tol, "\n")
+  cat("    retry           :", x@MIP$retry, "\n")
   cat("\n")
   return(invisible(x))
 })
@@ -154,32 +154,33 @@ setMethod("print", "config_Static", function(x) {
 setMethod("print", "config_Shadow", function(x) {
   cat("Shadow assembly configurations \n\n")
   cat("  item_selection \n")
-  cat("    method          :", x@item_selection$method, "\n")
-  cat("    info_type       :", x@item_selection$info_type, "\n")
-  cat("    initial_theta   :", x@item_selection$initial_theta, "\n")
-  cat("    fixed_theta     :", x@item_selection$fixed_theta, "\n")
+  cat("    method                    :", x@item_selection$method, "\n")
+  cat("    info_type                 :", x@item_selection$info_type, "\n")
+  cat("    initial_theta             :", x@item_selection$initial_theta, "\n")
+  cat("    fixed_theta               :", x@item_selection$fixed_theta, "\n")
   cat("\n")
   cat("  content_balancing \n")
-  cat("    method          :", x@content_balancing$method, "\n")
+  cat("    method                    :", x@content_balancing$method, "\n")
   cat("\n")
   cat("  MIP \n")
-  cat("    solver          :", x@MIP$solver, "\n")
-  cat("    verbosity       :", x@MIP$verbosity, "\n")
-  cat("    time_limit      :", x@MIP$time_limit, "\n")
-  cat("    gap_limit       :", x@MIP$gap_limit, "\n")
-  cat("    gap_limit_abs   :", x@MIP$gap_limit_abs, "\n")
+  cat("    solver                    :", x@MIP$solver, "\n")
+  cat("    verbosity                 :", x@MIP$verbosity, "\n")
+  cat("    time_limit                :", x@MIP$time_limit, "\n")
+  cat("    gap_limit                 :", x@MIP$gap_limit, "\n")
+  cat("    gap_limit_abs             :", x@MIP$gap_limit_abs, "\n")
+  cat("    retry                     :", x@MIP$retry, "\n")
   cat("\n")
   cat("  MCMC \n")
-  cat("    burn_in         :", x@MCMC$burn_in, "\n")
-  cat("    post_burn_in    :", x@MCMC$post_burn_in, "\n")
-  cat("    thin            :", x@MCMC$thin, "\n")
-  cat("    jump_factor     :", x@MCMC$jump_factor, "\n")
+  cat("    burn_in                   :", x@MCMC$burn_in, "\n")
+  cat("    post_burn_in              :", x@MCMC$post_burn_in, "\n")
+  cat("    thin                      :", x@MCMC$thin, "\n")
+  cat("    jump_factor               :", x@MCMC$jump_factor, "\n")
   cat("\n")
   cat("  refresh_policy \n")
-  cat("    method          :", x@refresh_policy$method, "\n")
-  cat("    interval        :", x@refresh_policy$interval, "\n")
-  cat("    threshold       :", x@refresh_policy$threshold, "\n")
-  cat("    position        :", x@refresh_policy$position, "\n")
+  cat("    method                    :", x@refresh_policy$method, "\n")
+  cat("    interval                  :", x@refresh_policy$interval, "\n")
+  cat("    threshold                 :", x@refresh_policy$threshold, "\n")
+  cat("    position                  :", x@refresh_policy$position, "\n")
   cat("\n")
   cat("  exposure_control \n")
   cat("    method                    :", x@exposure_control$method, "\n")
@@ -196,14 +197,14 @@ setMethod("print", "config_Shadow", function(x) {
   cat("    segment_cut               :", x@exposure_control$segment_cut, "\n")
   cat("    initial_eligibility_stats :", !is.null(x@exposure_control$initial_eligibility_stats), "\n")
   cat("    fading_factor             :", x@exposure_control$fading_factor, "\n")
-  cat("    diagnosticsStats          :", x@exposure_control$diagnostic_stats, "\n")
+  cat("    diagnostic_stats          :", x@exposure_control$diagnostic_stats, "\n")
   cat("\n")
   cat("  stopping_criterion \n")
-  cat("    method          :", x@stopping_criterion$method, "\n")
-  cat("    test_length     :", x@stopping_criterion$test_length, "\n")
-  cat("    min_ni          :", x@stopping_criterion$min_ni, "\n")
-  cat("    max_ni          :", x@stopping_criterion$max_ni, "\n")
-  cat("    se_threshold    :",
+  cat("    method                    :", x@stopping_criterion$method, "\n")
+  cat("    test_length               :", x@stopping_criterion$test_length, "\n")
+  cat("    min_ni                    :", x@stopping_criterion$min_ni, "\n")
+  cat("    max_ni                    :", x@stopping_criterion$max_ni, "\n")
+  cat("    se_threshold              :",
     ifelse(
       toupper(x@stopping_criterion$method) == "VARIABLE",
       x@stopping_criterion$se_threshold,
@@ -211,15 +212,15 @@ setMethod("print", "config_Shadow", function(x) {
     ), "\n")
   cat("\n")
   cat("  interim_theta \n")
-  cat("    method               :", x@interim_theta$method, "\n")
-  cat("    shrinkage_correction :", x@interim_theta$shrinkage_correction, "\n")
-  cat("    prior_dist           :",
+  cat("    method                    :", x@interim_theta$method, "\n")
+  cat("    shrinkage_correction      :", x@interim_theta$shrinkage_correction, "\n")
+  cat("    prior_dist                :",
     ifelse(
       toupper(x@interim_theta$method == "EAP"),
       x@interim_theta$prior_dist,
       NA
     ), "\n")
-  cat("    prior_par            :",
+  cat("    prior_par                 :",
     ifelse(
       toupper(x@interim_theta$method == "EAP"),
       sprintf(
@@ -230,22 +231,25 @@ setMethod("print", "config_Shadow", function(x) {
         ),
         x@interim_theta$prior_par[1], x@interim_theta$prior_par[2]),
       NA), "\n")
-  cat("    bound_ML             :", x@interim_theta$bound_ML, "\n")
-  cat("    truncate_ML          :", x@interim_theta$truncate_ML, "\n")
-  cat("    max_iter             :", x@interim_theta$max_iter, "\n")
-  cat("    crit                 :", x@interim_theta$crit, "\n")
-  cat("    max_change           :", x@interim_theta$max_change, "\n")
-  cat("    do_fisher            :", x@interim_theta$do_fisher, "\n\n")
+  cat("    bound_ML                  :", x@interim_theta$bound_ML, "\n")
+  cat("    truncate_ML               :", x@interim_theta$truncate_ML, "\n")
+  cat("    max_iter                  :", x@interim_theta$max_iter, "\n")
+  cat("    crit                      :", x@interim_theta$crit, "\n")
+  cat("    max_change                :", x@interim_theta$max_change, "\n")
+  cat("    do_Fisher                 :", x@interim_theta$do_Fisher, "\n")
+  cat("    fence_slope               :", x@interim_theta$fence_slope, "\n")
+  cat("    fence_difficulty          :", x@interim_theta$fence_difficulty, "\n")
+  cat("\n")
   cat("  final_theta \n")
-  cat("    method               :", x@final_theta$method, "\n")
-  cat("    shrinkage_correction :", x@final_theta$shrinkage_correction, "\n")
-  cat("    prior_dist           :",
+  cat("    method                    :", x@final_theta$method, "\n")
+  cat("    shrinkage_correction      :", x@final_theta$shrinkage_correction, "\n")
+  cat("    prior_dist                :",
     ifelse(
       toupper(x@final_theta$method == "EAP"),
       x@final_theta$prior_dist,
       NA
     ), "\n")
-  cat("    prior_par            :",
+  cat("    prior_par                 :",
     ifelse(
       toupper(x@final_theta$method == "EAP"),
       sprintf(
@@ -257,21 +261,23 @@ setMethod("print", "config_Shadow", function(x) {
         x@final_theta$prior_par[1], x@final_theta$prior_par[2]),
       NA
     ), "\n")
-  cat("    bound_ML             :", x@final_theta$bound_ML, "\n")
-  cat("    truncate_ML          :", x@final_theta$truncate_ML, "\n")
-  cat("    max_iter             :", x@final_theta$max_iter, "\n")
-  cat("    crit                 :", x@final_theta$crit, "\n")
-  cat("    max_change           :", x@final_theta$max_change, "\n")
-  cat("    do_fisher            :", x@final_theta$do_fisher, "\n")
+  cat("    bound_ML                  :", x@final_theta$bound_ML, "\n")
+  cat("    truncate_ML               :", x@final_theta$truncate_ML, "\n")
+  cat("    max_iter                  :", x@final_theta$max_iter, "\n")
+  cat("    crit                      :", x@final_theta$crit, "\n")
+  cat("    max_change                :", x@final_theta$max_change, "\n")
+  cat("    do_Fisher                 :", x@final_theta$do_Fisher, "\n")
+  cat("    fence_slope               :", x@final_theta$fence_slope, "\n")
+  cat("    fence_difficulty          :", x@final_theta$fence_difficulty, "\n")
   cat("\n")
   cat("  theta_grid \n")
   print(x@theta_grid)
   cat("\n")
-  cat("  audit_trail : ", x@audit_trail, "\n")
+  cat("  audit_trail                 : ", x@audit_trail, "\n")
   return(invisible(x))
 })
 
-#' @param index_only if \code{TRUE} (default), only print item indices. Otherwise, print all item attributes.
+#' @param index_only if \code{TRUE} then only print item indices. If \code{FALSE} then print all item attributes. (default = \code{TRUE})
 #'
 #' @aliases print,output_Static-method
 #' @docType methods
@@ -369,7 +375,7 @@ setMethod("print", "summary_constraints", function(x) {
   return(invisible(x))
 })
 
-#' @param digits minimal number of *significant* digits, see \code{\link{print.default}}.
+#' @param digits minimal number of *significant* digits. See \code{\link{print.default}}.
 #'
 #' @aliases print,summary_output_Static-method
 #' @docType methods

@@ -13,23 +13,23 @@
 \alias{constraints_reading}
 \title{Reading dataset}
 \description{
-Stimulus-based example item pool (303 items).
+Stimulus-based example item pool (303 items, 35 stimuli).
 }
 \details{
 This pool is associated with the following objects:
 \itemize{
-  \item \code{itempool_reading} An \code{\linkS4class{item_pool}} object.
-  \item \code{itemattrib_reading} An \code{\linkS4class{item_attrib}} object containing item attributes.
-  \item \code{stimattrib_reading} A \code{\linkS4class{st_attrib}} object containing stimulus attributes.
-  \item \code{constraints_reading} A \code{\linkS4class{constraints}} object containing 18 constraints.
+  \item \code{itempool_reading} an \code{\linkS4class{item_pool}} object containing 303 items.
+  \item \code{itemattrib_reading} an \code{\linkS4class{item_attrib}} object containing 12 item-level attributes.
+  \item \code{stimattrib_reading} a \code{\linkS4class{st_attrib}} object containing 4 stimulus-level attributes.
+  \item \code{constraints_reading} a \code{\linkS4class{constraints}} object containing 18 constraints.
 }
 
 Also, the following objects are intended for illustrating expected data structures.
 \itemize{
-  \item \code{itempool_reading_data} A \code{\link{data.frame}} containing item parameters.
-  \item \code{itemattrib_reading_data} A \code{\link{data.frame}} containing item attributes.
-  \item \code{stimattrib_reading_data} A \code{\link{data.frame}} containing stimulus attributes.
-  \item \code{constraints_reading_data} A \code{\link{data.frame}} containing constraint specifications.
+  \item \code{itempool_reading_data} a \code{\link{data.frame}} containing item parameters.
+  \item \code{itemattrib_reading_data} a \code{\link{data.frame}} containing item attributes.
+  \item \code{stimattrib_reading_data} a \code{\link{data.frame}} containing stimulus attributes.
+  \item \code{constraints_reading_data} a \code{\link{data.frame}} containing constraint specifications.
 }
 }
 \examples{

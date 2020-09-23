@@ -14,13 +14,13 @@ getSolution(object, examinee = NA, position = NA, index_only = TRUE)
 \S4method{getSolution}{output_Static}(object, examinee = NA, position = NA, index_only = TRUE)
 }
 \arguments{
-\item{object}{Output from \code{\link{Static}} or \code{\link{Shadow}}.}
+\item{object}{an \code{\linkS4class{output_Static}} object or an \code{\linkS4class{output_Shadow}} object.}
 
-\item{examinee}{Examinee id to display the solution. Used when 'object' is from \code{\link{Shadow}}.}
+\item{examinee}{(optional) the examinee index to display the solution. Used when the 'object' argument is an \code{\linkS4class{output_Shadow}} object.}
 
-\item{position}{If supplied, display the item attributes of the shadow test at that item position. If not supplied, display the item attributes of the administered items. Applied when 'object' is from \code{\link{Shadow}}.}
+\item{position}{(optional) if supplied, display the item attributes of the assembled test at that item position. If not supplied, display the item attributes of the administered items. Used when the 'object' argument is an \code{\linkS4class{output_Shadow}} object.}
 
-\item{index_only}{If \code{TRUE} (default), print the item indexes only. Otherwise, print all item attributes.}
+\item{index_only}{if \code{TRUE}, only print item indices. if \code{FALSE}, print all item attributes. (default = {TRUE})}
 }
 \value{
 Item attributes of solution items.

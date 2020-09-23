@@ -42,10 +42,21 @@ simResp(object, theta)
 \item{theta}{theta values to use.}
 }
 \value{
-\code{\link{simResp}} returns simulated item response data.
+\describe{
+  \item{\code{\link{item}} object:}{\code{\link{simResp}} returns a length \emph{nq} vector containing simulated item response data.}
+  \item{\code{\linkS4class{item_pool}} object:}{\code{\link{simResp}} returns a (\emph{nq}, \emph{ni}) matrix containing simulated item response data.}
+}
 }
 \description{
 \code{\link{simResp}} is a function to simulate item response data.
+}
+\details{
+\describe{
+  \item{\emph{notations}}{\itemize{
+    \item{\emph{nq} denotes the number of theta values.}
+    \item{\emph{ni} denotes the number of items in the \code{\linkS4class{item_pool}} object.}
+  }}
+}
 }
 \examples{
 
