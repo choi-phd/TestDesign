@@ -63,3 +63,6 @@ plot(solution, type = "audit" , examinee_id = 1)
 plot(solution, type = "shadow", examinee_id = 2, simple = T)
 summary(solution)
 ```
+
+The documentation is available at
+(<https://choi-phd.github.io/TestDesign>)
