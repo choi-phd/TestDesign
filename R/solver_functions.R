@@ -267,14 +267,19 @@ runMIP <- function(solver, obj, mat, dir, rhs, maximize, types,
     constraints_dir[constraints_dir == "=="] <- "="
 
     if (!is.null(gap_limit)) {
-      invisible(capture.output(MIP <- gurobi::gurobi(
-        list(obj = obj, modelsense = ifelse(maximize, "max", "min"), rhs = rhs, sense = constraints_dir, vtype = types, A = mat),
-        params = list(MIPGap = gap_limit, TimeLimit = time_limit),
-        env = NULL)))
+      tmp <- invisible(capture.output({
+        MIP <- gurobi::gurobi(
+          model = list(obj = obj, modelsense = ifelse(maximize, "max", "min"), rhs = rhs, sense = constraints_dir, vtype = types, A = mat),
+          params = list(MIPGap = gap_limit, TimeLimit = time_limit),
+          env = NULL)
+      }))
     } else {
-      invisible(capture.output(MIP <- gurobi::gurobi(
-        list(obj = obj, modelsense = ifelse(maximize, "max", "min"), rhs = rhs, sense = constraints_dir, vtype = types, A = mat),
-        params = list(TimeLimit = time_limit), env = NULL)))
+      tmp <- invisible(capture.output({
+        MIP <- gurobi::gurobi(
+          model = list(obj = obj, modelsense = ifelse(maximize, "max", "min"), rhs = rhs, sense = constraints_dir, vtype = types, A = mat),
+          params = list(TimeLimit = time_limit),
+          env = NULL)
+      }))
     }
 
     MIP[["solution"]] <- MIP$x
