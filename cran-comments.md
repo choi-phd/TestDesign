@@ -1,8 +1,4 @@
-# TestDesign 1.1.2
-
-This is a resubmission of TestDesign 1.1.1
-
-* Removed 'Rdpack' from imports to resolve a WARNING.
+# TestDesign 1.1.3
 
 ## Test environments
 
@@ -34,4 +30,4 @@ unable to verify current time
 
 ## Downstream dependencies
 
-The previous version 'TestDesign' 1.0.2 does not have downstream dependencies.
+The previous version 'TestDesign' 1.1.2 does not have downstream dependencies.

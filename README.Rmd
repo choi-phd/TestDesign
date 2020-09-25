@@ -15,7 +15,7 @@ Founded on the optimal test design framework, the `TestDesign` package allows fo
 
 ## Installation
 
-Install the latest release (1.1.2) from CRAN:
+Install the latest release (1.1.3) from CRAN:
 
 ```r
 install.packages("TestDesign")

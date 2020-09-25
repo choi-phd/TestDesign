@@ -20,7 +20,7 @@ real-world testing scenarios are provided as examples.
 
 ## Installation
 
-Install the latest release (1.1.2) from CRAN:
+Install the latest release (1.1.3) from CRAN:
 
 ``` r
 install.packages("TestDesign")
