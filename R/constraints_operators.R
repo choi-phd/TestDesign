@@ -1,4 +1,4 @@
-#' @include item_class.R
+#' @include st_attrib_operators.R
 NULL
 
 #' @title Basic operators for constraints objects

@@ -1,4 +1,4 @@
-#' @include item_class.R
+#' @include constraints_operators.R
 NULL
 
 #' Create an item pool cluster object
