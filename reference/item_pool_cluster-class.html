@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create an item pool cluster object — makeItemPoolCluster • TestDesign</title>
+<title>Class 'item_pool_cluster': an item pool — item_pool_cluster-class • TestDesign</title>
 
 
 <!-- jquery -->
@@ -41,9 +41,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Create an item pool cluster object — makeItemPoolCluster" />
-<meta property="og:description" content="Create a pool_cluster object.
-pool_cluster1 == pool_cluster2 tests equality of the two pool_cluster objects." />
+<meta property="og:title" content="Class 'item_pool_cluster': an item pool — item_pool_cluster-class" />
+<meta property="og:description" content="item_pool_cluster is an S4 class to represent a group of item pools." />
 
 
 
@@ -75,7 +74,7 @@ pool_cluster1 == pool_cluster2 tests equality of the two pool_cluster objects." 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TestDesign</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.3</span>
       </span>
     </div>
 
@@ -129,54 +128,30 @@ pool_cluster1 == pool_cluster2 tests equality of the two pool_cluster objects." 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create an item pool cluster object</h1>
-    <small class="dont-index">Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/R/pool_cluster_operators.R'><code>R/pool_cluster_operators.R</code></a></small>
-    <div class="hidden name"><code>pool_cluster-operators.Rd</code></div>
+    <h1>Class 'item_pool_cluster': an item pool</h1>
+    <small class="dont-index">Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/R/item_class.R'><code>R/item_class.R</code></a></small>
+    <div class="hidden name"><code>item_pool_cluster-class.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Create a <code><a href='pool_cluster-class.html'>pool_cluster</a></code> object.</p>
-<p><code>pool_cluster1 == pool_cluster2</code> tests equality of the two pool_cluster objects.</p>
+    <p><code>item_pool_cluster</code> is an S4 class to represent a group of item pools.</p>
     </div>
 
-    <pre class="usage">makeItemPoolCluster(x, ..., names = NULL)
-
-# S4 method for item_pool
-makeItemPoolCluster(x, ..., names = NULL)
-
-# S3 method for pool_cluster
-==(pool_cluster1, pool_cluster2)</pre>
-
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>x, ...</th>
-      <td><p><code><a href='item_pool-class.html'>item_pool</a></code> objects.</p></td>
-    </tr>
-    <tr>
-      <th>names</th>
-      <td><p>(optional) names to use for <code><a href='item_pool-class.html'>item_pool</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>pool_cluster1</th>
-      <td><p>a <code><a href='pool_cluster-class.html'>pool_cluster</a></code> object.</p></td>
-    </tr>
-    <tr>
-      <th>pool_cluster2</th>
-      <td><p>a <code><a href='pool_cluster-class.html'>pool_cluster</a></code> object.</p></td>
-    </tr>
-    </table>
 
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples">
-<span class='kw'>cluster</span> <span class='op'>&lt;-</span> <span class='fu'>makeItemPoolCluster</span>(<span class='kw'>itempool_science</span>, <span class='kw'>itempool_reading</span>)
-<span class='kw'>cluster1</span> <span class='op'>&lt;-</span> <span class='fu'>makeItemPoolCluster</span>(<span class='kw'>itempool_science</span>, <span class='kw'>itempool_reading</span>)
-<span class='kw'>cluster2</span> <span class='op'>&lt;-</span> <span class='fu'>makeItemPoolCluster</span>(<span class='kw'>cluster1</span><span class='op'>@</span>pools[[<span class='fl'>1</span>]], <span class='kw'>cluster1</span><span class='op'>@</span>pools[[<span class='fl'>2</span>]])
-<span class='kw'>cluster1</span> <span class='op'>==</span> <span class='kw'>cluster2</span>  <span class='co'>## TRUE</span>
+    <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
-</pre>
+    
+
+<dl>
+<dt><code>np</code></dt><dd><p>the number of item pools.</p></dd>
+
+<dt><code>pools</code></dt><dd><p>a list of <code><a href='item_pool-class.html'>item_pool</a></code> objects.</p></dd>
+
+<dt><code>names</code></dt><dd><p>a vector containing item pool names.</p></dd>
+
+</dl>
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TestDesign</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.3</span>
       </span>
     </div>
 
@@ -142,31 +142,24 @@
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This pool is associated with the following objects:</p><ul>
-<li><p><code>itempool_bayes</code> An <code><a href='item_pool-class.html'>item_pool</a></code> object containing 320 items.</p></li>
-<li><p><code>itemattrib_bayes</code> A <code><a href='item_attrib-class.html'>item_attrib</a></code> object containing 5 item-level attributes.</p></li>
-<li><p><code>constraints_bayes</code> A <code><a href='constraints-class.html'>constraints</a></code> object containing 14 constraints.</p></li>
+<li><p><code>itempool_bayes</code> an <code><a href='item_pool-class.html'>item_pool</a></code> object containing 320 items.</p></li>
+<li><p><code>itemattrib_bayes</code> a <code><a href='item_attrib-class.html'>item_attrib</a></code> object containing 5 item-level attributes.</p></li>
+<li><p><code>constraints_bayes</code> a <code><a href='constraints-class.html'>constraints</a></code> object containing 14 constraints.</p></li>
 </ul>
 
 <p>Also, the following objects are intended for illustrating expected data structures.</p><ul>
-<li><p><code>itempool_bayes_data</code> A <code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></code> containing item parameters.</p></li>
-<li><p><code>itempool_se_bayes_data</code> A <code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></code> containing item parameter standard errors.</p></li>
-<li><p><code>itemattrib_bayes_data</code> A <code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></code> containing item attributes.</p></li>
-<li><p><code>constraints_bayes_data</code> A <code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></code> containing constraint specifications.</p></li>
+<li><p><code>itempool_bayes_data</code> a <code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></code> containing item parameters.</p></li>
+<li><p><code>itempool_se_bayes_data</code> a <code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></code> containing item parameter standard errors.</p></li>
+<li><p><code>itemattrib_bayes_data</code> a <code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></code> containing item attributes.</p></li>
+<li><p><code>constraints_bayes_data</code> a <code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></code> containing constraint specifications.</p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='kw'>itempool_bayes</span>    <span class='op'>&lt;-</span> <span class='fu'><a href='loadItemPool.html'>loadItemPool</a></span>(<span class='kw'>itempool_bayes_data</span>, <span class='kw'>itempool_se_bayes_data</span>)
-<span class='kw'>itemattrib_bayes</span>  <span class='op'>&lt;-</span> <span class='fu'><a href='item_attrib-class.html'>loadItemAttrib</a></span>(<span class='kw'>itemattrib_bayes_data</span>, <span class='kw'>itempool_bayes</span>)
-<span class='kw'>constraints_bayes</span> <span class='op'>&lt;-</span> <span class='fu'><a href='loadConstraints.html'>loadConstraints</a></span>(<span class='kw'>constraints_bayes_data</span>,
-  <span class='kw'>itempool_bayes</span>, <span class='kw'>itemattrib_bayes</span>)
-
-<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-  <span class='fu'><a href='https://rdrr.io/r/utils/View.html'>View</a></span>(<span class='kw'>itempool_bayes_data</span>)
-  <span class='fu'><a href='https://rdrr.io/r/utils/View.html'>View</a></span>(<span class='kw'>itempool_se_bayes_data</span>)
-  <span class='fu'><a href='https://rdrr.io/r/utils/View.html'>View</a></span>(<span class='kw'>itemattrib_bayes_data</span>)
-  <span class='fu'><a href='https://rdrr.io/r/utils/View.html'>View</a></span>(<span class='kw'>constraints_bayes_data</span>)
-}
+    <pre class="examples"><span class='va'>itempool_bayes</span>    <span class='op'>&lt;-</span> <span class='fu'><a href='loadItemPool.html'>loadItemPool</a></span><span class='op'>(</span><span class='va'>itempool_bayes_data</span>, <span class='va'>itempool_se_bayes_data</span><span class='op'>)</span>
+<span class='va'>itemattrib_bayes</span>  <span class='op'>&lt;-</span> <span class='fu'><a href='item_attrib-class.html'>loadItemAttrib</a></span><span class='op'>(</span><span class='va'>itemattrib_bayes_data</span>, <span class='va'>itempool_bayes</span><span class='op'>)</span>
+<span class='va'>constraints_bayes</span> <span class='op'>&lt;-</span> <span class='fu'><a href='loadConstraints.html'>loadConstraints</a></span><span class='op'>(</span><span class='va'>constraints_bayes_data</span>,
+  <span class='va'>itempool_bayes</span>, <span class='va'>itemattrib_bayes</span><span class='op'>)</span>
 
 </pre>
   </div>

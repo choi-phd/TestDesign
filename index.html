@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">TestDesign</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.3</span>
       </span>
     </div>
 
@@ -101,49 +101,45 @@
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>Install the latest release (1.1.2) from CRAN:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"TestDesign"</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"TestDesign"</span><span class="op">)</span></pre></div>
 </div>
 <div id="quick-start" class="section level2">
 <h2 class="hasAnchor">
 <a href="#quick-start" class="anchor"></a>Quick start</h2>
 <div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw">itempool</span>    <span class="op">&lt;-</span> <span class="fu"><a href="reference/loadItemPool.html">loadItemPool</a></span>(<span class="kw">itempool_science_data</span>)
-<span class="kw">itemattrib</span>  <span class="op">&lt;-</span> <span class="fu"><a href="reference/item_attrib-class.html">loadItemAttrib</a></span>(<span class="kw">itemattrib_science_data</span>, <span class="kw">itempool</span>)
-<span class="kw">constraints</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/loadConstraints.html">loadConstraints</a></span>(<span class="kw">constraints_science_data</span>, <span class="kw">itempool</span>, <span class="kw">itemattrib</span>)
-</pre></div>
+<span class="va">itempool</span>    <span class="op">&lt;-</span> <span class="fu"><a href="reference/loadItemPool.html">loadItemPool</a></span><span class="op">(</span><span class="va">itempool_science_data</span><span class="op">)</span>
+<span class="va">itemattrib</span>  <span class="op">&lt;-</span> <span class="fu"><a href="reference/item_attrib-class.html">loadItemAttrib</a></span><span class="op">(</span><span class="va">itemattrib_science_data</span>, <span class="va">itempool</span><span class="op">)</span>
+<span class="va">constraints</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/loadConstraints.html">loadConstraints</a></span><span class="op">(</span><span class="va">constraints_science_data</span>, <span class="va">itempool</span>, <span class="va">itemattrib</span><span class="op">)</span></pre></div>
 </div>
 <div id="static-fixed-form-assembly" class="section level2">
 <h2 class="hasAnchor">
 <a href="#static-fixed-form-assembly" class="anchor"></a>Static (fixed-form) assembly</h2>
 <div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw">cfg</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/config_Static-class.html">createStaticTestConfig</a></span>(
-  item_selection = <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
-    method          = <span class="st">"TIF"</span>,
-    target_location = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">1</span>,  <span class="fl">1</span>),
-    target_value    = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>( <span class="fl">8</span>, <span class="fl">10</span>)
-  )
-)
+<span class="va">cfg</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/config_Static-class.html">createStaticTestConfig</a></span><span class="op">(</span>
+  item_selection <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+    method          <span class="op">=</span> <span class="st">"TIF"</span>,
+    target_location <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>,  <span class="fl">1</span><span class="op">)</span>,
+    target_value    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span> <span class="fl">8</span>, <span class="fl">10</span><span class="op">)</span>
+  <span class="op">)</span>
+<span class="op">)</span>
 
-<span class="kw">solution</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/Static.html">Static</a></span>(<span class="kw">cfg</span>, <span class="kw">constraints</span>)
+<span class="va">solution</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/Static.html">Static</a></span><span class="op">(</span><span class="va">cfg</span>, <span class="va">constraints</span><span class="op">)</span>
 
-<span class="fu"><a href="reference/summary.html">summary</a></span>(<span class="kw">solution</span>)
-<span class="fu"><a href="reference/print.html">print</a></span>(<span class="kw">solution</span>)
-<span class="fu"><a href="reference/plot.html">plot</a></span>(<span class="kw">solution</span>)
-</pre></div>
+<span class="fu"><a href="reference/summary.html">summary</a></span><span class="op">(</span><span class="va">solution</span><span class="op">)</span>
+<span class="fu"><a href="reference/print.html">print</a></span><span class="op">(</span><span class="va">solution</span><span class="op">)</span>
+<span class="fu"><a href="reference/plot.html">plot</a></span><span class="op">(</span><span class="va">solution</span><span class="op">)</span></pre></div>
 </div>
 <div id="shadow-adaptive-assembly" class="section level2">
 <h2 class="hasAnchor">
 <a href="#shadow-adaptive-assembly" class="anchor"></a>Shadow (adaptive) assembly</h2>
 <div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="kw">cfg</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/config_Shadow-class.html">createShadowTestConfig</a></span>()
+<span class="va">cfg</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/config_Shadow-class.html">createShadowTestConfig</a></span><span class="op">(</span><span class="op">)</span>
 
-<span class="kw">solution</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/Shadow.html">Shadow</a></span>(<span class="kw">cfg</span>, <span class="kw">constraints</span>, true_theta = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">1</span>))
+<span class="va">solution</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/Shadow.html">Shadow</a></span><span class="op">(</span><span class="va">cfg</span>, <span class="va">constraints</span>, true_theta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu"><a href="reference/plot.html">plot</a></span>(<span class="kw">solution</span>, type = <span class="st">"audit"</span> , examinee_id = <span class="fl">1</span>)
-<span class="fu"><a href="reference/plot.html">plot</a></span>(<span class="kw">solution</span>, type = <span class="st">"shadow"</span>, examinee_id = <span class="fl">2</span>, simple = <span class="kw">T</span>)
-<span class="fu"><a href="reference/summary.html">summary</a></span>(<span class="kw">solution</span>)
-</pre></div>
+<span class="fu"><a href="reference/plot.html">plot</a></span><span class="op">(</span><span class="va">solution</span>, type <span class="op">=</span> <span class="st">"audit"</span> , examinee_id <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+<span class="fu"><a href="reference/plot.html">plot</a></span><span class="op">(</span><span class="va">solution</span>, type <span class="op">=</span> <span class="st">"shadow"</span>, examinee_id <span class="op">=</span> <span class="fl">2</span>, simple <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
+<span class="fu"><a href="reference/summary.html">summary</a></span><span class="op">(</span><span class="va">solution</span><span class="op">)</span></pre></div>
 <p>The documentation is available at (<a href="https://choi-phd.github.io/TestDesign" class="uri">https://choi-phd.github.io/TestDesign</a>)</p>
 </div>
 </div>

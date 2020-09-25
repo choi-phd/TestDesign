@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TestDesign</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.3</span>
       </span>
     </div>
 
@@ -139,32 +139,44 @@
 
 
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    
+<dl>
+  <dt><em>notations</em></dt><dd><p><ul>
+<li><p><em>ni</em> denotes the number of items in the <code><a href='item_pool-class.html'>item_pool</a></code> object.</p></li>
+<li><p><em>ns</em> denotes the number of stimuli.</p></li>
+<li><p><em>nj</em> denotes the number of participants.</p></li>
+</ul></p></dd>
+
+</dl>
+
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
     
 
 <dl>
-<dt><code>output</code></dt><dd><p>list of <code><a href='output_Shadow-class.html'>output_Shadow</a></code> objects, containing the assembly results for each participant.</p></dd>
+<dt><code>output</code></dt><dd><p>a length-*nj* list of <code><a href='output_Shadow-class.html'>output_Shadow</a></code> objects, containing the assembly results for each participant.</p></dd>
 
-<dt><code>final_theta_est</code></dt><dd><p>final theta estimates for each participant.</p></dd>
+<dt><code>final_theta_est</code></dt><dd><p>a length-*nj* vector containing final theta estimates for each participant.</p></dd>
 
-<dt><code>final_se_est</code></dt><dd><p>standard errors of final theta estimates for each participant.</p></dd>
+<dt><code>final_se_est</code></dt><dd><p>a length-*nj* vector standard errors of the final theta estimates for each participant.</p></dd>
 
-<dt><code>exposure_rate</code></dt><dd><p>Exposure rate of each item in the pool.</p></dd>
+<dt><code>exposure_rate</code></dt><dd><p>a matrix containing item-level exposure rates of all items in the pool. Also contains stimulus-level exposure rates if the assembly was set-based.</p></dd>
 
-<dt><code>usage_matrix</code></dt><dd><p>The matrix representing which items were used in each item position.</p></dd>
+<dt><code>usage_matrix</code></dt><dd><p>a *nj* by (*ni* + *ns*) matrix representing whether the item/stimulus was administered to each participant. Stimuli representations are appended to the right side of the matrix.</p></dd>
 
-<dt><code>true_segment_count</code></dt><dd><p>foo</p></dd>
+<dt><code>true_segment_count</code></dt><dd><p>a length-*nj* vector containing the how many examinees are now in their segment based on the true theta. This will tend to increase. This can be reproduced with true theta values alone.</p></dd>
 
-<dt><code>est_segment_count</code></dt><dd><p>foo</p></dd>
+<dt><code>est_segment_count</code></dt><dd><p>a length-*nj* vector containing the how many examinees are now in their segment based on the estimated theta. This will tend to increase. This can be reproduced with estimated theta values alone.</p></dd>
 
-<dt><code>eligibility_stats</code></dt><dd><p>foo</p></dd>
+<dt><code>eligibility_stats</code></dt><dd><p>exposure record for diagnostics.</p></dd>
 
-<dt><code>check_eligibility_stats</code></dt><dd><p>foo</p></dd>
+<dt><code>check_eligibility_stats</code></dt><dd><p>detailed segment-wise exposure record for diagnostics. available when <code>config_Shadow@exposure_control$diagnostic_stats</code> is <code>TRUE</code>.</p></dd>
 
-<dt><code>no_fading_eligibility_stats</code></dt><dd><p>foo</p></dd>
+<dt><code>no_fading_eligibility_stats</code></dt><dd><p>detailed segment-wise exposure record without fading for diagnostics. available when <code>config_Shadow@exposure_control$diagnostic_stats</code> is <code>TRUE</code>.</p></dd>
 
-<dt><code>freq_infeasible</code></dt><dd><p>foo</p></dd>
+<dt><code>freq_infeasible</code></dt><dd><p>a table representing the number of times the assembly was initially infeasible.</p></dd>
 
 <dt><code>pool</code></dt><dd><p>the <code><a href='item_pool-class.html'>item_pool</a></code> used in the assembly.</p></dd>
 

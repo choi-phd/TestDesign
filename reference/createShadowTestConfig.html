@@ -75,7 +75,7 @@ Default values are used for any unspecified parameters/slots." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TestDesign</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.3</span>
       </span>
     </div>
 
@@ -139,19 +139,19 @@ Default values are used for any unspecified parameters/slots." />
 Default values are used for any unspecified parameters/slots.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>createShadowTestConfig</span>(
-  item_selection = <span class='kw'>NULL</span>,
-  content_balancing = <span class='kw'>NULL</span>,
-  MIP = <span class='kw'>NULL</span>,
-  MCMC = <span class='kw'>NULL</span>,
-  refresh_policy = <span class='kw'>NULL</span>,
-  exposure_control = <span class='kw'>NULL</span>,
-  stopping_criterion = <span class='kw'>NULL</span>,
-  interim_theta = <span class='kw'>NULL</span>,
-  final_theta = <span class='kw'>NULL</span>,
-  theta_grid = <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='op'>-</span><span class='fl'>4</span>, <span class='fl'>4</span>, <span class='fl'>0.1</span>),
-  audit_trail = <span class='kw'>F</span>
-)</pre>
+    <pre class="usage"><span class='fu'>createShadowTestConfig</span><span class='op'>(</span>
+  item_selection <span class='op'>=</span> <span class='cn'>NULL</span>,
+  content_balancing <span class='op'>=</span> <span class='cn'>NULL</span>,
+  MIP <span class='op'>=</span> <span class='cn'>NULL</span>,
+  MCMC <span class='op'>=</span> <span class='cn'>NULL</span>,
+  refresh_policy <span class='op'>=</span> <span class='cn'>NULL</span>,
+  exposure_control <span class='op'>=</span> <span class='cn'>NULL</span>,
+  stopping_criterion <span class='op'>=</span> <span class='cn'>NULL</span>,
+  interim_theta <span class='op'>=</span> <span class='cn'>NULL</span>,
+  final_theta <span class='op'>=</span> <span class='cn'>NULL</span>,
+  theta_grid <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>4</span>, <span class='fl'>4</span>, <span class='fl'>0.1</span><span class='op'>)</span>,
+  audit_trail <span class='op'>=</span> <span class='cn'>F</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -228,7 +228,7 @@ Default values are used for any unspecified parameters/slots.</p>
     <tr>
       <th>interim_theta</th>
       <td><p>a named list containing interim theta estimation options.</p><ul>
-<li><p><code>method</code> the type of estimation. Accepts <code>EAP, EB, FB</code>. (default = <code>EAP</code>)</p></li>
+<li><p><code>method</code> the type of estimation. Accepts <code>EAP, MLE, MLEF, EB, FB</code>. (default = <code>EAP</code>)</p></li>
 <li><p><code>shrinkage_correction</code> set <code>TRUE</code> to apply shrinkage correction. Used when <code>method</code> is <code>EAP</code>. (default = <code>FALSE</code>)</p></li>
 <li><p><code>prior_dist</code> the type of prior distribution. Accepts <code>NORMAL, UNIFORM</code>. (default = <code>NORMAL</code>)</p></li>
 <li><p><code>prior_par</code> distribution parameters for <code>prior_dist</code>. (default = <code><a href='https://rdrr.io/r/base/c.html'>c(0, 1)</a></code>)</p></li>
@@ -238,12 +238,14 @@ Default values are used for any unspecified parameters/slots.</p>
 <li><p><code>crit</code> convergence criterion. Used when <code>method</code> is <code>MLE</code>. (default = <code>1e-03</code>)</p></li>
 <li><p><code>max_change</code> maximum change in ML estimates between iterations. Changes exceeding this value is clipped to this value. Used when <code>method</code> is <code>MLE</code>. (default = <code>1.0</code>)</p></li>
 <li><p><code>do_Fisher</code> set <code>TRUE</code> to use Fisher's method of scoring. Used when <code>method</code> is <code>MLE</code>. (default = <code>TRUE</code>)</p></li>
+<li><p><code>fence_slope</code> slope parameter to use for <code>method = 'MLEF'</code>. This must have two values in total, for the lower and upper bound item respectively. Use one value to use the same value for both bounds. (default = <code>5</code>)</p></li>
+<li><p><code>fence_difficulty</code> difficulty parameters to use for <code>method = 'MLEF'</code>. This must have two values in total, for the lower and upper bound item respectively. (default = <code><a href='https://rdrr.io/r/base/c.html'>c(-5, 5)</a></code>)</p></li>
 </ul></td>
     </tr>
     <tr>
       <th>final_theta</th>
-      <td><p>A list containing final theta estimation options.</p><ul>
-<li><p><code>method</code> the type of estimation. Accepts <code>EAP, EB, FB</code>. (default = <code>EAP</code>)</p></li>
+      <td><p>a named list containing final theta estimation options.</p><ul>
+<li><p><code>method</code> the type of estimation. Accepts <code>EAP, MLE, MLEF, EB, FB</code>. (default = <code>EAP</code>)</p></li>
 <li><p><code>shrinkage_correction</code> set <code>TRUE</code> to apply shrinkage correction. Used when <code>method</code> is <code>EAP</code>. (default = <code>FALSE</code>)</p></li>
 <li><p><code>prior_dist</code> the type of prior distribution. Accepts <code>NORMAL, UNIFORM</code>. (default = <code>NORMAL</code>)</p></li>
 <li><p><code>prior_par</code> distribution parameters for <code>prior_dist</code>. (default = <code><a href='https://rdrr.io/r/base/c.html'>c(0, 1)</a></code>)</p></li>
@@ -253,6 +255,8 @@ Default values are used for any unspecified parameters/slots.</p>
 <li><p><code>crit</code> convergence criterion. Used when <code>method</code> is <code>MLE</code>. (default = <code>1e-03</code>)</p></li>
 <li><p><code>max_change</code> maximum change in ML estimates between iterations. Changes exceeding this value is clipped to this value. Used when <code>method</code> is <code>MLE</code>. (default = <code>1.0</code>)</p></li>
 <li><p><code>do_Fisher</code> set <code>TRUE</code> to use Fisher's method of scoring. Used when <code>method</code> is <code>MLE</code>. (default = <code>TRUE</code>)</p></li>
+<li><p><code>fence_slope</code> slope parameter to use for <code>method = 'MLEF'</code>. This must have two values in total, for the lower and upper bound item respectively. Use one value to use the same value for both bounds. (default = <code>5</code>)</p></li>
+<li><p><code>fence_difficulty</code> difficulty parameters to use for <code>method = 'MLEF'</code>. This must have two values in total, for the lower and upper bound item respectively. (default = <code><a href='https://rdrr.io/r/base/c.html'>c(-5, 5)</a></code>)</p></li>
 </ul></td>
     </tr>
     <tr>
@@ -267,13 +271,13 @@ Default values are used for any unspecified parameters/slots.</p>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='kw'>cfg1</span> <span class='op'>&lt;-</span> <span class='fu'>createShadowTestConfig</span>(refresh_policy = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-  method = <span class='st'>"STIMULUS"</span>
-))
-<span class='kw'>cfg2</span> <span class='op'>&lt;-</span> <span class='fu'>createShadowTestConfig</span>(refresh_policy = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-  method = <span class='st'>"POSITION"</span>,
-  position = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>5</span>, <span class='fl'>9</span>)
-))
+    <pre class="examples"><span class='va'>cfg1</span> <span class='op'>&lt;-</span> <span class='fu'>createShadowTestConfig</span><span class='op'>(</span>refresh_policy <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
+  method <span class='op'>=</span> <span class='st'>"STIMULUS"</span>
+<span class='op'>)</span><span class='op'>)</span>
+<span class='va'>cfg2</span> <span class='op'>&lt;-</span> <span class='fu'>createShadowTestConfig</span><span class='op'>(</span>refresh_policy <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
+  method <span class='op'>=</span> <span class='st'>"POSITION"</span>,
+  position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>5</span>, <span class='fl'>9</span><span class='op'>)</span>
+<span class='op'>)</span><span class='op'>)</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

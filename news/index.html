@@ -73,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TestDesign</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.3</span>
       </span>
     </div>
 
@@ -131,6 +131,28 @@
       <small>Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="testdesign-1-1-3" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.3">
+<a href="#testdesign-1-1-3" class="anchor"></a>TestDesign 1.1.3<small> Unreleased </small>
+</h1>
+<div id="new-features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features" class="anchor"></a>New features</h2>
+<ul>
+<li>Now supports MLE with Fences (<a href="https://doi.org/10.1177/0146621616631317">Han, 2016</a>) for interim and final theta estimates in <code><a href="../reference/Shadow.html">Shadow()</a></code>. This can be configured using <code>config_Shadow@interim_theta</code> and <code>config_Shadow@final_theta</code>.</li>
+</ul>
+</div>
+<div id="updates" class="section level2">
+<h2 class="hasAnchor">
+<a href="#updates" class="anchor"></a>Updates</h2>
+<ul>
+<li>Added missing documentation entries for the <code>output_Shadow_all</code> class.</li>
+<li>
+<code>output_Shadow_all</code> objects now have <code><a href="../reference/print.html">print()</a></code> and <code><a href="../reference/show.html">show()</a></code> extensions.</li>
+<li>Removed a deprecated class.</li>
+</ul>
+</div>
+</div>
     <div id="testdesign-1-1-2" class="section level1">
 <h1 class="page-header" data-toc-text="1.1.2">
 <a href="#testdesign-1-1-2" class="anchor"></a>TestDesign 1.1.2<small> 2020-09-21 </small>
@@ -168,9 +190,9 @@
 <code><a href="../reference/plot.html">plot(type = 'shadow')</a></code> (formerly <code><a href="../reference/plotShadow.html">plotShadow()</a></code>) now groups items by stimulus.</li>
 </ul>
 </div>
-<div id="new-features" class="section level2">
+<div id="new-features-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features" class="anchor"></a>New features</h2>
+<a href="#new-features-1" class="anchor"></a>New features</h2>
 <ul>
 <li>
 <code>config_*</code> objects now have a new <code>MIP$retry</code> slot. This specifies the number of retry attempts when the solver encounters a ‘no solution’ error. This error is incorrect in some cases. The intent of retrying is to verify whether the ‘no solution’ error indeed indicates a true error.</li>
@@ -248,7 +270,7 @@
 <a href="#new-helper-functions" class="anchor"></a>New helper functions</h2>
 <ul>
 <li>
-<code><a href="../reference/getSolution.html">getSolution()</a></code> prints the indexes of the selected items from the results of <code><a href="../reference/Static.html">Static()</a></code> or <code><a href="../reference/Shadow.html">Shadow()</a></code>.</li>
+<code><a href="../reference/getSolution.html">getSolution()</a></code> prints the indices of the selected items from the results of <code><a href="../reference/Static.html">Static()</a></code> or <code><a href="../reference/Shadow.html">Shadow()</a></code>.</li>
 <li>
 <code><a href="../reference/showConstraints.html">showConstraints()</a></code> returns the constraints table from a <code>constraints</code> object. This is a shortcut to access the <code>@constraints</code> slot.</li>
 </ul>
@@ -259,9 +281,9 @@
 <ul>
 <li>Now recognizes <code>TM_TARGET_GAP_ACHIEVED</code> as a valid status message in <code>lpsymphony</code> and <code>Rsymphony</code> solvers.</li>
 <li>
-<code><a href="../reference/item_attrib-class.html">loadItemAttrib()</a></code> now ignores malformatted values in ‘INDEX’ column and regenerates correct indexes.</li>
+<code><a href="../reference/item_attrib-class.html">loadItemAttrib()</a></code> now ignores malformatted values in ‘INDEX’ column and regenerates correct indices.</li>
 <li>
-<code><a href="../reference/st_attrib-class.html">loadStAttrib()</a></code> now ignores malformatted values in ‘STINDEX’ column and regenerates correct indexes.</li>
+<code><a href="../reference/st_attrib-class.html">loadStAttrib()</a></code> now ignores malformatted values in ‘STINDEX’ column and regenerates correct indices.</li>
 <li>
 <code>config_Static</code> object now shows the objective tolerance value in slot <code>@MIP$obj_tol</code>.</li>
 </ul>
@@ -310,9 +332,9 @@
 <code>ATA()</code> and <code>STA()</code> are removed. Deprecating the functions was not feasible because of the structural changes.</li>
 </ul>
 </div>
-<div id="new-features-1" class="section level2">
+<div id="new-features-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-1" class="anchor"></a>New features</h2>
+<a href="#new-features-2" class="anchor"></a>New features</h2>
 <ul>
 <li>Now supports item pools that include both set-based and discrete items.</li>
 <li>Now supports <code>lpsymphony</code> solver package from Bioconductor repository. Note: The current version 1.12.0 of <code>lpsymphony</code> will not install on R-devel due to <code>R CMD config F77</code> being deprecated. Installs normally on R 3.6.1.</li>

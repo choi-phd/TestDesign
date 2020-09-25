@@ -42,7 +42,7 @@
   
 
 <meta property="og:title" content="Run Test Assembly — runAssembly" />
-<meta property="og:description" content="Perform test assembly with specified configurations. This function is used internally in Static and Shadow." />
+<meta property="og:description" content="runAssembly is a function to perform test assembly. This function is used internally in Static and Shadow." />
 
 
 
@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TestDesign</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.3</span>
       </span>
     </div>
 
@@ -134,29 +134,29 @@
     </div>
 
     <div class="ref-description">
-    <p>Perform test assembly with specified configurations. This function is used internally in <code><a href='Static.html'>Static</a></code> and <code><a href='Shadow.html'>Shadow</a></code>.</p>
+    <p><code>runAssembly</code> is a function to perform test assembly. This function is used internally in <code><a href='Static.html'>Static</a></code> and <code><a href='Shadow.html'>Shadow</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>runAssembly</span>(<span class='kw'>config</span>, <span class='kw'>constraints</span>, xdata = <span class='kw'>NULL</span>, objective = <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>runAssembly</span><span class='op'>(</span><span class='va'>config</span>, <span class='va'>constraints</span>, xdata <span class='op'>=</span> <span class='cn'>NULL</span>, objective <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>config</th>
-      <td><p>A <code><a href='config_Static-class.html'>config_Static</a></code> or a <code><a href='config_Shadow-class.html'>config_Shadow</a></code> object containing configuration options. Use <code><a href='config_Static-class.html'>createStaticTestConfig</a></code> and <code><a href='config_Shadow-class.html'>createShadowTestConfig</a></code> for this.</p></td>
+      <td><p>a <code><a href='config_Static-class.html'>config_Static</a></code> or a <code><a href='config_Shadow-class.html'>config_Shadow</a></code> object containing configuration options. Use <code><a href='config_Static-class.html'>createStaticTestConfig</a></code> and <code><a href='config_Shadow-class.html'>createShadowTestConfig</a></code> for this.</p></td>
     </tr>
     <tr>
       <th>constraints</th>
-      <td><p>A list representing optimization constraints. Use <code><a href='loadConstraints.html'>loadConstraints</a></code> for this.</p></td>
+      <td><p>a <code><a href='constraints-class.html'>constraints</a></code> object. Use <code><a href='loadConstraints.html'>loadConstraints</a></code> for this.</p></td>
     </tr>
     <tr>
       <th>xdata</th>
-      <td><p>A list containing extra data to be used in <code><a href='Shadow.html'>Shadow</a></code>, representing the constraints for force-including previously administered items.</p></td>
+      <td><p>a list containing extra constraints in MIP form, to force-include previously administered items.</p></td>
     </tr>
     <tr>
       <th>objective</th>
-      <td><p>Information for each item in the pool.</p></td>
+      <td><p>the information value for each item in the pool.</p></td>
     </tr>
     </table>
 
