@@ -10,8 +10,8 @@
 \alias{simResp,item_GPC,numeric-method}
 \alias{simResp,item_GR,numeric-method}
 \alias{simResp,item_pool,numeric-method}
-\alias{simResp,pool_cluster,numeric-method}
-\alias{simResp,pool_cluster,list-method}
+\alias{simResp,item_pool_cluster,numeric-method}
+\alias{simResp,item_pool_cluster,list-method}
 \title{Simulate item response data}
 \usage{
 simResp(object, theta)
@@ -30,11 +30,11 @@ simResp(object, theta)
 
 \S4method{simResp}{item_pool,numeric}(object, theta)
 
-\S4method{simResp}{pool_cluster,numeric}(object, theta)
+\S4method{simResp}{item_pool_cluster,numeric}(object, theta)
 
-\S4method{simResp}{pool_cluster,list}(object, theta)
+\S4method{simResp}{item_pool_cluster,list}(object, theta)
 
-\S4method{simResp}{pool_cluster,list}(object, theta)
+\S4method{simResp}{item_pool_cluster,list}(object, theta)
 }
 \arguments{
 \item{object}{an \code{\link{item}} or an \code{\linkS4class{item_pool}} object.}

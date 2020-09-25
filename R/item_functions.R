@@ -639,10 +639,10 @@ setMethod(
 )
 
 #' @rdname calcProb-methods
-#' @aliases calcProb,pool_cluster,numeric-method
+#' @aliases calcProb,item_pool_cluster,numeric-method
 setMethod(
   f = "calcProb",
-  signature = c("pool_cluster", "numeric"),
+  signature = c("item_pool_cluster", "numeric"),
   definition = function(object, theta) {
     if (length(theta) > 0 && all(!is.na(theta))) {
       prob <- lapply(object@pools, calcProb, theta)
@@ -654,10 +654,10 @@ setMethod(
 )
 
 #' @rdname calcEscore-methods
-#' @aliases calcEscore,pool_cluster,numeric-method
+#' @aliases calcEscore,item_pool_cluster,numeric-method
 setMethod(
   f = "calcEscore",
-  signature = c("pool_cluster", "numeric"),
+  signature = c("item_pool_cluster", "numeric"),
   definition = function(object, theta) {
     if (length(theta) > 0 && all(!is.na(theta))) {
       expected_score <- lapply(object@pools, calcEscore, theta)
@@ -669,11 +669,11 @@ setMethod(
 )
 
 #' @rdname calcFisher-methods
-#' @aliases calcFisher,pool_cluster,numeric-method
+#' @aliases calcFisher,item_pool_cluster,numeric-method
 #' @export
 setMethod(
   f = "calcFisher",
-  signature = c("pool_cluster", "numeric"),
+  signature = c("item_pool_cluster", "numeric"),
   definition = function(object, theta) {
     if (length(theta) > 0 && all(!is.na(theta))) {
       info_Fisher <- vector(mode = "list", length = object@np)
@@ -1066,10 +1066,10 @@ setMethod(
 )
 
 #' @rdname calcJacobian-methods
-#' @aliases calcJacobian,pool_cluster,numeric-method
+#' @aliases calcJacobian,item_pool_cluster,numeric-method
 setMethod(
   f = "calcJacobian",
-  signature = c("pool_cluster", "numeric", "list"),
+  signature = c("item_pool_cluster", "numeric", "list"),
   definition = function(object, theta, resp) {
     if (length(theta) > 0 && all(!is.na(theta))) {
       mat_Jacobian <- vector(mode = "list", length = object@np)
@@ -1250,10 +1250,10 @@ setMethod(
 )
 
 #' @rdname calcHessian-methods
-#' @aliases calcHessian,pool_cluster,numeric-method
+#' @aliases calcHessian,item_pool_cluster,numeric-method
 setMethod(
   f = "calcHessian",
-  signature = c("pool_cluster", "numeric", "list"),
+  signature = c("item_pool_cluster", "numeric", "list"),
   definition = function(object, theta, resp) {
     if (length(theta) > 0 && all(!is.na(theta))) {
       mat_Hessian <- vector(mode = "list", length = object@np)
@@ -1436,10 +1436,10 @@ setMethod(
 )
 
 #' @rdname simResp-methods
-#' @aliases simResp,pool_cluster,numeric-method
+#' @aliases simResp,item_pool_cluster,numeric-method
 setMethod(
   f = "simResp",
-  signature = c("pool_cluster", "numeric"),
+  signature = c("item_pool_cluster", "numeric"),
   definition = function(object, theta) {
     if (length(theta) > 0 && all(!is.na(theta))) {
       data <- vector(mode = "list", length = object@np)
@@ -1454,10 +1454,10 @@ setMethod(
 )
 
 #' @rdname simResp-methods
-#' @aliases simResp,pool_cluster,list-method
+#' @aliases simResp,item_pool_cluster,list-method
 setMethod(
   f = "simResp",
-  signature = c("pool_cluster", "list"),
+  signature = c("item_pool_cluster", "list"),
   definition = function(object, theta) {
     if (length(theta) != length(object@np)) {
       data <- vector(mode = "list", length = object@np)

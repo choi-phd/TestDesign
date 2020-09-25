@@ -10,6 +10,7 @@
 \alias{show,item_GPC-method}
 \alias{show,item_GR-method}
 \alias{show,item_pool-method}
+\alias{show,item_pool_cluster-method}
 \alias{show,pool_cluster-method}
 \alias{show,item_attrib-method}
 \alias{show,st_attrib-method}
@@ -41,7 +42,7 @@
 
 \S4method{show}{item_pool}(object)
 
-\S4method{show}{pool_cluster}(object)
+\S4method{show}{item_pool_cluster}(object)
 
 \S4method{show}{item_attrib}(object)
 

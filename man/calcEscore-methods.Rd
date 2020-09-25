@@ -17,7 +17,7 @@
 \alias{calcEscore,item_GPC,matrix-method}
 \alias{calcEscore,item_GR,matrix-method}
 \alias{calcEscore,item_pool,matrix-method}
-\alias{calcEscore,pool_cluster,numeric-method}
+\alias{calcEscore,item_pool_cluster,numeric-method}
 \title{Calculate expected scores}
 \usage{
 calcEscore(object, theta)
@@ -50,7 +50,7 @@ calcEscore(object, theta)
 
 \S4method{calcEscore}{item_pool,matrix}(object, theta)
 
-\S4method{calcEscore}{pool_cluster,numeric}(object, theta)
+\S4method{calcEscore}{item_pool_cluster,numeric}(object, theta)
 }
 \arguments{
 \item{object}{an \code{\link{item}} or an \code{\linkS4class{item_pool}} object.}
