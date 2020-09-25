@@ -17,8 +17,8 @@
 \alias{calcHessian,item_GR,numeric-method}
 \alias{calcHessian,item_pool,numeric,numeric-method}
 \alias{calcHessian,item_pool,numeric-method}
-\alias{calcHessian,pool_cluster,numeric,list-method}
-\alias{calcHessian,pool_cluster,numeric-method}
+\alias{calcHessian,item_pool_cluster,numeric,list-method}
+\alias{calcHessian,item_pool_cluster,numeric-method}
 \title{Calculate second derivative of log-likelihood}
 \usage{
 calcHessian(object, theta, resp)
@@ -37,7 +37,7 @@ calcHessian(object, theta, resp)
 
 \S4method{calcHessian}{item_pool,numeric,numeric}(object, theta, resp)
 
-\S4method{calcHessian}{pool_cluster,numeric,list}(object, theta, resp)
+\S4method{calcHessian}{item_pool_cluster,numeric,list}(object, theta, resp)
 }
 \arguments{
 \item{object}{an \code{\link{item}} or an \code{\linkS4class{item_pool}} object.}

@@ -62,7 +62,7 @@ setMethod("show", "item_pool", function(object) {
 #' @aliases show,pool_cluster-method
 #' @docType methods
 #' @rdname show-methods
-setMethod("show", "pool_cluster", function(object) {
+setMethod("show", "item_pool_cluster", function(object) {
   if (length(object@np) > 0) {
     cat("@np    :", object@np, "\n")
     cat("@names :", paste0(object@names, collapse = ", "), "\n\n")
@@ -71,7 +71,7 @@ setMethod("show", "pool_cluster", function(object) {
       show(object@pools[[i]])
     }
   } else {
-    cat("The 'pool_cluster' object is empty.")
+    cat("The 'item_pool_cluster' object is empty.")
   }
 })
 

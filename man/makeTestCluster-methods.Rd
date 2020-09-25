@@ -3,18 +3,18 @@
 \docType{methods}
 \name{makeTestCluster}
 \alias{makeTestCluster}
-\alias{makeTestCluster,pool_cluster,numeric,numeric-method}
-\alias{makeTestCluster,pool_cluster,numeric,list-method}
+\alias{makeTestCluster,item_pool_cluster,numeric,numeric-method}
+\alias{makeTestCluster,item_pool_cluster,numeric,list-method}
 \title{Generate a test cluster object}
 \usage{
 makeTestCluster(object, theta, true_theta)
 
-\S4method{makeTestCluster}{pool_cluster,numeric,numeric}(object, theta, true_theta)
+\S4method{makeTestCluster}{item_pool_cluster,numeric,numeric}(object, theta, true_theta)
 
-\S4method{makeTestCluster}{pool_cluster,numeric,list}(object, theta, true_theta)
+\S4method{makeTestCluster}{item_pool_cluster,numeric,list}(object, theta, true_theta)
 }
 \arguments{
-\item{object}{An \code{\linkS4class{pool_cluster}} object}
+\item{object}{An \code{\linkS4class{item_pool_cluster}} object}
 
 \item{theta}{A grid of theta values}
 

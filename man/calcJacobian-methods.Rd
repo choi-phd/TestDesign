@@ -17,8 +17,8 @@
 \alias{calcJacobian,item_GR,numeric-method}
 \alias{calcJacobian,item_pool,numeric,numeric-method}
 \alias{calcJacobian,item_pool,numeric-method}
-\alias{calcJacobian,pool_cluster,numeric,list-method}
-\alias{calcJacobian,pool_cluster,numeric-method}
+\alias{calcJacobian,item_pool_cluster,numeric,list-method}
+\alias{calcJacobian,item_pool_cluster,numeric-method}
 \title{Calculate first derivative of log-likelihood}
 \usage{
 calcJacobian(object, theta, resp)
@@ -37,7 +37,7 @@ calcJacobian(object, theta, resp)
 
 \S4method{calcJacobian}{item_pool,numeric,numeric}(object, theta, resp)
 
-\S4method{calcJacobian}{pool_cluster,numeric,list}(object, theta, resp)
+\S4method{calcJacobian}{item_pool_cluster,numeric,list}(object, theta, resp)
 }
 \arguments{
 \item{object}{an \code{\link{item}} or an \code{\linkS4class{item_pool}} object.}
