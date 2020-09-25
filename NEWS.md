@@ -1,3 +1,15 @@
+# TestDesign 1.1.3
+
+## New features
+
+* Now supports MLE with Fences ([Han, 2016](https://doi.org/10.1177/0146621616631317)) for interim and final theta estimates in `Shadow()`. This can be configured using `config_Shadow@interim_theta` and `config_Shadow@final_theta`.
+
+## Updates
+
+* Added missing documentation entries for the `output_Shadow_all` class.
+* `output_Shadow_all` objects now have `print()` and `show()` extensions.
+* Removed a deprecated class.
+
 # TestDesign 1.1.2
 
 ## QoL updates
