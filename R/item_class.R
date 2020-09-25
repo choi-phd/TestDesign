@@ -274,7 +274,7 @@ setClass("item_pool",
 #' @slot np the number of item pools.
 #' @slot pools a list of \code{\linkS4class{item_pool}} objects.
 #' @slot names a vector containing item pool names.
-setClass("pool_cluster",
+setClass("item_pool_cluster",
   slots = c(
     np = "numeric",
     pools = "list",

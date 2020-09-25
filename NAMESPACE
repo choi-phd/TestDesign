@@ -3,7 +3,7 @@
 S3method("+",item_pool)
 S3method("-",item_pool)
 S3method("==",item_pool)
-S3method("==",pool_cluster)
+S3method("==",item_pool_cluster)
 export(OAT)
 export(Shadow)
 export(Static)

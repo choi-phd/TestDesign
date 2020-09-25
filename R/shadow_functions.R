@@ -2,10 +2,10 @@
 NULL
 
 #' @rdname simResp-methods
-#' @aliases simResp,pool_cluster,numeric-method
+#' @aliases simResp,item_pool_cluster,numeric-method
 setMethod(
   f = "simResp",
-  signature = c("pool_cluster", "list"),
+  signature = c("item_pool_cluster", "list"),
   definition = function(object, theta) {
     if (length(theta) != length(object@np)) {
       data <- vector(mode = "list", length = object@np)
@@ -27,7 +27,7 @@ setMethod(
 #'
 #' Generate a \code{\linkS4class{test_cluster}} object
 #'
-#' @param object An \code{\linkS4class{pool_cluster}} object
+#' @param object An \code{\linkS4class{item_pool_cluster}} object
 #' @param theta A grid of theta values
 #' @param true_theta An optional vector of true theta values to simulate response data
 #'
@@ -44,7 +44,7 @@ setGeneric(
 #' @rdname makeTestCluster-methods
 setMethod(
   f = "makeTestCluster",
-  signature = c("pool_cluster", "numeric", "numeric"),
+  signature = c("item_pool_cluster", "numeric", "numeric"),
   definition = function(object, theta, true_theta) {
     tests <- vector(mode = "list", length = object@np)
     for (p in 1:object@np) {
@@ -58,7 +58,7 @@ setMethod(
 #' @rdname makeTestCluster-methods
 setMethod(
   f = "makeTestCluster",
-  signature = c("pool_cluster", "numeric", "list"),
+  signature = c("item_pool_cluster", "numeric", "list"),
   definition = function(object, theta, true_theta) {
     tests <- vector(mode = "list", length = object@np)
     for (p in 1:object@np) {
