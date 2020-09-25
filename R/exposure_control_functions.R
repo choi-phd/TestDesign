@@ -118,25 +118,25 @@ initializeExposureRecordSegmentwise <- function(exposure_constants, constants) {
   fading_factor <- exposure_constants$fading_factor
 
   if (!constants$set_based) {
-    o$a_g_i <- matrix(0, nrow = nj, ncol = n_segment * ni)
-    o$e_g_i <- matrix(0, nrow = nj, ncol = n_segment * ni)
+    o$a_g_i <- replicate(n_segment, matrix(0, nrow = nj, ncol = ni), simplify = FALSE)
+    o$e_g_i <- replicate(n_segment, matrix(0, nrow = nj, ncol = ni), simplify = FALSE)
   }
   if (constants$set_based) {
-    o$a_g_i <- matrix(0, nrow = nj, ncol = n_segment * ni)
-    o$e_g_i <- matrix(0, nrow = nj, ncol = n_segment * ni)
-    o$a_g_s <- matrix(0, nrow = nj, ncol = n_segment * ns)
-    o$e_g_s <- matrix(0, nrow = nj, ncol = n_segment * ns)
+    o$a_g_i <- replicate(n_segment, matrix(0, nrow = nj, ncol = ni), simplify = FALSE)
+    o$e_g_i <- replicate(n_segment, matrix(0, nrow = nj, ncol = ni), simplify = FALSE)
+    o$a_g_s <- replicate(n_segment, matrix(0, nrow = nj, ncol = ns), simplify = FALSE)
+    o$e_g_s <- replicate(n_segment, matrix(0, nrow = nj, ncol = ns), simplify = FALSE)
   }
 
   if (fading_factor != 1 & !constants$set_based) {
-    o$a_g_i_nofade <- matrix(0, nrow = nj, ncol = n_segment * ni)
-    o$e_g_i_nofade <- matrix(0, nrow = nj, ncol = n_segment * ni)
+    o$a_g_i_nofade <- replicate(n_segment, matrix(0, nrow = nj, ncol = ni), simplify = FALSE)
+    o$e_g_i_nofade <- replicate(n_segment, matrix(0, nrow = nj, ncol = ni), simplify = FALSE)
   }
   if (fading_factor != 1 & constants$set_based) {
-    o$a_g_i_nofade <- matrix(0, nrow = nj, ncol = n_segment * ni)
-    o$e_g_i_nofade <- matrix(0, nrow = nj, ncol = n_segment * ni)
-    o$a_g_s_nofade <- matrix(0, nrow = nj, ncol = n_segment * ns)
-    o$e_g_s_nofade <- matrix(0, nrow = nj, ncol = n_segment * ns)
+    o$a_g_i_nofade <- replicate(n_segment, matrix(0, nrow = nj, ncol = ni), simplify = FALSE)
+    o$e_g_i_nofade <- replicate(n_segment, matrix(0, nrow = nj, ncol = ni), simplify = FALSE)
+    o$a_g_s_nofade <- replicate(n_segment, matrix(0, nrow = nj, ncol = ns), simplify = FALSE)
+    o$e_g_s_nofade <- replicate(n_segment, matrix(0, nrow = nj, ncol = ns), simplify = FALSE)
   }
 
   return(o)
@@ -198,11 +198,11 @@ updateExposureRecordSegmentwise <- function(o, j, x, exposure_constants, constan
 
   ni <- constants$ni
   for (g in 1:n_segment) {
-    o$a_g_i[j, (g - 1) * ni + 1:ni] <- x$a_ijk[g, ]
-    o$e_g_i[j, (g - 1) * ni + 1:ni] <- x$r_ijk[g, ]
+    o$a_g_i[[g]][j, 1:ni] <- x$a_ijk[g, ]
+    o$e_g_i[[g]][j, 1:ni] <- x$r_ijk[g, ]
     if (fading_factor != 1) {
-      o$a_g_i_nofade[j, (g - 1) * ni + 1:ni] <- x$a_ijk_nofade[g, ]
-      o$e_g_i_nofade[j, (g - 1) * ni + 1:ni] <- x$r_ijk_nofade[g, ]
+      o$a_g_i_nofade[[g]][j, 1:ni] <- x$a_ijk_nofade[g, ]
+      o$e_g_i_nofade[[g]][j, 1:ni] <- x$r_ijk_nofade[g, ]
     }
   }
 
@@ -212,11 +212,11 @@ updateExposureRecordSegmentwise <- function(o, j, x, exposure_constants, constan
 
   ns <- constants$ns
   for (g in 1:n_segment) {
-    o$a_g_s[j, (g - 1) * ns + 1:ns] <- x$a_sjk[g, ]
-    o$e_g_s[j, (g - 1) * ns + 1:ns] <- x$r_sjk[g, ]
+    o$a_g_s[[g]][j, 1:ns] <- x$a_sjk[g, ]
+    o$e_g_s[[g]][j, 1:ns] <- x$r_sjk[g, ]
     if (fading_factor != 1) {
-      o$a_g_s_nofade[j, (g - 1) * ns + 1:ns] <- x$a_sjk_nofade[g, ]
-      o$e_g_s_nofade[j, (g - 1) * ns + 1:ns] <- x$r_sjk_nofade[g, ]
+      o$a_g_s_nofade[[g]][j, 1:ns] <- x$a_sjk_nofade[g, ]
+      o$e_g_s_nofade[[g]][j, 1:ns] <- x$r_sjk_nofade[g, ]
     }
   }
 
