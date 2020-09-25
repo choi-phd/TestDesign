@@ -720,41 +720,46 @@ setMethod(
 
       if (config@exposure_control$diagnostic_stats) {
 
-        check_eligibility_stats <- as.data.frame(cbind(
-          1:constants$nj, true_theta, find_segment(true_theta, exposure_constants$segment_cut), segment_record$count_true,
-          exposure_record_detailed$a_g_i,
-          exposure_record_detailed$e_g_i), row.names = NULL)
-        names(check_eligibility_stats) <- c("Examinee", "TrueTheta", "TrueSegment", "TrueSegmentCount",
-          paste("a", "g", rep(1:exposure_constants$n_segment, rep(constants$ni, exposure_constants$n_segment)), "i", rep(1:constants$ni, exposure_constants$n_segment), sep = "_"),
-          paste("e", "g", rep(1:exposure_constants$n_segment, rep(constants$ni, exposure_constants$n_segment)), "i", rep(1:constants$ni, exposure_constants$n_segment), sep = "_"))
+        check_eligibility_stats <- list()
 
-        if (constants$set_based) {
-          check_eligibility_stats_stimulus <- as.data.frame(cbind(
-            exposure_record_detailed$a_g_s,
-            exposure_record_detailed$e_g_s), row.names = NULL)
-          names(check_eligibility_stats_stimulus) <- c(
-            paste("a", "g", rep(1:exposure_constants$n_segment, rep(constants$ns, exposure_constants$n_segment)), "s", rep(1:constants$ns, exposure_constants$n_segment), sep = "_"),
-            paste("e", "g", rep(1:exposure_constants$n_segment, rep(constants$ns, exposure_constants$n_segment)), "s", rep(1:constants$ns, exposure_constants$n_segment), sep = "_"))
-          check_eligibility_stats <- cbind(check_eligibility_stats, check_eligibility_stats_stimulus)
+        for (j in 1:constants$nj) {
+          tmp <- list()
+          tmp$true_theta         <- true_theta[j]
+          tmp$true_segment       <- find_segment(true_theta[j], exposure_constants$segment_cut)
+          tmp$true_segment_count <- segment_record$count_true[j]
+          check_eligibility_stats[[j]] <- tmp
+
+          check_eligibility_stats[[j]]$a_g_i <- exposure_record_detailed$a_g_i
+          check_eligibility_stats[[j]]$e_g_i <- exposure_record_detailed$e_g_i
+
+          if (constants$set_based) {
+            check_eligibility_stats[[j]]$a_g_s <- exposure_record_detailed$a_g_s
+            check_eligibility_stats[[j]]$e_g_s <- exposure_record_detailed$e_g_s
+          }
+
         }
 
         if (exposure_constants$fading_factor != 1) {
-          no_fading_eligibility_stats <- as.data.frame(cbind(
-            1:constants$nj, true_theta, find_segment(true_theta, exposure_constants$segment_cut), segment_record$count_true,
-            exposure_record_detailed$a_g_i_nofade,
-            exposure_record_detailed$e_g_i_nofade), row.names = NULL)
-          names(no_fading_eligibility_stats) <- c("Examinee", "TrueTheta", "TrueSegment", "TrueSegmentCount",
-            paste("a", "g", rep(1:exposure_constants$n_segment, rep(constants$ni, exposure_constants$n_segment)), "i", rep(1:constants$ni, exposure_constants$n_segment), sep = "_"),
-            paste("e", "g", rep(1:exposure_constants$n_segment, rep(constants$ni, exposure_constants$n_segment)), "i", rep(1:constants$ni, exposure_constants$n_segment), sep = "_"))
-          if (constants$set_based) {
-            no_fading_eligibility_stats_stimulus <- as.data.frame(cbind(
-              exposure_record_detailed$a_g_s_nofade,
-              exposure_record_detailed$e_g_s_nofade), row.names = NULL)
-            names(no_fading_eligibility_stats_stimulus) <- c(
-              paste("a", "g", rep(1:exposure_constants$n_segment, rep(constants$ns, exposure_constants$n_segment)), "s", rep(1:constants$ns, exposure_constants$n_segment), sep = "_"),
-              paste("e", "g", rep(1:exposure_constants$n_segment, rep(constants$ns, exposure_constants$n_segment)), "s", rep(1:constants$ns, exposure_constants$n_segment), sep = "_"))
-            no_fading_eligibility_stats <- cbind(no_fading_eligibility_stats, no_fading_eligibility_stats_stimulus)
+
+          no_fading_eligibility_stats <- list()
+
+          for (j in 1:constants$nj) {
+            tmp <- list()
+            tmp$true_theta         <- true_theta[j]
+            tmp$true_segment       <- find_segment(true_theta[j], exposure_constants$segment_cut)
+            tmp$true_segment_count <- segment_record$count_true[j]
+            no_fading_eligibility_stats[[j]] <- tmp
+
+            no_fading_eligibility_stats[[j]]$a_g_i_nofade <- exposure_record_detailed$a_g_i_nofade
+            no_fading_eligibility_stats[[j]]$e_g_i_nofade <- exposure_record_detailed$e_g_i_nofade
+
+            if (constants$set_based) {
+              no_fading_eligibility_stats[[j]]$a_g_s_nofade <- exposure_record_detailed$a_g_s_nofade
+              no_fading_eligibility_stats[[j]]$e_g_s_nofade <- exposure_record_detailed$e_g_s_nofade
+            }
+
           }
+
         }
 
       }
