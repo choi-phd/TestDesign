@@ -1,4 +1,4 @@
-#' @include item_class.R
+#' @include item_pool_operators.R
 NULL
 
 #' Basic functions for item attribute objects

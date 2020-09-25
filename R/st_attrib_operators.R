@@ -1,4 +1,4 @@
-#' @include item_class.R
+#' @include item_attrib_operators.R
 NULL
 
 #' Basic functions for stimulus attribute objects
