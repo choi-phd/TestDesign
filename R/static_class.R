@@ -73,9 +73,6 @@ setClass("config_Static",
   }
 )
 
-#' @noRd
-setClassUnion("config_ATA", c("config_Static"))
-
 #' Create a config_Static object
 #'
 #' \code{\link{createStaticTestConfig}} is a config function to create a \code{\linkS4class{config_Static}} object for Static (fixed-form) test assembly.
