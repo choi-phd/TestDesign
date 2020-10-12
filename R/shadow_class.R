@@ -190,7 +190,7 @@ setClass("config_Shadow",
     for (solver_name in c("gurobi", "Rsymphony", "lpsymphony", "Rglpk")) {
       if (toupper(object@MIP$solver) == toupper(solver_name)) {
         if (!requireNamespace(solver_name, quietly = TRUE)) {
-          msg <- sprintf("config@MIP: could not find the specified $solver package '$s'", solver_name)
+          msg <- sprintf("config@MIP: could not find the specified solver package '%s'", solver_name)
           err <- c(err, msg)
         }
       }
