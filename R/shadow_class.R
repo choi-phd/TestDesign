@@ -463,7 +463,7 @@ setClass("output_Shadow_all",
     data                        = "matrix_or_null",
     true_theta                  = "numeric_or_null",
     prior                       = "matrix_or_numeric_or_null",
-    prior_par                   = "numeric_or_null"
+    prior_par                   = "matrix_or_numeric_or_null"
   ),
   prototype = list(
     output                      = NULL,
