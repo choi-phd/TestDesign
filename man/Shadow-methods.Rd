@@ -13,6 +13,7 @@ Shadow(
   prior = NULL,
   prior_par = NULL,
   excluded_items = NULL,
+  include_items_for_estimation = NULL,
   force_solver = FALSE,
   session = NULL
 )
@@ -25,6 +26,7 @@ Shadow(
   prior = NULL,
   prior_par = NULL,
   excluded_items = NULL,
+  include_items_for_estimation = NULL,
   force_solver = FALSE,
   session = NULL
 )
@@ -43,6 +45,12 @@ Shadow(
 \item{prior_par}{(optional) normal distribution parameters \code{c(mean, sd)} to use as prior. Can be a vector to use the same prior for all \emph{nj} participants, or a \emph{nj}-row matrix to use a different prior for each participant.}
 
 \item{excluded_items}{(optional) a list containing item names to exclude from selection for each participant.}
+
+\item{include_items_for_estimation}{(optional) an examinee-wise list containing:
+\itemize{
+  \item{administered_item_pool} items to include in theta estimation as \code{\linkS4class{item_pool}} object.
+  \item{administered_item_resp} item responses to include in theta estimation.
+}}
 
 \item{force_solver}{if \code{TRUE}, do not check whether the solver is one of recommended solvers for doing set-based assembly. Has no effect on discrete assembly. (default = \code{FALSE})}
 
