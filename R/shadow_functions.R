@@ -79,6 +79,11 @@ setMethod(
 #' @param prior (optional) prior density at each \code{config@theta_grid}. This overrides \code{prior_par}. Can be a vector to use the same prior for all \emph{nj} participants, or a \emph{nj}-row matrix to use a different prior for each participant.
 #' @param prior_par (optional) normal distribution parameters \code{c(mean, sd)} to use as prior. Can be a vector to use the same prior for all \emph{nj} participants, or a \emph{nj}-row matrix to use a different prior for each participant.
 #' @param excluded_items (optional) a list containing item names to exclude from selection for each participant.
+#' @param include_items_for_estimation (optional) an examinee-wise list containing:
+#' \itemize{
+#'   \item{administered_item_pool} items to include in theta estimation as \code{\linkS4class{item_pool}} object.
+#'   \item{administered_item_resp} item responses to include in theta estimation.
+#' }
 #' @template force_solver_param
 #' @param session (optional) used to communicate with Shiny app \code{\link{TestDesign}}.
 #'
@@ -98,7 +103,7 @@ setMethod(
 #' @export
 setGeneric(
   name = "Shadow",
-  def = function(config, constraints = NULL, true_theta = NULL, data = NULL, prior = NULL, prior_par = NULL, excluded_items = NULL, force_solver = FALSE, session = NULL) {
+  def = function(config, constraints = NULL, true_theta = NULL, data = NULL, prior = NULL, prior_par = NULL, excluded_items = NULL, include_items_for_estimation = NULL, force_solver = FALSE, session = NULL) {
     standardGeneric("Shadow")
   }
 )
@@ -108,7 +113,7 @@ setGeneric(
 setMethod(
   f = "Shadow",
   signature = "config_Shadow",
-  definition = function(config, constraints, true_theta, data, prior, prior_par, excluded_items, force_solver = FALSE, session) {
+  definition = function(config, constraints, true_theta, data, prior, prior_par, excluded_items, include_items_for_estimation, force_solver = FALSE, session) {
 
     if (!validObject(config)) {
       stop("'config' argument is not a valid 'config_Shadow' object")
@@ -235,6 +240,15 @@ setMethod(
 
       if (exposure_constants$use_eligibility_control) {
         ineligible_flag <- flagIneligible(exposure_record, exposure_constants, constants, constraints@item_index_by_stimulus)
+      }
+
+      # Simulee: create augmented pool if applicable
+
+      if (!is.null(include_items_for_estimation)) {
+        augment_item_pool  <- include_items_for_estimation[[j]]$administered_item_pool
+        augment_item_resp  <- include_items_for_estimation[[j]]$administered_item_resp
+        augment_item_index <- pool@ni + 1:augment_item_pool@ni
+        augmented_pool <- combineItemPool(pool, augment_item_pool, unique = FALSE, verbose = FALSE)
       }
 
       # Simulee: administer items
@@ -397,38 +411,81 @@ setMethod(
 
         } else if (toupper(config@interim_theta$method) == "MLE") {
 
-          interim_EAP <- estimateThetaEAP(posterior_record$posterior[j, ], constants$theta_q)
-          interim_MLE <- mle(pool,
-            select      = o@administered_item_index[1:position],
-            resp        = o@administered_item_resp[1:position],
-            start_theta = interim_EAP$theta,
-            max_iter    = config@interim_theta$max_iter,
-            crit        = config@interim_theta$crit,
-            theta_range = config@interim_theta$bound_ML,
-            truncate    = config@interim_theta$truncate_ML,
-            max_change  = config@interim_theta$max_change,
-            do_Fisher   = config@interim_theta$do_Fisher
-          )
+          if (!is.null(include_items_for_estimation)) {
+
+            interim_EAP <- estimateThetaEAP(posterior_record$posterior[j, ], constants$theta_q)
+
+            interim_MLE <- mle(augmented_pool,
+              select      = c(augment_item_index, o@administered_item_index[1:position]),
+              resp        = c(augment_item_resp,  o@administered_item_resp[1:position]),
+              start_theta = interim_EAP$theta,
+              max_iter    = config@interim_theta$max_iter,
+              crit        = config@interim_theta$crit,
+              theta_range = config@interim_theta$bound_ML,
+              truncate    = config@interim_theta$truncate_ML,
+              max_change  = config@interim_theta$max_change,
+              do_Fisher   = config@interim_theta$do_Fisher
+            )
+
+          } else {
+
+            interim_EAP <- estimateThetaEAP(posterior_record$posterior[j, ], constants$theta_q)
+
+            interim_MLE <- mle(pool,
+              select      = o@administered_item_index[1:position],
+              resp        = o@administered_item_resp[1:position],
+              start_theta = interim_EAP$theta,
+              max_iter    = config@interim_theta$max_iter,
+              crit        = config@interim_theta$crit,
+              theta_range = config@interim_theta$bound_ML,
+              truncate    = config@interim_theta$truncate_ML,
+              max_change  = config@interim_theta$max_change,
+              do_Fisher   = config@interim_theta$do_Fisher
+            )
+
+          }
 
           o@interim_theta_est[position] <- interim_MLE$th
           o@interim_se_est[position]    <- interim_MLE$se
 
         } else if (toupper(config@interim_theta$method) == "MLEF") {
 
-          interim_EAP <- estimateThetaEAP(posterior_record$posterior[j, ], constants$theta_q)
-          interim_MLEF <- mlef(pool,
-            select           = o@administered_item_index[1:position],
-            resp             = o@administered_item_resp[1:position],
-            fence_slope      = config@interim_theta$fence_slope,
-            fence_difficulty = config@interim_theta$fence_difficulty,
-            start_theta      = interim_EAP$theta,
-            max_iter         = config@interim_theta$max_iter,
-            crit             = config@interim_theta$crit,
-            theta_range      = config@interim_theta$bound_ML,
-            truncate         = config@interim_theta$truncate_ML,
-            max_change       = config@interim_theta$max_change,
-            do_Fisher        = config@interim_theta$do_Fisher
-          )
+          if (!is.null(include_items_for_estimation)) {
+
+            interim_EAP <- estimateThetaEAP(posterior_record$posterior[j, ], constants$theta_q)
+
+            interim_MLEF <- mlef(augmented_pool,
+              select           = c(augment_item_index, o@administered_item_index[1:position]),
+              resp             = c(augment_item_resp,  o@administered_item_resp[1:position]),
+              fence_slope      = config@interim_theta$fence_slope,
+              fence_difficulty = config@interim_theta$fence_difficulty,
+              start_theta      = interim_EAP$theta,
+              max_iter         = config@interim_theta$max_iter,
+              crit             = config@interim_theta$crit,
+              theta_range      = config@interim_theta$bound_ML,
+              truncate         = config@interim_theta$truncate_ML,
+              max_change       = config@interim_theta$max_change,
+              do_Fisher        = config@interim_theta$do_Fisher
+            )
+
+          } else {
+
+            interim_EAP <- estimateThetaEAP(posterior_record$posterior[j, ], constants$theta_q)
+            interim_MLEF <- mlef(pool,
+              select           = o@administered_item_index[1:position],
+              resp             = o@administered_item_resp[1:position],
+              fence_slope      = config@interim_theta$fence_slope,
+              fence_difficulty = config@interim_theta$fence_difficulty,
+              start_theta      = interim_EAP$theta,
+              max_iter         = config@interim_theta$max_iter,
+              crit             = config@interim_theta$crit,
+              theta_range      = config@interim_theta$bound_ML,
+              truncate         = config@interim_theta$truncate_ML,
+              max_change       = config@interim_theta$max_change,
+              do_Fisher        = config@interim_theta$do_Fisher
+            )
+
+          }
 
           o@interim_theta_est[position] <- interim_MLEF$th
           o@interim_se_est[position]    <- interim_MLEF$se
@@ -522,38 +579,78 @@ setMethod(
 
       } else if (toupper(config@final_theta$method) == "MLE") {
 
-        final_MLE <- mle(
-          pool,
-          select      = o@administered_item_index[1:constants$max_ni],
-          resp        = o@administered_item_resp[1:constants$max_ni],
-          start_theta = o@interim_theta_est[constants$max_ni],
-          max_iter    = config@final_theta$max_iter,
-          crit        = config@final_theta$crit,
-          theta_range = config@final_theta$bound_ML,
-          truncate    = config@final_theta$truncate_ML,
-          max_change  = config@final_theta$max_change,
-          do_Fisher   = config@final_theta$do_Fisher
-        )
+        if (!is.null(include_items_for_estimation)) {
+
+          final_MLE <- mle(
+            augmented_pool,
+            select      = c(augment_item_index, o@administered_item_index[1:constants$max_ni]),
+            resp        = c(augment_item_resp,  o@administered_item_resp[1:constants$max_ni]),
+            start_theta = o@interim_theta_est[constants$max_ni],
+            max_iter    = config@final_theta$max_iter,
+            crit        = config@final_theta$crit,
+            theta_range = config@final_theta$bound_ML,
+            truncate    = config@final_theta$truncate_ML,
+            max_change  = config@final_theta$max_change,
+            do_Fisher   = config@final_theta$do_Fisher
+          )
+
+        } else {
+
+          final_MLE <- mle(
+            pool,
+            select      = o@administered_item_index[1:constants$max_ni],
+            resp        = o@administered_item_resp[1:constants$max_ni],
+            start_theta = o@interim_theta_est[constants$max_ni],
+            max_iter    = config@final_theta$max_iter,
+            crit        = config@final_theta$crit,
+            theta_range = config@final_theta$bound_ML,
+            truncate    = config@final_theta$truncate_ML,
+            max_change  = config@final_theta$max_change,
+            do_Fisher   = config@final_theta$do_Fisher
+          )
+
+        }
 
         o@final_theta_est <- final_MLE$th
         o@final_se_est    <- final_MLE$se
 
       } else if (toupper(config@final_theta$method) == "MLEF") {
 
-        final_MLEF <- mlef(
-          pool,
-          select           = o@administered_item_index[1:constants$max_ni],
-          resp             = o@administered_item_resp[1:constants$max_ni],
-          fence_slope      = config@final_theta$fence_slope,
-          fence_difficulty = config@final_theta$fence_difficulty,
-          start_theta      = o@interim_theta_est[constants$max_ni],
-          max_iter         = config@final_theta$max_iter,
-          crit             = config@final_theta$crit,
-          theta_range      = config@final_theta$bound_ML,
-          truncate         = config@final_theta$truncate_ML,
-          max_change       = config@final_theta$max_change,
-          do_Fisher        = config@final_theta$do_Fisher
-        )
+        if (!is.null(include_items_for_estimation)) {
+
+          final_MLEF <- mlef(
+            augmented_pool,
+            select           = c(augment_item_index, o@administered_item_index[1:constants$max_ni]),
+            resp             = c(augment_item_resp,  o@administered_item_resp[1:constants$max_ni]),
+            fence_slope      = config@final_theta$fence_slope,
+            fence_difficulty = config@final_theta$fence_difficulty,
+            start_theta      = o@interim_theta_est[constants$max_ni],
+            max_iter         = config@final_theta$max_iter,
+            crit             = config@final_theta$crit,
+            theta_range      = config@final_theta$bound_ML,
+            truncate         = config@final_theta$truncate_ML,
+            max_change       = config@final_theta$max_change,
+            do_Fisher        = config@final_theta$do_Fisher
+          )
+
+        } else {
+
+          final_MLEF <- mlef(
+            pool,
+            select           = o@administered_item_index[1:constants$max_ni],
+            resp             = o@administered_item_resp[1:constants$max_ni],
+            fence_slope      = config@final_theta$fence_slope,
+            fence_difficulty = config@final_theta$fence_difficulty,
+            start_theta      = o@interim_theta_est[constants$max_ni],
+            max_iter         = config@final_theta$max_iter,
+            crit             = config@final_theta$crit,
+            theta_range      = config@final_theta$bound_ML,
+            truncate         = config@final_theta$truncate_ML,
+            max_change       = config@final_theta$max_change,
+            do_Fisher        = config@final_theta$do_Fisher
+          )
+
+        }
 
         o@final_theta_est <- final_MLEF$th
         o@final_se_est    <- final_MLEF$se
