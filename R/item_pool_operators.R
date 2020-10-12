@@ -27,6 +27,8 @@ NULL
 #' @param x,x1,x2 an \code{\linkS4class{item_pool}} object.
 #' @param i item indices to use in subsetting.
 #' @param j,drop,... not used, exists for compatibility.
+#' @param unique if \code{TRUE}, remove items with duplicate IDs after combining. (default = \code{TRUE})
+#' @param verbose if \code{TRUE}, raise a warning if duplicate IDs are found after combining. (default = \code{TRUE})
 #'
 #' @examples
 #' p1 <- itempool_science[1:100]
@@ -73,7 +75,7 @@ subsetItemPool <- function(x, i = NULL) {
 }
 
 #' @noRd
-combineItemPoolData <- function(raw1, raw2) {
+combineItemPoolData <- function(raw1, raw2, unique) {
 
   tmp       <- setdiff(names(raw1), names(raw2))
   raw2[tmp] <- NA
@@ -82,8 +84,10 @@ combineItemPoolData <- function(raw1, raw2) {
 
   raw       <- rbind(raw1, raw2)
 
-  idx       <- which(!duplicated(raw$ID))
-  raw       <- raw[idx, ]
+  if (unique) {
+    idx       <- which(!duplicated(raw$ID))
+    raw       <- raw[idx, ]
+  }
 
   return(raw)
 
@@ -91,7 +95,7 @@ combineItemPoolData <- function(raw1, raw2) {
 
 #' @rdname item_pool-operators
 #' @export
-combineItemPool <- function(x1, x2) {
+combineItemPool <- function(x1, x2, unique = TRUE, verbose = TRUE) {
 
   if (!inherits(x1, "item_pool") || !inherits(x2, "item_pool")) {
     stop("operands must be 'item_pool' objects")
@@ -103,13 +107,16 @@ combineItemPool <- function(x1, x2) {
     stop("'x2' is not a valid 'item_pool' object")
   }
 
-  raw    <- combineItemPoolData(x1@raw   , x2@raw   )
-  raw_se <- combineItemPoolData(x1@raw_se, x2@raw_se)
-  o      <- loadItemPool(raw, raw_se)
+  raw    <- combineItemPoolData(x1@raw   , x2@raw   , unique = unique)
+  raw_se <- combineItemPoolData(x1@raw_se, x2@raw_se, unique = unique)
+  o      <- loadItemPool(raw, raw_se, unique = unique)
 
   id     <- c(x1@raw$ID, x2@raw$ID)
-  if (sum(duplicated(id)) > 0) {
-    warning(sprintf("duplicate item IDs were removed: %s", paste0(id[duplicated(id)], collapse = ", ")))
+
+  if (verbose) {
+    if (sum(duplicated(id)) > 0) {
+      warning(sprintf("duplicate item IDs found: %s", paste0(id[duplicated(id)], collapse = ", ")))
+    }
   }
 
   return(o)
