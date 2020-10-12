@@ -34,5 +34,7 @@ See \code{\link{item_pool-operators}} for object manipulation functions.
 \item{\code{raw}}{the raw input \code{\link{data.frame}} used in \code{\link{loadItemPool}} to create this object.}
 
 \item{\code{raw_se}}{the raw input \code{\link{data.frame}} used in \code{\link{loadItemPool}} to create this object.}
+
+\item{\code{unique}}{whether item IDs must be unique for this object to be a valid object.}
 }}
 
