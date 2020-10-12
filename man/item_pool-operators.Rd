@@ -15,7 +15,7 @@
 \usage{
 subsetItemPool(x, i = NULL)
 
-combineItemPool(x1, x2)
+combineItemPool(x1, x2, unique = TRUE, verbose = TRUE)
 
 \S4method{[}{item_pool,numeric}(x, i, j, ..., drop = TRUE)
 
@@ -31,6 +31,10 @@ combineItemPool(x1, x2)
 \item{x, x1, x2}{an \code{\linkS4class{item_pool}} object.}
 
 \item{i}{item indices to use in subsetting.}
+
+\item{unique}{if \code{TRUE}, remove items with duplicate IDs after combining. (default = \code{TRUE})}
+
+\item{verbose}{if \code{TRUE}, raise a warning if duplicate IDs are found after combining. (default = \code{TRUE})}
 
 \item{j, drop, ...}{not used, exists for compatibility.}
 }
