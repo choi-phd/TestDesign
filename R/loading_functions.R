@@ -10,6 +10,7 @@ NULL
 #' @param ipar_se (optional) standard errors. Can be a \code{\link{data.frame}} or the file path of a .csv file.
 #' @param file (deprecated) use \code{ipar} argument instead.
 #' @param se_file (deprecated) use \code{ipar_se} argument instead.
+#' @param unique if \code{TRUE}, item IDs must be unique to create a valid \code{\linkS4class{item_pool}} object. (default = \code{FALSE})
 #'
 #' @return \code{\link{loadItemPool}} returns an \code{\linkS4class{item_pool}} object.
 #'
@@ -47,7 +48,7 @@ NULL
 #' @seealso \code{\link{dataset_science}}, \code{\link{dataset_reading}}, \code{\link{dataset_fatigue}}, \code{\link{dataset_bayes}} for examples.
 #'
 #' @export
-loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL) {
+loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, unique = FALSE) {
 
   if (!missing("se_file")){
     warning("argument 'se_file' is deprecated. Use 'ipar_se' instead.")
@@ -227,6 +228,8 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL) {
   tmp <- pool@raw
   tmp[, 3:max(nfields)] <- pool@se
   pool@raw_se <- tmp
+
+  pool@unique <- unique
 
   if (validObject(pool)) {
     return(pool)
