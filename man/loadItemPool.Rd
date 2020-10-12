@@ -4,7 +4,7 @@
 \alias{loadItemPool}
 \title{Load item pool}
 \usage{
-loadItemPool(ipar, ipar_se = NULL, file = NULL, se_file = NULL)
+loadItemPool(ipar, ipar_se = NULL, file = NULL, se_file = NULL, unique = FALSE)
 }
 \arguments{
 \item{ipar}{item parameters. Can be a \code{\link{data.frame}} or the file path of a .csv file. The content should at least include columns 'ID' and 'MODEL'.}
@@ -14,6 +14,8 @@ loadItemPool(ipar, ipar_se = NULL, file = NULL, se_file = NULL)
 \item{file}{(deprecated) use \code{ipar} argument instead.}
 
 \item{se_file}{(deprecated) use \code{ipar_se} argument instead.}
+
+\item{unique}{if \code{TRUE}, item IDs must be unique to create a valid \code{\linkS4class{item_pool}} object. (default = \code{FALSE})}
 }
 \value{
 \code{\link{loadItemPool}} returns an \code{\linkS4class{item_pool}} object.
