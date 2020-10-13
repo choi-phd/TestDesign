@@ -9,6 +9,8 @@ matrix:
   include:
     - os: linux
       r: release
+      before_cache:
+        - Rscript -e 'remotes::install_github("r-lib/ragg@bc501c9951c5934afa55da6d36cdf03c2705d99f")'
       after_success:
         - Rscript -e 'pkgdown::build_site(examples = FALSE)'
       deploy:
