@@ -396,18 +396,45 @@ setMethod(
     }
 
     # add fence items
-    ipar_fence <- data.frame(
-      ID    = c("FENCE_LB", "FENCE_UB"),
-      MODEL = rep("2PL", 2),
-      PAR1  = rep(fence_slope, length.out = 2),
-      PAR2  = fence_difficulty
-    )
-    item_fence <- loadItemPool(ipar_fence)
-    object     <- object + item_fence
-    resp       <- cbind(resp, 1)
-    resp       <- cbind(resp, 0)
-    items      <- c(items, ni + 1:2)
-    ni         <- ni + 2
+    if (nj == 1) {
+
+      is_extreme <-
+        all(resp[1, ] == object[items]@NCAT - 1) |
+        all(resp[1, ] == object[items]@NCAT * 0)
+
+      if (is_extreme) {
+
+        ipar_fence <- data.frame(
+          ID    = c("FENCE_LB", "FENCE_UB"),
+          MODEL = rep("2PL", 2),
+          PAR1  = rep(fence_slope, length.out = 2),
+          PAR2  = fence_difficulty
+        )
+        item_fence <- loadItemPool(ipar_fence)
+        object     <- object + item_fence
+        resp       <- cbind(resp, 1)
+        resp       <- cbind(resp, 0)
+        items      <- c(items, ni + 1:2)
+        ni         <- ni + 2
+
+      }
+
+    }
+
+    if (nj > 1) {
+      ipar_fence <- data.frame(
+        ID    = c("FENCE_LB", "FENCE_UB"),
+        MODEL = rep("2PL", 2),
+        PAR1  = rep(fence_slope, length.out = 2),
+        PAR2  = fence_difficulty
+      )
+      item_fence <- loadItemPool(ipar_fence)
+      object     <- object + item_fence
+      resp       <- cbind(resp, 1)
+      resp       <- cbind(resp, 0)
+      items      <- c(items, ni + 1:2)
+      ni         <- ni + 2
+    }
 
     th    <- numeric(nj)
     se    <- numeric(nj)
