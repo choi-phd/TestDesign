@@ -159,6 +159,8 @@ setClass("config_Shadow",
       max_iter                  = 50,
       crit                      = 0.001,
       max_change                = 1.0,
+      use_step_size             = FALSE,
+      step_size                 = 0.5,
       do_Fisher                 = TRUE,
       fence_slope               = 5,
       fence_difficulty          = c(-5, 5)
@@ -173,6 +175,8 @@ setClass("config_Shadow",
       max_iter                  = 50,
       crit                      = 0.001,
       max_change                = 1.0,
+      use_step_size             = FALSE,
+      step_size                 = 0.5,
       do_Fisher                 = TRUE,
       fence_slope               = 5,
       fence_difficulty          = c(-5, 5)
@@ -337,6 +341,8 @@ setClass("config_Shadow",
 #'   \item{\code{max_iter}} maximum number of Newton-Raphson iterations. Used when \code{method} is \code{MLE}. (default = \code{50})
 #'   \item{\code{crit}} convergence criterion. Used when \code{method} is \code{MLE}. (default = \code{1e-03})
 #'   \item{\code{max_change}} maximum change in ML estimates between iterations. Changes exceeding this value is clipped to this value. Used when \code{method} is \code{MLE}. (default = \code{1.0})
+#'   \item{\code{use_step_size}} set \code{TRUE} to use \code{step_size}. Used when \code{method} is \code{MLE} or \code{MLEF}. (default = \code{FALSE})
+#'   \item{\code{step_size}} upper bound to impose on the absolute change in initial theta and estimated theta. Absolute changes exceeding this value will be capped to \code{step_size}. Used when \code{method} is \code{MLE} or \code{MLEF}. (default = \code{0.5})
 #'   \item{\code{do_Fisher}} set \code{TRUE} to use Fisher's method of scoring. Used when \code{method} is \code{MLE}. (default = \code{TRUE})
 #'   \item{\code{fence_slope}} slope parameter to use for \code{method = 'MLEF'}. This must have two values in total, for the lower and upper bound item respectively. Use one value to use the same value for both bounds. (default = \code{5})
 #'   \item{\code{fence_difficulty}} difficulty parameters to use for \code{method = 'MLEF'}. This must have two values in total, for the lower and upper bound item respectively. (default = \code{c(-5, 5)})
@@ -352,6 +358,8 @@ setClass("config_Shadow",
 #'   \item{\code{max_iter}} maximum number of Newton-Raphson iterations. Used when \code{method} is \code{MLE}. (default = \code{50})
 #'   \item{\code{crit}} convergence criterion. Used when \code{method} is \code{MLE}. (default = \code{1e-03})
 #'   \item{\code{max_change}} maximum change in ML estimates between iterations. Changes exceeding this value is clipped to this value. Used when \code{method} is \code{MLE}. (default = \code{1.0})
+#'   \item{\code{use_step_size}} set \code{TRUE} to use \code{step_size}. Used when \code{method} is \code{MLE} or \code{MLEF}.  (default = \code{FALSE})
+#'   \item{\code{step_size}} upper bound to impose on the absolute change in initial theta and estimated theta. Absolute changes exceeding this value will be capped to \code{step_size}. Used when \code{method} is \code{MLE} or \code{MLEF}. (default = \code{0.5})
 #'   \item{\code{do_Fisher}} set \code{TRUE} to use Fisher's method of scoring. Used when \code{method} is \code{MLE}. (default = \code{TRUE})
 #'   \item{\code{fence_slope}} slope parameter to use for \code{method = 'MLEF'}. This must have two values in total, for the lower and upper bound item respectively. Use one value to use the same value for both bounds. (default = \code{5})
 #'   \item{\code{fence_difficulty}} difficulty parameters to use for \code{method = 'MLEF'}. This must have two values in total, for the lower and upper bound item respectively. (default = \code{c(-5, 5)})
