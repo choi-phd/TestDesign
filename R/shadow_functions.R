@@ -416,15 +416,17 @@ setMethod(
             interim_EAP <- estimateThetaEAP(posterior_record$posterior[j, ], constants$theta_q)
 
             interim_MLE <- mle(augmented_pool,
-              select      = c(augment_item_index, o@administered_item_index[1:position]),
-              resp        = c(augment_item_resp,  o@administered_item_resp[1:position]),
-              start_theta = interim_EAP$theta,
-              max_iter    = config@interim_theta$max_iter,
-              crit        = config@interim_theta$crit,
-              theta_range = config@interim_theta$bound_ML,
-              truncate    = config@interim_theta$truncate_ML,
-              max_change  = config@interim_theta$max_change,
-              do_Fisher   = config@interim_theta$do_Fisher
+              select        = c(augment_item_index, o@administered_item_index[1:position]),
+              resp          = c(augment_item_resp,  o@administered_item_resp[1:position]),
+              start_theta   = interim_EAP$theta,
+              max_iter      = config@interim_theta$max_iter,
+              crit          = config@interim_theta$crit,
+              theta_range   = config@interim_theta$bound_ML,
+              truncate      = config@interim_theta$truncate_ML,
+              max_change    = config@interim_theta$max_change,
+              use_step_size = config@interim_theta$use_step_size,
+              step_size     = config@interim_theta$step_size,
+              do_Fisher     = config@interim_theta$do_Fisher
             )
 
           } else {
@@ -432,15 +434,17 @@ setMethod(
             interim_EAP <- estimateThetaEAP(posterior_record$posterior[j, ], constants$theta_q)
 
             interim_MLE <- mle(pool,
-              select      = o@administered_item_index[1:position],
-              resp        = o@administered_item_resp[1:position],
-              start_theta = interim_EAP$theta,
-              max_iter    = config@interim_theta$max_iter,
-              crit        = config@interim_theta$crit,
-              theta_range = config@interim_theta$bound_ML,
-              truncate    = config@interim_theta$truncate_ML,
-              max_change  = config@interim_theta$max_change,
-              do_Fisher   = config@interim_theta$do_Fisher
+              select        = o@administered_item_index[1:position],
+              resp          = o@administered_item_resp[1:position],
+              start_theta   = interim_EAP$theta,
+              max_iter      = config@interim_theta$max_iter,
+              crit          = config@interim_theta$crit,
+              theta_range   = config@interim_theta$bound_ML,
+              truncate      = config@interim_theta$truncate_ML,
+              max_change    = config@interim_theta$max_change,
+              use_step_size = config@interim_theta$use_step_size,
+              step_size     = config@interim_theta$step_size,
+              do_Fisher     = config@interim_theta$do_Fisher
             )
 
           }
@@ -465,6 +469,8 @@ setMethod(
               theta_range      = config@interim_theta$bound_ML,
               truncate         = config@interim_theta$truncate_ML,
               max_change       = config@interim_theta$max_change,
+              use_step_size    = config@interim_theta$use_step_size,
+              step_size        = config@interim_theta$step_size,
               do_Fisher        = config@interim_theta$do_Fisher
             )
 
@@ -482,6 +488,8 @@ setMethod(
               theta_range      = config@interim_theta$bound_ML,
               truncate         = config@interim_theta$truncate_ML,
               max_change       = config@interim_theta$max_change,
+              use_step_size    = config@interim_theta$use_step_size,
+              step_size        = config@interim_theta$step_size,
               do_Fisher        = config@interim_theta$do_Fisher
             )
 
@@ -583,30 +591,34 @@ setMethod(
 
           final_MLE <- mle(
             augmented_pool,
-            select      = c(augment_item_index, o@administered_item_index[1:constants$max_ni]),
-            resp        = c(augment_item_resp,  o@administered_item_resp[1:constants$max_ni]),
-            start_theta = o@interim_theta_est[constants$max_ni],
-            max_iter    = config@final_theta$max_iter,
-            crit        = config@final_theta$crit,
-            theta_range = config@final_theta$bound_ML,
-            truncate    = config@final_theta$truncate_ML,
-            max_change  = config@final_theta$max_change,
-            do_Fisher   = config@final_theta$do_Fisher
+            select        = c(augment_item_index, o@administered_item_index[1:constants$max_ni]),
+            resp          = c(augment_item_resp,  o@administered_item_resp[1:constants$max_ni]),
+            start_theta   = o@interim_theta_est[constants$max_ni],
+            max_iter      = config@final_theta$max_iter,
+            crit          = config@final_theta$crit,
+            theta_range   = config@final_theta$bound_ML,
+            truncate      = config@final_theta$truncate_ML,
+            max_change    = config@final_theta$max_change,
+            use_step_size = config@final_theta$use_step_size,
+            step_size     = config@final_theta$step_size,
+            do_Fisher     = config@final_theta$do_Fisher
           )
 
         } else {
 
           final_MLE <- mle(
             pool,
-            select      = o@administered_item_index[1:constants$max_ni],
-            resp        = o@administered_item_resp[1:constants$max_ni],
-            start_theta = o@interim_theta_est[constants$max_ni],
-            max_iter    = config@final_theta$max_iter,
-            crit        = config@final_theta$crit,
-            theta_range = config@final_theta$bound_ML,
-            truncate    = config@final_theta$truncate_ML,
-            max_change  = config@final_theta$max_change,
-            do_Fisher   = config@final_theta$do_Fisher
+            select        = o@administered_item_index[1:constants$max_ni],
+            resp          = o@administered_item_resp[1:constants$max_ni],
+            start_theta   = o@interim_theta_est[constants$max_ni],
+            max_iter      = config@final_theta$max_iter,
+            crit          = config@final_theta$crit,
+            theta_range   = config@final_theta$bound_ML,
+            truncate      = config@final_theta$truncate_ML,
+            max_change    = config@final_theta$max_change,
+            use_step_size = config@final_theta$use_step_size,
+            step_size     = config@final_theta$step_size,
+            do_Fisher     = config@final_theta$do_Fisher
           )
 
         }
@@ -630,6 +642,8 @@ setMethod(
             theta_range      = config@final_theta$bound_ML,
             truncate         = config@final_theta$truncate_ML,
             max_change       = config@final_theta$max_change,
+            use_step_size    = config@final_theta$use_step_size,
+            step_size        = config@final_theta$step_size,
             do_Fisher        = config@final_theta$do_Fisher
           )
 
@@ -647,6 +661,8 @@ setMethod(
             theta_range      = config@final_theta$bound_ML,
             truncate         = config@final_theta$truncate_ML,
             max_change       = config@final_theta$max_change,
+            use_step_size    = config@final_theta$use_step_size,
+            step_size        = config@final_theta$step_size,
             do_Fisher        = config@final_theta$do_Fisher
           )
 

@@ -18,6 +18,8 @@ mlef(
   truncate = FALSE,
   theta_range = c(-4, 4),
   max_change = 1,
+  use_step_size = FALSE,
+  step_size = 0.5,
   do_Fisher = TRUE
 )
 
@@ -33,6 +35,8 @@ mlef(
   truncate = FALSE,
   theta_range = c(-4, 4),
   max_change = 1,
+  use_step_size = FALSE,
+  step_size = 0.5,
   do_Fisher = TRUE
 )
 }
@@ -53,11 +57,15 @@ mlef(
 
 \item{crit}{convergence criterion to use. (default = \code{0.001})}
 
-\item{truncate}{set \code{TRUE} to impose a bound on the estimate. (default = \code{FALSE})}
+\item{truncate}{set \code{TRUE} to impose a bound using \code{theta_range} on the estimate. (default = \code{FALSE})}
 
 \item{theta_range}{a range of theta values to bound the estimate. Only effective when \code{truncate} is \code{TRUE}. (default = \code{c(-4, 4)})}
 
 \item{max_change}{upper bound to impose on the absolute change in theta between iterations. Absolute changes exceeding this value will be capped to \code{max_change}. (default = \code{1.0})}
+
+\item{use_step_size}{set \code{TRUE} to use \code{step_size}. (default = \code{FALSE})}
+
+\item{step_size}{upper bound to impose on the absolute change in initial theta and estimated theta. Absolute changes exceeding this value will be capped to \code{step_size}. (default = \code{0.5})}
 
 \item{do_Fisher}{set \code{TRUE} to use Fisher scoring instead of Newton-Raphson method. (default = \code{TRUE})}
 }

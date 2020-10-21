@@ -11,9 +11,11 @@ NULL
 #' @param start_theta (optional) initial theta values. If not supplied, EAP estimates using uniform priors are used as initial values. Uniform priors are computed using the \code{theta_range} argument below, with increments of \code{.1}.
 #' @param max_iter maximum number of iterations. (default = \code{100})
 #' @param crit convergence criterion to use. (default = \code{0.001})
-#' @param truncate set \code{TRUE} to impose a bound on the estimate. (default = \code{FALSE})
+#' @param truncate set \code{TRUE} to impose a bound using \code{theta_range} on the estimate. (default = \code{FALSE})
 #' @param theta_range a range of theta values to bound the estimate. Only effective when \code{truncate} is \code{TRUE}. (default = \code{c(-4, 4)})
 #' @param max_change upper bound to impose on the absolute change in theta between iterations. Absolute changes exceeding this value will be capped to \code{max_change}. (default = \code{1.0})
+#' @param use_step_size set \code{TRUE} to use \code{step_size}. (default = \code{FALSE})
+#' @param step_size upper bound to impose on the absolute change in initial theta and estimated theta. Absolute changes exceeding this value will be capped to \code{step_size}. (default = \code{0.5})
 #' @param do_Fisher set \code{TRUE} to use Fisher scoring instead of Newton-Raphson method. (default = \code{TRUE})
 #'
 #' @return \code{\link{mle}} returns a list containing estimated values.
@@ -33,7 +35,7 @@ NULL
 #' @export
 setGeneric(
   name = "mle",
-  def = function(object, select = NULL, resp, start_theta = NULL, max_iter = 100, crit = 0.001, truncate = FALSE, theta_range = c(-4, 4), max_change = 1.0, do_Fisher = TRUE) {
+  def = function(object, select = NULL, resp, start_theta = NULL, max_iter = 100, crit = 0.001, truncate = FALSE, theta_range = c(-4, 4), max_change = 1.0, use_step_size = FALSE, step_size = 0.5, do_Fisher = TRUE) {
     standardGeneric("mle")
   }
 )
@@ -43,7 +45,7 @@ setGeneric(
 setMethod(
   f = "mle",
   signature = "item_pool",
-  definition = function(object, select = NULL, resp, start_theta = NULL, max_iter = 50, crit = 0.005, truncate = FALSE, theta_range = c(-4, 4), max_change = 1.0, do_Fisher = TRUE) {
+  definition = function(object, select = NULL, resp, start_theta = NULL, max_iter = 50, crit = 0.005, truncate = FALSE, theta_range = c(-4, 4), max_change = 1.0, use_step_size = FALSE, step_size = 0.5, do_Fisher = TRUE) {
 
     ni         <- object@ni
     theta_grid <- seq(min(theta_range), max(theta_range), .1)
@@ -152,6 +154,13 @@ setMethod(
       max_theta <- max(theta_range)
       th[th > max_theta] <- max_theta
       th[th < min_theta] <- min_theta
+    }
+    if (use_step_size) {
+      th_change <- th - start_theta
+      idx       <- abs(th_change) >= step_size
+      th[idx]   <-
+        start_theta[idx] +
+        (sign(th_change[idx]) * step_size)
     }
     return(list(th = th, se = se, conv = conv, trunc = trunc))
   }
@@ -309,9 +318,11 @@ setMethod(
 #' @param start_theta (optional) initial theta values. If not supplied, EAP estimates using uniform priors are used as initial values. Uniform priors are computed using the \code{theta_range} argument below, with increments of \code{.1}.
 #' @param max_iter maximum number of iterations. (default = \code{100})
 #' @param crit convergence criterion to use. (default = \code{0.001})
-#' @param truncate set \code{TRUE} to impose a bound on the estimate. (default = \code{FALSE})
+#' @param truncate set \code{TRUE} to impose a bound using \code{theta_range} on the estimate. (default = \code{FALSE})
 #' @param theta_range a range of theta values to bound the estimate. Only effective when \code{truncate} is \code{TRUE}. (default = \code{c(-4, 4)})
 #' @param max_change upper bound to impose on the absolute change in theta between iterations. Absolute changes exceeding this value will be capped to \code{max_change}. (default = \code{1.0})
+#' @param use_step_size set \code{TRUE} to use \code{step_size}. (default = \code{FALSE})
+#' @param step_size upper bound to impose on the absolute change in initial theta and estimated theta. Absolute changes exceeding this value will be capped to \code{step_size}. (default = \code{0.5})
 #' @param do_Fisher set \code{TRUE} to use Fisher scoring instead of Newton-Raphson method. (default = \code{TRUE})
 #'
 #' @return \code{\link{mlef}} returns a list containing estimated values.
@@ -333,7 +344,7 @@ setMethod(
 #' @export
 setGeneric(
   name = "mlef",
-  def = function(object, select = NULL, resp, fence_slope = 5, fence_difficulty = c(-5, 5), start_theta = NULL, max_iter = 100, crit = 0.001, truncate = FALSE, theta_range = c(-4, 4), max_change = 1.0, do_Fisher = TRUE) {
+  def = function(object, select = NULL, resp, fence_slope = 5, fence_difficulty = c(-5, 5), start_theta = NULL, max_iter = 100, crit = 0.001, truncate = FALSE, theta_range = c(-4, 4), max_change = 1.0, use_step_size = FALSE, step_size = 0.5, do_Fisher = TRUE) {
     standardGeneric("mlef")
   }
 )
@@ -343,7 +354,7 @@ setGeneric(
 setMethod(
   f = "mlef",
   signature = "item_pool",
-  definition = function(object, select = NULL, resp, fence_slope = 5, fence_difficulty = c(-5, 5), start_theta = NULL, max_iter = 50, crit = 0.005, truncate = FALSE, theta_range = c(-4, 4), max_change = 1.0, do_Fisher = TRUE) {
+  definition = function(object, select = NULL, resp, fence_slope = 5, fence_difficulty = c(-5, 5), start_theta = NULL, max_iter = 50, crit = 0.005, truncate = FALSE, theta_range = c(-4, 4), max_change = 1.0, use_step_size = FALSE, step_size = 0.5, do_Fisher = TRUE) {
 
     ni         <- object@ni
     theta_grid <- seq(min(theta_range), max(theta_range), .1)
@@ -494,6 +505,13 @@ setMethod(
       max_theta <- max(theta_range)
       th[th > max_theta] <- max_theta
       th[th < min_theta] <- min_theta
+    }
+    if (use_step_size) {
+      th_change <- th - start_theta
+      idx       <- abs(th_change) >= step_size
+      th[idx]   <-
+        start_theta[idx] +
+        (sign(th_change[idx]) * step_size)
     }
     return(list(th = th, se = se, conv = conv, trunc = trunc))
   }
