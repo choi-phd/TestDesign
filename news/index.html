@@ -131,9 +131,9 @@
       <small>Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="testdesign-1-1-3" class="section level1">
+    <div id="testdesign-113" class="section level1">
 <h1 class="page-header" data-toc-text="1.1.3">
-<a href="#testdesign-1-1-3" class="anchor"></a>TestDesign 1.1.3<small> 2020-10-01 </small>
+<a href="#testdesign-113" class="anchor"></a>TestDesign 1.1.3<small> 2020-10-01 </small>
 </h1>
 <div id="new-features" class="section level2">
 <h2 class="hasAnchor">
@@ -153,15 +153,15 @@
 </ul>
 </div>
 </div>
-    <div id="testdesign-1-1-2" class="section level1">
+    <div id="testdesign-112" class="section level1">
 <h1 class="page-header" data-toc-text="1.1.2">
-<a href="#testdesign-1-1-2" class="anchor"></a>TestDesign 1.1.2<small> 2020-09-21 </small>
+<a href="#testdesign-112" class="anchor"></a>TestDesign 1.1.2<small> 2020-09-21 </small>
 </h1>
 <div id="qol-updates" class="section level2">
 <h2 class="hasAnchor">
 <a href="#qol-updates" class="anchor"></a>QoL updates</h2>
 <ul>
-<li>Web documentation is now available at <a href="https://choi-phd.github.io/TestDesign/" class="uri">https://choi-phd.github.io/TestDesign/</a>
+<li>Web documentation is now available at <a href="https://choi-phd.github.io/TestDesign/">https://choi-phd.github.io/TestDesign/</a>
 </li>
 <li>
 <code><a href="../reference/loadItemPool.html">loadItemPool()</a></code>, <code><a href="../reference/item_attrib-class.html">loadItemAttrib()</a></code>, <code><a href="../reference/st_attrib-class.html">loadStAttrib()</a></code>, <code><a href="../reference/loadConstraints.html">loadConstraints()</a></code>, <code><a href="../reference/buildConstraints.html">buildConstraints()</a></code> are now capable of reading from data frame objects.</li>
@@ -172,7 +172,7 @@
 <li>
 <code>constraints</code> objects can be now subsetted and combined with <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code> and <code><a href="https://rdrr.io/r/base/c.html">c()</a></code>.</li>
 <li>
-<code>SUM</code> constraints now accept <code>VARIABLE, EXPRESSION</code> in <code>CONDITION</code> for imposing constraints on conditional sums (e.g. <code>WORDCOUNT, DOK == 1</code>).</li>
+<code>SUM</code> constraints now accept <code>VARIABLE, EXPRESSION</code> in <code>CONDITION</code> for imposing constraints on conditional sums (e.g. <code>WORDCOUNT, DOK == 1</code>).</li>
 <li>
 <code><a href="../reference/Static.html">Static()</a></code> and <code><a href="../reference/Shadow.html">Shadow()</a></code> now asks for confirmation when attempting to use solvers other than <code>Rsymphony</code>, <code>lpsymphony</code> and <code>gurobi</code> for set-based assembly. This can be overridden by passing <code>force_solver = TRUE</code>.</li>
 <li>
@@ -233,9 +233,9 @@
 </ul>
 </div>
 </div>
-    <div id="testdesign-1-0-2" class="section level1">
+    <div id="testdesign-102" class="section level1">
 <h1 class="page-header" data-toc-text="1.0.2">
-<a href="#testdesign-1-0-2" class="anchor"></a>TestDesign 1.0.2<small> 2020-02-05 </small>
+<a href="#testdesign-102" class="anchor"></a>TestDesign 1.0.2<small> 2020-02-05 </small>
 </h1>
 <div id="default-solver" class="section level2">
 <h2 class="hasAnchor">
@@ -253,9 +253,9 @@
 </ul>
 </div>
 </div>
-    <div id="testdesign-1-0-1" class="section level1">
+    <div id="testdesign-101" class="section level1">
 <h1 class="page-header" data-toc-text="1.0.1">
-<a href="#testdesign-1-0-1" class="anchor"></a>TestDesign 1.0.1<small> 2020-01-24 </small>
+<a href="#testdesign-101" class="anchor"></a>TestDesign 1.0.1<small> 2020-01-24 </small>
 </h1>
 <div id="default-solver-1" class="section level2">
 <h2 class="hasAnchor">
@@ -289,9 +289,9 @@
 </ul>
 </div>
 </div>
-    <div id="testdesign-1-0-0" class="section level1">
+    <div id="testdesign-100" class="section level1">
 <h1 class="page-header" data-toc-text="1.0.0">
-<a href="#testdesign-1-0-0" class="anchor"></a>TestDesign 1.0.0<small> 2019-11-04 </small>
+<a href="#testdesign-100" class="anchor"></a>TestDesign 1.0.0<small> 2019-11-04 </small>
 </h1>
 <p>TestDesign 1.0.0 is a major release that provides structural changes to better streamline the usage of functions and also achieve more structured abstraction.</p>
 <div id="user-visible-structural-changes" class="section level2">
@@ -340,7 +340,7 @@
 <li>Now supports <code>lpsymphony</code> solver package from Bioconductor repository. Note: The current version 1.12.0 of <code>lpsymphony</code> will not install on R-devel due to <code>R CMD config F77</code> being deprecated. Installs normally on R 3.6.1.</li>
 <li>
 <code><a href="../reference/plotShadow.html">plotShadow()</a></code> has a new <code>simple</code> argument that simplifies the chart by hiding items that are not included in any shadow test.</li>
-<li>Now uses disambiguated solver names. (e.g. <code>lpsymphony</code> and <code>Rsymphony</code> instead of <code>SYMPHONY</code>)</li>
+<li>Now uses disambiguated solver names. (e.g. <code>lpsymphony</code> and <code>Rsymphony</code> instead of <code>SYMPHONY</code>)</li>
 <li>
 <code><a href="../articles/rsymphony.html">vignette('rsymphony')</a></code> is improved.</li>
 <li>
@@ -358,9 +358,9 @@
 </ul>
 </div>
 </div>
-    <div id="testdesign-0-2-5" class="section level1">
+    <div id="testdesign-025" class="section level1">
 <h1 class="page-header" data-toc-text="0.2.5">
-<a href="#testdesign-0-2-5" class="anchor"></a>TestDesign 0.2.5<small> 2019-09-12 </small>
+<a href="#testdesign-025" class="anchor"></a>TestDesign 0.2.5<small> 2019-09-12 </small>
 </h1>
 <div id="bug-fixes-4" class="section level2">
 <h2 class="hasAnchor">
@@ -383,9 +383,9 @@
 </ul>
 </div>
 </div>
-    <div id="testdesign-0-2-3" class="section level1">
+    <div id="testdesign-023" class="section level1">
 <h1 class="page-header" data-toc-text="0.2.3">
-<a href="#testdesign-0-2-3" class="anchor"></a>TestDesign 0.2.3<small> 2019-08-28 </small>
+<a href="#testdesign-023" class="anchor"></a>TestDesign 0.2.3<small> 2019-08-28 </small>
 </h1>
 <div id="bug-fixes-5" class="section level2">
 <h2 class="hasAnchor">
@@ -404,9 +404,9 @@
 </ul>
 </div>
 </div>
-    <div id="testdesign-0-2-2" class="section level1">
+    <div id="testdesign-022" class="section level1">
 <h1 class="page-header" data-toc-text="0.2.2">
-<a href="#testdesign-0-2-2" class="anchor"></a>TestDesign 0.2.2<small> 2019-08-20 </small>
+<a href="#testdesign-022" class="anchor"></a>TestDesign 0.2.2<small> 2019-08-20 </small>
 </h1>
 <ul>
 <li>This is the first published version.</li>
