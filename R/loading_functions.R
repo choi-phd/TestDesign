@@ -763,13 +763,13 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
     id <- c(item_attrib@data[["ID"]], st_attrib@data[["STID"]])
     ns <- nrow(st_attrib@data)
     nv <- ni + ns
-    item_id_by_stimulus <- split(item_attrib@data[["ID"]], as.factor(item_attrib@data[["STID"]]))
+    item_id_by_stimulus    <- split(item_attrib@data[["ID"]], as.factor(item_attrib@data[["STID"]]))
     item_index_by_stimulus <- lapply(item_id_by_stimulus, function(x) which(item_attrib@data[["ID"]] %in% x))
-    item_index_by_stimulus <- lapply(st_attrib@data[["STID"]], function(x) item_index_by_stimulus[[x]])
+    item_index_by_stimulus <- item_index_by_stimulus[st_attrib@data[["STID"]]]
     if (any(item_attrib@data[["STID"]] %in% c("", " ", "N/A", "n/a"))) {
       item_attrib@data[["STID"]][item_attrib@data[["STID"]] %in% c("", " ", "N/A", "n/a")] <- NA
     }
-    stimulus_id_by_item <- item_attrib@data[["STID"]]
+    stimulus_id_by_item    <- item_attrib@data[["STID"]]
     stimulus_index_by_item <- sapply(stimulus_id_by_item, function(x) { if (!is.na(x)) { which(st_attrib@data[["STID"]] == x) } else { NA } } )
     if (any(toupper(constraints[["CONDITION"]]) %in% c("PER STIMULUS", "PER PASSAGE", "PER SET", "PER TESTLET"))) {
       common_stimulus_length <- TRUE
