@@ -94,16 +94,22 @@ getXdataOfAdministered <- function(constants, position, output, stimulus_record,
 }
 
 #' @noRd
-getIndexOfExcludedItems <- function(excluded_items, item_pool) {
+getIndexOfExcludedEntry <- function(exclude, constraints) {
 
-  if (is.null(excluded_items)) {
-    return(excluded_items)
+  if (is.null(exclude)) {
+    return(NULL)
   }
 
+  o <- list()
   o <- lapply(
-    excluded_items,
+    exclude,
     function(x) {
-      which(item_pool@id %in% x)
+      tmp <- list()
+      tmp$i <- which(constraints@pool@id %in% x$i)
+      if (constraints@set_based) {
+        tmp$s <- which(constraints@st_attrib@data$STID %in% x$s)
+      }
+      return(tmp)
     }
   )
 
@@ -112,7 +118,7 @@ getIndexOfExcludedItems <- function(excluded_items, item_pool) {
 }
 
 #' @noRd
-getXdataOfExcludedItems <- function(constants, excluded_items) {
+getXdataOfExcludedEntry <- function(constants, exclude_index) {
 
   o <- list()
 
@@ -120,11 +126,17 @@ getXdataOfExcludedItems <- function(constants, excluded_items) {
   ni <- constants$ni
 
   # Exclude specified items
-
   o$xmat <- matrix(0, 1, nv)
   o$xdir <- rep("==", 1)
   o$xrhs <- rep(0   , 1)
-  o$xmat[1, excluded_items] <- 1
+  o$xmat[1, exclude_index$i] <- 1
+
+  if (!constants$set_based) {
+    return(o)
+  }
+
+  # Exclude specified stimuli
+  o$xmat[1, ni + exclude_index$s] <- 1
 
   return(o)
 

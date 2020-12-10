@@ -138,7 +138,7 @@ setMethod(
     posterior_constants <- getPosteriorConstants(config)
     posterior_record    <- initializePosterior(prior, prior_par, config, constants, pool, posterior_constants)
     initial_theta       <- initializeTheta(config, constants, posterior_record)
-    excluded_items      <- getIndexOfExcludedItems(excluded_items, pool)
+    exclude_index       <- getIndexOfExcludedEntry(exclude, constraints)
 
     if (constants$use_shadow) {
       refresh_shadow <- initializeShadowEngine(constants, config@refresh_policy)
@@ -278,7 +278,7 @@ setMethod(
             o@shadow_test_refreshed[position] <- TRUE
 
             xdata         <- getXdataOfAdministered(constants, position, o, stimulus_record, constraints)
-            xdata_exclude <- getXdataOfExcludedItems(constants, excluded_items[[j]])
+            xdata_exclude <- getXdataOfExcludedEntry(constants, exclude_index[[j]])
             xdata         <- combineXdata(xdata, xdata_exclude)
 
             # Do exposure control
