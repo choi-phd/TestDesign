@@ -2,21 +2,23 @@ set.seed(1)
 true_theta <- seq(-2, 2, 1)
 resp <- simResp(itempool_science, true_theta)
 
-test_that("item exclusion works", {
+test_that("excluding items works", {
 
   cfg <- createShadowTestConfig()
 
   set.seed(1)
-  excluded_items <- lapply(
+  exclude <- lapply(
     1:5,
     function(x) {
-      sample(itempool_science@id, 30)
+      tmp <- list()
+      tmp$i <- sample(itempool_science@id, 30)
+      return(tmp)
     }
   )
 
   solution <- Shadow(
     cfg, constraints_science, true_theta, data = resp,
-    excluded_items = excluded_items
+    exclude = exclude
   )
 
   administered_items <- lapply(
@@ -30,9 +32,9 @@ test_that("item exclusion works", {
 
   o <- mapply(
     function(intent, observed) {
-      any(intent %in% observed)
+      any(intent$i %in% observed)
     },
-    excluded_items,
+    exclude,
     administered_items,
     SIMPLIFY = FALSE
   )
