@@ -78,7 +78,7 @@ setMethod(
 #' @param data (optional) a matrix containing item response data to use in simulation. Either \code{true_theta} or \code{data} must be supplied.
 #' @param prior (optional) prior density at each \code{config@theta_grid}. This overrides \code{prior_par}. Can be a vector to use the same prior for all \emph{nj} participants, or a \emph{nj}-row matrix to use a different prior for each participant.
 #' @param prior_par (optional) normal distribution parameters \code{c(mean, sd)} to use as prior. Can be a vector to use the same prior for all \emph{nj} participants, or a \emph{nj}-row matrix to use a different prior for each participant.
-#' @param excluded_items (optional) a list containing item names to exclude from selection for each participant.
+#' @param exclude (optional) a list containing item names in \code{$i} and set names in \code{$s} to exclude from selection for each participant.
 #' @param include_items_for_estimation (optional) an examinee-wise list containing:
 #' \itemize{
 #'   \item{administered_item_pool} items to include in theta estimation as \code{\linkS4class{item_pool}} object.
