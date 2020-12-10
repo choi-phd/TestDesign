@@ -12,7 +12,7 @@ Shadow(
   data = NULL,
   prior = NULL,
   prior_par = NULL,
-  excluded_items = NULL,
+  exclude = NULL,
   include_items_for_estimation = NULL,
   force_solver = FALSE,
   session = NULL
@@ -25,7 +25,7 @@ Shadow(
   data = NULL,
   prior = NULL,
   prior_par = NULL,
-  excluded_items = NULL,
+  exclude = NULL,
   include_items_for_estimation = NULL,
   force_solver = FALSE,
   session = NULL
@@ -44,6 +44,8 @@ Shadow(
 
 \item{prior_par}{(optional) normal distribution parameters \code{c(mean, sd)} to use as prior. Can be a vector to use the same prior for all \emph{nj} participants, or a \emph{nj}-row matrix to use a different prior for each participant.}
 
+\item{exclude}{(optional) a list containing item names in \code{$i} and set names in \code{$s} to exclude from selection for each participant. The length of the list must be equal to the number of participants.}
+
 \item{include_items_for_estimation}{(optional) an examinee-wise list containing:
 \itemize{
   \item{administered_item_pool} items to include in theta estimation as \code{\linkS4class{item_pool}} object.
@@ -53,8 +55,6 @@ Shadow(
 \item{force_solver}{if \code{TRUE}, do not check whether the solver is one of recommended solvers for doing set-based assembly. Has no effect on discrete assembly. (default = \code{FALSE})}
 
 \item{session}{(optional) used to communicate with Shiny app \code{\link{TestDesign}}.}
-
-\item{exclude}{(optional) a list containing item names in \code{$i} and set names in \code{$s} to exclude from selection for each participant.}
 }
 \value{
 \code{\link{Shadow}} returns an \code{\linkS4class{output_Shadow_all}} object containing assembly results.
