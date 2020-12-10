@@ -78,7 +78,7 @@ setMethod(
 #' @param data (optional) a matrix containing item response data to use in simulation. Either \code{true_theta} or \code{data} must be supplied.
 #' @param prior (optional) prior density at each \code{config@theta_grid}. This overrides \code{prior_par}. Can be a vector to use the same prior for all \emph{nj} participants, or a \emph{nj}-row matrix to use a different prior for each participant.
 #' @param prior_par (optional) normal distribution parameters \code{c(mean, sd)} to use as prior. Can be a vector to use the same prior for all \emph{nj} participants, or a \emph{nj}-row matrix to use a different prior for each participant.
-#' @param exclude (optional) a list containing item names in \code{$i} and set names in \code{$s} to exclude from selection for each participant.
+#' @param exclude (optional) a list containing item names in \code{$i} and set names in \code{$s} to exclude from selection for each participant. The length of the list must be equal to the number of participants.
 #' @param include_items_for_estimation (optional) an examinee-wise list containing:
 #' \itemize{
 #'   \item{administered_item_pool} items to include in theta estimation as \code{\linkS4class{item_pool}} object.
@@ -103,7 +103,7 @@ setMethod(
 #' @export
 setGeneric(
   name = "Shadow",
-  def = function(config, constraints = NULL, true_theta = NULL, data = NULL, prior = NULL, prior_par = NULL, excluded_items = NULL, include_items_for_estimation = NULL, force_solver = FALSE, session = NULL) {
+  def = function(config, constraints = NULL, true_theta = NULL, data = NULL, prior = NULL, prior_par = NULL, exclude = NULL, include_items_for_estimation = NULL, force_solver = FALSE, session = NULL) {
     standardGeneric("Shadow")
   }
 )
@@ -113,7 +113,7 @@ setGeneric(
 setMethod(
   f = "Shadow",
   signature = "config_Shadow",
-  definition = function(config, constraints, true_theta, data, prior, prior_par, excluded_items, include_items_for_estimation, force_solver = FALSE, session) {
+  definition = function(config, constraints, true_theta, data, prior, prior_par, exclude, include_items_for_estimation, force_solver = FALSE, session) {
 
     if (!validObject(config)) {
       stop("'config' argument is not a valid 'config_Shadow' object")
