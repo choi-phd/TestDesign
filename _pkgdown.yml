@@ -33,7 +33,6 @@ reference:
       - plot
       - plotInfo
       - plotCAT
-      - plotShadow
       - plotExposure
       - getSolution
   - title: "Web GUI"
