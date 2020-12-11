@@ -997,28 +997,6 @@ toggleConstraints <- function(object, on = NULL, off = NULL) {
   return(object)
 }
 
-#' (deprecated) Update constraints
-#'
-#' Use \code{\link{toggleConstraints}} instead.
-#'
-#' @param object a \code{\linkS4class{constraints}} object from \code{\link{loadConstraints}}.
-#' @param on constraint indices to mark as active.
-#' @param off constraint indices to mark as inactive.
-#'
-#' @return \code{\link{updateConstraints}} returns the updated \code{\linkS4class{constraints}} object.
-#'
-#' @examples
-#' \dontrun{
-#' constraints_science2 <- updateConstraints(constraints_science, off = 32:36)
-#' constraints_science3 <- updateConstraints(constraints_science, on = 32:36)
-#' }
-#' @export
-updateConstraints <- function(object, on = NULL, off = NULL) {
-  .Deprecated("toggleConstraints", msg = "updateConstraints() is deprecated. Use toggleConstraints() instead.")
-  o <- toggleConstraints(object, on, off)
-  return(o)
-}
-
 #' Build constraints (shortcut to other loading functions)
 #'
 #' \code{\link{buildConstraints}} is a data loading function to create a \code{\linkS4class{constraints}} object.
