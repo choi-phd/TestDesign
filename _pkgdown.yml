@@ -32,7 +32,6 @@ reference:
       - summary
       - plot
       - plotInfo
-      - plotCAT
       - plotExposure
       - getSolution
   - title: "Web GUI"
