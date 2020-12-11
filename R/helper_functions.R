@@ -67,19 +67,6 @@ setMethod(
   }
 )
 
-#' (deprecated) Show constraints
-#'
-#' (deprecated) Use \code{\link[TestDesign:print-methods]{print}} instead.
-#'
-#' @param constraints a \code{\linkS4class{constraints}} object.
-#'
-#' @docType methods
-#' @export
-showConstraints <- function(constraints) {
-  .Deprecated("print", msg = "'showConstraints' function is deprecated. Use 'print' function instead.")
-  print(constraints)
-}
-
 #' @noRd
 countConstraints <- function(constraints, item_idx) {
 
