@@ -1,3 +1,23 @@
+# TestDesign 1.1.3.9004 (development version)
+
+## New features
+* `Shadow()` has a new argument `include_items_for_estimation` for including data to be used in theta estimation.
+* The argument `exclude_items` in `Shadow()` is now renamed to `exclude`. The argument `exclude` now also accepts stimulus IDs.
+* MLE estimator has new arguments `use_step_size` and `step_size` for limiting the amount of change between item administrations.
+
+## Changes
+* MLEF item augmentation is now only performed for extreme responses.
+* `loadConstraints()` now retains stimulus IDs in the `item_index_by_stimulus` slot for easier access.
+
+## Bug fixes
+* Fixed the error message associated with validating a `config_Shadow` object for whether its solver was installed on the system.
+
+## Deprecated functions
+* Deprecated `updateConstraints()` is removed. This is now `toggleConstraints()`.
+* Deprecated `showConstraints()` is removed. This is now `print()`.
+* Deprecated `plotCAT()` is removed. This is now `plot(type = 'audit')`.
+* Deprecated `plotShadow()` is removed. This is now `plot(type = 'shadow')`.
+
 # TestDesign 1.1.3
 
 ## New features
