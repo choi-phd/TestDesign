@@ -23,10 +23,11 @@ createShadowTestConfig(
 \arguments{
 \item{item_selection}{a named list containing item selection criteria.
 \itemize{
-  \item{\code{method}} the type of selection criteria. Accepts \code{MFI, MPWI, FB, EB}. (default = \code{MFI})
+  \item{\code{method}} the type of selection criteria. Accepts \code{MFI, MPWI, FB, EB, GFI}. (default = \code{MFI})
   \item{\code{info_type}} the type of information. Accepts \code{FISHER}. (default = \code{FISHER})
   \item{\code{initial_theta}} (optional) initial theta values to use.
   \item{\code{fixed_theta}} (optional) fixed theta values to use throughout all item positions.
+  \item{\code{target_value}} (optional) the target value to use for \code{method = 'GFI'}.
 }}
 
 \item{content_balancing}{a named list containing content balancing options.
