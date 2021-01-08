@@ -53,11 +53,13 @@ runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
 
       maximize  <- FALSE
 
-      # add nt*2 rows and a column (minimax)
+      # add one variable (minimax deviation)
 
       mat       <- cbind(mat, 0)
       obj       <- c(obj, 1)
       types     <- c(types, "C")
+
+      # add two constraints (minimax)
 
       for (k in 1:nrow(objective)) {
         add_mat            <- matrix(0, nrow = 2, ncol = nv + 1)
@@ -70,7 +72,7 @@ runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
         rhs <- c(rhs, rep(config@item_selection$target_value[k], 2))
       }
 
-      # add 1 row (enforce lowerbound on deviation for minimax)
+      # add one constraint (enforce lowerbound on minimax deviation)
 
       add_mat <- c(rep(0, nv), 1)
       mat <- rbind(mat, add_mat)
@@ -87,9 +89,6 @@ runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
       stop(sprintf("length of 'objective' must be %s or %s", nv, ni))
     }
 
-    obj[1:length(objective)] <- objective
-
-    maximize     <- TRUE
     sort_by_info <- TRUE
 
     # add x for previous items
@@ -102,6 +101,43 @@ runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
       mat <- rbind(mat, xmat)
       dir <- c(dir, xdir)
       rhs <- c(rhs, xrhs)
+    }
+
+    if (config@item_selection$method == "GFI") {
+
+      maximize     <- FALSE
+
+      # add one variable (minimax deviation)
+
+      mat       <- cbind(mat, 0)
+      obj       <- c(obj, 1)
+      types     <- c(types, "C")
+
+      # add two constraints (minimax)
+
+      for (k in 1) {
+        add_mat            <- matrix(0, nrow = 2, ncol = nv + 1)
+        add_mat[1, 1:ni]   <- objective[, k]
+        add_mat[2, 1:ni]   <- objective[, k]
+        add_mat[1, nv + 1] <- -1
+        add_mat[2, nv + 1] <- 1
+        mat <- rbind(mat, add_mat)
+        dir <- c(dir, c("<=", ">="))
+        rhs <- c(rhs, rep(config@item_selection$target_value, 2))
+      }
+
+      # add one constraint (enforce lowerbound on minimax deviation)
+
+      add_mat <- c(rep(0, nv), 1)
+      mat <- rbind(mat, add_mat)
+      dir <- c(dir, ">=")
+      rhs <- c(rhs, config@MIP$obj_tol)
+
+    } else {
+
+      maximize     <- TRUE
+      obj[1:length(objective)] <- objective
+
     }
 
   }
@@ -137,13 +173,13 @@ runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
   }
 
   if (!isOptimal(MIP$status, solver)) {
+    #if (names(MIP$status) == "TM_TIME_LIMIT_EXCEEDED") browser()
     return(list(status = MIP$status, MIP = MIP, selected = NULL))
   }
 
   MIP$solution[types == "B"] <- round(MIP$solution[types == "B"], 0)
 
   solve_time <- (proc.time() - solve_time)[["elapsed"]]
-
 
   # STIMULUS-LEVEL SORT IF NEEDED --------------------------------------------------------------
 
@@ -167,7 +203,7 @@ runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
 
   index_solution <- which(MIP$solution[1:constraints@ni] == 1)
   shadow_test    <- constraints@item_attrib@data[index_solution, ]
-  info           <- obj[index_solution]
+  info           <- objective[index_solution]
   obj_value      <- sum(info)
 
   if (sort_by_info) {

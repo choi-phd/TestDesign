@@ -271,7 +271,7 @@ setMethod(
 
             if (exposure_constants$use_eligibility_control) {
 
-              # Get ineligibile items in the current theta segment
+              # Get ineligible items in the current theta segment
 
               current_segment            <- o@theta_segment_index[position]
               ineligible_flag_in_segment <- getIneligibleFlagInSegment(ineligible_flag, current_segment, constants)
@@ -302,7 +302,13 @@ setMethod(
               # Penalize item info
 
               if (!is.null(config@exposure_control$M)) {
-                info[ineligible_flag_in_segment$i == 1] <- info[ineligible_flag_in_segment$i == 1] - config@exposure_control$M
+                if (config@item_selection$method == "GFI") {
+                  info[ineligible_flag_in_segment$i == 1] <-
+                  info[ineligible_flag_in_segment$i == 1] + config@exposure_control$M # add because GFI performs minimization
+                } else {
+                  info[ineligible_flag_in_segment$i == 1] <-
+                  info[ineligible_flag_in_segment$i == 1] - config@exposure_control$M
+                }
               } else {
                 info[ineligible_flag_in_segment$i == 1] <- -1 * all_data$max_info - 1
               }
