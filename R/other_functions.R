@@ -165,6 +165,10 @@ getInfo <- function(item_selection, j, info_fixed_theta, current_theta, pool, mo
     info <- calc_info(current_theta$theta, pool@ipar, pool@NCAT, model)
     return(info)
   }
+  if (item_method == "GFI") {
+    info <- calc_info(current_theta$theta, pool@ipar, pool@NCAT, model)
+    return(info)
+  }
   if (item_method == "MPWI") {
     info <- as.vector(matrix(posterior_record$posterior[j, ], nrow = 1) %*% info_grid)
     return(info)
