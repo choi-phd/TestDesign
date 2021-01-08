@@ -226,6 +226,11 @@ setClass("config_Shadow",
       msg <- sprintf("config@exposure_control: unrecognized $method '%s' (accepts NONE, ELIGIBILITY, BIGM, or BIGM-BAYESIAN)", object@exposure_control$method)
       err <- c(err, msg)
     }
+    if (toupper(object@item_selection$method) %in% c("GFI") &
+      object@exposure_control$method %in% c("ELIGIBILITY")) {
+      msg <- sprintf("config@exposure_control: $method 'ELIGIBILITY' is not compatible with @item_selection$method 'GFI'")
+      err <- c(err, msg)
+    }
     if (!length(object@exposure_control$max_exposure_rate) %in% c(1, object@exposure_control$n_segment)) {
       msg <- "config@exposure_control: length($max_exposure_rate) must be 1 or $n_segment"
       err <- c(err, msg)
