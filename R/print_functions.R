@@ -158,6 +158,7 @@ setMethod("print", "config_Shadow", function(x) {
   cat("    info_type                 :", x@item_selection$info_type, "\n")
   cat("    initial_theta             :", x@item_selection$initial_theta, "\n")
   cat("    fixed_theta               :", x@item_selection$fixed_theta, "\n")
+  cat("    target_value              :", x@item_selection$target_value, "\n")
   cat("\n")
   cat("  content_balancing \n")
   cat("    method                    :", x@content_balancing$method, "\n")

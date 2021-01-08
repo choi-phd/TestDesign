@@ -105,7 +105,8 @@ setClass("config_Shadow",
       method                    = "MFI",
       info_type                 = "FISHER",
       initial_theta             = NULL,
-      fixed_theta               = NULL
+      fixed_theta               = NULL,
+      target_value              = NULL
     ),
     content_balancing = list(
       method                    = "STA"
@@ -200,8 +201,8 @@ setClass("config_Shadow",
       }
     }
 
-    if (!toupper(object@item_selection$method) %in% c("MFI", "MPWI", "EB", "FB", "FIXED")) {
-      msg <- sprintf("config@item_selection: unrecognized $method '%s' (accepts MFI, MPWI, EB, FB, or FIXED)", object@item_selection$method)
+    if (!toupper(object@item_selection$method) %in% c("MFI", "MPWI", "EB", "FB", "GFI", "FIXED")) {
+      msg <- sprintf("config@item_selection: unrecognized $method '%s' (accepts MFI, MPWI, EB, FB, GFI, or FIXED)", object@item_selection$method)
       err <- c(err, msg)
     }
     if (toupper(object@item_selection$method) %in% c("FIXED")) {
@@ -277,10 +278,11 @@ setClass("config_Shadow",
 #'
 #' @param item_selection a named list containing item selection criteria.
 #' \itemize{
-#'   \item{\code{method}} the type of selection criteria. Accepts \code{MFI, MPWI, FB, EB}. (default = \code{MFI})
+#'   \item{\code{method}} the type of selection criteria. Accepts \code{MFI, MPWI, FB, EB, GFI}. (default = \code{MFI})
 #'   \item{\code{info_type}} the type of information. Accepts \code{FISHER}. (default = \code{FISHER})
 #'   \item{\code{initial_theta}} (optional) initial theta values to use.
 #'   \item{\code{fixed_theta}} (optional) fixed theta values to use throughout all item positions.
+#'   \item{\code{target_value}} (optional) the target value to use for \code{method = 'GFI'}.
 #' }
 #' @param content_balancing a named list containing content balancing options.
 #' \itemize{
