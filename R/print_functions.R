@@ -168,6 +168,7 @@ setMethod("print", "config_Shadow", function(x) {
   cat("    time_limit                :", x@MIP$time_limit, "\n")
   cat("    gap_limit                 :", x@MIP$gap_limit, "\n")
   cat("    gap_limit_abs             :", x@MIP$gap_limit_abs, "\n")
+  cat("    obj_tol                   :", x@MIP$obj_tol, "\n")
   cat("    retry                     :", x@MIP$retry, "\n")
   cat("\n")
   cat("  MCMC \n")
