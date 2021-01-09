@@ -21,6 +21,7 @@
   examinee_id = 1,
   position = NULL,
   theta_range = c(-5, 5),
+  ylim = NULL,
   color = "blue",
   z_ci = 1.96,
   simple = TRUE,
@@ -40,6 +41,7 @@
   examinee_id = 1,
   position = NULL,
   theta_range = c(-5, 5),
+  ylim = NULL,
   color = "blue",
   z_ci = 1.96,
   simple = TRUE,
@@ -59,6 +61,7 @@
   examinee_id = 1,
   position = NULL,
   theta_range = c(-5, 5),
+  ylim = NULL,
   color = "blue",
   z_ci = 1.96,
   simple = TRUE,
@@ -77,6 +80,7 @@
   select = NULL,
   examinee_id = 1,
   theta_range = c(-5, 5),
+  ylim = NULL,
   color = "blue",
   z_ci = 1.96,
   simple = FALSE,
@@ -96,6 +100,7 @@
   examinee_id = 1,
   position = NULL,
   theta_range = c(-5, 5),
+  ylim = NULL,
   color = "blue",
   z_ci = 1.96,
   simple = FALSE,
@@ -143,6 +148,8 @@
 \item{position}{used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'info'}. The item position to draw the plot.}
 
 \item{theta_range}{used in \code{\linkS4class{output_Shadow}} and \code{\linkS4class{output_Shadow_all}} with \code{type = 'audit'}. The theta range to plot. (default = \code{c(-5, 5)})}
+
+\item{ylim}{(optional) the y-axis plot range. Used in most plot types.}
 
 \item{color}{the color of the curve.}
 
