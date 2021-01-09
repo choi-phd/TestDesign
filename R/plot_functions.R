@@ -31,6 +31,7 @@ NULL
 #' @param examinee_id used in \code{\linkS4class{output_Shadow}} and \code{\linkS4class{output_Shadow_all}} with \code{type = 'audit'} and \code{type = 'shadow'}. The examinee numeric ID to draw the plot.
 #' @param position used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'info'}. The item position to draw the plot.
 #' @param theta_range used in \code{\linkS4class{output_Shadow}} and \code{\linkS4class{output_Shadow_all}} with \code{type = 'audit'}. The theta range to plot. (default = \code{c(-5, 5)})
+#' @param ylim (optional) the y-axis plot range. Used in most plot types.
 #' @param z_ci used in \code{\linkS4class{output_Shadow}} and \code{\linkS4class{output_Shadow_all}} with \code{type = 'audit'}. The range to use for confidence intervals. (default = \code{1.96})
 #' @param simple used in \code{\linkS4class{output_Shadow}} and \code{\linkS4class{output_Shadow_all}} with \code{type = 'shadow'}. If \code{TRUE}, simplify the chart by hiding unused items.
 #' @param theta_segment used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. The type of theta to determine exposure segments. Accepts \code{Estimated} or \code{True}. (default = \code{Estimated})
@@ -82,6 +83,7 @@ setMethod(
     examinee_id = 1,
     position = NULL,
     theta_range = c(-5, 5),
+    ylim = NULL,
     color = "blue",
     z_ci = 1.96,
     simple = TRUE,
@@ -120,14 +122,18 @@ setMethod(
       y <- rowSums(y)
     }
 
+    if (is.null(ylim)) {
+      ylim <- c(0, max(y))
+    }
+
     if (plot_sum) {
       plot(theta, y, xlab = "Theta", ylab = txt,
            main = sprintf("%s from %s %i items", txt, txt_s, length(items)),
-           type = "l", col = color, ylim = c(0, max(y)), ...)
+           type = "l", col = color, ylim = ylim, ...)
     } else {
       plot(theta, y[, items], xlab = "Theta", ylab = txt,
           main = x@id[items],
-          type = "l", col = color, ylim = c(0, max(y)), ...)
+          type = "l", col = color, ylim = ylim, ...)
     }
 
     box()
@@ -154,6 +160,7 @@ setMethod(
     examinee_id = 1,
     position = NULL,
     theta_range = c(-5, 5),
+    ylim = NULL,
     color = "blue",
     z_ci = 1.96,
     simple = TRUE,
@@ -204,13 +211,16 @@ setMethod(
       title   <- "Test Characteristic Curve based on the assembled test"
     }
 
-    ymax <- max(vec_sub, config@item_selection$target_value)
+    if (is.null(ylim)) {
+      ymax <- max(vec_sub, config@item_selection$target_value)
+      ylim <- c(0, ymax)
+    }
 
     # Begin plot
 
     plot(
       continuum, vec_sub,
-      xlim = c(min(continuum), max(continuum)), ylim = c(0, ymax),
+      xlim = c(min(continuum), max(continuum)), ylim = ylim,
       main = title, xlab = "Theta", ylab = ylab, type = "n", bty = "n", ...
     )
 
@@ -256,6 +266,7 @@ setMethod(
     examinee_id = 1,
     position = NULL,
     theta_range = c(-5, 5),
+    ylim = NULL,
     color = "blue",
     z_ci = 1.96,
     simple = TRUE,
@@ -278,11 +289,15 @@ setMethod(
     mean_info <- apply(mean_info, 1, mean)
     mean_info <- mean_info * n_items
 
+    if (is.null(ylim)) {
+      ylim <- c(0, max(max_info))
+    }
+
     # Begin plot
     tmp = sprintf("Maximum attainable test information and the randomly selected information")
     plot(
       0, 0,
-      type = "n", xlim = c(-3, 3), ylim = c(0, max(max_info)),
+      type = "n", xlim = c(-3, 3), ylim = ylim,
       xlab = "Theta", ylab = "Information", main = "Test information based on best items vs. random selection",
       ...
     )
@@ -313,6 +328,7 @@ setMethod(
     select = NULL,
     examinee_id = 1,
     theta_range = c(-5, 5),
+    ylim = NULL,
     color = "blue",
     z_ci = 1.96,
     simple = FALSE,
@@ -651,6 +667,7 @@ setMethod(
     examinee_id = 1,
     position = NULL,
     theta_range = c(-5, 5),
+    ylim = NULL,
     color = "blue",
     z_ci = 1.96,
     simple = FALSE,
@@ -681,10 +698,14 @@ setMethod(
         stop("Invalid info_type specified")
       }
 
+      if (is.null(ylim)) {
+        ylim <- c(0, max(y))
+      }
+
       plot(
         theta, y, xlab = "Theta", ylab = "Information",
         main = sprintf("Examinee ID: %s (%s)", examinee_id, txt),
-        type = "n", ylim = c(0, max(y)))
+        type = "n", ylim = ylim)
 
       grid()
 
