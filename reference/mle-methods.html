@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TestDesign</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -147,6 +147,8 @@
   truncate <span class='op'>=</span> <span class='cn'>FALSE</span>,
   theta_range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>4</span>, <span class='fl'>4</span><span class='op'>)</span>,
   max_change <span class='op'>=</span> <span class='fl'>1</span>,
+  use_step_size <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  step_size <span class='op'>=</span> <span class='fl'>0.5</span>,
   do_Fisher <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span>
 
@@ -161,6 +163,8 @@
   truncate <span class='op'>=</span> <span class='cn'>FALSE</span>,
   theta_range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>4</span>, <span class='fl'>4</span><span class='op'>)</span>,
   max_change <span class='op'>=</span> <span class='fl'>1</span>,
+  use_step_size <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  step_size <span class='op'>=</span> <span class='fl'>0.5</span>,
   do_Fisher <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span>
 
@@ -221,7 +225,7 @@
     </tr>
     <tr>
       <th>truncate</th>
-      <td><p>set <code>TRUE</code> to impose a bound on the estimate. (default = <code>FALSE</code>)</p></td>
+      <td><p>set <code>TRUE</code> to impose a bound using <code>theta_range</code> on the estimate. (default = <code>FALSE</code>)</p></td>
     </tr>
     <tr>
       <th>theta_range</th>
@@ -230,6 +234,14 @@
     <tr>
       <th>max_change</th>
       <td><p>upper bound to impose on the absolute change in theta between iterations. Absolute changes exceeding this value will be capped to <code>max_change</code>. (default = <code>1.0</code>)</p></td>
+    </tr>
+    <tr>
+      <th>use_step_size</th>
+      <td><p>set <code>TRUE</code> to use <code>step_size</code>. (default = <code>FALSE</code>)</p></td>
+    </tr>
+    <tr>
+      <th>step_size</th>
+      <td><p>upper bound to impose on the absolute change in initial theta and estimated theta. Absolute changes exceeding this value will be capped to <code>step_size</code>. (default = <code>0.5</code>)</p></td>
     </tr>
     <tr>
       <th>do_Fisher</th>

@@ -75,7 +75,7 @@ Default values are used for any unspecified parameters/slots." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TestDesign</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -179,6 +179,7 @@ Default values are used for any unspecified parameters/slots.</p>
 <li><p><code>time_limit</code> time limit in seconds. Used in solvers <code>lpsymphony, Rsymphony, gurobi, Rglpk</code>. (default = <code>60</code>)</p></li>
 <li><p><code>gap_limit</code> search termination criterion. Gap limit in relative scale passed onto the solver. Used in solver <code>gurobi</code>. (default = <code>.05</code>)</p></li>
 <li><p><code>gap_limit_abs</code> search termination criterion. Gap limit in absolute scale passed onto the solver. Used in solvers <code>lpsymphony, Rsymphony</code>. (default = <code>0.05</code>)</p></li>
+<li><p><code>obj_tol</code> search termination criterion. The lower bound to use on the minimax deviation variable. Used when <code>item_selection$method</code> is <code>GFI</code>, and ignored otherwise. (default = <code>0.05</code>)</p></li>
 <li><p><code>retry</code> number of times to retry running the solver if the solver returns no solution. Some solvers incorrectly return no solution even when a solution exists. This is the number of attempts to verify that the problem is indeed infeasible in such cases. Set to <code>0</code> to not retry. (default = <code>5</code>)</p></li>
 </ul></td>
     </tr>
@@ -237,6 +238,8 @@ Default values are used for any unspecified parameters/slots.</p>
 <li><p><code>max_iter</code> maximum number of Newton-Raphson iterations. Used when <code>method</code> is <code>MLE</code>. (default = <code>50</code>)</p></li>
 <li><p><code>crit</code> convergence criterion. Used when <code>method</code> is <code>MLE</code>. (default = <code>1e-03</code>)</p></li>
 <li><p><code>max_change</code> maximum change in ML estimates between iterations. Changes exceeding this value is clipped to this value. Used when <code>method</code> is <code>MLE</code>. (default = <code>1.0</code>)</p></li>
+<li><p><code>use_step_size</code> set <code>TRUE</code> to use <code>step_size</code>. Used when <code>method</code> is <code>MLE</code> or <code>MLEF</code>. (default = <code>FALSE</code>)</p></li>
+<li><p><code>step_size</code> upper bound to impose on the absolute change in initial theta and estimated theta. Absolute changes exceeding this value will be capped to <code>step_size</code>. Used when <code>method</code> is <code>MLE</code> or <code>MLEF</code>. (default = <code>0.5</code>)</p></li>
 <li><p><code>do_Fisher</code> set <code>TRUE</code> to use Fisher's method of scoring. Used when <code>method</code> is <code>MLE</code>. (default = <code>TRUE</code>)</p></li>
 <li><p><code>fence_slope</code> slope parameter to use for <code>method = 'MLEF'</code>. This must have two values in total, for the lower and upper bound item respectively. Use one value to use the same value for both bounds. (default = <code>5</code>)</p></li>
 <li><p><code>fence_difficulty</code> difficulty parameters to use for <code>method = 'MLEF'</code>. This must have two values in total, for the lower and upper bound item respectively. (default = <code><a href='https://rdrr.io/r/base/c.html'>c(-5, 5)</a></code>)</p></li>
@@ -254,6 +257,8 @@ Default values are used for any unspecified parameters/slots.</p>
 <li><p><code>max_iter</code> maximum number of Newton-Raphson iterations. Used when <code>method</code> is <code>MLE</code>. (default = <code>50</code>)</p></li>
 <li><p><code>crit</code> convergence criterion. Used when <code>method</code> is <code>MLE</code>. (default = <code>1e-03</code>)</p></li>
 <li><p><code>max_change</code> maximum change in ML estimates between iterations. Changes exceeding this value is clipped to this value. Used when <code>method</code> is <code>MLE</code>. (default = <code>1.0</code>)</p></li>
+<li><p><code>use_step_size</code> set <code>TRUE</code> to use <code>step_size</code>. Used when <code>method</code> is <code>MLE</code> or <code>MLEF</code>.  (default = <code>FALSE</code>)</p></li>
+<li><p><code>step_size</code> upper bound to impose on the absolute change in initial theta and estimated theta. Absolute changes exceeding this value will be capped to <code>step_size</code>. Used when <code>method</code> is <code>MLE</code> or <code>MLEF</code>. (default = <code>0.5</code>)</p></li>
 <li><p><code>do_Fisher</code> set <code>TRUE</code> to use Fisher's method of scoring. Used when <code>method</code> is <code>MLE</code>. (default = <code>TRUE</code>)</p></li>
 <li><p><code>fence_slope</code> slope parameter to use for <code>method = 'MLEF'</code>. This must have two values in total, for the lower and upper bound item respectively. Use one value to use the same value for both bounds. (default = <code>5</code>)</p></li>
 <li><p><code>fence_difficulty</code> difficulty parameters to use for <code>method = 'MLEF'</code>. This must have two values in total, for the lower and upper bound item respectively. (default = <code><a href='https://rdrr.io/r/base/c.html'>c(-5, 5)</a></code>)</p></li>

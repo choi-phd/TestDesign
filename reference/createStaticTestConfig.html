@@ -75,7 +75,7 @@ Default values are used for any unspecified parameters/slots." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TestDesign</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -162,7 +162,7 @@ Default values are used for any unspecified parameters/slots.</p>
 <li><p><code>time_limit</code> time limit in seconds. Used in solvers <code>lpsymphony, Rsymphony, gurobi, Rglpk</code>. (default = <code>60</code>)</p></li>
 <li><p><code>gap_limit</code> search termination criterion. Gap limit in relative scale passed onto the solver. Used in solver <code>gurobi</code>. (default = <code>.05</code>)</p></li>
 <li><p><code>gap_limit_abs</code> search termination criterion. Gap limit in absolute scale passed onto the solver. Used in solvers <code>lpsymphony, Rsymphony</code>. (default = <code>0.05</code>)</p></li>
-<li><p><code>obj_tol</code> search termination criterion. Tolerance on target objective value in absolute difference scale. Used when <code>item_selection$method</code> is <code>TIF</code> or <code>TCC</code>. (default = <code>0.05</code>)</p></li>
+<li><p><code>obj_tol</code> search termination criterion. The lower bound to use on the minimax deviation variable. Used when <code>item_selection$method</code> is <code>TIF</code> or <code>TCC</code>. (default = <code>0.05</code>)</p></li>
 <li><p><code>retry</code> number of times to retry running the solver if the solver returns no solution. Some solvers incorrectly return no solution even when a solution exists. This is the number of attempts to verify that the problem is indeed infeasible in such cases. Set to <code>0</code> to not retry. (default = <code>5</code>)</p></li>
 </ul></td>
     </tr>

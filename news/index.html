@@ -73,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TestDesign</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -131,13 +131,63 @@
       <small>Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="testdesign-113" class="section level1">
-<h1 class="page-header" data-toc-text="1.1.3">
-<a href="#testdesign-113" class="anchor"></a>TestDesign 1.1.3<small> 2020-10-01 </small>
+    <div id="testdesign-120" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.0">
+<a href="#testdesign-120" class="anchor"></a>TestDesign 1.2.0<small> Unreleased </small>
 </h1>
 <div id="new-features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-features" class="anchor"></a>New features</h2>
+<ul>
+<li>Added goal programming method for adaptive assembly.</li>
+<li>
+<code><a href="../reference/Shadow.html">Shadow()</a></code> has a new argument <code>include_items_for_estimation</code> for including existing response data to be used to supplement interim theta estimation.</li>
+<li>The argument <code>exclude_items</code> in <code><a href="../reference/Shadow.html">Shadow()</a></code> is now renamed to <code>exclude</code>. The argument <code>exclude</code> now also accepts stimulus IDs.</li>
+<li>MLE estimator has new arguments <code>use_step_size</code> and <code>step_size</code> for limiting the amount of change between item administrations.</li>
+</ul>
+</div>
+<div id="changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#changes" class="anchor"></a>Changes</h2>
+<ul>
+<li>MLEF item augmentation is now only performed for extreme responses.</li>
+</ul>
+</div>
+<div id="qol-updates" class="section level2">
+<h2 class="hasAnchor">
+<a href="#qol-updates" class="anchor"></a>QoL updates</h2>
+<ul>
+<li>
+<code><a href="../reference/loadConstraints.html">loadConstraints()</a></code> now retains stimulus IDs in the <code>item_index_by_stimulus</code> slot for easier access.</li>
+<li>
+<code><a href="../reference/plot.html">plot()</a></code> now accepts <code>ylim</code>.</li>
+</ul>
+</div>
+<div id="bug-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<ul>
+<li>Fixed the error message associated with validating a <code>config_Shadow</code> object for whether its solver was installed on the system.</li>
+</ul>
+</div>
+<div id="deprecated-functions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#deprecated-functions" class="anchor"></a>Deprecated functions</h2>
+<ul>
+<li>Deprecated <code>updateConstraints()</code> is removed. This is now <code><a href="../reference/toggleConstraints.html">toggleConstraints()</a></code>.</li>
+<li>Deprecated <code>showConstraints()</code> is removed. This is now <code><a href="../reference/print.html">print()</a></code>.</li>
+<li>Deprecated <code>plotCAT()</code> is removed. This is now <code><a href="../reference/plot.html">plot(type = 'audit')</a></code>.</li>
+<li>Deprecated <code>plotShadow()</code> is removed. This is now <code><a href="../reference/plot.html">plot(type = 'shadow')</a></code>.</li>
+</ul>
+</div>
+</div>
+    <div id="testdesign-113" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.3">
+<a href="#testdesign-113" class="anchor"></a>TestDesign 1.1.3<small> 2020-10-01 </small>
+</h1>
+<div id="new-features-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-1" class="anchor"></a>New features</h2>
 <ul>
 <li>Now supports MLE with Fences (<a href="https://doi.org/10.1177/0146621616631317">Han, 2016</a>) for interim and final theta estimates in <code><a href="../reference/Shadow.html">Shadow()</a></code>. This can be configured using <code>config_Shadow@interim_theta</code> and <code>config_Shadow@final_theta</code>.</li>
 </ul>
@@ -157,9 +207,9 @@
 <h1 class="page-header" data-toc-text="1.1.2">
 <a href="#testdesign-112" class="anchor"></a>TestDesign 1.1.2<small> 2020-09-21 </small>
 </h1>
-<div id="qol-updates" class="section level2">
+<div id="qol-updates-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#qol-updates" class="anchor"></a>QoL updates</h2>
+<a href="#qol-updates-1" class="anchor"></a>QoL updates</h2>
 <ul>
 <li>Web documentation is now available at <a href="https://choi-phd.github.io/TestDesign/">https://choi-phd.github.io/TestDesign/</a>
 </li>
@@ -187,12 +237,12 @@
 <li>Added <code>dataset_bayes</code> example dataset.</li>
 <li>Now checks whether each solver returns solution properly upon loading the package.</li>
 <li>
-<code><a href="../reference/plot.html">plot(type = 'shadow')</a></code> (formerly <code><a href="../reference/plotShadow.html">plotShadow()</a></code>) now groups items by stimulus.</li>
+<code><a href="../reference/plot.html">plot(type = 'shadow')</a></code> (formerly <code>plotShadow()</code>) now groups items by stimulus.</li>
 </ul>
 </div>
-<div id="new-features-1" class="section level2">
+<div id="new-features-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-1" class="anchor"></a>New features</h2>
+<a href="#new-features-2" class="anchor"></a>New features</h2>
 <ul>
 <li>
 <code>config_*</code> objects now have a new <code>MIP$retry</code> slot. This specifies the number of retry attempts when the solver encounters a ‘no solution’ error. This error is incorrect in some cases. The intent of retrying is to verify whether the ‘no solution’ error indeed indicates a true error.</li>
@@ -200,18 +250,18 @@
 <code><a href="../reference/Shadow.html">Shadow()</a></code> now has a new <code>excluded_items</code> argument.</li>
 </ul>
 </div>
-<div id="deprecated-functions" class="section level2">
+<div id="deprecated-functions-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#deprecated-functions" class="anchor"></a>Deprecated functions</h2>
+<a href="#deprecated-functions-1" class="anchor"></a>Deprecated functions</h2>
 <ul>
 <li>
-<code><a href="../reference/updateConstraints.html">updateConstraints()</a></code> is now <code><a href="../reference/toggleConstraints.html">toggleConstraints()</a></code>.</li>
+<code>updateConstraints()</code> is now <code><a href="../reference/toggleConstraints.html">toggleConstraints()</a></code>.</li>
 <li>
 <code><a href="../reference/plotInfo.html">plotInfo()</a></code> is now <code><a href="../reference/plot.html">plot(type = 'info')</a></code>.</li>
 <li>
-<code><a href="../reference/plotCAT.html">plotCAT()</a></code> is now <code><a href="../reference/plot.html">plot(type = 'audit')</a></code>.</li>
+<code>plotCAT()</code> is now <code><a href="../reference/plot.html">plot(type = 'audit')</a></code>.</li>
 <li>
-<code><a href="../reference/plotShadow.html">plotShadow()</a></code> is now <code><a href="../reference/plot.html">plot(type = 'shadow')</a></code>.</li>
+<code>plotShadow()</code> is now <code><a href="../reference/plot.html">plot(type = 'shadow')</a></code>.</li>
 <li>
 <code><a href="../reference/plotExposure.html">plotExposure()</a></code> is now <code><a href="../reference/plot.html">plot(type = 'exposure')</a></code>.</li>
 <li>
@@ -220,9 +270,9 @@
 <code>calcDerivative2()</code> is removed.</li>
 </ul>
 </div>
-<div id="bug-fixes" class="section level2">
+<div id="bug-fixes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed a rare bug where <code><a href="../reference/Shadow.html">Shadow()</a></code> was marking eligible items as ineligible when using <code>ELIGIBILITY</code> exposure control.</li>
 <li>Fixed where <code><a href="../reference/loadItemPool.html">loadItemPool()</a></code> was parsing standard errors incorrectly for <code>GR</code> models.</li>
@@ -244,9 +294,9 @@
 <li>Reverted the default solver to <code>lpSolve</code> to address <code>lpsymphony</code> being unavailable on Solaris.</li>
 </ul>
 </div>
-<div id="bug-fixes-1" class="section level2">
+<div id="bug-fixes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed where using diagnostic stats was preventing <code><a href="../reference/Shadow.html">Shadow()</a></code> to run.</li>
 <li>Fixed an error affecting <code>BIGM</code> exposure control method on set-based items.</li>
@@ -272,12 +322,12 @@
 <li>
 <code><a href="../reference/getSolution.html">getSolution()</a></code> prints the indices of the selected items from the results of <code><a href="../reference/Static.html">Static()</a></code> or <code><a href="../reference/Shadow.html">Shadow()</a></code>.</li>
 <li>
-<code><a href="../reference/showConstraints.html">showConstraints()</a></code> returns the constraints table from a <code>constraints</code> object. This is a shortcut to access the <code>@constraints</code> slot.</li>
+<code>showConstraints()</code> returns the constraints table from a <code>constraints</code> object. This is a shortcut to access the <code>@constraints</code> slot.</li>
 </ul>
 </div>
-<div id="bug-fixes-2" class="section level2">
+<div id="bug-fixes-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-3" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Now recognizes <code>TM_TARGET_GAP_ACHIEVED</code> as a valid status message in <code>lpsymphony</code> and <code>Rsymphony</code> solvers.</li>
 <li>
@@ -332,26 +382,26 @@
 <code>ATA()</code> and <code>STA()</code> are removed. Deprecating the functions was not feasible because of the structural changes.</li>
 </ul>
 </div>
-<div id="new-features-2" class="section level2">
+<div id="new-features-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-2" class="anchor"></a>New features</h2>
+<a href="#new-features-3" class="anchor"></a>New features</h2>
 <ul>
 <li>Now supports item pools that include both set-based and discrete items.</li>
 <li>Now supports <code>lpsymphony</code> solver package from Bioconductor repository. Note: The current version 1.12.0 of <code>lpsymphony</code> will not install on R-devel due to <code>R CMD config F77</code> being deprecated. Installs normally on R 3.6.1.</li>
 <li>
-<code><a href="../reference/plotShadow.html">plotShadow()</a></code> has a new <code>simple</code> argument that simplifies the chart by hiding items that are not included in any shadow test.</li>
+<code>plotShadow()</code> has a new <code>simple</code> argument that simplifies the chart by hiding items that are not included in any shadow test.</li>
 <li>Now uses disambiguated solver names. (e.g. <code>lpsymphony</code> and <code>Rsymphony</code> instead of <code>SYMPHONY</code>)</li>
 <li>
 <code><a href="../articles/rsymphony.html">vignette('rsymphony')</a></code> is improved.</li>
 <li>
-<code><a href="../reference/plotCAT.html">plotCAT()</a></code> and <code><a href="../reference/plotShadow.html">plotShadow()</a></code> now uses a separate color for polytomous item responses.</li>
+<code>plotCAT()</code> and <code>plotShadow()</code> now uses a separate color for polytomous item responses.</li>
 <li>
 <code><a href="../reference/plotInfo.html">plotInfo()</a></code> now uses a more polished plotting style.</li>
 </ul>
 </div>
-<div id="bug-fixes-3" class="section level2">
+<div id="bug-fixes-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-3" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-4" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed where <code><a href="../reference/plotExposure.html">plotExposure()</a></code> was incorrectly plotting stimulus-level exposure rates along with item-level exposure rates.</li>
 <li>Fixed where using Bayesian methods would trigger an error in <code><a href="../reference/Shadow.html">Shadow()</a></code>.</li>
@@ -362,9 +412,9 @@
 <h1 class="page-header" data-toc-text="0.2.5">
 <a href="#testdesign-025" class="anchor"></a>TestDesign 0.2.5<small> 2019-09-12 </small>
 </h1>
-<div id="bug-fixes-4" class="section level2">
+<div id="bug-fixes-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-4" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-5" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed where <code>gap_limit</code> was being incorrectly passed onto <code>SYMPHONY</code> in <code>ATA()</code> and <code><a href="../reference/Shadow.html">Shadow()</a></code>, instead of <code>gap_limit_abs</code>.</li>
 <li>Fixed where <code>gap_limit</code> was not being passed onto <code>GUROBI</code> in <code>ATA()</code> and <code><a href="../reference/Shadow.html">Shadow()</a></code>.</li>
@@ -387,9 +437,9 @@
 <h1 class="page-header" data-toc-text="0.2.3">
 <a href="#testdesign-023" class="anchor"></a>TestDesign 0.2.3<small> 2019-08-28 </small>
 </h1>
-<div id="bug-fixes-5" class="section level2">
+<div id="bug-fixes-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-5" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-6" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed where <code>ATA()</code> and <code><a href="../reference/Shadow.html">Shadow()</a></code> were returning incorrect solutions with set-based item pools in some cases.</li>
 <li>Fixed where <code>ATA()</code> and <code><a href="../reference/Shadow.html">Shadow()</a></code> were returning fewer than the specified number of items, due to solution vectors being not strictly binary in some cases.</li>

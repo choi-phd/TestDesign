@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TestDesign</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -207,7 +207,7 @@
     <pre class="examples"><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='va'>true_theta</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>10</span>, min <span class='op'>=</span> <span class='op'>-</span><span class='fl'>3.5</span>, max <span class='op'>=</span> <span class='fl'>3.5</span><span class='op'>)</span>
 <span class='va'>resp_science</span> <span class='op'>&lt;-</span> <span class='fu'><a href='simResp.html'>simResp</a></span><span class='op'>(</span><span class='va'>itempool_science</span>, <span class='va'>true_theta</span><span class='op'>)</span>
-<span class='va'>constraints_science2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='updateConstraints.html'>updateConstraints</a></span><span class='op'>(</span><span class='va'>constraints_science</span>, off <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>14</span><span class='op'>:</span><span class='fl'>20</span>, <span class='fl'>32</span><span class='op'>:</span><span class='fl'>36</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>constraints_science2</span> <span class='op'>&lt;-</span> <span class='fu'>updateConstraints</span><span class='op'>(</span><span class='va'>constraints_science</span>, off <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>14</span><span class='op'>:</span><span class='fl'>20</span>, <span class='fl'>32</span><span class='op'>:</span><span class='fl'>36</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>config_science</span> <span class='op'>&lt;-</span> <span class='fu'><a href='config_Shadow-class.html'>createShadowTestConfig</a></span><span class='op'>(</span>
   MIP <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>solver <span class='op'>=</span> <span class='st'>"lpSolve"</span><span class='op'>)</span>,
   exposure_control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"ELIGIBILITY"</span><span class='op'>)</span>
