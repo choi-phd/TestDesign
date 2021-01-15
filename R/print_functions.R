@@ -404,8 +404,10 @@ setMethod("print", "summary_output_Static", function(x, digits = 3) {
       x@score[i]
     ))
   }
-  cat("\n")
-  print(x@achieved, digits = digits)
+  if (!is.null(x@achieved)) {
+    cat("\n")
+    print(x@achieved, digits = digits)
+  }
   return(invisible(x))
 })
 
@@ -422,7 +424,10 @@ setMethod("print", "summary_output_Shadow_all", function(x, digits = 3) {
     cat(sprintf("           bias : % 2.6f\n", x@bias))
     cat(sprintf("           corr : % 2.6f\n", x@corr))
   }
-  cat(sprintf("     Average SE : % 2.6f\n\n", x@average_se))
-  print(x@achieved, digits = digits)
+  cat(sprintf("     Average SE : % 2.6f\n", x@average_se))
+  if (!is.null(x@achieved)) {
+    cat("\n")
+    print(x@achieved, digits = digits)
+  }
   return(invisible(x))
 })

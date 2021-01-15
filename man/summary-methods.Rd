@@ -16,12 +16,14 @@
 
 \S4method{summary}{constraints}(object)
 
-\S4method{summary}{output_Static}(object)
+\S4method{summary}{output_Static}(object, simple = FALSE)
 
-\S4method{summary}{output_Shadow_all}(object)
+\S4method{summary}{output_Shadow_all}(object, simple = FALSE)
 }
 \arguments{
 \item{object}{an object to summarize.}
+
+\item{simple}{if \code{TRUE}, do not print constraints. (default = \code{FALSE})}
 }
 \description{
 Extension of summary() for objects in TestDesign package
@@ -33,9 +35,11 @@ summary(itemattrib_science)
 cfg <- createStaticTestConfig()
 solution <- Static(cfg, constraints_science)
 summary(solution)
+summary(solution, simple = TRUE)
 
 cfg <- createShadowTestConfig()
 solution <- Shadow(cfg, constraints_science, true_theta = seq(-1, 1, 1))
 summary(solution)
+summary(solution, simple = TRUE)
 
 }
