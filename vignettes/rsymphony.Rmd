@@ -11,7 +11,7 @@ vignette: >
 
 ### Introduction
 
-Rsymphony is one of solver packages supported by TestDesign. As of Rsymphony version 0.1.28, Mac users may encounter error messages like below when trying to install the solver package from R.
+Rsymphony is one of solver packages supported by TestDesign. As of Rsymphony version 0.1.29, Mac users may encounter error messages as below when trying to install the package from R.
 
 ```
 * installing *source* package ‘Rsymphony’ ...
@@ -24,14 +24,14 @@ ERROR: configuration failed for package ‘Rsymphony’
 
 This document describes a potential fix to this problem. An admin account is required.
 
-Or alternatively, [lpsymphony](https://www.bioconductor.org/packages/release/bioc/html/lpsymphony.html) from Bioconductor repository is supported from TestDesign 1.0.0.
+Alternatively, [lpsymphony](https://www.bioconductor.org/packages/release/bioc/html/lpsymphony.html) from Bioconductor repository is supported by TestDesign 1.2.0.
 
 <br/>
 <br/>
 
 ### Install SYMPHONY libraries
 
-The cause of the error is that Rsymphony requires SYMPHONY libraries, but the libraries are not installed. The goal of this section is to install the libraries.
+The cause of the error is that Rsymphony requires SYMPHONY libraries, but the libraries are not properly installed. The goal of this section is to install the libraries.
 
 **Step 1.** Open the terminal from Launchpad. Switch to the admin account on your system by running the following line in the terminal prompt. Make sure to replace `username` with the actual username of the admin account. Type in the account password once prompted.
 
@@ -39,7 +39,7 @@ The cause of the error is that Rsymphony requires SYMPHONY libraries, but the li
 su username
 ```
 
-**Step 2.** Install the `homebrew` package manager by following the instructions on https://brew.sh/. The purpose of this step is to allow installing SYMPHONY with it.
+**Step 2.** Install the `homebrew` package manager as needed by following the instructions on https://brew.sh/. The purpose of this step is to allow installing SYMPHONY with it.
 
 **Step 3.** Install SYMPHONY and its dependencies by running the following in terminal. Each line must be run separately.
 
@@ -77,13 +77,13 @@ brew install wget
 **Step 2.** Run the following line in terminal to download the Rsymphony solver package.
 
 ```
-sudo wget https://cran.revolutionanalytics.com/src/contrib/Rsymphony_0.1-28.tar.gz
+sudo wget https://cran.revolutionanalytics.com/src/contrib/Rsymphony_0.1-29.tar.gz
 ```
 
 **Step 3.** Unpack the downloaded file by running the following line.
 
 ```
-sudo tar -xzvf Rsymphony_0.1-28.tar.gz
+sudo tar -xzvf Rsymphony_0.1-29.tar.gz
 ```
 
 **Step 4.** Open the file `Rsymphony/configure` by running the following line. This opens `nano` text editor, with `-c` option to make it display the line numbers.
