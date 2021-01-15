@@ -37,24 +37,36 @@ NULL
 
 #' @noRd
 .onAttach <- function(libname, pkgname) {
-  solver_names <- c("lpSolve", "Rsymphony", "lpsymphony", "gurobi", "Rglpk")
 
-  for (s in solver_names) {
-    x <- find.package(s, quiet = TRUE)
-    if (length(x) > 0) {
-      v <- packageVersion(s)
-      e <- testSolver(s)
-      if (e == "") {
-        status <- green("v")
-      } else {
-        status <- yellow("?")
-      }
-    } else {
-      v <- ""
-      status <- red("x")
+  skip_solver_test <- FALSE
+  has_pkgload <- length(find.package("pkgload", quiet = TRUE)) > 0
+  if (has_pkgload) {
+    if (pkgload::is_dev_package("TestDesign")) {
+      # skip if is being loaded by roxygen2
+      # roxygen2 conflicts with gurobi in when running roxygen2::roxygenize
+      skip_solver_test <- TRUE
     }
-    msg <- sprintf("%s %-10s %s %s", status, s, white(sprintf("%-7s", v)), white(e))
-    packageStartupMessage(msg)
+  }
+
+  if (!skip_solver_test) {
+    solver_names <- c("lpSolve", "Rsymphony", "lpsymphony", "gurobi", "Rglpk")
+    for (s in solver_names) {
+      x <- find.package(s, quiet = TRUE)
+      if (length(x) > 0) {
+        v <- packageVersion(s)
+        e <- testSolver(s)
+        if (e == "") {
+          status <- green("v")
+        } else {
+          status <- yellow("?")
+        }
+      } else {
+        v <- ""
+        status <- red("x")
+      }
+      msg <- sprintf("%s %-10s %s %s", status, s, white(sprintf("%-7s", v)), white(e))
+      packageStartupMessage(msg)
+    }
   }
 
   s      <- "TestDesign"
