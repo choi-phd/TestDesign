@@ -147,10 +147,10 @@
 <span class='fu'>summary</span><span class='op'>(</span><span class='va'>object</span><span class='op'>)</span>
 
 <span class='co'># S4 method for output_Static</span>
-<span class='fu'>summary</span><span class='op'>(</span><span class='va'>object</span><span class='op'>)</span>
+<span class='fu'>summary</span><span class='op'>(</span><span class='va'>object</span>, simple <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
 <span class='co'># S4 method for output_Shadow_all</span>
-<span class='fu'>summary</span><span class='op'>(</span><span class='va'>object</span><span class='op'>)</span></pre>
+<span class='fu'>summary</span><span class='op'>(</span><span class='va'>object</span>, simple <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -158,6 +158,10 @@
     <tr>
       <th>object</th>
       <td><p>an object to summarize.</p></td>
+    </tr>
+    <tr>
+      <th>simple</th>
+      <td><p>if <code>TRUE</code>, do not print constraints. (default = <code>FALSE</code>)</p></td>
     </tr>
     </table>
 
@@ -169,10 +173,12 @@
 <span class='va'>cfg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='config_Static-class.html'>createStaticTestConfig</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>solution</span> <span class='op'>&lt;-</span> <span class='fu'><a href='Static.html'>Static</a></span><span class='op'>(</span><span class='va'>cfg</span>, <span class='va'>constraints_science</span><span class='op'>)</span>
 <span class='fu'>summary</span><span class='op'>(</span><span class='va'>solution</span><span class='op'>)</span>
+<span class='fu'>summary</span><span class='op'>(</span><span class='va'>solution</span>, simple <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
 <span class='va'>cfg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='config_Shadow-class.html'>createShadowTestConfig</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>solution</span> <span class='op'>&lt;-</span> <span class='fu'><a href='Shadow.html'>Shadow</a></span><span class='op'>(</span><span class='va'>cfg</span>, <span class='va'>constraints_science</span>, true_theta <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'>summary</span><span class='op'>(</span><span class='va'>solution</span><span class='op'>)</span>
+<span class='fu'>summary</span><span class='op'>(</span><span class='va'>solution</span>, simple <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
 </pre>
   </div>
