@@ -740,6 +740,19 @@ getSolutionAttributes <- function(constraints, item_idx, all_values = FALSE) {
         )
     }
 
+    if (all(is.na(o$mean))) {
+      o$mean <- NULL
+    }
+    if (all(is.na(o$sd))) {
+      o$sd <- NULL
+    }
+    if (all(is.na(o$min))) {
+      o$min <- NULL
+    }
+    if (all(is.na(o$max))) {
+      o$max <- NULL
+    }
+
     return(o)
 
   }
