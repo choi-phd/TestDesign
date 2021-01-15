@@ -41,6 +41,7 @@ NULL
 #' @description Extension of summary() for objects in TestDesign package
 #'
 #' @param object an object to summarize.
+#' @param simple if \code{TRUE}, do not print constraints. (default = \code{FALSE})
 #'
 #' @examples
 #' summary(itempool_science)
@@ -49,10 +50,12 @@ NULL
 #' cfg <- createStaticTestConfig()
 #' solution <- Static(cfg, constraints_science)
 #' summary(solution)
+#' summary(solution, simple = TRUE)
 #'
 #' cfg <- createShadowTestConfig()
 #' solution <- Shadow(cfg, constraints_science, true_theta = seq(-1, 1, 1))
 #' summary(solution)
+#' summary(solution, simple = TRUE)
 #'
 #' @docType methods
 #' @rdname summary-methods

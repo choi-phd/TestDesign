@@ -42,7 +42,7 @@ setMethod("summary", "constraints", function(object) {
 #' @aliases summary,output_Static-method
 #' @docType methods
 #' @rdname summary-methods
-setMethod("summary", "output_Static", function(object) {
+setMethod("summary", "output_Static", function(object, simple = FALSE) {
   out <- new("summary_output_Static")
   out@n_targets        <- length(object@config@item_selection$target_location)
   out@obj_type         <- object@config@item_selection$method
@@ -58,7 +58,11 @@ setMethod("summary", "output_Static", function(object) {
   out@info  <- rowSums(info)
   out@score <- calcEscore(subpool, out@target_location)
 
-  out@achieved <- object@achieved
+  if (!simple) {
+    out@achieved <- object@achieved
+  } else {
+    out@achieved <- NULL
+  }
 
   return(out)
 
@@ -67,7 +71,7 @@ setMethod("summary", "output_Static", function(object) {
 #' @aliases summary,output_Shadow_all-method
 #' @docType methods
 #' @rdname summary-methods
-setMethod("summary", "output_Shadow_all", function(object) {
+setMethod("summary", "output_Shadow_all", function(object, simple = FALSE) {
   out <- new("summary_output_Shadow_all")
   out@n_simulee    <- length(object@output)
   out@test_length  <- object@constraints@test_length
@@ -106,6 +110,13 @@ setMethod("summary", "output_Shadow_all", function(object) {
   a_max  <- sapply(achieved, max)
   tmp <- object@constraints@constraints
   tmp <- cbind(tmp, mean = a_mean, sd = a_sd, min = a_min, max = a_max)
-  out@achieved <- tmp
+
+  if (!simple) {
+    out@achieved <- tmp
+  } else {
+    out@achieved <- NULL
+  }
+
   return(out)
+
 })
