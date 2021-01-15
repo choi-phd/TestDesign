@@ -24,6 +24,7 @@ License: GPL (>= 2)
 Depends: R (>= 2.10)
 biocViews:
 Imports: Rcpp (>= 1.0.0), methods, lpSolve, foreach, logitnorm, crayon
+SystemRequirements: C++11
 Suggests:
     lpsymphony,
     Rsymphony,
