@@ -302,20 +302,21 @@ runMIP <- function(solver, obj, mat, dir, rhs, maximize, types,
     constraints_dir <- dir
     constraints_dir[constraints_dir == "=="] <- "="
 
+    if (verbosity <= 0) verbosity <- 0
+    if (verbosity >= 1) verbosity <- 1
+
     if (!is.null(gap_limit)) {
-      tmp <- invisible(capture.output({
-        MIP <- gurobi::gurobi(
-          model = list(obj = obj, modelsense = ifelse(maximize, "max", "min"), rhs = rhs, sense = constraints_dir, vtype = types, A = mat),
-          params = list(MIPGap = gap_limit, TimeLimit = time_limit),
-          env = NULL)
-      }))
+      MIP <- gurobi::gurobi(
+        model = list(obj = obj, modelsense = ifelse(maximize, "max", "min"), rhs = rhs, sense = constraints_dir, vtype = types, A = mat),
+        params = list(MIPGap = gap_limit, TimeLimit = time_limit, LogToConsole = verbosity),
+        env = NULL
+      )
     } else {
-      tmp <- invisible(capture.output({
-        MIP <- gurobi::gurobi(
-          model = list(obj = obj, modelsense = ifelse(maximize, "max", "min"), rhs = rhs, sense = constraints_dir, vtype = types, A = mat),
-          params = list(TimeLimit = time_limit),
-          env = NULL)
-      }))
+      MIP <- gurobi::gurobi(
+        model = list(obj = obj, modelsense = ifelse(maximize, "max", "min"), rhs = rhs, sense = constraints_dir, vtype = types, A = mat),
+        params = list(TimeLimit = time_limit, LogToConsole = verbosity),
+        env = NULL
+      )
     }
 
     MIP[["solution"]] <- MIP$x
