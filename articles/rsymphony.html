@@ -100,7 +100,7 @@
 <div id="introduction" class="section level3">
 <h3 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h3>
-<p>Rsymphony is one of solver packages supported by TestDesign. As of Rsymphony version 0.1.28, Mac users may encounter error messages like below when trying to install the solver package from R.</p>
+<p>Rsymphony is one of solver packages supported by TestDesign. As of Rsymphony version 0.1.29, Mac users may encounter error messages as below when trying to install the package from R.</p>
 <pre><code>* installing *source* package ‘Rsymphony’ ...
 ** package ‘Rsymphony’ successfully unpacked and MD5 sums checked
 ** using staged installation
@@ -108,16 +108,16 @@ Cannot find SYMPHONY libraries and headers.
 See &lt;https://projects.coin-or.org/SYMPHONY&gt;.
 ERROR: configuration failed for package ‘Rsymphony’</code></pre>
 <p>This document describes a potential fix to this problem. An admin account is required.</p>
-<p>Or alternatively, <a href="https://www.bioconductor.org/packages/release/bioc/html/lpsymphony.html">lpsymphony</a> from Bioconductor repository is supported from TestDesign 1.0.0.</p>
+<p>Alternatively, <a href="https://www.bioconductor.org/packages/release/bioc/html/lpsymphony.html">lpsymphony</a> from Bioconductor repository is supported by TestDesign 1.2.0.</p>
 <p><br><br></p>
 </div>
 <div id="install-symphony-libraries" class="section level3">
 <h3 class="hasAnchor">
 <a href="#install-symphony-libraries" class="anchor"></a>Install SYMPHONY libraries</h3>
-<p>The cause of the error is that Rsymphony requires SYMPHONY libraries, but the libraries are not installed. The goal of this section is to install the libraries.</p>
+<p>The cause of the error is that Rsymphony requires SYMPHONY libraries, but the libraries are not properly installed. The goal of this section is to install the libraries.</p>
 <p><strong>Step 1.</strong> Open the terminal from Launchpad. Switch to the admin account on your system by running the following line in the terminal prompt. Make sure to replace <code>username</code> with the actual username of the admin account. Type in the account password once prompted.</p>
 <pre><code>su username</code></pre>
-<p><strong>Step 2.</strong> Install the <code>homebrew</code> package manager by following the instructions on <a href="https://brew.sh/" class="uri">https://brew.sh/</a>. The purpose of this step is to allow installing SYMPHONY with it.</p>
+<p><strong>Step 2.</strong> Install the <code>homebrew</code> package manager as needed by following the instructions on <a href="https://brew.sh/" class="uri">https://brew.sh/</a>. The purpose of this step is to allow installing SYMPHONY with it.</p>
 <p><strong>Step 3.</strong> Install SYMPHONY and its dependencies by running the following in terminal. Each line must be run separately.</p>
 <pre><code>brew tap coin-or-tools/coinor</code></pre>
 <pre><code>brew install symphony</code></pre>
@@ -133,9 +133,9 @@ ERROR: configuration failed for package ‘Rsymphony’</code></pre>
 <p><strong>Step 1.</strong> Install <code>wget</code> by running the following line in terminal. The purpose of this step is to allow downloading the package file directly from CRAN servers.</p>
 <pre><code>brew install wget</code></pre>
 <p><strong>Step 2.</strong> Run the following line in terminal to download the Rsymphony solver package.</p>
-<pre><code>sudo wget https://cran.revolutionanalytics.com/src/contrib/Rsymphony_0.1-28.tar.gz</code></pre>
+<pre><code>sudo wget https://cran.revolutionanalytics.com/src/contrib/Rsymphony_0.1-29.tar.gz</code></pre>
 <p><strong>Step 3.</strong> Unpack the downloaded file by running the following line.</p>
-<pre><code>sudo tar -xzvf Rsymphony_0.1-28.tar.gz</code></pre>
+<pre><code>sudo tar -xzvf Rsymphony_0.1-29.tar.gz</code></pre>
 <p><strong>Step 4.</strong> Open the file <code>Rsymphony/configure</code> by running the following line. This opens <code>nano</code> text editor, with <code>-c</code> option to make it display the line numbers.</p>
 <pre><code>sudo nano -c ./Rsymphony/configure</code></pre>
 <p>Comment out lines 51-55 by inserting <code>#</code>s at the beginning of each line, as shown below. Save it as the same file with Control + O, and when prompted for file name to write press Enter. Exit <code>nano</code> with Control + X.</p>
