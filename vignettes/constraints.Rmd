@@ -39,15 +39,15 @@ knitr::kable(constraints_science_data[1:5, ]) %>%
   column_spec(7, "3em")
 ```
 
-Constraints data must have seven columns, named as `CONSTRAINT`, `TYPE`, `WHAT`, `CONDITION`, `LB`, `UB`, `ONOFF` on the first row. Beginning from the second row, each row must have corresponding values for each column. A convenient way to creating constraints is to use a spreadsheet application (e.g. Excel) and work on the content from there.
+Constraints data must have seven columns, named as `CONSTRAINT_ID`, `TYPE`, `WHAT`, `CONDITION`, `LB`, `UB`, `ONOFF` on the first row. Beginning from the second row, each row must have corresponding values for each column. A convenient way to creating constraints is to use a spreadsheet application (e.g. Excel) and work on the content from there.
 
 <br/>
 
 ***
 
-#### CONSTRAINT
+#### CONSTRAINT_ID
 
-This column serves as indices. One number must be put into each row, beginning from 1 and incrementing by 1. `loadConstraints()` recreates these if necessary.
+This column serves as identifiers. Character values can be used as long as the values are unique.
 
 <br/>
 
