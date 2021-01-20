@@ -10,7 +10,9 @@
 \section{Slots}{
 
 \describe{
-\item{\code{constraint}}{the constraint ID string of the constraint.}
+\item{\code{constraint}}{the numeric index of the constraint.}
+
+\item{\code{constraint_id}}{the character ID of the constraint.}
 
 \item{\code{nc}}{the number of MIP-format constraints translated from this constraint.}
 
