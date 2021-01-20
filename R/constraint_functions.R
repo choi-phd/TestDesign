@@ -6,6 +6,10 @@ normalizeConstraintData <- function(x) {
 
   validCONSTRAINT <- as.character(1:dim(x)[1])
 
+  if (!"CONSTRAINT_ID" %in% names(x)) {
+    x$CONSTRAINT_ID <- sprintf("C%s", validCONSTRAINT)
+  }
+
   if ("CONSTRAINT" %in% names(x)) {
     x$CONSTRAINT <- NULL
     warning("the 'CONSTRAINT' column was ignored because it is reserved for internal use.")
