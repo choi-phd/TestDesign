@@ -953,6 +953,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 #'
 #' @export
 toggleConstraints <- function(object, on = NULL, off = NULL) {
+
   nc <- nrow(object@constraints)
   if (length(intersect(on, off)) > 0) {
     stop("toggleConstraints: 'on' and 'off' must have no values in common")
@@ -990,7 +991,7 @@ toggleConstraints <- function(object, on = NULL, off = NULL) {
       mat   <- rbind(mat, object@list_constraints[[i]]@mat)
       dir   <- c(dir, object@list_constraints[[i]]@dir)
       rhs   <- c(rhs, object@list_constraints[[i]]@rhs)
-      index <- c(index, rep(object@constraints[["CONSTRAINT"]][i], object@list_constraints[[i]]@nc))
+      index <- c(index, rep(object@list_constraints[[i]]@constraint, object@list_constraints[[i]]@nc))
     }
   }
 
