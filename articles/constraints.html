@@ -105,8 +105,8 @@
 <p>This document explains how to create constraints data for <code><a href="../reference/loadConstraints.html">loadConstraints()</a></code>. In test assembly, practitioners often want to select items satisfying various types of constraints. As of <em>TestDesign</em> version 1.1.0, constraints can be read in from <code>data.frame</code> objects or <code>.csv</code> spreadsheet files. Data is expected to be in the following structure:</p>
 <table class="table table table-striped table-hover table-condensed table-responsive">
 <thead><tr>
-<th style="text-align:right;">
-CONSTRAINT
+<th style="text-align:left;">
+CONSTRAINT_ID
 </th>
 <th style="text-align:left;">
 TYPE
@@ -129,8 +129,8 @@ ONOFF
 </tr></thead>
 <tbody>
 <tr>
-<td style="text-align:right;width: 5em; ">
-1
+<td style="text-align:left;width: 5em; ">
+C1
 </td>
 <td style="text-align:left;width: 5em; ">
 Number
@@ -150,8 +150,8 @@ Item
 </td>
 </tr>
 <tr>
-<td style="text-align:right;width: 5em; ">
-2
+<td style="text-align:left;width: 5em; ">
+C2
 </td>
 <td style="text-align:left;width: 5em; ">
 Number
@@ -172,8 +172,8 @@ LEVEL == 3
 </td>
 </tr>
 <tr>
-<td style="text-align:right;width: 5em; ">
-3
+<td style="text-align:left;width: 5em; ">
+C3
 </td>
 <td style="text-align:left;width: 5em; ">
 Number
@@ -194,8 +194,8 @@ LEVEL == 4
 </td>
 </tr>
 <tr>
-<td style="text-align:right;width: 5em; ">
-4
+<td style="text-align:left;width: 5em; ">
+C4
 </td>
 <td style="text-align:left;width: 5em; ">
 Number
@@ -216,8 +216,8 @@ LEVEL == 5
 </td>
 </tr>
 <tr>
-<td style="text-align:right;width: 5em; ">
-5
+<td style="text-align:left;width: 5em; ">
+C5
 </td>
 <td style="text-align:left;width: 5em; ">
 Number
@@ -239,13 +239,13 @@ STANDARD == 1
 </tr>
 </tbody>
 </table>
-<p>Constraints data must have seven columns, named as <code>CONSTRAINT</code>, <code>TYPE</code>, <code>WHAT</code>, <code>CONDITION</code>, <code>LB</code>, <code>UB</code>, <code>ONOFF</code> on the first row. Beginning from the second row, each row must have corresponding values for each column. A convenient way to creating constraints is to use a spreadsheet application (e.g. Excel) and work on the content from there.</p>
+<p>Constraints data must have seven columns, named as <code>CONSTRAINT_ID</code>, <code>TYPE</code>, <code>WHAT</code>, <code>CONDITION</code>, <code>LB</code>, <code>UB</code>, <code>ONOFF</code> on the first row. Beginning from the second row, each row must have corresponding values for each column. A convenient way to creating constraints is to use a spreadsheet application (e.g. Excel) and work on the content from there.</p>
 <p><br></p>
 <hr>
-<div id="constraint" class="section level4">
+<div id="constraint_id" class="section level4">
 <h4 class="hasAnchor">
-<a href="#constraint" class="anchor"></a>CONSTRAINT</h4>
-<p>This column serves as indices. One number must be put into each row, beginning from 1 and incrementing by 1. <code><a href="../reference/loadConstraints.html">loadConstraints()</a></code> recreates these if necessary.</p>
+<a href="#constraint_id" class="anchor"></a>CONSTRAINT_ID</h4>
+<p>This column serves as identifiers. Character values can be used as long as the values are unique.</p>
 <p><br></p>
 <hr>
 </div>
@@ -260,8 +260,8 @@ STANDARD == 1
 </ul>
 <table class="table table table-striped table-hover table-condensed table-responsive">
 <thead><tr>
-<th style="text-align:right;">
-CONSTRAINT
+<th style="text-align:left;">
+CONSTRAINT_ID
 </th>
 <th style="text-align:left;">
 TYPE
@@ -283,8 +283,8 @@ ONOFF
 </th>
 </tr></thead>
 <tbody><tr>
-<td style="text-align:right;width: 5em; ">
-1
+<td style="text-align:left;width: 5em; ">
+C1
 </td>
 <td style="text-align:left;width: 5em; background-color: cyan !important;">
 Number
@@ -311,8 +311,8 @@ Item
 </ul>
 <table class="table table table-striped table-hover table-condensed table-responsive">
 <thead><tr>
-<th style="text-align:right;">
-CONSTRAINT
+<th style="text-align:left;">
+CONSTRAINT_ID
 </th>
 <th style="text-align:left;">
 TYPE
@@ -334,8 +334,8 @@ ONOFF
 </th>
 </tr></thead>
 <tbody><tr>
-<td style="text-align:right;width: 5em; ">
-2
+<td style="text-align:left;width: 5em; ">
+C2
 </td>
 <td style="text-align:left;width: 5em; background-color: cyan !important;">
 Sum
@@ -363,8 +363,8 @@ WORDS
 </ul>
 <table class="table table table-striped table-hover table-condensed table-responsive">
 <thead><tr>
-<th style="text-align:right;">
-CONSTRAINT
+<th style="text-align:left;">
+CONSTRAINT_ID
 </th>
 <th style="text-align:left;">
 TYPE
@@ -386,8 +386,8 @@ ONOFF
 </th>
 </tr></thead>
 <tbody><tr>
-<td style="text-align:right;width: 5em; ">
-32
+<td style="text-align:left;width: 5em; ">
+C32
 </td>
 <td style="text-align:left;width: 5em; background-color: cyan !important;">
 Order
@@ -413,8 +413,8 @@ LEVEL
 </ul>
 <table class="table table table-striped table-hover table-condensed table-responsive">
 <thead><tr>
-<th style="text-align:right;">
-CONSTRAINT
+<th style="text-align:left;">
+CONSTRAINT_ID
 </th>
 <th style="text-align:left;">
 TYPE
@@ -436,8 +436,8 @@ ONOFF
 </th>
 </tr></thead>
 <tbody><tr>
-<td style="text-align:right;width: 5em; ">
-33
+<td style="text-align:left;width: 5em; ">
+C33
 </td>
 <td style="text-align:left;width: 5em; background-color: cyan !important;">
 Enemy
@@ -463,8 +463,8 @@ ID %in% c(“SC00001”, “SC00002”)
 </ul>
 <table class="table table table-striped table-hover table-condensed table-responsive">
 <thead><tr>
-<th style="text-align:right;">
-CONSTRAINT
+<th style="text-align:left;">
+CONSTRAINT_ID
 </th>
 <th style="text-align:left;">
 TYPE
@@ -486,8 +486,8 @@ ONOFF
 </th>
 </tr></thead>
 <tbody><tr>
-<td style="text-align:right;width: 5em; ">
-34
+<td style="text-align:left;width: 5em; ">
+C34
 </td>
 <td style="text-align:left;width: 5em; background-color: cyan !important;">
 Include
@@ -513,8 +513,8 @@ ID %in% c(“SC00003”, “SC00004”)
 </ul>
 <table class="table table table-striped table-hover table-condensed table-responsive">
 <thead><tr>
-<th style="text-align:right;">
-CONSTRAINT
+<th style="text-align:left;">
+CONSTRAINT_ID
 </th>
 <th style="text-align:left;">
 TYPE
@@ -536,8 +536,8 @@ ONOFF
 </th>
 </tr></thead>
 <tbody><tr>
-<td style="text-align:right;width: 5em; ">
-35
+<td style="text-align:left;width: 5em; ">
+C35
 </td>
 <td style="text-align:left;width: 5em; background-color: cyan !important;">
 Exclude
@@ -563,8 +563,8 @@ PTBIS &lt; 0.15
 </ul>
 <table class="table table table-striped table-hover table-condensed table-responsive">
 <thead><tr>
-<th style="text-align:right;">
-CONSTRAINT
+<th style="text-align:left;">
+CONSTRAINT_ID
 </th>
 <th style="text-align:left;">
 TYPE
@@ -586,8 +586,8 @@ ONOFF
 </th>
 </tr></thead>
 <tbody><tr>
-<td style="text-align:right;width: 5em; ">
-36
+<td style="text-align:left;width: 5em; ">
+C36
 </td>
 <td style="text-align:left;width: 5em; background-color: cyan !important;">
 AllOrNone
@@ -633,8 +633,8 @@ ID %in% c(“SC00005”, “SC00006”)
 <p>For <code>TYPE == SUM</code>, using a variable name imposes the constraint on the sum of the variable. The following row tells the solver to keep the sum of <code>WORDS</code> between 500–600.</p>
 <table class="table table table-striped table-hover table-condensed table-responsive">
 <thead><tr>
-<th style="text-align:right;">
-CONSTRAINT
+<th style="text-align:left;">
+CONSTRAINT_ID
 </th>
 <th style="text-align:left;">
 TYPE
@@ -656,8 +656,8 @@ ONOFF
 </th>
 </tr></thead>
 <tbody><tr>
-<td style="text-align:right;width: 5em; ">
-2
+<td style="text-align:left;width: 5em; ">
+C2
 </td>
 <td style="text-align:left;width: 5em; ">
 Sum
@@ -681,8 +681,8 @@ WORDS
 <p>For <code>TYPE == SUM</code>, constraints on conditional sums can be imposed by using a variable name, placing a comma, and then giving an R expression returning logical values. The following row tells the solver to keep the sum of <code>WORDS</code> within <code>DOK == 1</code> items between 50–80.</p>
 <table class="table table table-striped table-hover table-condensed table-responsive">
 <thead><tr>
-<th style="text-align:right;">
-CONSTRAINT
+<th style="text-align:left;">
+CONSTRAINT_ID
 </th>
 <th style="text-align:left;">
 TYPE
@@ -704,8 +704,8 @@ ONOFF
 </th>
 </tr></thead>
 <tbody><tr>
-<td style="text-align:right;width: 5em; ">
-3
+<td style="text-align:left;width: 5em; ">
+C3
 </td>
 <td style="text-align:left;width: 5em; ">
 Sum
@@ -729,8 +729,8 @@ WORDS, DOK == 1
 <p>In set-based assembly, <code>Per Stimulus</code> can be used to specify the number of items to select in each stimulus. For example, the following row tells the solver to select 4 to 6 items per stimulus:</p>
 <table class="table table table-striped table-hover table-condensed table-responsive">
 <thead><tr>
-<th style="text-align:right;">
-CONSTRAINT
+<th style="text-align:left;">
+CONSTRAINT_ID
 </th>
 <th style="text-align:left;">
 TYPE
@@ -752,8 +752,8 @@ ONOFF
 </th>
 </tr></thead>
 <tbody><tr>
-<td style="text-align:right;width: 5em; ">
-3
+<td style="text-align:left;width: 5em; ">
+C3
 </td>
 <td style="text-align:left;width: 5em; ">
 Number
@@ -788,7 +788,7 @@ Per Stimulus
 <table class="table table table-striped table-hover table-condensed table-responsive">
 <thead><tr>
 <th style="text-align:left;">
-CONSTRAINT
+CONSTRAINT_ID
 </th>
 <th style="text-align:left;">
 TYPE
@@ -811,7 +811,7 @@ ONOFF
 </tr></thead>
 <tbody><tr>
 <td style="text-align:left;width: 5em; ">
-1
+C1
 </td>
 <td style="text-align:left;width: 5em; ">
 Number
@@ -837,8 +837,8 @@ Item
 </ul>
 <table class="table table table-striped table-hover table-condensed table-responsive">
 <thead><tr>
-<th style="text-align:right;">
-CONSTRAINT
+<th style="text-align:left;">
+CONSTRAINT_ID
 </th>
 <th style="text-align:left;">
 TYPE
@@ -860,8 +860,8 @@ ONOFF
 </th>
 </tr></thead>
 <tbody><tr>
-<td style="text-align:right;width: 5em; ">
-17
+<td style="text-align:left;width: 5em; ">
+C17
 </td>
 <td style="text-align:left;width: 5em; ">
 Number
@@ -891,8 +891,8 @@ DOK &gt;= 2
 <p>Set this to <code>OFF</code> to turn off the constraint from being applied. <code>ON</code> or leaving it blank applies the constraint. The following example specifies the order constraint to be not applied.</p>
 <table class="table table table-striped table-hover table-condensed table-responsive">
 <thead><tr>
-<th style="text-align:right;">
-CONSTRAINT
+<th style="text-align:left;">
+CONSTRAINT_ID
 </th>
 <th style="text-align:left;">
 TYPE
@@ -914,8 +914,8 @@ ONOFF
 </th>
 </tr></thead>
 <tbody><tr>
-<td style="text-align:right;width: 5em; ">
-18
+<td style="text-align:left;width: 5em; ">
+C18
 </td>
 <td style="text-align:left;width: 5em; ">
 Order
