@@ -466,7 +466,8 @@ loadStAttrib <- function(object, item_attrib, file = NULL) {
 #'
 #' \code{\linkS4class{constraint}} is an S4 class to represent a single constraint.
 #'
-#' @slot constraint the constraint ID string of the constraint.
+#' @slot constraint the numeric index of the constraint.
+#' @slot constraint_id the character ID of the constraint.
 #' @slot nc the number of MIP-format constraints translated from this constraint.
 #' @slot mat,dir,rhs these represent MIP-format constraints. A single MIP-format constraint is associated with a row in \code{mat}, a value in \code{rhs}, and a value in \code{dir}.
 #' \itemize{
@@ -479,20 +480,22 @@ loadStAttrib <- function(object, item_attrib, file = NULL) {
 #' @export
 setClass("constraint",
   slots = c(
-    constraint = "character",
-    nc         = "numeric",
-    mat        = "matrix",
-    dir        = "character",
-    rhs        = "numeric",
-    suspend    = "logical"
+    constraint    = "numeric",
+    constraint_id = "character",
+    nc            = "numeric",
+    mat           = "matrix",
+    dir           = "character",
+    rhs           = "numeric",
+    suspend       = "logical"
   ),
   prototype = list(
-    constraint = character(0),
-    nc         = 0,
-    mat        = matrix(NA, 0, 0),
-    dir        = character(0),
-    rhs        = numeric(0),
-    suspend    = FALSE
+    constraint    = numeric(0),
+    constraint_id = character(0),
+    nc            = 0,
+    mat           = matrix(NA, 0, 0),
+    dir           = character(0),
+    rhs           = numeric(0),
+    suspend       = FALSE
   ),
   validity = function(object) {
     err <- c()
@@ -578,7 +581,7 @@ setClass("constraints",
     ni                     = "numeric",
     ns                     = "numeric",
     id                     = "character",
-    index                  = "character",
+    index                  = "numeric",
     mat                    = "matrix",
     dir                    = "character",
     rhs                    = "numeric",
@@ -601,7 +604,7 @@ setClass("constraints",
     ni                     = numeric(0),
     ns                     = numeric(0),
     id                     = character(0),
-    index                  = character(0),
+    index                  = numeric(0),
     mat                    = matrix(0),
     dir                    = character(0),
     rhs                    = numeric(0),
