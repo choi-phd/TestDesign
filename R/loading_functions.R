@@ -618,27 +618,32 @@ setClass("constraints",
   ),
   validity = function(object) {
 
-    tmp <- try(
+    tmp <- object
+    tmp@constraints$CONSTRAINT <- NULL
+
+    recreated <- try(
       loadConstraints(
-        object@constraints,
-        object@pool,
-        object@item_attrib,
-        object@st_attrib
+        tmp@constraints,
+        tmp@pool,
+        tmp@item_attrib,
+        tmp@st_attrib
       ),
       silent = TRUE
     )
 
-    if (inherits(tmp, "try-error")) {
+    if (inherits(recreated, "try-error")) {
 
-      err <- as.character(tmp)
+      err <- as.character(recreated)
 
     } else {
 
+      recreated@constraints$CONSTRAINT <- NULL
+
       err <- c()
 
-      for (x in slotNames(tmp)) {
-        slot_recreated <- slot(tmp, x)
-        slot_origin    <- slot(object, x)
+      for (x in slotNames(recreated)) {
+        slot_recreated <- slot(recreated, x)
+        slot_origin    <- slot(tmp      , x)
         if (inherits(slot_recreated, "integer")) {
           slot_recreated <- as.numeric(slot_recreated)
         }
@@ -651,6 +656,16 @@ setClass("constraints",
             sprintf("constraints: slot '%s' recreated from @constraints does not match @%s", x, x)
           )
         }
+      }
+
+      if (!identical(
+        recreated@constraints$CONSTRAINT_ID,
+        unique(recreated@constraints$CONSTRAINT_ID)
+      )) {
+        err <- c(
+          err,
+          sprintf("constraints: the 'CONSTRAINT_ID' column must have unique values")
+        )
       }
 
     }
