@@ -11,6 +11,7 @@
 
 ## QoL updates
 * `loadConstraints()` now retains stimulus IDs in the `item_index_by_stimulus` slot for easier access.
+* `loadConstraints()` now accepts non-numeric character IDs in the `CONSTRAINT_ID` column.
 * `plot()` now accepts `ylim`.
 
 ## Bug fixes
