@@ -341,7 +341,8 @@ loadItemAttrib <- function(object, pool, file = NULL) {
   }
 
   if ("INDEX" %in% names(item_attrib)) {
-    warning("The 'INDEX' column was ignored and replaced with valid values.")
+    item_attrib$INDEX <- NULL
+    warning("The 'INDEX' column was ignored because it is reserved for internal use.")
   }
   item_attrib <- data.frame(cbind(INDEX = 1:nrow(item_attrib), item_attrib))
 
@@ -441,7 +442,8 @@ loadStAttrib <- function(object, item_attrib, file = NULL) {
     st_attrib[["STID"]] <- as.character(st_attrib[["STID"]])
   }
   if ("STINDEX" %in% names(st_attrib)) {
-    warning("The 'STINDEX' column was ignored and replaced with valid values.")
+    st_attrib$STINDEX <- NULL
+    warning("The 'STINDEX' column was ignored because it is reserved for internal use.")
   }
   st_attrib <- data.frame(cbind(STINDEX = 1:nrow(st_attrib), st_attrib))
 
