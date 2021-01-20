@@ -330,6 +330,10 @@
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The base <code>plot()</code> does not allow directly storing the plot as a object. <code>TestDesign::plot()</code> calls <code><a href='https://rdrr.io/r/grDevices/recordplot.html'>recordPlot()</a></code> internally to allow this. This adds convenience, but also introduces a caveat when using with the 'knitr' package.
+The caveat is that using <code>plot()</code> alone will not render the plot. This issue can be resolved by using <code>p &lt;- plot()</code> and <code><a href='print.html'>print(p)</a></code> in two separate blocks in the markdown document.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
