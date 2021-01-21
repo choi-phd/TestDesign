@@ -585,7 +585,7 @@ addSolutionToConstraintData <- function(x, attrib, item_idx, all_values) {
       if (x$WHAT == "ITEM") {
         x[[solution_name]] <- length(item_idx)
       }
-      if (x$WHAT == "STIMULUS") {
+      if (x$WHAT %in% c("STIMULUS", "PASSAGE")) {
         x[[solution_name]] <- length(unique(attrib@data$STID[item_idx]))
       }
 
