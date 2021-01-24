@@ -9,7 +9,7 @@ NULL
 #'   \item{\code{\linkS4class{output_Shadow_all}}}: plot audit trail, shadow test chart, and exposure rates from the adaptive assembly solution.
 #'   \item{\code{\linkS4class{output_Shadow}}}: plot audit trail and shadow test chart from the adaptive assembly solution.
 #' }
-#' @param y not used, exists for compatibility with \code{\link[base]{plot}} in the base R package.
+#' @param y not used, exists for compatibility with \code{\link[graphics]{plot}} in the base R package.
 #' @param type the type of plot.
 #' \itemize{
 #'    \item{\code{info} plots information from \code{\linkS4class{item_pool}}, \code{\linkS4class{output_Static}}, and \code{\linkS4class{output_Shadow_all}}.}
@@ -36,7 +36,7 @@ NULL
 #' @param simple used in \code{\linkS4class{output_Shadow}} and \code{\linkS4class{output_Shadow_all}} with \code{type = 'shadow'}. If \code{TRUE}, simplify the chart by hiding unused items.
 #' @param theta_segment used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. The type of theta to determine exposure segments. Accepts \code{Estimated} or \code{True}. (default = \code{Estimated})
 #' @param color_final used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. The color of item-wise exposure rates, only counting the items administered in the final theta segment as exposed.
-#' @param ... arguments to pass onto \code{\link{plot}}.
+#' @param ... arguments to pass onto \code{\link[graphics]{plot}}.
 #'
 #' @examples
 #'

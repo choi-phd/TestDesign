@@ -119,7 +119,7 @@
   \item{\code{\linkS4class{output_Shadow}}}: plot audit trail and shadow test chart from the adaptive assembly solution.
 }}
 
-\item{y}{not used, exists for compatibility with \code{\link[base]{plot}} in the base R package.}
+\item{y}{not used, exists for compatibility with \code{\link[graphics]{plot}} in the base R package.}
 
 \item{type}{the type of plot.
 \itemize{
@@ -161,7 +161,7 @@
 
 \item{color_final}{used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. The color of item-wise exposure rates, only counting the items administered in the final theta segment as exposed.}
 
-\item{...}{arguments to pass onto \code{\link{plot}}.}
+\item{...}{arguments to pass onto \code{\link[graphics]{plot}}.}
 }
 \description{
 Extension of plot() for objects in TestDesign package
