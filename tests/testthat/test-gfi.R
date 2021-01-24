@@ -1,7 +1,6 @@
 test_that("GFI works", {
 
   skip_on_cran()
-  skip_if_not_installed("lpsymphony")
 
   set.seed(1)
   true_theta <- 0
@@ -18,7 +17,7 @@ test_that("GFI works", {
       method = "BIGM"
     ),
     MIP = list(
-      solver = "LPSYMPHONY"
+      solver = "LPSOLVE"
     )
   )
   set.seed(1)
