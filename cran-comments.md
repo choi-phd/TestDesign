@@ -1,4 +1,4 @@
-# TestDesign 1.2.0
+# TestDesign 1.2.1
 
 ## Test environments
 
@@ -6,7 +6,28 @@
 * GitHub Actions:
 * * Windows Server 2019 (R-release)
 * * macOS Catalina 10.15 (R-release)
-* * Ubuntu 20.04 (R-release, R-devel)
+* * Ubuntu 20.04 (R-release, R-devel, R-oldrel)
+
+This version addresses following issues.
+
+* In `man/plot-methods.Rd`, links to `base::plot()` are replaced by links to `graphics::plot()` to resolve a WARNING that occurs in R-oldrel:
+```
+checking Rd cross-references ... WARNING
+Missing link or links in documentation object 'plot-methods.Rd':
+  ‘[base]{plot}’
+```
+The WARNING occurs because `base::plot()` does not exist in versions R 3.x.x.
+
+* In clang-ASAN, gcc-ASAN, the use of 'lpsymphony' in tests was causing heap-buffer-overflow:
+```
+  =================================================================
+  ==3289600==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x62500034f018 at pc 0x000000448067 bp 0x7ffd335f7ee0 sp 0x7ffd335f76a0
+  READ of size 1096 at 0x62500034f018 thread T0
+      #0 0x448066 in memcpy /data/gannet/ripley/Sources2/LLVM/11.0.0/llvm-project-11.0.0/compiler-rt/lib/asan/../sanitizer_common/sanitizer_common_interceptors.inc:808:5
+      #1 0x7fd0a93eac31 in sym_explicit_load_problem(SYM_ENVIRONMENT*, int, int, int*, int*, double*, double*, double*, char*, double*, double*, char*, double*, double*, char) (/lib64/libSym.so.3+0x17c31)
+      #2 0x7fd0a9487394 in lp_symphony_solve /tmp/RtmpHUBnog/R.INSTALL16d35062cfdc66/lpsymphony/src/lp_symphony.cc:47:4
+```
+As a workaround, the use of 'lpsymphony' is replaced with 'lpSolve' in tests.
 
 ## R CMD check results
 
@@ -24,4 +45,4 @@ Information on obtaining 'gurobi' is described in `DESCRIPTION`.
 
 ## Downstream dependencies
 
-The previous version 'TestDesign' 1.1.3 does not have downstream dependencies.
+The previous version 'TestDesign' 1.2.0 does not have downstream dependencies.
