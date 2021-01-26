@@ -1,22 +1,14 @@
-# TestDesign 1.2.1
+# TestDesign 1.2.2
 
 ## Test environments
 
-* Local: Windows 10 (R 4.0.3)
+* Local:
+* * Windows 10 (R 4.0.3)
+* * Ubuntu 20.04 (R 4.0.3 with clang-ASAN)
 * GitHub Actions:
 * * Windows Server 2019 (R-release)
 * * macOS Catalina 10.15 (R-release)
 * * Ubuntu 20.04 (R-release, R-devel, R-oldrel)
-
-This version addresses following issues.
-
-* In `man/plot-methods.Rd`, links to `base::plot()` are replaced by links to `graphics::plot()` to resolve a WARNING that occurs in R-oldrel:
-```
-checking Rd cross-references ... WARNING
-Missing link or links in documentation object 'plot-methods.Rd':
-  ‘[base]{plot}’
-```
-The WARNING occurs because `base::plot()` does not exist in versions R 3.x.x.
 
 * In clang-ASAN, gcc-ASAN, the use of 'lpsymphony' in tests was causing heap-buffer-overflow:
 ```
@@ -27,7 +19,7 @@ The WARNING occurs because `base::plot()` does not exist in versions R 3.x.x.
       #1 0x7fd0a93eac31 in sym_explicit_load_problem(SYM_ENVIRONMENT*, int, int, int*, int*, double*, double*, double*, char*, double*, double*, char*, double*, double*, char) (/lib64/libSym.so.3+0x17c31)
       #2 0x7fd0a9487394 in lp_symphony_solve /tmp/RtmpHUBnog/R.INSTALL16d35062cfdc66/lpsymphony/src/lp_symphony.cc:47:4
 ```
-As a workaround, the use of 'lpsymphony' is replaced with 'lpSolve' in tests.
+This cannot be fixed on our end. As a workaround, a test in 'TestDesign' 1.2.1 that was using 'lpsymphony' is now conditionally disabled.
 
 ## R CMD check results
 
@@ -45,4 +37,4 @@ Information on obtaining 'gurobi' is described in `DESCRIPTION`.
 
 ## Downstream dependencies
 
-The previous version 'TestDesign' 1.2.0 does not have downstream dependencies.
+The previous version 'TestDesign' 1.2.1 does not have downstream dependencies.
