@@ -97,8 +97,7 @@ setClass("config_Shadow",
     stopping_criterion = "list",
     interim_theta      = "list",
     final_theta        = "list",
-    theta_grid         = "numeric",
-    audit_trail        = "logical"
+    theta_grid         = "numeric"
   ),
   prototype = list(
     item_selection = list(
@@ -183,8 +182,7 @@ setClass("config_Shadow",
       fence_slope               = 5,
       fence_difficulty          = c(-5, 5)
     ),
-    theta_grid                  = seq(-4, 4, .1),
-    audit_trail                 = FALSE
+    theta_grid                  = seq(-4, 4, .1)
   ),
   validity = function(object) {
     err <- NULL
@@ -374,7 +372,6 @@ setClass("config_Shadow",
 #'   \item{\code{fence_difficulty}} difficulty parameters to use for \code{method = 'MLEF'}. This must have two values in total, for the lower and upper bound item respectively. (default = \code{c(-5, 5)})
 #' }
 #' @param theta_grid the theta grid to use as quadrature points.
-#' @param audit_trail set \code{TRUE} to plot audit trails.
 #'
 #' @examples
 #' cfg1 <- createShadowTestConfig(refresh_policy = list(
@@ -389,7 +386,7 @@ setClass("config_Shadow",
 createShadowTestConfig <- function(
   item_selection = NULL, content_balancing = NULL, MIP = NULL, MCMC = NULL,
   refresh_policy = NULL, exposure_control = NULL, stopping_criterion = NULL,
-  interim_theta = NULL, final_theta = NULL, theta_grid = seq(-4, 4, .1), audit_trail = F) {
+  interim_theta = NULL, final_theta = NULL, theta_grid = seq(-4, 4, .1)) {
   cfg <- new("config_Shadow")
 
   arg_names <- c(
@@ -413,9 +410,6 @@ createShadowTestConfig <- function(
   }
   if (!is.null(theta_grid)) {
     cfg@theta_grid <- theta_grid
-  }
-  if (!is.null(audit_trail)) {
-    cfg@audit_trail <- audit_trail
   }
   if (length(cfg@exposure_control$max_exposure_rate) == 1) {
     cfg@exposure_control$max_exposure_rate <- rep(

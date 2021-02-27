@@ -279,7 +279,6 @@ setMethod("print", "config_Shadow", function(x) {
   cat("  theta_grid \n")
   print(x@theta_grid)
   cat("\n")
-  cat("  audit_trail                 : ", x@audit_trail, "\n")
   return(invisible(x))
 })
 
