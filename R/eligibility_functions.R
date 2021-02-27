@@ -269,11 +269,11 @@ applyAcceleration <- function(o, exposure_constants, constants) {
     nf_ijk <- matrix(o$n_jk / o$f_jk, n_segment, ni)
   }
 
+  p_a_ijk <- o$a_ijk / matrix(o$n_jk, n_segment, ni)
+  p_r_ijk <- o$r_ijk / matrix(o$n_jk, n_segment, ni)
+  p_a_ijk[is.na(p_a_ijk)] <- 0
+  p_r_ijk[is.na(p_r_ijk)] <- 1
   if (acc_factor > 1) {
-    p_a_ijk <- o$a_ijk / matrix(o$n_jk, n_segment, ni)
-    p_r_ijk <- o$r_ijk / matrix(o$n_jk, n_segment, ni)
-    p_a_ijk[is.na(p_a_ijk)] <- 0
-    p_r_ijk[is.na(p_r_ijk)] <- 1
     idx <- p_a_ijk > max_exposure_rate
     for (k in 1:n_segment) {
       o$p_e_i[k,  idx[k, ]] <-
@@ -301,11 +301,11 @@ applyAcceleration <- function(o, exposure_constants, constants) {
     nf_sjk <- matrix(o$n_jk / o$f_jk, n_segment, ns)
   }
 
+  p_a_sjk <- o$a_sjk / matrix(o$n_jk, n_segment, ns)
+  p_r_sjk <- o$r_sjk / matrix(o$n_jk, n_segment, ns)
+  p_a_sjk[is.na(p_a_sjk)] <- 0
+  p_r_sjk[is.na(p_r_sjk)] <- 1
   if (acc_factor > 1) {
-    p_a_sjk <- o$a_sjk / matrix(o$n_jk, n_segment, ns)
-    p_r_sjk <- o$r_sjk / matrix(o$n_jk, n_segment, ns)
-    p_a_sjk[is.na(p_a_sjk)] <- 0
-    p_r_sjk[is.na(p_r_sjk)] <- 1
     idx <- p_a_sjk > max_exposure_rate
     for (k in 1:n_segment) {
       o$p_e_s[k,  idx[k, ]] <-
