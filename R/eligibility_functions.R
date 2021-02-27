@@ -259,7 +259,7 @@ incrementAdministrationCountForVisitedSegments <- function(o, segment_prob, segm
 }
 
 #' @noRd
-applyAcceleration <- function(o, exposure_constants, constants) {
+updateEligibilityRates <- function(o, exposure_constants, constants) {
 
   max_exposure_rate <- exposure_constants$max_exposure_rate
   acc_factor        <- exposure_constants$acceleration_factor
