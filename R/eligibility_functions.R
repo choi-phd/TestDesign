@@ -222,7 +222,7 @@ getEligibleFlag <- function(ineligible_flag, constants, force_true) {
 }
 
 #' @noRd
-applyIncrementVisitedSegments <- function(o, segment_prob, segment_visited, ineligible_flag_in_segment, x, exposure_constants, constants) {
+incrementAdministrationCountForVisitedSegments <- function(o, segment_prob, segment_visited, ineligible_flag_in_segment, x, exposure_constants, constants) {
 
   segments_to_apply <- getSegmentsToApply(exposure_constants$n_segment, segment_visited)
 
