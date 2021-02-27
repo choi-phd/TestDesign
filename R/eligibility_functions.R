@@ -278,13 +278,13 @@ applyAcceleration <- function(o, exposure_constants, constants) {
     for (k in 1:n_segment) {
       o$p_e_i[k,  idx[k, ]] <-
         1 - nf_ijk[k,  idx[k, ]] +
-        (max_exposure_rate[k] / p_a_ijk[k, idx[k, ]]) ** acc_factor * nf_ijk[k, idx[k, ]] * p_r_ijk[k, idx[k, ]]
+        (max_exposure_rate[k] / p_a_ijk[k, idx[k, ]]) ** acc_factor * p_r_ijk[k, idx[k, ]] * nf_ijk[k, idx[k, ]]
       o$p_e_i[k, !idx[k, ]] <-
         1 - nf_ijk[k, !idx[k, ]] +
-        max_exposure_rate[k] * nf_ijk[k, !idx[k, ]] * p_r_ijk[k, !idx[k, ]] / p_a_ijk[k, !idx[k, ]]
+        (max_exposure_rate[k] / p_a_ijk[k, !idx[k, ]]) * p_r_ijk[k, !idx[k, ]] * nf_ijk[k, !idx[k, ]]
     }
   } else {
-    o$p_e_i <- 1 - nf_ijk + max_exposure_rate * nf_ijk * p_r_ijk / p_a_ijk
+    o$p_e_i <- 1 - nf_ijk + (max_exposure_rate / p_a_ijk * p_r_ijk * nf_ijk)
   }
 
   if (!constants$set_based) {
@@ -310,13 +310,13 @@ applyAcceleration <- function(o, exposure_constants, constants) {
     for (k in 1:n_segment) {
       o$p_e_s[k,  idx[k, ]] <-
         1 - nf_sjk[k,  idx[k, ]] +
-        (max_exposure_rate[k] / p_a_sjk[k, idx[k, ]]) ** acc_factor * nf_sjk[k, idx[k, ]] * p_r_sjk[k, idx[k, ]]
+        (max_exposure_rate[k] / p_a_sjk[k, idx[k, ]]) ** acc_factor * p_r_sjk[k, idx[k, ]] * nf_sjk[k, idx[k, ]]
       o$p_e_s[k, !idx[k, ]] <-
         1 - nf_sjk[k, !idx[k, ]] +
-        max_exposure_rate[k] * nf_sjk[k, !idx[k, ]] * p_r_sjk[k, !idx[k, ]] / p_a_sjk[k, !idx[k, ]]
+        (max_exposure_rate[k] / p_a_sjk[k, !idx[k, ]]) * p_r_sjk[k, !idx[k, ]] * nf_sjk[k, !idx[k, ]]
     }
   } else {
-    o$p_e_s <- 1 - nf_sjk + max_exposure_rate * nf_sjk * p_r_sjk / p_a_sjk
+    o$p_e_s <- 1 - nf_sjk + (max_exposure_rate / p_a_sjk * p_r_sjk * nf_sjk)
   }
 
   return(o)
