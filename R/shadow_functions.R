@@ -790,10 +790,6 @@ setMethod(
 
       }
 
-      if (config@audit_trail) {
-        plotAuditTrail()
-      }
-
       if (!is.null(session)) {
         shinyWidgets::updateProgressBar(session = session, id = "pb", value = j, total = constants$nj)
       } else {
