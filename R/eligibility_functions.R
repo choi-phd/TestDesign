@@ -186,7 +186,7 @@ applyIncrement <- function(o, segments_to_apply, segment_prob, theta_is_feasible
 
 
 #' @noRd
-applyClip <- function(o, constants) {
+clipEligibilityRates <- function(o, constants) {
 
   o$p_e_i[is.na(o$p_e_i) | o$a_ijk == 0] <- 1
   o$p_e_i[o$p_e_i > 1] <- 1
