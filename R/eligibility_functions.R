@@ -10,10 +10,10 @@ flagIneligible <- function(exposure_record, exposure_constants, constants, item_
   # Randomly flag items in each segment to be ineligible
 
   ni       <- constants$ni
-  pe_i     <- exposure_record$pe_i
+  p_e_i     <- exposure_record$p_e_i
   o$i      <- matrix(0, n_segment, ni)
   p_random <- matrix(runif(n_segment * ni), n_segment, ni)
-  o$i[p_random >= pe_i] <- 1
+  o$i[p_random >= p_e_i] <- 1
 
   if (!constants$set_based) {
     return(o)
@@ -22,10 +22,10 @@ flagIneligible <- function(exposure_record, exposure_constants, constants, item_
   # Randomly flag stimuli in each segment to be ineligible
 
   ns       <- constants$ns
-  pe_s     <- exposure_record$pe_s
+  p_e_s     <- exposure_record$p_e_s
   o$s      <- matrix(0, n_segment, ns)
   p_random <- matrix(runif(n_segment * ns), n_segment, ns)
-  o$s[p_random >= pe_s] <- 1
+  o$s[p_random >= p_e_s] <- 1
 
   for (k in 1:exposure_constants$n_segment) {
     for (s in which(o$s[k, ] == 1)) {
@@ -188,15 +188,15 @@ applyIncrement <- function(o, segments_to_apply, segment_prob, theta_is_feasible
 #' @noRd
 applyClip <- function(o, constants) {
 
-  o$pe_i[is.na(o$pe_i) | o$a_ijk == 0] <- 1
-  o$pe_i[o$pe_i > 1] <- 1
+  o$p_e_i[is.na(o$p_e_i) | o$a_ijk == 0] <- 1
+  o$p_e_i[o$p_e_i > 1] <- 1
 
   if (!constants$set_based) {
     return(o)
   }
 
-  o$pe_s[is.na(o$pe_s) | o$a_sjk == 0] <- 1
-  o$pe_s[o$pe_s > 1] <- 1
+  o$p_e_s[is.na(o$p_e_s) | o$a_sjk == 0] <- 1
+  o$p_e_s[o$p_e_s > 1] <- 1
 
   return(o)
 
@@ -274,15 +274,15 @@ applyAcceleration <- function(o, exposure_constants, constants) {
     p_r_ijk[is.na(p_r_ijk)] <- 1
     idx <- p_a_ijk > max_exposure_rate
     for (k in 1:n_segment) {
-      o$pe_i[k,  idx[k, ]] <-
+      o$p_e_i[k,  idx[k, ]] <-
         1 - nf_ijk[k,  idx[k, ]] +
         (max_exposure_rate[k] / p_a_ijk[k, idx[k, ]]) ** acc_factor * nf_ijk[k, idx[k, ]] * p_r_ijk[k, idx[k, ]]
-      o$pe_i[k, !idx[k, ]] <-
+      o$p_e_i[k, !idx[k, ]] <-
         1 - nf_ijk[k, !idx[k, ]] +
         max_exposure_rate[k] * nf_ijk[k, !idx[k, ]] * o$r_ijk[k, !idx[k, ]] / o$a_ijk[k, !idx[k, ]]
     }
   } else {
-    o$pe_i <- 1 - nf_ijk + max_exposure_rate * nf_ijk * o$r_ijk / o$a_ijk
+    o$p_e_i <- 1 - nf_ijk + max_exposure_rate * nf_ijk * o$r_ijk / o$a_ijk
   }
 
   if (!constants$set_based) {
@@ -304,15 +304,15 @@ applyAcceleration <- function(o, exposure_constants, constants) {
     p_r_sjk[is.na(p_r_sjk)] <- 1
     idx <- p_a_sjk > max_exposure_rate
     for (k in 1:n_segment) {
-      o$pe_s[k,  idx[k, ]] <-
+      o$p_e_s[k,  idx[k, ]] <-
         1 - nf_sjk[k,  idx[k, ]] +
         (max_exposure_rate[k] / p_a_sjk[k, idx[k, ]]) ** acc_factor * nf_sjk[k, idx[k, ]] * p_r_sjk[k, idx[k, ]]
-      o$pe_s[k, !idx[k, ]] <-
+      o$p_e_s[k, !idx[k, ]] <-
         1 - nf_sjk[k, !idx[k, ]] +
         max_exposure_rate[k] * nf_sjk[k, !idx[k, ]] * o$r_sjk[k, !idx[k, ]] / o$a_sjk[k, !idx[k, ]]
     }
   } else {
-    o$pe_s <- 1 - nf_sjk + max_exposure_rate * nf_sjk * o$r_sjk / o$a_sjk
+    o$p_e_s <- 1 - nf_sjk + max_exposure_rate * nf_sjk * o$r_sjk / o$a_sjk
   }
 
   return(o)
