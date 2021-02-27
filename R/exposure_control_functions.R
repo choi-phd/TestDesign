@@ -66,7 +66,7 @@ initializeExposureRecord <- function(exposure_control, exposure_constants, const
 
   o$a_ijk <- matrix(0, n_segment, ni)
   o$r_ijk <- matrix(0, n_segment, ni)
-  o$pe_i  <- matrix(1, n_segment, ni)
+  o$p_e_i  <- matrix(1, n_segment, ni)
   if (exposure_constants$fading_factor != 1) {
     o$a_ijk_nofade <- o$a_ijk
     o$r_ijk_nofade <- o$r_ijk
