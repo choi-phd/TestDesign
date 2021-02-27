@@ -136,12 +136,11 @@ getEligibleFlagInSegment <- function(ineligible_flag, segment, constants) {
 }
 
 #' @noRd
-applyIncrement <- function(o, segments_to_apply, segment_prob, theta_is_feasible, eligible_flag, x, exposure_constants, constants) {
+incrementExamineeCount <- function(o, segments_to_apply, segment_prob, theta_is_feasible, exposure_constants) {
 
-  fading_factor <- exposure_constants$fading_factor
-
-  o$n_jk[segments_to_apply] <- o$n_jk[segments_to_apply] + segment_prob
-  if (fading_factor != 1) {
+  o$n_jk[segments_to_apply] <-
+  o$n_jk[segments_to_apply] + segment_prob
+  if (exposure_constants$fading_factor != 1) {
     o$n_jk_nofade[segments_to_apply] <-
     o$n_jk_nofade[segments_to_apply] + segment_prob
   }
@@ -150,11 +149,18 @@ applyIncrement <- function(o, segments_to_apply, segment_prob, theta_is_feasible
     o$f_jk[segments_to_apply] + segment_prob
   }
 
+  return(o)
+
+}
+
+#' @noRd
+incrementAdministrationCount <- function(o, segments_to_apply, segment_prob, eligible_flag, x, exposure_constants, constants) {
+
   administered_i <- x@administered_item_index
 
   o$a_ijk[segments_to_apply, administered_i] <-
   o$a_ijk[segments_to_apply, administered_i] + segment_prob
-  if (fading_factor != 1) {
+  if (exposure_constants$fading_factor != 1) {
     o$a_ijk_nofade[segments_to_apply, administered_i] <-
     o$a_ijk_nofade[segments_to_apply, administered_i] + segment_prob
   }
@@ -171,7 +177,7 @@ applyIncrement <- function(o, segments_to_apply, segment_prob, theta_is_feasible
 
   o$a_sjk[segments_to_apply, administered_s] <-
   o$a_sjk[segments_to_apply, administered_s] + segment_prob
-  if (fading_factor != 1) {
+  if (exposure_constants$fading_factor != 1) {
     o$a_sjk_nofade[segments_to_apply, administered_s] <-
     o$a_sjk_nofade[segments_to_apply, administered_s] + segment_prob
   }
