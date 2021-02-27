@@ -751,7 +751,7 @@ setMethod(
           exposure_record   <- applyIncrement(exposure_record, segments_to_apply, segment_prob, theta_is_feasible, eligible_flag, o, exposure_constants, constants)
           exposure_record   <- applyIncrementVisitedSegments(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_segment, o, exposure_constants, constants)
           exposure_record   <- applyAcceleration(exposure_record, exposure_constants, constants)
-          exposure_record   <- applyClip(exposure_record, constants)
+          exposure_record   <- clipEligibilityRates(exposure_record, constants)
 
         } else if (exposure_control %in% c("BIGM")) {
 
@@ -762,7 +762,7 @@ setMethod(
           exposure_record   <- applyIncrement(exposure_record, segments_to_apply, segment_prob, FALSE, eligible_flag, o, exposure_constants, constants)
           exposure_record   <- applyIncrementVisitedSegments(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_segment, o, exposure_constants, constants)
           exposure_record   <- applyAcceleration(exposure_record, exposure_constants, constants)
-          exposure_record   <- applyClip(exposure_record, constants)
+          exposure_record   <- clipEligibilityRates(exposure_record, constants)
 
         } else if (exposure_control %in% c("BIGM-BAYESIAN")) {
 
@@ -773,7 +773,7 @@ setMethod(
           exposure_record   <- applyIncrement(exposure_record, segments_to_apply, segment_prob, FALSE, eligible_flag, o, exposure_constants, constants)
           exposure_record   <- applyIncrementVisitedSegments(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_segment, o, exposure_constants, constants)
           exposure_record   <- applyAcceleration(exposure_record, exposure_constants, constants)
-          exposure_record   <- applyClip(exposure_record, constants)
+          exposure_record   <- clipEligibilityRates(exposure_record, constants)
 
         }
 
