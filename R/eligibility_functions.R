@@ -106,8 +106,8 @@ applyFading <- function(o, segments_to_apply, exposure_constants, constants) {
 
   o$n_jk[segments_to_apply]    <- fading_factor * o$n_jk[segments_to_apply]
 
-  if (!is.null(o$p_jk)) {
-    o$p_jk[segments_to_apply]  <- fading_factor * o$p_jk[segments_to_apply]
+  if (!is.null(o$f_jk)) {
+    o$f_jk[segments_to_apply]  <- fading_factor * o$f_jk[segments_to_apply]
   }
 
   o$a_ijk[segments_to_apply, ] <- fading_factor * o$a_ijk[segments_to_apply, ]
@@ -146,8 +146,8 @@ applyIncrement <- function(o, segments_to_apply, segment_prob, theta_is_feasible
     o$n_jk_nofade[segments_to_apply] + segment_prob
   }
   if (theta_is_feasible) {
-    o$p_jk[segments_to_apply] <-
-    o$p_jk[segments_to_apply] + segment_prob
+    o$f_jk[segments_to_apply] <-
+    o$f_jk[segments_to_apply] + segment_prob
   }
 
   administered_i <- x@administered_item_index
@@ -260,11 +260,13 @@ applyAcceleration <- function(o, exposure_constants, constants) {
   n_segment         <- exposure_constants$n_segment
 
   ni <- constants$ni
-  # p_jk is only avalilable in ELIGIBILITY method
-  if (is.null(o$p_jk)) {
+  # f_jk: examinees who took a feasible test
+  # f_jk: only available in ELIGIBILITY method
+  # nf_ijk: correction term for administering infeasible tests
+  if (is.null(o$f_jk)) {
     nf_ijk <- matrix(1              , n_segment, ni)
   } else {
-    nf_ijk <- matrix(o$n_jk / o$p_jk, n_segment, ni)
+    nf_ijk <- matrix(o$n_jk / o$f_jk, n_segment, ni)
   }
 
   if (acc_factor > 1) {
@@ -290,11 +292,13 @@ applyAcceleration <- function(o, exposure_constants, constants) {
   }
 
   ns <- constants$ns
-  # p_jk is only avalilable in ELIGIBILITY method
-  if (is.null(o$p_jk)) {
+  # f_jk: examinees who took a feasible test
+  # f_jk: only available in ELIGIBILITY method
+  # nf_ijk: correction term for administering infeasible tests
+  if (is.null(o$f_jk)) {
     nf_sjk <- matrix(1              , n_segment, ns)
   } else {
-    nf_sjk <- matrix(o$n_jk / o$p_jk, n_segment, ns)
+    nf_sjk <- matrix(o$n_jk / o$f_jk, n_segment, ns)
   }
 
   if (acc_factor > 1) {
