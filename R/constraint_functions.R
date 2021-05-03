@@ -31,12 +31,17 @@ normalizeConstraintData <- function(x) {
 }
 
 #' @noRd
-validateLBUB <- function(x) {
+validateLBUB <- function(x, allow_range = TRUE) {
   if (any(c(x$LB, x$UB) < 0)) {
       stop(sprintf("constraint %s: LB and UB must be >= 0", x$CONSTRAINT))
     }
   if (x$LB > x$UB) {
     stop(sprintf("constraint %s: LB <= UB must be TRUE", x$CONSTRAINT))
+  }
+  if (!allow_range) {
+    if (x$LB != x$UB) {
+      stop(sprintf("constraint %s: LB == UB must be TRUE for test length", x$CONSTRAINT))
+    }
   }
 }
 
@@ -90,6 +95,7 @@ validateConstraintData <- function(x, attrib) {
     if (
       toupper(x$CONDITION) %in%
       c("", " ", "PER TEST", "TEST")) {
+      validateLBUB(x, allow_range = FALSE)
       return()
     }
 
