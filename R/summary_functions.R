@@ -112,7 +112,11 @@ setMethod("summary", "output_Shadow_all", function(object, simple = FALSE) {
   achieved <- vector("list", nc)
   for (i in 1:nc) {
     achieved[[i]] <- NA
-    x <- do.call("c", tmp[i, ])
+    if (nc == 1) {
+      x <- do.call("c", tmp)
+    } else {
+      x <- do.call("c", tmp[i, ])
+    }
     if (!is.null(achieved)) {
       achieved[[i]] <- x
     }
