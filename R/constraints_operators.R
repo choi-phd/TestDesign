@@ -52,6 +52,8 @@ subsetConstraints <- function(x, i = NULL) {
   }
 
   tmp <- x@constraints[i, ]
+  idx_to_drop <- which(toupper(names(x@constraints)) == "CONSTRAINT")
+  tmp <- tmp[, -idx_to_drop]
   o   <- loadConstraints(
     tmp,
     x@pool,
