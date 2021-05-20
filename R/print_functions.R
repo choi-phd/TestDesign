@@ -435,7 +435,16 @@ setMethod("print", "summary_output_Shadow_all", function(x, digits = 3) {
   cat(sprintf("     Average SE : % 2.6f\n", x@average_se))
   if (!is.null(x@achieved)) {
     cat("\n")
-    print(x@achieved, digits = digits)
+    idx_to_drop <- which(toupper(names(x@achieved)) == "CONSTRAINT")
+    x@achieved  <- x@achieved[, -idx_to_drop]
+    for (i in names(x@achieved)) {
+      idx_to_replace <- which(is.na(x@achieved[[i]]))
+      if (inherits(x@achieved[[i]], "numeric")) {
+        x@achieved[[i]] <- round(x@achieved[[i]], digits)
+      }
+      x@achieved[[i]][idx_to_replace] <- ""
+    }
+    print(x@achieved, row.names = FALSE, digits = digits)
   }
   return(invisible(x))
 })
