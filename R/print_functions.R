@@ -120,7 +120,8 @@ setMethod("print", "summary_item_attrib", function(x) {
 #' @docType methods
 #' @rdname print-methods
 setMethod("print", "constraints", function(x) {
-  print(x@constraints)
+  idx_to_drop <- which(toupper(names(x@constraints)) == "CONSTRAINT")
+  print(x@constraints[, -idx_to_drop])
   return(invisible(x@constraints))
 })
 
