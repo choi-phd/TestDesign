@@ -1,3 +1,9 @@
+# TestDesign 1.2.3
+
+* Internal constraint indices are now suppressed in printing. This affects `summary()` for `output_Shadow_all` and `output_Static` objects, and `print()` for `constraints` objects. User-supplied constraint indices are still printed as before.
+* Fixed where subsetting `constraints` objects raised a warning related to internal constraint indices.
+* `NA` values are now suppressed in printing, in `summary()` of `output_Shadow_all` and `output_Static` objects.
+
 # TestDesign 1.2.2
 
 * Fixed to pass automated checks on CRAN.
