@@ -73,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TestDesign</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.3</span>
       </span>
     </div>
 
@@ -131,6 +131,17 @@
       <small>Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="testdesign-123" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.3">
+<a href="#testdesign-123" class="anchor"></a>TestDesign 1.2.3<small> Unreleased </small>
+</h1>
+<ul>
+<li>Internal constraint indices are now suppressed in printing. This affects <code><a href="../reference/summary.html">summary()</a></code> for <code>output_Shadow_all</code> and <code>output_Static</code> objects, and <code><a href="../reference/print.html">print()</a></code> for <code>constraints</code> objects. User-supplied constraint indices are still printed as before.</li>
+<li>Fixed where subsetting <code>constraints</code> objects raised a warning related to internal constraint indices.</li>
+<li>
+<code>NA</code> values are now suppressed in printing, in <code><a href="../reference/summary.html">summary()</a></code> of <code>output_Shadow_all</code> and <code>output_Static</code> objects.</li>
+</ul>
+</div>
     <div id="testdesign-122" class="section level1">
 <h1 class="page-header" data-toc-text="1.2.2">
 <a href="#testdesign-122" class="anchor"></a>TestDesign 1.2.2<small> 2021-01-27 </small>
