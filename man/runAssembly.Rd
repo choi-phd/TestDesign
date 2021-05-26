@@ -16,13 +16,13 @@ runAssembly(config, constraints, xdata = NULL, objective = NULL)
 \item{objective}{the information value for each item in the pool.}
 }
 \value{
-A list containing the following entries:
+a list containing the following entries:
 \itemize{
-  \item{\code{MIP}} A list containing the result from MIP solver.
-  \item{\code{status}} The MIP status value, indicating whether an optimal solution was found.
-  \item{\code{shadow_test}} The attributes of the selected items.
-  \item{\code{obj_value}} The objective value of the solution.
-  \item{\code{solve_time}} The elapsed time in running the solver.
+  \item{\code{MIP}} a list containing the result from MIP solver.
+  \item{\code{status}} the MIP status value, indicating whether an optimal solution was found.
+  \item{\code{shadow_test}} the attributes of the selected items.
+  \item{\code{obj_value}} the objective value of the solution.
+  \item{\code{solve_time}} the elapsed time in running the solver.
 }
 }
 \description{
