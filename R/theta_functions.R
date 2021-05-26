@@ -694,7 +694,12 @@ setMethod(
 initializeTheta <- function(config, constants, posterior_record) {
   nj <- constants$nj
   if (!is.null(config@item_selection$initial_theta)) {
-    theta <- rep(config@item_selection$initial_theta, nj)
+    if (length(config@item_selection$initial_theta) == 1) {
+      theta <- rep(config@item_selection$initial_theta, nj)
+    }
+    if (length(config@item_selection$initial_theta) == nj) {
+      theta <- config@item_selection$initial_theta
+    }
   } else {
     theta <- as.vector(posterior_record$posterior %*% matrix(constants$theta_q, ncol = 1))
   }
