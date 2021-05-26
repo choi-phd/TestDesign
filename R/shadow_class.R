@@ -517,6 +517,7 @@ setClass("output_Shadow_all",
 #' @slot shadow_test_refreshed \code{TRUE} indicates the shadow test was refreshed for the position.
 #' @slot shadow_test_feasible \code{TRUE} indicates the MIP was feasible with all constraints.
 #' @slot solve_time elapsed time in running the solver at each position.
+#' @slot initial_theta_est initial theta estimate.
 #' @slot interim_theta_est interim theta estimates at each position.
 #' @slot interim_se_est the standard error of the interim estimate at each position.
 #' @slot theta_segment_index segment numbers of interim theta estimates.
@@ -548,6 +549,7 @@ setClass("output_Shadow",
     shadow_test_refreshed       = "logical",
     shadow_test_feasible        = "logical",
     solve_time                  = "numeric",
+    initial_theta_est           = "numeric",
     interim_theta_est           = "numeric",
     interim_se_est              = "numeric",
     theta_segment_index         = "numeric",
@@ -577,6 +579,7 @@ setClass("output_Shadow",
     shadow_test_refreshed       = logical(0),
     shadow_test_feasible        = logical(0),
     solve_time                  = numeric(0),
+    initial_theta_est           = numeric(0),
     interim_theta_est           = numeric(0),
     interim_se_est              = numeric(0),
     theta_segment_index         = numeric(0),
