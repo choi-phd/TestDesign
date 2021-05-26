@@ -215,6 +215,7 @@ setMethod(
         config@interim_theta, initial_theta, prior_par,
         constants$nj, j,
         posterior_constants)
+      o@initial_theta_est <- current_theta$theta
 
       # Simulee: initialize stimulus record
 
