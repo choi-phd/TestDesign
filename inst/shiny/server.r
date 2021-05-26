@@ -614,4 +614,9 @@ server <- function(input, output, session) {
     },
     contentType = "application/zip"
   )
+
+  session$onSessionEnded(function() {
+    stopApp()
+  })
+
 }
