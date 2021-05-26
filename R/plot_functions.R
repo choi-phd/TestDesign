@@ -413,6 +413,7 @@ setMethod(
 
       }
 
+      par(mar = old_mar, mfrow = old_mfrow)
       p <- recordPlot()
       dev.off()
       return(p)
@@ -644,6 +645,7 @@ setMethod(
 
       }
 
+      par(mar = old_mar, mfrow = old_mfrow)
       p <- recordPlot()
       dev.off()
       return(p)
@@ -925,6 +927,7 @@ setMethod(
       mtext(text = "Item", side = 1, line = 0, outer = T)
       mtext(text = "Exposure Rate", side = 2, line = 0, outer = T)
 
+      par(oma = old_oma, mar = old_mar)
       p <- recordPlot()
       dev.off()
 
