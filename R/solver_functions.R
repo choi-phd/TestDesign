@@ -10,13 +10,13 @@ NULL
 #' @param xdata a list containing extra constraints in MIP form, to force-include previously administered items.
 #' @param objective the information value for each item in the pool.
 #'
-#' @return A list containing the following entries:
+#' @return a list containing the following entries:
 #' \itemize{
-#'   \item{\code{MIP}} A list containing the result from MIP solver.
-#'   \item{\code{status}} The MIP status value, indicating whether an optimal solution was found.
-#'   \item{\code{shadow_test}} The attributes of the selected items.
-#'   \item{\code{obj_value}} The objective value of the solution.
-#'   \item{\code{solve_time}} The elapsed time in running the solver.
+#'   \item{\code{MIP}} a list containing the result from MIP solver.
+#'   \item{\code{status}} the MIP status value, indicating whether an optimal solution was found.
+#'   \item{\code{shadow_test}} the attributes of the selected items.
+#'   \item{\code{obj_value}} the objective value of the solution.
+#'   \item{\code{solve_time}} the elapsed time in running the solver.
 #' }
 #'
 #' @references
