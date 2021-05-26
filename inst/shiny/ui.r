@@ -28,7 +28,7 @@ ui <- fluidPage(
         inputId = "solvertype_dropdown", label = "Solver settings",
         radioGroupButtons(
           inputId = "solvertype", justified = TRUE, direction = "vertical",
-          choices = c("lpSolve", "Rsymphony", "lpsymphony", "gurobi", "rglpk")
+          choices = solvers
         ),
         circle = FALSE, icon = icon("drafting-compass"), width = "100%"
       ),
