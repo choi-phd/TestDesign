@@ -34,6 +34,8 @@
 
 \item{\code{solve_time}}{elapsed time in running the solver at each position.}
 
+\item{\code{initial_theta_est}}{initial theta estimate.}
+
 \item{\code{interim_theta_est}}{interim theta estimates at each position.}
 
 \item{\code{interim_se_est}}{the standard error of the interim estimate at each position.}
