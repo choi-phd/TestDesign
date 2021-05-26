@@ -369,9 +369,9 @@ setMethod(
         lines(c(i - 0.25, i + 0.25), c(ci_lower, ci_lower), col = "purple4")
         lines(c(i - 0.25, i + 0.25), c(ci_upper, ci_upper), col = "purple4")
       }
-      lines(1:n_items, x@interim_theta_est, lty = 3, col = "blue", lwd = 1.5)
-      points(1:n_items, x@interim_theta_est, pch = 16, cex = 2.5, col = "blue")
-      points(1:n_items, x@interim_theta_est, pch = 1, cex = 2.5, col = "purple4")
+      lines(0:n_items, c(x@initial_theta_est, x@interim_theta_est), lty = 3, col = "blue", lwd = 1.5)
+      points(0:n_items, c(x@initial_theta_est, x@interim_theta_est), pch = 16, cex = 2.5, col = "blue")
+      points(0:n_items, c(x@initial_theta_est, x@interim_theta_est), pch = 1, cex = 2.5, col = "purple4")
       if (!is.null(x@true_theta)) {
         abline(h = x@true_theta, lty = 1, col = "red")
       }
