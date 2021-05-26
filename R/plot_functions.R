@@ -735,12 +735,16 @@ setMethod(
         legend_col   <- c(legend_col, "black")
 
         if (position > 1) {
-
           abline(v = o@interim_theta_est[position - 1], col = "black", lty = 2)
           legend_label <- c(legend_label, sprintf("Interim @ %s = %.3f", position - 1, o@interim_theta_est[position - 1]))
           legend_lty   <- c(legend_lty, 2)
           legend_col   <- c(legend_col, "black")
-
+        }
+        if (position == 1) {
+          abline(v = o@initial_theta_est, col = "black", lty = 2)
+          legend_label <- c(legend_label, sprintf("Initial theta = %.3f", o@initial_theta_est))
+          legend_lty   <- c(legend_lty, 2)
+          legend_col   <- c(legend_col, "black")
         }
       }
 
