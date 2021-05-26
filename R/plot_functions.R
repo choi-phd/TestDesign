@@ -341,10 +341,11 @@ setMethod(
       min_theta <- theta_range[1]
       max_theta <- theta_range[2]
 
-      old_mar <- par()$mar
+      old_mar   <- par()$mar
+      old_mfrow <- par()$mfrow
       on.exit({
         close_dev <- ifelse(dev.cur() == 1, TRUE, FALSE)
-        par(mar = old_mar)
+        par(mar = old_mar, mfrow = old_mfrow)
         if (close_dev) {
           dev.off()
         }
