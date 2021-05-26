@@ -8,6 +8,17 @@ server <- function(input, output, session) {
     problemtype = 0
   )
 
+  # test each solver and filter
+  for (s in solvers) {
+    if (testSolver(s) != "") {
+      solvers <- setdiff(solvers, s)
+    }
+  }
+  updateRadioGroupButtons(
+    session, "solvertype",
+    choices = solvers
+  )
+
   observeEvent(input$itempool_file, {
     if (!is.null(input$itempool_file)) {
       v$itempool <- try(loadItemPool(input$itempool_file$datapath))
