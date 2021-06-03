@@ -1,8 +1,22 @@
+# TestDesign 1.2.4
+
+## Updates
+* `output_Shadow` gains a new slot for initial theta estimates. `plot()` utilizes the new slot.
+* `TestDesign()` now checks whether each solver works, and only shows solvers available on the user system.
+
+## Bug fixes
+* Fixed where graphic parameters were not being reset when using `plot()`.
+* `toggleConstraints()` now also accepts character IDs.
+
 # TestDesign 1.2.3
 
+## Updates
 * Internal constraint indices are now suppressed in printing. This affects `summary()` for `output_Shadow_all` and `output_Static` objects, and `print()` for `constraints` objects. User-supplied constraint indices are still printed as before.
-* Fixed where subsetting `constraints` objects raised a warning related to internal constraint indices.
 * `NA` values are now suppressed in printing, in `summary()` of `output_Shadow_all` and `output_Static` objects.
+
+## Bug fixes
+* Fixed where subsetting `constraints` objects raised a warning related to internal constraint indices.
+
 
 # TestDesign 1.2.2
 
