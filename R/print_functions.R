@@ -116,6 +116,23 @@ setMethod("print", "summary_item_attrib", function(x) {
   return(invisible(x))
 })
 
+#' @aliases print,summary_st_attrib-method
+#' @docType methods
+#' @rdname print-methods
+setMethod("print", "summary_st_attrib", function(x) {
+  cat("Set attributes\n")
+  cat(sprintf("  # of attributes : %i\n", length(x@attribs)))
+  for (i in 1:length(x@levels)) {
+    if (length(x@levels[[i]]) <= 10) {
+      lvl_txt <- paste0(x@levels[[i]], collapse = " ")
+    } else {
+      lvl_txt <- sprintf("(%i levels)", length(x@levels[[i]]))
+    }
+    cat(sprintf(" %16s : %s\n", names(x@levels)[i], lvl_txt))
+  }
+  return(invisible(x))
+})
+
 #' @aliases print,constraints-method
 #' @docType methods
 #' @rdname print-methods

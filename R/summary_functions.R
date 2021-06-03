@@ -27,6 +27,19 @@ setMethod("summary", "item_attrib", function(object) {
   return(out)
 })
 
+#' @aliases summary,st_attrib-method
+#' @docType methods
+#' @rdname summary-methods
+setMethod("summary", "st_attrib", function(object) {
+  out <- new("summary_st_attrib")
+  out@attribs <- names(object@data)
+  out@levels  <- list()
+  for (a in out@attribs) {
+    out@levels[[a]] <- sort(unique(object@data[[a]]))
+  }
+  return(out)
+})
+
 #' @aliases summary,constraints-method
 #' @docType methods
 #' @rdname summary-methods
