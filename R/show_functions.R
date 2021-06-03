@@ -115,6 +115,14 @@ setMethod("show", "summary_item_attrib", function(object) {
   return(invisible(NULL))
 })
 
+#' @aliases show,summary_st_attrib-method
+#' @docType methods
+#' @rdname show-methods
+setMethod("show", "summary_st_attrib", function(object) {
+  print(object)
+  return(invisible(NULL))
+})
+
 #' @aliases show,summary_constraints-method
 #' @docType methods
 #' @rdname show-methods
