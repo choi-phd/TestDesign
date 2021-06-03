@@ -9,9 +9,9 @@ toggleConstraints(object, on = NULL, off = NULL)
 \arguments{
 \item{object}{a \code{\linkS4class{constraints}} object from \code{\link{loadConstraints}}.}
 
-\item{on}{constraint indices to mark as active.}
+\item{on}{constraint indices to mark as active. Also accepts character IDs.}
 
-\item{off}{constraint indices to mark as inactive.}
+\item{off}{constraint indices to mark as inactive. Also accepts character IDs.}
 }
 \value{
 \code{\link{toggleConstraints}} returns the updated \code{\linkS4class{constraints}} object.
@@ -21,6 +21,7 @@ toggleConstraints(object, on = NULL, off = NULL)
 }
 \examples{
 constraints_science2 <- toggleConstraints(constraints_science, off = 32:36)
-constraints_science3 <- toggleConstraints(constraints_science, on = 32:36)
+constraints_science3 <- toggleConstraints(constraints_science2, on = 32:36)
+constraints_science4 <- toggleConstraints(constraints_science, off = "C32")
 
 }
