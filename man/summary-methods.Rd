@@ -5,6 +5,7 @@
 \alias{summary}
 \alias{summary,item_pool-method}
 \alias{summary,item_attrib-method}
+\alias{summary,st_attrib-method}
 \alias{summary,constraints-method}
 \alias{summary,output_Static-method}
 \alias{summary,output_Shadow_all-method}
@@ -13,6 +14,8 @@
 \S4method{summary}{item_pool}(object)
 
 \S4method{summary}{item_attrib}(object)
+
+\S4method{summary}{st_attrib}(object)
 
 \S4method{summary}{constraints}(object)
 
