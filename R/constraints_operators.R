@@ -149,14 +149,15 @@ setMethod(
 #' \code{\link{toggleConstraints}} is a function to toggle individual constraints in a \code{\linkS4class{constraints}} object.
 #'
 #' @param object a \code{\linkS4class{constraints}} object from \code{\link{loadConstraints}}.
-#' @param on constraint indices to mark as active.
-#' @param off constraint indices to mark as inactive.
+#' @param on constraint indices to mark as active. Also accepts character IDs.
+#' @param off constraint indices to mark as inactive. Also accepts character IDs.
 #'
 #' @return \code{\link{toggleConstraints}} returns the updated \code{\linkS4class{constraints}} object.
 #'
 #' @examples
 #' constraints_science2 <- toggleConstraints(constraints_science, off = 32:36)
-#' constraints_science3 <- toggleConstraints(constraints_science, on = 32:36)
+#' constraints_science3 <- toggleConstraints(constraints_science2, on = 32:36)
+#' constraints_science4 <- toggleConstraints(constraints_science, off = "C32")
 #'
 #' @export
 toggleConstraints <- function(object, on = NULL, off = NULL) {
@@ -168,6 +169,23 @@ toggleConstraints <- function(object, on = NULL, off = NULL) {
   if (!"ONOFF" %in% names(object@constraints)) {
     object@constraints[["ONOFF"]] <- ""
   }
+  if (inherits(on, "character")) {
+    on <- sapply(
+      on,
+      function(x) {
+        which(object@constraints[["CONSTRAINT_ID"]] == x)
+      }
+    )
+  }
+  if (inherits(off, "character")) {
+    off <- sapply(
+      off,
+      function(x) {
+        which(object@constraints[["CONSTRAINT_ID"]] == x)
+      }
+    )
+  }
+
   if (!is.null(on)) {
     if (any(!is.element(on, 1:nc))) {
       stop(sprintf("toggleConstraints: 'on' should be within c(1:nc), nc = %s", nc))
