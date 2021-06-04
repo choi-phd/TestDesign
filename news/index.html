@@ -73,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TestDesign</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.4</span>
       </span>
     </div>
 
@@ -131,16 +131,50 @@
       <small>Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="testdesign-124" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.4">
+<a href="#testdesign-124" class="anchor"></a>TestDesign 1.2.4<small> Unreleased </small>
+</h1>
+<div id="updates" class="section level2">
+<h2 class="hasAnchor">
+<a href="#updates" class="anchor"></a>Updates</h2>
+<ul>
+<li>
+<code>output_Shadow</code> gains a new slot for initial theta estimates. <code><a href="../reference/plot.html">plot()</a></code> utilizes the new slot.</li>
+<li>
+<code><a href="../reference/TestDesign.html">TestDesign()</a></code> now checks whether each solver works, and only shows solvers available on the user system.</li>
+</ul>
+</div>
+<div id="bug-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<ul>
+<li>Fixed where graphic parameters were not being reset when using <code><a href="../reference/plot.html">plot()</a></code>.</li>
+<li>
+<code><a href="../reference/toggleConstraints.html">toggleConstraints()</a></code> now also accepts character IDs.</li>
+</ul>
+</div>
+</div>
     <div id="testdesign-123" class="section level1">
 <h1 class="page-header" data-toc-text="1.2.3">
 <a href="#testdesign-123" class="anchor"></a>TestDesign 1.2.3<small> 2021-05-24 </small>
 </h1>
+<div id="updates-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#updates-1" class="anchor"></a>Updates</h2>
 <ul>
 <li>Internal constraint indices are now suppressed in printing. This affects <code><a href="../reference/summary.html">summary()</a></code> for <code>output_Shadow_all</code> and <code>output_Static</code> objects, and <code><a href="../reference/print.html">print()</a></code> for <code>constraints</code> objects. User-supplied constraint indices are still printed as before.</li>
-<li>Fixed where subsetting <code>constraints</code> objects raised a warning related to internal constraint indices.</li>
 <li>
 <code>NA</code> values are now suppressed in printing, in <code><a href="../reference/summary.html">summary()</a></code> of <code>output_Shadow_all</code> and <code>output_Static</code> objects.</li>
 </ul>
+</div>
+<div id="bug-fixes-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
+<ul>
+<li>Fixed where subsetting <code>constraints</code> objects raised a warning related to internal constraint indices.</li>
+</ul>
+</div>
 </div>
     <div id="testdesign-122" class="section level1">
 <h1 class="page-header" data-toc-text="1.2.2">
@@ -184,9 +218,9 @@
 <code><a href="../reference/plot.html">plot()</a></code> now accepts <code>ylim</code>.</li>
 </ul>
 </div>
-<div id="bug-fixes" class="section level2">
+<div id="bug-fixes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed the error message associated with validating a <code>config_Shadow</code> object for whether its solver was installed on the system.</li>
 </ul>
@@ -213,9 +247,9 @@
 <li>Now supports MLE with Fences (<a href="https://doi.org/10.1177/0146621616631317">Han, 2016</a>) for interim and final theta estimates in <code><a href="../reference/Shadow.html">Shadow()</a></code>. This can be configured using <code>config_Shadow@interim_theta</code> and <code>config_Shadow@final_theta</code>.</li>
 </ul>
 </div>
-<div id="updates" class="section level2">
+<div id="updates-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#updates" class="anchor"></a>Updates</h2>
+<a href="#updates-2" class="anchor"></a>Updates</h2>
 <ul>
 <li>Added missing documentation entries for the <code>output_Shadow_all</code> class.</li>
 <li>
@@ -291,9 +325,9 @@
 <code>calcDerivative2()</code> is removed.</li>
 </ul>
 </div>
-<div id="bug-fixes-1" class="section level2">
+<div id="bug-fixes-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-3" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed a rare bug where <code><a href="../reference/Shadow.html">Shadow()</a></code> was marking eligible items as ineligible when using <code>ELIGIBILITY</code> exposure control.</li>
 <li>Fixed where <code><a href="../reference/loadItemPool.html">loadItemPool()</a></code> was parsing standard errors incorrectly for <code>GR</code> models.</li>
@@ -315,9 +349,9 @@
 <li>Reverted the default solver to <code>lpSolve</code> to address <code>lpsymphony</code> being unavailable on Solaris.</li>
 </ul>
 </div>
-<div id="bug-fixes-2" class="section level2">
+<div id="bug-fixes-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-4" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed where using diagnostic stats was preventing <code><a href="../reference/Shadow.html">Shadow()</a></code> to run.</li>
 <li>Fixed an error affecting <code>BIGM</code> exposure control method on set-based items.</li>
@@ -346,9 +380,9 @@
 <code>showConstraints()</code> returns the constraints table from a <code>constraints</code> object. This is a shortcut to access the <code>@constraints</code> slot.</li>
 </ul>
 </div>
-<div id="bug-fixes-3" class="section level2">
+<div id="bug-fixes-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-3" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-5" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Now recognizes <code>TM_TARGET_GAP_ACHIEVED</code> as a valid status message in <code>lpsymphony</code> and <code>Rsymphony</code> solvers.</li>
 <li>
@@ -420,9 +454,9 @@
 <code><a href="../reference/plotInfo.html">plotInfo()</a></code> now uses a more polished plotting style.</li>
 </ul>
 </div>
-<div id="bug-fixes-4" class="section level2">
+<div id="bug-fixes-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-4" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-6" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed where <code><a href="../reference/plotExposure.html">plotExposure()</a></code> was incorrectly plotting stimulus-level exposure rates along with item-level exposure rates.</li>
 <li>Fixed where using Bayesian methods would trigger an error in <code><a href="../reference/Shadow.html">Shadow()</a></code>.</li>
@@ -433,9 +467,9 @@
 <h1 class="page-header" data-toc-text="0.2.5">
 <a href="#testdesign-025" class="anchor"></a>TestDesign 0.2.5<small> 2019-09-12 </small>
 </h1>
-<div id="bug-fixes-5" class="section level2">
+<div id="bug-fixes-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-5" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-7" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed where <code>gap_limit</code> was being incorrectly passed onto <code>SYMPHONY</code> in <code>ATA()</code> and <code><a href="../reference/Shadow.html">Shadow()</a></code>, instead of <code>gap_limit_abs</code>.</li>
 <li>Fixed where <code>gap_limit</code> was not being passed onto <code>GUROBI</code> in <code>ATA()</code> and <code><a href="../reference/Shadow.html">Shadow()</a></code>.</li>
@@ -458,9 +492,9 @@
 <h1 class="page-header" data-toc-text="0.2.3">
 <a href="#testdesign-023" class="anchor"></a>TestDesign 0.2.3<small> 2019-08-28 </small>
 </h1>
-<div id="bug-fixes-6" class="section level2">
+<div id="bug-fixes-8" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-6" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-8" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed where <code>ATA()</code> and <code><a href="../reference/Shadow.html">Shadow()</a></code> were returning incorrect solutions with set-based item pools in some cases.</li>
 <li>Fixed where <code>ATA()</code> and <code><a href="../reference/Shadow.html">Shadow()</a></code> were returning fewer than the specified number of items, due to solution vectors being not strictly binary in some cases.</li>

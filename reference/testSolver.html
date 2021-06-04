@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate Relative Errors — RE • TestDesign</title>
+<title>Test solver — testSolver • TestDesign</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Calculate Relative Errors — RE" />
-<meta property="og:description" content="Calculate Relative Errors." />
+<meta property="og:title" content="Test solver — testSolver" />
+<meta property="og:description" content="Test solver" />
 
 
 
@@ -128,30 +128,29 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate Relative Errors</h1>
-    <small class="dont-index">Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/R/shadow_functions.R'><code>R/shadow_functions.R</code></a></small>
-    <div class="hidden name"><code>RE.Rd</code></div>
+    <h1>Test solver</h1>
+    <small class="dont-index">Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/R/solver_functions.R'><code>R/solver_functions.R</code></a></small>
+    <div class="hidden name"><code>testSolver.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Calculate Relative Errors.</p>
+    <p>Test solver</p>
     </div>
 
-    <pre class="usage"><span class='fu'>RE</span><span class='op'>(</span><span class='va'>RMSE_foc</span>, <span class='va'>RMSE_ref</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>testSolver</span><span class='op'>(</span><span class='va'>solver</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>RMSE_foc</th>
-      <td><p>A vector of RMSE values for the focal group.</p></td>
-    </tr>
-    <tr>
-      <th>RMSE_ref</th>
-      <td><p>A vector of RMSE values for the reference group.</p></td>
+      <th>solver</th>
+      <td><p>a solver package name. Accepts <code>lpSolve, Rsymphony, lpsymphony, gurobi, Rglpk</code>.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>empty string <code>""</code> if solver works. A string containing error messages otherwise.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
