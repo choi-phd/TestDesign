@@ -561,6 +561,7 @@ setMethod(
 
     if (is.vector(resp)) {
       nj <- 1
+      resp <- matrix(resp, 1)
     } else if (is.matrix(resp)) {
       nj <- nrow(resp)
     } else if (is.data.frame(resp)) {
