@@ -1,3 +1,8 @@
+# TestDesign 1.2.5
+
+## Updates
+* Streamlined `eap()` to handle input formats consistently with `mle()`. This should only affect use cases where `eap()` is called directly.
+
 # TestDesign 1.2.4
 
 ## Updates
