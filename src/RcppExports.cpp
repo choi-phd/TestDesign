@@ -6,6 +6,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // calc_info
 arma::colvec calc_info(const arma::rowvec& x, const arma::mat& item_parm, const arma::icolvec& ncat, const arma::icolvec& model);
 RcppExport SEXP _TestDesign_calc_info(SEXP xSEXP, SEXP item_parmSEXP, SEXP ncatSEXP, SEXP modelSEXP) {
