@@ -81,8 +81,8 @@ setMethod(
 #' @param exclude (optional) a list containing item names in \code{$i} and set names in \code{$s} to exclude from selection for each participant. The length of the list must be equal to the number of participants.
 #' @param include_items_for_estimation (optional) an examinee-wise list containing:
 #' \itemize{
-#'   \item{administered_item_pool} items to include in theta estimation as \code{\linkS4class{item_pool}} object.
-#'   \item{administered_item_resp} item responses to include in theta estimation.
+#'   \item{\code{administered_item_pool}} items to include in theta estimation as \code{\linkS4class{item_pool}} object.
+#'   \item{\code{administered_item_resp}} item responses to include in theta estimation.
 #' }
 #' @template force_solver_param
 #' @param session (optional) used to communicate with Shiny app \code{\link{TestDesign}}.
