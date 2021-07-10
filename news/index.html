@@ -140,6 +140,16 @@
 <a href="#updates" class="anchor"></a>Updates</h2>
 <ul>
 <li>Streamlined <code><a href="../reference/eap.html">eap()</a></code> to handle input formats consistently with <code><a href="../reference/mle.html">mle()</a></code>. This should only affect use cases where <code><a href="../reference/eap.html">eap()</a></code> is called directly.</li>
+<li>
+<code><a href="../reference/Shadow.html">Shadow()</a></code> now utilizes <code>include_items_for_estimation</code> for EAP estimation.</li>
+</ul>
+</div>
+<div id="deprecated-functions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#deprecated-functions" class="anchor"></a>Deprecated functions</h2>
+<ul>
+<li>Deprecated <code>plotInfo()</code> is removed. This is now <code><a href="../reference/plot.html">plot(type = "info")</a></code>.</li>
+<li>Deprecated <code>plotExposure()</code> is removed. This is now <code><a href="../reference/plot.html">plot(type = "exposure")</a></code>.</li>
 </ul>
 </div>
 </div>
@@ -237,9 +247,9 @@
 <li>Fixed the error message associated with validating a <code>config_Shadow</code> object for whether its solver was installed on the system.</li>
 </ul>
 </div>
-<div id="deprecated-functions" class="section level2">
+<div id="deprecated-functions-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#deprecated-functions" class="anchor"></a>Deprecated functions</h2>
+<a href="#deprecated-functions-1" class="anchor"></a>Deprecated functions</h2>
 <ul>
 <li>Deprecated <code>updateConstraints()</code> is removed. This is now <code><a href="../reference/toggleConstraints.html">toggleConstraints()</a></code>.</li>
 <li>Deprecated <code>showConstraints()</code> is removed. This is now <code><a href="../reference/print.html">print()</a></code>.</li>
@@ -317,20 +327,20 @@
 <code><a href="../reference/Shadow.html">Shadow()</a></code> now has a new <code>excluded_items</code> argument.</li>
 </ul>
 </div>
-<div id="deprecated-functions-1" class="section level2">
+<div id="deprecated-functions-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#deprecated-functions-1" class="anchor"></a>Deprecated functions</h2>
+<a href="#deprecated-functions-2" class="anchor"></a>Deprecated functions</h2>
 <ul>
 <li>
 <code>updateConstraints()</code> is now <code><a href="../reference/toggleConstraints.html">toggleConstraints()</a></code>.</li>
 <li>
-<code><a href="../reference/plotInfo.html">plotInfo()</a></code> is now <code><a href="../reference/plot.html">plot(type = 'info')</a></code>.</li>
+<code>plotInfo()</code> is now <code><a href="../reference/plot.html">plot(type = 'info')</a></code>.</li>
 <li>
 <code>plotCAT()</code> is now <code><a href="../reference/plot.html">plot(type = 'audit')</a></code>.</li>
 <li>
 <code>plotShadow()</code> is now <code><a href="../reference/plot.html">plot(type = 'shadow')</a></code>.</li>
 <li>
-<code><a href="../reference/plotExposure.html">plotExposure()</a></code> is now <code><a href="../reference/plot.html">plot(type = 'exposure')</a></code>.</li>
+<code>plotExposure()</code> is now <code><a href="../reference/plot.html">plot(type = 'exposure')</a></code>.</li>
 <li>
 <code>calcDerivative()</code> is removed.</li>
 <li>
@@ -419,11 +429,11 @@
 <li>
 <code><a href="../reference/Shadow.html">Shadow()</a></code> now uses fewer arguments to match with <code><a href="../reference/Static.html">Static()</a></code> and to reduce redundant information in the arguments.</li>
 <li>
-<code>plotMaxInfo()</code> is removed. The functionality is subsumed under <code><a href="../reference/plotInfo.html">plotInfo()</a></code>, which can be used by supplying a <code>constriants</code> object to the function.</li>
+<code>plotMaxInfo()</code> is removed. The functionality is subsumed under <code>plotInfo()</code>, which can be used by supplying a <code>constriants</code> object to the function.</li>
 <li>
-<code><a href="../reference/Static.html">Static()</a></code> now does not return the information plot by itself. The plotting should be done with <code><a href="../reference/plotInfo.html">plotInfo()</a></code>.</li>
+<code><a href="../reference/Static.html">Static()</a></code> now does not return the information plot by itself. The plotting should be done with <code>plotInfo()</code>.</li>
 <li>
-<code><a href="../reference/plotInfo.html">plotInfo()</a></code> is now an S4 method.</li>
+<code>plotInfo()</code> is now an S4 method.</li>
 <li><ul>
 <li>Supplying an <code>item_pool</code> object gives a pool-level information plot.</li>
 </ul></li>
@@ -463,14 +473,14 @@
 <li>
 <code>plotCAT()</code> and <code>plotShadow()</code> now uses a separate color for polytomous item responses.</li>
 <li>
-<code><a href="../reference/plotInfo.html">plotInfo()</a></code> now uses a more polished plotting style.</li>
+<code>plotInfo()</code> now uses a more polished plotting style.</li>
 </ul>
 </div>
 <div id="bug-fixes-6" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bug-fixes-6" class="anchor"></a>Bug fixes</h2>
 <ul>
-<li>Fixed where <code><a href="../reference/plotExposure.html">plotExposure()</a></code> was incorrectly plotting stimulus-level exposure rates along with item-level exposure rates.</li>
+<li>Fixed where <code>plotExposure()</code> was incorrectly plotting stimulus-level exposure rates along with item-level exposure rates.</li>
 <li>Fixed where using Bayesian methods would trigger an error in <code><a href="../reference/Shadow.html">Shadow()</a></code>.</li>
 </ul>
 </div>
