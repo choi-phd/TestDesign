@@ -403,14 +403,49 @@ setMethod(
 
         # Item position / simulee: update posterior
 
-        prob_resp <- all_data$test@prob[[o@administered_item_index[position]]][, o@administered_item_resp[position] + 1]
-        posterior_record <- updatePosterior(posterior_record, j, prob_resp)
+        prob_matrix_current_item <- all_data$test@prob[[o@administered_item_index[position]]]
+        prob_resp_current_item   <- prob_matrix_current_item[, o@administered_item_resp[position] + 1]
+        posterior_record <- updatePosterior(posterior_record, j, prob_resp_current_item)
+
+        # Item position / simulee: utilize supplied items if necessary
+
+        if (!is.null(include_items_for_estimation)) {
+
+          prob_matrix_supplied_items <- calcProb(
+            include_items_for_estimation[[j]]$administered_item_pool,
+            constants$theta_q
+          )
+
+          n_supplied_items <- include_items_for_estimation[[j]]$administered_item_pool@ni
+
+          prob_resp_supplied_items <- sapply(
+            1:n_supplied_items,
+            function(i) {
+              resp <- include_items_for_estimation[[j]]$administered_item_resp[i] + 1
+              prob_matrix_supplied_items[[i]][, resp]
+            }
+          )
+          prob_resp_supplied_items <- apply(prob_resp_supplied_items, 1, prod)
+
+          augmented_posterior_record <- updatePosterior(posterior_record, j, prob_resp_supplied_items)
+          augmented_pool             <- augmented_pool
+          augmented_item_index       <- c(augment_item_index, o@administered_item_index[1:position])
+          augmented_item_resp        <- c(augment_item_resp,  o@administered_item_resp[1:position])
+
+        } else {
+
+          augmented_posterior_record <- posterior_record
+          augmented_pool             <- pool
+          augmented_item_index       <- o@administered_item_index[1:position]
+          augmented_item_resp        <- o@administered_item_resp[1:position]
+
+        }
 
         # Item position / simulee: estimate theta
 
         if (toupper(config@interim_theta$method) == "EAP") {
 
-          interim_EAP <- estimateThetaEAP(posterior_record$posterior[j, ], constants$theta_q)
+          interim_EAP <- estimateThetaEAP(augmented_posterior_record$posterior[j, ], constants$theta_q)
           interim_EAP <- applyShrinkageCorrection(interim_EAP, config@interim_theta)
 
           o@interim_theta_est[position] <- interim_EAP$theta
@@ -418,89 +453,44 @@ setMethod(
 
         } else if (toupper(config@interim_theta$method) == "MLE") {
 
-          if (!is.null(include_items_for_estimation)) {
+          interim_EAP <- estimateThetaEAP(augmented_posterior_record$posterior[j, ], constants$theta_q)
 
-            interim_EAP <- estimateThetaEAP(posterior_record$posterior[j, ], constants$theta_q)
-
-            interim_MLE <- mle(augmented_pool,
-              select        = c(augment_item_index, o@administered_item_index[1:position]),
-              resp          = c(augment_item_resp,  o@administered_item_resp[1:position]),
-              start_theta   = interim_EAP$theta,
-              max_iter      = config@interim_theta$max_iter,
-              crit          = config@interim_theta$crit,
-              theta_range   = config@interim_theta$bound_ML,
-              truncate      = config@interim_theta$truncate_ML,
-              max_change    = config@interim_theta$max_change,
-              use_step_size = config@interim_theta$use_step_size,
-              step_size     = config@interim_theta$step_size,
-              do_Fisher     = config@interim_theta$do_Fisher
-            )
-
-          } else {
-
-            interim_EAP <- estimateThetaEAP(posterior_record$posterior[j, ], constants$theta_q)
-
-            interim_MLE <- mle(pool,
-              select        = o@administered_item_index[1:position],
-              resp          = o@administered_item_resp[1:position],
-              start_theta   = interim_EAP$theta,
-              max_iter      = config@interim_theta$max_iter,
-              crit          = config@interim_theta$crit,
-              theta_range   = config@interim_theta$bound_ML,
-              truncate      = config@interim_theta$truncate_ML,
-              max_change    = config@interim_theta$max_change,
-              use_step_size = config@interim_theta$use_step_size,
-              step_size     = config@interim_theta$step_size,
-              do_Fisher     = config@interim_theta$do_Fisher
-            )
-
-          }
+          interim_MLE <- mle(augmented_pool,
+            select        = augmented_item_index,
+            resp          = augmented_item_resp,
+            start_theta   = interim_EAP$theta,
+            max_iter      = config@interim_theta$max_iter,
+            crit          = config@interim_theta$crit,
+            theta_range   = config@interim_theta$bound_ML,
+            truncate      = config@interim_theta$truncate_ML,
+            max_change    = config@interim_theta$max_change,
+            use_step_size = config@interim_theta$use_step_size,
+            step_size     = config@interim_theta$step_size,
+            do_Fisher     = config@interim_theta$do_Fisher
+          )
 
           o@interim_theta_est[position] <- interim_MLE$th
           o@interim_se_est[position]    <- interim_MLE$se
 
         } else if (toupper(config@interim_theta$method) == "MLEF") {
 
-          if (!is.null(include_items_for_estimation)) {
+          interim_EAP <- estimateThetaEAP(augmented_posterior_record$posterior[j, ], constants$theta_q)
 
-            interim_EAP <- estimateThetaEAP(posterior_record$posterior[j, ], constants$theta_q)
-
-            interim_MLEF <- mlef(augmented_pool,
-              select           = c(augment_item_index, o@administered_item_index[1:position]),
-              resp             = c(augment_item_resp,  o@administered_item_resp[1:position]),
-              fence_slope      = config@interim_theta$fence_slope,
-              fence_difficulty = config@interim_theta$fence_difficulty,
-              start_theta      = interim_EAP$theta,
-              max_iter         = config@interim_theta$max_iter,
-              crit             = config@interim_theta$crit,
-              theta_range      = config@interim_theta$bound_ML,
-              truncate         = config@interim_theta$truncate_ML,
-              max_change       = config@interim_theta$max_change,
-              use_step_size    = config@interim_theta$use_step_size,
-              step_size        = config@interim_theta$step_size,
-              do_Fisher        = config@interim_theta$do_Fisher
-            )
-
-          } else {
-
-            interim_EAP <- estimateThetaEAP(posterior_record$posterior[j, ], constants$theta_q)
-            interim_MLEF <- mlef(pool,
-              select           = o@administered_item_index[1:position],
-              resp             = o@administered_item_resp[1:position],
-              fence_slope      = config@interim_theta$fence_slope,
-              fence_difficulty = config@interim_theta$fence_difficulty,
-              start_theta      = interim_EAP$theta,
-              max_iter         = config@interim_theta$max_iter,
-              crit             = config@interim_theta$crit,
-              theta_range      = config@interim_theta$bound_ML,
-              truncate         = config@interim_theta$truncate_ML,
-              max_change       = config@interim_theta$max_change,
-              use_step_size    = config@interim_theta$use_step_size,
-              step_size        = config@interim_theta$step_size,
-              do_Fisher        = config@interim_theta$do_Fisher
-            )
-
-          }
+          interim_MLEF <- mlef(augmented_pool,
+            select           = augmented_item_index,
+            resp             = augmented_item_resp,
+            fence_slope      = config@interim_theta$fence_slope,
+            fence_difficulty = config@interim_theta$fence_difficulty,
+            start_theta      = interim_EAP$theta,
+            max_iter         = config@interim_theta$max_iter,
+            crit             = config@interim_theta$crit,
+            theta_range      = config@interim_theta$bound_ML,
+            truncate         = config@interim_theta$truncate_ML,
+            max_change       = config@interim_theta$max_change,
+            use_step_size    = config@interim_theta$use_step_size,
+            step_size        = config@interim_theta$step_size,
+            do_Fisher        = config@interim_theta$do_Fisher
+          )
 
           o@interim_theta_est[position] <- interim_MLEF$th
           o@interim_se_est[position]    <- interim_MLEF$se
