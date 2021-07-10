@@ -73,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TestDesign</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.5</span>
       </span>
     </div>
 
@@ -131,13 +131,25 @@
       <small>Source: <a href='https://github.com/choi-phd/TestDesign/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="testdesign-124" class="section level1">
-<h1 class="page-header" data-toc-text="1.2.4">
-<a href="#testdesign-124" class="anchor"></a>TestDesign 1.2.4<small> Unreleased </small>
+    <div id="testdesign-125" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.5">
+<a href="#testdesign-125" class="anchor"></a>TestDesign 1.2.5<small> Unreleased </small>
 </h1>
 <div id="updates" class="section level2">
 <h2 class="hasAnchor">
 <a href="#updates" class="anchor"></a>Updates</h2>
+<ul>
+<li>Streamlined <code><a href="../reference/eap.html">eap()</a></code> to handle input formats consistently with <code><a href="../reference/mle.html">mle()</a></code>. This should only affect use cases where <code><a href="../reference/eap.html">eap()</a></code> is called directly.</li>
+</ul>
+</div>
+</div>
+    <div id="testdesign-124" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.4">
+<a href="#testdesign-124" class="anchor"></a>TestDesign 1.2.4<small> 2021-06-05 </small>
+</h1>
+<div id="updates-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#updates-1" class="anchor"></a>Updates</h2>
 <ul>
 <li>
 <code>output_Shadow</code> gains a new slot for initial theta estimates. <code><a href="../reference/plot.html">plot()</a></code> utilizes the new slot.</li>
@@ -159,9 +171,9 @@
 <h1 class="page-header" data-toc-text="1.2.3">
 <a href="#testdesign-123" class="anchor"></a>TestDesign 1.2.3<small> 2021-05-24 </small>
 </h1>
-<div id="updates-1" class="section level2">
+<div id="updates-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#updates-1" class="anchor"></a>Updates</h2>
+<a href="#updates-2" class="anchor"></a>Updates</h2>
 <ul>
 <li>Internal constraint indices are now suppressed in printing. This affects <code><a href="../reference/summary.html">summary()</a></code> for <code>output_Shadow_all</code> and <code>output_Static</code> objects, and <code><a href="../reference/print.html">print()</a></code> for <code>constraints</code> objects. User-supplied constraint indices are still printed as before.</li>
 <li>
@@ -247,9 +259,9 @@
 <li>Now supports MLE with Fences (<a href="https://doi.org/10.1177/0146621616631317">Han, 2016</a>) for interim and final theta estimates in <code><a href="../reference/Shadow.html">Shadow()</a></code>. This can be configured using <code>config_Shadow@interim_theta</code> and <code>config_Shadow@final_theta</code>.</li>
 </ul>
 </div>
-<div id="updates-2" class="section level2">
+<div id="updates-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#updates-2" class="anchor"></a>Updates</h2>
+<a href="#updates-3" class="anchor"></a>Updates</h2>
 <ul>
 <li>Added missing documentation entries for the <code>output_Shadow_all</code> class.</li>
 <li>
