@@ -445,7 +445,7 @@ setMethod(
 
         if (toupper(config@interim_theta$method) == "EAP") {
 
-          interim_EAP <- estimateThetaEAP(augmented_posterior_record$posterior[j, ], constants$theta_q)
+          interim_EAP <- computeEAPFromPosterior(augmented_posterior_record$posterior[j, ], constants$theta_q)
           interim_EAP <- applyShrinkageCorrection(interim_EAP, config@interim_theta)
 
           o@interim_theta_est[position] <- interim_EAP$theta
@@ -453,8 +453,7 @@ setMethod(
 
         } else if (toupper(config@interim_theta$method) == "MLE") {
 
-          interim_EAP <- estimateThetaEAP(augmented_posterior_record$posterior[j, ], constants$theta_q)
-
+          interim_EAP <- computeEAPFromPosterior(augmented_posterior_record$posterior[j, ], constants$theta_q)
           interim_MLE <- mle(augmented_pool,
             select        = augmented_item_index,
             resp          = augmented_item_resp,
@@ -474,8 +473,7 @@ setMethod(
 
         } else if (toupper(config@interim_theta$method) == "MLEF") {
 
-          interim_EAP <- estimateThetaEAP(augmented_posterior_record$posterior[j, ], constants$theta_q)
-
+          interim_EAP <- computeEAPFromPosterior(augmented_posterior_record$posterior[j, ], constants$theta_q)
           interim_MLEF <- mlef(augmented_pool,
             select           = augmented_item_index,
             resp             = augmented_item_resp,
@@ -587,7 +585,7 @@ setMethod(
         )[1, ]
 
         o@posterior       <- o@likelihood * final_prior
-        final_EAP <- estimateThetaEAP(o@posterior, constants$theta_q)
+        final_EAP <- computeEAPFromPosterior(o@posterior, constants$theta_q)
         final_EAP <- applyShrinkageCorrection(final_EAP, config@final_theta)
         o@final_theta_est <- final_EAP$theta
         o@final_se_est    <- final_EAP$se
