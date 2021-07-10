@@ -497,6 +497,11 @@ setMethod(
 
         } else if (toupper(config@interim_theta$method) == "EB") {
 
+          # TODO: needs to work with include_items_for_estimation
+          if (!is.null(include_items_for_estimation)) {
+            stop("EB with include_items_for_estimation is not available")
+          }
+
           current_item <- o@administered_item_index[position]
 
           interim_EB <- theta_EB_single(
@@ -513,6 +518,11 @@ setMethod(
           o@interim_se_est[position]    <- sd(interim_EB)
 
         } else if (toupper(config@interim_theta$method) == "FB") {
+
+          # TODO: needs to work with include_items_for_estimation
+          if (!is.null(include_items_for_estimation)) {
+            stop("FB with include_items_for_estimation is not available")
+          }
 
           current_item <- o@administered_item_index[position]
 
