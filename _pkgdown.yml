@@ -31,8 +31,6 @@ reference:
     contents:
       - summary
       - plot
-      - plotInfo
-      - plotExposure
       - getSolution
   - title: "Web GUI"
     contents:
