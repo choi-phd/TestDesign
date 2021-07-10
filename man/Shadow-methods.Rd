@@ -48,8 +48,8 @@ Shadow(
 
 \item{include_items_for_estimation}{(optional) an examinee-wise list containing:
 \itemize{
-  \item{administered_item_pool} items to include in theta estimation as \code{\linkS4class{item_pool}} object.
-  \item{administered_item_resp} item responses to include in theta estimation.
+  \item{\code{administered_item_pool}} items to include in theta estimation as \code{\linkS4class{item_pool}} object.
+  \item{\code{administered_item_resp}} item responses to include in theta estimation.
 }}
 
 \item{force_solver}{if \code{TRUE}, do not check whether the solver is one of recommended solvers for doing set-based assembly. Has no effect on discrete assembly. (default = \code{FALSE})}
