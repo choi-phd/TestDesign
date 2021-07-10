@@ -211,7 +211,7 @@ setMethod(
       o@set_based                   <- constants$set_based
       o@item_index_by_stimulus      <- constraints@item_index_by_stimulus
 
-      current_theta <- estimateInitialTheta(
+      current_theta <- parseInitialTheta(
         config@interim_theta, initial_theta, prior_par,
         constants$nj, j,
         posterior_constants)
