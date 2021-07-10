@@ -544,14 +544,6 @@ setMethod(
         current_theta$theta            <- o@interim_theta_est[position]
         current_theta$se               <- o@interim_se_est[position]
 
-        # Item position / simulee: trigger shadow test refresh if theta change is sufficient
-
-        if (toupper(config@refresh_policy$method) == "THRESHOLD") {
-          if ((abs(theta_change) > config@refresh_policy$threshold) && (position < constants$test_length)) {
-            refresh_shadow[position + 1] <- TRUE
-          }
-        }
-
         # Item position / simulee: prepare for the next item position
 
         if (position == constants$max_ni) {
