@@ -730,7 +730,7 @@ getInitialThetaPrior <- function(config_theta, prior_par, nj, j, posterior_const
 }
 
 #' @noRd
-estimateInitialTheta <- function(config_theta, initial_theta, prior_par, nj, j, posterior_constants) {
+parseInitialTheta <- function(config_theta, initial_theta, prior_par, nj, j, posterior_constants) {
 
   o <- list()
   theta_method <- toupper(config_theta$method)
