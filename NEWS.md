@@ -1,3 +1,13 @@
+# TestDesign 1.2.5
+
+## Updates
+* Streamlined `eap()` to handle input formats consistently with `mle()`. This should only affect use cases where `eap()` is called directly.
+* `Shadow()` now utilizes `include_items_for_estimation` for EAP estimation.
+
+## Deprecated functions
+* Deprecated `plotInfo()` is removed. This is now `plot(type = "info")`.
+* Deprecated `plotExposure()` is removed. This is now `plot(type = "exposure")`.
+
 # TestDesign 1.2.4
 
 ## Updates
