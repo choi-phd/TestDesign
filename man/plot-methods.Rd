@@ -27,6 +27,7 @@
   simple = TRUE,
   theta_segment = "Estimated",
   color_final = "blue",
+  segment = NULL,
   ...
 )
 
@@ -47,6 +48,7 @@
   simple = TRUE,
   theta_segment = "Estimated",
   color_final = "blue",
+  segment = NULL,
   ...
 )
 
@@ -67,6 +69,7 @@
   simple = TRUE,
   theta_segment = "Estimated",
   color_final = "blue",
+  segment = NULL,
   ...
 )
 
@@ -86,6 +89,7 @@
   simple = FALSE,
   theta_segment = "Estimated",
   color_final = "blue",
+  segment = NULL,
   ...
 )
 
@@ -106,6 +110,7 @@
   simple = FALSE,
   theta_segment = "Estimated",
   color_final = "blue",
+  segment = NULL,
   ...
 )
 }
@@ -160,6 +165,8 @@
 \item{theta_segment}{used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. The type of theta to determine exposure segments. Accepts \code{Estimated} or \code{True}. (default = \code{Estimated})}
 
 \item{color_final}{used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. The color of item-wise exposure rates, only counting the items administered in the final theta segment as exposed.}
+
+\item{segment}{used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. (optional) The segment index to draw the plot. Leave empty to use all segments.}
 
 \item{...}{arguments to pass onto \code{\link[graphics]{plot}}.}
 }

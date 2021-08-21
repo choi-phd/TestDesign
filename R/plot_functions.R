@@ -36,6 +36,7 @@ NULL
 #' @param simple used in \code{\linkS4class{output_Shadow}} and \code{\linkS4class{output_Shadow_all}} with \code{type = 'shadow'}. If \code{TRUE}, simplify the chart by hiding unused items.
 #' @param theta_segment used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. The type of theta to determine exposure segments. Accepts \code{Estimated} or \code{True}. (default = \code{Estimated})
 #' @param color_final used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. The color of item-wise exposure rates, only counting the items administered in the final theta segment as exposed.
+#' @param segment used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. (optional) The segment index to draw the plot. Leave empty to use all segments.
 #' @param ... arguments to pass onto \code{\link[graphics]{plot}}.
 #'
 #' @examples
@@ -89,6 +90,7 @@ setMethod(
     simple = TRUE,
     theta_segment = "Estimated",
     color_final = "blue",
+    segment = NULL,
     ...) {
 
     if (!is.null(select)) {
@@ -166,6 +168,7 @@ setMethod(
     simple = TRUE,
     theta_segment = "Estimated",
     color_final = "blue",
+    segment = NULL,
     ...) {
 
     config      <- x@config
@@ -272,6 +275,7 @@ setMethod(
     simple = TRUE,
     theta_segment = "Estimated",
     color_final = "blue",
+    segment = NULL,
     ...) {
 
     if (!type == "info") {
@@ -334,6 +338,7 @@ setMethod(
     simple = FALSE,
     theta_segment = "Estimated",
     color_final = "blue",
+    segment = NULL,
     ...) {
 
     if (type == "audit") {
@@ -676,6 +681,7 @@ setMethod(
     simple = FALSE,
     theta_segment = "Estimated",
     color_final = "blue",
+    segment = NULL,
     ...) {
 
     if (!type %in% c("audit", "shadow", "info", "score", "exposure")) {
@@ -915,13 +921,20 @@ setMethod(
       })
       par(oma = c(3, 3, 0, 0), mar = c(3, 3, 2, 2))
 
-      plotER(
-        item_exposure_rate, item_exposure_rate_final, stim_exposure_rate, x@constraints@stimulus_index_by_item,
-        max_rate = max_rate, title = "Overall", color = color, color_final = color_final, simple = TRUE)
-      for (k in 1:n_segment) {
-        plotER(
-          item_exposure_rate_segment[[k]], item_exposure_rate_segment_final[[k]], stim_exposure_rate_segment[[k]], x@constraints@stimulus_index_by_item,
-          max_rate = max_rate, title = segment_label[k], color = color, color_final = color_final, simple = TRUE)
+      if (is.null(segment)) {
+        segment <- c(0, 1:n_segment)
+      }
+      for (k in segment) {
+        if (k == 0) {
+          plotER(
+            item_exposure_rate, item_exposure_rate_final, stim_exposure_rate, x@constraints@stimulus_index_by_item,
+            max_rate = max_rate, title = "Overall", color = color, color_final = color_final, simple = TRUE
+          )
+        } else {
+          plotER(
+            item_exposure_rate_segment[[k]], item_exposure_rate_segment_final[[k]], stim_exposure_rate_segment[[k]], x@constraints@stimulus_index_by_item,
+            max_rate = max_rate, title = segment_label[k], color = color, color_final = color_final, simple = TRUE)
+        }
       }
 
       mtext(text = "Item", side = 1, line = 0, outer = T)
