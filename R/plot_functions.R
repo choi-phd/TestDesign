@@ -37,6 +37,7 @@ NULL
 #' @param theta_segment used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. The type of theta to determine exposure segments. Accepts \code{Estimated} or \code{True}. (default = \code{Estimated})
 #' @param color_final used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. The color of item-wise exposure rates, only counting the items administered in the final theta segment as exposed.
 #' @param segment used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. (optional) The segment index to draw the plot. Leave empty to use all segments.
+#' @param rmse used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. If \code{TRUE}, display the RMSE value for each segment. (default = \code{FALSE})
 #' @param ... arguments to pass onto \code{\link[graphics]{plot}}.
 #'
 #' @examples
@@ -91,6 +92,7 @@ setMethod(
     theta_segment = "Estimated",
     color_final = "blue",
     segment = NULL,
+    rmse = FALSE,
     ...) {
 
     if (!is.null(select)) {
@@ -169,6 +171,7 @@ setMethod(
     theta_segment = "Estimated",
     color_final = "blue",
     segment = NULL,
+    rmse = FALSE,
     ...) {
 
     config      <- x@config
@@ -339,6 +342,7 @@ setMethod(
     theta_segment = "Estimated",
     color_final = "blue",
     segment = NULL,
+    rmse = FALSE,
     ...) {
 
     if (type == "audit") {
@@ -682,6 +686,7 @@ setMethod(
     theta_segment = "Estimated",
     color_final = "blue",
     segment = NULL,
+    rmse = FALSE,
     ...) {
 
     if (!type %in% c("audit", "shadow", "info", "score", "exposure")) {
@@ -937,10 +942,18 @@ setMethod(
             item_exposure_rate, item_exposure_rate_final, stim_exposure_rate, x@constraints@stimulus_index_by_item,
             max_rate = max_rate, title = "Overall", color = color, color_final = color_final, simple = TRUE
           )
+          if (rmse) {
+            rmse_value <- sqrt(mean((x@final_theta_est - x@true_theta) ** 2))
+            text(0, 1, sprintf("RMSE = %1.3f", rmse_value), adj = c(0, 1))
+          }
         } else {
           plotER(
             item_exposure_rate_segment[[k]], item_exposure_rate_segment_final[[k]], stim_exposure_rate_segment[[k]], x@constraints@stimulus_index_by_item,
             max_rate = max_rate, title = segment_label[k], color = color, color_final = color_final, simple = TRUE)
+          if (rmse) {
+            rmse_value <- sqrt(mean((x@final_theta_est[theta_segment_index == k] - x@true_theta[theta_segment_index == k]) ** 2))
+            text(0, 1, sprintf("RMSE = %1.3f", rmse_value), adj = c(0, 1))
+          }
         }
       }
 

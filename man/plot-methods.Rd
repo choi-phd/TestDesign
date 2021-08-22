@@ -28,6 +28,7 @@
   theta_segment = "Estimated",
   color_final = "blue",
   segment = NULL,
+  rmse = FALSE,
   ...
 )
 
@@ -49,6 +50,7 @@
   theta_segment = "Estimated",
   color_final = "blue",
   segment = NULL,
+  rmse = FALSE,
   ...
 )
 
@@ -90,6 +92,7 @@
   theta_segment = "Estimated",
   color_final = "blue",
   segment = NULL,
+  rmse = FALSE,
   ...
 )
 
@@ -111,6 +114,7 @@
   theta_segment = "Estimated",
   color_final = "blue",
   segment = NULL,
+  rmse = FALSE,
   ...
 )
 }
@@ -167,6 +171,8 @@
 \item{color_final}{used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. The color of item-wise exposure rates, only counting the items administered in the final theta segment as exposed.}
 
 \item{segment}{used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. (optional) The segment index to draw the plot. Leave empty to use all segments.}
+
+\item{rmse}{used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. If \code{TRUE}, display the RMSE value for each segment. (default = \code{FALSE})}
 
 \item{...}{arguments to pass onto \code{\link[graphics]{plot}}.}
 }
