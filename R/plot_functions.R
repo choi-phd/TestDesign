@@ -922,20 +922,28 @@ setMethod(
         stim_exposure_rate_segment_final <- NULL
       }
 
-      old_oma <- par()$oma
-      old_mar <- par()$mar
-      on.exit({
-        close_dev <- ifelse(dev.cur() == 1, TRUE, FALSE)
-        par(oma = old_oma, mar = old_mar)
-        if (close_dev) {
-          dev.off()
-        }
-      })
-      par(oma = c(3, 3, 0, 0), mar = c(3, 3, 2, 2))
-
       if (is.null(segment)) {
+
         segment <- c(0, 1:n_segment)
+        use_axis_labels <- TRUE
+
+        old_oma <- par()$oma
+        old_mar <- par()$mar
+        on.exit({
+          close_dev <- ifelse(dev.cur() == 1, TRUE, FALSE)
+          par(oma = old_oma, mar = old_mar)
+          if (close_dev) {
+            dev.off()
+          }
+        })
+        par(oma = c(3, 3, 0, 0), mar = c(3, 3, 2, 2))
+
+      } else {
+
+        use_axis_labels <- FALSE
+
       }
+
       for (k in segment) {
         if (k == 0) {
           plotER(
@@ -957,10 +965,12 @@ setMethod(
         }
       }
 
-      mtext(text = "Item", side = 1, line = 0, outer = T)
-      mtext(text = "Exposure Rate", side = 2, line = 0, outer = T)
+      if (use_axis_labels) {
+        mtext(text = "Item"         , side = 1, line = 0, outer = TRUE)
+        mtext(text = "Exposure Rate", side = 2, line = 0, outer = TRUE)
+        par(oma = old_oma, mar = old_mar)
+      }
 
-      par(oma = old_oma, mar = old_mar)
       p <- recordPlot()
       dev.off()
 
