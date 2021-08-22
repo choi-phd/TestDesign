@@ -29,6 +29,7 @@
   color_final = "blue",
   segment = NULL,
   rmse = FALSE,
+  use_segment_label = TRUE,
   ...
 )
 
@@ -51,6 +52,7 @@
   color_final = "blue",
   segment = NULL,
   rmse = FALSE,
+  use_segment_label = TRUE,
   ...
 )
 
@@ -93,6 +95,7 @@
   color_final = "blue",
   segment = NULL,
   rmse = FALSE,
+  use_segment_label = TRUE,
   ...
 )
 
@@ -115,6 +118,7 @@
   color_final = "blue",
   segment = NULL,
   rmse = FALSE,
+  use_segment_label = TRUE,
   ...
 )
 }
@@ -173,6 +177,8 @@
 \item{segment}{used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. (optional) The segment index to draw the plot. Leave empty to use all segments.}
 
 \item{rmse}{used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. If \code{TRUE}, display the RMSE value for each segment. (default = \code{FALSE})}
+
+\item{use_segment_label}{used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. If \code{TRUE}, display the segment label for each segment. (default = \code{TRUE})}
 
 \item{...}{arguments to pass onto \code{\link[graphics]{plot}}.}
 }
