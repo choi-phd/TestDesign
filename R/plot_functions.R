@@ -820,6 +820,7 @@ setMethod(
       cut_lower     <- segment_cut[1:n_segment]
       cut_upper     <- segment_cut[2:(n_segment + 1)]
       segment_label <- character(n_segment)
+
       for (k in 1:n_segment) {
         if (k < n_segment) {
           segment_label[k] <- sprintf("(%s,%s]", cut_lower[k], cut_upper[k])
@@ -827,14 +828,18 @@ setMethod(
           segment_label[k] <- sprintf("(%s,%s)", cut_lower[k], cut_upper[k])
         }
       }
+
       theta_segment_index <- numeric(nj)
       theta_segment_index <- find_segment(theta_value, segment_cut)
+
       segment_n    <- numeric(n_segment)
       segment_dist <- table(theta_segment_index)
       segment_n[as.numeric(names(segment_dist))] <- segment_dist
       segment_index_table <- matrix(NA, nj, x@constraints@test_length)
+
       usage_matrix       <- x@usage_matrix
       usage_matrix_final <- x@usage_matrix
+
       for (j in 1:nj) {
         administered_items <- x@output[[j]]@administered_item_index
         pos_item_outside_of_segment <- x@output[[j]]@theta_segment_index != theta_segment_index[j]
@@ -842,6 +847,7 @@ setMethod(
         usage_matrix_final[j, idx_item_outside_of_segment] <- FALSE
         segment_index_table[j, ] <- x@output[[j]]@theta_segment_index
       }
+
       ## visited segments across item positions and each examinee
       segment_freq <- matrix(0, n_segment, n_segment)
       for (i in 1:x@constraints@test_length) {
@@ -865,6 +871,7 @@ setMethod(
       exposure_rate_final         <- colSums(usage_matrix_final) / nj
       item_exposure_rate          <- exposure_rate[1:ni]
       item_exposure_rate_final    <- exposure_rate_final[1:ni]
+
       if (x@constraints@set_based) {
         stim_exposure_rate        <- exposure_rate[(ni + 1):nv][x@constraints@stimulus_index_by_item]
         stim_exposure_rate_final  <- exposure_rate_final[(ni + 1):nv][x@constraints@stimulus_index_by_item]
