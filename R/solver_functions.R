@@ -96,9 +96,9 @@ runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
 
     # add x for previous items
 
-    xmat          <- xdata[['xmat']]
-    xdir          <- xdata[['xdir']]
-    xrhs          <- xdata[['xrhs']]
+    xmat          <- xdata[["xmat"]]
+    xdir          <- xdata[["xdir"]]
+    xrhs          <- xdata[["xrhs"]]
 
     if (!is.null(xmat) && !is.null(xdir) && !is.null(xrhs)) {
       mat <- rbind(mat, xmat)
@@ -125,7 +125,7 @@ runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
 
   MIP$solution[types == "B"] <- round(MIP$solution[types == "B"], 0)
 
-  solve_time <- (proc.time() - solve_time)[['elapsed']]
+  solve_time <- (proc.time() - solve_time)[["elapsed"]]
 
 
   # STIMULUS-LEVEL SORT IF NEEDED --------------------------------------------------------------
