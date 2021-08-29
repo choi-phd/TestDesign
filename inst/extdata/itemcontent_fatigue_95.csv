@@ -12,7 +12,7 @@ FATIMP11,How often did your fatigue make you more forgetful?
 FATIMP13,How often were you too tired to do errands?
 FATIMP14,How often did your fatigue make it difficult to organize your thoughts when doing things at work (include work at home)?
 FATIMP15,How often did your fatigue interfere with your ability to engage in recreational activities?
-FATIMP16,How often did you have trouble finishing things because of your fatigue? 
+FATIMP16,How often did you have trouble finishing things because of your fatigue?
 FATIMP17,How often did your fatigue make it difficult to make decisions?
 FATIMP18,How often did you have to limit your social activities because of your fatigue?
 FATIMP19,How often were you too tired to do your household chores?
@@ -32,7 +32,7 @@ FATIMP35,To what degree did your fatigue make it difficult to organize your thou
 FATIMP36,To what degree did your fatigue make it difficult to start anything new?
 FATIMP37,Due to your fatigue were you less effective at work (include work at home)?
 FATIMP38,To what degree did your fatigue make it difficult to make decisions?
-FATIMP40,How often did you have enough energy to exercise strenuously? 
+FATIMP40,How often did you have enough energy to exercise strenuously?
 FATIMP42,How often were you less effective at home due to your fatigue?
 FATIMP43,To what degree did your fatigue make it difficult to organize your thoughts when doing things at work (include work at home)?
 FATIMP44,To what degree did your fatigue make you more forgetful?
@@ -82,7 +82,7 @@ FATEXP52,How wiped out were you on average?
 FATEXP54,How often did you have physical energy?
 FATEXP56,What was the level of your fatigue on most days?
 HI7,I feel fatigued
-HI12,I feel weak all over 
+HI12,I feel weak all over
 AN1,"I feel listless (""washed out"")"
 AN2,I feel tired
 AN3,I have trouble <U>starting</U> things because I am tired

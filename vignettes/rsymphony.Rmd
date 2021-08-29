@@ -77,7 +77,7 @@ brew install wget
 **Step 2.** Run the following line in terminal to download the Rsymphony solver package.
 
 ```
-sudo wget https://cran.revolutionanalytics.com/src/contrib/Rsymphony_0.1-28.tar.gz 
+sudo wget https://cran.revolutionanalytics.com/src/contrib/Rsymphony_0.1-28.tar.gz
 ```
 
 **Step 3.** Unpack the downloaded file with running the following line.
@@ -114,7 +114,7 @@ Change line 12 `#include <coin/symphony.h>` as below. Save it as the same file w
 #include <symphony.h>
 ```
 
-**Step 6.** Run the following line in terminal to install the modified Rsymphony package. 
+**Step 6.** Run the following line in terminal to install the modified Rsymphony package.
 
 ```
 sudo R CMD install Rsymphony
@@ -164,4 +164,3 @@ For further reference, please refer to these following external links.
 
 * https://stackoverflow.com/questions/32129191/osx-installing-rsymphony-linking-headers-and-libs/37599406
 * https://stackoverflow.com/questions/42215523/installing-rsymphony-using-rstudio-on-macos
-
