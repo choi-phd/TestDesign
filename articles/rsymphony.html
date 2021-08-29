@@ -139,10 +139,10 @@ ERROR: configuration failed for package ‘Rsymphony’</code></pre>
 <p><strong>Step 4.</strong> Open the file <code>Rsymphony/configure</code> by running the following line. This opens <code>nano</code> text editor, with <code>-c</code> option to make it display the line numbers.</p>
 <pre><code>sudo nano -c ./Rsymphony/configure</code></pre>
 <p>Comment out lines 51-55 by inserting <code>#</code>s at the beginning of each line, as shown below. Save it as the same file with Control + O, and when prompted for file name to write press Enter. Exit <code>nano</code> with Control + X.</p>
-<pre><code>#if test ${status} -ne 0; then
-# echo "Cannot find SYMPHONY libraries and headers."
+<pre><code>#if test ${status} -ne 0; then 
+# echo "Cannot find SYMPHONY libraries and headers." 
 # echo "See https://projects.coin-or.org/SYMPHONY."
-# exit 1
+# exit 1 
 #fi</code></pre>
 <p><strong>Step 5.</strong> Open the file <code>Rsymphony/src/R_symphony.cc</code> by running the following line.</p>
 <pre><code>sudo nano -c ./Rsymphony/src/R_symphony.cc</code></pre>
