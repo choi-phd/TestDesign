@@ -181,21 +181,21 @@ setClass("config_Shadow",
   validity = function(object) {
     errors <- NULL
     if (toupper(object@MIP$solver) %not in% c("LPSYMPHONY", "RSYMPHONY", "LPSOLVE", "GUROBI", "RGLPK")) {
-      msg <- sprintf("Unrecognized option in @MIP$solver                : %s", object@MIP$solver)
+      msg <- sprintf("Unrecognized option in @MIP$solver : %s", object@MIP$solver)
       errors <- c(errors, msg)
     }
 
     for (solver_name in c("gurobi", "Rsymphony", "lpsymphony", "Rglpk")) {
       if (toupper(object@MIP$solver) == toupper(solver_name)) {
         if (!requireNamespace(solver_name, quietly = TRUE)) {
-          msg <- sprintf("could not find the specified solver package                  : %s", solver_name)
+          msg <- sprintf("could not find the specified solver package : %s", solver_name)
           errors <- c(errors, msg)
         }
       }
     }
 
     if (toupper(object@item_selection$method) %not in% c("MFI", "MPWI", "EB", "FB")) {
-      msg <- sprintf("Unrecognized option in @item_selection$method     : %s", object@item_selection$method)
+      msg <- sprintf("Unrecognized option in @item_selection$method : %s", object@item_selection$method)
       errors <- c(errors, msg)
     }
 
