@@ -16,3 +16,4 @@ isOptimal <- function(status, solver) {
   }
   return(is_optimal)
 }
+
