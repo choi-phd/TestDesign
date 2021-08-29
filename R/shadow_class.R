@@ -15,39 +15,39 @@ NULL
 #'
 #' @export
 setClass("test",
-         slots = c(
-           pool = "item_pool",
-           theta = "numeric",
-           prob = "list",
-           info = "matrix",
-           true_theta = "numeric_or_null",
-           data = "matrix_or_null"
-         ),
-         prototype = list(
-           pool = new("item_pool"),
-           theta = numeric(0),
-           prob = list(0),
-           info = matrix(0),
-           true_theta = numeric(0),
-           data = matrix(NA, 0, 0)
-         ),
-         validity = function(object) {
-           errors <- NULL
-           if (length(object@prob) != object@pool@ni) {
-             errors <- c(errors, "length(@prob) must match @pool@ni.")
-           }
-           if (ncol(object@info) != object@pool@ni) {
-             errors <- c(errors, "ncol(@info) must match @pool@ni.")
-           }
-           if (nrow(object@info) != length(object@theta)) {
-             errors <- c(errors, "nrow(@info) must match length(@theta).")
-           }
-           if (length(errors) == 0) {
-             return(TRUE)
-           } else {
-             return(errors)
-           }
-         }
+  slots = c(
+    pool = "item_pool",
+    theta = "numeric",
+    prob = "list",
+    info = "matrix",
+    true_theta = "numeric_or_null",
+    data = "matrix_or_null"
+  ),
+  prototype = list(
+    pool = new("item_pool"),
+    theta = numeric(0),
+    prob = list(0),
+    info = matrix(0),
+    true_theta = numeric(0),
+    data = matrix(NA, 0, 0)
+  ),
+  validity = function(object) {
+    errors <- NULL
+    if (length(object@prob) != object@pool@ni) {
+      errors <- c(errors, "length(@prob) must match @pool@ni.")
+    }
+    if (ncol(object@info) != object@pool@ni) {
+      errors <- c(errors, "ncol(@info) must match @pool@ni.")
+    }
+    if (nrow(object@info) != length(object@theta)) {
+      errors <- c(errors, "nrow(@info) must match length(@theta).")
+    }
+    if (length(errors) == 0) {
+      return(TRUE)
+    } else {
+      return(errors)
+    }
+  }
 )
 
 
@@ -62,30 +62,30 @@ setClass("test",
 #' @export
 
 setClass("test_cluster",
-         slots = c(
-           nt = "numeric",
-           tests = "list",
-           names = "character"
-         ),
-         prototype = list(
-           nt = numeric(0),
-           tests = list(0),
-           names = character(0)
-         ),
-         validity = function(object) {
-           errors <- NULL
-           if (length(object@tests) != object@nt) {
-             errors <- c(errors, "@nt must match length(@tests).")
-           }
-           if (length(object@names) != object@nt) {
-             errors <- c(errors, "@nt must match length(@names).")
-           }
-           if (length(errors) == 0) {
-             return(TRUE)
-           } else {
-             return(errors)
-           }
-         }
+  slots = c(
+    nt = "numeric",
+    tests = "list",
+    names = "character"
+  ),
+  prototype = list(
+    nt = numeric(0),
+    tests = list(0),
+    names = character(0)
+  ),
+  validity = function(object) {
+    errors <- NULL
+    if (length(object@tests) != object@nt) {
+      errors <- c(errors, "@nt must match length(@tests).")
+    }
+    if (length(object@names) != object@nt) {
+      errors <- c(errors, "@nt must match length(@names).")
+    }
+    if (length(errors) == 0) {
+      return(TRUE)
+    } else {
+      return(errors)
+    }
+  }
 )
 
 #' createShadowTestConfig
