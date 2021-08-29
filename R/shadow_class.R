@@ -34,13 +34,13 @@ setClass("test",
          validity = function(object) {
            errors <- NULL
            if (length(object@prob) != object@pool@ni) {
-             errors <- c(errors, "length(prob) must match pool@ni.")
+             errors <- c(errors, "length(@prob) must match @pool@ni.")
            }
            if (ncol(object@info) != object@pool@ni) {
-             errors <- c(errors, "ncol(info) must match pool@ni.")
+             errors <- c(errors, "ncol(@info) must match @pool@ni.")
            }
            if (nrow(object@info) != length(object@theta)) {
-             errors <- c(errors, "nrow(info) must match length(theta).")
+             errors <- c(errors, "nrow(@info) must match length(@theta).")
            }
            if (length(errors) == 0) {
              return(TRUE)
@@ -75,10 +75,10 @@ setClass("test_cluster",
          validity = function(object) {
            errors <- NULL
            if (length(object@tests) != object@nt) {
-             errors <- c(errors, "length(tests) must match nt.")
+             errors <- c(errors, "@nt must match length(@tests).")
            }
            if (length(object@names) != object@nt) {
-             errors <- c(errors, "length(names) must match nt.")
+             errors <- c(errors, "@nt must match length(@names).")
            }
            if (length(errors) == 0) {
              return(TRUE)
