@@ -681,6 +681,18 @@ addSolutionToConstraintData <- function(x, attrib, item_idx, all_values) {
 
   }
 
+  if (x$TYPE %in% c("ENEMY", "INCLUDE", "EXCLUDE", "ALLORNONE")) {
+
+    match_vec <- with(attrib@data, eval(parse(text = x$CONDITION)))
+    x[[solution_name]] <- sum(item_idx %in% which(match_vec))
+
+    if (all_values) {
+      return(x[[solution_name]])
+    }
+    return(x)
+
+  }
+
   if (all_values) {
     return(NA)
   }
