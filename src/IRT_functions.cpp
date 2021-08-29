@@ -2,9 +2,9 @@
 using namespace Rcpp;
 
 //' Calculate probability at a single theta (1PL)
-//'
+//' 
 //' Calculate the probability of correct response at a theta value, under the 1PL model.
-//'
+//' 
 //' @template x-single
 //' @template 1pl-params
 //' @template 1pl-ref
@@ -14,9 +14,9 @@ double p_1pl(const double& x, const double& b){
 }
 
 //' Calculate probability at multiple thetas (1PL)
-//'
+//' 
 //' Calculate the probability of correct response at theta values, under the 1PL model.
-//'
+//' 
 //' @template x-vector
 //' @template 1pl-params
 //' @template 1pl-ref
@@ -31,9 +31,9 @@ NumericVector array_p_1pl(NumericVector x, const double& b){
 }
 
 //' Calculate probability at a single theta (2PL)
-//'
+//' 
 //' Calculate the probability of correct response at a theta value, under the 2PL model.
-//'
+//' 
 //' @template x-single
 //' @template 2pl-params
 //' @template 2pl-ref
@@ -43,9 +43,9 @@ double p_2pl(const double& x, const double& a, const double& b){
 }
 
 //' Calculate probability at multiple thetas (2PL)
-//'
+//' 
 //' Calculate the probability of correct response at theta values, under the 2PL model.
-//'
+//'  
 //' @template x-vector
 //' @template 2pl-params
 //' @template 2pl-ref
@@ -60,9 +60,9 @@ NumericVector array_p_2pl(NumericVector x, const double& a, const double& b){
 }
 
 //' Calculate probability at a single theta (3PL)
-//'
+//' 
 //' Calculate the probability of correct response at a theta value, under the 3PL model.
-//'
+//' 
 //' @template x-single
 //' @template 3pl-params
 //' @template 3pl-ref
@@ -72,9 +72,9 @@ double p_3pl(const double& x, const double& a, const double& b, const double& c)
 }
 
 //' Calculate probability at multiple thetas (3PL)
-//'
+//' 
 //' Calculate the probability of correct response at theta values, under the 3PL model.
-//'
+//' 
 //' @template x-vector
 //' @template 3pl-params
 //' @template 3pl-ref
@@ -89,9 +89,9 @@ NumericVector array_p_3pl(NumericVector x, const double& a, const double& b, con
 }
 
 //' Calculate probability at a single theta (PC)
-//'
+//' 
 //' Calculate the probability of correct response at a theta value, under the partial credit model.
-//'
+//' 
 //' @template x-single
 //' @template pc-params
 //' @template pc-ref
@@ -110,9 +110,9 @@ NumericVector p_pc(const double& x, NumericVector b){
 }
 
 //' Calculate probability at multiple thetas (PC)
-//'
+//' 
 //' Calculate the probability of correct response at theta values, under the partial credit model.
-//'
+//' 
 //' @template x-vector
 //' @template pc-params
 //' @template pc-ref
@@ -132,9 +132,9 @@ NumericMatrix array_p_pc(NumericVector x, NumericVector b){
 }
 
 //' Calculate probability at a single theta (GPC)
-//'
+//' 
 //' Calculate the probability of correct response at a theta value, under the generalized partial credit model.
-//'
+//' 
 //' @template x-single
 //' @template gpc-params
 //' @template gpc-ref
@@ -153,9 +153,9 @@ NumericVector p_gpc(const double& x, const double& a, NumericVector b){
 }
 
 //' Calculate probability at multiple thetas (GPC)
-//'
+//' 
 //' Calculate the probability of correct response at theta values, under the generalized partial credit model.
-//'
+//' 
 //' @template x-vector
 //' @template gpc-params
 //' @template gpc-ref
@@ -175,9 +175,9 @@ NumericMatrix array_p_gpc(NumericVector x, const double& a, NumericVector b){
 }
 
 //' Calculate probability at a single theta (GR)
-//'
+//' 
 //' Calculate the probability of correct response at a theta value, under the graded response model.
-//'
+//' 
 //' @template x-single
 //' @template gr-params
 //' @template gr-ref
@@ -197,9 +197,9 @@ NumericVector p_gr(const double& x, const double& a, NumericVector b){
 }
 
 //' Calculate probability at multiple thetas (GR)
-//'
+//' 
 //' Calculate the probability of correct response at theta values, under the graded response model.
-//'
+//' 
 //' @template x-vector
 //' @template gr-params
 //' @template gr-ref
@@ -219,9 +219,9 @@ NumericMatrix array_p_gr(NumericVector x, const double& a, NumericVector b){
 }
 
 //' Calculate Fisher information at a single theta (1PL)
-//'
+//' 
 //' Calculate the Fisher information at a theta value according to the 1PL model.
-//'
+//' 
 //' @template x-single
 //' @template 1pl-params
 //' @template 1pl-ref
@@ -232,9 +232,9 @@ double info_1pl(const double& x, const double& b){
 }
 
 //' Calculate Fisher information at multiple thetas (1PL)
-//'
+//' 
 //' Calculate the Fisher information at theta values according to the 1PL model.
-//'
+//' 
 //' @template x-vector
 //' @template 1pl-params
 //' @template 1pl-ref
@@ -249,9 +249,9 @@ NumericVector array_info_1pl(NumericVector x, const double& b){
 }
 
 //' Calculate Fisher information at a single theta (2PL)
-//'
+//' 
 //' Calculate the Fisher information at a theta value according to the 2PL model.
-//'
+//' 
 //' @template x-single
 //' @template 2pl-params
 //' @template 2pl-ref
@@ -262,9 +262,9 @@ double info_2pl(const double& x, const double& a, const double& b){
 }
 
 //' Calculate Fisher information at multiple thetas (2PL)
-//'
+//' 
 //' Calculate the Fisher information at theta values according to the 2PL model.
-//'
+//' 
 //' @template x-vector
 //' @template 2pl-params
 //' @template 2pl-ref
@@ -279,9 +279,9 @@ NumericVector array_info_2pl(NumericVector x, const double& a, const double& b){
 }
 
 //' Calculate Fisher information at a single theta (3PL)
-//'
+//' 
 //' Calculate the Fisher information at a theta value according to the 3PL model.
-//'
+//' 
 //' @template x-single
 //' @template 3pl-params
 //' @template 3pl-ref
@@ -292,9 +292,9 @@ double info_3pl(const double& x, const double& a, const double& b, const double&
 }
 
 //' Calculate Fisher information at multiple thetas (3PL)
-//'
+//' 
 //' Calculate the Fisher information at theta values according to the 3PL model.
-//'
+//' 
 //' @template x-vector
 //' @template 3pl-params
 //' @template 3pl-ref
@@ -309,9 +309,9 @@ NumericVector array_info_3pl(NumericVector x, const double& a, const double& b, 
 }
 
 //' Calculate Fisher information at a single theta (PC)
-//'
+//' 
 //' Calculate the Fisher information at a theta value according to the partial credit model.
-//'
+//' 
 //' @template x-single
 //' @template pc-params
 //' @template pc-ref
@@ -328,9 +328,9 @@ double info_pc(const double& x, NumericVector b){
 }
 
 //' Calculate Fisher information at multiple thetas (PC)
-//'
+//' 
 //' Calculate the Fisher information at theta values according to the partial credit model.
-//'
+//' 
 //' @template x-vector
 //' @template pc-params
 //' @template pc-ref
@@ -345,9 +345,9 @@ NumericVector array_info_pc(NumericVector x, NumericVector b){
 }
 
 //' Calculate Fisher information at a single theta (GPC).
-//'
+//' 
 //' Calculate the Fisher information at a theta value according to the generalizied partial credit model.
-//'
+//' 
 //' @template x-single
 //' @template gpc-params
 //' @template gpc-ref
@@ -364,9 +364,9 @@ double info_gpc(const double& x, const double& a, NumericVector b){
 }
 
 //' Calculate Fisher information at multiple thetas (GPC)
-//'
+//' 
 //' Calculate the Fisher information at theta values according to the generalized partial credit model.
-//'
+//' 
 //' @template x-vector
 //' @template gpc-params
 //' @template gpc-ref
@@ -381,9 +381,9 @@ NumericVector array_info_gpc(NumericVector x, const double& a, NumericVector b){
 }
 
 //' Calculate Fisher information at a single theta (GR).
-//'
+//' 
 //' Calculate the Fisher information at a theta value according to the graded resposne model.
-//'
+//' 
 //' @template x-single
 //' @template gr-params
 //' @template gr-ref
@@ -404,9 +404,9 @@ double info_gr(const double& x, const double& a, NumericVector b){
 }
 
 //' Calculate Fisher information at multiple thetas (GR)
-//'
+//' 
 //' Calculate the Fisher information at theta values according to the graded response model.
-//'
+//' 
 //' @template x-vector
 //' @template gr-params
 //' @template gr-ref
@@ -421,7 +421,7 @@ NumericVector array_info_gr(NumericVector x, const double& a, NumericVector b){
 }
 
 //' Calculate the Fisher information matrix for a single theta value and a set of items, potentially with a mixture of different models
-//'
+//' 
 //' @param x Numeric. A single theta value.
 //' @param item_parm A matrix of item parameters.
 //' @template calc-params-mini
@@ -456,7 +456,7 @@ NumericVector calc_info(const double& x,
       }
       if (model[i] == 5){
         info_array[i] = info_gpc(x,a,b);
-      } else if (model[i] == 6){
+      } else if (model[i] == 6){ 
         info_array[i] = info_gr(x,a,b);
       }
     }
@@ -465,7 +465,7 @@ NumericVector calc_info(const double& x,
 }
 
 //' Calculate the Fisher information matrix for a vector of theta values and a set of items, potentially with a mixture of different models
-//'
+//' 
 //' @param x Numeric. A vector of theta values.
 //' @param item_parm A matrix of item parameters.
 //' @template calc-params-mini
@@ -475,7 +475,7 @@ NumericMatrix calc_info_matrix(NumericVector x,
                                IntegerVector ncat,
                                IntegerVector model) {
   int nx = x.size();
-  int ni = item_parm.nrow();
+  int ni = item_parm.nrow(); 
   NumericMatrix info_matrix(nx,ni);
   for (int i = 0; i < ni; i++) {
     if (model[i] == 1){
@@ -524,7 +524,7 @@ NumericMatrix calc_info_matrix(NumericVector x,
 //' Calculate the Fisher information using empirical Bayes
 //'
 //' Calculate the Fisher information using empirical Bayes.
-//'
+//' 
 //' @param x A numeric vector of MCMC sampled theta values.
 //' @param item_parm A numeric matrix of item parameters.
 //' @template calc-params-mini
@@ -546,9 +546,9 @@ NumericVector calc_info_EB(NumericVector x,
 }
 
 //' Calculate the Fisher information using full Bayesian
-//'
+//' 
 //' Calculate the Fisher information using full Bayesian.
-//'
+//' 
 //' @param x A numeric vector of MCMC sampled theta values.
 //' @param items_list A list of item parameter matrices.
 //' @template calc-params-mini
@@ -559,23 +559,23 @@ NumericVector calc_info_FB(NumericVector x,
                            IntegerVector ncat,
                            IntegerVector model,
                            bool useEAP = false){
-  int nx = x.size();
-  int ni = ncat.size();
-  NumericVector info_array(ni);
-  if (useEAP) x = rep(mean(x), nx);
+  int nx = x.size(); 
+  int ni = ncat.size(); 
+  NumericVector info_array(ni); 
+  if (useEAP) x = rep(mean(x), nx); 
   for(int i = 0; i < ni; i++){
     NumericMatrix item_parm = as<NumericMatrix>(items_list[i]);
-    int ns = item_parm.nrow();
-    int s = 0;
+    int ns = item_parm.nrow(); 
+    int s = 0; 
     double info_sum = 0;
-    if (model[i] == 1) {
+    if (model[i] == 1) { 
       for(int j = 0; j < nx; j++) {
         double b = item_parm(s,0);
         info_sum += info_1pl(x[j],b);
         s += 1;
         if (s >= ns) { s = 0; }
       }
-    } else if (model[i] == 2) {
+    } else if (model[i] == 2) { 
       for(int j = 0; j < nx; j++) {
         double a = item_parm(s,0);
         double b = item_parm(s,1);
@@ -583,7 +583,7 @@ NumericVector calc_info_FB(NumericVector x,
         s += 1;
         if (s >= ns) { s = 0; }
       }
-    } else if (model[i] == 3) {
+    } else if (model[i] == 3) { 
       for(int j = 0; j < nx; j++) {
         double a = item_parm(s,0);
         double b = item_parm(s,1);
@@ -592,7 +592,7 @@ NumericVector calc_info_FB(NumericVector x,
         s += 1;
         if (s >= ns) { s = 0; }
       }
-    } else if (model[i] == 4) {
+    } else if (model[i] == 4) { 
       for(int j = 0; j < nx; j++) {
         NumericVector b(ncat[i]-1);
         for (int k = 0; k < ncat[i]-1; k++){
@@ -602,7 +602,7 @@ NumericVector calc_info_FB(NumericVector x,
         s += 1;
         if (s >= ns) { s = 0; }
       }
-    } else if (model[i] == 5) {
+    } else if (model[i] == 5) { 
       for(int j = 0; j < nx; j++) {
         double a = item_parm(s,0);
         NumericVector b(ncat[i]-1);
@@ -613,7 +613,7 @@ NumericVector calc_info_FB(NumericVector x,
         s += 1;
         if (s >= ns) { s = 0; }
       }
-    } else if (model[i] == 6) {
+    } else if (model[i] == 6) { 
       for(int j = 0; j < nx; j++) {
         double a = item_parm(s,0);
         NumericVector b(ncat[i]-1);
@@ -627,13 +627,13 @@ NumericVector calc_info_FB(NumericVector x,
     }
     info_array[i] = info_sum;
   }
-  return info_array / (double)nx;
+  return info_array / (double)nx; 
 }
 
 //' Calculate the mutual information using full Bayesian
-//'
+//' 
 //' Calculate the mutual information using full Bayesian.
-//'
+//' 
 //' @param x A numeric vector of MCMC sampled theta values.
 //' @param items_list A list of item parameter matrices.
 //' @template calc-params-mini
@@ -642,19 +642,19 @@ NumericVector calc_MI_FB(NumericVector x,
                          List items_list,
                          IntegerVector ncat,
                          IntegerVector model){
-  int nx = x.size();
-  int ni = ncat.size();
-  NumericVector info_array(ni);
+  int nx = x.size(); 
+  int ni = ncat.size(); 
+  NumericVector info_array(ni); 
   for(int i = 0; i < ni; i++){
     NumericMatrix posterior_k(nx, ncat[i]);
     NumericVector prob(ncat[i]);
     NumericVector p(ncat[i]);
     NumericMatrix item_parm = as<NumericMatrix>(items_list[i]);
     int ns = item_parm.nrow();
-    int s = 0;
+    int s = 0; 
     double info_sum = 0;
     double sumP;
-    if (model[i] == 1) {
+    if (model[i] == 1) { 
       for(int j = 0; j < nx; j++) {
         double b = item_parm(s,0);
         p[1] = p_1pl(x[j],b);
@@ -662,7 +662,7 @@ NumericVector calc_MI_FB(NumericVector x,
         posterior_k(j,_) = p;
         s += 1;
         if (s >= ns) { s = 0; }
-    }} else if (model[i] == 2) {
+    }} else if (model[i] == 2) { 
       for(int j = 0; j < nx; j++) {
         double a = item_parm(s,0), b = item_parm(s,1);
         p[1] = p_2pl(x[j],a,b);
@@ -670,7 +670,7 @@ NumericVector calc_MI_FB(NumericVector x,
         posterior_k(j,_) = p;
         s += 1;
         if (s >= ns) { s = 0; }
-    }} else if (model[i] == 3) {
+    }} else if (model[i] == 3) { 
       for(int j = 0; j < nx; j++) {
         double a = item_parm(s,0);
         double b = item_parm(s,1);
@@ -680,7 +680,7 @@ NumericVector calc_MI_FB(NumericVector x,
         posterior_k(j,_) = p;
         s += 1;
         if (s >= ns) { s = 0; }
-    }} else if (model[i] == 4) {
+    }} else if (model[i] == 4) { 
       for(int j = 0; j < nx; j++) {
         NumericVector b(ncat[i]-1);
         for (int k = 0; k < ncat[i]-1; k++){
@@ -690,7 +690,7 @@ NumericVector calc_MI_FB(NumericVector x,
         posterior_k(j,_) = p;
         s += 1;
         if (s >= ns) { s = 0; }
-    }} else if (model[i] == 5) {
+    }} else if (model[i] == 5) { 
       for(int j = 0; j < nx; j++) {
         double a = item_parm(s,0);
         NumericVector b(ncat[i]-1);
@@ -722,13 +722,13 @@ NumericVector calc_MI_FB(NumericVector x,
     }}
     info_array[i] = info_sum;
   }
-  return info_array / (double)nx;
+  return info_array / (double)nx; 
 }
 
 //' Calculate a likelihood value of theta
-//'
+//' 
 //' Calculate a likelihood value of theta.
-//'
+//' 
 //' @param x Numeric. A single theta value.
 //' @param item_parm A numeric matrix of item parameters.
 //' @param resp A numeric vector of item responses.
@@ -793,14 +793,14 @@ double calc_likelihood(const double& x,
 }
 
 //' Calculate a likelihood function of theta
-//'
+//' 
 //' Calculate a likelihood function of theta.
-//'
+//' 
 //' @param theta_grid An equi-spaced grid of theta values.
 //' @param item_parm A numeric matrix of item parameters.
 //' @param resp A numeric vector of item responses.
 //' @template calc-params-mini
-//'
+//' 
 // [[Rcpp::export]]
 NumericVector calc_likelihood_function(NumericVector theta_grid,
                                        NumericMatrix item_parm,
@@ -859,9 +859,9 @@ NumericVector calc_likelihood_function(NumericVector theta_grid,
 }
 
 //' Calculate a log-likelihood value of theta
-//'
+//' 
 //' Calculate a log-likelihood value of theta.
-//'
+//' 
 //' @param x A length-one numeric vector for a theta value.
 //' @param item_parm A numeric matrix of item parameters.
 //' @template calc-params
@@ -927,12 +927,12 @@ double calc_log_likelihood(const double& x,
 }
 
 //' Calculate a log-likelihood function of theta
-//'
+//' 
 //' Calculate a log-likelihood function of theta.
-//'
+//' 
 //' @param theta_grid An equi-spaced grid of theta values.
 //' @param item_parm A numeric matrix of item parameters.
-//' @template calc-params
+//' @template calc-params 
 // [[Rcpp::export]]
 NumericVector calc_log_likelihood_function(NumericVector theta_grid,
                                        NumericMatrix item_parm,
@@ -986,7 +986,7 @@ NumericVector calc_log_likelihood_function(NumericVector theta_grid,
       llh[q] += log(pp(q,resp[i]));
     }
   }
-  if (prior == 1){
+  if (prior == 1){ 
     for (int q = 0; q < nq; q++) {
       llh[q] += -0.5*pow((theta_grid[q]-prior_parm[0])/prior_parm[1],2)-log(prior_parm[1]);
     }
@@ -995,9 +995,9 @@ NumericVector calc_log_likelihood_function(NumericVector theta_grid,
 }
 
 //' Calculate a posterior value of theta
-//'
+//' 
 //' Calculate a posterior value of theta.
-//'
+//' 
 //' @param x A length-one numeric vector for a theta value.
 //' @param item_parm A numeric matrix of item parameters.
 //' @template calc-params
@@ -1022,9 +1022,9 @@ double calc_posterior(const double& x,
 }
 
 //' Calculate a posterior distribution of theta
-//'
+//' 
 //' Calculate a posterior distribution of theta.
-//'
+//' 
 //' @param theta_grid An equi-spaced grid of theta values.
 //' @param item_parm A numeric matrix of item parameters.
 //' @template calc-params
@@ -1053,9 +1053,9 @@ NumericVector calc_posterior_function(NumericVector theta_grid,
 }
 
 //' Calculate a posterior value of theta for a single item
-//'
+//' 
 //' Calculate a posterior value of theta for a single item.
-//'
+//' 
 //' @param x A length-one numeric vector for a theta value.
 //' @param item_parm A numeric vector of item parameters (for one item).
 //' @param resp A length-one numeric vector of item responses.
@@ -1063,7 +1063,7 @@ NumericVector calc_posterior_function(NumericVector theta_grid,
 //' @param model A length-one numeric vector of the IRT model by item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).
 //' @param prior The type of prior distribution (1: normal, 2: uniform).
 //' @param prior_parm A numeric vector of hyperparameters for the prior distribution, c(mu, sigma) or c(ll, ul).
-//'
+//' 
 // [[Rcpp::export]]
 double calc_posterior_single(const double& x,
                              NumericVector item_parm,
@@ -1130,9 +1130,9 @@ double calc_posterior_single(const double& x,
 }
 
 //' Calculate an EAP estimate of theta for one examinee
-//'
+//' 
 //' Calculate an expected a posterior estimate of theta for one examinee.
-//'
+//' 
 //' @param theta_grid An equi-spaced theta grid.
 //' @param item_parm A numeric matrix of item parameters.
 //' @template calc-params
@@ -1160,9 +1160,9 @@ NumericVector theta_EAP(NumericVector theta_grid,
 }
 
 //' Calculate EAP estimates of theta for a group of examinees
-//'
+//' 
 //' Calculate expected a posteriori estimates of theta for a group of examinees.
-//'
+//' 
 //' @param theta_grid An equi-spaced theta grid.
 //' @param item_parm A numeric matrix of item parameters.
 //' @param Resp A numeric matrix of item responses.
@@ -1170,7 +1170,7 @@ NumericVector theta_EAP(NumericVector theta_grid,
 //' @param model A numeric vector of the IRT model by item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).
 //' @param prior The type of prior distribution (1: normal, 2: uniform).
 //' @param prior_parm A numeric vector of hyperparameters for the prior distribution, c(mu, sigma) or c(ll, ul).
-//'
+//' 
 // [[Rcpp::export]]
 NumericMatrix theta_EAP_matrix(NumericVector theta_grid,
                                NumericMatrix item_parm,
@@ -1201,9 +1201,9 @@ NumericMatrix theta_EAP_matrix(NumericVector theta_grid,
 }
 
 //' Calculate an empirical Bayes estimate of theta for one examinee
-//'
+//' 
 //' Calculate an empirical Bayes estimate of theta for one examinee.
-//'
+//' 
 //' @param nx The number of MCMC draws.
 //' @param theta_init A value for initial estimate of theta.
 //' @param theta_prop SD of the proposal distribution.
@@ -1242,9 +1242,9 @@ NumericVector theta_EB(const int& nx,
 }
 
 //' Calculate an empirical Bayes estimate of theta for a single item
-//'
+//' 
 //' Calculate an empirical Bayes estimate of theta for a single item.
-//'
+//' 
 //' @param nx The number of MCMC draws.
 //' @param theta_init A value for initial estimate of theta.
 //' @param theta_prop SD of the proposal distribution.
@@ -1285,7 +1285,7 @@ NumericVector theta_EB_single(const int& nx,
 //' Calculate a fully Bayesian estimate of theta for an examinee
 //'
 //' Calculate a fully Bayesian estimate of theta for an examinee.
-//'
+//' 
 //' @param nx The number of MCMC draws.
 //' @param theta_init A value for initial estimate of theta.
 //' @param theta_prop SD of the proposal distribution.
@@ -1353,9 +1353,9 @@ NumericVector theta_FB(const int& nx,
 }
 
 //' Calculate a fully Bayesian estimate of theta for a single item
-//'
+//' 
 //' Calculate a fully Bayesian estimate of theta for a single item.
-//'
+//' 
 //' @param nx The number of MCMC draws.
 //' @param theta_init A value for initial estimate of theta.
 //' @param theta_prop SD of the proposal distribution.
@@ -1416,12 +1416,12 @@ NumericVector theta_FB_single(const int& nx,
 }
 
 //' Find the segment to which each theta value belongs
-//'
+//' 
 //' Find the segment to which each theta value belongs.
-//'
+//' 
 //' @param segment A numeric vector of segment cuts.
 //' @param x A numeric vector of theta values.
-//'
+//' 
 // [[Rcpp::export]]
 IntegerVector find_segment(NumericVector segment,
                           NumericVector x) {
