@@ -136,14 +136,14 @@ runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
                                      constraints@st_attrib@data[c("STINDEX", "STID", constraints@stim_order_by)],
                                      by = "STID", all.x = TRUE, sort = FALSE)
     constraints@item_attrib@data <- constraints@item_attrib@data[order(constraints@item_attrib@data$tmpsort), ]
-    constraints@item_attrib@data <- constraints@item_attrib@data[, !(colnames(constraints@item_attrib@data) %in% 'tmpsort')]
+    constraints@item_attrib@data <- constraints@item_attrib@data[, !(colnames(constraints@item_attrib@data) %in% "tmpsort")]
   } else if (!is.null(constraints@st_attrib)) {
     constraints@item_attrib@data$tmpsort <- 1:constraints@ni
     constraints@item_attrib@data <- merge(constraints@item_attrib@data,
                                      constraints@st_attrib@data[c("STINDEX", "STID")],
                                      by = "STID", all.x = TRUE, sort = FALSE)
     constraints@item_attrib@data <- constraints@item_attrib@data[order(constraints@item_attrib@data$tmpsort), ]
-    constraints@item_attrib@data <- constraints@item_attrib@data[, !(colnames(constraints@item_attrib@data) %in% 'tmpsort')]
+    constraints@item_attrib@data <- constraints@item_attrib@data[, !(colnames(constraints@item_attrib@data) %in% "tmpsort")]
   }
 
   # Common logic for attribute parsing
