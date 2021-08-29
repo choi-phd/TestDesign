@@ -35,7 +35,7 @@ su username
 **Step 3.** Install SYMPHONY by running the following lines in terminal.
 
 ```
-brew tap coin-or-tools/coinor
+brew tap coin-or-tools/coinor 
 brew install symphony
 brew install pkg-config
 ```
@@ -55,7 +55,7 @@ brew install wget
 **Step 2.** Run the following lines in terminal to download the Rsymphony solver package. The first line downloads the package file, and the second line unpacks the file.
 
 ```
-sudo wget https://cran.revolutionanalytics.com/src/contrib/Rsymphony_0.1-28.tar.gz
+sudo wget https://cran.revolutionanalytics.com/src/contrib/Rsymphony_0.1-28.tar.gz 
 sudo tar -xzvf Rsymphony_0.1-28.tar.gz
 ```
 
@@ -68,10 +68,10 @@ open ./Rsymphony
 **Step 4.** Open the file `configure` with a text editor software. Comment out the lines 51-55 by inserting `#`s at the beginning of each line as below. Save it as the same file.
 
 ```
-#if test ${status} -ne 0; then
-# echo "Cannot find SYMPHONY libraries and headers."
+#if test ${status} -ne 0; then 
+# echo "Cannot find SYMPHONY libraries and headers." 
 # echo "See https://projects.coin-or.org/SYMPHONY."
-# exit 1
+# exit 1 
 #fi
 ```
 
@@ -93,7 +93,7 @@ If the `R CMD` fails with `--lgfortran` error, proceed to the next step.
 
 ## Tell R where Fortran libraries are located
 
-The cause of the error is that R needs Fortran libraries to build the package, but it does not know where they are. They are already available on your system: when you installed the SYMPHONY libraries from the previous steps, it installed gcc library as a requirement, which contains Fortran libraries as well.
+The cause of the error is that R needs Fortran libraries to build the package, but it does not know where they are. They are already available on your system: when you installed the SYMPHONY libraries from the previous steps, it installed gcc library as a requirement, which contains Fortran libraries as well. 
 
 **Step 1.** Run the following lines in terminal. This points R to the Fortran libraries.
 
