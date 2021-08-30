@@ -1,3 +1,7 @@
+# TestDesign 1.2.2
+
+* Fixed to pass automated checks on CRAN.
+
 # TestDesign 1.2.0
 
 ## New features
