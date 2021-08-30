@@ -371,6 +371,14 @@
 <li>Reverted the default solver to <code>lpSolve</code> to address <code>lpsymphony</code> being unavailable on Solaris.</li>
 </ul>
 </div>
+<div id="bug-fixes-4" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-4" class="anchor"></a>Bug fixes</h2>
+<ul>
+<li>Fixed where using diagnostic stats was preventing <code><a href="../reference/Shadow.html">Shadow()</a></code> to run.</li>
+<li>Fixed an error affecting <code>BIGM</code> exposure control method on set-based items.</li>
+</ul>
+</div>
 </div>
     <div id="testdesign-101" class="section level1">
 <h1 class="page-header" data-toc-text="1.0.1">
@@ -394,9 +402,9 @@
 <code>showConstraints()</code> returns the constraints table from a <code>constraints</code> object. This is a shortcut to access the <code>@constraints</code> slot.</li>
 </ul>
 </div>
-<div id="bug-fixes-4" class="section level2">
+<div id="bug-fixes-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-4" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-5" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Now recognizes <code>TM_TARGET_GAP_ACHIEVED</code> as a valid status message in <code>lpsymphony</code> and <code>Rsymphony</code> solvers.</li>
 <li>
@@ -412,7 +420,7 @@
 <h1 class="page-header" data-toc-text="1.0.0">
 <a href="#testdesign-100" class="anchor"></a>TestDesign 1.0.0<small> 2019-11-04 </small>
 </h1>
-<p>TestDesign 1.0.0 is a major release that provides structural changes to better streamline the usage of the functions and also achieve more structured abstraction.</p>
+<p>TestDesign 1.0.0 is a major release that provides structural changes to better streamline the usage of functions and also achieve more structured abstraction.</p>
 <div id="user-visible-structural-changes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#user-visible-structural-changes" class="anchor"></a>User-visible structural changes</h2>
@@ -421,22 +429,22 @@
 <li>
 <code><a href="../reference/Shadow.html">Shadow()</a></code> now uses fewer arguments to match with <code><a href="../reference/Static.html">Static()</a></code> and to reduce redundant information in the arguments.</li>
 <li>
-<code>plotMaxInfo()</code> is removed. The functionality is subsumed under <code>plotInfo()</code>, which can be used by supplying a <code>constriants</code> class object to the function.</li>
+<code>plotMaxInfo()</code> is removed. The functionality is subsumed under <code>plotInfo()</code>, which can be used by supplying a <code>constriants</code> object to the function.</li>
 <li>
 <code><a href="../reference/Static.html">Static()</a></code> now does not return the information plot by itself. The plotting should be done with <code>plotInfo()</code>.</li>
 <li>
 <code>plotInfo()</code> is now an S4 method.</li>
 <li><ul>
-<li>Supplying <code>item_pool</code> object gives pool-level information plot.</li>
+<li>Supplying an <code>item_pool</code> object gives a pool-level information plot.</li>
 </ul></li>
 <li><ul>
-<li>Supplying the result from <code>Static</code> gives information plot based on the selected items.</li>
+<li>Supplying the result from <code><a href="../reference/Static.html">Static()</a></code> gives an information plot based on the selected items.</li>
 </ul></li>
 <li><ul>
-<li>Supplying <code>constraints</code> object gives information range plot from the test length specified in the constraints.</li>
+<li>Supplying a <code>constraints</code> object gives an information range plot from the test length specified in the constraints.</li>
 </ul></li>
 <li><ul>
-<li>The comparison in the information range plot is now based on <em>k</em> randomly drawn items instead of the <em>k</em> worst items.</li>
+<li>The comparison in the information range plot is now based on <em>k</em> randomly drawn items instead of <em>k</em> worst items.</li>
 </ul></li>
 </ul>
 </div>
@@ -458,8 +466,8 @@
 <li>Now supports item pools that include both set-based and discrete items.</li>
 <li>Now supports <code>lpsymphony</code> solver package from Bioconductor repository. Note: The current version 1.12.0 of <code>lpsymphony</code> will not install on R-devel due to <code>R CMD config F77</code> being deprecated. Installs normally on R 3.6.1.</li>
 <li>
-<code>plotShadow()</code> has a new <code>simple</code> argument that simplifies the chart by hiding the items not included in any shadow test.</li>
-<li>Use disambiguated solver names. (e.g. <code>lpsymphony</code> and <code>Rsymphony</code> instead of <code>SYMPHONY</code>)</li>
+<code>plotShadow()</code> has a new <code>simple</code> argument that simplifies the chart by hiding items that are not included in any shadow test.</li>
+<li>Now uses disambiguated solver names. (e.g. <code>lpsymphony</code> and <code>Rsymphony</code> instead of <code>SYMPHONY</code>)</li>
 <li>
 <code><a href="../articles/rsymphony.html">vignette('rsymphony')</a></code> is improved.</li>
 <li>
@@ -468,9 +476,9 @@
 <code>plotInfo()</code> now uses a more polished plotting style.</li>
 </ul>
 </div>
-<div id="bug-fixes-5" class="section level2">
+<div id="bug-fixes-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-5" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-6" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed where <code>plotExposure()</code> was incorrectly plotting stimulus-level exposure rates along with item-level exposure rates.</li>
 <li>Fixed where using Bayesian methods would trigger an error in <code><a href="../reference/Shadow.html">Shadow()</a></code>.</li>
@@ -481,14 +489,14 @@
 <h1 class="page-header" data-toc-text="0.2.5">
 <a href="#testdesign-025" class="anchor"></a>TestDesign 0.2.5<small> 2019-09-12 </small>
 </h1>
-<div id="bug-fixes-6" class="section level2">
+<div id="bug-fixes-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-6" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-7" class="anchor"></a>Bug fixes</h2>
 <ul>
-<li>Fixed where <code>gap_limit</code> was incorrectly passed onto <code>SYMPHONY</code> in <code>ATA()</code> and <code><a href="../reference/Shadow.html">Shadow()</a></code>, instead of <code>gap_limit_abs</code>.</li>
+<li>Fixed where <code>gap_limit</code> was being incorrectly passed onto <code>SYMPHONY</code> in <code>ATA()</code> and <code><a href="../reference/Shadow.html">Shadow()</a></code>, instead of <code>gap_limit_abs</code>.</li>
 <li>Fixed where <code>gap_limit</code> was not being passed onto <code>GUROBI</code> in <code>ATA()</code> and <code><a href="../reference/Shadow.html">Shadow()</a></code>.</li>
 <li>Fixed where <code>time_limit</code> was not being passed onto <code>GUROBI</code> in <code><a href="../reference/Shadow.html">Shadow()</a></code>.</li>
-<li>Fixed where <code>time_limit</code> was incorrectly passed in microseconds to <code>GLPK</code> in <code><a href="../reference/Shadow.html">Shadow()</a></code>.</li>
+<li>Fixed where <code>time_limit</code> was being incorrectly passed in microseconds to <code>GLPK</code> in <code><a href="../reference/Shadow.html">Shadow()</a></code>.</li>
 <li>Fixed where a valid interval-based refresh policy triggered an error in <code><a href="../reference/Shadow.html">Shadow()</a></code>.</li>
 <li>Now prints an error message instead of crashing, when requesting adaptive assembly with set-based refresh policy on non-set-based item pools.</li>
 </ul>
@@ -498,7 +506,7 @@
 <a href="#others" class="anchor"></a>Others</h2>
 <ul>
 <li>
-<code>config_ATA@MIP</code> now has <code>$obj_tol</code> for controlling objective value tolerance.</li>
+<code>config_ATA@MIP</code> now has a new slot <code>$obj_tol</code> for controlling objective value tolerance.</li>
 </ul>
 </div>
 </div>
@@ -506,12 +514,12 @@
 <h1 class="page-header" data-toc-text="0.2.3">
 <a href="#testdesign-023" class="anchor"></a>TestDesign 0.2.3<small> 2019-08-28 </small>
 </h1>
-<div id="bug-fixes-7" class="section level2">
+<div id="bug-fixes-8" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-7" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-8" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed where <code>ATA()</code> and <code><a href="../reference/Shadow.html">Shadow()</a></code> were returning incorrect solutions with set-based item pools in some cases.</li>
-<li>Fixed where <code>ATA()</code> and <code><a href="../reference/Shadow.html">Shadow()</a></code> were returning fewer than specified number of items, due to solution vectors being not strictly binary in some cases.</li>
+<li>Fixed where <code>ATA()</code> and <code><a href="../reference/Shadow.html">Shadow()</a></code> were returning fewer than the specified number of items, due to solution vectors being not strictly binary in some cases.</li>
 </ul>
 </div>
 <div id="others-1" class="section level2">
@@ -528,7 +536,7 @@
 <a href="#testdesign-022" class="anchor"></a>TestDesign 0.2.2<small> 2019-08-20 </small>
 </h1>
 <ul>
-<li>Initial release.</li>
+<li>This is the first published version.</li>
 </ul>
 </div>
   </div>
