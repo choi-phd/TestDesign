@@ -1,3 +1,10 @@
+# TestDesign 1.2.6
+
+## Updates
+
+* `plot(type = "exposure")` gains new arguments `segment`, `rmse`, and `use_segment_label`.
+* `summary()` for `output_Shadow_all` objects now also summarizes the number of selected items for `ENEMY`, `INCLUDE`, `EXCLUDE`, and `ALLORNONE` constraints.
+
 # TestDesign 1.2.5
 
 ## Updates
