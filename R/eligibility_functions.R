@@ -215,20 +215,22 @@ incrementRho <- function(o, segments_to_apply, segment_prob, ineligible_flag, th
   # either the item was eligible or the test was infeasible
   # (used as denominator)
 
-  eligible_flag <- getEligibleFlag(ineligible_flag, constants, !theta_is_feasible)
-
-  o$r_ijk <- o$r_ijk + eligible_flag$i * segments_to_apply * segment_prob
+  r_flag_i <- !ineligible_flag$i
+  if (!theta_is_feasible) r_flag_i <- TRUE
+  o$r_ijk <- o$r_ijk + r_flag_i * segments_to_apply * segment_prob
   if (constants$fading_factor != 1) {
-    o$r_ijk_nofade <- o$r_ijk_nofade + eligible_flag$i * segments_to_apply * segment_prob
+    o$r_ijk_nofade <- o$r_ijk_nofade + r_flag_i * segments_to_apply * segment_prob
   }
 
   if (!constants$set_based) {
     return(o)
   }
 
-  o$r_sjk <- o$r_sjk + eligible_flag$s * segments_to_apply * segment_prob
+  r_flag_s <- !ineligible_flag$s
+  if (!theta_is_feasible) r_flag_s <- TRUE
+  o$r_sjk <- o$r_sjk + r_flag_s * segments_to_apply * segment_prob
   if (constants$fading_factor != 1) {
-    o$r_sjk_nofade <- o$r_sjk_nofade + eligible_flag$s * segments_to_apply * segment_prob
+    o$r_sjk_nofade <- o$r_sjk_nofade + r_flag_s * segments_to_apply * segment_prob
   }
 
   return(o)
@@ -250,19 +252,6 @@ clipEligibilityRates <- function(o, constants) {
 
   return(o)
 
-}
-
-#' @noRd
-getEligibleFlag <- function(ineligible_flag, constants, force_true) {
-  o <- list()
-  o$i <- !ineligible_flag$i
-  if (force_true) o$i <- TRUE
-  if (!constants$set_based) {
-    return(o)
-  }
-  o$s <- !ineligible_flag$s
-  if (force_true) o$s <- TRUE
-  return(o)
 }
 
 #' @noRd
