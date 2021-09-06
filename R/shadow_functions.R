@@ -288,14 +288,14 @@ setMethod(
               # Get ineligible items in the current theta segment
 
               current_segment            <- o@theta_segment_index[position]
-              ineligible_flag_in_segment <- getIneligibleFlagInSegment(ineligible_flag, current_segment, constants)
-              ineligible_flag_in_segment <- flagAdministeredAsEligible(ineligible_flag_in_segment, o, position, constants)
+              ineligible_flag_in_current_theta_segment <- getIneligibleFlagInSegment(ineligible_flag, current_segment, constants)
+              ineligible_flag_in_current_theta_segment <- flagAdministeredAsEligible(ineligible_flag_in_current_theta_segment, o, position, constants)
 
             }
 
             if (constants$use_eligibility_control && exposure_control %in% c("ELIGIBILITY")) {
 
-              xdata_elg  <- applyIneligibleFlagtoXdata(xdata, ineligible_flag_in_segment, constants, constraints)
+              xdata_elg  <- applyIneligibleFlagtoXdata(xdata, ineligible_flag_in_current_theta_segment, constants, constraints)
               optimal    <- runAssembly(config, constraints, xdata = xdata_elg, objective = info)
               is_optimal <- isOptimal(optimal$status, config@MIP$solver)
 
@@ -317,14 +317,14 @@ setMethod(
 
               if (!is.null(config@exposure_control$M)) {
                 if (config@item_selection$method == "GFI") {
-                  info[ineligible_flag_in_segment$i == 1] <-
-                  info[ineligible_flag_in_segment$i == 1] + config@exposure_control$M # add because GFI performs minimization
+                  info[ineligible_flag_in_current_theta_segment$i == 1] <-
+                  info[ineligible_flag_in_current_theta_segment$i == 1] + config@exposure_control$M # add because GFI performs minimization
                 } else {
-                  info[ineligible_flag_in_segment$i == 1] <-
-                  info[ineligible_flag_in_segment$i == 1] - config@exposure_control$M
+                  info[ineligible_flag_in_current_theta_segment$i == 1] <-
+                  info[ineligible_flag_in_current_theta_segment$i == 1] - config@exposure_control$M
                 }
               } else {
-                info[ineligible_flag_in_segment$i == 1] <- -1 * all_data$max_info - 1
+                info[ineligible_flag_in_current_theta_segment$i == 1] <- -1 * all_data$max_info - 1
               }
 
               optimal <- runAssembly(config, constraints, xdata = xdata, objective = info)
@@ -725,8 +725,8 @@ setMethod(
 
         segment_of                 <- getSegmentOf(o, constants)
         segment_record             <- updateSegmentRecord(segment_record, segment_of, j)
-        ineligible_flag_in_segment <- getIneligibleFlagInSegment(ineligible_flag, segment_of$final_theta_est, constants)
-        eligible_flag_in_segment   <- getEligibleFlagInSegment(ineligible_flag, segment_of$final_theta_est, constants)
+        ineligible_flag_in_final_theta_segment <- getIneligibleFlagInSegment(ineligible_flag, segment_of$final_theta_est, constants)
+        eligible_flag_in_final_theta_segment   <- getEligibleFlagInSegment(ineligible_flag, segment_of$final_theta_est, constants)
 
         o_list[[j]]@true_theta_segment <- segment_of$true_theta
 
@@ -740,7 +740,7 @@ setMethod(
           eligible_flag     <- getEligibleFlag(ineligible_flag, constants, !theta_is_feasible)
           exposure_record   <- incrementExamineeCount(exposure_record, segments_to_apply, segment_prob, theta_is_feasible, constants)
           exposure_record   <- incrementAdministrationCount(exposure_record, segments_to_apply, segment_prob, eligible_flag, o, constants)
-          exposure_record   <- adjustAlphaToReduceSpike(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_segment, o, constants)
+          exposure_record   <- adjustAlphaToReduceSpike(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_final_theta_segment, o, constants)
           exposure_record   <- updateEligibilityRates(exposure_record, constants)
           exposure_record   <- clipEligibilityRates(exposure_record, constants)
 
@@ -752,7 +752,7 @@ setMethod(
           eligible_flag     <- getEligibleFlag(ineligible_flag, constants, FALSE)
           exposure_record   <- incrementExamineeCount(exposure_record, segments_to_apply, segment_prob, FALSE, constants)
           exposure_record   <- incrementAdministrationCount(exposure_record, segments_to_apply, segment_prob, eligible_flag, o, constants)
-          exposure_record   <- adjustAlphaToReduceSpike(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_segment, o, constants)
+          exposure_record   <- adjustAlphaToReduceSpike(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_final_theta_segment, o, constants)
           exposure_record   <- updateEligibilityRates(exposure_record, constants)
           exposure_record   <- clipEligibilityRates(exposure_record, constants)
 
@@ -764,7 +764,7 @@ setMethod(
           eligible_flag     <- getEligibleFlag(ineligible_flag, constants, FALSE)
           exposure_record   <- incrementExamineeCount(exposure_record, segments_to_apply, segment_prob, FALSE, constants)
           exposure_record   <- incrementAdministrationCount(exposure_record, segments_to_apply, segment_prob, eligible_flag, o, constants)
-          exposure_record   <- adjustAlphaToReduceSpike(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_segment, o, constants)
+          exposure_record   <- adjustAlphaToReduceSpike(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_final_theta_segment, o, constants)
           exposure_record   <- updateEligibilityRates(exposure_record, constants)
           exposure_record   <- clipEligibilityRates(exposure_record, constants)
 
