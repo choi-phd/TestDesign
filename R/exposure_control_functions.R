@@ -2,16 +2,16 @@
 NULL
 
 #' @noRd
-initializeSegmentRecord <- function(exposure_constants, constants) {
+initializeSegmentRecord <- function(constants) {
 
   o <- list()
 
-  if (!exposure_constants$use_eligibility_control) {
+  if (!constants$use_eligibility_control) {
     return(o)
   }
 
-  o$freq_true  <- numeric(exposure_constants$n_segment)
-  o$freq_est   <- numeric(exposure_constants$n_segment)
+  o$freq_true  <- numeric(constants$n_segment)
+  o$freq_est   <- numeric(constants$n_segment)
   o$count_true <- numeric(constants$nj)
   o$count_est  <- numeric(constants$nj)
 
@@ -20,27 +20,27 @@ initializeSegmentRecord <- function(exposure_constants, constants) {
 }
 
 #' @noRd
-initializeExposureRecord <- function(exposure_control, exposure_constants, constants) {
+initializeExposureRecord <- function(exposure_control, constants) {
 
   o <- list()
 
   ni <- constants$ni
   ns <- constants$ns
-  n_segment <- exposure_constants$n_segment
+  n_segment <- constants$n_segment
 
   o$n_jk  <- numeric(n_segment)
   if (toupper(exposure_control$method) == "ELIGIBILITY") {
     o$f_jk  <- numeric(n_segment)
   }
 
-  if (exposure_constants$fading_factor != 1) {
+  if (constants$fading_factor != 1) {
     o$n_jk_nofade  <- o$n_jk
   }
 
   o$a_ijk <- matrix(0, n_segment, ni)
   o$r_ijk <- matrix(0, n_segment, ni)
   o$p_e_i  <- matrix(1, n_segment, ni)
-  if (exposure_constants$fading_factor != 1) {
+  if (constants$fading_factor != 1) {
     o$a_ijk_nofade <- o$a_ijk
     o$r_ijk_nofade <- o$r_ijk
   }
@@ -52,7 +52,7 @@ initializeExposureRecord <- function(exposure_control, exposure_constants, const
   o$a_sjk <- matrix(0, n_segment, ns)
   o$r_sjk <- matrix(0, n_segment, ns)
   o$pe_s  <- matrix(1, n_segment, ns)
-  if (exposure_constants$fading_factor != 1) {
+  if (constants$fading_factor != 1) {
     o$a_sjk_nofade <- o$a_sjk
     o$r_sjk_nofade <- o$r_sjk
   }
@@ -81,14 +81,14 @@ getInitialEligibilityStats <- function(o, initial_stats, constants) {
 }
 
 #' @noRd
-initializeExposureRecordSegmentwise <- function(exposure_constants, constants) {
+initializeExposureRecordSegmentwise <- function(constants) {
 
   o <- list()
   ni <- constants$ni
   ns <- constants$ns
   nj <- constants$nj
-  n_segment     <- exposure_constants$n_segment
-  fading_factor <- exposure_constants$fading_factor
+  n_segment     <- constants$n_segment
+  fading_factor <- constants$fading_factor
 
   if (!constants$set_based) {
     o$a_g_i <- replicate(n_segment, matrix(0, nrow = nj, ncol = ni), simplify = FALSE)
@@ -117,11 +117,11 @@ initializeExposureRecordSegmentwise <- function(exposure_constants, constants) {
 }
 
 #' @noRd
-getSegmentOf <- function(x, exposure_constants) {
+getSegmentOf <- function(x, constants) {
 
   o <- list()
 
-  o$final_theta_est   <- find_segment(x@final_theta_est, exposure_constants$segment_cut)
+  o$final_theta_est   <- find_segment(x@final_theta_est, constants$segment_cut)
 
   tmp                 <- sort(unique(x@theta_segment_index))
   o$visited           <- tmp[tmp != o$final_theta_est]
@@ -130,7 +130,7 @@ getSegmentOf <- function(x, exposure_constants) {
     return(o)
   }
 
-  o$true_theta        <- find_segment(x@true_theta, exposure_constants$segment_cut)
+  o$true_theta        <- find_segment(x@true_theta, constants$segment_cut)
   return(o)
 
 }
@@ -164,10 +164,10 @@ getSegmentsToApply <- function(n_segment, segments) {
 }
 
 #' @noRd
-updateExposureRecordSegmentwise <- function(o, j, x, exposure_constants, constants) {
+updateExposureRecordSegmentwise <- function(o, j, x, constants) {
 
-  n_segment     <- exposure_constants$n_segment
-  fading_factor <- exposure_constants$fading_factor
+  n_segment     <- constants$n_segment
+  fading_factor <- constants$fading_factor
 
   ni <- constants$ni
   for (g in 1:n_segment) {
