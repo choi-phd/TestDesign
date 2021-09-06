@@ -156,6 +156,14 @@ incrementExamineeCount <- function(o, segments_to_apply, segment_prob, theta_is_
 #' @noRd
 incrementAlpha <- function(o, segments_to_apply, segment_prob, x, constants) {
 
+  # van der Linden & Veldkamp (2007)
+  # Conditional Item-Exposure Control in Adaptive Testing Using Item-Ineligibility Probabilities
+  # page 407
+
+  # a_ijk (alpha): number of times an examinee was in segment k, and
+  # was administered the item
+  # (used as numerator)
+
   administered_i <- x@administered_item_index
 
   o$a_ijk[segments_to_apply, administered_i] <-
@@ -184,6 +192,14 @@ incrementAlpha <- function(o, segments_to_apply, segment_prob, x, constants) {
 
 #' @noRd
 incrementRho <- function(o, segments_to_apply, segment_prob, eligible_flag, constants) {
+
+  # van der Linden & Veldkamp (2007)
+  # Conditional Item-Exposure Control in Adaptive Testing Using Item-Ineligibility Probabilities
+  # page 407
+
+  # r_ijk (rho): number of times an examinee was in segment k, and
+  # either the item was eligible or the test was infeasible
+  # (used as denominator)
 
   o$r_ijk <- o$r_ijk + eligible_flag$i * segments_to_apply * segment_prob
   if (constants$fading_factor != 1) {
