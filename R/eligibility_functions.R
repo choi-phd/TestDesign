@@ -2,10 +2,10 @@
 NULL
 
 #' @noRd
-flagIneligible <- function(exposure_record, exposure_constants, constants, item_index_by_stimulus) {
+flagIneligible <- function(exposure_record, constants, item_index_by_stimulus) {
 
   o <- list()
-  n_segment <- exposure_constants$n_segment
+  n_segment <- constants$n_segment
 
   # Randomly flag items in each segment to be ineligible
 
@@ -27,7 +27,7 @@ flagIneligible <- function(exposure_record, exposure_constants, constants, item_
   p_random <- matrix(runif(n_segment * ns), n_segment, ns)
   o$s[p_random >= p_e_s] <- 1
 
-  for (k in 1:exposure_constants$n_segment) {
+  for (k in 1:constants$n_segment) {
     for (s in which(o$s[k, ] == 1)) {
       o$i[k, item_index_by_stimulus[[s]]] <- 1
     }
@@ -100,9 +100,9 @@ applyIneligibleFlagtoXdata <- function(xdata, ineligible_flag_in_segment, consta
 }
 
 #' @noRd
-applyFading <- function(o, segments_to_apply, exposure_constants, constants) {
+applyFading <- function(o, segments_to_apply, constants) {
 
-  fading_factor <- exposure_constants$fading_factor
+  fading_factor <- constants$fading_factor
 
   o$n_jk[segments_to_apply]    <- fading_factor * o$n_jk[segments_to_apply]
 
@@ -136,11 +136,11 @@ getEligibleFlagInSegment <- function(ineligible_flag, segment, constants) {
 }
 
 #' @noRd
-incrementExamineeCount <- function(o, segments_to_apply, segment_prob, theta_is_feasible, exposure_constants) {
+incrementExamineeCount <- function(o, segments_to_apply, segment_prob, theta_is_feasible, constants) {
 
   o$n_jk[segments_to_apply] <-
   o$n_jk[segments_to_apply] + segment_prob
-  if (exposure_constants$fading_factor != 1) {
+  if (constants$fading_factor != 1) {
     o$n_jk_nofade[segments_to_apply] <-
     o$n_jk_nofade[segments_to_apply] + segment_prob
   }
@@ -154,18 +154,18 @@ incrementExamineeCount <- function(o, segments_to_apply, segment_prob, theta_is_
 }
 
 #' @noRd
-incrementAdministrationCount <- function(o, segments_to_apply, segment_prob, eligible_flag, x, exposure_constants, constants) {
+incrementAdministrationCount <- function(o, segments_to_apply, segment_prob, eligible_flag, x, constants) {
 
   administered_i <- x@administered_item_index
 
   o$a_ijk[segments_to_apply, administered_i] <-
   o$a_ijk[segments_to_apply, administered_i] + segment_prob
-  if (exposure_constants$fading_factor != 1) {
+  if (constants$fading_factor != 1) {
     o$a_ijk_nofade[segments_to_apply, administered_i] <-
     o$a_ijk_nofade[segments_to_apply, administered_i] + segment_prob
   }
   o$r_ijk <- o$r_ijk + eligible_flag$i * segments_to_apply * segment_prob
-  if (exposure_constants$fading_factor != 1) {
+  if (constants$fading_factor != 1) {
     o$r_ijk_nofade <- o$r_ijk_nofade + eligible_flag$i * segments_to_apply * segment_prob
   }
 
@@ -177,12 +177,12 @@ incrementAdministrationCount <- function(o, segments_to_apply, segment_prob, eli
 
   o$a_sjk[segments_to_apply, administered_s] <-
   o$a_sjk[segments_to_apply, administered_s] + segment_prob
-  if (exposure_constants$fading_factor != 1) {
+  if (constants$fading_factor != 1) {
     o$a_sjk_nofade[segments_to_apply, administered_s] <-
     o$a_sjk_nofade[segments_to_apply, administered_s] + segment_prob
   }
   o$r_sjk <- o$r_sjk + eligible_flag$s * segments_to_apply * segment_prob
-  if (exposure_constants$fading_factor != 1) {
+  if (constants$fading_factor != 1) {
     o$r_sjk_nofade <- o$r_sjk_nofade + eligible_flag$s * segments_to_apply * segment_prob
   }
 
@@ -222,9 +222,9 @@ getEligibleFlag <- function(ineligible_flag, constants, force_true) {
 }
 
 #' @noRd
-incrementAdministrationCountForVisitedSegments <- function(o, segment_prob, segment_visited, ineligible_flag_in_segment, x, exposure_constants, constants) {
+incrementAdministrationCountForVisitedSegments <- function(o, segment_prob, segment_visited, ineligible_flag_in_segment, x, constants) {
 
-  segments_to_apply <- getSegmentsToApply(exposure_constants$n_segment, segment_visited)
+  segments_to_apply <- getSegmentsToApply(constants$n_segment, segment_visited)
 
   administered_i <- x@administered_item_index
   if (any(segments_to_apply)) {
@@ -259,11 +259,11 @@ incrementAdministrationCountForVisitedSegments <- function(o, segment_prob, segm
 }
 
 #' @noRd
-updateEligibilityRates <- function(o, exposure_constants, constants) {
+updateEligibilityRates <- function(o, constants) {
 
-  max_exposure_rate <- exposure_constants$max_exposure_rate
-  acc_factor        <- exposure_constants$acceleration_factor
-  n_segment         <- exposure_constants$n_segment
+  max_exposure_rate <- constants$max_exposure_rate
+  acc_factor        <- constants$acceleration_factor
+  n_segment         <- constants$n_segment
 
   ni <- constants$ni
   # f_jk: examinees who took a feasible test

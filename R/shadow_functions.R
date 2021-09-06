@@ -147,15 +147,14 @@ setMethod(
     # Initialize exposure rate control
 
     exposure_control   <- toupper(config@exposure_control$method)
-    exposure_constants <- getExposureConstants(config@exposure_control)
     items_administered <- matrix(FALSE, constants$nj, constants$ni)
     o_list <- vector(mode = "list", length = constants$nj)
 
     if (exposure_control %in% c("NONE", "ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
 
-      segment_record           <- initializeSegmentRecord(exposure_constants, constants)
-      exposure_record          <- initializeExposureRecord(config@exposure_control, exposure_constants, constants)
-      exposure_record_detailed <- initializeExposureRecordSegmentwise(exposure_constants, constants)
+      segment_record           <- initializeSegmentRecord(constants)
+      exposure_record          <- initializeExposureRecord(config@exposure_control, constants)
+      exposure_record_detailed <- initializeExposureRecordSegmentwise(constants)
       if (!is.null(config@exposure_control$initial_eligibility_stats)) {
         exposure_record <- config@exposure_control$initial_eligibility_stats
       }
@@ -239,8 +238,8 @@ setMethod(
 
       # Simulee: flag ineligibile items
 
-      if (exposure_constants$use_eligibility_control) {
-        ineligible_flag <- flagIneligible(exposure_record, exposure_constants, constants, constraints@item_index_by_stimulus)
+      if (constants$use_eligibility_control) {
+        ineligible_flag <- flagIneligible(exposure_record, constants, constraints@item_index_by_stimulus)
       }
 
       # Simulee: create augmented pool if applicable
@@ -268,7 +267,7 @@ setMethod(
 
         if (constants$use_shadow) {
 
-          o@theta_segment_index[position] <- getThetaSegment(current_theta, position, config@exposure_control, exposure_constants)
+          o@theta_segment_index[position] <- getThetaSegment(current_theta, position, config@exposure_control, constants)
 
           if (shouldShadowBeRefreshed(
             position, config@refresh_policy, refresh_shadow,
@@ -284,7 +283,7 @@ setMethod(
 
             # Do exposure control
 
-            if (exposure_constants$use_eligibility_control) {
+            if (constants$use_eligibility_control) {
 
               # Get ineligible items in the current theta segment
 
@@ -294,7 +293,7 @@ setMethod(
 
             }
 
-            if (exposure_constants$use_eligibility_control && exposure_control %in% c("ELIGIBILITY")) {
+            if (constants$use_eligibility_control && exposure_control %in% c("ELIGIBILITY")) {
 
               xdata_elg  <- applyIneligibleFlagtoXdata(xdata, ineligible_flag_in_segment, constants, constraints)
               optimal    <- runAssembly(config, constraints, xdata = xdata_elg, objective = info)
@@ -311,7 +310,7 @@ setMethod(
 
             }
 
-            if (exposure_constants$use_eligibility_control && exposure_control %in% c("BIGM", "BIGM-BAYESIAN")) {
+            if (constants$use_eligibility_control && exposure_control %in% c("BIGM", "BIGM-BAYESIAN")) {
 
               # Do Big-M based exposure control
               # Penalize item info
@@ -333,7 +332,7 @@ setMethod(
 
             }
 
-            if (!exposure_constants$use_eligibility_control) {
+            if (!constants$use_eligibility_control) {
 
               optimal <- runAssembly(config, constraints, xdata = xdata, objective = info)
               o@shadow_test_feasible[position] <- TRUE
@@ -722,9 +721,9 @@ setMethod(
 
       # Simulee: do exposure control
 
-      if (exposure_constants$use_eligibility_control) {
+      if (constants$use_eligibility_control) {
 
-        segment_of                 <- getSegmentOf(o, exposure_constants)
+        segment_of                 <- getSegmentOf(o, constants)
         segment_record             <- updateSegmentRecord(segment_record, segment_of, j)
         ineligible_flag_in_segment <- getIneligibleFlagInSegment(ineligible_flag, segment_of$final_theta_est, constants)
         eligible_flag_in_segment   <- getEligibleFlagInSegment(ineligible_flag, segment_of$final_theta_est, constants)
@@ -733,40 +732,40 @@ setMethod(
 
         if (exposure_control %in% c("ELIGIBILITY")) {
 
-          segments_to_apply <- getSegmentsToApply(exposure_constants$n_segment, segment_of$final_theta_est)
-          exposure_record   <- applyFading(exposure_record, segments_to_apply, exposure_constants, constants)
+          segments_to_apply <- getSegmentsToApply(constants$n_segment, segment_of$final_theta_est)
+          exposure_record   <- applyFading(exposure_record, segments_to_apply, constants)
           segment_prob      <- 1
           segment_feasible  <- unique(o@theta_segment_index[o@shadow_test_feasible == TRUE])
           theta_is_feasible <- segment_of$final_theta_est %in% segment_feasible
           eligible_flag     <- getEligibleFlag(ineligible_flag, constants, !theta_is_feasible)
-          exposure_record   <- incrementExamineeCount(exposure_record, segments_to_apply, segment_prob, theta_is_feasible, exposure_constants)
-          exposure_record   <- incrementAdministrationCount(exposure_record, segments_to_apply, segment_prob, eligible_flag, o, exposure_constants, constants)
-          exposure_record   <- incrementAdministrationCountForVisitedSegments(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_segment, o, exposure_constants, constants)
-          exposure_record   <- updateEligibilityRates(exposure_record, exposure_constants, constants)
+          exposure_record   <- incrementExamineeCount(exposure_record, segments_to_apply, segment_prob, theta_is_feasible, constants)
+          exposure_record   <- incrementAdministrationCount(exposure_record, segments_to_apply, segment_prob, eligible_flag, o, constants)
+          exposure_record   <- incrementAdministrationCountForVisitedSegments(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_segment, o, constants)
+          exposure_record   <- updateEligibilityRates(exposure_record, constants)
           exposure_record   <- clipEligibilityRates(exposure_record, constants)
 
         } else if (exposure_control %in% c("BIGM")) {
 
-          segments_to_apply <- getSegmentsToApply(exposure_constants$n_segment, segment_of$final_theta_est)
-          exposure_record   <- applyFading(exposure_record, segments_to_apply, exposure_constants, constants)
+          segments_to_apply <- getSegmentsToApply(constants$n_segment, segment_of$final_theta_est)
+          exposure_record   <- applyFading(exposure_record, segments_to_apply, constants)
           segment_prob      <- 1
           eligible_flag     <- getEligibleFlag(ineligible_flag, constants, FALSE)
-          exposure_record   <- incrementExamineeCount(exposure_record, segments_to_apply, segment_prob, FALSE, exposure_constants)
-          exposure_record   <- incrementAdministrationCount(exposure_record, segments_to_apply, segment_prob, eligible_flag, o, exposure_constants, constants)
-          exposure_record   <- incrementAdministrationCountForVisitedSegments(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_segment, o, exposure_constants, constants)
-          exposure_record   <- updateEligibilityRates(exposure_record, exposure_constants, constants)
+          exposure_record   <- incrementExamineeCount(exposure_record, segments_to_apply, segment_prob, FALSE, constants)
+          exposure_record   <- incrementAdministrationCount(exposure_record, segments_to_apply, segment_prob, eligible_flag, o, constants)
+          exposure_record   <- incrementAdministrationCountForVisitedSegments(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_segment, o, constants)
+          exposure_record   <- updateEligibilityRates(exposure_record, constants)
           exposure_record   <- clipEligibilityRates(exposure_record, constants)
 
         } else if (exposure_control %in% c("BIGM-BAYESIAN")) {
 
-          segments_to_apply <- getSegmentsToApply(exposure_constants$n_segment, 1:exposure_constants$n_segment)
-          exposure_record   <- applyFading(exposure_record, segments_to_apply, exposure_constants, constants)
-          segment_prob      <- getSegmentProb(current_theta$posterior_sample, exposure_constants)
+          segments_to_apply <- getSegmentsToApply(constants$n_segment, 1:constants$n_segment)
+          exposure_record   <- applyFading(exposure_record, segments_to_apply, constants)
+          segment_prob      <- getSegmentProb(current_theta$posterior_sample, constants)
           eligible_flag     <- getEligibleFlag(ineligible_flag, constants, FALSE)
-          exposure_record   <- incrementExamineeCount(exposure_record, segments_to_apply, segment_prob, FALSE, exposure_constants)
-          exposure_record   <- incrementAdministrationCount(exposure_record, segments_to_apply, segment_prob, eligible_flag, o, exposure_constants, constants)
-          exposure_record   <- incrementAdministrationCountForVisitedSegments(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_segment, o, exposure_constants, constants)
-          exposure_record   <- updateEligibilityRates(exposure_record, exposure_constants, constants)
+          exposure_record   <- incrementExamineeCount(exposure_record, segments_to_apply, segment_prob, FALSE, constants)
+          exposure_record   <- incrementAdministrationCount(exposure_record, segments_to_apply, segment_prob, eligible_flag, o, constants)
+          exposure_record   <- incrementAdministrationCountForVisitedSegments(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_segment, o, constants)
+          exposure_record   <- updateEligibilityRates(exposure_record, constants)
           exposure_record   <- clipEligibilityRates(exposure_record, constants)
 
         }
@@ -774,7 +773,7 @@ setMethod(
         if (config@exposure_control$diagnostic_stats) {
 
           exposure_record_detailed <- updateExposureRecordSegmentwise(
-            exposure_record_detailed, j, exposure_record, exposure_constants, constants
+            exposure_record_detailed, j, exposure_record, constants
           )
 
         }
@@ -825,7 +824,7 @@ setMethod(
 
     # Get exposure control diagnostic stats
 
-    if (exposure_constants$use_eligibility_control) {
+    if (constants$use_eligibility_control) {
 
       if (config@exposure_control$diagnostic_stats) {
 
@@ -834,7 +833,7 @@ setMethod(
         for (j in 1:constants$nj) {
           tmp <- list()
           tmp$true_theta         <- true_theta[j]
-          tmp$true_segment       <- find_segment(true_theta[j], exposure_constants$segment_cut)
+          tmp$true_segment       <- find_segment(true_theta[j], constants$segment_cut)
           tmp$true_segment_count <- segment_record$count_true[j]
           check_eligibility_stats[[j]] <- tmp
 
@@ -848,14 +847,14 @@ setMethod(
 
         }
 
-        if (exposure_constants$fading_factor != 1) {
+        if (constants$fading_factor != 1) {
 
           no_fading_eligibility_stats <- list()
 
           for (j in 1:constants$nj) {
             tmp <- list()
             tmp$true_theta         <- true_theta[j]
-            tmp$true_segment       <- find_segment(true_theta[j], exposure_constants$segment_cut)
+            tmp$true_segment       <- find_segment(true_theta[j], constants$segment_cut)
             tmp$true_segment_count <- segment_record$count_true[j]
             no_fading_eligibility_stats[[j]] <- tmp
 
