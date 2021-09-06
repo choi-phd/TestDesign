@@ -152,6 +152,12 @@ incrementN <- function(o, segments_to_apply, segment_prob, constants) {
 #' @noRd
 incrementPhi <- function(o, segments_to_apply, segment_prob, theta_is_feasible) {
 
+  # for soft costraint exposure control, incrementPhi() is not called for the purpose of code optimization
+  # techinally, incrementPhi() should be always called because test is always feasible when using soft costraint exposure control
+  # but always incrementing f_jk gives f_jk == n_jk, which is only used to compute n_jk / f_jk = 1
+  # hence, skip incrementing and just use 1
+  # see updateEligibilityRates()
+
   if (theta_is_feasible) {
     o$f_jk[segments_to_apply] <-
     o$f_jk[segments_to_apply] + segment_prob
