@@ -50,6 +50,25 @@ getConstants <- function(constraints, config, arg_data, true_theta) {
     o$set_based_refresh <- FALSE
   }
 
+  exposure_method <- toupper(config@exposure_control$method)
+  if (exposure_method %in% c("ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
+    o$use_eligibility_control <- TRUE
+  } else {
+    o$use_eligibility_control <- FALSE
+  }
+
+  o$max_exposure_rate   <- config@exposure_control$max_exposure_rate
+  o$fading_factor       <- config@exposure_control$fading_factor
+  o$acceleration_factor <- config@exposure_control$acceleration_factor
+  o$n_segment           <- config@exposure_control$n_segment
+  o$segment_cut         <- config@exposure_control$segment_cut
+  o$cut_lower           <- o$segment_cut[(1:o$n_segment)]
+  o$cut_upper           <- o$segment_cut[(1:o$n_segment) + 1]
+
+  if (!length(o$max_exposure_rate) %in% c(1, o$n_segment)) {
+    stop("length(max_exposure_rate) must be 1 or n_segment")
+  }
+
   return(o)
 
 }
