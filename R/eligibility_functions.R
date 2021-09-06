@@ -154,7 +154,7 @@ incrementExamineeCount <- function(o, segments_to_apply, segment_prob, theta_is_
 }
 
 #' @noRd
-incrementAdministrationCount <- function(o, segments_to_apply, segment_prob, eligible_flag, x, constants) {
+incrementAlpha <- function(o, segments_to_apply, segment_prob, x, constants) {
 
   administered_i <- x@administered_item_index
 
@@ -163,10 +163,6 @@ incrementAdministrationCount <- function(o, segments_to_apply, segment_prob, eli
   if (constants$fading_factor != 1) {
     o$a_ijk_nofade[segments_to_apply, administered_i] <-
     o$a_ijk_nofade[segments_to_apply, administered_i] + segment_prob
-  }
-  o$r_ijk <- o$r_ijk + eligible_flag$i * segments_to_apply * segment_prob
-  if (constants$fading_factor != 1) {
-    o$r_ijk_nofade <- o$r_ijk_nofade + eligible_flag$i * segments_to_apply * segment_prob
   }
 
   if (!constants$set_based) {
@@ -181,6 +177,23 @@ incrementAdministrationCount <- function(o, segments_to_apply, segment_prob, eli
     o$a_sjk_nofade[segments_to_apply, administered_s] <-
     o$a_sjk_nofade[segments_to_apply, administered_s] + segment_prob
   }
+
+  return(o)
+
+}
+
+#' @noRd
+incrementRho <- function(o, segments_to_apply, segment_prob, eligible_flag, constants) {
+
+  o$r_ijk <- o$r_ijk + eligible_flag$i * segments_to_apply * segment_prob
+  if (constants$fading_factor != 1) {
+    o$r_ijk_nofade <- o$r_ijk_nofade + eligible_flag$i * segments_to_apply * segment_prob
+  }
+
+  if (!constants$set_based) {
+    return(o)
+  }
+
   o$r_sjk <- o$r_sjk + eligible_flag$s * segments_to_apply * segment_prob
   if (constants$fading_factor != 1) {
     o$r_sjk_nofade <- o$r_sjk_nofade + eligible_flag$s * segments_to_apply * segment_prob
@@ -189,7 +202,6 @@ incrementAdministrationCount <- function(o, segments_to_apply, segment_prob, eli
   return(o)
 
 }
-
 
 #' @noRd
 clipEligibilityRates <- function(o, constants) {
