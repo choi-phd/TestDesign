@@ -136,7 +136,7 @@ getEligibleFlagInSegment <- function(ineligible_flag, segment, constants) {
 }
 
 #' @noRd
-incrementExamineeCount <- function(o, segments_to_apply, segment_prob, theta_is_feasible, constants) {
+incrementN <- function(o, segments_to_apply, segment_prob, constants) {
 
   o$n_jk[segments_to_apply] <-
   o$n_jk[segments_to_apply] + segment_prob
@@ -144,6 +144,14 @@ incrementExamineeCount <- function(o, segments_to_apply, segment_prob, theta_is_
     o$n_jk_nofade[segments_to_apply] <-
     o$n_jk_nofade[segments_to_apply] + segment_prob
   }
+
+  return(o)
+
+}
+
+#' @noRd
+incrementPhi <- function(o, segments_to_apply, segment_prob, theta_is_feasible) {
+
   if (theta_is_feasible) {
     o$f_jk[segments_to_apply] <-
     o$f_jk[segments_to_apply] + segment_prob

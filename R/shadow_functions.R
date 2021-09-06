@@ -738,7 +738,8 @@ setMethod(
           segment_feasible  <- unique(o@theta_segment_index[o@shadow_test_feasible == TRUE])
           theta_is_feasible <- segment_of$final_theta_est %in% segment_feasible
           eligible_flag     <- getEligibleFlag(ineligible_flag, constants, !theta_is_feasible)
-          exposure_record   <- incrementExamineeCount(exposure_record, segments_to_apply, segment_prob, theta_is_feasible, constants)
+          exposure_record   <- incrementN(exposure_record, segments_to_apply, segment_prob, constants)
+          exposure_record   <- incrementPhi(exposure_record, segments_to_apply, segment_prob, theta_is_feasible)
           exposure_record   <- incrementAlpha(exposure_record, segments_to_apply, segment_prob, o, constants)
           exposure_record   <- incrementRho(exposure_record, segments_to_apply, segment_prob, eligible_flag, constants)
           exposure_record   <- adjustAlphaToReduceSpike(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_final_theta_segment, o, constants)
@@ -751,7 +752,8 @@ setMethod(
           exposure_record   <- applyFading(exposure_record, segments_to_apply, constants)
           segment_prob      <- 1
           eligible_flag     <- getEligibleFlag(ineligible_flag, constants, FALSE)
-          exposure_record   <- incrementExamineeCount(exposure_record, segments_to_apply, segment_prob, FALSE, constants)
+          exposure_record   <- incrementN(exposure_record, segments_to_apply, segment_prob, constants)
+          exposure_record   <- incrementPhi(exposure_record, segments_to_apply, segment_prob, FALSE) # TODO: why is this false?
           exposure_record   <- incrementAlpha(exposure_record, segments_to_apply, segment_prob, o, constants)
           exposure_record   <- incrementRho(exposure_record, segments_to_apply, segment_prob, eligible_flag, constants)
           exposure_record   <- adjustAlphaToReduceSpike(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_final_theta_segment, o, constants)
@@ -764,7 +766,8 @@ setMethod(
           exposure_record   <- applyFading(exposure_record, segments_to_apply, constants)
           segment_prob      <- getSegmentProb(current_theta$posterior_sample, constants)
           eligible_flag     <- getEligibleFlag(ineligible_flag, constants, FALSE)
-          exposure_record   <- incrementExamineeCount(exposure_record, segments_to_apply, segment_prob, FALSE, constants)
+          exposure_record   <- incrementN(exposure_record, segments_to_apply, segment_prob, constants)
+          exposure_record   <- incrementPhi(exposure_record, segments_to_apply, segment_prob, FALSE) # TODO: why is this false?
           exposure_record   <- incrementAlpha(exposure_record, segments_to_apply, segment_prob, o, constants)
           exposure_record   <- incrementRho(exposure_record, segments_to_apply, segment_prob, eligible_flag, constants)
           exposure_record   <- adjustAlphaToReduceSpike(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_final_theta_segment, o, constants)
