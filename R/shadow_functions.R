@@ -740,7 +740,7 @@ setMethod(
           eligible_flag     <- getEligibleFlag(ineligible_flag, constants, !theta_is_feasible)
           exposure_record   <- incrementExamineeCount(exposure_record, segments_to_apply, segment_prob, theta_is_feasible, constants)
           exposure_record   <- incrementAdministrationCount(exposure_record, segments_to_apply, segment_prob, eligible_flag, o, constants)
-          exposure_record   <- incrementAdministrationCountForVisitedSegments(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_segment, o, constants)
+          exposure_record   <- adjustAlphaToReduceSpike(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_segment, o, constants)
           exposure_record   <- updateEligibilityRates(exposure_record, constants)
           exposure_record   <- clipEligibilityRates(exposure_record, constants)
 
@@ -752,7 +752,7 @@ setMethod(
           eligible_flag     <- getEligibleFlag(ineligible_flag, constants, FALSE)
           exposure_record   <- incrementExamineeCount(exposure_record, segments_to_apply, segment_prob, FALSE, constants)
           exposure_record   <- incrementAdministrationCount(exposure_record, segments_to_apply, segment_prob, eligible_flag, o, constants)
-          exposure_record   <- incrementAdministrationCountForVisitedSegments(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_segment, o, constants)
+          exposure_record   <- adjustAlphaToReduceSpike(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_segment, o, constants)
           exposure_record   <- updateEligibilityRates(exposure_record, constants)
           exposure_record   <- clipEligibilityRates(exposure_record, constants)
 
@@ -764,7 +764,7 @@ setMethod(
           eligible_flag     <- getEligibleFlag(ineligible_flag, constants, FALSE)
           exposure_record   <- incrementExamineeCount(exposure_record, segments_to_apply, segment_prob, FALSE, constants)
           exposure_record   <- incrementAdministrationCount(exposure_record, segments_to_apply, segment_prob, eligible_flag, o, constants)
-          exposure_record   <- incrementAdministrationCountForVisitedSegments(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_segment, o, constants)
+          exposure_record   <- adjustAlphaToReduceSpike(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_segment, o, constants)
           exposure_record   <- updateEligibilityRates(exposure_record, constants)
           exposure_record   <- clipEligibilityRates(exposure_record, constants)
 

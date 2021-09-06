@@ -222,7 +222,17 @@ getEligibleFlag <- function(ineligible_flag, constants, force_true) {
 }
 
 #' @noRd
-incrementAdministrationCountForVisitedSegments <- function(o, segment_prob, segment_visited, ineligible_flag_in_segment, x, constants) {
+adjustAlphaToReduceSpike <- function(o, segment_prob, segment_visited, ineligible_flag_in_segment, x, constants) {
+
+  # van der Linden & Choi (2018)
+  # Improving Item-Exposure Control in Adaptive Testing
+  # page 13
+
+  # adjust a_ijk (alpha) to reduce overexposure spikes
+  # increment a_ijk for visited segments for administered items that were
+  # - administered in visited segments AND
+  # - ineligible in the final-theta segment
+  # visited segments do not include final-theta segment
 
   segments_to_apply <- getSegmentsToApply(constants$n_segment, segment_visited)
 
