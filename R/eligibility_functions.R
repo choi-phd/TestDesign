@@ -205,7 +205,7 @@ incrementAlpha <- function(o, segments_to_apply, segment_prob, x, constants) {
 }
 
 #' @noRd
-incrementRho <- function(o, segments_to_apply, segment_prob, eligible_flag, constants) {
+incrementRho <- function(o, segments_to_apply, segment_prob, ineligible_flag, theta_is_feasible, constants) {
 
   # van der Linden & Veldkamp (2007)
   # Conditional Item-Exposure Control in Adaptive Testing Using Item-Ineligibility Probabilities
@@ -214,6 +214,8 @@ incrementRho <- function(o, segments_to_apply, segment_prob, eligible_flag, cons
   # r_ijk (rho): number of times an examinee was in segment k, and
   # either the item was eligible or the test was infeasible
   # (used as denominator)
+
+  eligible_flag <- getEligibleFlag(ineligible_flag, constants, !theta_is_feasible)
 
   o$r_ijk <- o$r_ijk + eligible_flag$i * segments_to_apply * segment_prob
   if (constants$fading_factor != 1) {
