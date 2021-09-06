@@ -65,7 +65,7 @@ flagAdministeredAsEligible <- function(o, x, position, constants) {
 }
 
 #' @noRd
-applyIneligibleFlagtoXdata <- function(xdata, ineligible_flag_in_segment, constants, constraints) {
+applyIneligibleFlagtoXdata <- function(xdata, ineligible_flag_in_current_theta_segment, constants, constraints) {
 
   o <- list()
 
@@ -73,19 +73,19 @@ applyIneligibleFlagtoXdata <- function(xdata, ineligible_flag_in_segment, consta
   nv <- constants$nv
   item_index_by_stimulus <- constraints@item_index_by_stimulus
 
-  if (any(ineligible_flag_in_segment$i == 1)) {
+  if (any(ineligible_flag_in_current_theta_segment$i == 1)) {
     o$xmat_elg <- numeric(nv)
-    o$xmat_elg[1:ni] <- ineligible_flag_in_segment$i
+    o$xmat_elg[1:ni] <- ineligible_flag_in_current_theta_segment$i
     o$xdir_elg <- "=="
     o$xrhs_elg <- 0
   }
 
-  if (any(ineligible_flag_in_segment$s == 1)) {
-    o$xmat_elg[(ni + 1):nv] <- ineligible_flag_in_segment$s
-    for (s in which(ineligible_flag_in_segment$s == 1)) {
+  if (any(ineligible_flag_in_current_theta_segment$s == 1)) {
+    o$xmat_elg[(ni + 1):nv] <- ineligible_flag_in_current_theta_segment$s
+    for (s in which(ineligible_flag_in_current_theta_segment$s == 1)) {
       o$xmat_elg[item_index_by_stimulus[[s]]] <- 1
     }
-    for (s in which(ineligible_flag_in_segment$s == 0)) {
+    for (s in which(ineligible_flag_in_current_theta_segment$s == 0)) {
       o$xmat_elg[item_index_by_stimulus[[s]]] <- 0
     }
   }
@@ -222,7 +222,7 @@ getEligibleFlag <- function(ineligible_flag, constants, force_true) {
 }
 
 #' @noRd
-adjustAlphaToReduceSpike <- function(o, segment_prob, segment_visited, ineligible_flag_in_segment, x, constants) {
+adjustAlphaToReduceSpike <- function(o, segment_prob, segment_visited, ineligible_flag_in_final_theta_segment, x, constants) {
 
   # van der Linden & Choi (2018)
   # Improving Item-Exposure Control in Adaptive Testing
@@ -238,11 +238,11 @@ adjustAlphaToReduceSpike <- function(o, segment_prob, segment_visited, ineligibl
 
   administered_i <- x@administered_item_index
   if (any(segments_to_apply)) {
-    if (any(ineligible_flag_in_segment$i[administered_i] == 1)) {
+    if (any(ineligible_flag_in_final_theta_segment$i[administered_i] == 1)) {
       items_visited  <- administered_i[
         x@theta_segment_index %in% segment_visited
       ]
-      items_to_apply <- items_visited[ineligible_flag_in_segment$i[items_visited] == 1]
+      items_to_apply <- items_visited[ineligible_flag_in_final_theta_segment$i[items_visited] == 1]
       o$a_ijk[, items_to_apply] <- o$a_ijk[, items_to_apply] + segments_to_apply * segment_prob
     }
   }
@@ -253,12 +253,12 @@ adjustAlphaToReduceSpike <- function(o, segment_prob, segment_visited, ineligibl
 
   administered_s <- x@administered_stimulus_index
   if (any(segments_to_apply)) {
-    if (any(ineligible_flag_in_segment$s[administered_s] == 1, na.rm = TRUE)) {
+    if (any(ineligible_flag_in_final_theta_segment$s[administered_s] == 1, na.rm = TRUE)) {
       stimuli_visited  <- administered_s[
         x@theta_segment_index %in% segment_visited &
         x@administered_stimulus_index %in% administered_s
       ]
-      stimuli_to_apply <- stimuli_visited[ineligible_flag_in_segment$s[stimuli_visited] == 1]
+      stimuli_to_apply <- stimuli_visited[ineligible_flag_in_final_theta_segment$s[stimuli_visited] == 1]
       stimuli_to_apply <- na.omit(stimuli_to_apply)
       o$a_sjk[, stimuli_to_apply] <- o$a_sjk[, stimuli_to_apply] + segments_to_apply * segment_prob
     }
