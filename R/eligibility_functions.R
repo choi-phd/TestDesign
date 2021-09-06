@@ -10,10 +10,10 @@ flagIneligible <- function(exposure_record, constants, item_index_by_stimulus) {
   # Randomly flag items in each segment to be ineligible
 
   ni       <- constants$ni
-  p_e_i     <- exposure_record$p_e_i
-  o$i      <- matrix(0, n_segment, ni)
+  p_e_i    <- exposure_record$p_e_i
+  o$i      <- matrix(1, n_segment, ni)
   p_random <- matrix(runif(n_segment * ni), n_segment, ni)
-  o$i[p_random >= p_e_i] <- 1
+  o$i[p_random >= p_e_i] <- 0
 
   if (!constants$set_based) {
     return(o)
@@ -22,10 +22,10 @@ flagIneligible <- function(exposure_record, constants, item_index_by_stimulus) {
   # Randomly flag stimuli in each segment to be ineligible
 
   ns       <- constants$ns
-  p_e_s     <- exposure_record$p_e_s
-  o$s      <- matrix(0, n_segment, ns)
+  p_e_s    <- exposure_record$p_e_s
+  o$s      <- matrix(1, n_segment, ns)
   p_random <- matrix(runif(n_segment * ns), n_segment, ns)
-  o$s[p_random >= p_e_s] <- 1
+  o$s[p_random >= p_e_s] <- 0
 
   for (k in 1:constants$n_segment) {
     for (s in which(o$s[k, ] == 1)) {
@@ -41,31 +41,31 @@ flagIneligible <- function(exposure_record, constants, item_index_by_stimulus) {
 }
 
 #' @noRd
-getIneligibleFlagInSegment <- function(ineligible_flag, segment, constants) {
+getEligibleFlagInSegment <- function(eligible_flag, segment, constants) {
   o <- list()
-  o$i <- ineligible_flag$i[segment, ]
+  o$i <- eligible_flag$i[segment, ]
   if (!constants$set_based) {
     return(o)
   }
-  o$s <- ineligible_flag$s[segment, ]
+  o$s <- eligible_flag$s[segment, ]
   return(o)
 }
 
 #' @noRd
 flagAdministeredAsEligible <- function(o, x, position, constants) {
 
-  o$i[x@administered_item_index[0:(position - 1)]] <- 0
+  o$i[x@administered_item_index[0:(position - 1)]] <- 1
   if (!constants$set_based) {
     return(o)
   }
 
-  o$s[x@administered_stimulus_index[0:(position - 1)]] <- 0
+  o$s[x@administered_stimulus_index[0:(position - 1)]] <- 1
   return(o)
 
 }
 
 #' @noRd
-applyIneligibleFlagtoXdata <- function(xdata, ineligible_flag_in_current_theta_segment, constants, constraints) {
+applyEligibilityConstraintsToXdata <- function(xdata, eligible_flag_in_current_theta_segment, constants, constraints) {
 
   o <- list()
 
@@ -73,19 +73,19 @@ applyIneligibleFlagtoXdata <- function(xdata, ineligible_flag_in_current_theta_s
   nv <- constants$nv
   item_index_by_stimulus <- constraints@item_index_by_stimulus
 
-  if (any(ineligible_flag_in_current_theta_segment$i == 1)) {
+  if (any(eligible_flag_in_current_theta_segment$i == 0)) {
     o$xmat_elg <- numeric(nv)
-    o$xmat_elg[1:ni] <- ineligible_flag_in_current_theta_segment$i
+    o$xmat_elg[1:ni] <- (eligible_flag_in_current_theta_segment$i == 0) * 1
     o$xdir_elg <- "=="
     o$xrhs_elg <- 0
   }
 
-  if (any(ineligible_flag_in_current_theta_segment$s == 1)) {
-    o$xmat_elg[(ni + 1):nv] <- ineligible_flag_in_current_theta_segment$s
-    for (s in which(ineligible_flag_in_current_theta_segment$s == 1)) {
+  if (any(eligible_flag_in_current_theta_segment$s == 0)) {
+    o$xmat_elg[(ni + 1):nv] <- eligible_flag_in_current_theta_segment$s
+    for (s in which(eligible_flag_in_current_theta_segment$s == 1)) {
       o$xmat_elg[item_index_by_stimulus[[s]]] <- 1
     }
-    for (s in which(ineligible_flag_in_current_theta_segment$s == 0)) {
+    for (s in which(eligible_flag_in_current_theta_segment$s == 0)) {
       o$xmat_elg[item_index_by_stimulus[[s]]] <- 0
     }
   }
@@ -125,13 +125,13 @@ applyFading <- function(o, segments_to_apply, constants) {
 }
 
 #' @noRd
-getEligibleFlagInSegment <- function(ineligible_flag, segment, constants) {
+getEligibleFlagInSegment <- function(eligible_flag, segment, constants) {
   o <- list()
-  o$i <- !ineligible_flag$i[segment, ]
+  o$i <- eligible_flag$i[segment, ]
   if (!constants$set_based) {
     return(o)
   }
-  o$s <- !ineligible_flag$s[segment, ]
+  o$s <- eligible_flag$s[segment, ]
   return(o)
 }
 
@@ -205,7 +205,7 @@ incrementAlpha <- function(o, segments_to_apply, segment_prob, x, constants) {
 }
 
 #' @noRd
-incrementRho <- function(o, segments_to_apply, segment_prob, ineligible_flag, theta_is_feasible, constants) {
+incrementRho <- function(o, segments_to_apply, segment_prob, eligible_flag, theta_is_feasible, constants) {
 
   # van der Linden & Veldkamp (2007)
   # Conditional Item-Exposure Control in Adaptive Testing Using Item-Ineligibility Probabilities
@@ -215,7 +215,7 @@ incrementRho <- function(o, segments_to_apply, segment_prob, ineligible_flag, th
   # either the item was eligible or the test was infeasible
   # (used as denominator)
 
-  r_flag_i <- !ineligible_flag$i
+  r_flag_i <- eligible_flag$i
   if (!theta_is_feasible) r_flag_i <- TRUE
   o$r_ijk <- o$r_ijk + r_flag_i * segments_to_apply * segment_prob
   if (constants$fading_factor != 1) {
@@ -226,7 +226,7 @@ incrementRho <- function(o, segments_to_apply, segment_prob, ineligible_flag, th
     return(o)
   }
 
-  r_flag_s <- !ineligible_flag$s
+  r_flag_s <- eligible_flag$s
   if (!theta_is_feasible) r_flag_s <- TRUE
   o$r_sjk <- o$r_sjk + r_flag_s * segments_to_apply * segment_prob
   if (constants$fading_factor != 1) {
@@ -255,7 +255,7 @@ clipEligibilityRates <- function(o, constants) {
 }
 
 #' @noRd
-adjustAlphaToReduceSpike <- function(o, segment_prob, segment_visited, ineligible_flag_in_final_theta_segment, x, constants) {
+adjustAlphaToReduceSpike <- function(o, segment_prob, segment_visited, eligible_flag_in_final_theta_segment, x, constants) {
 
   # van der Linden & Choi (2018)
   # Improving Item-Exposure Control in Adaptive Testing
@@ -271,11 +271,11 @@ adjustAlphaToReduceSpike <- function(o, segment_prob, segment_visited, ineligibl
 
   administered_i <- x@administered_item_index
   if (any(segments_to_apply)) {
-    if (any(ineligible_flag_in_final_theta_segment$i[administered_i] == 1)) {
+    if (any(eligible_flag_in_final_theta_segment$i[administered_i] == 0)) {
       items_visited  <- administered_i[
         x@theta_segment_index %in% segment_visited
       ]
-      items_to_apply <- items_visited[ineligible_flag_in_final_theta_segment$i[items_visited] == 1]
+      items_to_apply <- items_visited[eligible_flag_in_final_theta_segment$i[items_visited] == 0]
       o$a_ijk[, items_to_apply] <- o$a_ijk[, items_to_apply] + segments_to_apply * segment_prob
     }
   }
@@ -286,12 +286,12 @@ adjustAlphaToReduceSpike <- function(o, segment_prob, segment_visited, ineligibl
 
   administered_s <- x@administered_stimulus_index
   if (any(segments_to_apply)) {
-    if (any(ineligible_flag_in_final_theta_segment$s[administered_s] == 1, na.rm = TRUE)) {
+    if (any(eligible_flag_in_final_theta_segment$s[administered_s] == 0, na.rm = TRUE)) {
       stimuli_visited  <- administered_s[
         x@theta_segment_index %in% segment_visited &
         x@administered_stimulus_index %in% administered_s
       ]
-      stimuli_to_apply <- stimuli_visited[ineligible_flag_in_final_theta_segment$s[stimuli_visited] == 1]
+      stimuli_to_apply <- stimuli_visited[eligible_flag_in_final_theta_segment$s[stimuli_visited] == 0]
       stimuli_to_apply <- na.omit(stimuli_to_apply)
       o$a_sjk[, stimuli_to_apply] <- o$a_sjk[, stimuli_to_apply] + segments_to_apply * segment_prob
     }
