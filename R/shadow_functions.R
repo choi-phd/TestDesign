@@ -753,7 +753,7 @@ setMethod(
           segment_prob      <- 1
           eligible_flag     <- getEligibleFlag(ineligible_flag, constants, FALSE)
           exposure_record   <- incrementN(exposure_record, segments_to_apply, segment_prob, constants)
-          exposure_record   <- incrementPhi(exposure_record, segments_to_apply, segment_prob, FALSE) # TODO: why is this false?
+        # exposure_record   <- incrementPhi(exposure_record, segments_to_apply, segment_prob, TRUE) # is not called for the purpose of code optimization; see comments in incrementPhi()
           exposure_record   <- incrementAlpha(exposure_record, segments_to_apply, segment_prob, o, constants)
           exposure_record   <- incrementRho(exposure_record, segments_to_apply, segment_prob, eligible_flag, constants)
           exposure_record   <- adjustAlphaToReduceSpike(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_final_theta_segment, o, constants)
@@ -767,7 +767,7 @@ setMethod(
           segment_prob      <- getSegmentProb(current_theta$posterior_sample, constants)
           eligible_flag     <- getEligibleFlag(ineligible_flag, constants, FALSE)
           exposure_record   <- incrementN(exposure_record, segments_to_apply, segment_prob, constants)
-          exposure_record   <- incrementPhi(exposure_record, segments_to_apply, segment_prob, FALSE) # TODO: why is this false?
+        # exposure_record   <- incrementPhi(exposure_record, segments_to_apply, segment_prob, TRUE) # is not called for the purpose of code optimization; see comments in incrementPhi()
           exposure_record   <- incrementAlpha(exposure_record, segments_to_apply, segment_prob, o, constants)
           exposure_record   <- incrementRho(exposure_record, segments_to_apply, segment_prob, eligible_flag, constants)
           exposure_record   <- adjustAlphaToReduceSpike(exposure_record, segment_prob, segment_of$visited, ineligible_flag_in_final_theta_segment, o, constants)
