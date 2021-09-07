@@ -196,3 +196,17 @@ updateExposureRecordSegmentwise <- function(o, j, x, constants) {
   return(o)
 
 }
+
+#' @noRd
+initializeUsageMatrix <- function(constants) {
+
+  if (!constants$set_based) {
+    o <- matrix(FALSE, nrow = constants$nj, ncol = constants$ni)
+    return(o)
+  }
+  if (constants$set_based) {
+    o <- matrix(FALSE, nrow = constants$nj, ncol = constants$nv)
+    return(o)
+  }
+
+}

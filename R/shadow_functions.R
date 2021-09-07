@@ -162,12 +162,7 @@ setMethod(
     }
 
     # Initialize usage matrix
-
-    if (constants$set_based) {
-      usage_matrix <- matrix(FALSE, nrow = constants$nj, ncol = constants$nv)
-    } else {
-      usage_matrix <- matrix(FALSE, nrow = constants$nj, ncol = constants$ni)
-    }
+    usage_matrix <- initializeUsageMatrix(constants)
 
     # Loop over nj simulees
 
