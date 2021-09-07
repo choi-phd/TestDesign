@@ -706,11 +706,7 @@ setMethod(
       }
 
       # Simulee: record item usage
-
-      usage_matrix[j, o@administered_item_index] <- TRUE
-      if (constants$set_based) {
-        usage_matrix[j, constants$ni + o@administered_stimulus_index] <- TRUE
-      }
+      usage_matrix <- updateUsageMatrix(usage_matrix, j, o, constants)
 
       o_list[[j]] <- o
 
