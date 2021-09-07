@@ -435,103 +435,20 @@ setMethod(
 
         }
 
+
         # Item position / simulee: estimate theta
-
-        if (toupper(config@interim_theta$method) == "EAP") {
-
-          interim_EAP <- computeEAPFromPosterior(augmented_posterior_record$posterior[j, ], constants$theta_q)
-          interim_EAP <- applyShrinkageCorrection(interim_EAP, config@interim_theta)
-
-          o@interim_theta_est[position] <- interim_EAP$theta
-          o@interim_se_est[position]    <- interim_EAP$se
-
-        } else if (toupper(config@interim_theta$method) == "MLE") {
-
-          interim_EAP <- computeEAPFromPosterior(augmented_posterior_record$posterior[j, ], constants$theta_q)
-          interim_MLE <- mle(augmented_pool,
-            select        = augmented_item_index,
-            resp          = augmented_item_resp,
-            start_theta   = interim_EAP$theta,
-            max_iter      = config@interim_theta$max_iter,
-            crit          = config@interim_theta$crit,
-            theta_range   = config@interim_theta$bound_ML,
-            truncate      = config@interim_theta$truncate_ML,
-            max_change    = config@interim_theta$max_change,
-            use_step_size = config@interim_theta$use_step_size,
-            step_size     = config@interim_theta$step_size,
-            do_Fisher     = config@interim_theta$do_Fisher
-          )
-
-          o@interim_theta_est[position] <- interim_MLE$th
-          o@interim_se_est[position]    <- interim_MLE$se
-
-        } else if (toupper(config@interim_theta$method) == "MLEF") {
-
-          interim_EAP <- computeEAPFromPosterior(augmented_posterior_record$posterior[j, ], constants$theta_q)
-          interim_MLEF <- mlef(augmented_pool,
-            select           = augmented_item_index,
-            resp             = augmented_item_resp,
-            fence_slope      = config@interim_theta$fence_slope,
-            fence_difficulty = config@interim_theta$fence_difficulty,
-            start_theta      = interim_EAP$theta,
-            max_iter         = config@interim_theta$max_iter,
-            crit             = config@interim_theta$crit,
-            theta_range      = config@interim_theta$bound_ML,
-            truncate         = config@interim_theta$truncate_ML,
-            max_change       = config@interim_theta$max_change,
-            use_step_size    = config@interim_theta$use_step_size,
-            step_size        = config@interim_theta$step_size,
-            do_Fisher        = config@interim_theta$do_Fisher
-          )
-
-          o@interim_theta_est[position] <- interim_MLEF$th
-          o@interim_se_est[position]    <- interim_MLEF$se
-
-        } else if (toupper(config@interim_theta$method) == "EB") {
-
-          # TODO: needs to work with include_items_for_estimation
-          if (!is.null(include_items_for_estimation)) {
-            stop("EB with include_items_for_estimation is not available")
-          }
-
-          current_item <- o@administered_item_index[position]
-
-          interim_EB <- theta_EB_single(
-            posterior_constants$n_sample, current_theta$theta, current_theta$se,
-            pool@ipar[current_item, ],
-            o@administered_item_resp[position], pool@NCAT[current_item],
-            model[current_item], 1, c(current_theta$theta, current_theta$se)
-          )[, 1]
-
-          interim_EB                    <- applyThin(interim_EB, posterior_constants)
-
-          o@posterior_sample            <- interim_EB
-          o@interim_theta_est[position] <- mean(interim_EB)
-          o@interim_se_est[position]    <- sd(interim_EB)
-
-        } else if (toupper(config@interim_theta$method) == "FB") {
-
-          # TODO: needs to work with include_items_for_estimation
-          if (!is.null(include_items_for_estimation)) {
-            stop("FB with include_items_for_estimation is not available")
-          }
-
-          current_item <- o@administered_item_index[position]
-
-          interim_FB <- theta_FB_single(
-            posterior_constants$n_sample, current_theta$theta, current_theta$se, posterior_record$ipar_list[[current_item]],
-            pool@ipar[current_item, ],
-            o@administered_item_resp[position], pool@NCAT[current_item],
-            model[current_item], 1, c(current_theta$theta, current_theta$se)
-          )[, 1]
-
-          interim_FB                    <- applyThin(interim_FB, posterior_constants)
-
-          o@posterior_sample            <- interim_FB
-          o@interim_theta_est[position] <- mean(interim_FB)
-          o@interim_se_est[position]    <- sd(interim_FB)
-
-        }
+        o <- estimateInterimTheta(
+          o, j, position,
+          current_theta,
+          augmented_posterior_record, posterior_record,
+          augmented_pool, pool, model,
+          augmented_item_index,
+          augmented_item_resp,
+          include_items_for_estimation,
+          config,
+          constants,
+          posterior_constants
+        )
 
         theta_change                   <- o@interim_theta_est[position] - current_theta$theta
         current_theta$posterior_sample <- o@posterior_sample
