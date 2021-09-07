@@ -795,21 +795,7 @@ setMethod(
     final_se_est    <- unlist(lapply(1:constants$nj, function(j) o_list[[j]]@final_se_est))
 
     # Aggregate exposure rates
-
-    if (!constants$set_based) {
-      exposure_rate <- matrix(NA, constants$ni, 2)
-      colnames(exposure_rate) <- c('Item', 'Item ER')
-      exposure_rate[, 1] <- 1:constants$ni
-      exposure_rate[, 2] <- colSums(usage_matrix) / constants$nj
-    } else {
-      exposure_rate <- matrix(NA, constants$ni, 4)
-      colnames(exposure_rate) <- c('Item', 'Stimulus', 'Item ER', 'Stimulus ER')
-      exposure_rate_raw <- colSums(usage_matrix) / constants$nj
-      exposure_rate[, 1] <- 1:constants$ni
-      exposure_rate[, 2] <- constraints@stimulus_index_by_item
-      exposure_rate[, 3] <- exposure_rate_raw[1:constants$ni]
-      exposure_rate[, 4] <- exposure_rate_raw[(constants$ni + 1):constants$nv][constraints@stimulus_index_by_item]
-    }
+    exposure_rate <- aggregateUsageMatrix(usage_matrix, constants, constraints)
 
     eligibility_stats           <- NULL
     check_eligibility_stats     <- NULL
