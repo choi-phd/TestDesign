@@ -225,3 +225,26 @@ updateUsageMatrix <- function(o, j, x, constants) {
   return(o)
 
 }
+
+#' @noRd
+aggregateUsageMatrix <- function(usage_matrix, constants, constraints) {
+
+  if (!constants$set_based) {
+    o <- matrix(NA, constants$ni, 2)
+    colnames(o) <- c("Item", "Item ER")
+    o[, 1] <- 1:constants$ni
+    o[, 2] <- apply(usage_matrix, 2, sum) / constants$nj
+    return(o)
+  }
+  if (constants$set_based) {
+    o <- matrix(NA, constants$ni, 4)
+    colnames(o) <- c("Item", "Stimulus", "Item ER", "Stimulus ER")
+    x <- apply(usage_matrix, 2, sum) / constants$nj
+    o[, 1] <- 1:constants$ni
+    o[, 2] <- constraints@stimulus_index_by_item
+    o[, 3] <- x[1:constants$ni]
+    o[, 4] <- x[(constants$ni + 1):constants$nv][constraints@stimulus_index_by_item]
+    return(o)
+  }
+
+}
