@@ -2,7 +2,7 @@
 NULL
 
 #' @noRd
-getConstants <- function(constraints, config, arg_data, true_theta) {
+getConstants <- function(constraints, config, arg_data, true_theta, max_info) {
 
   o <- list()
   o$ni <- constraints@ni
@@ -69,6 +69,8 @@ getConstants <- function(constraints, config, arg_data, true_theta) {
     stop("length(max_exposure_rate) must be 1 or n_segment")
   }
 
+  o$max_info <- max_info
+
   return(o)
 
 }
@@ -119,27 +121,31 @@ initializeShadowEngine <- function(constants, refresh_policy) {
 }
 
 #' @noRd
-makeData <- function(pool, true_theta, arg_data, constants) {
+makeData <- function(pool, true_theta, resp_data, config) {
 
   o <- list()
-  theta_grid <- constants$theta_q
+  theta_grid <- config@theta_grid
 
-  if (!is.null(arg_data)) {
+  if (!is.null(resp_data) & !is.null(true_theta)) {
+    # only response data is available
     o$test <- makeTest(pool, theta_grid, info_type = "FISHER", true_theta = NULL)
-    o$test@data <- as.matrix(arg_data)
-    for (i in 1:constants$ni) {
+    o$test@data <- as.matrix(resp_data)
+    for (i in 1:pool@ni) {
       invalid_resp <- !(o$test@data[, i] %in% 0:(pool@NCAT[i] - 1))
       o$test@data[invalid_resp, i] <- NA
     }
-  } else if (!is.null(true_theta)) {
-    o$test <- makeTest(pool, theta_grid, info_type = "FISHER", true_theta)
-  } else {
-    stop("either 'data' or 'true_theta' must be supplied")
+    o$max_info <- max(o$test@info)
+    return(o)
   }
 
-  o$max_info <- max(o$test@info)
+  if (is.null(resp_data) & !is.null(true_theta)) {
+    # only true theta is available
+    o$test <- makeTest(pool, theta_grid, info_type = "FISHER", true_theta)
+    o$max_info <- max(o$test@info)
+    return(o)
+  }
 
-  return(o)
+  stop("either 'data' or 'true_theta' must be supplied")
 
 }
 
