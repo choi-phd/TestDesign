@@ -309,7 +309,7 @@ setMethod(
 
               # Do Big-M based exposure control: penalize item info
               info <- applyEligibilityConstraintsToInfo(
-                info, eligible_flag_in_current_theta_segment, config, constants, all_data$max_info
+                info, eligible_flag_in_current_theta_segment, config, constants
               )
 
               optimal <- runAssembly(config, constraints, xdata = xdata, objective = info)
