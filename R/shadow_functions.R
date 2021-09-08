@@ -307,20 +307,10 @@ setMethod(
 
             if (constants$use_eligibility_control && exposure_control %in% c("BIGM", "BIGM-BAYESIAN")) {
 
-              # Do Big-M based exposure control
-              # Penalize item info
-
-              if (!is.null(config@exposure_control$M)) {
-                if (config@item_selection$method == "GFI") {
-                  info[eligible_flag_in_current_theta_segment$i == 0] <-
-                  info[eligible_flag_in_current_theta_segment$i == 0] + config@exposure_control$M # add because GFI performs minimization
-                } else {
-                  info[eligible_flag_in_current_theta_segment$i == 0] <-
-                  info[eligible_flag_in_current_theta_segment$i == 0] - config@exposure_control$M
-                }
-              } else {
-                info[eligible_flag_in_current_theta_segment$i == 0] <- -1 * all_data$max_info - 1
-              }
+              # Do Big-M based exposure control: penalize item info
+              info <- applyEligibilityConstraintsToInfo(
+                info, eligible_flag_in_current_theta_segment, config, constants, all_data$max_info
+              )
 
               optimal <- runAssembly(config, constraints, xdata = xdata, objective = info)
               o@shadow_test_feasible[position] <- TRUE

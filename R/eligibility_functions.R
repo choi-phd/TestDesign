@@ -100,6 +100,30 @@ applyEligibilityConstraintsToXdata <- function(xdata, eligible_flag_in_current_t
 }
 
 #' @noRd
+applyEligibilityConstraintsToInfo <- function(o, eligible_flag_in_current_theta_segment, config, constants, max_info) {
+
+  if (is.null(constants$M) & config@item_selection$method == "GFI") {
+    o[eligible_flag_in_current_theta_segment$i == 0] <- 1 * max_info + 1 # add because GFI performs minimization
+    return(o)
+  }
+  if (is.null(constants$M) & config@item_selection$method != "GFI") {
+    o[eligible_flag_in_current_theta_segment$i == 0] <- -1 * max_info - 1
+    return(o)
+  }
+  if (!is.null(constants$M) & config@item_selection$method == "GFI") {
+    o[eligible_flag_in_current_theta_segment$i == 0] <-
+    o[eligible_flag_in_current_theta_segment$i == 0] + constants$M # add because GFI performs minimization
+    return(o)
+  }
+  if (!is.null(constants$M) & config@item_selection$method != "GFI") {
+    o[eligible_flag_in_current_theta_segment$i == 0] <-
+    o[eligible_flag_in_current_theta_segment$i == 0] - constants$M
+    return(o)
+  }
+
+}
+
+#' @noRd
 applyFading <- function(o, segments_to_apply, constants) {
 
   fading_factor <- constants$fading_factor
