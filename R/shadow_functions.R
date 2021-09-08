@@ -132,8 +132,8 @@ setMethod(
 
     pool                <- constraints@pool
     model               <- sanitizeModel(pool@model)
-    constants           <- getConstants(constraints, config, data, true_theta)
-    all_data            <- makeData(pool, true_theta, data, constants)
+    all_data            <- makeData(pool, true_theta, data, config)
+    constants           <- getConstants(constraints, config, data, true_theta, all_data$max_info)
     info_fixed_theta    <- getInfoFixedTheta(config@item_selection, constants, all_data$test, pool, model)
     posterior_constants <- getPosteriorConstants(config)
     posterior_record    <- initializePosterior(prior, prior_par, config, constants, pool, posterior_constants)
