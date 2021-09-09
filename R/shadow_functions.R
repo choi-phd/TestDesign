@@ -523,60 +523,13 @@ setMethod(
     # Aggregate exposure rates
     exposure_rate <- aggregateUsageMatrix(usage_matrix, constants, constraints)
 
-    eligibility_stats           <- NULL
-    check_eligibility_stats     <- NULL
-    no_fading_eligibility_stats <- NULL
-
     # Get exposure control diagnostic stats
-
-    if (constants$use_eligibility_control) {
-
-      if (config@exposure_control$diagnostic_stats) {
-
-        check_eligibility_stats <- list()
-
-        for (j in 1:constants$nj) {
-          tmp <- list()
-          tmp$true_theta         <- true_theta[j]
-          tmp$true_segment       <- find_segment(true_theta[j], constants$segment_cut)
-          tmp$true_segment_count <- segment_record$count_true[j]
-          check_eligibility_stats[[j]] <- tmp
-
-          check_eligibility_stats[[j]]$a_g_i <- exposure_record_detailed$a_g_i
-          check_eligibility_stats[[j]]$e_g_i <- exposure_record_detailed$e_g_i
-
-          if (constants$set_based) {
-            check_eligibility_stats[[j]]$a_g_s <- exposure_record_detailed$a_g_s
-            check_eligibility_stats[[j]]$e_g_s <- exposure_record_detailed$e_g_s
-          }
-
-        }
-
-        if (constants$fading_factor != 1) {
-
-          no_fading_eligibility_stats <- list()
-
-          for (j in 1:constants$nj) {
-            tmp <- list()
-            tmp$true_theta         <- true_theta[j]
-            tmp$true_segment       <- find_segment(true_theta[j], constants$segment_cut)
-            tmp$true_segment_count <- segment_record$count_true[j]
-            no_fading_eligibility_stats[[j]] <- tmp
-
-            no_fading_eligibility_stats[[j]]$a_g_i_nofade <- exposure_record_detailed$a_g_i_nofade
-            no_fading_eligibility_stats[[j]]$e_g_i_nofade <- exposure_record_detailed$e_g_i_nofade
-
-            if (constants$set_based) {
-              no_fading_eligibility_stats[[j]]$a_g_s_nofade <- exposure_record_detailed$a_g_s_nofade
-              no_fading_eligibility_stats[[j]]$e_g_s_nofade <- exposure_record_detailed$e_g_s_nofade
-            }
-
-          }
-
-        }
-
-      }
-    }
+    diagnostic_stats <- parseDiagnosticStats(
+      true_theta, segment_record,
+      exposure_record_detailed,
+      config,
+      constants
+    )
 
     if (constants$use_shadow) {
       freq_infeasible <- table(unlist(lapply(1:constants$nj, function(j) sum(!o_list[[j]]@shadow_test_feasible))))
@@ -600,8 +553,8 @@ setMethod(
     out@true_segment_count          <- segment_record$count_true
     out@est_segment_count           <- segment_record$count_est
     out@eligibility_stats           <- exposure_record
-    out@check_eligibility_stats     <- check_eligibility_stats
-    out@no_fading_eligibility_stats <- no_fading_eligibility_stats
+    out@check_eligibility_stats     <- diagnostic_stats$elg_stats
+    out@no_fading_eligibility_stats <- diagnostic_stats$elg_stats_nofade
     out@freq_infeasible             <- freq_infeasible
 
     return(out)
