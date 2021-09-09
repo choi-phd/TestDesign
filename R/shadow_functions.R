@@ -252,7 +252,7 @@ setMethod(
       while (!done) {
 
         position <- position + 1
-        info     <- getInfo(
+        info_current_theta <- computeInfoAtCurrentTheta(
           config@item_selection, j, info_fixed_theta, current_theta, pool, model,
           posterior_record, all_data$test@info
         )
@@ -273,7 +273,7 @@ setMethod(
               eligible_flag,
               exclude_index,
               stimulus_record,
-              info,
+              info_current_theta,
               config,
               constants,
               constraints
@@ -309,7 +309,7 @@ setMethod(
 
           # If not doing shadow
 
-          o@administered_item_index[position] <- selectItem(info, position, o)
+          o@administered_item_index[position] <- selectItem(info_current_theta, position, o)
 
         }
 
