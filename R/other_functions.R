@@ -121,7 +121,7 @@ initializeShadowEngine <- function(constants, refresh_policy) {
 }
 
 #' @noRd
-makeData <- function(pool, true_theta, resp_data, config) {
+makeData <- function(pool, true_theta, resp_data, config, seed) {
 
   o <- list()
   theta_grid <- config@theta_grid
@@ -138,10 +138,16 @@ makeData <- function(pool, true_theta, resp_data, config) {
     return(o)
   }
 
-  if (is.null(resp_data) & !is.null(true_theta)) {
+  if (is.null(resp_data) & !is.null(true_theta) & is.null(seed)) {
     # only true theta is available
     o$test <- makeTest(pool, theta_grid, info_type = "FISHER", true_theta)
     o$max_info <- max(o$test@info)
+    return(o)
+  }
+
+  if (is.null(resp_data) & !is.null(true_theta) & !is.null(seed)) {
+    # skip data generation; generate on the fly
+    o$max_info <- "FOO" # temporarily block this
     return(o)
   }
 
