@@ -395,3 +395,89 @@ updateEligibilityRates <- function(o, constants) {
   return(o)
 
 }
+
+#' @noRd
+parseDiagnosticStats <- function(
+  true_theta, segment_record,
+  exposure_record_detailed,
+  config,
+  constants
+) {
+
+  o <- list()
+
+  if (!constants$use_eligibility_control | !config@exposure_control$diagnostic_stats) {
+    return(o)
+  }
+
+  o$elg_stats <- list()
+
+  for (j in 1:constants$nj) {
+
+    tmp <- list()
+    tmp$true_theta         <- true_theta[j]
+    tmp$true_segment       <- find_segment(true_theta[j], constants$segment_cut)
+    tmp$true_segment_count <- segment_record$count_true[j]
+    o$elg_stats[[j]] <- tmp
+
+    a_g_i <- lapply(exposure_record_detailed$a_g_i, function(x) { x[j, ] })
+    a_g_i <- do.call(rbind, a_g_i)
+    o$elg_stats[[j]]$a_g_i <- a_g_i
+
+    e_g_i <- lapply(exposure_record_detailed$e_g_i, function(x) { x[j, ] })
+    e_g_i <- do.call(rbind, e_g_i)
+    o$elg_stats[[j]]$e_g_i <- e_g_i
+
+    if (constants$set_based) {
+
+      a_g_s <- lapply(exposure_record_detailed$a_g_s, function(x) { x[j, ] })
+      a_g_s <- do.call(rbind, a_g_s)
+      o$elg_stats[[j]]$a_g_s <- a_g_s
+
+      e_g_s <- lapply(exposure_record_detailed$e_g_s, function(x) { x[j, ] })
+      e_g_s <- do.call(rbind, e_g_s)
+      o$elg_stats[[j]]$e_g_s <- e_g_s
+
+    }
+
+  }
+
+  if (constants$fading_factor == 1) {
+    return(o)
+  }
+
+  o$elg_stats_nofade <- list()
+
+  for (j in 1:constants$nj) {
+
+    tmp <- list()
+    tmp$true_theta         <- true_theta[j]
+    tmp$true_segment       <- find_segment(true_theta[j], constants$segment_cut)
+    tmp$true_segment_count <- segment_record$count_true[j]
+    o$elg_stats_nofade[[j]] <- tmp
+
+    a_g_i_nofade <- lapply(exposure_record_detailed$a_g_i_nofade, function(x) { x[j, ] })
+    a_g_i_nofade <- do.call(rbind, a_g_i_nofade)
+    o$elg_stats_nofade[[j]]$a_g_i_nofade <- a_g_i_nofade
+
+    e_g_i_nofade <- lapply(exposure_record_detailed$e_g_i_nofade, function(x) { x[j, ] })
+    e_g_i_nofade <- do.call(rbind, e_g_i_nofade)
+    o$elg_stats_nofade[[j]]$e_g_i_nofade <- e_g_i_nofade
+
+    if (constants$set_based) {
+
+      a_g_s_nofade <- lapply(exposure_record_detailed$a_g_s_nofade, function(x) { x[j, ] })
+      a_g_s_nofade <- do.call(rbind, a_g_s_nofade)
+      o$elg_stats_nofade[[j]]$a_g_s_nofade <- a_g_s_nofade
+
+      e_g_s_nofade <- lapply(exposure_record_detailed$e_g_s_nofade, function(x) { x[j, ] })
+      e_g_s_nofade <- do.call(rbind, e_g_s_nofade)
+      o$elg_stats_nofade[[j]]$e_g_s_nofade <- e_g_s_nofade
+
+    }
+
+  }
+
+  return(o)
+
+}
