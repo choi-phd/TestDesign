@@ -21,6 +21,21 @@ test_that("exposure control works", {
 
   cfg <- createShadowTestConfig(
     MIP = list(solver = "LPSOLVE"),
+    exposure_control = list(
+      method = "ELIGIBILITY",
+      diagnostic_stats = TRUE
+    )
+  )
+  set.seed(1)
+  solution <- Shadow(cfg, constraints_bayes, true_theta, data = resp_bayes)
+  exposure_rate <- solution@exposure_rate[, 2]
+
+  expect_lte(
+    max(exposure_rate), 0.35
+  )
+
+  cfg <- createShadowTestConfig(
+    MIP = list(solver = "LPSOLVE"),
     exposure_control = list(method = "ELIGIBILITY")
   )
   set.seed(1)
