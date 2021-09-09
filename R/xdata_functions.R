@@ -47,7 +47,7 @@ getXdataOfAdministered <- function(constants, position, output, stimulus_record,
 
   }
 
-  if (unique_ns > 0 && stimulus_record$end_set) {
+  if (unique_ns > 0 && stimulus_record$just_finished_this_set) {
 
     o$smat <- matrix(0, unique_ns, nv)
     o$sdir <- rep("==", unique_ns)
@@ -68,12 +68,12 @@ getXdataOfAdministered <- function(constants, position, output, stimulus_record,
 
   # include administered set
 
-  end_set                      <- stimulus_record$end_set
+  just_finished_this_set       <- stimulus_record$just_finished_this_set
   finished_stimulus_index      <- stimulus_record$finished_stimulus_index
   finished_stimulus_item_count <- stimulus_record$finished_stimulus_item_count
   n_finished_stimulus          <- length(finished_stimulus_index)
 
-  if (unique_ns > 0 && !end_set && n_finished_stimulus > 0) {
+  if (unique_ns > 0 && !just_finished_this_set && n_finished_stimulus > 0) {
 
     o$smat <- matrix(0, nrow = n_finished_stimulus, ncol = nv)
     o$sdir <- rep("==", n_finished_stimulus)

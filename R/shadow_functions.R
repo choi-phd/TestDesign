@@ -318,9 +318,9 @@ setMethod(
           o@administered_stimulus_index[position] <- selection$stimulus_selected
 
           if (selection$is_last_item_in_this_set) {
-            stimulus_record$end_set <- TRUE
+            stimulus_record$just_finished_this_set <- TRUE
           } else {
-            stimulus_record$end_set <- FALSE
+            stimulus_record$just_finished_this_set <- FALSE
           }
 
           if (!is.na(selection$stimulus_of_previous_item)) {
