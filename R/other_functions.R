@@ -281,8 +281,8 @@ selectItemFromShadowTest <- function(shadow_test, position, constants, x) {
   o <- list()
 
   o$n_remaining <- constants$test_length - position
-  o$stimulus_finished     <- FALSE
-  o$new_stimulus_selected <- FALSE
+  o$is_last_item_in_this_set <- FALSE
+  o$new_stimulus_selected    <- FALSE
 
   o$stimulus_of_previous_item <- 0
 
@@ -328,13 +328,13 @@ selectItemFromShadowTest <- function(shadow_test, position, constants, x) {
   }
 
   if (sum(shadow_test[["STINDEX"]][remaining] == o$stimulus_selected, na.rm = TRUE) == 1) {
-    o$stimulus_finished <- TRUE
+    o$is_last_item_in_this_set <- TRUE
   }
   if (is.na(o$stimulus_selected)) {
-    o$stimulus_finished <- TRUE
+    o$is_last_item_in_this_set <- TRUE
   }
   if (o$n_remaining == 0) {
-    o$stimulus_finished <- TRUE
+    o$is_last_item_in_this_set <- TRUE
   }
 
   return(o)

@@ -317,7 +317,7 @@ setMethod(
         if (constants$set_based) {
           o@administered_stimulus_index[position] <- selection$stimulus_selected
 
-          if (selection$stimulus_finished) {
+          if (selection$is_last_item_in_this_set) {
             stimulus_record$end_set <- TRUE
           } else {
             stimulus_record$end_set <- FALSE
