@@ -268,70 +268,28 @@ setMethod(
             theta_change, constants, stimulus_record
           )) {
 
-            administered_stimulus_index <- na.omit(unique(o@administered_stimulus_index))
-            o@shadow_test_refreshed[position] <- TRUE
-
-            xdata         <- getXdataOfAdministered(constants, position, o, stimulus_record, constraints)
-            xdata_exclude <- getXdataOfExcludedEntry(constants, exclude_index[[j]])
-            xdata         <- combineXdata(xdata, xdata_exclude)
-
-            # Do exposure control
-
-            if (constants$use_eligibility_control) {
-
-              # Get eligible items in the current theta segment
-
-              current_segment            <- o@theta_segment_index[position]
-              eligible_flag_in_current_theta_segment <- getEligibleFlagInSegment(eligible_flag, current_segment, constants)
-              eligible_flag_in_current_theta_segment <- flagAdministeredAsEligible(eligible_flag_in_current_theta_segment, o, position, constants)
-
-            }
-
-            if (constants$use_eligibility_control && constants$exposure_control_method %in% c("ELIGIBILITY")) {
-
-              xdata_elg  <- applyEligibilityConstraintsToXdata(xdata, eligible_flag_in_current_theta_segment, constants, constraints)
-              optimal    <- runAssembly(config, constraints, xdata = xdata_elg, objective = info)
-              is_optimal <- isOptimal(optimal$status, config@MIP$solver)
-
-              # If not optimal, retry without xmat
-
-              if (is_optimal) {
-                o@shadow_test_feasible[position] <- TRUE
-              } else {
-                o@shadow_test_feasible[position] <- FALSE
-                optimal <- runAssembly(config, constraints, xdata = xdata, objective = info)
-              }
-
-            }
-
-            if (constants$use_eligibility_control && constants$exposure_control_method %in% c("BIGM", "BIGM-BAYESIAN")) {
-
-              # Do Big-M based exposure control: penalize item info
-              info <- applyEligibilityConstraintsToInfo(
-                info, eligible_flag_in_current_theta_segment, config, constants
-              )
-
-              optimal <- runAssembly(config, constraints, xdata = xdata, objective = info)
-              o@shadow_test_feasible[position] <- TRUE
-
-            }
-
-            if (!constants$use_eligibility_control) {
-
-              optimal <- runAssembly(config, constraints, xdata = xdata, objective = info)
-              o@shadow_test_feasible[position] <- TRUE
-
-            }
-
-            is_optimal <- isOptimal(optimal$status, config@MIP$solver)
+            shadowtest <- assembleShadowTest(
+              j, position, o,
+              eligible_flag,
+              exclude_index,
+              stimulus_record,
+              info,
+              config,
+              constants,
+              constraints
+            )
+            is_optimal <- isShadowtestOptimal(shadowtest)
             if (!is_optimal) {
-              printSolverNewline(config@MIP$solver)
-              msg <- getSolverStatusMessage(optimal$status, config@MIP$solver)
+              printSolverNewline(shadowtest$solver)
+              msg <- getSolverStatusMessage(shadowtest$status, shadowtest$solver)
               warning(msg, immediate. = TRUE)
               stop(sprintf("MIP solver returned non-zero status at examinee %i position %i", j, position))
             }
 
-            o@solve_time[position] <- optimal$solve_time
+            o@shadow_test_refreshed[position] <- TRUE
+            o@solve_time[position] <- shadowtest$solve_time
+
+            o@shadow_test_feasible[position] <- shadowtest$feasible
 
           } else {
 
@@ -342,10 +300,10 @@ setMethod(
 
           # Select an item from shadow test
 
-          selection <- selectItemFromShadowTest(optimal$shadow_test, position, constants, o)
+          selection <- selectItemFromShadowTest(shadowtest$shadow_test, position, constants, o)
           o@administered_item_index[position] <- selection$item_selected
-          o@shadow_test[[position]]$i         <- optimal$shadow_test$INDEX
-          o@shadow_test[[position]]$s         <- optimal$shadow_test$STINDEX
+          o@shadow_test[[position]]$i         <- shadowtest$shadow_test$INDEX
+          o@shadow_test[[position]]$s         <- shadowtest$shadow_test$STINDEX
 
         } else {
 

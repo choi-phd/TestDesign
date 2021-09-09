@@ -174,7 +174,7 @@ runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
 
   if (!isOptimal(MIP$status, solver)) {
     #if (names(MIP$status) == "TM_TIME_LIMIT_EXCEEDED") browser()
-    return(list(status = MIP$status, MIP = MIP, selected = NULL))
+    return(list(solver = solver, status = MIP$status, MIP = MIP, selected = NULL))
   }
 
   MIP$solution[types == "B"] <- round(MIP$solution[types == "B"], 0)
@@ -248,7 +248,7 @@ runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
   }
 
   return(list(
-    MIP = MIP, status = MIP$status,
+    MIP = MIP, solver = solver, status = MIP$status,
     shadow_test = shadow_test, obj_value = obj_value,
     solve_time = solve_time
   ))
