@@ -86,6 +86,7 @@ setMethod(
 #' }
 #' @template force_solver_param
 #' @param session (optional) used to communicate with Shiny app \code{\link{TestDesign}}.
+#' @param seed (optional) used to perform data generation internally.
 #'
 #' @return \code{\link{Shadow}} returns an \code{\linkS4class{output_Shadow_all}} object containing assembly results.
 #'
@@ -103,7 +104,7 @@ setMethod(
 #' @export
 setGeneric(
   name = "Shadow",
-  def = function(config, constraints = NULL, true_theta = NULL, data = NULL, prior = NULL, prior_par = NULL, exclude = NULL, include_items_for_estimation = NULL, force_solver = FALSE, session = NULL) {
+  def = function(config, constraints = NULL, true_theta = NULL, data = NULL, prior = NULL, prior_par = NULL, exclude = NULL, include_items_for_estimation = NULL, force_solver = FALSE, session = NULL, seed = NULL) {
     standardGeneric("Shadow")
   }
 )
@@ -113,7 +114,7 @@ setGeneric(
 setMethod(
   f = "Shadow",
   signature = "config_Shadow",
-  definition = function(config, constraints, true_theta, data, prior, prior_par, exclude, include_items_for_estimation, force_solver = FALSE, session) {
+  definition = function(config, constraints, true_theta, data, prior, prior_par, exclude, include_items_for_estimation, force_solver = FALSE, session, seed = NULL) {
 
     if (!validObject(config)) {
       stop("'config' argument is not a valid 'config_Shadow' object")
@@ -132,7 +133,7 @@ setMethod(
 
     pool                <- constraints@pool
     model               <- sanitizeModel(pool@model)
-    all_data            <- makeData(pool, true_theta, data, config)
+    all_data            <- makeData(pool, true_theta, data, config, seed)
     constants           <- getConstants(constraints, config, data, true_theta, all_data$max_info)
     info_fixed_theta    <- getInfoFixedTheta(config@item_selection, constants, all_data$test, pool, model)
     posterior_constants <- getPosteriorConstants(config)
@@ -230,7 +231,7 @@ setMethod(
       # Simulee: flag ineligibile items
 
       if (constants$use_eligibility_control) {
-        eligible_flag <- flagIneligible(exposure_record, constants, constraints@item_index_by_stimulus)
+        eligible_flag <- flagIneligible(exposure_record, constants, constraints@item_index_by_stimulus, seed, j)
       }
 
       # Simulee: create augmented pool if applicable
@@ -267,6 +268,9 @@ setMethod(
             theta_change, constants, stimulus_record
           )) {
 
+            if (!is.null(seed)) {
+              set.seed(seed * 234 + j)
+            }
             shadowtest <- assembleShadowTest(
               j, position, o,
               eligible_flag,
@@ -337,12 +341,30 @@ setMethod(
 
         # Item position / simulee: record which item was administered
 
-        o@administered_item_resp[position] <- all_data$test@data[j, o@administered_item_index[position]]
-        o@administered_item_ncat[position] <- pool@NCAT[o@administered_item_index[position]]
+        if (!is.null(seed)) {
+          set.seed((seed * 345) + (j * 123) + o@administered_item_index[position])
+          o@administered_item_resp[position] <- simResp(
+            pool[o@administered_item_index[position]],
+            o@true_theta
+          )
+          o@administered_item_ncat[position] <- pool@NCAT[o@administered_item_index[position]]
+        }
+        if (is.null(seed)) {
+          o@administered_item_resp[position] <- all_data$test@data[j, o@administered_item_index[position]]
+          o@administered_item_ncat[position] <- pool@NCAT[o@administered_item_index[position]]
+        }
 
         # Item position / simulee: update posterior
 
-        prob_matrix_current_item <- all_data$test@prob[[o@administered_item_index[position]]]
+        if (!is.null(seed)) {
+          prob_matrix_current_item <- calcProb(
+            pool[o@administered_item_index[position]],
+            constants$theta_q
+          )[[1]]
+        }
+        if (is.null(seed)) {
+          prob_matrix_current_item <- all_data$test@prob[[o@administered_item_index[position]]]
+        }
         prob_resp_current_item   <- prob_matrix_current_item[, o@administered_item_resp[position] + 1]
         posterior_record <- updatePosterior(posterior_record, j, prob_resp_current_item)
 
@@ -497,7 +519,6 @@ setMethod(
     out@constraints                 <- constraints
     out@prior                       <- prior
     out@prior_par                   <- prior_par
-    out@data                        <- all_data$test@data
     out@final_theta_est             <- final_theta_est
     out@final_se_est                <- final_se_est
     out@exposure_rate               <- exposure_rate
@@ -508,6 +529,13 @@ setMethod(
     out@check_eligibility_stats     <- diagnostic_stats$elg_stats
     out@no_fading_eligibility_stats <- diagnostic_stats$elg_stats_nofade
     out@freq_infeasible             <- freq_infeasible
+
+    if (is.null(seed)) {
+      out@data <- all_data$test@data
+    }
+    if (!is.null(seed)) {
+      out@data <- NULL
+    }
 
     return(out)
   }

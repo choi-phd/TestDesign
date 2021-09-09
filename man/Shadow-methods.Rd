@@ -15,7 +15,8 @@ Shadow(
   exclude = NULL,
   include_items_for_estimation = NULL,
   force_solver = FALSE,
-  session = NULL
+  session = NULL,
+  seed = NULL
 )
 
 \S4method{Shadow}{config_Shadow}(
@@ -28,7 +29,8 @@ Shadow(
   exclude = NULL,
   include_items_for_estimation = NULL,
   force_solver = FALSE,
-  session = NULL
+  session = NULL,
+  seed = NULL
 )
 }
 \arguments{
@@ -55,6 +57,8 @@ Shadow(
 \item{force_solver}{if \code{TRUE}, do not check whether the solver is one of recommended solvers for doing set-based assembly. Has no effect on discrete assembly. (default = \code{FALSE})}
 
 \item{session}{(optional) used to communicate with Shiny app \code{\link{TestDesign}}.}
+
+\item{seed}{(optional) used to perform data generation internally.}
 }
 \value{
 \code{\link{Shadow}} returns an \code{\linkS4class{output_Shadow_all}} object containing assembly results.

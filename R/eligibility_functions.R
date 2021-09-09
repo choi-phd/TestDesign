@@ -2,7 +2,11 @@
 NULL
 
 #' @noRd
-flagIneligible <- function(exposure_record, constants, item_index_by_stimulus) {
+flagIneligible <- function(exposure_record, constants, item_index_by_stimulus, seed, j) {
+
+  if (!is.null(seed)) {
+    set.seed(seed * 123 + j)
+  }
 
   o <- list()
   n_segment <- constants$n_segment
