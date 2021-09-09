@@ -145,10 +145,6 @@ setMethod(
     }
 
     # Initialize exposure rate control
-
-    items_administered <- matrix(FALSE, constants$nj, constants$ni)
-    o_list <- vector(mode = "list", length = constants$nj)
-
     if (constants$exposure_control_method %in% c("NONE", "ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
 
       segment_record           <- initializeSegmentRecord(constants)
@@ -164,6 +160,7 @@ setMethod(
     usage_matrix <- initializeUsageMatrix(constants)
 
     # Loop over nj simulees
+    o_list <- vector(mode = "list", length = constants$nj)
 
     has_progress_pkg <- requireNamespace("progress")
     if (has_progress_pkg) {
@@ -342,7 +339,6 @@ setMethod(
 
         o@administered_item_resp[position] <- all_data$test@data[j, o@administered_item_index[position]]
         o@administered_item_ncat[position] <- pool@NCAT[o@administered_item_index[position]]
-        items_administered[j, o@administered_item_index[position]] <- TRUE
 
         # Item position / simulee: update posterior
 
