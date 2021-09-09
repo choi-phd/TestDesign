@@ -146,11 +146,10 @@ setMethod(
 
     # Initialize exposure rate control
 
-    exposure_control   <- toupper(config@exposure_control$method)
     items_administered <- matrix(FALSE, constants$nj, constants$ni)
     o_list <- vector(mode = "list", length = constants$nj)
 
-    if (exposure_control %in% c("NONE", "ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
+    if (constants$exposure_control_method %in% c("NONE", "ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
 
       segment_record           <- initializeSegmentRecord(constants)
       exposure_record          <- initializeExposureRecord(config@exposure_control, constants)
@@ -288,7 +287,7 @@ setMethod(
 
             }
 
-            if (constants$use_eligibility_control && exposure_control %in% c("ELIGIBILITY")) {
+            if (constants$use_eligibility_control && constants$exposure_control_method %in% c("ELIGIBILITY")) {
 
               xdata_elg  <- applyEligibilityConstraintsToXdata(xdata, eligible_flag_in_current_theta_segment, constants, constraints)
               optimal    <- runAssembly(config, constraints, xdata = xdata_elg, objective = info)
@@ -305,7 +304,7 @@ setMethod(
 
             }
 
-            if (constants$use_eligibility_control && exposure_control %in% c("BIGM", "BIGM-BAYESIAN")) {
+            if (constants$use_eligibility_control && constants$exposure_control_method %in% c("BIGM", "BIGM-BAYESIAN")) {
 
               # Do Big-M based exposure control: penalize item info
               info <- applyEligibilityConstraintsToInfo(
@@ -627,7 +626,7 @@ setMethod(
 
         o_list[[j]]@true_theta_segment <- segment_of$true_theta
 
-        if (exposure_control %in% c("ELIGIBILITY")) {
+        if (constants$exposure_control_method %in% c("ELIGIBILITY")) {
 
           segments_to_apply <- getSegmentsToApply(constants$n_segment, segment_of$final_theta_est)
           exposure_record   <- applyFading(exposure_record, segments_to_apply, constants)
@@ -642,7 +641,7 @@ setMethod(
           exposure_record   <- updateEligibilityRates(exposure_record, constants)
           exposure_record   <- clipEligibilityRates(exposure_record, constants)
 
-        } else if (exposure_control %in% c("BIGM")) {
+        } else if (constants$exposure_control_method %in% c("BIGM")) {
 
           segments_to_apply <- getSegmentsToApply(constants$n_segment, segment_of$final_theta_est)
           exposure_record   <- applyFading(exposure_record, segments_to_apply, constants)
@@ -655,7 +654,7 @@ setMethod(
           exposure_record   <- updateEligibilityRates(exposure_record, constants)
           exposure_record   <- clipEligibilityRates(exposure_record, constants)
 
-        } else if (exposure_control %in% c("BIGM-BAYESIAN")) {
+        } else if (constants$exposure_control_method %in% c("BIGM-BAYESIAN")) {
 
           segments_to_apply <- getSegmentsToApply(constants$n_segment, 1:constants$n_segment)
           exposure_record   <- applyFading(exposure_record, segments_to_apply, constants)

@@ -50,8 +50,8 @@ getConstants <- function(constraints, config, arg_data, true_theta, max_info) {
     o$set_based_refresh <- FALSE
   }
 
-  exposure_method <- toupper(config@exposure_control$method)
-  if (exposure_method %in% c("ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
+  o$exposure_control_method <- toupper(config@exposure_control$method)
+  if (o$exposure_control_method %in% c("ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
     o$use_eligibility_control <- TRUE
   } else {
     o$use_eligibility_control <- FALSE
