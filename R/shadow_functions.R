@@ -261,7 +261,9 @@ setMethod(
 
         if (constants$use_shadow) {
 
-          o@theta_segment_index[position] <- getThetaSegment(current_theta, position, config@exposure_control, constants)
+          o@theta_segment_index[position] <- parseThetaSegment(
+            current_theta, position, config@exposure_control, constants
+          )
 
           if (shouldShadowBeRefreshed(
             position, config@refresh_policy, refresh_shadow,

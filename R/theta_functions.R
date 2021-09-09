@@ -1068,24 +1068,22 @@ parseInitialTheta <- function(config_theta, initial_theta, prior_par, nj, j, pos
 }
 
 #' @noRd
-getThetaSegment <- function(current_theta, position, exposure_control, constants) {
+parseThetaSegment <- function(current_theta, position, exposure_control, constants) {
 
-  exposure_control_method <- toupper(exposure_control$method)
   n_segment   <- constants$n_segment
   segment_cut <- constants$segment_cut
 
-  if (exposure_control_method %in% c("NONE", "ELIGIBILITY", "BIGM")) {
-    if (isFirstSegmentValid(exposure_control$first_segment, n_segment, position)) {
-      segment <- exposure_control$first_segment[position]
-      return(segment)
-    } else {
-      segment <- find_segment(current_theta$theta, segment_cut)
-      return(segment)
-    }
+  if (isFirstSegmentValid(exposure_control$first_segment, n_segment, position)) {
+    segment <- exposure_control$first_segment[position]
+    return(segment)
   }
 
-  if (exposure_control_method %in% c("BIGM-BAYESIAN")) {
-    # maybe not necessary to make this into a function
+  if (constants$exposure_control_method %in% c("NONE", "ELIGIBILITY", "BIGM")) {
+    segment <- find_segment(current_theta$theta, segment_cut)
+    return(segment)
+  }
+
+  if (constants$exposure_control_method %in% c("BIGM-BAYESIAN")) {
     segment_prob <- getSegmentProb(current_theta$posterior_sample, constants)
     segment      <- which.max(segment_prob)
     return(segment)
