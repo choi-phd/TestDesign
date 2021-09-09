@@ -76,6 +76,7 @@ Collate:
     'summary_class.R'
     'print_functions.R'
     'runshiny.R'
+    'shadowtest_functions.R'
     'summary_functions.R'
     'show_functions.R'
     'test_operators.R'
