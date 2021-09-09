@@ -221,7 +221,7 @@ computeInfoAtCurrentTheta <- function(item_selection, j, info_fixed_theta, curre
 #' @noRd
 initializeStimulusRecord <- function() {
   o <- list()
-  o$end_set <- TRUE
+  o$just_finished_this_set <- TRUE
   o$finished_stimulus_index      <- NULL
   o$finished_stimulus_item_count <- NULL
   return(o)
@@ -251,7 +251,7 @@ shouldShadowBeRefreshed <- function(position, refresh_policy, refresh_shadow, th
       return(TRUE)
     }
   }
-  if (constants$set_based_refresh && constants$set_based && stimulus_record$end_set) {
+  if (constants$set_based_refresh && constants$set_based && stimulus_record$just_finished_this_set) {
     return(TRUE)
   }
 
