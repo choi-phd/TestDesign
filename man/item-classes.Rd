@@ -65,17 +65,17 @@ Birnbaum, A. (1958). \emph{Further considerations of efficiency in tests of a me
 Randolph Air Force Base, TX: USAF School of Aviation Medicine.
 
 Birnbaum, A. (1968). Some latent trait models and their use in inferring an examinee's ability.
-In Lord, F. M., Novick, M. R. (eds.), \emph{Statistical Theories of Mental Test Scores}, 397–479.
+In Lord, F. M., Novick, M. R. (eds.), \emph{Statistical Theories of Mental Test Scores}, 397-479.
 Reading, MA: Addison-Wesley.
 
 Masters, G. N. (1982). A Rasch model for partial credit scoring.
-\emph{Psychometrika, 47}(2), 149–174.
+\emph{Psychometrika, 47}(2), 149-174.
 
 Andrich, D. (1978). A rating formulation for ordered response categories.
-\emph{Psychometrika, 43}(4), 561–573.
+\emph{Psychometrika, 43}(4), 561-573.
 
 Muraki, E. (1992). A generalized partial credit model: Application of an EM algorithm.
-\emph{Applied Psychological Measurement, 16}(2), 159–176.
+\emph{Applied Psychological Measurement, 16}(2), 159-176.
 
 Samejima, F. (1969). Estimation of latent ability using a response pattern of graded scores.
 \emph{Psychometrika Monograph, 17}.
