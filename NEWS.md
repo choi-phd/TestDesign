@@ -1,3 +1,17 @@
+# TestDesign 1.2.6
+
+## Updates
+
+* `Shadow()` gains a new argument `seed`.
+* `plot(type = "exposure")` gains new arguments `segment`, `rmse`, and `use_segment_label`.
+* `summary()` for `output_Shadow_all` objects now also summarizes the number of selected items for `ENEMY`, `INCLUDE`, `EXCLUDE`, and `ALLORNONE` constraints.
+* Updated the citation in `citation("TestDesign")`
+
+## Bug fixes
+
+* Fixed where `summary()` of an `output_Shadow_all` object used to throw an `incorrect number of dimensions` error when there was only one constraint.
+* Fixed where setting `diagnostic_stats = TRUE` option in `createShadowTestConfig()` would generate unnecessarily large amount of data when running `Shadow()`.
+
 # TestDesign 1.2.5
 
 ## Updates

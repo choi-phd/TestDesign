@@ -1,14 +1,15 @@
-# TestDesign 1.2.5
+# TestDesign 1.2.6
 
 ## Test environments
 
 * Local:
-* * Windows 10 (R 4.1.0)
-* * Ubuntu 20.04 (R 4.1.0)
+* * Windows 10 (R 4.1.1)
+* * Ubuntu 20.04 (R 4.1.1)
 * GitHub Actions:
 * * Windows Server 2019 (R-release)
+* * macOS Big Sur 11 (R-release)
 * * macOS Catalina 10.15 (R-release)
-* * Ubuntu 20.04 (R-release, R-devel, R-oldrel)
+* * Ubuntu 20.04 (R-release, R-devel, R-oldrel, R-3.6.3)
 
 ## R CMD check results
 
@@ -26,7 +27,7 @@ Information on obtaining 'gurobi' is described in `DESCRIPTION`.
 
 ## Downstream dependencies
 
-The previous version 'TestDesign' 1.2.4 has 1 downstream dependency: `maat`
+The previous version 'TestDesign' 1.2.5 has 1 downstream dependency: `maat`
 
 Downstream dependency was checked using 'revdepcheck' available from https://github.com/r-lib/revdepcheck
 
