@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TestDesign</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.6</span>
       </span>
     </div>
 
@@ -155,6 +155,9 @@
   simple <span class='op'>=</span> <span class='cn'>TRUE</span>,
   theta_segment <span class='op'>=</span> <span class='st'>"Estimated"</span>,
   color_final <span class='op'>=</span> <span class='st'>"blue"</span>,
+  segment <span class='op'>=</span> <span class='cn'>NULL</span>,
+  rmse <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  use_segment_label <span class='op'>=</span> <span class='cn'>TRUE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span>
 
@@ -176,6 +179,9 @@
   simple <span class='op'>=</span> <span class='cn'>TRUE</span>,
   theta_segment <span class='op'>=</span> <span class='st'>"Estimated"</span>,
   color_final <span class='op'>=</span> <span class='st'>"blue"</span>,
+  segment <span class='op'>=</span> <span class='cn'>NULL</span>,
+  rmse <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  use_segment_label <span class='op'>=</span> <span class='cn'>TRUE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span>
 
@@ -197,6 +203,7 @@
   simple <span class='op'>=</span> <span class='cn'>TRUE</span>,
   theta_segment <span class='op'>=</span> <span class='st'>"Estimated"</span>,
   color_final <span class='op'>=</span> <span class='st'>"blue"</span>,
+  segment <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>...</span>
 <span class='op'>)</span>
 
@@ -217,6 +224,9 @@
   simple <span class='op'>=</span> <span class='cn'>FALSE</span>,
   theta_segment <span class='op'>=</span> <span class='st'>"Estimated"</span>,
   color_final <span class='op'>=</span> <span class='st'>"blue"</span>,
+  segment <span class='op'>=</span> <span class='cn'>NULL</span>,
+  rmse <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  use_segment_label <span class='op'>=</span> <span class='cn'>TRUE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span>
 
@@ -238,6 +248,9 @@
   simple <span class='op'>=</span> <span class='cn'>FALSE</span>,
   theta_segment <span class='op'>=</span> <span class='st'>"Estimated"</span>,
   color_final <span class='op'>=</span> <span class='st'>"blue"</span>,
+  segment <span class='op'>=</span> <span class='cn'>NULL</span>,
+  rmse <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  use_segment_label <span class='op'>=</span> <span class='cn'>TRUE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -323,6 +336,18 @@
     <tr>
       <th>color_final</th>
       <td><p>used in <code><a href='output_Shadow_all-class.html'>output_Shadow_all</a></code> with <code>type = 'exposure'</code>. The color of item-wise exposure rates, only counting the items administered in the final theta segment as exposed.</p></td>
+    </tr>
+    <tr>
+      <th>segment</th>
+      <td><p>used in <code><a href='output_Shadow_all-class.html'>output_Shadow_all</a></code> with <code>type = 'exposure'</code>. (optional) The segment index to draw the plot. Leave empty to use all segments.</p></td>
+    </tr>
+    <tr>
+      <th>rmse</th>
+      <td><p>used in <code><a href='output_Shadow_all-class.html'>output_Shadow_all</a></code> with <code>type = 'exposure'</code>. If <code>TRUE</code>, display the RMSE value for each segment. (default = <code>FALSE</code>)</p></td>
+    </tr>
+    <tr>
+      <th>use_segment_label</th>
+      <td><p>used in <code><a href='output_Shadow_all-class.html'>output_Shadow_all</a></code> with <code>type = 'exposure'</code>. If <code>TRUE</code>, display the segment label for each segment. (default = <code>TRUE</code>)</p></td>
     </tr>
     <tr>
       <th>...</th>

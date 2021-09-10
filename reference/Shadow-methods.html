@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TestDesign</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.6</span>
       </span>
     </div>
 
@@ -147,7 +147,8 @@
   exclude <span class='op'>=</span> <span class='cn'>NULL</span>,
   include_items_for_estimation <span class='op'>=</span> <span class='cn'>NULL</span>,
   force_solver <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  session <span class='op'>=</span> <span class='cn'>NULL</span>
+  session <span class='op'>=</span> <span class='cn'>NULL</span>,
+  seed <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span>
 
 <span class='co'># S4 method for config_Shadow</span>
@@ -161,7 +162,8 @@
   exclude <span class='op'>=</span> <span class='cn'>NULL</span>,
   include_items_for_estimation <span class='op'>=</span> <span class='cn'>NULL</span>,
   force_solver <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  session <span class='op'>=</span> <span class='cn'>NULL</span>
+  session <span class='op'>=</span> <span class='cn'>NULL</span>,
+  seed <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -210,6 +212,10 @@
       <th>session</th>
       <td><p>(optional) used to communicate with Shiny app <code><a href='TestDesign.html'>TestDesign</a></code>.</p></td>
     </tr>
+    <tr>
+      <th>seed</th>
+      <td><p>(optional) used to perform data generation internally.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -219,13 +225,13 @@
 
     <p>van der Linden, W. J., Reese, L. M. (1998).
 A model for optimal constrained adaptive testing.
-<em>Applied Psychological Measurement, 22</em>, 259–270.</p>
+<em>Applied Psychological Measurement, 22</em>, 259-270.</p>
 <p>van der Linden, W. J. (1998).
 Optimal assembly of psychological and educational tests.
-<em>Applied Psychological Measurement, 22</em>, 195–211.</p>
+<em>Applied Psychological Measurement, 22</em>, 195-211.</p>
 <p>van der Linden, W. J. (2000).
 Optimal assembly of tests with item sets.
-<em>Applied Psychological Measurement, 24</em>, 225–240.</p>
+<em>Applied Psychological Measurement, 24</em>, 225-240.</p>
 <p>van der Linden, W. J. (2005).
 <em>Linear models for optimal test design.</em>
 Springer Science &amp; Business Media.</p>
