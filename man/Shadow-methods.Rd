@@ -71,15 +71,15 @@ solution@output
 \references{
 van der Linden, W. J., Reese, L. M. (1998).
 A model for optimal constrained adaptive testing.
-\emph{Applied Psychological Measurement, 22}, 259–270.
+\emph{Applied Psychological Measurement, 22}, 259-270.
 
 van der Linden, W. J. (1998).
 Optimal assembly of psychological and educational tests.
-\emph{Applied Psychological Measurement, 22}, 195–211.
+\emph{Applied Psychological Measurement, 22}, 195-211.
 
 van der Linden, W. J. (2000).
 Optimal assembly of tests with item sets.
-\emph{Applied Psychological Measurement, 24}, 225–240.
+\emph{Applied Psychological Measurement, 24}, 225-240.
 
 van der Linden, W. J. (2005).
 \emph{Linear models for optimal test design.}
