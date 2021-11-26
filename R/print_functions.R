@@ -358,7 +358,6 @@ setMethod("print", "output_Shadow_all", function(x) {
 #' @docType methods
 #' @rdname print-methods
 setMethod("print", "exposure_rate_plot", function(x) {
-  print(x@plot)
   return(invisible(x))
 })
 
