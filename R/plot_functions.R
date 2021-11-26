@@ -740,7 +740,10 @@ setMethod(
 plotExposurePanel <- function(
   item_exposure_rate, item_exposure_rate_final = NULL,
   stim_exposure_rate = NULL, stim_index = NULL,
-  max_rate = max_rate, title = NULL, color = "blue", color_final = "yellow", color_stim = "red", color_threshold = "dark gray", simple = FALSE) {
+  max_rate = max_rate, title = NULL,
+  color = "blue", color_final = "yellow",
+  color_stim = "red", color_threshold = "dark gray",
+  simple = FALSE, ...) {
 
   if (!is.null(stim_index)) {
     idx_sort <- order(stim_exposure_rate, stim_index, item_exposure_rate, decreasing = TRUE)
@@ -762,7 +765,12 @@ plotExposurePanel <- function(
     ylab = ""
   }
 
-  plot(1:ni, item_exposure_rate_ordered, type = "n", lwd = 2, ylim = c(0, 1), xlab = "Item", ylab = "Exposure Rate", main = title)
+  plot(
+    1:ni, item_exposure_rate_ordered,
+    type = "n", lwd = 2, ylim = c(0, 1),
+    xlab = "Item", ylab = "Exposure Rate", main = title,
+    ...
+  )
   points(1:ni, item_exposure_rate_ordered, type = "h", lwd = 1, col = color)
   if (!is.null(stim_exposure_rate)) {
     lines(1:ni, stim_exposure_rate_ordered, col = color_stim, type = "s")
@@ -1043,7 +1051,7 @@ plotShadowExposure <- function(
       plotExposurePanel(
         item_exposure_rate, item_exposure_rate_final, stim_exposure_rate, x@constraints@stimulus_index_by_item,
         max_rate = max_rate, title = switch(2 - use_segment_label, "Overall", NULL),
-        color = color, color_final = color_final, simple = TRUE
+        color = color, color_final = color_final, simple = TRUE, ...
       )
       if (rmse) {
         rmse_value <- sqrt(mean((x@final_theta_est - x@true_theta) ** 2))
@@ -1053,7 +1061,7 @@ plotShadowExposure <- function(
       plotExposurePanel(
         item_exposure_rate_segment[[k]], item_exposure_rate_segment_final[[k]], stim_exposure_rate_segment[[k]], x@constraints@stimulus_index_by_item,
         max_rate = max_rate, title = switch(2 - use_segment_label, segment_label[k], NULL),
-        color = color, color_final = color_final, simple = TRUE
+        color = color, color_final = color_final, simple = TRUE, ...
       )
       if (rmse) {
         rmse_value <- sqrt(mean((x@final_theta_est[theta_segment_index == k] - x@true_theta[theta_segment_index == k]) ** 2))
