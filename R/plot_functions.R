@@ -147,7 +147,7 @@ setMethod(
 
     box()
 
-    return()
+    return(invisible(NULL))
 
   }
 )
@@ -250,7 +250,7 @@ setMethod(
 
     box()
 
-    return()
+    return(invisible(NULL))
 
   }
 )
@@ -310,7 +310,7 @@ setMethod(
 
     box()
 
-    return()
+    return(invisible(NULL))
 
   }
 )
@@ -412,7 +412,7 @@ setMethod(
 
       }
 
-      return()
+      return(invisible(NULL))
 
     }
 
@@ -638,7 +638,7 @@ setMethod(
 
       }
 
-      return()
+      return(invisible(NULL))
 
     }
 
@@ -690,7 +690,7 @@ setMethod(
         use_par,
         ...
       )
-      return()
+      return(invisible(NULL))
     }
 
     if (type == "audit") {
@@ -701,7 +701,7 @@ setMethod(
         use_par,
         ...
       )
-      return()
+      return(invisible(NULL))
     }
 
     if (type == "shadow") {
@@ -711,7 +711,7 @@ setMethod(
         use_par,
         ...
       )
-      return()
+      return(invisible(NULL))
     }
 
     if (type == "exposure") {
@@ -724,7 +724,7 @@ setMethod(
         use_par,
         ...
       )
-      return()
+      return(invisible(NULL))
     }
 
   }
@@ -860,7 +860,7 @@ plotShadowInfo <- function(x, examinee_id, position, info_type, ylim, theta, col
 
   box()
 
-  return()
+  return(invisible(NULL))
 
 }
 
@@ -878,7 +878,7 @@ plotShadowAudit <- function(x, examinee_id, theta_range, z_ci, use_par, ...) {
     use_par = use_par,
     ...
   )
-  return()
+  return(invisible(NULL))
 
 }
 
@@ -896,7 +896,7 @@ plotShadowChart <- function(x, examinee_id, simple, use_par, ...) {
     ...
   )
 
-  return()
+  return(invisible(NULL))
 
 }
 
