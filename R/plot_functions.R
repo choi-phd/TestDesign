@@ -144,9 +144,7 @@ setMethod(
 
     box()
 
-    p <- recordPlot()
-    dev.off()
-    return(p)
+    return()
 
   }
 )
@@ -253,9 +251,7 @@ setMethod(
 
     box()
 
-    p <- recordPlot()
-    dev.off()
-    return(p)
+    return()
 
   }
 )
@@ -317,9 +313,7 @@ setMethod(
 
     box()
 
-    p <- recordPlot()
-    dev.off()
-    return(p)
+    return()
 
   }
 )
@@ -354,14 +348,9 @@ setMethod(
       min_theta <- theta_range[1]
       max_theta <- theta_range[2]
 
-      old_mar   <- par()$mar
-      old_mfrow <- par()$mfrow
+      old_par <- par(no.readonly = TRUE)
       on.exit({
-        close_dev <- ifelse(dev.cur() == 1, TRUE, FALSE)
-        par(mar = old_mar, mfrow = old_mfrow)
-        if (close_dev) {
-          dev.off()
-        }
+        par(old_par)
       })
       par(mar = c(2, 3, 1, 1) + 0.1)
 
@@ -426,10 +415,7 @@ setMethod(
 
       }
 
-      par(mar = old_mar, mfrow = old_mfrow)
-      p <- recordPlot()
-      dev.off()
-      return(p)
+      return()
 
     }
 
@@ -438,14 +424,9 @@ setMethod(
       test_length  <- x@test_length_constraints
       ni_pool      <- x@ni_pool
 
-      old_mar   <- par()$mar
-      old_mfrow <- par()$mfrow
+      old_par <- par(no.readonly = TRUE)
       on.exit({
-        close_dev <- ifelse(dev.cur() == 1, TRUE, FALSE)
-        par(mar = old_mar, mfrow = old_mfrow)
-        if (close_dev) {
-          dev.off()
-        }
+        par(old_par)
       })
       par(mar = c(2, 3, 1, 1) + 0.1, mfrow = c(1, 1))
 
@@ -658,10 +639,7 @@ setMethod(
 
       }
 
-      par(mar = old_mar, mfrow = old_mfrow)
-      p <- recordPlot()
-      dev.off()
-      return(p)
+      return()
 
     }
 
@@ -775,9 +753,7 @@ setMethod(
 
       box()
 
-      p <- recordPlot()
-      dev.off()
-      return(p)
+      return()
 
     }
 
@@ -786,7 +762,7 @@ setMethod(
       if (!all(examinee_id %in% 1:length(x@output))) {
         stop("plot(output_Shadow_all): 'examinee_id' out of bounds")
       }
-      p <- plot(
+      plot(
         x@output[[examinee_id]],
         type = "audit",
         theta_range = theta_range,
@@ -794,21 +770,21 @@ setMethod(
         ...
       )
 
-      return(p)
+      return()
 
     } else if (type == "shadow") {
 
       if (!all(examinee_id %in% 1:length(x@output))) {
         stop("plot(output_Shadow_all): 'examinee_id' out of bounds")
       }
-      p <- plot(
+      plot(
         x@output[[examinee_id]],
         type = "shadow",
         simple = simple,
         ...
       )
 
-      return(p)
+      return()
 
     } else if (type == "exposure") {
 
@@ -932,14 +908,9 @@ setMethod(
         segment <- c(0, 1:n_segment)
         use_axis_labels <- TRUE
 
-        old_oma <- par()$oma
-        old_mar <- par()$mar
+        old_par <- par(no.readonly = TRUE)
         on.exit({
-          close_dev <- ifelse(dev.cur() == 1, TRUE, FALSE)
-          par(oma = old_oma, mar = old_mar)
-          if (close_dev) {
-            dev.off()
-          }
+          par(old_par)
         })
         par(oma = c(3, 3, 0, 0), mar = c(3, 3, 2, 2))
 
@@ -976,14 +947,10 @@ setMethod(
       if (use_axis_labels) {
         mtext(text = "Item"         , side = 1, line = 0, outer = TRUE)
         mtext(text = "Exposure Rate", side = 2, line = 0, outer = TRUE)
-        par(oma = old_oma, mar = old_mar)
       }
 
-      p <- recordPlot()
-      dev.off()
-
       out <- new("exposure_rate_plot")
-      out@plot <- p
+      out@plot <- NULL
       out@item_exposure_rate         <- item_exposure_rate
       out@item_exposure_rate_segment <- item_exposure_rate_segment
       out@item_exposure_rate_segment_final <- item_exposure_rate_segment_final
