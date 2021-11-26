@@ -708,20 +708,16 @@ setMethod(
         ...
       )
       return()
-    } else if (type == "shadow") {
+    }
 
-      if (!all(examinee_id %in% 1:length(x@output))) {
-        stop("plot(output_Shadow_all): 'examinee_id' out of bounds")
-      }
-      plot(
-        x@output[[examinee_id]],
-        type = "shadow",
-        simple = simple,
+    if (type == "shadow") {
+      plotShadowChart(
+        x, examinee_id,
+        simple,
+        use_par,
         ...
       )
-
       return()
-
     } else if (type == "exposure") {
 
       if (toupper(theta_segment) == "TRUE") {
@@ -1046,6 +1042,24 @@ plotShadowAudit <- function(x, examinee_id, theta_range, z_ci, use_par, ...) {
     use_par = use_par,
     ...
   )
+  return()
+
+}
+
+#' @noRd
+plotShadowChart <- function(x, examinee_id, simple, use_par, ...) {
+
+  if (!all(examinee_id %in% 1:length(x@output))) {
+    stop("plot(output_Shadow_all): 'examinee_id' out of bounds")
+  }
+  plot(
+    x@output[[examinee_id]],
+    type = "shadow",
+    simple = simple,
+    use_par = use_par,
+    ...
+  )
+
   return()
 
 }
