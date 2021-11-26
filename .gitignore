@@ -18,3 +18,4 @@ figures/man.R
 docs
 src/tmp.def
 revdep/
+tests/testthat/Rplots.pdf
