@@ -688,84 +688,15 @@ setMethod(
     }
 
     if (type == "info") {
-
-      o <- x@output[[examinee_id]]
-      if (is.null(position)) {
-        i <- o@administered_item_index
-        txt <- "administered items"
-      } else {
-        i <- o@shadow_test[[position]]$i
-        txt <- sprintf("shadow test at position %s", position)
-      }
-
-      p <- x@pool[i]
-      if (toupper(info_type) == "FISHER") {
-        y <- calcFisher(p, theta)
-        y <- rowSums(y)
-      } else {
-        stop("Invalid info_type specified")
-      }
-
-      if (is.null(ylim)) {
-        ylim <- c(0, max(y))
-      }
-
-      plot(
-        theta, y, xlab = "Theta", ylab = "Information",
-        main = sprintf("Examinee ID: %s (%s)", examinee_id, txt),
-        type = "n", ylim = ylim)
-
-      grid()
-
-      lines(theta, y, col = color)
-
-      legend_label = c()
-      legend_lty   = c()
-      legend_col   = c()
-
-      if (!is.null(o@true_theta)) {
-        abline(v = o@true_theta, col = "red", lty = 1)
-        legend_label <- c(legend_label, sprintf("True theta = %.3f", o@true_theta))
-        legend_lty   <- c(legend_lty, 1)
-        legend_col   <- c(legend_col, "red")
-      }
-
-      abline(v = o@final_theta_est, col = "red", lty = 2)
-      legend_label <- c(legend_label, sprintf("Final theta = %.3f", o@final_theta_est))
-      legend_lty   <- c(legend_lty, 2)
-      legend_col   <- c(legend_col, "red")
-
-      if (!is.null(position)) {
-        abline(v = o@interim_theta_est[position], col = "black", lty = 1)
-        legend_label <- c(legend_label, sprintf("Interim @ %s = %.3f", position, o@interim_theta_est[position]))
-        legend_lty   <- c(legend_lty, 1)
-        legend_col   <- c(legend_col, "black")
-
-        if (position > 1) {
-          abline(v = o@interim_theta_est[position - 1], col = "black", lty = 2)
-          legend_label <- c(legend_label, sprintf("Interim @ %s = %.3f", position - 1, o@interim_theta_est[position - 1]))
-          legend_lty   <- c(legend_lty, 2)
-          legend_col   <- c(legend_col, "black")
-        }
-        if (position == 1) {
-          abline(v = o@initial_theta_est, col = "black", lty = 2)
-          legend_label <- c(legend_label, sprintf("Initial theta = %.3f", o@initial_theta_est))
-          legend_lty   <- c(legend_lty, 2)
-          legend_col   <- c(legend_col, "black")
-        }
-      }
-
-      legend(
-        "topleft",
-        legend = legend_label,
-        lty    = legend_lty,
-        col    = legend_col
+      plotShadowInfo(
+        x, examinee_id, position,
+        info_type,
+        ylim, theta,
+        color,
+        use_par,
+        ...
       )
-
-      box()
-
       return()
-
     }
 
     if (type == "audit") {
@@ -1023,4 +954,86 @@ plotER <- function(
     item_exposure_rate_final_ordered <- item_exposure_rate_final[idx_sort]
     points(1:ni, item_exposure_rate_final_ordered, type = "h", lwd = 1, lty = 1, col = color_final)
   }
+}
+
+#' @noRd
+plotShadowInfo <- function(x, examinee_id, position, info_type, ylim, theta, color, use_par, ...) {
+
+  o <- x@output[[examinee_id]]
+  if (is.null(position)) {
+    i <- o@administered_item_index
+    txt <- "administered items"
+  } else {
+    i <- o@shadow_test[[position]]$i
+    txt <- sprintf("shadow test at position %s", position)
+  }
+
+  p <- x@pool[i]
+  if (toupper(info_type) == "FISHER") {
+    y <- calcFisher(p, theta)
+    y <- rowSums(y)
+  } else {
+    stop("Invalid info_type specified")
+  }
+
+  if (is.null(ylim)) {
+    ylim <- c(0, max(y))
+  }
+
+  plot(
+    theta, y, xlab = "Theta", ylab = "Information",
+    main = sprintf("Examinee ID: %s (%s)", examinee_id, txt),
+    type = "n", ylim = ylim)
+
+  grid()
+
+  lines(theta, y, col = color)
+
+  legend_label = c()
+  legend_lty   = c()
+  legend_col   = c()
+
+  if (!is.null(o@true_theta)) {
+    abline(v = o@true_theta, col = "red", lty = 1)
+    legend_label <- c(legend_label, sprintf("True theta = %.3f", o@true_theta))
+    legend_lty   <- c(legend_lty, 1)
+    legend_col   <- c(legend_col, "red")
+  }
+
+  abline(v = o@final_theta_est, col = "red", lty = 2)
+  legend_label <- c(legend_label, sprintf("Final theta = %.3f", o@final_theta_est))
+  legend_lty   <- c(legend_lty, 2)
+  legend_col   <- c(legend_col, "red")
+
+  if (!is.null(position)) {
+    abline(v = o@interim_theta_est[position], col = "black", lty = 1)
+    legend_label <- c(legend_label, sprintf("Interim @ %s = %.3f", position, o@interim_theta_est[position]))
+    legend_lty   <- c(legend_lty, 1)
+    legend_col   <- c(legend_col, "black")
+
+    if (position > 1) {
+      abline(v = o@interim_theta_est[position - 1], col = "black", lty = 2)
+      legend_label <- c(legend_label, sprintf("Interim @ %s = %.3f", position - 1, o@interim_theta_est[position - 1]))
+      legend_lty   <- c(legend_lty, 2)
+      legend_col   <- c(legend_col, "black")
+    }
+    if (position == 1) {
+      abline(v = o@initial_theta_est, col = "black", lty = 2)
+      legend_label <- c(legend_label, sprintf("Initial theta = %.3f", o@initial_theta_est))
+      legend_lty   <- c(legend_lty, 2)
+      legend_col   <- c(legend_col, "black")
+    }
+  }
+
+  legend(
+    "topleft",
+    legend = legend_label,
+    lty    = legend_lty,
+    col    = legend_col
+  )
+
+  box()
+
+  return()
+
 }
