@@ -211,12 +211,21 @@ server <- function(input, output, session) {
         if (input$simulee_id != "") {
           v <- updateLogs(v, sprintf("Created plots for simulee %i", v$simulee_id))
 
-          v$plot_output <- plot(v$fit, v$simulee_id, type = 'audit')
+          plot(v$fit, v$simulee_id, type = 'audit')
+          p <- recordPlot()
+          dev.off()
+
+          v$plot_output <- p
           assignObject(v$plot_output,
             sprintf("shiny_audit_plot_%i", v$simulee_id),
             sprintf("Audit trail plot for simulee %i", v$simulee_id)
           )
-          v$shadow_chart <- plot(v$fit, v$simulee_id, type = 'shadow', simple = TRUE)
+
+          plot(v$fit, v$simulee_id, type = 'shadow', simple = TRUE)
+          p <- recordPlot()
+          dev.off()
+
+          v$shadow_chart <- p
           assignObject(v$shadow_chart,
             sprintf("shiny_shadow_chart_%i", v$simulee_id),
             sprintf("Shadow test chart for simulee %i", v$simulee_id)
@@ -228,13 +237,19 @@ server <- function(input, output, session) {
 
   observeEvent(input$maxinfo_button, {
     if (v$itempool_exists & v$const_exists) {
-      v$info_range_plot <- plot(v$const)
+
+      plot(v$const)
+      p <- recordPlot()
+      dev.off()
+
+      v$info_range_plot <- p
       v$plot_output <- v$info_range_plot
       assignObject(v$info_range_plot,
         "shiny_info_range_plot",
         "Obtainable info range plot"
       )
       v <- updateLogs(v, "Info range plot is printed on the 'Main' tab.")
+
     }
     updateCheckboxGroupButtons(
       session = session,
@@ -242,7 +257,6 @@ server <- function(input, output, session) {
       selected = character(0)
     )
   })
-
 
   observeEvent(input$run_solver, {
     shinyjs::disable("run_solver")
@@ -297,7 +311,11 @@ server <- function(input, output, session) {
         if (is.null(v$fit@MIP)) {
           v <- updateLogs(v, "Solver did not find a solution. Try relaxing the target values.")
         } else {
-          v$plot_output <- plot(v$fit)
+          plot(v$fit)
+          p <- recordPlot()
+          dev.off()
+
+          v$plot_output <- p
 
           v <- updateLogs(v, sprintf("%-10s: solved in %3.3fs", conf@MIP$solver, v$fit@solve_time))
           v$selected_index <- which(v$fit@MIP[[1]]$solution == 1)
