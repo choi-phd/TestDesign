@@ -30,6 +30,7 @@
   segment = NULL,
   rmse = FALSE,
   use_segment_label = TRUE,
+  use_par = TRUE,
   ...
 )
 
@@ -53,6 +54,7 @@
   segment = NULL,
   rmse = FALSE,
   use_segment_label = TRUE,
+  use_par = TRUE,
   ...
 )
 
@@ -74,6 +76,7 @@
   theta_segment = "Estimated",
   color_final = "blue",
   segment = NULL,
+  use_par = TRUE,
   ...
 )
 
@@ -96,6 +99,7 @@
   segment = NULL,
   rmse = FALSE,
   use_segment_label = TRUE,
+  use_par = TRUE,
   ...
 )
 
@@ -119,6 +123,7 @@
   segment = NULL,
   rmse = FALSE,
   use_segment_label = TRUE,
+  use_par = TRUE,
   ...
 )
 }
@@ -179,6 +184,8 @@
 \item{rmse}{used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. If \code{TRUE}, display the RMSE value for each segment. (default = \code{FALSE})}
 
 \item{use_segment_label}{used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. If \code{TRUE}, display the segment label for each segment. (default = \code{TRUE})}
+
+\item{use_par}{if \code{FALSE}, graphical parameters are not overridden inside the function. (default = \code{TRUE})}
 
 \item{...}{arguments to pass onto \code{\link[graphics]{plot}}.}
 }
