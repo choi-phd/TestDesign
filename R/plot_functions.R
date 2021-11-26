@@ -700,20 +700,14 @@ setMethod(
     }
 
     if (type == "audit") {
-
-      if (!all(examinee_id %in% 1:length(x@output))) {
-        stop("plot(output_Shadow_all): 'examinee_id' out of bounds")
-      }
-      plot(
-        x@output[[examinee_id]],
-        type = "audit",
-        theta_range = theta_range,
-        z_ci = z_ci,
+      plotShadowAudit(
+        x, examinee_id,
+        theta_range,
+        z_ci,
+        use_par,
         ...
       )
-
       return()
-
     } else if (type == "shadow") {
 
       if (!all(examinee_id %in% 1:length(x@output))) {
@@ -1034,6 +1028,24 @@ plotShadowInfo <- function(x, examinee_id, position, info_type, ylim, theta, col
 
   box()
 
+  return()
+
+}
+
+#' @noRd
+plotShadowAudit <- function(x, examinee_id, theta_range, z_ci, use_par, ...) {
+
+  if (!all(examinee_id %in% 1:length(x@output))) {
+    stop("plot(output_Shadow_all): 'examinee_id' out of bounds")
+  }
+  plot(
+    x@output[[examinee_id]],
+    type = "audit",
+    theta_range = theta_range,
+    z_ci = z_ci,
+    use_par = use_par,
+    ...
+  )
   return()
 
 }
