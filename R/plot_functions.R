@@ -34,12 +34,13 @@ NULL
 #' @param ylim (optional) the y-axis plot range. Used in most plot types.
 #' @param z_ci used in \code{\linkS4class{output_Shadow}} and \code{\linkS4class{output_Shadow_all}} with \code{type = 'audit'}. The range to use for confidence intervals. (default = \code{1.96})
 #' @param simple used in \code{\linkS4class{output_Shadow}} and \code{\linkS4class{output_Shadow_all}} with \code{type = 'shadow'}. If \code{TRUE}, simplify the chart by hiding unused items.
-#' @param theta_segment used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. The type of theta to determine exposure segments. Accepts \code{Estimated} or \code{True}. (default = \code{Estimated})
+#' @param theta_type used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. The type of theta to determine exposure segments. Accepts \code{Estimated} or \code{True}. (default = \code{Estimated})
 #' @param color_final used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. The color of item-wise exposure rates, only counting the items administered in the final theta segment as exposed.
 #' @param segment used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. (optional) The segment index to draw the plot. Leave empty to use all segments.
 #' @param rmse used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. If \code{TRUE}, display the RMSE value for each segment. (default = \code{FALSE})
 #' @param use_segment_label used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. If \code{TRUE}, display the segment label for each segment. (default = \code{TRUE})
 #' @param use_par if \code{FALSE}, graphical parameters are not overridden inside the function. (default = \code{TRUE})
+#' @param theta_segment (deprecated) use \code{theta_type} argument instead.
 #' @param ... arguments to pass onto \code{\link[graphics]{plot}}.
 #'
 #' @examples
@@ -91,7 +92,7 @@ setMethod(
     color = "blue",
     z_ci = 1.96,
     simple = TRUE,
-    theta_segment = "Estimated",
+    theta_type = "Estimated",
     color_final = "blue",
     segment = NULL,
     rmse = FALSE,
@@ -170,7 +171,7 @@ setMethod(
     color = "blue",
     z_ci = 1.96,
     simple = TRUE,
-    theta_segment = "Estimated",
+    theta_type = "Estimated",
     color_final = "blue",
     segment = NULL,
     rmse = FALSE,
@@ -278,7 +279,7 @@ setMethod(
     color = "blue",
     z_ci = 1.96,
     simple = TRUE,
-    theta_segment = "Estimated",
+    theta_type = "Estimated",
     color_final = "blue",
     segment = NULL,
     use_par = TRUE,
@@ -340,7 +341,7 @@ setMethod(
     color = "blue",
     z_ci = 1.96,
     simple = FALSE,
-    theta_segment = "Estimated",
+    theta_type = "Estimated",
     color_final = "blue",
     segment = NULL,
     rmse = FALSE,
@@ -675,14 +676,19 @@ setMethod(
     color = "blue",
     z_ci = 1.96,
     simple = FALSE,
-    theta_segment = "Estimated",
+    theta_type = "Estimated",
     color_final = "blue",
     segment = NULL,
     rmse = FALSE,
     use_segment_label = TRUE,
     use_par = TRUE,
+    theta_segment = NULL,
     ...) {
 
+    if (!missing("theta_segment")){
+      warning("argument 'theta_segment' is deprecated. Use 'theta_type' instead.")
+      theta_type <- theta_segment
+    }
     if (!type %in% c("audit", "shadow", "info", "score", "exposure")) {
       stop("plot(output_Shadow_all): 'type' must be 'audit', 'shadow', 'info', 'score', or 'exposure'")
     }
@@ -722,7 +728,7 @@ setMethod(
 
     if (type == "exposure") {
       plotShadowExposure(
-        x, theta_segment,
+        x, theta_type,
         segment,
         use_segment_label,
         color, color_final,
@@ -908,18 +914,18 @@ plotShadowChart <- function(x, examinee_id, simple, use_par, ...) {
 
 #' @noRd
 plotShadowExposure <- function(
-  x, theta_segment,
+  x, theta_type,
   segment, use_segment_label,
   color, color_final, rmse, use_par, ...) {
 
-  if (toupper(theta_segment) == "TRUE") {
+  if (toupper(theta_type) == "TRUE") {
     theta_value <- x@true_theta
     nj          <- length(theta_value)
-  } else if (toupper(theta_segment) == "ESTIMATED") {
+  } else if (toupper(theta_type) == "ESTIMATED") {
     theta_value <- x@final_theta_est
     nj          <- length(theta_value)
   } else {
-    stop("plot(output_Shadow_all): 'theta_segment' must be 'estimated' or 'true'")
+    stop("plot(output_Shadow_all): 'theta_type' must be 'estimated' or 'true'")
   }
 
   ni <- x@pool@ni
