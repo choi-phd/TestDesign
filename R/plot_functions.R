@@ -39,6 +39,7 @@ NULL
 #' @param segment used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. (optional) The segment index to draw the plot. Leave empty to use all segments.
 #' @param rmse used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. If \code{TRUE}, display the RMSE value for each segment. (default = \code{FALSE})
 #' @param use_segment_label used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. If \code{TRUE}, display the segment label for each segment. (default = \code{TRUE})
+#' @param use_par if \code{FALSE}, graphical parameters are not overridden inside the function. (default = \code{TRUE})
 #' @param ... arguments to pass onto \code{\link[graphics]{plot}}.
 #'
 #' @examples
@@ -95,6 +96,7 @@ setMethod(
     segment = NULL,
     rmse = FALSE,
     use_segment_label = TRUE,
+    use_par = TRUE,
     ...) {
 
     if (!is.null(select)) {
@@ -173,6 +175,7 @@ setMethod(
     segment = NULL,
     rmse = FALSE,
     use_segment_label = TRUE,
+    use_par = TRUE,
     ...) {
 
     config      <- x@config
@@ -278,6 +281,7 @@ setMethod(
     theta_segment = "Estimated",
     color_final = "blue",
     segment = NULL,
+    use_par = TRUE,
     ...) {
 
     if (!type == "info") {
@@ -341,18 +345,22 @@ setMethod(
     segment = NULL,
     rmse = FALSE,
     use_segment_label = TRUE,
+    use_par = TRUE,
     ...) {
 
     if (type == "audit") {
+
+      if (use_par) {
+        old_par <- par(no.readonly = TRUE)
+        on.exit({
+          par(old_par)
+        })
+        par(mar = c(2, 3, 1, 1) + 0.1)
+      }
+
       n_items <- length(x@administered_item_index)
       min_theta <- theta_range[1]
       max_theta <- theta_range[2]
-
-      old_par <- par(no.readonly = TRUE)
-      on.exit({
-        par(old_par)
-      })
-      par(mar = c(2, 3, 1, 1) + 0.1)
 
       layout(rbind(c(1, 1), c(1, 1), c(1, 1), c(1, 1), c(2, 2)))
 
@@ -421,14 +429,16 @@ setMethod(
 
     if (type == "shadow") {
 
+      if (use_par) {
+        old_par <- par(no.readonly = TRUE)
+        on.exit({
+          par(old_par)
+        })
+        par(mar = c(2, 3, 1, 1) + 0.1, mfrow = c(1, 1))
+      }
+
       test_length  <- x@test_length_constraints
       ni_pool      <- x@ni_pool
-
-      old_par <- par(no.readonly = TRUE)
-      on.exit({
-        par(old_par)
-      })
-      par(mar = c(2, 3, 1, 1) + 0.1, mfrow = c(1, 1))
 
       max_position <- sum(!is.na(x@administered_item_resp))
 
@@ -670,6 +680,7 @@ setMethod(
     segment = NULL,
     rmse = FALSE,
     use_segment_label = TRUE,
+    use_par = TRUE,
     ...) {
 
     if (!type %in% c("audit", "shadow", "info", "score", "exposure")) {
@@ -903,16 +914,18 @@ setMethod(
         stim_exposure_rate_segment_final <- NULL
       }
 
-      if (is.null(segment)) {
-
-        segment <- c(0, 1:n_segment)
-        use_axis_labels <- TRUE
-
+      if (use_par) {
         old_par <- par(no.readonly = TRUE)
         on.exit({
           par(old_par)
         })
         par(oma = c(3, 3, 0, 0), mar = c(3, 3, 2, 2))
+      }
+
+      if (is.null(segment)) {
+
+        segment <- c(0, 1:n_segment)
+        use_axis_labels <- TRUE
 
       } else {
 
