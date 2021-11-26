@@ -171,11 +171,6 @@ setMethod(
     color = "blue",
     z_ci = 1.96,
     simple = TRUE,
-    theta_type = "Estimated",
-    color_final = "blue",
-    segment = NULL,
-    rmse = FALSE,
-    use_segment_label = TRUE,
     use_par = TRUE,
     ...) {
 
@@ -279,9 +274,6 @@ setMethod(
     color = "blue",
     z_ci = 1.96,
     simple = TRUE,
-    theta_type = "Estimated",
-    color_final = "blue",
-    segment = NULL,
     use_par = TRUE,
     ...) {
 
@@ -342,10 +334,6 @@ setMethod(
     z_ci = 1.96,
     simple = FALSE,
     theta_type = "Estimated",
-    color_final = "blue",
-    segment = NULL,
-    rmse = FALSE,
-    use_segment_label = TRUE,
     use_par = TRUE,
     ...) {
 
