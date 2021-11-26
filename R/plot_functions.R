@@ -737,7 +737,7 @@ setMethod(
 )
 
 #' @noRd
-plotER <- function(
+plotExposurePanel <- function(
   item_exposure_rate, item_exposure_rate_final = NULL,
   stim_exposure_rate = NULL, stim_index = NULL,
   max_rate = max_rate, title = NULL, color = "blue", color_final = "yellow", color_stim = "red", color_threshold = "dark gray", simple = FALSE) {
@@ -1040,7 +1040,7 @@ plotShadowExposure <- function(
 
   for (k in segment) {
     if (k == 0) {
-      plotER(
+      plotExposurePanel(
         item_exposure_rate, item_exposure_rate_final, stim_exposure_rate, x@constraints@stimulus_index_by_item,
         max_rate = max_rate, title = switch(2 - use_segment_label, "Overall", NULL),
         color = color, color_final = color_final, simple = TRUE
@@ -1050,7 +1050,7 @@ plotShadowExposure <- function(
         text(0, 1, sprintf("RMSE = %1.3f", rmse_value), adj = c(0, 1))
       }
     } else {
-      plotER(
+      plotExposurePanel(
         item_exposure_rate_segment[[k]], item_exposure_rate_segment_final[[k]], stim_exposure_rate_segment[[k]], x@constraints@stimulus_index_by_item,
         max_rate = max_rate, title = switch(2 - use_segment_label, segment_label[k], NULL),
         color = color, color_final = color_final, simple = TRUE
