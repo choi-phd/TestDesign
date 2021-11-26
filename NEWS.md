@@ -1,3 +1,13 @@
+# TestDesign 1.2.7
+
+## Updates
+
+* `plot()` now works better with 'knitr' markdown documents. This is enabled by removing the use of `recordPlot()` inside `plot()`. As a result, `p <- plot()` will not work anymore. Use `recordPlot()` for assigning plots into objects.
+* Shiny app `TestDesign()` is updated to work with the above change.
+* `plot()` gains a new `use_par` argument to override using default graphical parameters that are hard-coded into the function. This allows for more flexible formatting.
+* `theta_segment` argument in `plot(type = "exposure")` is renamed to `theta_type`. The existing argument is deprecated and using it will raise a warning.
+* added validation check for test length constraints. In shadow test approach, test length is expected to be a fixed value.
+
 # TestDesign 1.2.6
 
 ## Updates
