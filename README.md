@@ -60,7 +60,7 @@ cfg <- createShadowTestConfig()
 solution <- Shadow(cfg, constraints, true_theta = c(0, 1))
 
 plot(solution, type = "audit" , examinee_id = 1)
-plot(solution, type = "shadow", examinee_id = 2, simple = T)
+plot(solution, type = "shadow", examinee_id = 2, simple = TRUE)
 summary(solution)
 ```
 
