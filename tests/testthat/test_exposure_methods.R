@@ -1,7 +1,7 @@
 test_that("exposure control works", {
 
   skip_on_cran()
-  skip_on_travis()
+  skip_on_ci()
 
   set.seed(1)
   true_theta <- runif(100, -3.5, 3.5)
