@@ -1000,3 +1000,47 @@ setMethod(
     }
   }
 )
+
+#' @noRd
+plotER <- function(
+  item_exposure_rate, item_exposure_rate_final = NULL,
+  stim_exposure_rate = NULL, stim_index = NULL,
+  max_rate = max_rate, title = NULL, color = "blue", color_final = "yellow", color_stim = "red", color_threshold = "dark gray", simple = FALSE) {
+
+  if (!is.null(stim_index)) {
+    idx_sort <- order(stim_exposure_rate, stim_index, item_exposure_rate, decreasing = TRUE)
+    item_exposure_rate_ordered <- item_exposure_rate[idx_sort]
+    stim_exposure_rate_ordered <- stim_exposure_rate[idx_sort]
+    stim_index_ordered         <- stim_index[idx_sort]
+  } else {
+    idx_sort <- order(item_exposure_rate, decreasing = TRUE)
+    item_exposure_rate_ordered <- item_exposure_rate[idx_sort]
+  }
+
+  ni <- length(item_exposure_rate)
+
+  if (!simple) {
+    xlab = "Item"
+    ylab = "Exposure Rate"
+  } else {
+    xlab = ""
+    ylab = ""
+  }
+
+  plot(1:ni, item_exposure_rate_ordered, type = "n", lwd = 2, ylim = c(0, 1), xlab = "Item", ylab = "Exposure Rate", main = title)
+  points(1:ni, item_exposure_rate_ordered, type = "h", lwd = 1, col = color)
+  if (!is.null(stim_exposure_rate)) {
+    lines(1:ni, stim_exposure_rate_ordered, col = color_stim, type = "s")
+    for (stim_id in unique(stim_index_ordered)) {
+      x <- mean((1:ni)[which(stim_index_ordered == stim_id)])
+      y <- stim_exposure_rate_ordered[which(stim_index_ordered == stim_id)][1]
+      points(x, y, col = color_stim, pch = 21, bg = 'white', cex = .75)
+    }
+  }
+  abline(h = max_rate, col = color_threshold, lty = 2)
+
+  if (!is.null(item_exposure_rate_final)) {
+    item_exposure_rate_final_ordered <- item_exposure_rate_final[idx_sort]
+    points(1:ni, item_exposure_rate_final_ordered, type = "h", lwd = 1, lty = 1, col = color_final)
+  }
+}
