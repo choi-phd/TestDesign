@@ -133,7 +133,7 @@
 
     <div id="testdesign-126" class="section level1">
 <h1 class="page-header" data-toc-text="1.2.6">
-<a href="#testdesign-126" class="anchor"></a>TestDesign 1.2.6<small> Unreleased </small>
+<a href="#testdesign-126" class="anchor"></a>TestDesign 1.2.6<small> 2021-09-22 </small>
 </h1>
 <div id="updates" class="section level2">
 <h2 class="hasAnchor">
@@ -142,10 +142,10 @@
 <li>
 <code><a href="../reference/Shadow.html">Shadow()</a></code> gains a new argument <code>seed</code>.</li>
 <li>
-<code><a href="../reference/plot.html">plot(type = "exposure")</a></code> gains new arguments <code>segment</code>, <code>rmse</code>, and <code>use_segment_label</code>.</li>
+<code>plot(type = "exposure")</code> gains new arguments <code>segment</code>, <code>rmse</code>, and <code>use_segment_label</code>.</li>
 <li>
 <code><a href="../reference/summary.html">summary()</a></code> for <code>output_Shadow_all</code> objects now also summarizes the number of selected items for <code>ENEMY</code>, <code>INCLUDE</code>, <code>EXCLUDE</code>, and <code>ALLORNONE</code> constraints.</li>
-<li>Updated the citation in <code><a href="https://rdrr.io/r/utils/citation.html">citation("TestDesign")</a></code>
+<li>Updated the citation in <code>citation("TestDesign")</code>
 </li>
 </ul>
 </div>
@@ -175,8 +175,8 @@
 <h2 class="hasAnchor">
 <a href="#deprecated-functions" class="anchor"></a>Deprecated functions</h2>
 <ul>
-<li>Deprecated <code>plotInfo()</code> is removed. This is now <code><a href="../reference/plot.html">plot(type = "info")</a></code>.</li>
-<li>Deprecated <code>plotExposure()</code> is removed. This is now <code><a href="../reference/plot.html">plot(type = "exposure")</a></code>.</li>
+<li>Deprecated <code>plotInfo()</code> is removed. This is now <code>plot(type = "info")</code>.</li>
+<li>Deprecated <code>plotExposure()</code> is removed. This is now <code>plot(type = "exposure")</code>.</li>
 </ul>
 </div>
 </div>
@@ -280,8 +280,8 @@
 <ul>
 <li>Deprecated <code>updateConstraints()</code> is removed. This is now <code><a href="../reference/toggleConstraints.html">toggleConstraints()</a></code>.</li>
 <li>Deprecated <code>showConstraints()</code> is removed. This is now <code><a href="../reference/print.html">print()</a></code>.</li>
-<li>Deprecated <code>plotCAT()</code> is removed. This is now <code><a href="../reference/plot.html">plot(type = 'audit')</a></code>.</li>
-<li>Deprecated <code>plotShadow()</code> is removed. This is now <code><a href="../reference/plot.html">plot(type = 'shadow')</a></code>.</li>
+<li>Deprecated <code>plotCAT()</code> is removed. This is now <code>plot(type = 'audit')</code>.</li>
+<li>Deprecated <code>plotShadow()</code> is removed. This is now <code>plot(type = 'shadow')</code>.</li>
 </ul>
 </div>
 </div>
@@ -322,9 +322,9 @@
 <li>
 <code><a href="../reference/loadItemPool.html">loadItemPool()</a></code> is now capable of reading from <code>SingleGroupClass</code> objects from <code>mirt</code> package.</li>
 <li>
-<code>item_pool</code> objects can be now subsetted and combined with <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code> and <code><a href="https://rdrr.io/r/base/c.html">c()</a></code>.</li>
+<code>item_pool</code> objects can be now subsetted and combined with <code>[</code> and <code><a href="https://rdrr.io/r/base/c.html">c()</a></code>.</li>
 <li>
-<code>constraints</code> objects can be now subsetted and combined with <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code> and <code><a href="https://rdrr.io/r/base/c.html">c()</a></code>.</li>
+<code>constraints</code> objects can be now subsetted and combined with <code>[</code> and <code><a href="https://rdrr.io/r/base/c.html">c()</a></code>.</li>
 <li>
 <code>SUM</code> constraints now accept <code>VARIABLE, EXPRESSION</code> in <code>CONDITION</code> for imposing constraints on conditional sums (e.g. <code>WORDCOUNT, DOK == 1</code>).</li>
 <li>
@@ -341,7 +341,7 @@
 <li>Added <code>dataset_bayes</code> example dataset.</li>
 <li>Now checks whether each solver returns solution properly upon loading the package.</li>
 <li>
-<code><a href="../reference/plot.html">plot(type = 'shadow')</a></code> (formerly <code>plotShadow()</code>) now groups items by stimulus.</li>
+<code>plot(type = 'shadow')</code> (formerly <code>plotShadow()</code>) now groups items by stimulus.</li>
 </ul>
 </div>
 <div id="new-features-2" class="section level2">
@@ -361,13 +361,13 @@
 <li>
 <code>updateConstraints()</code> is now <code><a href="../reference/toggleConstraints.html">toggleConstraints()</a></code>.</li>
 <li>
-<code>plotInfo()</code> is now <code><a href="../reference/plot.html">plot(type = 'info')</a></code>.</li>
+<code>plotInfo()</code> is now <code>plot(type = 'info')</code>.</li>
 <li>
-<code>plotCAT()</code> is now <code><a href="../reference/plot.html">plot(type = 'audit')</a></code>.</li>
+<code>plotCAT()</code> is now <code>plot(type = 'audit')</code>.</li>
 <li>
-<code>plotShadow()</code> is now <code><a href="../reference/plot.html">plot(type = 'shadow')</a></code>.</li>
+<code>plotShadow()</code> is now <code>plot(type = 'shadow')</code>.</li>
 <li>
-<code>plotExposure()</code> is now <code><a href="../reference/plot.html">plot(type = 'exposure')</a></code>.</li>
+<code>plotExposure()</code> is now <code>plot(type = 'exposure')</code>.</li>
 <li>
 <code>calcDerivative()</code> is removed.</li>
 <li>

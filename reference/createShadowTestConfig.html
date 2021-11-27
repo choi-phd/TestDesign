@@ -206,11 +206,11 @@ Default values are used for any unspecified parameters/slots.</p>
       <td><p>a named list containing exposure control settings.</p><ul>
 <li><p><code>method</code> the type of exposure control method. Accepts <code>NONE, ELIGIBILITY, BIGM, BIGM-BAYESIAN</code>. (default = <code>ELIGIBILITY</code>)</p></li>
 <li><p><code>M</code> used in methods <code>BIGM, BIGM-BAYESIAN</code>. the Big M penalty to use on item information.</p></li>
-<li><p><code>max_exposure_rate</code> target exposure rates for each segment. (default = <code><a href='https://rdrr.io/r/base/rep.html'>rep(0.25, 7)</a></code>)</p></li>
+<li><p><code>max_exposure_rate</code> target exposure rates for each segment. (default = <code>rep(0.25, 7)</code>)</p></li>
 <li><p><code>acceleration_factor</code> the acceleration factor to apply. (default = <code>1</code>)</p></li>
 <li><p><code>n_segment</code> the number of theta segments to use. (default = <code>7</code>)</p></li>
 <li><p><code>first_segment</code> (optional) the theta segment assumed at the beginning of test for all participants.</p></li>
-<li><p><code>segment_cut</code> theta segment cuts. (default = <code><a href='https://rdrr.io/r/base/c.html'>c(-Inf, seq(-2.5, 2.5, 1), Inf)</a></code>)</p></li>
+<li><p><code>segment_cut</code> theta segment cuts. (default = <code>c(-Inf, seq(-2.5, 2.5, 1), Inf)</code>)</p></li>
 <li><p><code>initial_eligibility_stats</code> (optional) initial eligibility statistics to use.</p></li>
 <li><p><code>fading_factor</code> the fading factor to apply. (default = <code>.999</code>)</p></li>
 <li><p><code>diagnostic_stats</code> set to <code>TRUE</code> to generate segment-wise diagnostic statistics. (default = <code>FALSE</code>)</p></li>
@@ -232,8 +232,8 @@ Default values are used for any unspecified parameters/slots.</p>
 <li><p><code>method</code> the type of estimation. Accepts <code>EAP, MLE, MLEF, EB, FB</code>. (default = <code>EAP</code>)</p></li>
 <li><p><code>shrinkage_correction</code> set <code>TRUE</code> to apply shrinkage correction. Used when <code>method</code> is <code>EAP</code>. (default = <code>FALSE</code>)</p></li>
 <li><p><code>prior_dist</code> the type of prior distribution. Accepts <code>NORMAL, UNIFORM</code>. (default = <code>NORMAL</code>)</p></li>
-<li><p><code>prior_par</code> distribution parameters for <code>prior_dist</code>. (default = <code><a href='https://rdrr.io/r/base/c.html'>c(0, 1)</a></code>)</p></li>
-<li><p><code>bound_ML</code> theta bound in <code><a href='https://rdrr.io/r/base/c.html'>c(lower_bound, upper_bound)</a></code> format. Used when <code>method</code> is <code>MLE</code>. (default = <code>-4, 4</code>)</p></li>
+<li><p><code>prior_par</code> distribution parameters for <code>prior_dist</code>. (default = <code>c(0, 1)</code>)</p></li>
+<li><p><code>bound_ML</code> theta bound in <code>c(lower_bound, upper_bound)</code> format. Used when <code>method</code> is <code>MLE</code>. (default = <code>-4, 4</code>)</p></li>
 <li><p><code>truncate_ML</code> set <code>TRUE</code> to truncate ML estimate within <code>bound_ML</code>. (default = <code>FALSE</code>)</p></li>
 <li><p><code>max_iter</code> maximum number of Newton-Raphson iterations. Used when <code>method</code> is <code>MLE</code>. (default = <code>50</code>)</p></li>
 <li><p><code>crit</code> convergence criterion. Used when <code>method</code> is <code>MLE</code>. (default = <code>1e-03</code>)</p></li>
@@ -242,7 +242,7 @@ Default values are used for any unspecified parameters/slots.</p>
 <li><p><code>step_size</code> upper bound to impose on the absolute change in initial theta and estimated theta. Absolute changes exceeding this value will be capped to <code>step_size</code>. Used when <code>method</code> is <code>MLE</code> or <code>MLEF</code>. (default = <code>0.5</code>)</p></li>
 <li><p><code>do_Fisher</code> set <code>TRUE</code> to use Fisher's method of scoring. Used when <code>method</code> is <code>MLE</code>. (default = <code>TRUE</code>)</p></li>
 <li><p><code>fence_slope</code> slope parameter to use for <code>method = 'MLEF'</code>. This must have two values in total, for the lower and upper bound item respectively. Use one value to use the same value for both bounds. (default = <code>5</code>)</p></li>
-<li><p><code>fence_difficulty</code> difficulty parameters to use for <code>method = 'MLEF'</code>. This must have two values in total, for the lower and upper bound item respectively. (default = <code><a href='https://rdrr.io/r/base/c.html'>c(-5, 5)</a></code>)</p></li>
+<li><p><code>fence_difficulty</code> difficulty parameters to use for <code>method = 'MLEF'</code>. This must have two values in total, for the lower and upper bound item respectively. (default = <code>c(-5, 5)</code>)</p></li>
 </ul></td>
     </tr>
     <tr>
@@ -251,8 +251,8 @@ Default values are used for any unspecified parameters/slots.</p>
 <li><p><code>method</code> the type of estimation. Accepts <code>EAP, MLE, MLEF, EB, FB</code>. (default = <code>EAP</code>)</p></li>
 <li><p><code>shrinkage_correction</code> set <code>TRUE</code> to apply shrinkage correction. Used when <code>method</code> is <code>EAP</code>. (default = <code>FALSE</code>)</p></li>
 <li><p><code>prior_dist</code> the type of prior distribution. Accepts <code>NORMAL, UNIFORM</code>. (default = <code>NORMAL</code>)</p></li>
-<li><p><code>prior_par</code> distribution parameters for <code>prior_dist</code>. (default = <code><a href='https://rdrr.io/r/base/c.html'>c(0, 1)</a></code>)</p></li>
-<li><p><code>bound_ML</code> theta bound in <code><a href='https://rdrr.io/r/base/c.html'>c(lower_bound, upper_bound)</a></code> format. Used when <code>method</code> is <code>MLE</code>. (default = <code>-4, 4</code>)</p></li>
+<li><p><code>prior_par</code> distribution parameters for <code>prior_dist</code>. (default = <code>c(0, 1)</code>)</p></li>
+<li><p><code>bound_ML</code> theta bound in <code>c(lower_bound, upper_bound)</code> format. Used when <code>method</code> is <code>MLE</code>. (default = <code>-4, 4</code>)</p></li>
 <li><p><code>truncate_ML</code> set <code>TRUE</code> to truncate ML estimate within <code>bound_ML</code>. (default = <code>FALSE</code>)</p></li>
 <li><p><code>max_iter</code> maximum number of Newton-Raphson iterations. Used when <code>method</code> is <code>MLE</code>. (default = <code>50</code>)</p></li>
 <li><p><code>crit</code> convergence criterion. Used when <code>method</code> is <code>MLE</code>. (default = <code>1e-03</code>)</p></li>
@@ -261,7 +261,7 @@ Default values are used for any unspecified parameters/slots.</p>
 <li><p><code>step_size</code> upper bound to impose on the absolute change in initial theta and estimated theta. Absolute changes exceeding this value will be capped to <code>step_size</code>. Used when <code>method</code> is <code>MLE</code> or <code>MLEF</code>. (default = <code>0.5</code>)</p></li>
 <li><p><code>do_Fisher</code> set <code>TRUE</code> to use Fisher's method of scoring. Used when <code>method</code> is <code>MLE</code>. (default = <code>TRUE</code>)</p></li>
 <li><p><code>fence_slope</code> slope parameter to use for <code>method = 'MLEF'</code>. This must have two values in total, for the lower and upper bound item respectively. Use one value to use the same value for both bounds. (default = <code>5</code>)</p></li>
-<li><p><code>fence_difficulty</code> difficulty parameters to use for <code>method = 'MLEF'</code>. This must have two values in total, for the lower and upper bound item respectively. (default = <code><a href='https://rdrr.io/r/base/c.html'>c(-5, 5)</a></code>)</p></li>
+<li><p><code>fence_difficulty</code> difficulty parameters to use for <code>method = 'MLEF'</code>. This must have two values in total, for the lower and upper bound item respectively. (default = <code>c(-5, 5)</code>)</p></li>
 </ul></td>
     </tr>
     <tr>
