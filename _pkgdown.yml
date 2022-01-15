@@ -64,3 +64,48 @@ reference:
       - output_Static-class
       - output_Shadow-class
       - output_Shadow_all-class
+  - title: internal
+    contents:
+      - item_attrib-operators
+      - st_attrib-operators
+      - constraints-operators
+      - test_operators
+      - item_pool-class
+      - item_pool_cluster-class
+      - test_cluster-class
+      - summary-classes
+      - find_segment
+      - print
+      - show
+      - app
+      - testSolver
+      - runAssembly
+      - calc_posterior
+      - calc_posterior_function
+      - calc_posterior_single
+      - calc_info
+      - calc_info_EB
+      - calc_info_FB
+      - calc_likelihood
+      - calc_MI_FB
+      - theta_EB
+      - theta_FB
+      - theta_FB_single
+      - theta_EAP
+      - theta_EAP_matrix
+      - p_1pl
+      - info_1pl
+      - mle
+      - mlef
+      - calcLogLikelihood
+      - calcLocation-methods
+      - getSolutionAttributes
+      - checkConstraints
+      - eap
+      - makeItemPoolCluster
+      - makeTestCluster
+      - lnHyperPars
+      - logitHyperPars
+      - iparPosteriorSample
+      - RE
+      - RMSE
