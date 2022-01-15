@@ -20,6 +20,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -32,18 +34,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TestDesign</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.7</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -68,7 +64,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/choi-phd/TestDesign/">
+  <a href="https://github.com/choi-phd/TestDesign/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -88,10 +84,10 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Creating constraints in TestDesign package</h1>
-                        <h4 class="author">Sangdon Lim</h4>
+                        <h4 data-toc-skip class="author">Sangdon Lim</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/choi-phd/TestDesign/blob/master/vignettes/constraints.Rmd"><code>vignettes/constraints.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/choi-phd/TestDesign/blob/HEAD/vignettes/constraints.Rmd" class="external-link"><code>vignettes/constraints.Rmd</code></a></small>
       <div class="hidden name"><code>constraints.Rmd</code></div>
 
     </div>
@@ -99,11 +95,11 @@
     
     
 <p><br></p>
-<div id="introduction" class="section level3">
-<h3 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h3>
+<div class="section level3">
+<h3 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h3>
 <p>This document explains how to create constraints data for <code><a href="../reference/loadConstraints.html">loadConstraints()</a></code>. In test assembly, practitioners often want to select items satisfying various types of constraints. As of <em>TestDesign</em> version 1.1.0, constraints can be read in from <code>data.frame</code> objects or <code>.csv</code> spreadsheet files. Data is expected to be in the following structure:</p>
-<table class="table table table-striped table-hover table-condensed table-responsive">
+<table class="table table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;">
 CONSTRAINT_ID
@@ -242,23 +238,23 @@ STANDARD == 1
 <p>Constraints data must have seven columns, named as <code>CONSTRAINT_ID</code>, <code>TYPE</code>, <code>WHAT</code>, <code>CONDITION</code>, <code>LB</code>, <code>UB</code>, <code>ONOFF</code> on the first row. Beginning from the second row, each row must have corresponding values for each column. A convenient way to creating constraints is to use a spreadsheet application (e.g. Excel) and work on the content from there.</p>
 <p><br></p>
 <hr>
-<div id="constraint_id" class="section level4">
-<h4 class="hasAnchor">
-<a href="#constraint_id" class="anchor"></a>CONSTRAINT_ID</h4>
+<div class="section level4">
+<h4 id="constraint_id">CONSTRAINT_ID<a class="anchor" aria-label="anchor" href="#constraint_id"></a>
+</h4>
 <p>This column serves as identifiers. Character values can be used as long as the values are unique.</p>
 <p><br></p>
 <hr>
 </div>
-<div id="type" class="section level4">
-<h4 class="hasAnchor">
-<a href="#type" class="anchor"></a>TYPE</h4>
+<div class="section level4">
+<h4 id="type">TYPE<a class="anchor" aria-label="anchor" href="#type"></a>
+</h4>
 <p>This column specifies the type of constraint. Following values are expected: <code>Number</code>, <code>Order</code>, <code>Enemy</code>, <code>Include</code>, <code>Exclude</code>, <code>AllorNone</code>.</p>
 <p><br></p>
 <ul>
 <li>
 <code>Number</code> specifies the constraint to be applied to the number of selected items (if <code>WHAT</code> column is <code>Item</code>), or to the number of selected item sets (if <code>WHAT</code> column is <code>Stimulus</code>). For example, the following row tells the solver to select a total of 30 items.</li>
 </ul>
-<table class="table table table-striped table-hover table-condensed table-responsive">
+<table class="table table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;">
 CONSTRAINT_ID
@@ -309,7 +305,7 @@ Item
 <li>
 <code>Sum</code> specifies the constraint to be applied to the sum of attributes of selected items (if <code>WHAT</code> column is <code>Item</code>), or of selected item sets (if <code>WHAT</code> column is <code>Stimulus</code>). For example, the following row tells the solver to keep the sum of <code>WORDS</code> between 500–600.</li>
 </ul>
-<table class="table table table-striped table-hover table-condensed table-responsive">
+<table class="table table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;">
 CONSTRAINT_ID
@@ -361,7 +357,7 @@ WORDS
 <li>
 <code>Order</code> specifies the selection to be made in ascending order. The following row tells the solver to select the items in ascending <code>LEVEL</code>, based on supplied attributes.</li>
 </ul>
-<table class="table table table-striped table-hover table-condensed table-responsive">
+<table class="table table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;">
 CONSTRAINT_ID
@@ -411,7 +407,7 @@ LEVEL
 <li>
 <code>Enemy</code> specifies the items (or item sets) matching the condition to be treated as enemy items. To tell the solver to select at most one of the two items:</li>
 </ul>
-<table class="table table table-striped table-hover table-condensed table-responsive">
+<table class="table table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;">
 CONSTRAINT_ID
@@ -461,7 +457,7 @@ ID %in% c(“SC00001”, “SC00002”)
 <li>
 <code>Include</code> specifies the items matching the condition to be always included in selection. For example, the following row tells the solver to include items <code>SC00003</code> and <code>SC00004</code>:</li>
 </ul>
-<table class="table table table-striped table-hover table-condensed table-responsive">
+<table class="table table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;">
 CONSTRAINT_ID
@@ -511,7 +507,7 @@ ID %in% c(“SC00003”, “SC00004”)
 <li>
 <code>Exclude</code> specifies the items matching the condition to be always excluded from selection. The following row tells the solver to exclude items that match <code>PTBIS &lt; 0.15</code>, based on supplied item attributes.</li>
 </ul>
-<table class="table table table-striped table-hover table-condensed table-responsive">
+<table class="table table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;">
 CONSTRAINT_ID
@@ -561,7 +557,7 @@ PTBIS &lt; 0.15
 <li>
 <code>AllOrNone</code> specifies the items matching the condition to be either all included or all excluded. To tell the solver to either select items <code>SC00005</code> and <code>SC00006</code> at the same time or exclude them at the same time:</li>
 </ul>
-<table class="table table table-striped table-hover table-condensed table-responsive">
+<table class="table table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;">
 CONSTRAINT_ID
@@ -609,16 +605,16 @@ ID %in% c(“SC00005”, “SC00006”)
 <p><br></p>
 <hr>
 </div>
-<div id="what" class="section level4">
-<h4 class="hasAnchor">
-<a href="#what" class="anchor"></a>WHAT</h4>
+<div class="section level4">
+<h4 id="what">WHAT<a class="anchor" aria-label="anchor" href="#what"></a>
+</h4>
 <p>This column specifies the unit of assembly the constraint uses. Expected values are <code>Item</code> or <code>Stimulus</code>.</p>
 <p><br></p>
 <hr>
 </div>
-<div id="condition" class="section level4">
-<h4 class="hasAnchor">
-<a href="#condition" class="anchor"></a>CONDITION</h4>
+<div class="section level4">
+<h4 id="condition">CONDITION<a class="anchor" aria-label="anchor" href="#condition"></a>
+</h4>
 <p>This column specifies the condition of the constraint. An R expression returning logical values (<code>TRUE</code> or <code>FALSE</code>) is expected. The variables supplied in item attributes can be used in the expression as variable names.</p>
 <p>Some examples are:</p>
 <ul>
@@ -631,7 +627,7 @@ ID %in% c(“SC00005”, “SC00006”)
 <li>Leave it empty to not specify any condition. This is useful in constraining the total number of items.</li>
 </ul>
 <p>For <code>TYPE == SUM</code>, using a variable name imposes the constraint on the sum of the variable. The following row tells the solver to keep the sum of <code>WORDS</code> between 500–600.</p>
-<table class="table table table-striped table-hover table-condensed table-responsive">
+<table class="table table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;">
 CONSTRAINT_ID
@@ -679,7 +675,7 @@ WORDS
 </tr></tbody>
 </table>
 <p>For <code>TYPE == SUM</code>, constraints on conditional sums can be imposed by using a variable name, placing a comma, and then giving an R expression returning logical values. The following row tells the solver to keep the sum of <code>WORDS</code> within <code>DOK == 1</code> items between 50–80.</p>
-<table class="table table table-striped table-hover table-condensed table-responsive">
+<table class="table table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;">
 CONSTRAINT_ID
@@ -727,7 +723,7 @@ WORDS, DOK == 1
 </tr></tbody>
 </table>
 <p>In set-based assembly, <code>Per Stimulus</code> can be used to specify the number of items to select in each stimulus. For example, the following row tells the solver to select 4 to 6 items per stimulus:</p>
-<table class="table table table-striped table-hover table-condensed table-responsive">
+<table class="table table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;">
 CONSTRAINT_ID
@@ -777,15 +773,15 @@ Per Stimulus
 <p><br></p>
 <hr>
 </div>
-<div id="lb-and-ub" class="section level4">
-<h4 class="hasAnchor">
-<a href="#lb-and-ub" class="anchor"></a>LB and UB</h4>
+<div class="section level4">
+<h4 id="lb-and-ub">LB and UB<a class="anchor" aria-label="anchor" href="#lb-and-ub"></a>
+</h4>
 <p>These two columns specify lower and upper bounds on the number of selected items. These must be specified when <code>TYPE</code> is <code>Number</code>, and otherwise must be left empty.</p>
 <p>Some example rows are provided.</p>
 <ul>
 <li>To select a total of 12 items:</li>
 </ul>
-<table class="table table table-striped table-hover table-condensed table-responsive">
+<table class="table table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;">
 CONSTRAINT_ID
@@ -835,7 +831,7 @@ Item
 <ul>
 <li>To select 15 to 30 items satisfying <code>DOK &gt;= 2</code>:</li>
 </ul>
-<table class="table table table-striped table-hover table-condensed table-responsive">
+<table class="table table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;">
 CONSTRAINT_ID
@@ -885,11 +881,11 @@ DOK &gt;= 2
 <p><br></p>
 <hr>
 </div>
-<div id="onoff" class="section level4">
-<h4 class="hasAnchor">
-<a href="#onoff" class="anchor"></a>ONOFF</h4>
+<div class="section level4">
+<h4 id="onoff">ONOFF<a class="anchor" aria-label="anchor" href="#onoff"></a>
+</h4>
 <p>Set this to <code>OFF</code> to turn off the constraint from being applied. <code>ON</code> or leaving it blank applies the constraint. The following example specifies the order constraint to be not applied.</p>
-<table class="table table table-striped table-hover table-condensed table-responsive">
+<table class="table table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;">
 CONSTRAINT_ID
@@ -949,11 +945,13 @@ OFF
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://education.utexas.edu/faculty/seung_choi">Seung W. Choi</a>, <a href="https://sdlim.com/">Sangdon Lim</a>.</p>
+  <p></p>
+<p>Developed by <a href="https://education.utexas.edu/faculty/seung_choi" class="external-link">Seung W. Choi</a>, <a href="https://sdlim.com/" class="external-link">Sangdon Lim</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -961,6 +959,8 @@ OFF
 
   
 
+
+  
 
   </body>
 </html>
