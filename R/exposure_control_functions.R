@@ -62,7 +62,7 @@ doExposureControl <- function(
   # exposure_record   <- incrementPhi(exposure_record, segments_to_apply, segment_prob, TRUE) # is not called for the purpose of code optimization; see comments in incrementPhi()
     exposure_record   <- incrementAlpha(exposure_record, segments_to_apply, segment_prob, o, constants)
     exposure_record   <- incrementRho(exposure_record, segments_to_apply, segment_prob, eligible_flag, TRUE, constants)
-    exposure_record   <- adjustAlphaToReduceSpike(exposure_record, segment_prob, segment_of$visited, eligible_flag_in_final_theta_segment, o, constants)
+    exposure_record   <- adjustAlphaToReduceSpike(exposure_record, segment_prob[segment_of$final_theta_est], segment_of$visited, eligible_flag_in_final_theta_segment, o, constants)
     exposure_record   <- updateEligibilityRates(exposure_record, constants)
     exposure_record   <- clipEligibilityRates(exposure_record, constants)
     return(exposure_record)

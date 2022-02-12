@@ -283,7 +283,7 @@ clipEligibilityRates <- function(o, constants) {
 }
 
 #' @noRd
-adjustAlphaToReduceSpike <- function(o, segment_prob, segment_visited, eligible_flag_in_final_theta_segment, x, constants) {
+adjustAlphaToReduceSpike <- function(o, segment_prob_of_final_theta, segments_visited, eligible_flag_in_final_theta_segment, x, constants) {
 
   # van der Linden & Choi (2018)
   # Improving Item-Exposure Control in Adaptive Testing
@@ -295,34 +295,54 @@ adjustAlphaToReduceSpike <- function(o, segment_prob, segment_visited, eligible_
   # - ineligible in the final-theta segment
   # visited segments do not include final-theta segment
 
-  segments_to_apply <- getSegmentsToApply(constants$n_segment, segment_visited)
+  segments_to_apply <- getSegmentsToApply(constants$n_segment, segments_visited)
+  if (all(segments_to_apply == 0)) {
+    return(o)
+  }
 
   administered_i <- x@administered_item_index
-  if (any(segments_to_apply)) {
-    if (any(eligible_flag_in_final_theta_segment$i[administered_i] == 0)) {
-      items_visited  <- administered_i[
-        x@theta_segment_index %in% segment_visited
+  if (all(eligible_flag_in_final_theta_segment$i[administered_i] == 1)) {
+    return(o)
+  }
+
+  for (segment_visited in segments_visited) {
+    administered_in_visited_segment <-
+      x@administered_item_index[
+        x@theta_segment_index == segment_visited
       ]
-      items_to_apply <- items_visited[eligible_flag_in_final_theta_segment$i[items_visited] == 0]
-      o$a_ijk[, items_to_apply] <- o$a_ijk[, items_to_apply] + segments_to_apply * segment_prob
-    }
+    items_to_apply <-
+      administered_in_visited_segment[
+        eligible_flag_in_final_theta_segment$i[administered_in_visited_segment] == 0
+      ]
+    o$a_ijk[segment_visited, items_to_apply] <-
+    o$a_ijk[segment_visited, items_to_apply] + segment_prob_of_final_theta
   }
 
   if (!constants$set_based) {
     return(o)
   }
 
-  administered_s <- x@administered_stimulus_index
-  if (any(segments_to_apply)) {
-    if (any(eligible_flag_in_final_theta_segment$s[administered_s] == 0, na.rm = TRUE)) {
-      stimuli_visited  <- administered_s[
-        x@theta_segment_index %in% segment_visited &
+  # x@administered_stimulus_index may contain NA if set-based items and discrete items are mixed
+  administered_s <- na.omit(unique(x@administered_stimulus_index))
+  if (all(eligible_flag_in_final_theta_segment$s[administered_s] == 1)) {
+    return(o)
+  }
+
+  for (segment_visited in segments_visited) {
+    administered_in_visited_segment <-
+      x@administered_stimulus_index[
+        x@theta_segment_index == segment_visited &
         x@administered_stimulus_index %in% administered_s
       ]
-      stimuli_to_apply <- stimuli_visited[eligible_flag_in_final_theta_segment$s[stimuli_visited] == 0]
-      stimuli_to_apply <- na.omit(stimuli_to_apply)
-      o$a_sjk[, stimuli_to_apply] <- o$a_sjk[, stimuli_to_apply] + segments_to_apply * segment_prob
-    }
+    administered_in_visited_segment <- unique(
+      administered_in_visited_segment
+    )
+    stimuli_to_apply <-
+      administered_in_visited_segment[
+        eligible_flag_in_final_theta_segment$s[administered_in_visited_segment] == 0
+      ]
+    o$a_sjk[segment_visited, stimuli_to_apply] <-
+    o$a_sjk[segment_visited, stimuli_to_apply] + segment_prob_of_final_theta
   }
 
   return(o)
