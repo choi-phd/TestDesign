@@ -29,6 +29,21 @@ dbind <- function(...) {
 
 }
 
+#' @noRd
+getDecisionVariablesOfPoolForMultipool <- function(pool_idx, nv_per_bin) {
+  return(
+    ((pool_idx - 1) * nv_per_bin) + 1:nv_per_bin
+  )
+}
+
+#' @noRd
+getDecisionVariablesOfItemForMultipool <- function(item_idx, nv_per_bin, n_bins) {
+  nv_total <- nv_per_bin * n_bins
+  return(
+    seq(item_idx, nv_total, nv_per_bin)
+  )
+}
+
 #' Split an item pool into partitions
 #'
 #' \code{\link{Split}} is a function to split a pool into multiple parallel tests or pools.
