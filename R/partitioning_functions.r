@@ -44,6 +44,14 @@ getDecisionVariablesOfItemForMultipool <- function(item_idx, nv_per_bin, n_bins)
   )
 }
 
+#' @noRd
+splitSolutionToBins <- function(solution, n_bins, ni_per_bin) {
+  pool_size <- length(solution) / n_bins
+  o <- split(solution, ceiling(seq_along(solution) / pool_size))
+  o <- lapply(o, function(x) x[1:ni_per_bin])
+  return(o)
+}
+
 #' Split an item pool into partitions
 #'
 #' \code{\link{Split}} is a function to split a pool into multiple parallel tests or pools.
