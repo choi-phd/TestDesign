@@ -91,7 +91,7 @@ setMethod(
     }
 
     if (!force_solver) {
-      o <- validateSolver(config, constraints)
+      o <- validateSolver(config, constraints, purpose = "SPLIT")
       if (!o) {
         return(invisible())
       }

@@ -381,7 +381,7 @@ printSolverNewline <- function(solver) {
 }
 
 #' @noRd
-validateSolver <- function(config, constraints) {
+validateSolver <- function(config, constraints, purpose = NULL) {
 
   if (constraints@set_based) {
     if (!toupper(config@MIP$solver) %in%  c("LPSYMPHONY", "RSYMPHONY", "GUROBI")) {
@@ -398,6 +398,40 @@ validateSolver <- function(config, constraints) {
 
       txt <- paste(
         sprintf("Set-based assembly with %s takes a long time.", config@MIP$solver),
+        "Recommended solvers: LPSYMPHONY, RSYMPHONY, or GUROBI",
+        sep = "\n"
+      )
+
+      choices <- c(
+        sprintf("Proceed with %s", config@MIP$solver),
+        "Abort"
+      )
+      input <- menu(choices, FALSE, txt)
+
+      return(input == 1)
+
+    }
+  }
+
+  if (is.null(purpose)) {
+    return(TRUE)
+  }
+
+  if (purpose == "SPLIT") {
+    if (!toupper(config@MIP$solver) %in%  c("LPSYMPHONY", "RSYMPHONY", "GUROBI")) {
+
+      if (!interactive()) {
+        txt <- paste(
+          sprintf("Split() with %s is not allowed in non-interactive mode", config@MIP$solver),
+          "(allowed solvers: LPSYMPHONY, RSYMPHONY, or GUROBI)",
+          sep = " "
+        )
+        warning(txt)
+        return(FALSE)
+      }
+
+      txt <- paste(
+        sprintf("Split() with %s takes a long time.", config@MIP$solver),
         "Recommended solvers: LPSYMPHONY, RSYMPHONY, or GUROBI",
         sep = "\n"
       )
