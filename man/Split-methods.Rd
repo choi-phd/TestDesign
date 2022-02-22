@@ -19,7 +19,7 @@ Split(config, constraints, n_partition, partition_type, force_solver = FALSE)
 
 \item{partition_type}{\code{test} to create tests, or \code{pool} to create pools.}
 
-\item{force_solver}{if \code{TRUE}, do not check whether the solver is one of recommended solvers for doing set-based assembly. Has no effect on discrete assembly. (default = \code{FALSE})}
+\item{force_solver}{if \code{TRUE}, do not check whether the solver is one of recommended solvers for complex problems (set-based assembly, partitioning). (default = \code{FALSE})}
 }
 \value{
 \code{\link{partition}} returns a \code{list} object containing item indices of created tests/pools.

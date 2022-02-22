@@ -54,7 +54,7 @@ Shadow(
   \item{\code{administered_item_resp}} item responses to include in theta estimation.
 }}
 
-\item{force_solver}{if \code{TRUE}, do not check whether the solver is one of recommended solvers for doing set-based assembly. Has no effect on discrete assembly. (default = \code{FALSE})}
+\item{force_solver}{if \code{TRUE}, do not check whether the solver is one of recommended solvers for complex problems (set-based assembly, partitioning). (default = \code{FALSE})}
 
 \item{session}{(optional) used to communicate with Shiny app \code{\link{TestDesign}}.}
 
