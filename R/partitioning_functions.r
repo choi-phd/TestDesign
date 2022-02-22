@@ -28,3 +28,51 @@ dbind <- function(...) {
   return(o)
 
 }
+
+#' Split an item pool into partitions
+#'
+#' \code{\link{Split}} is a function to split a pool into multiple parallel tests or pools.
+#' When constructing parallel tests, each test is constructed to satisfy all constraints.
+#' When constructing parallel pools, each pool is constructed so that it contains a test that satisfies all constraints.
+#'
+#' @template config_Static-param
+#' @template constraints-param
+#' @param n_partition the number of partitions to create.
+#' @param partition_type \code{test} to create tests, or \code{pool} to create pools.
+#' @template force_solver_param
+#'
+#' @return \code{\link{partition}} returns a \code{list} object containing item indices of created tests/pools.
+#'
+#' @examples
+#'
+#' @docType methods
+#' @rdname Split-methods
+#' @export
+setGeneric(
+  name = "Split",
+  def = function(config, constraints, n_partition, partition_type, force_solver = FALSE) {
+    standardGeneric("Split")
+  }
+)
+
+#' @docType methods
+#' @rdname Split-methods
+#' @export
+setMethod(
+  f = "Split",
+  signature = c("config_Static"),
+  definition = function(config, constraints, n_partition, partition_type, force_solver = FALSE) {
+
+    if (!validObject(config)) {
+      stop("'config' object is not valid.")
+    }
+
+    if (!force_solver) {
+      o <- validateSolver(config, constraints)
+      if (!o) {
+        return(invisible())
+      }
+    }
+
+  }
+)
