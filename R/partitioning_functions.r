@@ -105,6 +105,10 @@ setMethod(
       }
     }
 
+    if (constraints@set_based) {
+      stop("Split() does not support set-based pools yet")
+    }
+
     itempool          <- constraints@pool
     ni                <- itempool@ni
     n_bins            <- n_partition
