@@ -72,6 +72,7 @@ Collate:
     'helper_functions.R'
     'item_pool_cluster_operators.R'
     'other_functions.R'
+    'partitioning_functions.r'
     'plot_functions.R'
     'summary_class.R'
     'print_functions.R'
