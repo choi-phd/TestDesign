@@ -121,7 +121,6 @@ setMethod(
     rhs_ba <- rep(1   , ni)
 
     # bin size constraint:
-    bin_size <- ni / n_bins
     mat_bs <- matrix(0, n_bins, nv_total_with_dev)
     for (b in 1:n_bins) {
       mat_bs[
@@ -233,6 +232,10 @@ setMethod(
     rhs_ba <- rhs_ba
 
     # bin size constraint:
+    bin_size <- ni / n_bins
+    if (bin_size %% 1 != 0) {
+      stop(sprintf("unexpected resulting partition size '%s': this must result in an integer", bin_size))
+    }
     mat_bs <- mat_bs
     dir_bs <- dir_bs
     rhs_bs <- rep(bin_size, n_bins)
