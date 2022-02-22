@@ -67,7 +67,15 @@ splitSolutionToBins <- function(solution, n_bins, ni_per_bin) {
 #' @return \code{\link{partition}} returns a \code{list} object containing item indices of created tests/pools.
 #'
 #' @examples
+#' \dontrun{
+#' config <- createStaticTestConfig(MIP = list(solver = "LPSYMPHONY"))
+#' constraints <- constraints_science[1:10]
 #'
+#' solution <- Split(config, constraints, n_partition = 4, partition_type = "test"))
+#' print(solution)
+#' solution <- Split(config, constraints, n_partition = 4, partition_type = "pool"))
+#' print(solution)
+#' }
 #' @docType methods
 #' @rdname Split-methods
 #' @export

@@ -30,5 +30,13 @@ When constructing parallel tests, each test is constructed to satisfy all constr
 When constructing parallel pools, each pool is constructed so that it contains a test that satisfies all constraints.
 }
 \examples{
+\dontrun{
+config <- createStaticTestConfig(MIP = list(solver = "LPSYMPHONY"))
+constraints <- constraints_science[1:10]
 
+solution <- Split(config, constraints, n_partition = 4, partition_type = "test"))
+print(solution)
+solution <- Split(config, constraints, n_partition = 4, partition_type = "pool"))
+print(solution)
+}
 }
