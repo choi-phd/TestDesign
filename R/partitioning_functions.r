@@ -137,10 +137,6 @@ setMethod(
       }
     }
 
-    if (constraints@set_based) {
-      stop("Split() does not support set-based pools yet")
-    }
-
     itempool          <- constraints@pool
     ni                <- constraints@ni
     nv                <- constraints@nv
