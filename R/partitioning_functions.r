@@ -276,31 +276,39 @@ setMethod(
     rhs_ba <- rhs_ba
 
     # bin size constraint:
-    if (!constraints@set_based) {
+    if (!constraints@set_based & is.null(partition_size_range)) {
       bin_size <- ni / n_bins
       if (bin_size %% 1 != 0) {
         stop(sprintf("unexpected resulting partition size '%s': this must result in an integer", bin_size))
       }
-      mat_bs <- mat_bs
-      dir_bs <- dir_bs
-      rhs_bs <- rep(bin_size, n_bins)
+      bin_size_lb <- bin_size
+      bin_size_ub <- bin_size
     }
-    if (constraints@set_based) {
-      mat_bs <- matrix(0, n_bins * 2, nv_total_with_dev)
-      for (b in 1:n_bins) {
-        mat_bs[
-          (b - 1) * 2 + (1:2),
-          getDecisionVariablesOfPoolForMultipool(b, ni, nv)
-        ] <- 1
-      }
+    if (!constraints@set_based & !is.null(partition_size_range)) {
+      bin_size_lb <- partition_size_range[1]
+      bin_size_ub <- partition_size_range[2]
+    }
+    if (constraints@set_based & is.null(partition_size_range)) {
       n_i_per_s <- do.call(c, lapply(constraints@item_index_by_stimulus, length))
       smallest_s <- min(n_i_per_s)
       bin_size    <- ni / n_bins
       bin_size_lb <- bin_size - (smallest_s * 1)
       bin_size_ub <- bin_size + (smallest_s * 1)
-      dir_bs <- rep(c(">=", "<="), n_bins)
-      rhs_bs <- rep(c(bin_size_lb, bin_size_ub), n_bins)
     }
+    if (constraints@set_based & !is.null(partition_size_range)) {
+      bin_size_lb <- partition_size_range[1]
+      bin_size_ub <- partition_size_range[2]
+    }
+
+    mat_bs <- matrix(0, n_bins * 2, nv_total_with_dev)
+    for (b in 1:n_bins) {
+      mat_bs[
+        (b - 1) * 2 + (1:2),
+        getDecisionVariablesOfPoolForMultipool(b, ni, nv)
+      ] <- 1
+    }
+    dir_bs <- rep(c(">=", "<="), n_bins)
+    rhs_bs <- rep(c(bin_size_lb, bin_size_ub), n_bins)
 
     # existing assignment constraint from Step 1:
     idx_assignment_stepone <- which(o1$solution == 1)
