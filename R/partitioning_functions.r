@@ -30,9 +30,9 @@ dbind <- function(...) {
 }
 
 #' @noRd
-getDecisionVariablesOfPoolForMultipool <- function(pool_idx, nv_per_bin) {
+getDecisionVariablesOfPoolForMultipool <- function(pool_idx, ni_per_bin, nv_per_bin) {
   return(
-    ((pool_idx - 1) * nv_per_bin) + 1:nv_per_bin
+    ((pool_idx - 1) * nv_per_bin) + 1:ni_per_bin
   )
 }
 
@@ -45,10 +45,16 @@ getDecisionVariablesOfItemForMultipool <- function(item_idx, nv_per_bin, n_bins)
 }
 
 #' @noRd
-splitSolutionToBins <- function(solution, n_bins, ni_per_bin) {
-  pool_size <- length(solution) / n_bins
-  o <- split(solution, ceiling(seq_along(solution) / pool_size))
-  o <- lapply(o, function(x) x[1:ni_per_bin])
+splitSolutionToBins <- function(solution, n_bins, ni_per_bin, nv_per_bin) {
+  o <- list()
+  for (b in 1:n_bins) {
+    i <- (b - 1) * nv_per_bin + 1:ni_per_bin
+    s <- (b - 1) * nv_per_bin + (ni_per_bin + 1):nv_per_bin
+    o[[b]] <- list()
+    o[[b]]$i <- which(solution[i] == 1)
+    o[[b]]$s <- which(solution[s] == 1)
+  }
+  names(o) <- 1:n_bins
   return(o)
 }
 
@@ -110,9 +116,10 @@ setMethod(
     }
 
     itempool          <- constraints@pool
-    ni                <- itempool@ni
+    ni                <- constraints@ni
+    nv                <- constraints@nv
     n_bins            <- n_partition
-    nv_total          <- ni * n_bins
+    nv_total          <- nv * n_bins
     nv_total_with_dev <- nv_total + 1
 
     target_thetas <- config@item_selection$target_location
@@ -126,7 +133,7 @@ setMethod(
     for (i in 1:ni) {
       mat_ba[
         i,
-        getDecisionVariablesOfItemForMultipool(i, ni, n_bins)
+        getDecisionVariablesOfItemForMultipool(i, nv, n_bins)
       ] <- 1
     }
     dir_ba <- rep("<=", ni)
@@ -137,7 +144,7 @@ setMethod(
     for (b in 1:n_bins) {
       mat_bs[
         b,
-        getDecisionVariablesOfPoolForMultipool(b, ni)
+        getDecisionVariablesOfPoolForMultipool(b, ni, nv)
       ] <- 1
     }
     dir_bs <- rep("=="                   , n_bins)
@@ -173,17 +180,17 @@ setMethod(
         idx <- (k - 1) * n_pairs + p
         pairs_list[[idx]] <- matrix(0, 2, nv_total_with_dev)
         pairs_list[[idx]][1,
-          getDecisionVariablesOfPoolForMultipool(positive_side, ni)
+          getDecisionVariablesOfPoolForMultipool(positive_side, ni, nv)
         ] <- item_info
         pairs_list[[idx]][1,
-          getDecisionVariablesOfPoolForMultipool(negative_side, ni)
+          getDecisionVariablesOfPoolForMultipool(negative_side, ni, nv)
         ] <- -item_info
         pairs_list[[idx]][1, nv_total_with_dev] <- -1
         pairs_list[[idx]][2,
-          getDecisionVariablesOfPoolForMultipool(positive_side, ni)
+          getDecisionVariablesOfPoolForMultipool(positive_side, ni, nv)
         ] <- item_info
         pairs_list[[idx]][2,
-          getDecisionVariablesOfPoolForMultipool(negative_side, ni)
+          getDecisionVariablesOfPoolForMultipool(negative_side, ni, nv)
         ] <- -item_info
         pairs_list[[idx]][2, nv_total_with_dev] <- 1
       }
@@ -199,17 +206,17 @@ setMethod(
     dir_l <- ">="
     rhs_l <- config@MIP$obj_tol
 
+    obj <- rep(0, nv_total_with_dev)
+    obj[nv_total_with_dev] <- 1
+    types <- rep("B", nv_total_with_dev)
+    types[nv_total_with_dev] <- "C"
+
     # aggregate all constraints
     mat <- rbind(mat_ba, mat_bs, mat_c, mat_i, mat_l)
     dir <-     c(dir_ba, dir_bs, dir_c, dir_i, dir_l)
     rhs <-     c(rhs_ba, rhs_bs, rhs_c, rhs_i, rhs_l)
 
     # solve
-    obj <- rep(0, nv_total_with_dev)
-    obj[nv_total_with_dev] <- 1
-    types <- rep("B", nv_total_with_dev)
-    types[nv_total_with_dev] <- "C"
-
     o <- runMIP(
       solver = config@MIP$solver,
       obj = obj,
@@ -224,16 +231,10 @@ setMethod(
       gap_limit     = config@MIP$gap_limit
     )
 
-    solution_per_bin <- splitSolutionToBins(o$solution, n_bins, ni)
-    oo <- lapply(
-      solution_per_bin,
-      function(x) {
-        which(x == 1)
-      }
-    )
+    solution_per_bin <- splitSolutionToBins(o$solution, n_bins, ni, nv)
 
     if (partition_type == "test") {
-      return(oo)
+      return(solution_per_bin)
     }
 
     # Step 2. Grow each bin --------------------------------------------------------
