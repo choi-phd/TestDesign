@@ -23,7 +23,7 @@ setClass("output_Split",
     set_based            = "logical",
     config               = "config_Static",
     constraints          = "constraints",
-    partition_size_range = "numeric",
+    partition_size_range = "numeric_or_null",
     partition_type       = "character"
   ),
   prototype = list(
