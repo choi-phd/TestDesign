@@ -33,7 +33,9 @@ Split(
 
 \item{partition_type}{\code{test} to create tests, or \code{pool} to create pools.}
 
-\item{partition_size_range}{(optional) two integer values for the desired range for the size of a partition. Has no effect when \code{partition_type} is \code{test}.}
+\item{partition_size_range}{(optional) two integer values for the desired range for the size of a partition. Has no effect when \code{partition_type} is \code{test}.
+For discrete item pools, the default partition size is (pool size / number of partitions).
+For set-based item pools, the default partition size is (pool size / number of partitions) +/- smallest set size.}
 
 \item{force_solver}{if \code{TRUE}, do not check whether the solver is one of recommended solvers for complex problems (set-based assembly, partitioning). (default = \code{FALSE})}
 }

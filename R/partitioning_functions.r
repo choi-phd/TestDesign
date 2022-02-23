@@ -94,6 +94,8 @@ getSetStructureConstraints <- function(constraints) {
 #' @param n_partition the number of partitions to create.
 #' @param partition_type \code{test} to create tests, or \code{pool} to create pools.
 #' @param partition_size_range (optional) two integer values for the desired range for the size of a partition. Has no effect when \code{partition_type} is \code{test}.
+#' For discrete item pools, the default partition size is (pool size / number of partitions).
+#' For set-based item pools, the default partition size is (pool size / number of partitions) +/- smallest set size.
 #' @template force_solver_param
 #'
 #' @return \code{\link{partition}} returns a \code{list} object containing item indices of created tests/pools.
