@@ -242,7 +242,7 @@ setMethod(
     rhs <-     c(rhs_ba, rhs_bs, rhs_c, rhs_i, rhs_l)
 
     # solve
-    o <- runMIP(
+    o1 <- runMIP(
       solver = config@MIP$solver,
       obj = obj,
       mat = mat,
@@ -256,7 +256,7 @@ setMethod(
       gap_limit     = config@MIP$gap_limit
     )
 
-    solution_per_bin <- splitSolutionToBins(o$solution, n_bins, ni, nv)
+    solution_per_bin <- splitSolutionToBins(o1$solution, n_bins, ni, nv)
 
     if (partition_type == "test") {
       return(solution_per_bin)
@@ -270,31 +270,69 @@ setMethod(
     rhs_ba <- rhs_ba
 
     # bin size constraint:
-    bin_size <- ni / n_bins
-    if (bin_size %% 1 != 0) {
-      stop(sprintf("unexpected resulting partition size '%s': this must result in an integer", bin_size))
+    if (!constraints@set_based) {
+      bin_size <- ni / n_bins
+      if (bin_size %% 1 != 0) {
+        stop(sprintf("unexpected resulting partition size '%s': this must result in an integer", bin_size))
+      }
+      mat_bs <- mat_bs
+      dir_bs <- dir_bs
+      rhs_bs <- rep(bin_size, n_bins)
     }
-    mat_bs <- mat_bs
-    dir_bs <- dir_bs
-    rhs_bs <- rep(bin_size, n_bins)
+    if (constraints@set_based) {
+      mat_bs <- matrix(0, n_bins * 2, nv_total_with_dev)
+      for (b in 1:n_bins) {
+        mat_bs[
+          (b - 1) * 2 + (1:2),
+          getDecisionVariablesOfPoolForMultipool(b, ni, nv)
+        ] <- 1
+      }
+      n_i_per_s <- do.call(c, lapply(constraints@item_index_by_stimulus, length))
+      smallest_s <- min(n_i_per_s)
+      bin_size    <- ni / n_bins
+      bin_size_lb <- bin_size - (smallest_s * 1)
+      bin_size_ub <- bin_size + (smallest_s * 1)
+      dir_bs <- rep(c(">=", "<="), n_bins)
+      rhs_bs <- rep(c(bin_size_lb, bin_size_ub), n_bins)
+    }
 
-    # bin items constraint from Step 1:
-    idx_items_stepone <- which(o$solution == 1)
-    n_items_stepone   <- length(idx_items_stepone)
-    mat_bi <- matrix(0, n_items_stepone, nv_total_with_dev)
-    for (i in 1:n_items_stepone) {
-      mat_bi[i, idx_items_stepone[i]] <- 1
+    # existing assignment constraint from Step 1:
+    idx_assignment_stepone <- which(o1$solution == 1)
+    n_assignment_stepone   <- length(idx_assignment_stepone)
+    mat_be <- matrix(0, n_assignment_stepone, nv_total_with_dev)
+    for (i in 1:n_assignment_stepone) {
+      mat_be[i, idx_assignment_stepone[i]] <- 1
     }
-    dir_bi <- rep("==", n_items_stepone)
-    rhs_bi <- rep(1   , n_items_stepone)
+    dir_be <- rep("==", n_assignment_stepone)
+    rhs_be <- rep(1   , n_assignment_stepone)
+
+    # set-based constraints (to keep set-based structure in growed portions)
+    mat_ss <- getSetStructureConstraints(constraints)
+    dir_ss <- rep("==", constraints@ns)
+    rhs_ss <- rep(0   , constraints@ns)
+
+    mat_list <- vector("list", n_bins)
+    dir_list <- vector("list", n_bins)
+    rhs_list <- vector("list", n_bins)
+
+    for (b in 1:n_bins) {
+      mat_list[[b]] <- mat_ss
+      dir_list[[b]] <- dir_ss
+      rhs_list[[b]] <- rhs_ss
+    }
+
+    mat_ss <- do.call(dbind, mat_list)
+    dir_ss <- unlist(dir_list)
+    rhs_ss <- unlist(rhs_list)
+    mat_ss <- cbind(mat_ss, 0) # add deviance variable
 
     # combine all constraints
-    mat <- rbind(mat_ba, mat_bs, mat_bi, mat_i, mat_l)
-    dir <-     c(dir_ba, dir_bs, dir_bi, dir_i, dir_l)
-    rhs <-     c(rhs_ba, rhs_bs, rhs_bi, rhs_i, rhs_l)
+    mat <- rbind(mat_ba, mat_bs, mat_be, mat_ss, mat_i, mat_l)
+    dir <-     c(dir_ba, dir_bs, dir_be, dir_ss, dir_i, dir_l)
+    rhs <-     c(rhs_ba, rhs_bs, rhs_be, rhs_ss, rhs_i, rhs_l)
 
     # solve
-    o <- runMIP(
+    o2 <- runMIP(
       solver = config@MIP$solver,
       obj = obj,
       mat = mat,
@@ -308,16 +346,10 @@ setMethod(
       gap_limit     = config@MIP$gap_limit
     )
 
-    solution_per_bin <- splitSolutionToBins(o$solution, n_bins, ni)
-    oo <- lapply(
-      solution_per_bin,
-      function(x) {
-        which(x == 1)
-      }
-    )
+    solution_per_bin <- splitSolutionToBins(o2$solution, n_bins, ni, nv)
 
     if (partition_type == "pool") {
-      return(oo)
+      return(solution_per_bin)
     }
 
   }
