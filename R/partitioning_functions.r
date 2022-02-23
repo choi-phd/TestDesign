@@ -278,10 +278,10 @@ setMethod(
 
     # Step 2. Grow each bin --------------------------------------------------------
 
-    # bin assignment constraint: an item must be assigned to exactly one bin
-    mat_ba <- mat_ba
-    dir_ba <- rep("==", ni)
-    rhs_ba <- rhs_ba
+    # bin full assignment constraint: an item must be assigned to exactly one bin
+    mat_bfa <- mat_bpa
+    dir_bfa <- rep("==", ni)
+    rhs_bfa <- rhs_bpa
 
     # bin size constraint:
     if (!constraints@set_based & is.null(partition_size_range)) {
@@ -349,9 +349,9 @@ setMethod(
     mat_ss <- cbind(mat_ss, 0) # add deviance variable
 
     # combine all constraints
-    mat <- rbind(mat_ba, mat_bs, mat_be, mat_ss, mat_i, mat_l)
-    dir <-     c(dir_ba, dir_bs, dir_be, dir_ss, dir_i, dir_l)
-    rhs <-     c(rhs_ba, rhs_bs, rhs_be, rhs_ss, rhs_i, rhs_l)
+    mat <- rbind(mat_bfa, mat_bs, mat_be, mat_ss, mat_i, mat_l)
+    dir <-     c(dir_bfa, dir_bs, dir_be, dir_ss, dir_i, dir_l)
+    rhs <-     c(rhs_bfa, rhs_bs, rhs_be, rhs_ss, rhs_i, rhs_l)
 
     # solve
     o2 <- runMIP(
@@ -368,12 +368,19 @@ setMethod(
       gap_limit     = config@MIP$gap_limit
     )
 
+    if (isOptimal(o2$status, config@MIP$solver)) {
+      feasible[2] <- TRUE
+    }
+    if (!isOptimal(o2$status, config@MIP$solver)) {
+      feasible[2] <- FALSE
+    }
+
     solution_per_bin <- splitSolutionToBins(o2$solution, n_bins, ni, nv)
 
     if (partition_type == "pool") {
       o <- new("output_Split")
       o@output               <- solution_per_bin
-      o@feasible             <- TRUE
+      o@feasible             <- feasible
       o@solve_time           <- o2$solve_time
       o@set_based            <- constraints@set_based
       o@config               <- config
