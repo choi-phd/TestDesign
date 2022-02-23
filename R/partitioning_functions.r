@@ -337,24 +337,28 @@ setMethod(
     rhs_be <- rep(1   , n_assignment_stepone)
 
     # set-based constraints (to keep set-based structure in growed portions)
-    mat_ss <- getSetStructureConstraints(constraints)
-    dir_ss <- rep("==", constraints@ns)
-    rhs_ss <- rep(0   , constraints@ns)
-
-    mat_list <- vector("list", n_bins)
-    dir_list <- vector("list", n_bins)
-    rhs_list <- vector("list", n_bins)
-
-    for (b in 1:n_bins) {
-      mat_list[[b]] <- mat_ss
-      dir_list[[b]] <- dir_ss
-      rhs_list[[b]] <- rhs_ss
+    if (!constraints@set_based) {
+      mat_ss <- matrix(0, 0, nv_total_with_dev)
+      dir_ss <- character(0)
+      rhs_ss <- numeric(0)
     }
-
-    mat_ss <- do.call(dbind, mat_list)
-    dir_ss <- unlist(dir_list)
-    rhs_ss <- unlist(rhs_list)
-    mat_ss <- cbind(mat_ss, 0) # add deviance variable
+    if (constraints@set_based) {
+      mat_ss <- getSetStructureConstraints(constraints)
+      dir_ss <- rep("==", constraints@ns)
+      rhs_ss <- rep(0   , constraints@ns)
+      mat_list <- vector("list", n_bins)
+      dir_list <- vector("list", n_bins)
+      rhs_list <- vector("list", n_bins)
+      for (b in 1:n_bins) {
+        mat_list[[b]] <- mat_ss
+        dir_list[[b]] <- dir_ss
+        rhs_list[[b]] <- rhs_ss
+      }
+      mat_ss <- do.call(dbind, mat_list)
+      dir_ss <- unlist(dir_list)
+      rhs_ss <- unlist(rhs_list)
+      mat_ss <- cbind(mat_ss, 0) # add deviance variable
+    }
 
     # combine all constraints
     mat <- rbind(mat_bfa, mat_bs, mat_be, mat_ss, mat_i, mat_l)
