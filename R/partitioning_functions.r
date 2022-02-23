@@ -373,6 +373,27 @@ setMethod(
     }
     if (!isOptimal(o2$status, config@MIP$solver)) {
       feasible[2] <- FALSE
+      # retry using partial assignment
+      mat <- rbind(mat_bpa, mat_bs, mat_be, mat_ss, mat_i, mat_l)
+      dir <-     c(dir_bpa, dir_bs, dir_be, dir_ss, dir_i, dir_l)
+      rhs <-     c(rhs_bpa, rhs_bs, rhs_be, rhs_ss, rhs_i, rhs_l)
+      o2 <- runMIP(
+        solver = config@MIP$solver,
+        obj = obj,
+        mat = mat,
+        dir = dir,
+        rhs = rhs,
+        maximize = FALSE,
+        types = types,
+        verbosity     = config@MIP$verbosity,
+        time_limit    = config@MIP$time_limit,
+        gap_limit_abs = config@MIP$gap_limit_abs,
+        gap_limit     = config@MIP$gap_limit
+      )
+      if (!isOptimal(o2$status, config@MIP$solver)) {
+        msg <- getSolverStatusMessage(o2$status, config@MIP$solver)
+        stop(msg)
+      }
     }
 
     solution_per_bin <- splitSolutionToBins(o2$solution, n_bins, ni, nv)
