@@ -148,6 +148,7 @@ setMethod(
     n_targets <- length(target_thetas)
 
     feasible <- FALSE
+    solve_time <- 0
 
     # Step 1. Make base bins
 
@@ -241,6 +242,9 @@ setMethod(
     rhs <-     c(rhs_bpa, rhs_bs, rhs_c, rhs_i, rhs_l)
 
     # solve
+
+    solve_time_stepone <- proc.time()
+
     o1 <- runMIP(
       solver = config@MIP$solver,
       obj = obj,
@@ -260,6 +264,8 @@ setMethod(
       stop(msg)
     }
 
+    solve_time_stepone <- (proc.time() - solve_time_stepone)[["elapsed"]]
+    solve_time[1] <- solve_time_stepone
     feasible[1] <- TRUE
     solution_per_bin <- splitSolutionToBins(o1$solution, n_bins, ni, nv)
 
@@ -267,7 +273,7 @@ setMethod(
       o <- new("output_Split")
       o@output               <- solution_per_bin
       o@feasible             <- feasible
-      o@solve_time           <- o1$solve_time
+      o@solve_time           <- solve_time
       o@set_based            <- constraints@set_based
       o@config               <- config
       o@constraints          <- constraints
@@ -354,6 +360,9 @@ setMethod(
     rhs <-     c(rhs_bfa, rhs_bs, rhs_be, rhs_ss, rhs_i, rhs_l)
 
     # solve
+
+    solve_time_steptwo <- proc.time()
+
     o2 <- runMIP(
       solver = config@MIP$solver,
       obj = obj,
@@ -396,13 +405,15 @@ setMethod(
       }
     }
 
+    solve_time_steptwo <- (proc.time() - solve_time_steptwo)[["elapsed"]]
+    solve_time[2] <- solve_time_steptwo
     solution_per_bin <- splitSolutionToBins(o2$solution, n_bins, ni, nv)
 
     if (partition_type == "pool") {
       o <- new("output_Split")
       o@output               <- solution_per_bin
       o@feasible             <- feasible
-      o@solve_time           <- o2$solve_time
+      o@solve_time           <- solve_time
       o@set_based            <- constraints@set_based
       o@config               <- config
       o@constraints          <- constraints
