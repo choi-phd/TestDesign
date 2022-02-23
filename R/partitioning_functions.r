@@ -115,7 +115,7 @@ getSetStructureConstraints <- function(constraints) {
 #' @export
 setGeneric(
   name = "Split",
-  def = function(config, constraints, n_partition, partition_type, partition_size_range, force_solver = FALSE) {
+  def = function(config, constraints, n_partition, partition_type, partition_size_range = NULL, force_solver = FALSE) {
     standardGeneric("Split")
   }
 )
