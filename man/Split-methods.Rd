@@ -11,7 +11,7 @@ Split(
   constraints,
   n_partition,
   partition_type,
-  partition_size_range,
+  partition_size_range = NULL,
   force_solver = FALSE
 )
 
