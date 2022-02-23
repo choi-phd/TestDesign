@@ -363,7 +363,16 @@ setMethod(
     solution_per_bin <- splitSolutionToBins(o2$solution, n_bins, ni, nv)
 
     if (partition_type == "pool") {
-      return(solution_per_bin)
+      o <- new("output_Split")
+      o@output               <- solution_per_bin
+      o@feasible             <- TRUE
+      o@solve_time           <- o2$solve_time
+      o@set_based            <- constraints@set_based
+      o@config               <- config
+      o@constraints          <- constraints
+      o@partition_size_range <- partition_size_range
+      o@partition_type       <- partition_type
+      return(o)
     }
 
   }
