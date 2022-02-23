@@ -147,19 +147,21 @@ setMethod(
     target_thetas <- config@item_selection$target_location
     n_targets <- length(target_thetas)
 
+    feasible <- FALSE
+
     # Step 1. Make base bins
 
-    # bin assignment constraint: an item must be assigned to no more than one bin
+    # bin partial assignment constraint: an item must be assigned to no more than one bin
     # n of constraints = ni
-    mat_ba <- matrix(0, ni, nv_total_with_dev)
+    mat_bpa <- matrix(0, ni, nv_total_with_dev)
     for (i in 1:ni) {
-      mat_ba[
+      mat_bpa[
         i,
         getDecisionVariablesOfItemForMultipool(i, nv, n_bins)
       ] <- 1
     }
-    dir_ba <- rep("<=", ni)
-    rhs_ba <- rep(1   , ni)
+    dir_bpa <- rep("<=", ni)
+    rhs_bpa <- rep(1   , ni)
 
     # bin size constraint:
     mat_bs <- matrix(0, n_bins, nv_total_with_dev)
@@ -234,9 +236,9 @@ setMethod(
     types[nv_total_with_dev] <- "C"
 
     # aggregate all constraints
-    mat <- rbind(mat_ba, mat_bs, mat_c, mat_i, mat_l)
-    dir <-     c(dir_ba, dir_bs, dir_c, dir_i, dir_l)
-    rhs <-     c(rhs_ba, rhs_bs, rhs_c, rhs_i, rhs_l)
+    mat <- rbind(mat_bpa, mat_bs, mat_c, mat_i, mat_l)
+    dir <-     c(dir_bpa, dir_bs, dir_c, dir_i, dir_l)
+    rhs <-     c(rhs_bpa, rhs_bs, rhs_c, rhs_i, rhs_l)
 
     # solve
     o1 <- runMIP(
@@ -253,12 +255,18 @@ setMethod(
       gap_limit     = config@MIP$gap_limit
     )
 
+    if (!isOptimal(o1$status, config@MIP$solver)) {
+      msg <- getSolverStatusMessage(o1$status, config@MIP$solver)
+      stop(msg)
+    }
+
+    feasible[1] <- TRUE
     solution_per_bin <- splitSolutionToBins(o1$solution, n_bins, ni, nv)
 
     if (partition_type == "test") {
       o <- new("output_Split")
       o@output               <- solution_per_bin
-      o@feasible             <- TRUE
+      o@feasible             <- feasible
       o@solve_time           <- o1$solve_time
       o@set_based            <- constraints@set_based
       o@config               <- config
