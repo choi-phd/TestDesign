@@ -58,6 +58,31 @@ splitSolutionToBins <- function(solution, n_bins, ni_per_bin, nv_per_bin) {
   return(o)
 }
 
+#' @noRd
+getSetStructureConstraints <- function(constraints) {
+
+  ni <- constraints@ni
+  ns <- constraints@ns
+  nv <- constraints@nv
+
+  mat_ss <- matrix(0, ns, nv)
+
+  for (s in 1:ns) {
+    ni_this_s <- length(constraints@item_index_by_stimulus[[s]])
+    mat_ss[
+      s,
+      constraints@item_index_by_stimulus[[s]]
+    ] <- 1
+    mat_ss[
+      s,
+      ni + s
+    ] <- -ni_this_s
+  }
+
+  return(mat_ss)
+
+}
+
 #' Split an item pool into partitions
 #'
 #' \code{\link{Split}} is a function to split a pool into multiple parallel tests or pools.
