@@ -6,9 +6,23 @@
 \alias{Split,config_Static-method}
 \title{Split an item pool into partitions}
 \usage{
-Split(config, constraints, n_partition, partition_type, force_solver = FALSE)
+Split(
+  config,
+  constraints,
+  n_partition,
+  partition_type,
+  partition_size_range,
+  force_solver = FALSE
+)
 
-\S4method{Split}{config_Static}(config, constraints, n_partition, partition_type, force_solver = FALSE)
+\S4method{Split}{config_Static}(
+  config,
+  constraints,
+  n_partition,
+  partition_type,
+  partition_size_range = NULL,
+  force_solver = FALSE
+)
 }
 \arguments{
 \item{config}{a \code{\linkS4class{config_Static}} object. Use \code{\link{createStaticTestConfig}} for this.}
@@ -18,6 +32,8 @@ Split(config, constraints, n_partition, partition_type, force_solver = FALSE)
 \item{n_partition}{the number of partitions to create.}
 
 \item{partition_type}{\code{test} to create tests, or \code{pool} to create pools.}
+
+\item{partition_size_range}{(optional) two integer values for the desired range for the size of a partition. Has no effect when \code{partition_type} is \code{test}.}
 
 \item{force_solver}{if \code{TRUE}, do not check whether the solver is one of recommended solvers for complex problems (set-based assembly, partitioning). (default = \code{FALSE})}
 }

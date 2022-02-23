@@ -93,6 +93,7 @@ getSetStructureConstraints <- function(constraints) {
 #' @template constraints-param
 #' @param n_partition the number of partitions to create.
 #' @param partition_type \code{test} to create tests, or \code{pool} to create pools.
+#' @param partition_size_range (optional) two integer values for the desired range for the size of a partition. Has no effect when \code{partition_type} is \code{test}.
 #' @template force_solver_param
 #'
 #' @return \code{\link{partition}} returns a \code{list} object containing item indices of created tests/pools.
@@ -112,7 +113,7 @@ getSetStructureConstraints <- function(constraints) {
 #' @export
 setGeneric(
   name = "Split",
-  def = function(config, constraints, n_partition, partition_type, force_solver = FALSE) {
+  def = function(config, constraints, n_partition, partition_type, partition_size_range, force_solver = FALSE) {
     standardGeneric("Split")
   }
 )
@@ -123,7 +124,7 @@ setGeneric(
 setMethod(
   f = "Split",
   signature = c("config_Static"),
-  definition = function(config, constraints, n_partition, partition_type, force_solver = FALSE) {
+  definition = function(config, constraints, n_partition, partition_type, partition_size_range = NULL, force_solver = FALSE) {
 
     if (!validObject(config)) {
       stop("'config' object is not valid.")
