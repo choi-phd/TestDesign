@@ -146,10 +146,12 @@ setMethod(
     nv_total          <- nv * n_bins
     nv_total_with_dev <- nv_total + 1
 
-    target_thetas <- config@item_selection$target_location
+    target_thetas  <- config@item_selection$target_location
+    target_weights <- config@item_selection$target_weight
     n_targets <- length(target_thetas)
 
     obj_info <- calcFisher(itempool, target_thetas)
+    obj_info <- obj_info * target_weights
     obj_info <- apply(obj_info, 2, sum)
 
     feasible <- FALSE
@@ -204,6 +206,7 @@ setMethod(
 
     for (k in 1:n_targets) {
       item_info <- calcFisher(itempool, target_thetas[k])[1, ]
+      item_info <- item_info * target_weights[k]
       for (p in 1:n_pairs) {
         positive_side <- pairs_table[p, 1]
         negative_side <- pairs_table[p, 2]
@@ -245,7 +248,7 @@ setMethod(
     obj <- rep(0, nv)
     obj[1:ni] <- obj_info
     obj <- rep(obj, n_partition)
-    delta_scale <- length(config@item_selection$target_location) * n_bins
+    delta_scale <- sum(target_weights) * n_bins
     obj[nv_total_with_dev] <- -delta_scale
     types <- rep("B", nv_total_with_dev)
     types[nv_total_with_dev] <- "C"
