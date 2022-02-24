@@ -12,17 +12,17 @@
 \describe{
 \item{\code{output}}{a list containing item/set indices of each partition.}
 
-\item{\code{feasible}}{for partitioning into pools, \code{TRUE} indicates the complete assignment problem was feasible.}
+\item{\code{feasible}}{for partitioning into sub-pools, \code{TRUE} indicates the complete assignment problem was feasible.}
 
 \item{\code{solve_time}}{elapsed time in running the solver.}
 
-\item{\code{set_based}}{whether the item pool was set-based.}
+\item{\code{set_based}}{whether the item pool is set-based.}
 
 \item{\code{config}}{the \code{\linkS4class{config_Static}} used in the assembly.}
 
 \item{\code{constraints}}{the \code{\linkS4class{constraints}} used in the assembly.}
 
-\item{\code{partition_size_range}}{the partition size range for splitting into pools.}
+\item{\code{partition_size_range}}{the partition size range for splitting into sub-pools.}
 
 \item{\code{partition_type}}{the partition type. Can be a \code{test} or a \code{pool}.}
 }}
