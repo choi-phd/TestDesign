@@ -6,12 +6,12 @@ NULL
 #' \code{\linkS4class{output_Split}} is an S4 class to represent the partitioning solution of an item pool.
 #'
 #' @slot output a list containing item/set indices of each partition.
-#' @slot feasible for partitioning into pools, \code{TRUE} indicates the complete assignment problem was feasible.
+#' @slot feasible for partitioning into sub-pools, \code{TRUE} indicates the complete assignment problem was feasible.
 #' @slot solve_time elapsed time in running the solver.
-#' @slot set_based whether the item pool was set-based.
+#' @slot set_based whether the item pool is set-based.
 #' @slot config the \code{\linkS4class{config_Static}} used in the assembly.
 #' @slot constraints the \code{\linkS4class{constraints}} used in the assembly.
-#' @slot partition_size_range the partition size range for splitting into pools.
+#' @slot partition_size_range the partition size range for splitting into sub-pools.
 #' @slot partition_type the partition type. Can be a \code{test} or a \code{pool}.
 #'
 #' @export
