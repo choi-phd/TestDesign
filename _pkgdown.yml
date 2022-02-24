@@ -27,6 +27,7 @@ reference:
       - createShadowTestConfig
       - Static
       - Shadow
+      - Split
   - title: "Summary functions"
     contents:
       - summary
@@ -64,6 +65,7 @@ reference:
       - output_Static-class
       - output_Shadow-class
       - output_Shadow_all-class
+      - output_Split-class
   - title: internal
     contents:
       - item_attrib-operators
