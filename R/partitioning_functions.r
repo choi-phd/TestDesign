@@ -98,7 +98,7 @@ getSetStructureConstraints <- function(constraints) {
 #' For set-based item pools, the default partition size is (pool size / number of partitions) +/- smallest set size.
 #' @template force_solver_param
 #'
-#' @return \code{\link{partition}} returns a \code{list} object containing item indices of created tests/pools.
+#' @return \code{\link{partition}} returns an \code{\linkS4class{output_Split}} object containing item/set indices of created tests/pools.
 #'
 #' @examples
 #' \dontrun{
@@ -106,9 +106,9 @@ getSetStructureConstraints <- function(constraints) {
 #' constraints <- constraints_science[1:10]
 #'
 #' solution <- Split(config, constraints, n_partition = 4, partition_type = "test"))
-#' print(solution)
+#' plot(solution)
 #' solution <- Split(config, constraints, n_partition = 4, partition_type = "pool"))
-#' print(solution)
+#' plot(solution)
 #' }
 #' @docType methods
 #' @rdname Split-methods

@@ -40,7 +40,7 @@ For set-based item pools, the default partition size is (pool size / number of p
 \item{force_solver}{if \code{TRUE}, do not check whether the solver is one of recommended solvers for complex problems (set-based assembly, partitioning). (default = \code{FALSE})}
 }
 \value{
-\code{\link{partition}} returns a \code{list} object containing item indices of created tests/pools.
+\code{\link{partition}} returns an \code{\linkS4class{output_Split}} object containing item/set indices of created tests/pools.
 }
 \description{
 \code{\link{Split}} is a function to split a pool into multiple parallel tests or pools.
@@ -53,8 +53,8 @@ config <- createStaticTestConfig(MIP = list(solver = "LPSYMPHONY"))
 constraints <- constraints_science[1:10]
 
 solution <- Split(config, constraints, n_partition = 4, partition_type = "test"))
-print(solution)
+plot(solution)
 solution <- Split(config, constraints, n_partition = 4, partition_type = "pool"))
-print(solution)
+plot(solution)
 }
 }
