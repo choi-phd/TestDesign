@@ -149,6 +149,9 @@ setMethod(
     target_thetas <- config@item_selection$target_location
     n_targets <- length(target_thetas)
 
+    obj_info <- calcFisher(itempool, target_thetas)
+    obj_info <- apply(obj_info, 2, sum)
+
     feasible <- FALSE
     solve_time <- 0
 
@@ -233,15 +236,18 @@ setMethod(
     dir_l <- ">="
     rhs_l <- config@MIP$obj_tol
 
-    obj <- rep(0, nv_total_with_dev)
-    obj[nv_total_with_dev] <- 1
-    types <- rep("B", nv_total_with_dev)
-    types[nv_total_with_dev] <- "C"
-
     # aggregate all constraints
     mat <- rbind(mat_bpa, mat_bs, mat_c, mat_i, mat_l)
     dir <-     c(dir_bpa, dir_bs, dir_c, dir_i, dir_l)
     rhs <-     c(rhs_bpa, rhs_bs, rhs_c, rhs_i, rhs_l)
+
+    # main optimization
+    obj <- rep(0, nv)
+    obj[1:ni] <- obj_info
+    obj <- rep(obj, n_partition)
+    obj[nv_total_with_dev] <- -constraints@test_length
+    types <- rep("B", nv_total_with_dev)
+    types[nv_total_with_dev] <- "C"
 
     # solve
 
@@ -253,7 +259,7 @@ setMethod(
       mat = mat,
       dir = dir,
       rhs = rhs,
-      maximize = FALSE,
+      maximize = TRUE,
       types = types,
       verbosity     = config@MIP$verbosity,
       time_limit    = config@MIP$time_limit,
@@ -364,6 +370,12 @@ setMethod(
     mat <- rbind(mat_bfa, mat_bs, mat_be, mat_ss, mat_i, mat_l)
     dir <-     c(dir_bfa, dir_bs, dir_be, dir_ss, dir_i, dir_l)
     rhs <-     c(rhs_bfa, rhs_bs, rhs_be, rhs_ss, rhs_i, rhs_l)
+
+    # main optimization
+    obj <- rep(0, nv_total_with_dev)
+    obj[nv_total_with_dev] <- 1
+    types <- rep("B", nv_total_with_dev)
+    types[nv_total_with_dev] <- "C"
 
     # solve
 
