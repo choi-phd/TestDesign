@@ -8,6 +8,7 @@
 \alias{plot,constraints-method}
 \alias{plot,output_Shadow-method}
 \alias{plot,output_Shadow_all-method}
+\alias{plot,output_Split-method}
 \title{Extension of plot() for objects in TestDesign package}
 \usage{
 \S4method{plot}{item_pool}(
@@ -113,6 +114,25 @@
   use_segment_label = TRUE,
   use_par = TRUE,
   theta_segment = NULL,
+  ...
+)
+
+\S4method{plot}{output_Split}(
+  x,
+  y,
+  type = NULL,
+  theta = seq(-3, 3, 0.1),
+  info_type = "FISHER",
+  plot_sum = TRUE,
+  select = NULL,
+  examinee_id = 1,
+  position = NULL,
+  theta_range = c(-5, 5),
+  ylim = NULL,
+  color = "blue",
+  z_ci = 1.96,
+  simple = TRUE,
+  use_par = TRUE,
   ...
 )
 }

@@ -1086,3 +1086,81 @@ plotShadowExposure <- function(
   return(out)
 
 }
+
+#' @docType methods
+#' @rdname plot-methods
+#' @export
+setMethod(
+  f = "plot",
+  signature = "output_Split",
+  definition = function(
+    x, y, type = NULL,
+    theta = seq(-3, 3, .1),
+    info_type = "FISHER",
+    plot_sum = TRUE,
+    select = NULL,
+    examinee_id = 1,
+    position = NULL,
+    theta_range = c(-5, 5),
+    ylim = NULL,
+    color = "blue",
+    z_ci = 1.96,
+    simple = TRUE,
+    use_par = TRUE,
+    ...) {
+
+    config      <- x@config
+    constraints <- x@constraints
+    continuum   <- theta
+    continuum   <- sort(c(continuum, config@item_selection$target_location))
+
+    np <- length(x@output)
+    info_per_partition <- matrix(NA, np, length(continuum))
+
+    for (p in 1:np) {
+      i <- x@output[[p]]$i
+      mat_sub <- calcFisher(constraints@pool, continuum)[, i]
+      vec_sub <- apply(mat_sub, 1, sum)
+      info_per_partition[p, ] <- vec_sub
+    }
+    if (is.null(ylim)) {
+      ymax <- max(info_per_partition)
+      ylim <- c(0, ymax)
+    }
+
+    ylab  <- "Information"
+    if (x@partition_type == "test") {
+      title <- "Test information function of each partition"
+    }
+    if (x@partition_type == "pool") {
+      title <- "Pool information function of each partition"
+    }
+
+    # Begin plot
+
+    plot(
+      continuum, continuum,
+      xlim = c(min(continuum), max(continuum)), ylim = ylim,
+      main = title, xlab = "Theta", ylab = ylab, type = "n", bty = "n"
+    )
+
+    abline(v = config@item_selection$target_location, lty = 3, lwd = 1)
+
+    for (p in 1:np) {
+      lines(continuum, info_per_partition[p, ], lty = 1, lwd = 1, col = color)
+    }
+
+    legend(
+      "topleft",
+      "Target locations",
+      bty = "o", bg = "white",
+      box.lty = 0, box.lwd = 0, box.col = "white",
+      lty = 3, lwd = 1, seg.len = 1, inset = c(0, .01)
+    )
+
+    box()
+
+    return(invisible(NULL))
+
+  }
+)
