@@ -4,6 +4,10 @@
 
 * Added `Split()` for partitioning an item pool into parallel tests/sub-pools that satisfy all constraints. This is an experimental method we are currently working on.
 
+## Bug fixes
+
+* Fixed where alpha adjustment for exposure control was being applied excessively.
+
 # TestDesign 1.2.7
 
 ## Updates
