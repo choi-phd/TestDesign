@@ -1,0 +1,84 @@
+---
+title: "Using Split() for creating parallel tests/pools"
+author: Sangdon Lim
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using Split() for creating parallel tests/pools}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options:
+  chunk_output_type: console
+---
+
+
+
+<br/>
+
+### Introduction
+
+This document explains how to use `Split()` to create parallel tests and pools. The partitioning method used in `Split()` is an experimental method that we developed. The `Split()` function can be used to split an existing item pool into multiple tests or pools, optimally assembled to have minimal information difference between all partition pairs.
+
+When used to create parallel tests, the method ensures that all tests satisfy all content constraints. A unique and practical strength of the method is when it is used to create parallel pools. The pools created this way are constructed so that they contain at least one complete test that satisfy all content constraints.
+
+The `Split()` function is available from *TestDesign* version 1.3.0. Interested users can look forward to our manuscript currently in preparation.
+
+### Example: discrete items (`science` pool)
+
+
+```r
+cfg <- createStaticTestConfig(
+  MIP = list(solver = "LPSYMPHONY", time_limit = 300),
+  item_selection = list(target_location = c(-1.6, -0.5, 0.5, 1.6))
+)
+constraints <- constraints_science[1:7]
+```
+
+
+```r
+parallel_tests <- Split(cfg, constraints, n_partition = 4, partition_type = "test")
+plot(parallel_tests)
+```
+
+<img src="discrete-test-1.svg" width="95%" style="display: block; margin: auto;" />
+
+
+```r
+parallel_pools <- Split(cfg, constraints, n_partition = 2, partition_type = "pool")
+plot(parallel_pools)
+```
+
+<img src="discrete-pool-1.svg" width="95%" style="display: block; margin: auto;" />
+
+### Example: set-based items (`reading` pool)
+
+`Split()` retains the set-based structure in a way that each item set is assigned to only one partition.
+
+
+```r
+cfg <- createStaticTestConfig(
+  MIP = list(solver = "LPSYMPHONY", time_limit = 300, obj_tol = 0.25),
+  item_selection = list(target_location = c(-1.6, -0.5, 0.5, 1.6))
+)
+constraints <- constraints_reading[1:5]
+```
+
+
+```r
+parallel_tests <- Split(cfg, constraints, n_partition = 3, partition_type = "test")
+plot(parallel_tests)
+```
+
+<img src="setbased-test-1.svg" width="95%" style="display: block; margin: auto;" />
+
+Because partitions are created by assigning item sets, a solution that exactly matches partition sizes may not exist. The code below allows partition sizes to vary between 140 and 160.
+
+
+```r
+parallel_pools <- Split(
+  cfg, constraints, n_partition = 2, partition_type = "pool",
+  partition_size_range = c(140, 160)
+)
+plot(parallel_pools)
+```
+
+<img src="setbased-pool-1.svg" width="95%" style="display: block; margin: auto;" />
