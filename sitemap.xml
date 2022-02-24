@@ -13,6 +13,9 @@
     <loc>/articles/rsymphony.html</loc>
   </url>
   <url>
+    <loc>/articles/split.html</loc>
+  </url>
+  <url>
     <loc>/authors.html</loc>
   </url>
   <url>
@@ -29,6 +32,9 @@
   </url>
   <url>
     <loc>/reference/Shadow-methods.html</loc>
+  </url>
+  <url>
+    <loc>/reference/Split-methods.html</loc>
   </url>
   <url>
     <loc>/reference/Static-methods.html</loc>
@@ -191,6 +197,9 @@
   </url>
   <url>
     <loc>/reference/output_Shadow_all-class.html</loc>
+  </url>
+  <url>
+    <loc>/reference/output_Split-class.html</loc>
   </url>
   <url>
     <loc>/reference/output_Static-class.html</loc>

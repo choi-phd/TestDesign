@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TestDesign</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.7.9000</span>
       </span>
     </div>
 
@@ -36,6 +36,9 @@
     </li>
     <li>
       <a href="../articles/rsymphony.html">Installing Rsymphony solver package on Mac</a>
+    </li>
+    <li>
+      <a href="../articles/split.html">Using Split() for creating parallel tests/pools</a>
     </li>
   </ul></li>
 <li>
@@ -61,7 +64,14 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.2.7" id="testdesign-127">TestDesign 1.2.7<a class="anchor" aria-label="anchor" href="#testdesign-127"></a></h2>
+<h2 class="page-header" data-toc-text="1.2.7.9000" id="testdesign-1279000">TestDesign 1.2.7.9000<a class="anchor" aria-label="anchor" href="#testdesign-1279000"></a></h2>
+<div class="section level3">
+<h3 id="new-features-1-2-7-9000">New features<a class="anchor" aria-label="anchor" href="#new-features-1-2-7-9000"></a></h3>
+<ul><li>Added <code><a href="../reference/Split-methods.html">Split()</a></code> for partitioning an item pool into parallel tests/sub-pools that satisfy all constraints. This is an experimental method we are currently working on.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.2.7" id="testdesign-127">TestDesign 1.2.7<small>2022-02-03</small><a class="anchor" aria-label="anchor" href="#testdesign-127"></a></h2>
 <div class="section level3">
 <h3 id="updates-1-2-7">Updates<a class="anchor" aria-label="anchor" href="#updates-1-2-7"></a></h3>
 <ul><li>
@@ -71,7 +81,7 @@
 <code><a href="../reference/plot-methods.html">plot()</a></code> gains a new <code>use_par</code> argument to override using default graphical parameters that are hard-coded into the function. This allows for more flexible formatting.</li>
 <li>
 <code>theta_segment</code> argument in <code>plot(type = "exposure")</code> is renamed to <code>theta_type</code>. The existing argument is deprecated and using it will raise a warning.</li>
-<li>added validation check for test length constraints. In shadow test approach, test length is expected to be a fixed value.</li>
+<li>Added validation check for test length constraints. In shadow test approach, test length is expected to be a fixed value.</li>
 </ul></div>
 </div>
     <div class="section level2">
