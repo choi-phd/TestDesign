@@ -245,7 +245,8 @@ setMethod(
     obj <- rep(0, nv)
     obj[1:ni] <- obj_info
     obj <- rep(obj, n_partition)
-    obj[nv_total_with_dev] <- -constraints@test_length
+    delta_scale <- length(config@item_selection$target_location) * n_bins
+    obj[nv_total_with_dev] <- -delta_scale
     types <- rep("B", nv_total_with_dev)
     types[nv_total_with_dev] <- "C"
 
