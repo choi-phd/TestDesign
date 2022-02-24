@@ -2,7 +2,7 @@
 
 ## New features
 
-* Added `Split()` for partitioning an item pool into parallel tests/pools that satisfy all constraints. This is an experimental method we are working on.
+* Added `Split()` for partitioning an item pool into parallel tests/sub-pools that satisfy all constraints. This is an experimental method we are currently working on.
 
 # TestDesign 1.2.7
 
