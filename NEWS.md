@@ -1,8 +1,8 @@
-# TestDesign 1.2.7.9000
+# TestDesign 1.3.0
 
 ## New features
 
-* Added `Split()` for partitioning an item pool into parallel tests/sub-pools that satisfy all constraints. This is an experimental method we are currently working on.
+* Added `Split()` for partitioning an item pool into parallel tests/sub-pools that satisfy all constraints. This is an experimental method we are currently working on. See `vignette('split')` for a quick introduction.
 
 ## Bug fixes
 

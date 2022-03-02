@@ -1,4 +1,4 @@
-# TestDesign 1.2.7
+# TestDesign 1.3.0
 
 ## Test environments
 
@@ -25,7 +25,7 @@ Information on obtaining 'gurobi' is described in `DESCRIPTION`.
 
 ## Downstream dependencies
 
-The previous version 'TestDesign' 1.2.6 has 1 downstream dependency: 'maat' 1.0.2
+The previous version 'TestDesign' 1.2.7 has 1 downstream dependency: 'maat' 1.0.2
 
 Downstream dependency was checked using 'revdepcheck' available from https://github.com/r-lib/revdepcheck
 
