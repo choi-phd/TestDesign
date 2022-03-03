@@ -7,7 +7,7 @@ test_that("partitioning methods work", {
 
   set.seed(1)
 
-  config <- createStaticTestConfig(MIP = list(solver = "LPSYMPHONY"))
+  config <- createStaticTestConfig(MIP = list(solver = "LPSYMPHONY", time_limit = 300, obj_tol = 0.25))
   constraints <- constraints_science[1:10]
 
   n_partition <- 4
@@ -36,17 +36,17 @@ test_that("partitioning methods work", {
 
   set.seed(1)
 
-  config <- createStaticTestConfig(MIP = list(solver = "LPSYMPHONY", time_limit = 300))
-  constraints <- constraints_reading[1:6]
+  config <- createStaticTestConfig(MIP = list(solver = "LPSYMPHONY", time_limit = 300, obj_tol = 0.25))
+  constraints <- constraints_reading[1:5]
 
-  n_partition <- 3
+  n_partition <- 2
   o <- Split(config, constraints, n_partition = n_partition, partition_type = "test")
   for (partition in o@output) {
     subpool <- constraints@pool[partition$i]
     expect_equal(subpool@ni, constraints@test_length)
   }
 
-  n_partition <- 3
+  n_partition <- 2
   o <- Split(config, constraints, n_partition = n_partition, partition_type = "pool", partition_size_range = c(90, 110))
   for (partition in o@output) {
     subpool <- constraints@pool[partition$i]
