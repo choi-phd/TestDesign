@@ -203,10 +203,6 @@
 \description{
 Extension of plot() for objects in TestDesign package
 }
-\details{
-The base \code{plot()} does not allow directly storing the plot as a object. \code{TestDesign::plot()} calls \code{recordPlot()} internally to allow this. This adds convenience, but also introduces a caveat when using with the 'knitr' package.
-The caveat is that using \code{plot()} alone will not render the plot. This issue can be resolved by using \code{p <- plot()} and \code{print(p)} in two separate blocks in the markdown document.
-}
 \examples{
 
 subitempool <- itempool_science[1:8]
