@@ -2,7 +2,7 @@
 output: github_document
 ---
 
-# TestDesign
+# TestDesign <img src="man/figures/testdesign_logo.png" align="right" height="192"/>
 
 <!-- badges: start -->
 [![R build status](https://github.com/choi-phd/TestDesign/workflows/build/badge.svg)](https://github.com/choi-phd/TestDesign/actions)
