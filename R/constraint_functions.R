@@ -93,9 +93,22 @@ validateConstraintData <- function(x, attrib) {
     validateLBUB(x)
 
     if (
-      toupper(x$CONDITION) %in%
-      c("", " ", "PER TEST", "TEST")) {
+      (toupper(x$WHAT) %in%
+      c("ITEM")) &
+      (toupper(x$CONDITION) %in%
+      c("", " ", "PER TEST", "TEST"))
+    ) {
       validateLBUB(x, allow_range = FALSE)
+      return()
+    }
+
+    if (
+      (toupper(x$WHAT) %in%
+      c("STIMULUS", "PASSAGE", "SET", "TESTLET")) &
+      (toupper(x$CONDITION) %in%
+      c("", " ", "PER TEST", "TEST"))
+    ) {
+      validateLBUB(x, allow_range = TRUE)
       return()
     }
 
