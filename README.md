@@ -1,5 +1,5 @@
 
-# TestDesign
+# TestDesign <img src="man/figures/testdesign_logo.png" align="right" height="192"/>
 
 <!-- badges: start -->
 
