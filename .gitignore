@@ -9,7 +9,7 @@
 *.dcf
 src-i386/
 src-x64/
-figures/
+/figures/
 .vscode/
 inst/doc
 doc
