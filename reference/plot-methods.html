@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TestDesign</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.1</span>
       </span>
     </div>
 
@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -261,11 +261,6 @@
 <dt>theta_segment</dt>
 <dd><p>(deprecated) use <code>theta_type</code> argument instead.</p></dd>
 </dl></div>
-    <div id="details">
-    <h2>Details</h2>
-    <p>The base <code>plot()</code> does not allow directly storing the plot as a object. <code>TestDesign::plot()</code> calls <code><a href="https://rdrr.io/r/grDevices/recordplot.html" class="external-link">recordPlot()</a></code> internally to allow this. This adds convenience, but also introduces a caveat when using with the 'knitr' package.
-The caveat is that using <code>plot()</code> alone will not render the plot. This issue can be resolved by using <code>p &lt;- plot()</code> and <code>print(p)</code> in two separate blocks in the markdown document.</p>
-    </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
