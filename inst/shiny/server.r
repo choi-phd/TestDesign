@@ -28,7 +28,7 @@ server <- function(input, output, session) {
       if (class(v$itempool) == "item_pool") {
         v$itempool_exists <- TRUE
         v <- updateLogs(v, "Step 1. Item parameter file: OK")
-        v$ipar <- v$itempool@ipar
+        v$ipar <- v$itempool@raw
         assignObject(v$itempool,
           "shiny_itempool",
           "Item parameters (full object)")
@@ -546,11 +546,31 @@ server <- function(input, output, session) {
     shinyjs::enable("run_solver")
   })
 
-  output$table_itempool    <- renderDT(parseObject(v$ipar), options = list(pageLength = 100))
-  output$table_itemattrib  <- renderDT(parseObject(if(!is.null(v$itemattrib)) v$itemattrib@data else NULL), options = list(pageLength = 100))
-  output$table_stimattrib  <- renderDT(parseObject(if(!is.null(v$stimattrib)) v$stimattrib@data else NULL), options = list(pageLength = 100))
-  output$table_constraints <- renderDT(parseObject(v$constraints), options = list(pageLength = 100))
-  output$results      <- renderDT(parseObject(v$results), options = list(pageLength = 100))
+  output$table_itempool    <- renderDT(
+    parseObject(v$ipar),
+    options = list(pageLength = 100),
+    rownames = FALSE
+  )
+  output$table_itemattrib  <- renderDT(
+    parseObject(if(!is.null(v$itemattrib)) v$itemattrib@data else NULL),
+    options = list(pageLength = 100),
+    rownames = FALSE
+  )
+  output$table_stimattrib  <- renderDT(
+    parseObject(if(!is.null(v$stimattrib)) v$stimattrib@data else NULL),
+    options = list(pageLength = 100),
+    rownames = FALSE
+  )
+  output$table_constraints <- renderDT(
+    parseObject(v$constraints),
+    options = list(pageLength = 100),
+    rownames = FALSE
+  )
+  output$results      <- renderDT(
+    parseObject(v$results),
+    options = list(pageLength = 100),
+    rownames = FALSE
+  )
   output$text_output  <- renderText(parseObject(v$logs_text))
   output$plot_output  <- renderPlot(parseObject(v$plot_output))
   output$shadow_chart <- renderPlot(parseObject(v$shadow_chart))
