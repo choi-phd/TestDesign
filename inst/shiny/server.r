@@ -214,7 +214,7 @@ server <- function(input, output, session) {
         if (input$simulee_id != "") {
           v <- updateLogs(v, sprintf("Created plots for simulee %i", v$simulee_id))
 
-          plot(v$fit, v$simulee_id, type = 'audit')
+          plot(v$fit, v$simulee_id, type = "audit")
           p <- recordPlot()
           dev.off()
 
@@ -224,7 +224,7 @@ server <- function(input, output, session) {
             sprintf("Audit trail plot for simulee %i", v$simulee_id)
           )
 
-          plot(v$fit, v$simulee_id, type = 'shadow', simple = TRUE)
+          plot(v$fit, v$simulee_id, type = "shadow", simple = TRUE)
           p <- recordPlot()
           dev.off()
 
@@ -301,8 +301,8 @@ server <- function(input, output, session) {
         progress <- Progress$new(session)
         on.exit(progress$close())
         progress$set(
-          message = 'Computing..',
-          detail = 'This may take a while.'
+          message = "Computing..",
+          detail = "This may take a while."
         )
 
         v$fit <- Static(conf, v$const)
@@ -517,8 +517,8 @@ server <- function(input, output, session) {
         progress <- Progress$new(session)
         on.exit(progress$close())
         progress$set(
-          message = 'Computing..',
-          detail = 'This may take a while.'
+          message = "Computing..",
+          detail = "This may take a while."
         )
 
         v$time <- Sys.time()
