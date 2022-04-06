@@ -636,6 +636,20 @@ server <- function(input, output, session) {
     contentType = "application/zip"
   )
 
+  observeEvent(input$closeapp, {
+    if ("Yes" %in% input$closeapp) {
+      stopApp()
+    }
+    if ("No" %in% input$closeapp) {
+      updateCheckboxGroupButtons(
+        session = session,
+        inputId = "closeapp",
+        selected = character(0)
+      )
+      toggleDropdownButton(inputId = "closeapp_dropdown")
+    }
+  })
+
   session$onSessionEnded(function() {
     stopApp()
   })
