@@ -126,7 +126,19 @@ ui <- fluidPage(
         circle = FALSE, icon = icon("cog"), width = "100%"
       ),
 
-      downloadButton("export_data", "Export data")
+      downloadButton("export_data", "Export data"),
+
+      dropdownButton(
+        label = "Close app", inputId = "closeapp_dropdown",
+        circle = FALSE, width = "100%", icon = icon("times-circle"),
+        h3("Are you sure?"),
+        checkboxGroupButtons(
+          inputId = "closeapp",
+          choices = c("Yes", "No"),
+          justified = TRUE
+        )
+      )
+
     ),
 
     mainPanel(
