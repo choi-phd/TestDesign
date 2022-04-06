@@ -5,19 +5,22 @@ server <- function(input, output, session) {
     const_exists = FALSE,
     content_exists = FALSE,
     stimattrib_exists = FALSE,
-    problemtype = 0
+    problemtype = 0,
+    solvers = solvers
   )
 
   # test each solver and filter
   for (s in solvers) {
     if (testSolver(s) != "") {
-      solvers <- setdiff(solvers, s)
+      v$solvers <- setdiff(solvers, s)
     }
   }
-  updateRadioGroupButtons(
-    session, "solvertype",
-    choices = solvers
-  )
+  observe({
+    updateRadioGroupButtons(
+      session, "solvertype",
+      choices = v$solvers
+    )
+  })
 
   observeEvent(input$itempool_file, {
     if (!is.null(input$itempool_file)) {
