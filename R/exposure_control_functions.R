@@ -140,7 +140,7 @@ initializeExposureRecord <- function(exposure_control, constants) {
 
   o$a_sjk <- matrix(0, n_segment, ns)
   o$r_sjk <- matrix(0, n_segment, ns)
-  o$pe_s  <- matrix(1, n_segment, ns)
+  o$p_e_s  <- matrix(1, n_segment, ns)
   if (constants$fading_factor != 1) {
     o$a_sjk_nofade <- o$a_sjk
     o$r_sjk_nofade <- o$r_sjk
