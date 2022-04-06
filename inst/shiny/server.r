@@ -419,6 +419,8 @@ server <- function(input, output, session) {
 
         conf@exposure_control$method <- input$exposure_method
         conf@exposure_control$diagnostic_stats <- TRUE
+        conf@exposure_control$max_exposure_rate <-
+          rep(0.25, conf@exposure_control$n_segment)
 
         # parse theta estimation settings
 
