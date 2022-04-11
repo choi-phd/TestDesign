@@ -1,3 +1,14 @@
+# TestDesign 1.3.1.9000
+
+## Updates
+
+* Shiny app `TestDesign()` gains a 'close app' button.
+
+## Bug fixes
+
+* Fixed where the Shiny app was not starting normally.
+* Fixed where attempting to use an exposure acceleration factor greater than 1 in set-based adaptive assembly using `Shadow()` would trigger a 'incorrect number of subscripts' error.
+
 # TestDesign 1.3.1
 
 ## Bug fixes
