@@ -397,8 +397,22 @@ createShadowTestConfig <- function(
   obj_names <- c()
   for (arg in arg_names) {
     if (!is.null(eval(parse(text = arg)))) {
-      eval(parse(text = paste0("obj_names <- names(cfg@", arg, ")")))
-      for (entry in obj_names) {
+      accepted_slots <-
+        eval(parse(text = sprintf("names(cfg@%s)", arg)))
+      supplied_slots <-
+        eval(parse(text = sprintf("names(%s)", arg)))
+      leftovers <- setdiff(supplied_slots, accepted_slots)
+      if (length(leftovers) > 0) {
+        for (x in leftovers) {
+          stop(
+            sprintf(
+              "cfg@%s: slot '%s' is unused",
+              arg, x
+            )
+          )
+        }
+      }
+      for (entry in accepted_slots) {
         entry_l <- paste0("cfg@", arg, "$", entry)
         entry_r <- paste0(arg, "$", entry)
         tmp <- eval(parse(text = entry_r))
