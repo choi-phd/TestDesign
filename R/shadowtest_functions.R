@@ -16,8 +16,13 @@ assembleShadowTest <- function(
   administered_stimulus_index <- na.omit(unique(o@administered_stimulus_index))
 
   xdata         <- getXdataOfAdministered(constants, position, o, stimulus_record, constraints)
-  xdata_exclude <- getXdataOfExcludedEntry(constants, exclude_index[[j]])
-  xdata         <- combineXdata(xdata, xdata_exclude)
+  if (constants$exclude_method == "HARD") {
+    xdata_exclude <- getXdataOfExcludedEntry(constants, exclude_index[[j]])
+    xdata         <- combineXdata(xdata, xdata_exclude)
+  }
+  if (constants$exclude_method == "SOFT") {
+    info <- getInfoOfExcludedEntry(info, exclude_index[[j]], constants)
+  }
 
   if (constants$use_eligibility_control) {
 
