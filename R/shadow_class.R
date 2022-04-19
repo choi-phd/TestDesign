@@ -227,8 +227,10 @@ setClass("config_Shadow",
     }
     if (object@exclude_policy$method == "SOFT") {
       if (!is.numeric(object@exclude_policy$M)) {
-        msg <- sprintf("$method 'SOFT' requires $M to be a positive value")
-        err <- c(err, msg)
+        if (!is.null(object@exclude_policy$M)) {
+          msg <- sprintf("$method 'SOFT' requires $M to be a positive value")
+          err <- c(err, msg)
+        }
       }
       if (is.numeric(object@exclude_policy$M)) {
         if (object@exclude_policy$M < 0) {
@@ -248,8 +250,10 @@ setClass("config_Shadow",
     }
     if (object@exposure_control$method %in% c("BIGM", "BIGM-BAYESIAN")) {
       if (!is.numeric(object@exposure_control$M)) {
-        msg <- sprintf("$method 'BIGM', 'BIGM-BAYESIAM' requires $M to be a positive value")
-        err <- c(err, msg)
+        if (!is.null(object@exposure_control$M)) {
+          msg <- sprintf("$method 'BIGM', 'BIGM-BAYESIAM' requires $M to be a positive value")
+          err <- c(err, msg)
+        }
       }
       if (is.numeric(object@exposure_control$M)) {
         if (object@exposure_control$M < 0) {
