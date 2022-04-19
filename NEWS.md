@@ -1,5 +1,9 @@
 # TestDesign 1.3.1.9000
 
+## New features
+
+* `config_Shadow` and `createShadowTestConfig()` gain a new slot `exclude_policy` for configuring how excluded items are treated. Excluded items are supplied through the `exclude` argument in `Shadow()`.
+
 ## Updates
 
 * Shiny app `TestDesign()` gains a 'close app' button.
