@@ -92,6 +92,7 @@ setClass("config_Shadow",
     content_balancing  = "list",
     MIP                = "list",
     MCMC               = "list",
+    exclude_policy     = "list",
     refresh_policy     = "list",
     exposure_control   = "list",
     stopping_criterion = "list",
@@ -124,6 +125,9 @@ setClass("config_Shadow",
       post_burn_in              = 500,
       thin                      = 1,
       jump_factor               = 1
+    ),
+    exclude_policy = list(
+      method = "HARD"
     ),
     refresh_policy = list(
       method                    = "ALWAYS",
@@ -213,6 +217,11 @@ setClass("config_Shadow",
 
     if (!object@content_balancing$method %in% c("NONE", "STA")) {
       msg <- sprintf("config@content_balancing: unrecognized $method '%s' (accepts NONE, or STA)", object@content_balancing$method)
+      err <- c(err, msg)
+    }
+    if (!object@exclude_policy$method %in%
+      c("HARD", "SOFT")) {
+      msg <- sprintf("config@exclude_policy: unrecognized $method '%s' (accepts HARD, or SOFT)", object@exclude_policy$method)
       err <- c(err, msg)
     }
     if (!object@refresh_policy$method %in%
