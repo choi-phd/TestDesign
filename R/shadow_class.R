@@ -318,6 +318,10 @@ setClass("config_Shadow",
 #'   \item{\code{thin}} thinning interval to apply. \code{1} represents no thinning. (default = \code{1})
 #'   \item{\code{jump_factor}} the jump factor to use. \code{1} represents no jumping. (default = \code{1})
 #' }
+#' @param exclude_policy a named list containing the exclude policy for use with the \code{exclude} argument in \code{\link{Shadow}}.
+#' \itemize{
+#'   \item{\code{method}} the type of policy. Accepts \code{HARD, SOFT}. (default = \code{HARD})
+#' }
 #' @param refresh_policy a named list containing the refresh policy for when to obtain a new shadow test.
 #' \itemize{
 #'   \item{\code{method}} the type of policy. Accepts \code{ALWAYS, POSITION, INTERVAL, THRESHOLD, INTERVAL-THRESHOLD, STIMULUS, SET, PASSAGE}. (default = \code{ALWAYS})
@@ -394,13 +398,13 @@ setClass("config_Shadow",
 #' @export
 createShadowTestConfig <- function(
   item_selection = NULL, content_balancing = NULL, MIP = NULL, MCMC = NULL,
-  refresh_policy = NULL, exposure_control = NULL, stopping_criterion = NULL,
+  exclude_policy = NULL, refresh_policy = NULL, exposure_control = NULL, stopping_criterion = NULL,
   interim_theta = NULL, final_theta = NULL, theta_grid = seq(-4, 4, .1)) {
   cfg <- new("config_Shadow")
 
   arg_names <- c(
     "item_selection", "content_balancing", "MIP", "MCMC",
-    "refresh_policy", "exposure_control", "stopping_criterion",
+    "exclude_policy", "refresh_policy", "exposure_control", "stopping_criterion",
     "interim_theta", "final_theta"
   )
   obj_names <- c()

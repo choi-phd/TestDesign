@@ -11,6 +11,7 @@ createShadowTestConfig(
   content_balancing = NULL,
   MIP = NULL,
   MCMC = NULL,
+  exclude_policy = NULL,
   refresh_policy = NULL,
   exposure_control = NULL,
   stopping_criterion = NULL,
@@ -51,6 +52,11 @@ createShadowTestConfig(
   \item{\code{post_burn_in}} the number of chains to use after discarding the first \code{burn_in} chains. (default = \code{500})
   \item{\code{thin}} thinning interval to apply. \code{1} represents no thinning. (default = \code{1})
   \item{\code{jump_factor}} the jump factor to use. \code{1} represents no jumping. (default = \code{1})
+}}
+
+\item{exclude_policy}{a named list containing the exclude policy for use with the \code{exclude} argument in \code{\link{Shadow}}.
+\itemize{
+  \item{\code{method}} the type of policy. Accepts \code{HARD, SOFT}. (default = \code{HARD})
 }}
 
 \item{refresh_policy}{a named list containing the refresh policy for when to obtain a new shadow test.
