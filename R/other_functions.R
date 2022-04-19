@@ -44,6 +44,7 @@ getConstants <- function(constraints, config, arg_data, true_theta, max_info) {
   }
 
   o$exclude_method <- toupper(config@exclude_policy$method)
+  o$exclude_M      <- config@exclude_policy$M
 
   refresh_method <- toupper(config@refresh_policy$method)
   if (refresh_method %in% c("STIMULUS", "SET", "PASSAGE")) {
