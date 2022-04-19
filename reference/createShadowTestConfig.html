@@ -76,6 +76,7 @@ Default values are used for any unspecified parameters/slots.</p>
   content_balancing <span class="op">=</span> <span class="cn">NULL</span>,
   MIP <span class="op">=</span> <span class="cn">NULL</span>,
   MCMC <span class="op">=</span> <span class="cn">NULL</span>,
+  exclude_policy <span class="op">=</span> <span class="cn">NULL</span>,
   refresh_policy <span class="op">=</span> <span class="cn">NULL</span>,
   exposure_control <span class="op">=</span> <span class="cn">NULL</span>,
   stopping_criterion <span class="op">=</span> <span class="cn">NULL</span>,
@@ -111,6 +112,10 @@ Default values are used for any unspecified parameters/slots.</p>
 <li><p><code>post_burn_in</code> the number of chains to use after discarding the first <code>burn_in</code> chains. (default = <code>500</code>)</p></li>
 <li><p><code>thin</code> thinning interval to apply. <code>1</code> represents no thinning. (default = <code>1</code>)</p></li>
 <li><p><code>jump_factor</code> the jump factor to use. <code>1</code> represents no jumping. (default = <code>1</code>)</p></li>
+</ul></dd>
+<dt>exclude_policy</dt>
+<dd><p>a named list containing the exclude policy for use with the <code>exclude</code> argument in <code><a href="Shadow-methods.html">Shadow</a></code>.</p><ul><li><p><code>method</code> the type of policy. Accepts <code>HARD, SOFT</code>. (default = <code>HARD</code>)</p></li>
+<li><p><code>M</code> the Big M penalty to use on item information. Used in the <code>SOFT</code> method.</p></li>
 </ul></dd>
 <dt>refresh_policy</dt>
 <dd><p>a named list containing the refresh policy for when to obtain a new shadow test.</p><ul><li><p><code>method</code> the type of policy. Accepts <code>ALWAYS, POSITION, INTERVAL, THRESHOLD, INTERVAL-THRESHOLD, STIMULUS, SET, PASSAGE</code>. (default = <code>ALWAYS</code>)</p></li>
