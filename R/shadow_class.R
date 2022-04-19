@@ -127,7 +127,8 @@ setClass("config_Shadow",
       jump_factor               = 1
     ),
     exclude_policy = list(
-      method = "HARD"
+      method = "HARD",
+      M = NULL
     ),
     refresh_policy = list(
       method                    = "ALWAYS",
@@ -321,6 +322,7 @@ setClass("config_Shadow",
 #' @param exclude_policy a named list containing the exclude policy for use with the \code{exclude} argument in \code{\link{Shadow}}.
 #' \itemize{
 #'   \item{\code{method}} the type of policy. Accepts \code{HARD, SOFT}. (default = \code{HARD})
+#'   \item{\code{M}} the Big M penalty to use on item information. Used in the \code{SOFT} method.
 #' }
 #' @param refresh_policy a named list containing the refresh policy for when to obtain a new shadow test.
 #' \itemize{
