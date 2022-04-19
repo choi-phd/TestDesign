@@ -225,6 +225,18 @@ setClass("config_Shadow",
       msg <- sprintf("config@exclude_policy: unrecognized $method '%s' (accepts HARD, or SOFT)", object@exclude_policy$method)
       err <- c(err, msg)
     }
+    if (object@exclude_policy$method == "SOFT") {
+      if (!is.numeric(object@exclude_policy$M)) {
+        msg <- sprintf("$method 'SOFT' requires $M to be a positive value")
+        err <- c(err, msg)
+      }
+      if (is.numeric(object@exclude_policy$M)) {
+        if (object@exclude_policy$M < 0) {
+          msg <- sprintf("$method 'SOFT' requires $M to be a positive value")
+          err <- c(err, msg)
+        }
+      }
+    }
     if (!object@refresh_policy$method %in%
       c("ALWAYS", "POSITION", "INTERVAL", "THRESHOLD", "INTERVAL-THRESHOLD", "STIMULUS", "SET", "PASSAGE")) {
       msg <- sprintf("config@refresh_policy: unrecognized $method '%s'", object@refresh_policy$method)
@@ -233,6 +245,18 @@ setClass("config_Shadow",
     if (!object@exposure_control$method %in% c("NONE", "ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
       msg <- sprintf("config@exposure_control: unrecognized $method '%s' (accepts NONE, ELIGIBILITY, BIGM, or BIGM-BAYESIAN)", object@exposure_control$method)
       err <- c(err, msg)
+    }
+    if (object@exposure_control$method %in% c("BIGM", "BIGM-BAYESIAN")) {
+      if (!is.numeric(object@exposure_control$M)) {
+        msg <- sprintf("$method 'BIGM', 'BIGM-BAYESIAM' requires $M to be a positive value")
+        err <- c(err, msg)
+      }
+      if (is.numeric(object@exposure_control$M)) {
+        if (object@exposure_control$M < 0) {
+          msg <- sprintf("$method 'BIGM', 'BIGM-BAYESIAM' requires $M to be a positive value")
+          err <- c(err, msg)
+        }
+      }
     }
     if (toupper(object@item_selection$method) %in% c("GFI") &
       object@exposure_control$method %in% c("ELIGIBILITY")) {
