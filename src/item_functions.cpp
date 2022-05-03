@@ -3,7 +3,10 @@
 //' @rdname p_item
 //' @export
 // [[Rcpp::export]]
-double p_1pl(const arma::rowvec& x, const double& b) {
+double p_1pl(
+  const arma::rowvec& x,
+  const double& b
+) {
   double xmul = x(0);
   return 1 / (1 + std::exp(b - xmul));
 }
@@ -11,7 +14,11 @@ double p_1pl(const arma::rowvec& x, const double& b) {
 //' @rdname p_item
 //' @export
 // [[Rcpp::export]]
-double p_2pl(const arma::rowvec& x, const double& a, const double& b) {
+double p_2pl(
+  const arma::rowvec& x,
+  const double& a,
+  const double& b
+) {
   double xmul = x(0);
   return 1 / (1 + std::exp(-a * (xmul - b)));
 }
@@ -19,7 +26,12 @@ double p_2pl(const arma::rowvec& x, const double& a, const double& b) {
 //' @rdname p_item
 //' @export
 // [[Rcpp::export]]
-double p_3pl(const arma::rowvec& x, const double& a, const double& b, const double& c) {
+double p_3pl(
+  const arma::rowvec& x,
+  const double& a,
+  const double& b,
+  const double& c
+) {
   double xmul = x(0);
   return c + (1 - c) / (1 + std::exp(-a * (xmul - b)));
 }
@@ -27,7 +39,10 @@ double p_3pl(const arma::rowvec& x, const double& a, const double& b, const doub
 //' @rdname p_item
 //' @export
 // [[Rcpp::export]]
-arma::rowvec p_pc(const arma::rowvec& x, const arma::rowvec& b) {
+arma::rowvec p_pc(
+  const arma::rowvec& x,
+  const arma::rowvec& b
+) {
 
   double xmul = x(0);
   int nk = b.n_cols + 1;
@@ -49,7 +64,11 @@ arma::rowvec p_pc(const arma::rowvec& x, const arma::rowvec& b) {
 //' @rdname p_item
 //' @export
 // [[Rcpp::export]]
-arma::rowvec p_gpc(const arma::rowvec& x, const double& a, const arma::rowvec& b) {
+arma::rowvec p_gpc(
+  const arma::rowvec& x,
+  const double& a,
+  const arma::rowvec& b
+) {
 
   double xmul = x(0);
   int nk = b.n_cols + 1;
@@ -71,7 +90,11 @@ arma::rowvec p_gpc(const arma::rowvec& x, const double& a, const arma::rowvec& b
 //' @rdname p_item
 //' @export
 // [[Rcpp::export]]
-arma::rowvec p_gr(const arma::rowvec& x, const double& a, const arma::rowvec& b) {
+arma::rowvec p_gr(
+  const arma::rowvec& x,
+  const double& a,
+  const arma::rowvec& b
+) {
 
   int nk = b.n_cols + 1;
   rowvec p(nk), p_star(nk + 1);
@@ -92,7 +115,10 @@ arma::rowvec p_gr(const arma::rowvec& x, const double& a, const arma::rowvec& b)
 //' @rdname p_item
 //' @export
 // [[Rcpp::export]]
-arma::colvec array_p_1pl(const arma::mat& x, const double& b) {
+arma::colvec array_p_1pl(
+  const arma::mat& x,
+  const double& b
+) {
 
   int nx = x.n_rows;
   colvec p_array(nx);
@@ -108,7 +134,11 @@ arma::colvec array_p_1pl(const arma::mat& x, const double& b) {
 //' @rdname p_item
 //' @export
 // [[Rcpp::export]]
-arma::colvec array_p_2pl(const arma::mat& x, const double& a, const double& b) {
+arma::colvec array_p_2pl(
+  const arma::mat& x,
+  const double& a,
+  const double& b
+) {
 
   int nx = x.n_rows;
   colvec p_array(nx);
@@ -124,7 +154,12 @@ arma::colvec array_p_2pl(const arma::mat& x, const double& a, const double& b) {
 //' @rdname p_item
 //' @export
 // [[Rcpp::export]]
-arma::colvec array_p_3pl(const arma::mat& x, const double& a, const double& b, const double& c) {
+arma::colvec array_p_3pl(
+  const arma::mat& x,
+  const double& a,
+  const double& b,
+  const double& c
+) {
 
   int nx = x.n_rows;
   colvec p_array(nx);
@@ -140,7 +175,10 @@ arma::colvec array_p_3pl(const arma::mat& x, const double& a, const double& b, c
 //' @rdname p_item
 //' @export
 // [[Rcpp::export]]
-arma::mat array_p_pc(const arma::mat& x, const arma::rowvec& b) {
+arma::mat array_p_pc(
+  const arma::mat& x,
+  const arma::rowvec& b
+) {
 
   int nx = x.n_rows;
   int nk = b.n_cols + 1;
@@ -151,12 +189,17 @@ arma::mat array_p_pc(const arma::mat& x, const arma::rowvec& b) {
   }
 
   return p_array;
+
 }
 
 //' @rdname p_item
 //' @export
 // [[Rcpp::export]]
-arma::mat array_p_gpc(const arma::mat& x, const double& a, const arma::rowvec& b) {
+arma::mat array_p_gpc(
+  const arma::mat& x,
+  const double& a,
+  const arma::rowvec& b
+) {
 
   int nx = x.n_rows;
   int nk = b.n_cols + 1;
@@ -173,7 +216,11 @@ arma::mat array_p_gpc(const arma::mat& x, const double& a, const arma::rowvec& b
 //' @rdname p_item
 //' @export
 // [[Rcpp::export]]
-arma::mat array_p_gr(const arma::mat& x, const double& a, const arma::rowvec& b) {
+arma::mat array_p_gr(
+  const arma::mat& x,
+  const double& a,
+  const arma::rowvec& b
+) {
 
   int nx = x.n_rows;
   int nk = b.n_cols + 1;
@@ -190,7 +237,10 @@ arma::mat array_p_gr(const arma::mat& x, const double& a, const arma::rowvec& b)
 //' @rdname info_item
 //' @export
 // [[Rcpp::export]]
-double info_1pl(const arma::rowvec& x, const double& b) {
+double info_1pl(
+  const arma::rowvec& x,
+  const double& b
+) {
   double p = p_1pl(x, b);
   return p * (1 - p);
 }
@@ -198,7 +248,11 @@ double info_1pl(const arma::rowvec& x, const double& b) {
 //' @rdname info_item
 //' @export
 // [[Rcpp::export]]
-double info_2pl(const arma::rowvec& x, const double& a, const double& b) {
+double info_2pl(
+  const arma::rowvec& x,
+  const double& a,
+  const double& b
+) {
   double p = p_2pl(x, a, b);
   return pow(a, 2) * p * (1 - p);
 }
@@ -206,7 +260,12 @@ double info_2pl(const arma::rowvec& x, const double& a, const double& b) {
 //' @rdname info_item
 //' @export
 // [[Rcpp::export]]
-double info_3pl(const arma::rowvec& x, const double& a, const double& b, const double& c) {
+double info_3pl(
+  const arma::rowvec& x,
+  const double& a,
+  const double& b,
+  const double& c
+) {
   double p = p_3pl(x, a, b, c);
   return pow(a, 2) * (1 - p) / p * pow((p - c) / (1 - c), 2);
 }
@@ -214,7 +273,10 @@ double info_3pl(const arma::rowvec& x, const double& a, const double& b, const d
 //' @rdname info_item
 //' @export
 // [[Rcpp::export]]
-double info_pc(const arma::rowvec& x, const arma::rowvec& b) {
+double info_pc(
+  const arma::rowvec& x,
+  const arma::rowvec& b
+) {
 
   rowvec p = p_pc(x, b);
   int nk = b.n_cols + 1;
@@ -232,7 +294,11 @@ double info_pc(const arma::rowvec& x, const arma::rowvec& b) {
 //' @rdname info_item
 //' @export
 // [[Rcpp::export]]
-double info_gpc(const arma::rowvec& x, const double& a, const arma::rowvec& b) {
+double info_gpc(
+  const arma::rowvec& x,
+  const double& a,
+  const arma::rowvec& b
+) {
 
   rowvec p = p_gpc(x, a, b);
   int nk = b.n_cols + 1;
@@ -250,7 +316,11 @@ double info_gpc(const arma::rowvec& x, const double& a, const arma::rowvec& b) {
 //' @rdname info_item
 //' @export
 // [[Rcpp::export]]
-double info_gr(const arma::rowvec& x, const double& a, const arma::rowvec& b) {
+double info_gr(
+  const arma::rowvec& x,
+  const double& a,
+  const arma::rowvec& b
+) {
 
   int nk = b.n_cols + 1;
   rowvec p_star(nk + 1);
@@ -274,7 +344,10 @@ double info_gr(const arma::rowvec& x, const double& a, const arma::rowvec& b) {
 //' @rdname info_item
 //' @export
 // [[Rcpp::export]]
-arma::colvec array_info_1pl(const arma::mat& x, const double& b) {
+arma::colvec array_info_1pl(
+  const arma::mat& x,
+  const double& b
+) {
 
   int nx = x.n_rows;
   colvec info_array(nx);
@@ -290,7 +363,11 @@ arma::colvec array_info_1pl(const arma::mat& x, const double& b) {
 //' @rdname info_item
 //' @export
 // [[Rcpp::export]]
-arma::colvec array_info_2pl(const arma::mat& x, const double& a, const double& b) {
+arma::colvec array_info_2pl(
+  const arma::mat& x,
+  const double& a,
+  const double& b
+) {
 
   int nx = x.n_rows;
   colvec info_array(nx);
@@ -300,12 +377,18 @@ arma::colvec array_info_2pl(const arma::mat& x, const double& a, const double& b
   }
 
   return info_array;
+
 }
 
 //' @rdname info_item
 //' @export
 // [[Rcpp::export]]
-arma::colvec array_info_3pl(const arma::mat& x, const double& a, const double& b, const double& c) {
+arma::colvec array_info_3pl(
+  const arma::mat& x,
+  const double& a,
+  const double& b,
+  const double& c
+) {
 
   int nx = x.n_rows;
   colvec info_array(nx);
@@ -318,11 +401,13 @@ arma::colvec array_info_3pl(const arma::mat& x, const double& a, const double& b
 
 }
 
-
 //' @rdname info_item
 //' @export
 // [[Rcpp::export]]
-arma::colvec array_info_pc(const arma::mat& x, const arma::rowvec& b) {
+arma::colvec array_info_pc(
+  const arma::mat& x,
+  const arma::rowvec& b
+) {
 
   int nx = x.n_rows;
   colvec info_array(nx);
@@ -338,7 +423,11 @@ arma::colvec array_info_pc(const arma::mat& x, const arma::rowvec& b) {
 //' @rdname info_item
 //' @export
 // [[Rcpp::export]]
-arma::colvec array_info_gpc(const arma::mat& x, const double& a, const arma::rowvec& b) {
+arma::colvec array_info_gpc(
+  const arma::mat& x,
+  const double& a,
+  const arma::rowvec& b
+) {
 
   int nx = x.n_rows;
   colvec info_array(nx);
@@ -354,7 +443,11 @@ arma::colvec array_info_gpc(const arma::mat& x, const double& a, const arma::row
 //' @rdname info_item
 //' @export
 // [[Rcpp::export]]
-arma::colvec array_info_gr(const arma::mat& x, const double& a, const arma::rowvec& b) {
+arma::colvec array_info_gr(
+  const arma::mat& x,
+  const double& a,
+  const arma::rowvec& b
+) {
 
   int nx = x.n_rows;
   colvec info_array(nx);
