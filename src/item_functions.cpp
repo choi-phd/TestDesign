@@ -54,10 +54,10 @@ arma::rowvec p_pc(
   }
 
   rowvec zz = cumsum(z);
-  rowvec pp = exp(zz);
-  double psum = sum(pp);
+  rowvec num = exp(zz);
+  double denom = sum(num);
 
-  return pp / psum;
+  return num / denom;
 
 }
 
@@ -80,10 +80,10 @@ arma::rowvec p_gpc(
   }
 
   rowvec zz = cumsum(z);
-  rowvec pp = exp(zz);
-  double psum = sum(pp);
+  rowvec num = exp(zz);
+  double denom = sum(num);
 
-  return pp / psum;
+  return num / denom;
 
 }
 
@@ -331,13 +331,13 @@ double info_gr(
     p_star(k) = p_2pl(x, a, b(k - 1));
   }
 
-  double out = 0;
+  double o = 0;
 
   for (int k = 0; k < nk; k++) {
-    out += (p_star(k) - p_star(k + 1)) * pow(1 - p_star(k) - p_star(k + 1), 2);
+    o += (p_star(k) - p_star(k + 1)) * pow(1 - p_star(k) - p_star(k + 1), 2);
   }
 
-  return out *= pow(a, 2);
+  return o *= pow(a, 2);
 
 }
 
