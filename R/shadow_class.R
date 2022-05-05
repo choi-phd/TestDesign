@@ -86,6 +86,7 @@ setClass("test_cluster",
 )
 
 #' @rdname createShadowTestConfig
+#' @export
 setClass("config_Shadow",
   slots = c(
     item_selection     = "list",
