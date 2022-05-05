@@ -2,6 +2,7 @@
 NULL
 
 #' @rdname createStaticTestConfig
+#' @export
 setClass("config_Static",
   slots = c(
     item_selection = "list",
