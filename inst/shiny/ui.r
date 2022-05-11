@@ -117,7 +117,7 @@ ui <- fluidPage(
       dropdownButton(
         inputId = "refresh_policy_dropdown", label = "Refresh policy",
         radioGroupButtons(
-          inputId = "refresh_policy", justified = TRUE, direction = "vertical",
+          inputId = "refresh_policy_method", justified = TRUE, direction = "vertical",
           choices = c("ALWAYS", "POSITION", "INTERVAL", "THRESHOLD", "INTERVAL-THRESHOLD", "SET")
         ),
         textInput("refresh_threshold", label = h3("Refresh when theta change exceeds"), value = "0.1"),
