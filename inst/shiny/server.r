@@ -531,9 +531,14 @@ server <- function(input, output, session) {
           "Simulation result"
         )
 
+        if (inherits(v$fit, "try-error")) {
+          v <- updateLogs(v, sprintf("Error: see the console for details."))
+          break
+        }
+
         v$time <- difftime(Sys.time(), v$time, units = "secs")
 
-        v <- updateLogs(v, sprintf("%-10s: simulation complete in %3.3fs", conf@MIP$solver, v$time))
+        v <- updateLogs(v, sprintf("%-10s: simulation complete in %3.3fs", cfg@MIP$solver, v$time))
 
         updateTextInput(session, "simulee_id", value = "")
 
