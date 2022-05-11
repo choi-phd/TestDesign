@@ -268,32 +268,21 @@ server <- function(input, output, session) {
       if (input$problemtype == 1 & v$const_exists) {
         v$problemtype <- 1
 
-        conf <- new("config_Static")
-        conf@MIP$solver <- input$solvertype
+        cfg <- try(createStaticTestConfig(
+          MIP = list(solver = input$solvertype),
+          item_selection = list(
+            method = input$objtype,
+            target_location = eval(parse(text = sprintf("c(%s)", input$thetas))),
+            target_value    = eval(parse(text = sprintf("c(%s)", input$targets)))
+          )
+        ))
 
-        if (parseText(input$thetas)) {
-          eval(parse(text = sprintf("conf@item_selection$target_location <- c(%s)", input$thetas)))
-        } else {
-          v <- updateLogs(v, "Theta values should be comma-separated numbers.")
+        if (inherits(cfg, "try-error")) {
+          v <- updateLogs(v, "Error: the config is not valid. See the console for details.")
           break
         }
 
-        conf@item_selection$method <- input$objtype
-
-        if (conf@item_selection$method != "MAXINFO") {
-            if (parseText(input$targets)) {
-            eval(parse(text = sprintf("conf@item_selection$target_value <- c(%s)", input$targets)))
-          } else {
-            v <- updateLogs(v, "Target values should be comma-separated numbers.")
-            break
-          }
-        } else {
-          conf@item_selection$target_value <- NULL
-        }
-
-        conf@item_selection$target_weight <- rep(1, length(conf@item_selection$target_location))
-
-        assignObject(conf,
+        assignObject(cfg,
           "shiny_config_Static",
           "config_Static object"
         )
@@ -320,7 +309,7 @@ server <- function(input, output, session) {
 
           v$plot_output <- p
 
-          v <- updateLogs(v, sprintf("%-10s: solved in %3.3fs", conf@MIP$solver, v$fit@solve_time))
+          v <- updateLogs(v, sprintf("%-10s: solved in %3.3fs", cfg@MIP$solver, v$fit@solve_time))
           v$selected_index <- which(v$fit@MIP[[1]]$solution == 1)
           v$selected_index <- v$selected_index[v$selected_index <= v$itempool@ni]
 
