@@ -433,79 +433,12 @@ server <- function(input, output, session) {
           break
         }
 
-        if (parseText(input$interim_prior_par)) {
-          eval(parse(text = sprintf("conf@interim_theta$prior_par = c(%s)", input$interim_prior_par)))
-          if (length(conf@interim_theta$prior_par) != 2) {
-            v <- updateLogs(v, "Interim prior parameters should be two values.")
-            break
-          }
-        } else {
-          v <- updateLogs(v, "Interim prior parameters should be two values.")
-          break
-        }
-        if (parseText(input$final_prior_par)) {
-          eval(parse(text = sprintf("conf@final_theta$prior_par = c(%s)", input$final_prior_par)))
-          if (length(conf@final_theta$prior_par) != 2) {
-            v <- updateLogs(v, "Final prior parameters should be two values.")
-            break
-          }
-        } else {
-          v <- updateLogs(v, "Final prior parameters should be two values.")
-          break
-        }
-
-
-        if (conf@item_selection$method == "FB") {
-          if (conf@interim_theta$method != "FB") {
-            v <- updateLogs(v, "FB item selection method requires FB interim method.")
-            break
-          }
-        }
-        if (conf@item_selection$method == "EB") {
-          if (conf@interim_theta$method != "EB") {
-            v <- updateLogs(v, "EB item selection method requires EB interim method.")
-            break
-          }
-        }
-
-        # parse refresh policy settings
-
-        conf@refresh_policy$method <- input$refresh_policy
-
-        if (conf@refresh_policy$method == "SET" && v$const@set_based == FALSE) {
+        if (cfg@refresh_policy$method == "SET" && v$const@set_based == FALSE) {
           v <- updateLogs(v, "Set-based refresh policy is only applicable for set-based item pools.")
           break
         }
 
-        if (parseText(input$refresh_interval)) {
-          eval(parse(text = sprintf("conf@refresh_policy$interval <- c(%s)[1]", input$refresh_interval)))
-          if (conf@refresh_policy$interval < 1 |
-              all(conf@refresh_policy$interval != as.integer(conf@refresh_policy$interval))) {
-            v <- updateLogs(v, "Refresh interval should be an integer larger than or equal to 1.")
-            break
-          }
-        }
-        if (parseText(input$refresh_position)) {
-          eval(parse(text = sprintf("conf@refresh_policy$position <- c(%s)", input$refresh_position)))
-          if (any(conf@refresh_policy$position < 1) |
-            all(conf@refresh_policy$position != as.integer(conf@refresh_policy$position))) {
-            v <- updateLogs(v, "Refresh positions should be comma-separated integers larger than or equal to 1.")
-            break
-          }
-        }
-        if (parseText(input$refresh_threshold)) {
-          eval(parse(text = sprintf("conf@refresh_policy$threshold <- c(%s)[1]", input$refresh_threshold)))
-          if (conf@refresh_policy$threshold < 0) {
-            v <- updateLogs(v, "Refresh threshold should be a positive value.")
-            break
-          }
-        }
-
-        eval(parse(text = sprintf("conf@item_selection$target_location <- c(%s)", input$thetas)))
-
-        conf@MIP$solver <- input$solvertype
-
-        assignObject(conf,
+        assignObject(cfg,
           "shiny_config_Shadow",
           "config_Shadow object"
         )
@@ -518,7 +451,18 @@ server <- function(input, output, session) {
         )
 
         v$time <- Sys.time()
-        v$fit <- Shadow(conf, v$const, true_theta, resp_data, prior = NULL, prior_par = NULL, session = session)
+        v$fit <- try(
+          Shadow(
+            config = cfg,
+            constraints = v$const,
+            true_theta = true_theta,
+            data = resp_data,
+            prior = NULL,
+            prior_par = NULL,
+            session = session
+          )
+        )
+
         message("\n")
         assignObject(v$fit,
           "shiny_Shadow",
