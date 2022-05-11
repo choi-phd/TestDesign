@@ -104,10 +104,10 @@ server <- function(input, output, session) {
 
         v$constraints_data <- v$constraints@constraints
         assignObject(v$constraints,
-          "shiny_const",
+          "shiny_constraints",
           "Constraints (full object)")
         assignObject(v$constraints_data,
-          "shiny_constraints",
+          "shiny_constraints_data",
           "Constraints (raw data.frame)")
 
         if (isolate(v$constraints@set_based & !input$solvertype %in% c("lpsymphony", "Rsymphony", "gurobi"))) {
