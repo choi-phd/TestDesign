@@ -359,14 +359,14 @@ server <- function(input, output, session) {
         }
 
         if (parseText(input$simulee_id)) {
-          eval(parse(text = sprintf("v$simulee_id <- c(%s)[1]", input$simulee_id)))
+          v$simulee_id <- eval(parse(text = sprintf("c(%s)[1]", input$simulee_id)))
         } else {
           v <- updateLogs(v, "Number of simulees should be an integer.")
           break
         }
 
         if (parseText(input$simulee_theta_params)) {
-          eval(parse(text = sprintf("v$simulee_theta_params <- c(%s)[1:2]", input$simulee_theta_params)))
+          v$simulee_theta_params <- eval(parse(text = sprintf("c(%s)[1:2]", input$simulee_theta_params)))
         } else {
           v <- updateLogs(v, "Theta distribution parameters should be two numbers.")
           break
