@@ -38,7 +38,7 @@ usethis::use_data(constraints_reading, overwrite = TRUE)
 
 itempool_fatigue_data    <- read.csv("inst/extdata/itempool_fatigue_95.csv",    header = TRUE , as.is = TRUE)
 itemattrib_fatigue_data  <- read.csv("inst/extdata/itemattrib_fatigue_95.csv",  header = TRUE , as.is = TRUE)
-itemcontent_fatigue_data <- read.csv("inst/extdata/itemcontent_fatigue_95.csv", header = TRUE , as.is = TRUE)
+itemtext_fatigue_data    <- read.csv("inst/extdata/itemtext_fatigue_95.csv",    header = TRUE , as.is = TRUE)
 constraints_fatigue_data <- read.csv("inst/extdata/constraints_fatigue_95.csv", header = TRUE , as.is = TRUE)
 resp_fatigue_data        <- read.csv("inst/extdata/resp_fatigue_95.csv",        header = FALSE, as.is = TRUE)
 itempool_fatigue    <- loadItemPool("inst/extdata/itempool_fatigue_95.csv")
@@ -47,7 +47,7 @@ constraints_fatigue <- loadConstraints("inst/extdata/constraints_fatigue_95.csv"
 
 usethis::use_data(itempool_fatigue_data,    overwrite = TRUE)
 usethis::use_data(itemattrib_fatigue_data,  overwrite = TRUE)
-usethis::use_data(itemcontent_fatigue_data, overwrite = TRUE)
+usethis::use_data(itemtext_fatigue_data,    overwrite = TRUE)
 usethis::use_data(constraints_fatigue_data, overwrite = TRUE)
 usethis::use_data(resp_fatigue_data,   overwrite = TRUE)
 usethis::use_data(itempool_fatigue,    overwrite = TRUE)
