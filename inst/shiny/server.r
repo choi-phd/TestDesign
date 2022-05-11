@@ -99,7 +99,7 @@ server <- function(input, output, session) {
       }
       if (class(v$constraints) == "constraints") {
 
-        v$const_exists <- TRUE
+        v$constraints_exists <- TRUE
         v <- updateLogs(v, "Step 3. Constraints: OK.")
 
         v$constraints_data <- v$constraints@constraints
@@ -120,7 +120,7 @@ server <- function(input, output, session) {
       }
 
       v <- updateLogs(v, "Press the button to run solver.")
-      shinyjs::toggleState("run_solver", v$const_exists)
+      shinyjs::toggleState("run_solver", v$constraints_exists)
 
     }
   })
@@ -153,12 +153,12 @@ server <- function(input, output, session) {
     v$stimattrib  <- NULL
     v$constraints <- NULL
     v$content     <- NULL
-    v$itempool_exists   <- FALSE
-    v$itemse_exists     <- FALSE
-    v$itemattrib_exists <- FALSE
-    v$stimattrib_exists <- FALSE
-    v$const_exists      <- FALSE
-    v$content_exists    <- FALSE
+    v$itempool_exists    <- FALSE
+    v$itemse_exists      <- FALSE
+    v$itemattrib_exists  <- FALSE
+    v$stimattrib_exists  <- FALSE
+    v$constraints_exists <- FALSE
+    v$content_exists     <- FALSE
     v <- updateLogs(v, "Files cleared.")
     updateCheckboxGroupButtons(
       session = session,
@@ -239,7 +239,7 @@ server <- function(input, output, session) {
   })
 
   observeEvent(input$maxinfo_button, {
-    if (v$itempool_exists & v$const_exists) {
+    if (v$itempool_exists & v$constraints_exists) {
 
       plot(v$constraints)
       p <- recordPlot()
@@ -265,7 +265,7 @@ server <- function(input, output, session) {
     shinyjs::disable("run_solver")
 
     for (do in 1) {
-      if (input$problemtype == 1 & v$const_exists) {
+      if (input$problemtype == 1 & v$constraints_exists) {
         v$problemtype <- 1
 
         cfg <- try(createStaticTestConfig(
@@ -333,7 +333,7 @@ server <- function(input, output, session) {
         }
       }
 
-      if (input$problemtype == 2 & v$const_exists) {
+      if (input$problemtype == 2 & v$constraints_exists) {
         v$problemtype <- 2
 
         if (input$exposure_method == "BIGM-BAYESIAN") {
