@@ -76,11 +76,11 @@ ui <- fluidPage(
       dropdownButton(
         inputId = "exposure_dropdown", label = "Exposure control settings",
         radioGroupButtons(
-          inputId = "exposure_method", justified = TRUE,
+          inputId = "exposure_control_method", justified = TRUE,
           choices = c("ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")
         ),
-        sliderInput("exposure_fading_factor", label = h3("Fading factor"), min = .9, max = 1.0, value = 1.0, step = .01),
-        textInput("exposure_acc_factor", label = h3("Acceleration factor"), value = "2"),
+        sliderInput("exposure_control_fading_factor", label = h3("Fading factor"), min = .9, max = 1.0, value = 1.0, step = .01),
+        textInput("exposure_control_acceleration_factor", label = h3("Acceleration factor"), value = "2"),
         circle = FALSE, icon = icon("cog"), width = "100%"
       ),
 
