@@ -11,12 +11,12 @@ ui <- fluidPage(
       dropdownButton(
         h3(""),
         label = "Load files",
-        fileInput("itempool_file",   buttonLabel = "Item parameters",                 label = NULL, accept = accepted_files),
-        fileInput("itemse_file",     buttonLabel = "Item standard errors (optional)", label = NULL, accept = accepted_files),
-        fileInput("itemattrib_file", buttonLabel = "Item attributes",                 label = NULL, accept = accepted_files),
-        fileInput("stimattrib_file", buttonLabel = "Stimulus attributes (optional)",  label = NULL, accept = accepted_files),
-        fileInput("const_file",      buttonLabel = "Constraints",                     label = NULL, accept = accepted_files),
-        fileInput("content_file",    buttonLabel = "Item contents (optional)",        label = NULL, accept = accepted_files),
+        fileInput("itempool_file",    buttonLabel = "Item parameters",                 label = NULL, accept = accepted_files),
+        fileInput("itemse_file",      buttonLabel = "Item standard errors (optional)", label = NULL, accept = accepted_files),
+        fileInput("itemattrib_file",  buttonLabel = "Item attributes",                 label = NULL, accept = accepted_files),
+        fileInput("stimattrib_file",  buttonLabel = "Stimulus attributes (optional)",  label = NULL, accept = accepted_files),
+        fileInput("constraints_file", buttonLabel = "Constraints",                     label = NULL, accept = accepted_files),
+        fileInput("content_file",     buttonLabel = "Item contents (optional)",        label = NULL, accept = accepted_files),
         checkboxGroupButtons(
           inputId = "clear_files", justified = TRUE,
           choices = c("Clear files"), checkIcon = list(yes = icon("trash-alt"), no = icon("trash-alt"))
