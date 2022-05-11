@@ -93,29 +93,29 @@ server <- function(input, output, session) {
   observeEvent(input$const_file, {
     if (!is.null(input$const_file) & v$itempool_exists & v$itemattrib_exists) {
       if (v$stimattrib_exists) {
-        v$const <- try(loadConstraints(input$const_file$datapath, v$itempool, v$itemattrib, v$stimattrib))
+        v$constraints <- try(loadConstraints(input$const_file$datapath, v$itempool, v$itemattrib, v$stimattrib))
       } else {
-        v$const <- try(loadConstraints(input$const_file$datapath, v$itempool, v$itemattrib))
+        v$constraints <- try(loadConstraints(input$const_file$datapath, v$itempool, v$itemattrib))
       }
-      if (class(v$const) == "constraints") {
+      if (class(v$constraints) == "constraints") {
 
         v$const_exists <- TRUE
         v <- updateLogs(v, "Step 3. Constraints: OK.")
 
-        v$constraints_data <- v$const@constraints
-        assignObject(v$const,
+        v$constraints_data <- v$constraints@constraints
+        assignObject(v$constraints,
           "shiny_const",
           "Constraints (full object)")
         assignObject(v$constraints_data,
           "shiny_constraints",
           "Constraints (raw data.frame)")
 
-        if (isolate(v$const@set_based & !input$solvertype %in% c("lpsymphony", "Rsymphony", "gurobi"))) {
+        if (isolate(v$constraints@set_based & !input$solvertype %in% c("lpsymphony", "Rsymphony", "gurobi"))) {
           v <- updateLogs(v, "Warning: set-based assembly requires 'lpsymphony', 'Rsymphony' or 'gurobi'.")
         }
 
       } else {
-        v$const_exists <- FALSE
+        v$constraints_exists <- FALSE
         v <- updateLogs(v, "Error: Constraints are not in the expected format. See ?dataset_science for details.")
       }
 
@@ -148,11 +148,11 @@ server <- function(input, output, session) {
     shinyjs::reset("stimattrib_file")
     shinyjs::reset("const_file")
     shinyjs::reset("content_file")
-    v$itempool   <- NULL
-    v$itemattrib <- NULL
-    v$stimattrib <- NULL
-    v$const      <- NULL
-    v$content    <- NULL
+    v$itempool    <- NULL
+    v$itemattrib  <- NULL
+    v$stimattrib  <- NULL
+    v$constraints <- NULL
+    v$content     <- NULL
     v$itempool_exists   <- FALSE
     v$itemse_exists     <- FALSE
     v$itemattrib_exists <- FALSE
@@ -241,7 +241,7 @@ server <- function(input, output, session) {
   observeEvent(input$maxinfo_button, {
     if (v$itempool_exists & v$const_exists) {
 
-      plot(v$const)
+      plot(v$constraints)
       p <- recordPlot()
       dev.off()
 
@@ -294,7 +294,7 @@ server <- function(input, output, session) {
           detail = "This may take a while."
         )
 
-        v$fit <- Static(cfg, v$const)
+        v$fit <- Static(cfg, v$constraints)
         assignObject(v$fit,
           "shiny_Static",
           "Static() solution object"
@@ -433,7 +433,7 @@ server <- function(input, output, session) {
           break
         }
 
-        if (cfg@refresh_policy$method == "SET" && v$const@set_based == FALSE) {
+        if (cfg@refresh_policy$method == "SET" && v$constraints@set_based == FALSE) {
           v <- updateLogs(v, "Set-based refresh policy is only applicable for set-based item pools.")
           break
         }
@@ -454,7 +454,7 @@ server <- function(input, output, session) {
         v$fit <- try(
           Shadow(
             config = cfg,
-            constraints = v$const,
+            constraints = v$constraints,
             true_theta = true_theta,
             data = resp_data,
             prior = NULL,
