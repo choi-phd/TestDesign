@@ -375,7 +375,7 @@ server <- function(input, output, session) {
         if (input$simulee_theta_distribution == "NORMAL") {
           true_theta <- rnorm(v$n_simulees, v$simulee_theta_params[1], v$simulee_theta_params[2])
         }
-        if (input$simulee_theta_distribution == "UNIF") {
+        if (input$simulee_theta_distribution == "UNIFORM") {
           true_theta <- runif(v$n_simulees, min = v$simulee_theta_params[1], max = v$simulee_theta_params[2])
         }
         assignObject(true_theta,

@@ -65,7 +65,7 @@ ui <- fluidPage(
         inputId = "simulation_dropdown", label = "Simulation settings",
         radioGroupButtons(
           inputId = "simulee_theta_distribution", justified = TRUE,
-          choices = c("NORMAL", "UNIF")
+          choices = c("NORMAL", "UNIFORM")
         ),
         textInput("simulee_theta_params", label = "True theta distribution parameters", value = "0, 1"),
         textInput("n_simulees", label = h3("# of simulees"), value = "1"),
@@ -93,7 +93,7 @@ ui <- fluidPage(
         ),
         radioGroupButtons(
           inputId = "interim_theta_prior_dist", justified = TRUE,
-          choices = c("NORMAL", "UNIF")
+          choices = c("NORMAL", "UNIFORM")
         ),
         textInput("interim_theta_prior_par", label = "Prior distribution parameters", value = "0, 1"),
         h3("Final theta"),
@@ -103,7 +103,7 @@ ui <- fluidPage(
         ),
         radioGroupButtons(
           inputId = "final_theta_prior_dist", justified = TRUE,
-          choices = c("NORMAL", "UNIF")
+          choices = c("NORMAL", "UNIFORM")
         ),
         textInput("final_theta_prior_par", label = "Prior distribution parameters", value = "0, 1"),
         circle = FALSE, icon = icon("cog"), width = "100%"
