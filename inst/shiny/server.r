@@ -191,9 +191,9 @@ server <- function(input, output, session) {
   })
 
   observeEvent(input$refresh_policy_method, {
-    shinyjs::toggle("refresh_threshold", condition = input$refresh_policy_method %in% c("THRESHOLD", "INTERVAL-THRESHOLD"))
-    shinyjs::toggle("refresh_interval",  condition = input$refresh_policy_method %in% c("INTERVAL", "INTERVAL-THRESHOLD"))
-    shinyjs::toggle("refresh_position",  condition = input$refresh_policy_method %in% c("POSITION"))
+    shinyjs::toggle("refresh_policy_threshold", condition = input$refresh_policy_method %in% c("THRESHOLD", "INTERVAL-THRESHOLD"))
+    shinyjs::toggle("refresh_policy_interval",  condition = input$refresh_policy_method %in% c("INTERVAL", "INTERVAL-THRESHOLD"))
+    shinyjs::toggle("refresh_policy_position",  condition = input$refresh_policy_method %in% c("POSITION"))
   })
 
   observeEvent(input$simulee_id, {
@@ -413,9 +413,9 @@ server <- function(input, output, session) {
           ),
           refresh_policy = list(
             method = input$refresh_policy_method,
-            interval = input$refresh_interval,
-            position = input$refresh_position,
-            threshold = input$refresh_threshold
+            interval = input$refresh_policy_interval,
+            position = input$refresh_policy_position,
+            threshold = input$refresh_policy_threshold
           )
         ))
 

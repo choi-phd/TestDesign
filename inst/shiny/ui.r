@@ -120,9 +120,9 @@ ui <- fluidPage(
           inputId = "refresh_policy_method", justified = TRUE, direction = "vertical",
           choices = c("ALWAYS", "POSITION", "INTERVAL", "THRESHOLD", "INTERVAL-THRESHOLD", "SET")
         ),
-        textInput("refresh_threshold", label = h3("Refresh when theta change exceeds"), value = "0.1"),
-        textInput("refresh_position", label = h3("Refresh at item positions (comma-separated)"), value = "1, 10"),
-        textInput("refresh_interval", label = h3("Refresh at item intervals (1 = always)"), value = "2"),
+        textInput("refresh_policy_threshold", label = h3("Refresh when theta change exceeds"), value = "0.1"),
+        textInput("refresh_policy_position", label = h3("Refresh at item positions (comma-separated)"), value = "1, 10"),
+        textInput("refresh_policy_interval", label = h3("Refresh at item intervals (1 = always)"), value = "2"),
         circle = FALSE, icon = icon("cog"), width = "100%"
       ),
 
