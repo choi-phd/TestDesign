@@ -389,41 +389,46 @@ server <- function(input, output, session) {
           "Simulation: response data"
         )
 
-        conf <- new("config_Shadow")
+        # parse config
+        cfg <- try(createShadowTestConfig(
+          MIP = list(
+            solver = input$solvertype
+          ),
+          item_selection = list(
+            method = input$item_selection_method
+          ),
+          exposure_control = list(
+            method = input$exposure_method,
+            fading_factor = input$exposure_fading_factor,
+            acceleration_factor = as.numeric(input$exposure_acc_factor),
+            diagnostic_stats = FALSE
+          ),
+          interim_theta = list(
+            method = input$interim_method,
+            prior_dist = input$interim_prior
+          ),
+          final_theta = list(
+            method = input$final_method,
+            prior_dist = input$final_prior
+          ),
+          refresh_policy = list(
+            method = input$refresh_policy,
+            interval = input$refresh_interval,
+            position = input$refresh_position,
+            threshold = input$refresh_threshold
+          )
+        ))
 
-        # parse exposure control settings
-
-        conf@exposure_control$fading_factor <- input$exposure_fading_factor
-
-        if (parseText(input$exposure_acc_factor)) {
-          eval(parse(text = sprintf("conf@exposure_control$acceleration_factor <- c(%s)[1]", input$exposure_acc_factor)))
-          if (conf@exposure_control$acceleration_factor < 1) {
-            v <- updateLogs(v, "Acceleration factor should be a number larger than or equal to 1.0.")
-            break
-          }
-        } else {
-          v <- updateLogs(v, "Acceleration factor should be a number larger than or equal to 1.0.")
+        if (inherits(cfg, "try-error")) {
+          v <- updateLogs(v, "Error: the config is not valid. See the console for details.")
           break
         }
 
-        conf@exposure_control$method <- input$exposure_method
-        conf@exposure_control$diagnostic_stats <- TRUE
-        conf@exposure_control$max_exposure_rate <-
-          rep(0.25, conf@exposure_control$n_segment)
-
-        # parse theta estimation settings
-
-        conf@interim_theta$method <- input$interim_method
-        conf@interim_theta$prior_dist <- input$interim_prior
-        conf@final_theta$method <- input$final_method
-        conf@final_theta$prior_dist <- input$final_prior
-        conf@item_selection$method <- input$item_selection_method
-
-        if (conf@interim_theta$method == "FB" & v$itemse_exists == F) {
+        if (cfg@interim_theta$method == "FB" & v$itemse_exists == F) {
           v <- updateLogs(v, "FB interim method requires the standard errors to be supplied.")
           break
         }
-        if (conf@final_theta$method == "FB" & v$itemse_exists == F) {
+        if (cfg@final_theta$method == "FB" & v$itemse_exists == F) {
           v <- updateLogs(v, "FB final method requires the standard errors to be supplied.")
           break
         }
