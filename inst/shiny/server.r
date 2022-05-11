@@ -294,7 +294,7 @@ server <- function(input, output, session) {
           detail = "This may take a while."
         )
 
-        v$fit <- Static(conf, v$const)
+        v$fit <- Static(cfg, v$const)
         assignObject(v$fit,
           "shiny_Static",
           "Static() solution object"
