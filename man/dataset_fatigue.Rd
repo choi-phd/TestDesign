@@ -5,7 +5,7 @@
 \alias{dataset_fatigue}
 \alias{itempool_fatigue_data}
 \alias{itemattrib_fatigue_data}
-\alias{itemcontent_fatigue_data}
+\alias{itemtext_fatigue_data}
 \alias{constraints_fatigue_data}
 \alias{resp_fatigue_data}
 \alias{itempool_fatigue}
@@ -27,7 +27,7 @@ Also, the following objects are intended for illustrating expected data structur
 \itemize{
   \item \code{itempool_fatigue_data} a \code{\link{data.frame}} containing item parameters.
   \item \code{itemattrib_fatigue_data} a \code{\link{data.frame}} containing item attributes.
-  \item \code{itemcontent_fatigue_data} a \code{\link{data.frame}} containing item contents.
+  \item \code{itemtext_fatigue_data} a \code{\link{data.frame}} containing item texts.
   \item \code{constraints_fatigue_data} a \code{\link{data.frame}} containing constraint specifications.
   \item \code{resp_fatigue_data} a \code{\link{data.frame}} containing raw response data.
 }

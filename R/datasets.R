@@ -81,7 +81,7 @@ NULL
 #' \itemize{
 #'   \item \code{itempool_fatigue_data} a \code{\link{data.frame}} containing item parameters.
 #'   \item \code{itemattrib_fatigue_data} a \code{\link{data.frame}} containing item attributes.
-#'   \item \code{itemcontent_fatigue_data} a \code{\link{data.frame}} containing item contents.
+#'   \item \code{itemtext_fatigue_data} a \code{\link{data.frame}} containing item texts.
 #'   \item \code{constraints_fatigue_data} a \code{\link{data.frame}} containing constraint specifications.
 #'   \item \code{resp_fatigue_data} a \code{\link{data.frame}} containing raw response data.
 #' }
@@ -92,7 +92,7 @@ NULL
 #' constraints_fatigue <- loadConstraints(constraints_fatigue_data,
 #'   itempool_fatigue, itemattrib_fatigue)
 #'
-#' @aliases itempool_fatigue_data itemattrib_fatigue_data itemcontent_fatigue_data constraints_fatigue_data resp_fatigue_data itempool_fatigue itemattrib_fatigue constraints_fatigue
+#' @aliases itempool_fatigue_data itemattrib_fatigue_data itemtext_fatigue_data constraints_fatigue_data resp_fatigue_data itempool_fatigue itemattrib_fatigue constraints_fatigue
 #'
 #' @docType data
 #' @keywords datasets
