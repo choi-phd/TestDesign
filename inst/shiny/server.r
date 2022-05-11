@@ -102,11 +102,11 @@ server <- function(input, output, session) {
         v$const_exists <- TRUE
         v <- updateLogs(v, "Step 3. Constraints: OK.")
 
-        v$constraints <- v$const@constraints
+        v$constraints_data <- v$const@constraints
         assignObject(v$const,
           "shiny_const",
           "Constraints (full object)")
-        assignObject(v$constraints,
+        assignObject(v$constraints_data,
           "shiny_constraints",
           "Constraints (raw data.frame)")
 
@@ -507,7 +507,7 @@ server <- function(input, output, session) {
     rownames = FALSE
   )
   output$table_constraints <- renderDT(
-    parseObject(v$constraints),
+    parseObject(v$constraints_data),
     options = list(pageLength = 100),
     rownames = FALSE
   )
@@ -543,10 +543,10 @@ server <- function(input, output, session) {
         fs <- c(fs, path)
         write.csv(v$stimattrib@data, path, row.names = F)
       }
-      if (!is.null(v$constraints)) {
+      if (!is.null(v$constraints_data)) {
         path <- getTempFilePath("raw_data_constraints.csv")
         fs <- c(fs, path)
-        write.csv(v$constraints, path, row.names = F)
+        write.csv(v$constraints_data, path, row.names = F)
       }
       if (!is.null(v$content)) {
         path <- getTempFilePath("raw_data_content.csv")
