@@ -190,10 +190,10 @@ server <- function(input, output, session) {
     shinyjs::toggleState("targets", input$objtype != "MAXINFO")
   })
 
-  observeEvent(input$refresh_policy, {
-    shinyjs::toggle("refresh_threshold", condition = input$refresh_policy %in% c("THRESHOLD", "INTERVAL-THRESHOLD"))
-    shinyjs::toggle("refresh_interval",  condition = input$refresh_policy %in% c("INTERVAL", "INTERVAL-THRESHOLD"))
-    shinyjs::toggle("refresh_position",  condition = input$refresh_policy %in% c("POSITION"))
+  observeEvent(input$refresh_policy_method, {
+    shinyjs::toggle("refresh_threshold", condition = input$refresh_policy_method %in% c("THRESHOLD", "INTERVAL-THRESHOLD"))
+    shinyjs::toggle("refresh_interval",  condition = input$refresh_policy_method %in% c("INTERVAL", "INTERVAL-THRESHOLD"))
+    shinyjs::toggle("refresh_position",  condition = input$refresh_policy_method %in% c("POSITION"))
   })
 
   observeEvent(input$simulee_id, {
@@ -412,7 +412,7 @@ server <- function(input, output, session) {
             prior_dist = input$final_prior
           ),
           refresh_policy = list(
-            method = input$refresh_policy,
+            method = input$refresh_policy_method,
             interval = input$refresh_interval,
             position = input$refresh_position,
             threshold = input$refresh_threshold
