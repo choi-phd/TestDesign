@@ -424,11 +424,11 @@ server <- function(input, output, session) {
           break
         }
 
-        if (cfg@interim_theta$method == "FB" & v$itemse_exists == F) {
+        if (cfg@interim_theta$method == "FB" & v$itemse_exists == FALSE) {
           v <- updateLogs(v, "FB interim method requires the standard errors to be supplied.")
           break
         }
-        if (cfg@final_theta$method == "FB" & v$itemse_exists == F) {
+        if (cfg@final_theta$method == "FB" & v$itemse_exists == FALSE) {
           v <- updateLogs(v, "FB final method requires the standard errors to be supplied.")
           break
         }
@@ -531,27 +531,27 @@ server <- function(input, output, session) {
       if (!is.null(v$itempool)) {
         path <- getTempFilePath("raw_data_item_params.csv")
         fs <- c(fs, path)
-        write.csv(v$itempool@raw, path, row.names = F)
+        write.csv(v$itempool@raw, path, row.names = FALSE)
       }
       if (!is.null(v$itemattrib)) {
         path <- getTempFilePath("raw_data_item_attribs.csv")
         fs <- c(fs, path)
-        write.csv(v$itemattrib@data, path, row.names = F)
+        write.csv(v$itemattrib@data, path, row.names = FALSE)
       }
       if (!is.null(v$stimattrib)) {
         path <- getTempFilePath("raw_data_stim_attribs.csv")
         fs <- c(fs, path)
-        write.csv(v$stimattrib@data, path, row.names = F)
+        write.csv(v$stimattrib@data, path, row.names = FALSE)
       }
       if (!is.null(v$constraints_data)) {
         path <- getTempFilePath("raw_data_constraints.csv")
         fs <- c(fs, path)
-        write.csv(v$constraints_data, path, row.names = F)
+        write.csv(v$constraints_data, path, row.names = FALSE)
       }
       if (!is.null(v$content)) {
         path <- getTempFilePath("raw_data_content.csv")
         fs <- c(fs, path)
-        write.csv(v$content, path, row.names = F)
+        write.csv(v$content, path, row.names = FALSE)
       }
 
       if (v$problemtype == 1) {
@@ -566,14 +566,14 @@ server <- function(input, output, session) {
           if (!is.null(v$selected_item_contents)) {
             path <- getTempFilePath("selected_item_contents.csv")
             fs <- c(fs, path)
-            write.csv(v$selected_item_contents, path, row.names = F)
+            write.csv(v$selected_item_contents, path, row.names = FALSE)
           }
         }
         if (!is.null(v$selected_item_attribs)) {
           if (!is.null(v$selected_index)) {
             path <- getTempFilePath("selected_item_attribs.csv")
             fs <- c(fs, path)
-            write.csv(v$selected_item_attribs, path, row.names = F)
+            write.csv(v$selected_item_attribs, path, row.names = FALSE)
           }
         }
       }
