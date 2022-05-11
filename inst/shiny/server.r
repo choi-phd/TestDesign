@@ -337,7 +337,7 @@ server <- function(input, output, session) {
         v$problemtype <- 2
 
         if (input$exposure_method == "BIGM-BAYESIAN") {
-          if (!input$interim_method %in% c("FB", "EB")) {
+          if (!input$interim_theta_method %in% c("FB", "EB")) {
             v <- updateLogs(v, "BIGM-BAYESIAN requires interim methods FB or EB.")
             break
           }
@@ -404,12 +404,12 @@ server <- function(input, output, session) {
             diagnostic_stats = FALSE
           ),
           interim_theta = list(
-            method = input$interim_method,
-            prior_dist = input$interim_prior
+            method = input$interim_theta_method,
+            prior_dist = input$interim_theta_prior_dist
           ),
           final_theta = list(
-            method = input$final_method,
-            prior_dist = input$final_prior
+            method = input$final_theta_method,
+            prior_dist = input$final_theta_prior_dist
           ),
           refresh_policy = list(
             method = input$refresh_policy_method,
