@@ -336,13 +336,13 @@ server <- function(input, output, session) {
       if (input$problemtype == 2 & v$constraints_exists) {
         v$problemtype <- 2
 
-        if (input$exposure_method == "BIGM-BAYESIAN") {
+        if (input$exposure_control_method == "BIGM-BAYESIAN") {
           if (!input$interim_theta_method %in% c("FB", "EB")) {
             v <- updateLogs(v, "BIGM-BAYESIAN requires interim methods FB or EB.")
             break
           }
         }
-        if (input$exposure_method == "BIGM-BAYESIAN") {
+        if (input$exposure_control_method == "BIGM-BAYESIAN") {
           if (!input$item_selection_method %in% c("FB", "EB")) {
             v <- updateLogs(v, "BIGM-BAYESIAN requires item selection method FB or EB.")
             break
@@ -398,9 +398,9 @@ server <- function(input, output, session) {
             method = input$item_selection_method
           ),
           exposure_control = list(
-            method = input$exposure_method,
-            fading_factor = input$exposure_fading_factor,
-            acceleration_factor = as.numeric(input$exposure_acc_factor),
+            method = input$exposure_control_method,
+            fading_factor = input$exposure_control_fading_factor,
+            acceleration_factor = as.numeric(input$exposure_control_acceleration_factor),
             diagnostic_stats = FALSE
           ),
           interim_theta = list(
