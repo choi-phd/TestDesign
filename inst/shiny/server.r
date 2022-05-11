@@ -90,12 +90,12 @@ server <- function(input, output, session) {
     }
   })
 
-  observeEvent(input$const_file, {
-    if (!is.null(input$const_file) & v$itempool_exists & v$itemattrib_exists) {
+  observeEvent(input$constraints_file, {
+    if (!is.null(input$constraints_file) & v$itempool_exists & v$itemattrib_exists) {
       if (v$stimattrib_exists) {
-        v$constraints <- try(loadConstraints(input$const_file$datapath, v$itempool, v$itemattrib, v$stimattrib))
+        v$constraints <- try(loadConstraints(input$constraints_file$datapath, v$itempool, v$itemattrib, v$stimattrib))
       } else {
-        v$constraints <- try(loadConstraints(input$const_file$datapath, v$itempool, v$itemattrib))
+        v$constraints <- try(loadConstraints(input$constraints_file$datapath, v$itempool, v$itemattrib))
       }
       if (class(v$constraints) == "constraints") {
 
@@ -146,7 +146,7 @@ server <- function(input, output, session) {
     shinyjs::reset("itemse_file")
     shinyjs::reset("itemattrib_file")
     shinyjs::reset("stimattrib_file")
-    shinyjs::reset("const_file")
+    shinyjs::reset("constraints_file")
     shinyjs::reset("content_file")
     v$itempool    <- NULL
     v$itemattrib  <- NULL
