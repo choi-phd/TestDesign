@@ -3,7 +3,7 @@ server <- function(input, output, session) {
     itempool_exists = FALSE,
     itemse_exists = FALSE,
     const_exists = FALSE,
-    content_exists = FALSE,
+    itemtext_exists = FALSE,
     stimattrib_exists = FALSE,
     problemtype = 0,
     solvers = solvers
@@ -125,18 +125,18 @@ server <- function(input, output, session) {
     }
   })
 
-  observeEvent(input$content_file, {
-    if (!is.null(input$content_file)) {
-      v$content <- try(read.csv(input$content_file$datapath))
-      if (class(v$content) == "data.frame") {
-        v$content_exists <- TRUE
-        v <- updateLogs(v, "Item contents: OK.")
-        assignObject(v$content,
-          "shiny_content",
-          "Item contents")
+  observeEvent(input$itemtext_file, {
+    if (!is.null(input$itemtext_file)) {
+      v$itemtext <- try(read.csv(input$itemtext_file$datapath))
+      if (class(v$itemtext) == "data.frame") {
+        v$itemtext_exists <- TRUE
+        v <- updateLogs(v, "Item texts: OK.")
+        assignObject(v$itemtext,
+          "shiny_itemtext",
+          "Item texts")
       } else {
-        v$content_exists <- FALSE
-        v <- updateLogs(v, "Error: Item contents are not in the expected format. See ?dataset_fatigue for details.")
+        v$itemtext_exists <- FALSE
+        v <- updateLogs(v, "Error: Item texts are not in the expected format. See ?dataset_fatigue for details.")
       }
     }
   })
@@ -147,18 +147,18 @@ server <- function(input, output, session) {
     shinyjs::reset("itemattrib_file")
     shinyjs::reset("stimattrib_file")
     shinyjs::reset("constraints_file")
-    shinyjs::reset("content_file")
+    shinyjs::reset("itemtext_file")
     v$itempool    <- NULL
     v$itemattrib  <- NULL
     v$stimattrib  <- NULL
     v$constraints <- NULL
-    v$content     <- NULL
+    v$itemtext     <- NULL
     v$itempool_exists    <- FALSE
     v$itemse_exists      <- FALSE
     v$itemattrib_exists  <- FALSE
     v$stimattrib_exists  <- FALSE
     v$constraints_exists <- FALSE
-    v$content_exists     <- FALSE
+    v$itemtext_exists     <- FALSE
     v <- updateLogs(v, "Files cleared.")
     updateCheckboxGroupButtons(
       session = session,
@@ -200,7 +200,7 @@ server <- function(input, output, session) {
     if (v$problemtype == 2) {
       if (!is.null(v$fit)) {
         if (parseText(input$simulee_id)) {
-          eval(parse(text = sprintf("simulee_id <- c(%s)[1]", input$simulee_id)))
+          simulee_id <- eval(parse(text = sprintf("c(%s)[1]", input$simulee_id)))
           if (is.null(simulee_id)) {
             simulee_id <- 1
           }
@@ -319,14 +319,14 @@ server <- function(input, output, session) {
             "shiny_selected_item_attribs",
             "Selected item attributes"
           )
-          if (v$content_exists) {
-            v$index_from_content <- v$content$ID %in% v$selected_item_names
-            v$selected_item_contents <- v$content[v$index_from_content, ]
-            assignObject(v$selected_item_contents,
-              "shiny_selected_item_contents",
-              "Selected item contents"
+          if (v$itemtext_exists) {
+            v$index_from_itemtext <- v$itemtext$ID %in% v$selected_item_names
+            v$selected_itemtext <- v$itemtext[v$index_from_itemtext, ]
+            assignObject(v$selected_itemtext,
+              "shiny_selected_itemtext",
+              "Selected item texts"
             )
-            v$results <- v$selected_item_contents
+            v$results <- v$selected_itemtext
           } else {
             v$results <- v$selected_item_attribs
           }
@@ -548,10 +548,10 @@ server <- function(input, output, session) {
         fs <- c(fs, path)
         write.csv(v$constraints_data, path, row.names = FALSE)
       }
-      if (!is.null(v$content)) {
-        path <- getTempFilePath("raw_data_content.csv")
+      if (!is.null(v$itemtext)) {
+        path <- getTempFilePath("raw_data_itemtext.csv")
         fs <- c(fs, path)
-        write.csv(v$content, path, row.names = FALSE)
+        write.csv(v$itemtext, path, row.names = FALSE)
       }
 
       if (v$problemtype == 1) {
@@ -562,11 +562,11 @@ server <- function(input, output, session) {
           print(v$plot_output)
           dev.off()
         }
-        if (v$content_exists) {
-          if (!is.null(v$selected_item_contents)) {
-            path <- getTempFilePath("selected_item_contents.csv")
+        if (v$itemtext_exists) {
+          if (!is.null(v$selected_itemtext)) {
+            path <- getTempFilePath("selected_itemtext.csv")
             fs <- c(fs, path)
-            write.csv(v$selected_item_contents, path, row.names = FALSE)
+            write.csv(v$selected_itemtext, path, row.names = FALSE)
           }
         }
         if (!is.null(v$selected_item_attribs)) {
