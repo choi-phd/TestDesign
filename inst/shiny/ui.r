@@ -88,24 +88,24 @@ ui <- fluidPage(
         inputId = "theta_settings", label = "Estimation Settings for interim & final thetas",
         h3("Interim theta"),
         radioGroupButtons(
-          inputId = "interim_method", justified = TRUE,
+          inputId = "interim_theta_method", justified = TRUE,
           choices = c("EAP", "FB", "EB")
         ),
         radioGroupButtons(
-          inputId = "interim_prior", justified = TRUE,
+          inputId = "interim_theta_prior_dist", justified = TRUE,
           choices = c("NORMAL", "UNIF")
         ),
-        textInput("interim_prior_par", label = "Prior distribution parameters", value = "0, 1"),
+        textInput("interim_theta_prior_par", label = "Prior distribution parameters", value = "0, 1"),
         h3("Final theta"),
         radioGroupButtons(
-          inputId = "final_method", justified = TRUE,
+          inputId = "final_theta_method", justified = TRUE,
           choices = c("EAP", "FB", "EB")
         ),
         radioGroupButtons(
-          inputId = "final_prior", justified = TRUE,
+          inputId = "final_theta_prior_dist", justified = TRUE,
           choices = c("NORMAL", "UNIF")
         ),
-        textInput("final_prior_par", label = "Prior distribution parameters", value = "0, 1"),
+        textInput("final_theta_prior_par", label = "Prior distribution parameters", value = "0, 1"),
         circle = FALSE, icon = icon("cog"), width = "100%"
       ),
 
