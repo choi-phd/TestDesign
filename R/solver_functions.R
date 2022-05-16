@@ -19,7 +19,6 @@ NULL
 #'   \item{\code{solve_time}} the elapsed time in running the solver.
 #' }
 #'
-#' @references
 #' @template mipbook-ref
 runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
 
