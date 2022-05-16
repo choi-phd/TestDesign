@@ -405,17 +405,19 @@ server <- function(input, output, session) {
           ),
           interim_theta = list(
             method = input$interim_theta_method,
-            prior_dist = input$interim_theta_prior_dist
+            prior_dist = input$interim_theta_prior_dist,
+            prior_par = eval(parse(text = sprintf("c(%s)", input$interim_theta_prior_par)))
           ),
           final_theta = list(
             method = input$final_theta_method,
-            prior_dist = input$final_theta_prior_dist
+            prior_dist = input$final_theta_prior_dist,
+            prior_par = eval(parse(text = sprintf("c(%s)", input$final_theta_prior_par)))
           ),
           refresh_policy = list(
             method = input$refresh_policy_method,
-            interval = input$refresh_policy_interval,
-            position = input$refresh_policy_position,
-            threshold = input$refresh_policy_threshold
+            interval = eval(parse(text = sprintf("c(%s)", input$refresh_policy_interval))),
+            position = eval(parse(text = sprintf("c(%s)", input$refresh_policy_position))),
+            threshold = eval(parse(text = sprintf("c(%s)", input$refresh_policy_threshold)))
           )
         ))
 
