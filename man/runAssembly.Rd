@@ -29,8 +29,6 @@ a list containing the following entries:
 \code{\link{runAssembly}} is a function to perform test assembly. This function is used internally in \code{\link{Static}} and \code{\link{Shadow}}.
 }
 \references{
-
-
 van der Linden, W. J. (2005).
 \emph{Linear models for optimal test design.}
 Springer Science & Business Media.
