@@ -1,3 +1,10 @@
+# TestDesign 1.3.3
+
+## Updates
+
+* Streamlined error handling in Shiny app `TestDesign()`.
+* `config_Static` and `config_Shadow` and are now exported classes.
+
 # TestDesign 1.3.2
 
 ## New features
