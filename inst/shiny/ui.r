@@ -51,8 +51,8 @@ ui <- fluidPage(
         choices = c("TCC", "TIF", "MAXINFO")
       ),
 
-      textInput("thetas", label = h3("Theta values (comma-separated)"), value = "0, 1"),
-      textInput("targets", label = h3("Target values (comma-separated)"), value = "15, 20"),
+      textInput("item_selection_target_location", label = h3("Theta values (comma-separated)"), value = "0, 1"),
+      textInput("item_selection_target_value", label = h3("Target values (comma-separated)"), value = "15, 20"),
 
       h3(""),
 

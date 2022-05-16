@@ -168,15 +168,15 @@ server <- function(input, output, session) {
   })
 
   observeEvent(input$problemtype, {
-    shinyjs::toggle("objtype",                  condition = input$problemtype == 1)
-    shinyjs::toggle("thetas",                   condition = input$problemtype == 1)
-    shinyjs::toggle("targets",                  condition = input$problemtype == 1)
-    shinyjs::toggle("maxinfo_button",           condition = input$problemtype == 1)
-    shinyjs::toggle("exposure_dropdown",        condition = input$problemtype == 2)
-    shinyjs::toggle("theta_settings",           condition = input$problemtype == 2)
-    shinyjs::toggle("item_selection_method",    condition = input$problemtype == 2)
-    shinyjs::toggle("refresh_policy_dropdown",  condition = input$problemtype == 2)
-    shinyjs::toggle("simulation_dropdown",      condition = input$problemtype == 2)
+    shinyjs::toggle("objtype",                        condition = input$problemtype == 1)
+    shinyjs::toggle("item_selection_target_location", condition = input$problemtype == 1)
+    shinyjs::toggle("item_selection_target_value",    condition = input$problemtype == 1)
+    shinyjs::toggle("maxinfo_button",                 condition = input$problemtype == 1)
+    shinyjs::toggle("exposure_dropdown",              condition = input$problemtype == 2)
+    shinyjs::toggle("theta_settings",                 condition = input$problemtype == 2)
+    shinyjs::toggle("item_selection_method",          condition = input$problemtype == 2)
+    shinyjs::toggle("refresh_policy_dropdown",        condition = input$problemtype == 2)
+    shinyjs::toggle("simulation_dropdown",            condition = input$problemtype == 2)
     if (input$problemtype == 2) {
       showTab("tabs", target = "2")
       hideTab("tabs", target = "3")
@@ -187,7 +187,7 @@ server <- function(input, output, session) {
   })
 
   observeEvent(input$objtype, {
-    shinyjs::toggleState("targets", input$objtype != "MAXINFO")
+    shinyjs::toggleState("item_selection_target_value", input$objtype != "MAXINFO")
   })
 
   observeEvent(input$refresh_policy_method, {
@@ -272,8 +272,8 @@ server <- function(input, output, session) {
           MIP = list(solver = input$solvertype),
           item_selection = list(
             method = input$objtype,
-            target_location = eval(parse(text = sprintf("c(%s)", input$thetas))),
-            target_value    = eval(parse(text = sprintf("c(%s)", input$targets)))
+            target_location = eval(parse(text = sprintf("c(%s)", input$item_selection_target_location))),
+            target_value    = eval(parse(text = sprintf("c(%s)", input$item_selection_target_value)))
           )
         ))
 
