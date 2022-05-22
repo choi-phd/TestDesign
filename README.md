@@ -65,4 +65,4 @@ summary(solution)
 ```
 
 The documentation is available at
-(https://choi-phd.github.io/TestDesign<https://choi-phd.github.io/TestDesign/>)
+<https://choi-phd.github.io/TestDesign/>
