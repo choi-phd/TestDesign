@@ -708,7 +708,6 @@ setMethod(
 #' @param resp item response on all (or selected) items in the \code{object} argument. Can be a vector, a matrix, or a data frame. \code{length(resp)} or \code{ncol(resp)} must be equal to the number of all (or selected) items.
 #' @param theta_grid the theta grid to use as quadrature points. (default = \code{seq(-4, 4, .1)})
 #' @param prior a prior distribution, a numeric vector for a common prior or a matrix for individualized priors. (default = \code{rep(1 / 81, 81)})
-#' @param reset_prior used for \code{\linkS4class{test_cluster}} objects. If \code{TRUE}, to reset the prior distribution before each test.
 #'
 #' @return \code{\link{eap}} returns a list containing estimated values.
 #' \itemize{

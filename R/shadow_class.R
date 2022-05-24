@@ -1,42 +1,6 @@
 #' @include static_class.R
 NULL
 
-#' Class 'test_cluster': data for test assembly
-#'
-#' \code{\linkS4class{test_cluster}} is an S4 class to represent data for test assembly.
-#'
-#' @slot nt the number of \code{\linkS4class{test}} objects in this cluster.
-#' @slot tests the list containing \code{\linkS4class{test}} objects.
-#' @slot names test ID strings for each \code{\linkS4class{test}} object.
-#'
-#' @export
-setClass("test_cluster",
-  slots = c(
-    nt      = "numeric",
-    tests   = "list",
-    names   = "character"
-  ),
-  prototype = list(
-    nt      = numeric(0),
-    tests   = list(0),
-    names   = character(0)
-  ),
-  validity = function(object) {
-    err <- NULL
-    if (length(object@tests) != object@nt) {
-      err <- c(err, "test_cluster: @nt must be equal to length(@tests)")
-    }
-    if (length(object@names) != object@nt) {
-      err <- c(err, "test_cluster: @nt must be equal to length(@names)")
-    }
-    if (length(err) == 0) {
-      return(TRUE)
-    } else {
-      return(err)
-    }
-  }
-)
-
 #' @rdname createShadowTestConfig
 #' @export
 setClass("config_Shadow",

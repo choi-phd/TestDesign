@@ -32,8 +32,6 @@ eap(
 \item{theta_grid}{the theta grid to use as quadrature points. (default = \code{seq(-4, 4, .1)})}
 
 \item{prior}{a prior distribution, a numeric vector for a common prior or a matrix for individualized priors. (default = \code{rep(1 / 81, 81)})}
-
-\item{reset_prior}{used for \code{\linkS4class{test_cluster}} objects. If \code{TRUE}, to reset the prior distribution before each test.}
 }
 \value{
 \code{\link{eap}} returns a list containing estimated values.

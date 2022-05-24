@@ -23,51 +23,6 @@ setMethod(
   }
 )
 
-#' Generate a test cluster object
-#'
-#' Generate a \code{\linkS4class{test_cluster}} object
-#'
-#' @param object An \code{\linkS4class{item_pool_cluster}} object
-#' @param theta A grid of theta values
-#' @param true_theta An optional vector of true theta values to simulate response data
-#'
-#' @docType methods
-#' @rdname makeTestCluster-methods
-setGeneric(
-  name = "makeTestCluster",
-  def = function(object, theta, true_theta) {
-    standardGeneric("makeTestCluster")
-  }
-)
-
-#' @docType methods
-#' @rdname makeTestCluster-methods
-setMethod(
-  f = "makeTestCluster",
-  signature = c("item_pool_cluster", "numeric", "numeric"),
-  definition = function(object, theta, true_theta) {
-    tests <- vector(mode = "list", length = object@np)
-    for (p in 1:object@np) {
-      tests[[p]] <- makeTest(object@pools[[p]], theta, true_theta)
-    }
-    return(new("test_cluster", nt = object@np, names = object@names))
-  }
-)
-
-#' @docType methods
-#' @rdname makeTestCluster-methods
-setMethod(
-  f = "makeTestCluster",
-  signature = c("item_pool_cluster", "numeric", "list"),
-  definition = function(object, theta, true_theta) {
-    tests <- vector(mode = "list", length = object@np)
-    for (p in 1:object@np) {
-      tests[[p]] <- makeTest(object@pools[[p]], theta, true_theta[[p]])
-    }
-    return(new("test_cluster", nt = object@np, names = object@names))
-  }
-)
-
 #' Run adaptive test assembly
 #'
 #' \code{\link{Shadow}} is a test assembly function to perform adaptive test assembly based on the generalized shadow-test framework.
