@@ -129,7 +129,7 @@ makeData <- function(pool, true_theta, resp_data, config, seed) {
   o <- list()
   theta_grid <- config@theta_grid
 
-  if (!is.null(resp_data) & !is.null(true_theta)) {
+  if (!is.null(resp_data) & is.null(true_theta)) {
     # only response data is available
     o$test <- makeTest(pool, theta_grid, info_type = "FISHER", true_theta = NULL)
     o$test@data <- as.matrix(resp_data)
