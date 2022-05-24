@@ -131,15 +131,22 @@ setMethod(
       }
     }
 
-    pool                <- constraints@pool
-    model               <- sanitizeModel(pool@model)
-    all_data            <- makeData(pool, true_theta, data, config, seed)
-    constants           <- getConstants(constraints, config, data, true_theta, all_data$max_info)
-    info_fixed_theta    <- getInfoFixedTheta(config@item_selection, constants, all_data$test, pool, model)
-    posterior_constants <- getPosteriorConstants(config)
-    posterior_record    <- initializePosterior(prior, prior_par, config, constants, pool, posterior_constants)
-    initial_theta       <- initializeTheta(config, constants, posterior_record)
-    exclude_index       <- getIndexOfExcludedEntry(exclude, constraints)
+    pool                  <- constraints@pool
+    model                 <- sanitizeModel(pool@model)
+    simulation_data_cache <- makeSimulationDataCache(
+      item_pool = pool,
+      info_type = "FISHER",
+      theta_grid = config@theta_grid,
+      seed = seed,
+      true_theta = true_theta,
+      response_data = data
+    )
+    constants             <- getConstants(constraints, config, data, true_theta, simulation_data_cache@max_info)
+    info_fixed_theta      <- getInfoFixedTheta(config@item_selection, constants, simulation_data_cache@info_grid, pool, model)
+    posterior_constants   <- getPosteriorConstants(config)
+    posterior_record      <- initializePosterior(prior, prior_par, config, constants, pool, posterior_constants)
+    initial_theta         <- initializeTheta(config, constants, posterior_record)
+    exclude_index         <- getIndexOfExcludedEntry(exclude, constraints)
 
     if (constants$use_shadow) {
       refresh_shadow <- initializeShadowEngine(constants, config@refresh_policy)
@@ -252,7 +259,7 @@ setMethod(
         position <- position + 1
         info_current_theta <- computeInfoAtCurrentTheta(
           config@item_selection, j, info_fixed_theta, current_theta, pool, model,
-          posterior_record, all_data$test@info
+          posterior_record, simulation_data_cache@info_grid
         )
 
         # Item position / simulee: do shadow test assembly
@@ -350,7 +357,7 @@ setMethod(
           o@administered_item_ncat[position] <- pool@NCAT[o@administered_item_index[position]]
         }
         if (is.null(seed)) {
-          o@administered_item_resp[position] <- all_data$test@data[j, o@administered_item_index[position]]
+          o@administered_item_resp[position] <- simulation_data_cache@response_data[j, o@administered_item_index[position]]
           o@administered_item_ncat[position] <- pool@NCAT[o@administered_item_index[position]]
         }
 
@@ -363,7 +370,7 @@ setMethod(
           )[[1]]
         }
         if (is.null(seed)) {
-          prob_matrix_current_item <- all_data$test@prob[[o@administered_item_index[position]]]
+          prob_matrix_current_item <- simulation_data_cache@prob_grid[[o@administered_item_index[position]]]
         }
         prob_resp_current_item   <- prob_matrix_current_item[, o@administered_item_resp[position] + 1]
         posterior_record <- updatePosterior(posterior_record, j, prob_resp_current_item)
@@ -529,13 +536,7 @@ setMethod(
     out@check_eligibility_stats     <- diagnostic_stats$elg_stats
     out@no_fading_eligibility_stats <- diagnostic_stats$elg_stats_nofade
     out@freq_infeasible             <- freq_infeasible
-
-    if (is.null(seed)) {
-      out@data <- all_data$test@data
-    }
-    if (!is.null(seed)) {
-      out@data <- NULL
-    }
+    out@data <- simulation_data_cache@response_data
 
     return(out)
   }
@@ -582,7 +583,6 @@ RE <- function(RMSE_foc, RMSE_ref) {
 #' @param usage_matrix A matrix of item usage data from \code{\link{Shadow}}.
 #' @param true_theta A vector of true theta values.
 checkConstraints <- function(constraints, usage_matrix, true_theta = NULL) {
-
 
   raw_constraints <- constraints@constraints
   list_constraints <- constraints@list_constraints
