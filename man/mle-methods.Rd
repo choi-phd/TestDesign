@@ -4,9 +4,6 @@
 \name{mle}
 \alias{mle}
 \alias{mle,item_pool-method}
-\alias{MLE}
-\alias{MLE,test-method}
-\alias{MLE,test_cluster-method}
 \title{Compute maximum likelihood estimates of theta}
 \usage{
 mle(
@@ -38,32 +35,6 @@ mle(
   step_size = 0.5,
   do_Fisher = TRUE
 )
-
-MLE(
-  object,
-  select = NULL,
-  start_theta = NULL,
-  max_iter = 100,
-  crit = 0.001,
-  theta_range = c(-4, 4),
-  truncate = FALSE,
-  max_change = 1,
-  do_Fisher = TRUE
-)
-
-\S4method{MLE}{test}(
-  object,
-  select = NULL,
-  start_theta = NULL,
-  max_iter = 100,
-  crit = 0.001,
-  theta_range = c(-4, 4),
-  truncate = FALSE,
-  max_change = 1,
-  do_Fisher = TRUE
-)
-
-\S4method{MLE}{test_cluster}(object, select = NULL, start_theta = NULL, max_iter = 100, crit = 0.001)
 }
 \arguments{
 \item{object}{an \code{\linkS4class{item_pool}} object.}
