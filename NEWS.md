@@ -1,3 +1,9 @@
+# TestDesign 1.3.3.9000
+
+## Bug fixes
+
+* Fixed where `Shadow()` was not working when `data` was supplied with `true_theta` left empty. (#118)
+
 # TestDesign 1.3.3
 
 ## Updates
