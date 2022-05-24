@@ -1,54 +1,6 @@
 #' @include static_class.R
 NULL
 
-#' Class 'test': data for test assembly
-#'
-#' \code{\linkS4class{test}} is an S4 class to represent data for test assembly.
-#'
-#' @slot pool the \code{\linkS4class{item_pool}} object.
-#' @slot theta the theta grid to use as quadrature points.
-#' @slot prob the list containing item response probabilities.
-#' @slot info the matrix containing item information values.
-#' @slot true_theta (optional) the true theta values.
-#' @slot data (optional) the matrix containing item responses.
-#'
-#' @export
-setClass("test",
-  slots = c(
-    pool       = "item_pool",
-    theta      = "numeric",
-    prob       = "list",
-    info       = "matrix",
-    true_theta = "numeric_or_null",
-    data       = "matrix_or_null"
-  ),
-  prototype = list(
-    pool       = new("item_pool"),
-    theta      = numeric(0),
-    prob       = list(0),
-    info       = matrix(0),
-    true_theta = numeric(0),
-    data       = matrix(NA, 0, 0)
-  ),
-  validity = function(object) {
-    err <- NULL
-    if (length(object@prob) != object@pool@ni) {
-      err <- c(err, "test: length(@prob) must be equal to @pool@ni")
-    }
-    if (ncol(object@info) != object@pool@ni) {
-      err <- c(err, "test: ncol(@info) must match @pool@ni")
-    }
-    if (nrow(object@info) != length(object@theta)) {
-      err <- c(err, "test: nrow(@info) must match length(@theta)")
-    }
-    if (length(err) == 0) {
-      return(TRUE)
-    } else {
-      return(err)
-    }
-  }
-)
-
 #' Class 'test_cluster': data for test assembly
 #'
 #' \code{\linkS4class{test_cluster}} is an S4 class to represent data for test assembly.

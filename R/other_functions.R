@@ -124,42 +124,7 @@ initializeShadowEngine <- function(constants, refresh_policy) {
 }
 
 #' @noRd
-makeData <- function(pool, true_theta, resp_data, config, seed) {
-
-  o <- list()
-  theta_grid <- config@theta_grid
-
-  if (!is.null(resp_data) & !is.null(true_theta)) {
-    # only response data is available
-    o$test <- makeTest(pool, theta_grid, info_type = "FISHER", true_theta = NULL)
-    o$test@data <- as.matrix(resp_data)
-    for (i in 1:pool@ni) {
-      invalid_resp <- !(o$test@data[, i] %in% 0:(pool@NCAT[i] - 1))
-      o$test@data[invalid_resp, i] <- NA
-    }
-    o$max_info <- max(o$test@info)
-    return(o)
-  }
-
-  if (is.null(resp_data) & !is.null(true_theta) & is.null(seed)) {
-    # only true theta is available
-    o$test <- makeTest(pool, theta_grid, info_type = "FISHER", true_theta)
-    o$max_info <- max(o$test@info)
-    return(o)
-  }
-
-  if (is.null(resp_data) & !is.null(true_theta) & !is.null(seed)) {
-    # skip data generation; generate on the fly
-    o$max_info <- "FOO" # temporarily block this
-    return(o)
-  }
-
-  stop("either 'data' or 'true_theta' must be supplied")
-
-}
-
-#' @noRd
-getInfoFixedTheta <- function(item_selection, constants, test, pool, model) {
+getInfoFixedTheta <- function(item_selection, constants, info_cache, pool, model) {
 
   nj <- constants$nj
   o <- list()
@@ -167,7 +132,7 @@ getInfoFixedTheta <- function(item_selection, constants, test, pool, model) {
   if (!is.null(item_selection$fixed_theta)) {
     if (length(item_selection$fixed_theta) == 1) {
       o$info_fixed_theta <- vector(mode = "list", length = nj)
-      o$info_fixed_theta <- test@info[which.min(abs(constants$theta_grid - item_selection$fixed_theta)), ]
+      o$info_fixed_theta <- info_cache[which.min(abs(constants$theta_grid - item_selection$fixed_theta)), ]
       o$select_at_fixed_theta <- TRUE
     }
     if (length(item_selection$fixed_theta) == nj) {
