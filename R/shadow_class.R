@@ -86,7 +86,8 @@ setClass("config_Shadow",
       step_size                 = 0.5,
       do_Fisher                 = TRUE,
       fence_slope               = 5,
-      fence_difficulty          = c(-5, 5)
+      fence_difficulty          = c(-5, 5),
+      hand_scored_attribute     = NULL
     ),
     final_theta = list(
       method                    = "EAP",

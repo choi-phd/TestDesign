@@ -46,6 +46,20 @@ getConstants <- function(constraints, config, arg_data, true_theta, max_info) {
   o$exclude_method <- toupper(config@exclude_policy$method)
   o$exclude_M      <- config@exclude_policy$M
 
+  o$use_hand_scored <- !is.null(config@interim_theta$hand_scored_attribute)
+  if (o$use_hand_scored) {
+    if (!config@interim_theta$hand_scored_attribute %in% names(constraints@item_attrib)) {
+      stop(sprintf(
+        "column not found in item attribute table: '%s'",
+        config@interim_theta$hand_scored_attribute
+      ))
+    }
+  }
+  if (o$use_hand_scored) {
+    o$item_is_hand_scored <-
+      constraints@item_attrib@data[[config@interim_theta$hand_scored_attribute]]
+  }
+
   refresh_method <- toupper(config@refresh_policy$method)
   if (refresh_method %in% c("STIMULUS", "SET", "PASSAGE")) {
     o$set_based_refresh <- TRUE

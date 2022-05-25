@@ -15,6 +15,27 @@ estimateInterimTheta <- function(
   posterior_constants
 ) {
 
+  if (constants$use_hand_scored) {
+    if (
+      constants$item_is_hand_scored[o@administered_item_index[position]] &
+      position > 1
+    ) {
+      # skip update and reuse previous interim theta estimate
+      o@interim_theta_est[position] <- o@interim_theta_est[position - 1]
+      o@interim_se_est[position]    <- o@interim_se_est[position - 1]
+      return(o)
+    }
+    if (
+      constants$item_is_hand_scored[o@administered_item_index[position]] &
+      position == 1
+    ) {
+      # skip update and reuse previous interim theta estimate (starting theta)
+      o@interim_theta_est[position] <- o@initial_theta_est
+      o@interim_se_est[position]    <- NA
+      return(o)
+    }
+  }
+
   if (toupper(config@interim_theta$method) == "EAP") {
 
     interim_EAP <- computeEAPFromPosterior(augmented_posterior_record$posterior[j, ], constants$theta_q)
