@@ -322,15 +322,7 @@ setMethod(
 
         # Item position / simulee: update posterior
 
-        if (!is.null(seed)) {
-          prob_matrix_current_item <- calcProb(
-            pool[o@administered_item_index[position]],
-            constants$theta_q
-          )[[1]]
-        }
-        if (is.null(seed)) {
-          prob_matrix_current_item <- simulation_data_cache@prob_grid[[o@administered_item_index[position]]]
-        }
+        prob_matrix_current_item <- simulation_data_cache@prob_grid[[o@administered_item_index[position]]]
         prob_resp_current_item   <- prob_matrix_current_item[, o@administered_item_resp[position] + 1]
         posterior_record <- updatePosterior(posterior_record, j, prob_resp_current_item)
 
