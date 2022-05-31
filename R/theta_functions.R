@@ -488,6 +488,157 @@ setMethod(
   }
 )
 
+#' @docType methods
+#' @rdname mle-methods
+setGeneric(
+  name = "MLE",
+  def = function(object, select = NULL, start_theta = NULL, max_iter = 100, crit = 0.001, theta_range = c(-4, 4), truncate = FALSE, max_change = 1.0, do_Fisher = TRUE) {
+    standardGeneric("MLE")
+  }
+)
+
+#' @docType methods
+#' @rdname mle-methods
+setMethod(
+  f = "MLE",
+  signature = "test",
+  definition = function(
+    object, select = NULL,
+    start_theta = NULL, max_iter = 100, crit = 0.001,
+    theta_range = c(-4, 4), truncate = FALSE,
+    max_change = 1.0,
+    do_Fisher = TRUE
+  ) {
+
+    # 'test' class is superseded by 'simulation_data_cache'
+    # maintainer preference: keep this function
+
+    ni <- ncol(object@data)
+    nj <- nrow(object@data)
+    nq <- length(object@theta)
+
+    if (is.null(select)) {
+      select <- 1:object@pool@ni
+      resp <- object@data
+    } else {
+      if (!all(select %in% 1:object@pool@ni)) {
+        stop("MLE: 'select' contains invalid item indices")
+      }
+      resp <- object@data[, unique(select)]
+    }
+
+    if (!is.null(select)) {
+      if (anyDuplicated(select) > 0) {
+        warning("MLE: 'select' contains duplicate indices")
+        select <- select[-duplicated(select)]
+      }
+      if (!all(select %in% 1:ni)) {
+        stop("MLE: 'select' contains invalid indices")
+      }
+      items <- select
+    } else {
+      items <- 1:ni
+    }
+
+    if (is.null(start_theta)) {
+      prior <- rep(1 / nq, nq)
+      start_theta <- EAP(object,
+        select = select,
+        prior  = prior
+      )
+      start_theta <- start_theta$th
+    } else if (length(start_theta) == 1) {
+      start_theta <- rep(start_theta, nj)
+    } else if (length(start_theta) != nj) {
+      stop("MLE: 'start_theta' must be of length 1 or the number of examinees")
+    }
+
+    th <- numeric(nj)
+    se <- numeric(nj)
+    conv  <- logical(nj)
+    trunc <- logical(nj)
+
+    for (j in 1:nj) {
+      theta_1 <- start_theta[j]
+      max_raw_score <- sum(object@pool@NCAT[items[!is.na(object@data[j, items])]] - 1)
+      raw_score <- sum(object@data[j, items], na.rm = TRUE)
+
+      if (raw_score > 0 && raw_score < max_raw_score) {
+
+        converged <- FALSE
+        done <- FALSE
+        iteration <- 0
+
+        while (!converged && !done && iteration <= max_iter) {
+          iteration <- iteration + 1
+          theta_0 <- theta_1
+          deriv1 <- 0
+          deriv2 <- 0
+          for (i in items) {
+            resp <- object@data[j, i]
+            deriv1 <- deriv1 + calcJacobian(object@pool@parms[[i]], theta_0, resp)
+            if (do_Fisher) {
+              deriv2 <- deriv2 + calcFisher(object@pool@parms[[i]], theta_0)
+            } else {
+              deriv2 <- deriv2 - calcHessian(object@pool@parms[[i]], theta_0, resp)
+            }
+          }
+          change <- deriv1 / deriv2
+          if (is.nan(change)) {
+            done <- TRUE
+          } else {
+            if (abs(change) > max_change) {
+              change <- sign(change) * max_change
+            } else if (abs(change) < crit) {
+              converged <- conv[j] <- TRUE
+            }
+            theta_1 <- theta_0 + change
+          }
+        }
+      }
+
+      if (conv[j]) {
+        th[j] <- theta_1
+        se[j] <- 1 / sqrt(abs(deriv2))
+      } else {
+        th[j] <- start_theta[j]
+        sum_fisher <- 0
+        for (i in 1:length(items)) {
+          sum_fisher <- sum_fisher + calcFisher(object@parms[[items[i]]], th[j])
+        }
+        se[j] <- 1 / sqrt(sum_fisher)
+      }
+
+    }
+    if (truncate) {
+      min_theta <- min(theta_range)
+      max_theta <- max(theta_range)
+      th[th > max_theta] <- max_theta
+      th[th < min_theta] <- min_theta
+    }
+    RMSE <- NULL
+    if (!is.null(object@true_theta)) {
+      RMSE <- sqrt(mean((th - object@true_theta)^2))
+    }
+    return(list(th = th, se = se, conv = conv, trunc = trunc, RMSE = RMSE))
+  }
+)
+
+#' @docType methods
+#' @rdname mle-methods
+setMethod(
+  f = "MLE",
+  signature = "test_cluster",
+  definition = function(object, select = NULL, start_theta = NULL, max_iter = 100, crit = 0.001) {
+    # maintainer preference: keep this function
+    MLE_cluster <- vector(mode = "list", length = object@nt)
+    for (t in 1:object@nt) {
+      MLE_cluster[[t]] <- MLE(object@tests[[t]], select = NULL, start_theta = start_theta, max_iter = max_iter, crit = crit)
+    }
+    return(MLE_cluster)
+  }
+)
+
 #' Compute maximum likelihood estimates of theta using fence items
 #'
 #' \code{\link{mlef}} is a function to compute maximum likelihood estimates of theta using fence items.
