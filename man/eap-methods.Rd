@@ -4,6 +4,9 @@
 \name{eap}
 \alias{eap}
 \alias{eap,item_pool-method}
+\alias{EAP}
+\alias{EAP,test-method}
+\alias{EAP,test_cluster-method}
 \title{Compute expected a posteriori estimates of theta}
 \usage{
 eap(
@@ -21,6 +24,12 @@ eap(
   theta_grid = seq(-4, 4, 0.1),
   prior = rep(1/81, 81)
 )
+
+EAP(object, select = NULL, prior, reset_prior = FALSE)
+
+\S4method{EAP}{test}(object, select = NULL, prior, reset_prior = FALSE)
+
+\S4method{EAP}{test_cluster}(object, select = NULL, prior, reset_prior = FALSE)
 }
 \arguments{
 \item{object}{an \code{\linkS4class{item_pool}} object.}
@@ -32,6 +41,8 @@ eap(
 \item{theta_grid}{the theta grid to use as quadrature points. (default = \code{seq(-4, 4, .1)})}
 
 \item{prior}{a prior distribution, a numeric vector for a common prior or a matrix for individualized priors. (default = \code{rep(1 / 81, 81)})}
+
+\item{reset_prior}{used for \code{\linkS4class{test_cluster}} objects. If \code{TRUE}, reset the prior distribution for each \code{\linkS4class{test}} object.}
 }
 \value{
 \code{\link{eap}} returns a list containing estimated values.

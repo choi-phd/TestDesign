@@ -708,6 +708,7 @@ setMethod(
 #' @param resp item response on all (or selected) items in the \code{object} argument. Can be a vector, a matrix, or a data frame. \code{length(resp)} or \code{ncol(resp)} must be equal to the number of all (or selected) items.
 #' @param theta_grid the theta grid to use as quadrature points. (default = \code{seq(-4, 4, .1)})
 #' @param prior a prior distribution, a numeric vector for a common prior or a matrix for individualized priors. (default = \code{rep(1 / 81, 81)})
+#' @param reset_prior used for \code{\linkS4class{test_cluster}} objects. If \code{TRUE}, reset the prior distribution for each \code{\linkS4class{test}} object.
 #'
 #' @return \code{\link{eap}} returns a list containing estimated values.
 #' \itemize{
@@ -798,6 +799,82 @@ setMethod(
       se <- as.vector(sqrt(rowSums(posterior * (matrix(theta_grid, nj, nq, byrow = TRUE) - matrix(th, nj, nq))^2) / rowSums(posterior)))
     }
     return(list(th = th, se = se))
+  }
+)
+
+#' @docType methods
+#' @rdname eap-methods
+setGeneric(
+  name = "EAP",
+  def = function(object, select = NULL, prior, reset_prior = FALSE) {
+    standardGeneric("EAP")
+  }
+)
+
+#' @docType methods
+#' @rdname eap-methods
+setMethod(
+  f = "EAP",
+  signature = "test",
+  definition = function(object, select = NULL, prior, reset_prior = FALSE) {
+
+    # 'test' class is superseded by 'simulation_data_cache'
+    # maintainer preference: keep this function
+
+    nj <- nrow(object@data)
+    if (is.matrix(prior)) {
+      nq <- ncol(prior)
+      if (nj != nrow(prior)) stop("EAP: nrow(prior) is not equal to nrow(data)")
+      posterior <- prior
+    } else {
+      nq <- length(prior)
+      posterior <- matrix(rep(prior, nj), nj, nq, byrow = TRUE)
+    }
+    if (is.null(select)) {
+      select <- 1:object@pool@ni
+    } else {
+      if (!all(select %in% 1:object@pool@ni)) {
+        stop("EAP: 'select' contains invalid item indices")
+      }
+    }
+    for (i in unique(select)) {
+      resp <- matrix(object@data[, i] + 1, nj, 1)
+      if (!all(is.na(resp))) {
+        prob <- t(object@prob[[i]][, resp])
+        prob[is.na(prob)] <- 1
+        posterior <- posterior * prob
+      }
+    }
+    th <- as.vector(posterior %*% object@theta / rowSums(posterior))
+    se <- as.vector(sqrt(rowSums(posterior * (matrix(object@theta, nj, nq, byrow = TRUE) - matrix(th, nj, nq))^2) / rowSums(posterior)))
+    if (is.null(object@true_theta)) {
+      RMSE <- NULL
+    } else {
+      RMSE <- sqrt(mean((th - object@true_theta)^2))
+    }
+    return(list(th = th, se = se, prior = prior, posterior = posterior, RMSE = RMSE))
+  }
+)
+
+#' @docType methods
+#' @rdname eap-methods
+setMethod(
+  f = "EAP",
+  signature = "test_cluster",
+  definition = function(object, select = NULL, prior, reset_prior = FALSE) {
+    # maintainer preference: keep this function
+    EAP_cluster <- vector(mode = "list", length = object@nt)
+    EAP_cluster[[1]] <- EAP(object@tests[[1]], select = select, prior = prior)
+    if (reset_prior) {
+      for (t in 2:object@nt) {
+        EAP_cluster[[t]] <- EAP(object@tests[[t]], select = select, prior = prior)
+      }
+    } else {
+      for (t in 2:object@nt) {
+        EAP_cluster[[t]] <- EAP(object@tests[[t]], select = select, prior = EAP_cluster[[t - 1]]@posterior)
+      }
+    }
+    return(EAP_cluster)
   }
 )
 
