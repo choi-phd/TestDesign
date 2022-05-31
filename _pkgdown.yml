@@ -53,7 +53,6 @@ reference:
   - title: "Helper functions"
     contents:
       - simResp
-      - makeTest
       - subsetItemPool
       - combineItemPool
   - title: "Object classes"
@@ -61,7 +60,6 @@ reference:
       - item-classes
       - constraint-class
       - constraints-class
-      - test-class
       - output_Static-class
       - output_Shadow-class
       - output_Shadow_all-class
@@ -71,10 +69,7 @@ reference:
       - item_attrib-operators
       - st_attrib-operators
       - constraints-operators
-      - test_operators
       - item_pool-class
-      - item_pool_cluster-class
-      - test_cluster-class
       - summary-classes
       - find_segment
       - print
@@ -99,12 +94,17 @@ reference:
       - info_1pl
       - mle
       - mlef
+      - eap
       - calcLogLikelihood
       - calcLocation-methods
       - getSolutionAttributes
       - checkConstraints
-      - eap
+      - item_pool_cluster-class
       - makeItemPoolCluster
+      - test-class
+      - test_operators
+      - test_cluster-class
+      - makeTest
       - makeTestCluster
       - lnHyperPars
       - logitHyperPars
