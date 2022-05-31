@@ -176,3 +176,52 @@ setMethod(
     return(subsetTest(x, i))
   }
 )
+
+#' Create a test cluster object
+#'
+#' \code{\link{makeTestCluster}} is a function for creating a \code{\linkS4class{test_cluster}} object.
+#' This is used to make all necessary data (e.g., item information, response data) prior to the main simulation.
+#' This function is only kept for backwards compatibility.
+#'
+#' @param object an \code{\linkS4class{item_pool_cluster}} object.
+#' @param theta a grid of theta values.
+#' @param true_theta an optional vector of true theta values to simulate response data.
+#'
+#' @docType methods
+#' @rdname makeTestCluster-methods
+#'
+#' @export
+setGeneric(
+  name = "makeTestCluster",
+  def = function(object, theta, true_theta) {
+    standardGeneric("makeTestCluster")
+  }
+)
+
+#' @docType methods
+#' @rdname makeTestCluster-methods
+setMethod(
+  f = "makeTestCluster",
+  signature = c("item_pool_cluster", "numeric", "numeric"),
+  definition = function(object, theta, true_theta) {
+    tests <- vector(mode = "list", length = object@np)
+    for (p in 1:object@np) {
+      tests[[p]] <- makeTest(object@pools[[p]], theta, true_theta)
+    }
+    return(new("test_cluster", nt = object@np, names = object@names))
+  }
+)
+
+#' @docType methods
+#' @rdname makeTestCluster-methods
+setMethod(
+  f = "makeTestCluster",
+  signature = c("item_pool_cluster", "numeric", "list"),
+  definition = function(object, theta, true_theta) {
+    tests <- vector(mode = "list", length = object@np)
+    for (p in 1:object@np) {
+      tests[[p]] <- makeTest(object@pools[[p]], theta, true_theta[[p]])
+    }
+    return(new("test_cluster", nt = object@np, names = object@names))
+  }
+)
