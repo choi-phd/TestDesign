@@ -99,3 +99,39 @@ setClass("test",
     return(x)
   }
 )
+
+#' Class 'test_cluster': data cache for Shadow()
+#'
+#' \code{\linkS4class{test_cluster}} is an S4 class to represent data cache for Shadow().
+#' This class is only kept for backwards compatibility.
+#'
+#' @slot nt the number of \code{\linkS4class{test}} objects in this cluster.
+#' @slot tests the list containing \code{\linkS4class{test}} objects.
+#' @slot names test ID strings for each \code{\linkS4class{test}} object.
+#'
+#' @export
+setClass("test_cluster",
+  slots = c(
+    nt      = "numeric",
+    tests   = "list",
+    names   = "character"
+  ),
+  prototype = list(
+    nt      = numeric(0),
+    tests   = list(0),
+    names   = character(0)
+  ),
+  validity = function(object) {
+    x <- NULL
+    if (length(object@tests) != object@nt) {
+      x <- c(x, "test_cluster: @nt must be equal to length(@tests)")
+    }
+    if (length(object@names) != object@nt) {
+      x <- c(x, "test_cluster: @nt must be equal to length(@names)")
+    }
+    if (length(x) == 0) {
+      return(TRUE)
+    }
+    return(x)
+  }
+)
