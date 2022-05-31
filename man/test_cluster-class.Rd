@@ -3,9 +3,10 @@
 \docType{class}
 \name{test_cluster-class}
 \alias{test_cluster-class}
-\title{Class 'test_cluster': data cache for Shadow()}
+\title{Class 'test_cluster': data cache for simulations}
 \description{
-\code{\linkS4class{test_cluster}} is an S4 class to represent data cache for Shadow().
+\code{\linkS4class{test_cluster}} is an S4 class to represent data cache for running simulations.
+Despite the name, this class does not represent a series of tests and is not related to a series of tests. That is, test length is not stored in this class.
 This class is only kept for backwards compatibility.
 }
 \section{Slots}{

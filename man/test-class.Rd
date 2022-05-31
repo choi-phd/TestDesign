@@ -3,9 +3,10 @@
 \docType{class}
 \name{test-class}
 \alias{test-class}
-\title{Class 'test': data cache for Shadow()}
+\title{Class 'test': data cache for simulations}
 \description{
-\code{\linkS4class{test}} is an S4 class to represent data cache for Shadow().
+\code{\linkS4class{test}} is an S4 class to represent data cache for running simulations.
+Despite the name, this class does not represent a test and is not related to a test. That is, test length is not stored in this class.
 This class is only kept for backwards compatibility.
 The functionality of this class is superseded by \code{\linkS4class{simulation_data_cache}}.
 }
