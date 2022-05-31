@@ -469,27 +469,27 @@ setMethod(
       freq_infeasible <- NULL
     }
 
-    out                             <- new("output_Shadow_all")
-    out@output                      <- o_list
-    out@pool                        <- pool
-    out@config                      <- config
-    out@true_theta                  <- true_theta
-    out@constraints                 <- constraints
-    out@prior                       <- prior
-    out@prior_par                   <- prior_par
-    out@final_theta_est             <- final_theta_est
-    out@final_se_est                <- final_se_est
-    out@exposure_rate               <- exposure_rate
-    out@usage_matrix                <- usage_matrix
-    out@true_segment_count          <- segment_record$count_true
-    out@est_segment_count           <- segment_record$count_est
-    out@eligibility_stats           <- exposure_record
-    out@check_eligibility_stats     <- diagnostic_stats$elg_stats
-    out@no_fading_eligibility_stats <- diagnostic_stats$elg_stats_nofade
-    out@freq_infeasible             <- freq_infeasible
-    out@data <- simulation_data_cache@response_data
+    o                             <- new("output_Shadow_all")
+    o@output                      <- o_list
+    o@pool                        <- pool
+    o@config                      <- config
+    o@true_theta                  <- true_theta
+    o@constraints                 <- constraints
+    o@prior                       <- prior
+    o@prior_par                   <- prior_par
+    o@final_theta_est             <- final_theta_est
+    o@final_se_est                <- final_se_est
+    o@exposure_rate               <- exposure_rate
+    o@usage_matrix                <- usage_matrix
+    o@true_segment_count          <- segment_record$count_true
+    o@est_segment_count           <- segment_record$count_est
+    o@eligibility_stats           <- exposure_record
+    o@check_eligibility_stats     <- diagnostic_stats$elg_stats
+    o@no_fading_eligibility_stats <- diagnostic_stats$elg_stats_nofade
+    o@freq_infeasible             <- freq_infeasible
+    o@data <- simulation_data_cache@response_data
+    return(o)
 
-    return(out)
   }
 )
 
