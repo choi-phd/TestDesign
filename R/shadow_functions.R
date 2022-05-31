@@ -304,7 +304,11 @@ setMethod(
         # Item position / simulee: record which item was administered
 
         o@administered_item_ncat[position] <- pool@NCAT[o@administered_item_index[position]]
+
+        # Item position / simulee: simulate examinee response
+
         if (!is.null(seed)) {
+          # if seed is available, generate response data on the fly
           set.seed((seed * 345) + (j * 123) + o@administered_item_index[position])
           o@administered_item_resp[position] <- simResp(
             pool[o@administered_item_index[position]],
@@ -312,6 +316,7 @@ setMethod(
           )
         }
         if (is.null(seed)) {
+          # if seed is empty, use pregenerated response data
           o@administered_item_resp[position] <- simulation_data_cache@response_data[j, o@administered_item_index[position]]
         }
 
