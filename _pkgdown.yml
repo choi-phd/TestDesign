@@ -106,6 +106,8 @@ reference:
       - test_cluster-class
       - makeTest
       - makeTestCluster
+      - simulation_data_cache-class
+      - makeSimulationDataCache
       - lnHyperPars
       - logitHyperPars
       - iparPosteriorSample
