@@ -181,6 +181,9 @@
     <loc>/reference/logitHyperPars.html</loc>
   </url>
   <url>
+    <loc>/reference/makeSimulationDataCache-methods.html</loc>
+  </url>
+  <url>
     <loc>/reference/makeTest-methods.html</loc>
   </url>
   <url>
@@ -221,6 +224,9 @@
   </url>
   <url>
     <loc>/reference/simResp-methods.html</loc>
+  </url>
+  <url>
+    <loc>/reference/simulation_data_cache-class.html</loc>
   </url>
   <url>
     <loc>/reference/st_attrib-operators.html</loc>
