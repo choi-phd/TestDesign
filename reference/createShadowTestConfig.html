@@ -157,6 +157,7 @@ Default values are used for any unspecified parameters/slots.</p>
 <li><p><code>do_Fisher</code> set <code>TRUE</code> to use Fisher's method of scoring. Used when <code>method</code> is <code>MLE</code>. (default = <code>TRUE</code>)</p></li>
 <li><p><code>fence_slope</code> slope parameter to use for <code>method = 'MLEF'</code>. This must have two values in total, for the lower and upper bound item respectively. Use one value to use the same value for both bounds. (default = <code>5</code>)</p></li>
 <li><p><code>fence_difficulty</code> difficulty parameters to use for <code>method = 'MLEF'</code>. This must have two values in total, for the lower and upper bound item respectively. (default = <code>c(-5, 5)</code>)</p></li>
+<li><p><code>hand_scored_attribute</code> (optional) the item attribute name for whether each item is hand-scored or not. The attribute should have <code>TRUE</code> (hand-scored) and <code>FALSE</code> (machine-scored) values. If a hand-scored item is administered to an examinee, the previous interim theta (or the starting theta if this occurs for the first item) is reused without updating the estimate.</p></li>
 </ul></dd>
 <dt>final_theta</dt>
 <dd><p>a named list containing final theta estimation options.</p><ul><li><p><code>method</code> the type of estimation. Accepts <code>EAP, MLE, MLEF, EB, FB</code>. (default = <code>EAP</code>)</p></li>
