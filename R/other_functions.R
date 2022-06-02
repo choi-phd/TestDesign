@@ -48,6 +48,13 @@ getConstants <- function(constraints, config, arg_data, true_theta, max_info) {
 
   o$use_hand_scored <- !is.null(config@interim_theta$hand_scored_attribute)
   if (o$use_hand_scored) {
+    if (length(config@interim_theta$hand_scored_attribute) != 1) {
+      stop(sprintf(
+        "config@interim_theta$hand_scored_attribute: too many values (expecting one item attribute name)"
+      ))
+    }
+  }
+  if (o$use_hand_scored) {
     if (!config@interim_theta$hand_scored_attribute %in% names(constraints@item_attrib)) {
       stop(sprintf(
         "column not found in item attribute table: '%s'",
