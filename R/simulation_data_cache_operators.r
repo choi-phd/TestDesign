@@ -66,6 +66,8 @@ setMethod(
       # allocate response data after filtering
       for (i in 1:item_pool@ni) {
         # replace out-of-bound responses with NA
+        # TODO: may need to exclude these items from being selected
+        # TODO: may need to raise a warning
         invalid_response <- !(response_data[, i] %in% 0:(item_pool@NCAT[i] - 1))
         response_data[invalid_response, i] <- NA
       }
