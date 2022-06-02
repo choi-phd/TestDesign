@@ -107,6 +107,7 @@ createShadowTestConfig(
   \item{\code{do_Fisher}} set \code{TRUE} to use Fisher's method of scoring. Used when \code{method} is \code{MLE}. (default = \code{TRUE})
   \item{\code{fence_slope}} slope parameter to use for \code{method = 'MLEF'}. This must have two values in total, for the lower and upper bound item respectively. Use one value to use the same value for both bounds. (default = \code{5})
   \item{\code{fence_difficulty}} difficulty parameters to use for \code{method = 'MLEF'}. This must have two values in total, for the lower and upper bound item respectively. (default = \code{c(-5, 5)})
+  \item{\code{hand_scored_attribute}} (optional) the item attribute name for whether each item is hand-scored or not. The attribute should have \code{TRUE} (hand-scored) and \code{FALSE} (machine-scored) values. If a hand-scored item is administered to an examinee, the previous interim theta (or the starting theta if this occurs for the first item) is reused without updating the estimate.
 }}
 
 \item{final_theta}{a named list containing final theta estimation options.
