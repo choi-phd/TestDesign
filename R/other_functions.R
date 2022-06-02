@@ -66,6 +66,32 @@ getConstants <- function(constraints, config, arg_data, true_theta, max_info) {
     o$item_is_hand_scored <-
       constraints@item_attrib@data[[config@interim_theta$hand_scored_attribute]]
   }
+  if (o$use_hand_scored) {
+    # normalize
+    if (all(sort(unique(o$item_is_hand_scored)) == c("N", "Y"))) {
+      o$item_is_hand_scored <- o$item_is_hand_scored == "Y"
+    }
+    if (all(sort(unique(o$item_is_hand_scored)) == c("n", "y"))) {
+      o$item_is_hand_scored <- o$item_is_hand_scored == "y"
+    }
+    if (all(sort(unique(o$item_is_hand_scored)) == c("NO", "YES"))) {
+      o$item_is_hand_scored <- o$item_is_hand_scored == "YES"
+    }
+    if (all(sort(unique(o$item_is_hand_scored)) == c("no", "yes"))) {
+      o$item_is_hand_scored <- o$item_is_hand_scored == "yes"
+    }
+    if (all(sort(unique(o$item_is_hand_scored)) == c("0", "1"))) {
+      o$item_is_hand_scored <- o$item_is_hand_scored == "1"
+    }
+    if (!all(sort(unique(o$item_is_hand_scored)) == c(FALSE, TRUE))) {
+      stop(sprintf(
+        "hand_scored_attribute '%s': {%s} could not be normalized to {FALSE, TRUE} (expecting logical values in item attribute '%s')",
+        config@interim_theta$hand_scored_attribute,
+        paste0(sort(unique(o$item_is_hand_scored)), collapse = ", "),
+        config@interim_theta$hand_scored_attribute
+      ))
+    }
+  }
 
   refresh_method <- toupper(config@refresh_policy$method)
   if (refresh_method %in% c("STIMULUS", "SET", "PASSAGE")) {
