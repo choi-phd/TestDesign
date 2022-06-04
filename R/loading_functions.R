@@ -139,9 +139,10 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
       b    <- ipar[   i, 3]
       b_se <- ipar_se[i, 3]
 
+      valid[i] <- TRUE
+
       pool@model[i] <- "item_1PL"
       parms[[i]] <- new("item_1PL", difficulty = b)
-      valid[i] <- TRUE
 
       pool@ipar[i, 1] <- b
       pool@se[  i, 1] <- b_se
@@ -154,16 +155,14 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
       a_se <- ipar_se[i, 3]
       b_se <- ipar_se[i, 4]
 
-      if (a > 0) {
+      if (a <= 0) { valid[i] <- FALSE; next }
+      valid[i] <- TRUE
 
-        pool@model[i] <- "item_2PL"
-        parms[[i]] <- new("item_2PL", slope = a, difficulty = b)
-        valid[i] <- TRUE
+      pool@model[i] <- "item_2PL"
+      parms[[i]] <- new("item_2PL", slope = a, difficulty = b)
 
-        pool@ipar[i, 1:2] <- c(a   , b)
-        pool@se[  i, 1:2] <- c(a_se, b_se)
-
-      }
+      pool@ipar[i, 1:2] <- c(a   , b)
+      pool@se[  i, 1:2] <- c(a_se, b_se)
 
     } else if (model[i] == 3 | model[i] == "3PL") {
 
@@ -175,16 +174,16 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
       b_se <- ipar_se[i, 4]
       c_se <- ipar_se[i, 5]
 
-      if (a > 0 && c >= 0 && c < 1) {
+      if (a <= 0) { valid[i] <- FALSE; next }
+      if (c <  0) { valid[i] <- FALSE; next }
+      if (c >= 1) { valid[i] <- FALSE; next }
+      valid[i] <- TRUE
 
-        pool@model[i] <- "item_3PL"
-        parms[[i]] <- new("item_3PL", slope = a, difficulty = b, guessing = c)
-        valid[i] <- TRUE
+      pool@model[i] <- "item_3PL"
+      parms[[i]] <- new("item_3PL", slope = a, difficulty = b, guessing = c)
 
-        pool@ipar[i, 1:3] <- c(a   , b   , c)
-        pool@se[  i, 1:3] <- c(a_se, b_se, c_se)
-
-      }
+      pool@ipar[i, 1:3] <- c(a   , b   , c)
+      pool@se[  i, 1:3] <- c(a_se, b_se, c_se)
 
     } else if (model[i] == 4 | model[i] == "PC") {
 
@@ -192,9 +191,10 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
       b    <- as.numeric(ipar[   i, 3:nfields[i]])
       b_se <- as.numeric(ipar_se[i, 3:nfields[i]])
 
+      valid[i] <- TRUE
+
       pool@model[i] <- "item_PC"
       parms[[i]] <- new("item_PC", threshold = b, ncat = NCAT[i])
-      valid[i] <- TRUE
 
       pool@ipar[i, 1:(NCAT[i] - 1)] <- b
       pool@se[  i, 1:(NCAT[i] - 1)] <- b_se
@@ -207,16 +207,14 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
       a_se <- as.numeric(ipar_se[i, 3])
       b_se <- as.numeric(ipar_se[i, 4:nfields[i]])
 
-      if (a > 0) {
+      if (a <= 0) { valid[i] <- FALSE; next }
+      valid[i] <- TRUE
 
-        pool@model[i] <- "item_GPC"
-        parms[[i]] <- new("item_GPC", slope = a, threshold = b, ncat = NCAT[i])
-        valid[i] <- TRUE
+      pool@model[i] <- "item_GPC"
+      parms[[i]] <- new("item_GPC", slope = a, threshold = b, ncat = NCAT[i])
 
-        pool@ipar[i, 1:NCAT[i]] <- c(a   , b)
-        pool@se[  i, 1:NCAT[i]] <- c(a_se, b_se)
-
-      }
+      pool@ipar[i, 1:NCAT[i]] <- c(a   , b)
+      pool@se[  i, 1:NCAT[i]] <- c(a_se, b_se)
 
     } else if (model[i] == 6 | model[i] == "GR") {
 
@@ -226,16 +224,15 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
       a_se <- as.numeric(ipar_se[i, 3])
       b_se <- as.numeric(ipar_se[i, 4:nfields[i]])
 
-      if (a > 0 && (!is.unsorted(b))) {
+      if (a <= 0)         { valid[i] <- FALSE; next }
+      if (is.unsorted(b)) { valid[i] <- FALSE; next }
+      valid[i] <- TRUE
 
-        pool@model[i] <- "item_GR"
-        parms[[i]] <- new("item_GR", slope = a, category = b, ncat = NCAT[i])
-        valid[i] <- TRUE
+      pool@model[i] <- "item_GR"
+      parms[[i]] <- new("item_GR", slope = a, category = b, ncat = NCAT[i])
 
-        pool@ipar[i, 1:NCAT[i]] <- c(a   , b)
-        pool@se[  i, 1:NCAT[i]] <- c(a_se, b_se)
-
-      }
+      pool@ipar[i, 1:NCAT[i]] <- c(a   , b)
+      pool@se[  i, 1:NCAT[i]] <- c(a_se, b_se)
 
     } else {
       stop(paste("Item", i, ": unknown IRT model specified - valid models are 1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, or 6: GR"))
