@@ -147,7 +147,11 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
       pool@ipar[i, 1] <- b
       pool@se[  i, 1] <- b_se
 
-    } else if (model[i] == 2 | model[i] == "2PL") {
+      next
+
+    }
+
+    if (model[i] == 2 | model[i] == "2PL") {
 
       NCAT[i] <- 2
       a    <- ipar[   i, 3]
@@ -164,7 +168,11 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
       pool@ipar[i, 1:2] <- c(a   , b)
       pool@se[  i, 1:2] <- c(a_se, b_se)
 
-    } else if (model[i] == 3 | model[i] == "3PL") {
+      next
+
+    }
+
+    if (model[i] == 3 | model[i] == "3PL") {
 
       NCAT[i] <- 2
       a    <- ipar[   i, 3]
@@ -185,7 +193,11 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
       pool@ipar[i, 1:3] <- c(a   , b   , c)
       pool@se[  i, 1:3] <- c(a_se, b_se, c_se)
 
-    } else if (model[i] == 4 | model[i] == "PC") {
+      next
+
+    }
+
+    if (model[i] == 4 | model[i] == "PC") {
 
       NCAT[i] <- nfields[i] - 1
       b    <- as.numeric(ipar[   i, 3:nfields[i]])
@@ -199,7 +211,11 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
       pool@ipar[i, 1:(NCAT[i] - 1)] <- b
       pool@se[  i, 1:(NCAT[i] - 1)] <- b_se
 
-    } else if (model[i] == 5 | model[i] == "GPC") {
+      next
+
+    }
+
+    if (model[i] == 5 | model[i] == "GPC") {
 
       NCAT[i] <- nfields[i] - 2
       a    <- as.numeric(ipar[   i, 3])
@@ -216,7 +232,11 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
       pool@ipar[i, 1:NCAT[i]] <- c(a   , b)
       pool@se[  i, 1:NCAT[i]] <- c(a_se, b_se)
 
-    } else if (model[i] == 6 | model[i] == "GR") {
+      next
+
+    }
+
+    if (model[i] == 6 | model[i] == "GR") {
 
       NCAT[i] <- nfields[i] - 2
       a    <- as.numeric(ipar[   i, 3])
@@ -234,9 +254,12 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
       pool@ipar[i, 1:NCAT[i]] <- c(a   , b)
       pool@se[  i, 1:NCAT[i]] <- c(a_se, b_se)
 
-    } else {
-      stop(paste("Item", i, ": unknown IRT model specified - valid models are 1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, or 6: GR"))
+      next
+
     }
+
+    stop(paste("Item", i, ": unknown IRT model specified - valid models are 1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, or 6: GR"))
+
   }
   if (sum(!valid) > 0) {
     stop(paste("Check the parameters for the following item(s):", paste((1:ni)[!valid], collapse = ", "), "\n"))
