@@ -88,6 +88,7 @@ Collate:
     'shadowtest_functions.R'
     'summary_functions.R'
     'show_functions.R'
+    'sim_resp_functions.r'
     'simulation_data_cache_class.r'
     'simulation_data_cache_operators.r'
     'theta_functions.R'
