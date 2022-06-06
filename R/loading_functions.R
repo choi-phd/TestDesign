@@ -1,4 +1,11 @@
-#' @include item_functions.R
+#' @include calc_prob_functions.r
+#' @include calc_escore_functions.r
+#' @include calc_location_functions.r
+#' @include calc_fisher_functions.r
+#' @include calc_loglikelihood_functions.r
+#' @include calc_jacobian_functions.r
+#' @include calc_hessian_functions.r
+#' @include sim_resp_functions.r
 NULL
 
 #' Load item pool
