@@ -1,5 +1,8 @@
 #include "item_functions.h"
 
+// exp(x) / (1 + exp(x)) is equivalent to
+// 1 / (1 + exp(-x))
+
 //' @rdname p_item
 //' @export
 // [[Rcpp::export]]
@@ -7,8 +10,8 @@ double p_1pl(
   const arma::rowvec& x,
   const double& b
 ) {
-  double xmul = x(0);
-  return 1 / (1 + std::exp(b - xmul));
+  double xmul = x(0) - b;
+  return 1 / (1 + std::exp(-xmul));
 }
 
 //' @rdname p_item
@@ -19,8 +22,8 @@ double p_2pl(
   const double& a,
   const double& b
 ) {
-  double xmul = x(0);
-  return 1 / (1 + std::exp(-a * (xmul - b)));
+  double xmul = a * (x(0) - b);
+  return 1 / (1 + std::exp(-xmul));
 }
 
 //' @rdname p_item
@@ -44,17 +47,16 @@ arma::rowvec p_pc(
   const arma::rowvec& b
 ) {
 
-  double xmul = x(0);
   int nk = b.n_cols + 1;
-  rowvec z(nk);
-  z(0) = xmul;
+  rowvec xpart(nk);
+  xpart(0) = x(0);
 
   for (int k = 1; k < nk; k++) {
-    z(k) = xmul - b(k - 1);
+    xpart(k) = x(0) - b(k - 1);
   }
 
-  rowvec zz = cumsum(z);
-  rowvec num = exp(zz);
+  rowvec xmul = cumsum(xpart);
+  rowvec num = exp(xmul);
   double denom = sum(num);
 
   return num / denom;
@@ -70,17 +72,16 @@ arma::rowvec p_gpc(
   const arma::rowvec& b
 ) {
 
-  double xmul = x(0);
   int nk = b.n_cols + 1;
-  rowvec z(nk);
-  z(0) = a * xmul;
+  rowvec xpart(nk);
+  xpart(0) = a * x(0);
 
   for (int k = 1; k < nk; k++) {
-    z(k) = a * (xmul - b(k - 1));
+    xpart(k) = a * (x(0) - b(k - 1));
   }
 
-  rowvec zz = cumsum(z);
-  rowvec num = exp(zz);
+  rowvec xmul = cumsum(xpart);
+  rowvec num = exp(xmul);
   double denom = sum(num);
 
   return num / denom;
