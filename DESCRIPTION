@@ -69,6 +69,7 @@ Collate:
     'calc_fisher_functions.r'
     'calc_loglikelihood_functions.r'
     'calc_jacobian_functions.r'
+    'calc_hessian_functions.r'
     'constraint_functions.R'
     'cpp_documents.R'
     'datasets.R'
