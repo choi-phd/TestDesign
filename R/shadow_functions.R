@@ -1,28 +1,6 @@
 #' @include static_functions.R
 NULL
 
-#' @rdname simResp-methods
-#' @aliases simResp,item_pool_cluster,numeric-method
-setMethod(
-  f = "simResp",
-  signature = c("item_pool_cluster", "list"),
-  definition = function(object, theta) {
-    if (length(theta) != length(object@np)) {
-      data <- vector(mode = "list", length = object@np)
-      for (i in 1:object@np) {
-        if (all(!is.na(theta[[i]]))) {
-          data[[i]] <- simResp(object@pools[[i]], theta[[i]])
-        } else {
-          stop(paste0("invalid values in theta", "[[", i, "]]"))
-        }
-      }
-      return(data)
-    } else {
-      stop("length of theta not equal to np")
-    }
-  }
-)
-
 #' Run adaptive test assembly
 #'
 #' \code{\link{Shadow}} is a test assembly function to perform adaptive test assembly based on the generalized shadow-test framework.
