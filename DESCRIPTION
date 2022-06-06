@@ -67,6 +67,7 @@ Collate:
     'calc_escore_functions.r'
     'calc_location_functions.r'
     'calc_fisher_functions.r'
+    'calc_loglikelihood_functions.r'
     'constraint_functions.R'
     'cpp_documents.R'
     'datasets.R'
