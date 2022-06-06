@@ -64,6 +64,7 @@ Collate:
     'shadow_functions.R'
     'bayes_functions.R'
     'calc_prob_functions.r'
+    'calc_escore_functions.r'
     'constraint_functions.R'
     'cpp_documents.R'
     'datasets.R'
