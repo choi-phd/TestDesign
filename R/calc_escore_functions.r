@@ -3,7 +3,7 @@ NULL
 
 #' Calculate expected scores
 #'
-#' \code{\link{calcEscore}} is a function to calculate expected scores.
+#' \code{\link{calcEscore}} is a function for calculating expected scores.
 #'
 #' @param object an \code{\link{item}} or an \code{\linkS4class{item_pool}} object.
 #' @param theta theta values to use.
@@ -130,7 +130,7 @@ setMethod(
   f = "calcEscore",
   signature = c("item_1PL", "matrix"),
   definition = function(object, theta) {
-    return(calcProb(object, theta)[, 2])
+    return(array_e_1pl(theta, object@difficulty)[, 1])
   }
 )
 
@@ -140,7 +140,7 @@ setMethod(
   f = "calcEscore",
   signature = c("item_2PL", "matrix"),
   definition = function(object, theta) {
-    return(calcProb(object, theta)[, 2])
+    return(array_e_2pl(theta, object@slope, object@difficulty)[, 1])
   }
 )
 
@@ -150,7 +150,7 @@ setMethod(
   f = "calcEscore",
   signature = c("item_3PL", "matrix"),
   definition = function(object, theta) {
-    return(calcProb(object, theta)[, 2])
+    return(array_e_3pl(theta, object@slope, object@difficulty, object@guessing)[, 1])
   }
 )
 
@@ -160,9 +160,7 @@ setMethod(
   f = "calcEscore",
   signature = c("item_PC", "matrix"),
   definition = function(object, theta) {
-    prob           <- calcProb(object, theta)
-    expected_score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
-    return(expected_score)
+    return(array_e_pc(theta, object@threshold)[, 1])
   }
 )
 
@@ -172,9 +170,7 @@ setMethod(
   f = "calcEscore",
   signature = c("item_GPC", "matrix"),
   definition = function(object, theta) {
-    prob           <- calcProb(object, theta)
-    expected_score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
-    return(expected_score)
+    return(array_e_gpc(theta, object@slope, object@threshold)[, 1])
   }
 )
 
@@ -184,9 +180,7 @@ setMethod(
   f = "calcEscore",
   signature = c("item_GR", "matrix"),
   definition = function(object, theta) {
-    prob           <- calcProb(object, theta)
-    expected_score <- as.vector(prob %*% t(matrix(0:(object@ncat - 1), 1)))
-    return(expected_score)
+    return(array_e_gr(theta, object@slope, object@category)[, 1])
   }
 )
 
