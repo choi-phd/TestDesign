@@ -133,32 +133,60 @@
     <h2>Arguments</h2>
     <dl><dt>object</dt>
 <dd><p>an <code><a href="item_pool-class.html">item_pool</a></code> object.</p></dd>
+
+
 <dt>select</dt>
 <dd><p>(optional) if item indices are supplied, only the specified items are used.</p></dd>
+
+
 <dt>resp</dt>
 <dd><p>item response on all (or selected) items in the <code>object</code> argument. Can be a vector, a matrix, or a data frame. <code>length(resp)</code> or <code>ncol(resp)</code> must be equal to the number of all (or selected) items.</p></dd>
+
+
 <dt>start_theta</dt>
 <dd><p>(optional) initial theta values. If not supplied, EAP estimates using uniform priors are used as initial values. Uniform priors are computed using the <code>theta_range</code> argument below, with increments of <code>.1</code>.</p></dd>
+
+
 <dt>max_iter</dt>
 <dd><p>maximum number of iterations. (default = <code>100</code>)</p></dd>
+
+
 <dt>crit</dt>
 <dd><p>convergence criterion to use. (default = <code>0.001</code>)</p></dd>
+
+
 <dt>truncate</dt>
 <dd><p>set <code>TRUE</code> to impose a bound using <code>theta_range</code> on the estimate. (default = <code>FALSE</code>)</p></dd>
+
+
 <dt>theta_range</dt>
 <dd><p>a range of theta values to bound the estimate. Only effective when <code>truncate</code> is <code>TRUE</code>. (default = <code>c(-4, 4)</code>)</p></dd>
+
+
 <dt>max_change</dt>
 <dd><p>upper bound to impose on the absolute change in theta between iterations. Absolute changes exceeding this value will be capped to <code>max_change</code>. (default = <code>1.0</code>)</p></dd>
+
+
 <dt>use_step_size</dt>
 <dd><p>set <code>TRUE</code> to use <code>step_size</code>. (default = <code>FALSE</code>)</p></dd>
+
+
 <dt>step_size</dt>
 <dd><p>upper bound to impose on the absolute change in initial theta and estimated theta. Absolute changes exceeding this value will be capped to <code>step_size</code>. (default = <code>0.5</code>)</p></dd>
+
+
 <dt>do_Fisher</dt>
 <dd><p>set <code>TRUE</code> to use Fisher scoring instead of Newton-Raphson method. (default = <code>TRUE</code>)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>mle</code> returns a list containing estimated values.</p><ul><li><p><code>th</code> theta value.</p></li>
+    
+
+<p><code>mle</code> returns a list containing estimated values.</p>
+
+
+<ul><li><p><code>th</code> theta value.</p></li>
 <li><p><code>se</code> standard error.</p></li>
 <li><p><code>conv</code> <code>TRUE</code> if estimation converged.</p></li>
 <li><p><code>trunc</code> <code>TRUE</code> if truncation was applied on <code>th</code>.</p></li>
@@ -182,7 +210,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

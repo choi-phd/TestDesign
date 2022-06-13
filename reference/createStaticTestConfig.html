@@ -83,6 +83,8 @@ Default values are used for any unspecified parameters/slots.</p>
 <li><p><code>target_value</code> a numeric vector containing the target values at each theta location. This should have the same length with <code>target_location</code>. Ignored if method is <code>MAXINFO</code>. (default = <code>NULL</code>)</p></li>
 <li><p><code>target_weight</code> a numeric vector containing the weights for each theta location. This should have the same length with <code>target_location</code>. (default = <code>rep(1, length(target_location))</code></p></li>
 </ul></dd>
+
+
 <dt>MIP</dt>
 <dd><p>a named list containing solver options.</p><ul><li><p><code>solver</code> the type of solver. Accepts <code>lpsymphony, Rsymphony, gurobi, lpSolve, Rglpk</code>. (default = <code>LPSOLVE</code>)</p></li>
 <li><p><code>verbosity</code> verbosity level of the solver. (default = <code>-2</code>)</p></li>
@@ -92,10 +94,13 @@ Default values are used for any unspecified parameters/slots.</p>
 <li><p><code>obj_tol</code> search termination criterion. The lower bound to use on the minimax deviation variable. Used when <code>item_selection$method</code> is <code>TIF</code> or <code>TCC</code>. (default = <code>0.05</code>)</p></li>
 <li><p><code>retry</code> number of times to retry running the solver if the solver returns no solution. Some solvers incorrectly return no solution even when a solution exists. This is the number of attempts to verify that the problem is indeed infeasible in such cases. Set to <code>0</code> to not retry. (default = <code>5</code>)</p></li>
 </ul></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>createStaticTestConfig</code> returns a <code>config_Static</code> object. This object is used in <code><a href="Static-methods.html">Static</a></code>.</p>
+    
+
+<p><code>createStaticTestConfig</code> returns a <code>config_Static</code> object. This object is used in <code><a href="Static-methods.html">Static</a></code>.</p>
     </div>
 
     <div id="ref-examples">
@@ -142,7 +147,7 @@ Default values are used for any unspecified parameters/slots.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

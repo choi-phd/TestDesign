@@ -210,8 +210,12 @@
 <li><p><code><a href="output_Shadow_all-class.html">output_Shadow_all</a></code>: plot audit trail, shadow test chart, and exposure rates from the adaptive assembly solution.</p></li>
 <li><p><code><a href="output_Shadow-class.html">output_Shadow</a></code>: plot audit trail and shadow test chart from the adaptive assembly solution.</p></li>
 </ul></dd>
+
+
 <dt>y</dt>
 <dd><p>not used, exists for compatibility with <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></code> in the base R package.</p></dd>
+
+
 <dt>type</dt>
 <dd><p>the type of plot.</p><ul><li><p><code>info</code> plots information from <code><a href="item_pool-class.html">item_pool</a></code>, <code><a href="output_Static-class.html">output_Static</a></code>, and <code><a href="output_Shadow_all-class.html">output_Shadow_all</a></code>.</p></li>
 <li><p><code>score</code> plots expected scores from <code><a href="item_pool-class.html">item_pool</a></code> and <code><a href="output_Static-class.html">output_Static</a></code>.</p></li>
@@ -219,47 +223,86 @@
 <li><p><code>shadow</code> plots shadow test chart from <code><a href="output_Shadow_all-class.html">output_Shadow_all</a></code> and <code><a href="output_Shadow-class.html">output_Shadow</a></code>.</p></li>
 <li><p><code>exposure</code> plots exposure rates from <code><a href="output_Shadow_all-class.html">output_Shadow_all</a></code>.</p></li>
 </ul></dd>
+
+
 <dt>theta</dt>
 <dd><p>the theta grid to use in plotting. (default = <code>seq(-3, 3, .1)</code>)</p></dd>
+
+
 <dt>info_type</dt>
 <dd><p>the type of information. Currently accepts <code>FISHER</code>. (default = <code>FISHER</code>)</p></dd>
+
+
 <dt>plot_sum</dt>
 <dd><p>used in <code><a href="item_pool-class.html">item_pool</a></code> objects.</p><ul><li><p>if <code>TRUE</code> then plot pool-level values.</p></li>
 <li><p>if <code>FALSE</code> then plot item-level values, and repeat for all items in the pool.</p></li>
 <li><p>(default = <code>TRUE</code>)</p></li>
 </ul></dd>
+
+
 <dt>select</dt>
 <dd><p>used in <code><a href="item_pool-class.html">item_pool</a></code> objects. Item indices to subset.</p></dd>
+
+
 <dt>examinee_id</dt>
 <dd><p>used in <code><a href="output_Shadow-class.html">output_Shadow</a></code> and <code><a href="output_Shadow_all-class.html">output_Shadow_all</a></code> with <code>type = 'audit'</code> and <code>type = 'shadow'</code>. The examinee numeric ID to draw the plot.</p></dd>
+
+
 <dt>position</dt>
 <dd><p>used in <code><a href="output_Shadow_all-class.html">output_Shadow_all</a></code> with <code>type = 'info'</code>. The item position to draw the plot.</p></dd>
+
+
 <dt>theta_range</dt>
 <dd><p>used in <code><a href="output_Shadow-class.html">output_Shadow</a></code> and <code><a href="output_Shadow_all-class.html">output_Shadow_all</a></code> with <code>type = 'audit'</code>. The theta range to plot. (default = <code>c(-5, 5)</code>)</p></dd>
+
+
 <dt>ylim</dt>
 <dd><p>(optional) the y-axis plot range. Used in most plot types.</p></dd>
+
+
 <dt>color</dt>
 <dd><p>the color of the curve.</p></dd>
+
+
 <dt>z_ci</dt>
 <dd><p>used in <code><a href="output_Shadow-class.html">output_Shadow</a></code> and <code><a href="output_Shadow_all-class.html">output_Shadow_all</a></code> with <code>type = 'audit'</code>. The range to use for confidence intervals. (default = <code>1.96</code>)</p></dd>
+
+
 <dt>simple</dt>
 <dd><p>used in <code><a href="output_Shadow-class.html">output_Shadow</a></code> and <code><a href="output_Shadow_all-class.html">output_Shadow_all</a></code> with <code>type = 'shadow'</code>. If <code>TRUE</code>, simplify the chart by hiding unused items.</p></dd>
+
+
 <dt>theta_type</dt>
 <dd><p>used in <code><a href="output_Shadow_all-class.html">output_Shadow_all</a></code> with <code>type = 'exposure'</code>. The type of theta to determine exposure segments. Accepts <code>Estimated</code> or <code>True</code>. (default = <code>Estimated</code>)</p></dd>
+
+
 <dt>color_final</dt>
 <dd><p>used in <code><a href="output_Shadow_all-class.html">output_Shadow_all</a></code> with <code>type = 'exposure'</code>. The color of item-wise exposure rates, only counting the items administered in the final theta segment as exposed.</p></dd>
+
+
 <dt>segment</dt>
 <dd><p>used in <code><a href="output_Shadow_all-class.html">output_Shadow_all</a></code> with <code>type = 'exposure'</code>. (optional) The segment index to draw the plot. Leave empty to use all segments.</p></dd>
+
+
 <dt>rmse</dt>
 <dd><p>used in <code><a href="output_Shadow_all-class.html">output_Shadow_all</a></code> with <code>type = 'exposure'</code>. If <code>TRUE</code>, display the RMSE value for each segment. (default = <code>FALSE</code>)</p></dd>
+
+
 <dt>use_segment_label</dt>
 <dd><p>used in <code><a href="output_Shadow_all-class.html">output_Shadow_all</a></code> with <code>type = 'exposure'</code>. If <code>TRUE</code>, display the segment label for each segment. (default = <code>TRUE</code>)</p></dd>
+
+
 <dt>use_par</dt>
 <dd><p>if <code>FALSE</code>, graphical parameters are not overridden inside the function. (default = <code>TRUE</code>)</p></dd>
+
+
 <dt>...</dt>
 <dd><p>arguments to pass onto <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></code>.</p></dd>
+
+
 <dt>theta_segment</dt>
 <dd><p>(deprecated) use <code>theta_type</code> argument instead.</p></dd>
+
 </dl></div>
 
     <div id="ref-examples">
@@ -307,7 +350,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

@@ -103,32 +103,55 @@
     <h2>Arguments</h2>
     <dl><dt>config</dt>
 <dd><p>a <code><a href="createShadowTestConfig.html">config_Shadow</a></code> object. Use <code><a href="createShadowTestConfig.html">createShadowTestConfig</a></code> for this.</p></dd>
+
+
 <dt>constraints</dt>
 <dd><p>a <code><a href="constraints-class.html">constraints</a></code> object representing test specifications. Use <code><a href="loadConstraints.html">loadConstraints</a></code> for this.</p></dd>
+
+
 <dt>true_theta</dt>
 <dd><p>(optional) true theta values to use in simulation. Either <code>true_theta</code> or <code>data</code> must be supplied.</p></dd>
+
+
 <dt>data</dt>
 <dd><p>(optional) a matrix containing item response data to use in simulation. Either <code>true_theta</code> or <code>data</code> must be supplied.</p></dd>
+
+
 <dt>prior</dt>
 <dd><p>(optional) prior density at each <code>config@theta_grid</code>. This overrides <code>prior_par</code>. Can be a vector to use the same prior for all <em>nj</em> participants, or a <em>nj</em>-row matrix to use a different prior for each participant.</p></dd>
+
+
 <dt>prior_par</dt>
 <dd><p>(optional) normal distribution parameters <code>c(mean, sd)</code> to use as prior. Can be a vector to use the same prior for all <em>nj</em> participants, or a <em>nj</em>-row matrix to use a different prior for each participant.</p></dd>
+
+
 <dt>exclude</dt>
 <dd><p>(optional) a list containing item names in <code>$i</code> and set names in <code>$s</code> to exclude from selection for each participant. The length of the list must be equal to the number of participants.</p></dd>
+
+
 <dt>include_items_for_estimation</dt>
 <dd><p>(optional) an examinee-wise list containing:</p><ul><li><p><code>administered_item_pool</code> items to include in theta estimation as <code><a href="item_pool-class.html">item_pool</a></code> object.</p></li>
 <li><p><code>administered_item_resp</code> item responses to include in theta estimation.</p></li>
 </ul></dd>
+
+
 <dt>force_solver</dt>
 <dd><p>if <code>TRUE</code>, do not check whether the solver is one of recommended solvers for complex problems (set-based assembly, partitioning). (default = <code>FALSE</code>)</p></dd>
+
+
 <dt>session</dt>
 <dd><p>(optional) used to communicate with Shiny app <code><a href="TestDesign.html">TestDesign</a></code>.</p></dd>
+
+
 <dt>seed</dt>
 <dd><p>(optional) used to perform data generation internally.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>Shadow</code> returns an <code><a href="output_Shadow_all-class.html">output_Shadow_all</a></code> object containing assembly results.</p>
+    
+
+<p><code>Shadow</code> returns an <code><a href="output_Shadow_all-class.html">output_Shadow_all</a></code> object containing assembly results.</p>
     </div>
     <div id="references">
     <h2>References</h2>
@@ -166,7 +189,7 @@ Springer Science &amp; Business Media.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

@@ -97,22 +97,35 @@ When constructing parallel pools, each pool is constructed so that it contains a
     <h2>Arguments</h2>
     <dl><dt>config</dt>
 <dd><p>a <code><a href="createStaticTestConfig.html">config_Static</a></code> object. Use <code><a href="createStaticTestConfig.html">createStaticTestConfig</a></code> for this.</p></dd>
+
+
 <dt>constraints</dt>
 <dd><p>a <code><a href="constraints-class.html">constraints</a></code> object representing test specifications. Use <code><a href="loadConstraints.html">loadConstraints</a></code> for this.</p></dd>
+
+
 <dt>n_partition</dt>
 <dd><p>the number of partitions to create.</p></dd>
+
+
 <dt>partition_type</dt>
 <dd><p><code>test</code> to create tests, or <code>pool</code> to create pools.</p></dd>
+
+
 <dt>partition_size_range</dt>
 <dd><p>(optional) two integer values for the desired range for the size of a partition. Has no effect when <code>partition_type</code> is <code>test</code>.
 For discrete item pools, the default partition size is (pool size / number of partitions).
 For set-based item pools, the default partition size is (pool size / number of partitions) +/- smallest set size.</p></dd>
+
+
 <dt>force_solver</dt>
 <dd><p>if <code>TRUE</code>, do not check whether the solver is one of recommended solvers for complex problems (set-based assembly, partitioning). (default = <code>FALSE</code>)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>partition</code> returns an <code><a href="output_Split-class.html">output_Split</a></code> object containing item/set indices of created tests/pools.</p>
+    
+
+<p><code>partition</code> returns an <code><a href="output_Split-class.html">output_Split</a></code> object containing item/set indices of created tests/pools.</p>
     </div>
 
     <div id="ref-examples">
@@ -131,7 +144,7 @@ For set-based item pools, the default partition size is (pool size / number of p
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

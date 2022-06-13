@@ -99,20 +99,33 @@
     <h2>Arguments</h2>
     <dl><dt>object</dt>
 <dd><p>an <code><a href="item_pool-class.html">item_pool</a></code> object.</p></dd>
+
+
 <dt>select</dt>
 <dd><p>(optional) if item indices are supplied, only the specified items are used.</p></dd>
+
+
 <dt>resp</dt>
 <dd><p>item response on all (or selected) items in the <code>object</code> argument. Can be a vector, a matrix, or a data frame. <code>length(resp)</code> or <code>ncol(resp)</code> must be equal to the number of all (or selected) items.</p></dd>
+
+
 <dt>theta_grid</dt>
 <dd><p>the theta grid to use as quadrature points. (default = <code>seq(-4, 4, .1)</code>)</p></dd>
+
+
 <dt>prior</dt>
 <dd><p>a prior distribution, a numeric vector for a common prior or a matrix for individualized priors. (default = <code>rep(1 / 81, 81)</code>)</p></dd>
+
+
 <dt>reset_prior</dt>
 <dd><p>used for <code><a href="test_cluster-class.html">test_cluster</a></code> objects. If <code>TRUE</code>, reset the prior distribution for each <code><a href="test-class.html">test</a></code> object.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>eap</code> returns a list containing estimated values.</p><ul><li><p><code>th</code> theta value.</p></li>
+    
+
+<p><code>eap</code> returns a list containing estimated values.</p><ul><li><p><code>th</code> theta value.</p></li>
 <li><p><code>se</code> standard error.</p></li>
 </ul></div>
 
@@ -135,7 +148,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

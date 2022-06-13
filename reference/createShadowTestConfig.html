@@ -95,9 +95,13 @@ Default values are used for any unspecified parameters/slots.</p>
 <li><p><code>fixed_theta</code> (optional) fixed theta values to use throughout all item positions.</p></li>
 <li><p><code>target_value</code> (optional) the target value to use for <code>method = 'GFI'</code>.</p></li>
 </ul></dd>
+
+
 <dt>content_balancing</dt>
 <dd><p>a named list containing content balancing options.</p><ul><li><p><code>method</code> the type of balancing method. Accepts <code>NONE, STA</code>. (default = <code>STA</code>)</p></li>
 </ul></dd>
+
+
 <dt>MIP</dt>
 <dd><p>a named list containing solver options.</p><ul><li><p><code>solver</code> the type of solver. Accepts <code>lpsymphony, Rsymphony, gurobi, lpSolve, Rglpk</code>. (default = <code>LPSOLVE</code>)</p></li>
 <li><p><code>verbosity</code> verbosity level of the solver. (default = <code>-2</code>)</p></li>
@@ -107,22 +111,30 @@ Default values are used for any unspecified parameters/slots.</p>
 <li><p><code>obj_tol</code> search termination criterion. The lower bound to use on the minimax deviation variable. Used when <code>item_selection$method</code> is <code>GFI</code>, and ignored otherwise. (default = <code>0.05</code>)</p></li>
 <li><p><code>retry</code> number of times to retry running the solver if the solver returns no solution. Some solvers incorrectly return no solution even when a solution exists. This is the number of attempts to verify that the problem is indeed infeasible in such cases. Set to <code>0</code> to not retry. (default = <code>5</code>)</p></li>
 </ul></dd>
+
+
 <dt>MCMC</dt>
 <dd><p>a named list containing Markov-chain Monte Carlo configurations for obtaining posterior samples.</p><ul><li><p><code>burn_in</code> the number of chains from the start to discard. (default = <code>100</code>)</p></li>
 <li><p><code>post_burn_in</code> the number of chains to use after discarding the first <code>burn_in</code> chains. (default = <code>500</code>)</p></li>
 <li><p><code>thin</code> thinning interval to apply. <code>1</code> represents no thinning. (default = <code>1</code>)</p></li>
 <li><p><code>jump_factor</code> the jump factor to use. <code>1</code> represents no jumping. (default = <code>1</code>)</p></li>
 </ul></dd>
+
+
 <dt>exclude_policy</dt>
 <dd><p>a named list containing the exclude policy for use with the <code>exclude</code> argument in <code><a href="Shadow-methods.html">Shadow</a></code>.</p><ul><li><p><code>method</code> the type of policy. Accepts <code>HARD, SOFT</code>. (default = <code>HARD</code>)</p></li>
 <li><p><code>M</code> the Big M penalty to use on item information. Used in the <code>SOFT</code> method.</p></li>
 </ul></dd>
+
+
 <dt>refresh_policy</dt>
 <dd><p>a named list containing the refresh policy for when to obtain a new shadow test.</p><ul><li><p><code>method</code> the type of policy. Accepts <code>ALWAYS, POSITION, INTERVAL, THRESHOLD, INTERVAL-THRESHOLD, STIMULUS, SET, PASSAGE</code>. (default = <code>ALWAYS</code>)</p></li>
 <li><p><code>interval</code> used in methods <code>INTERVAL, INTERVAL-THRESHOLD</code>. Set to 1 to refresh at each position, 2 to refresh at every two positions, and so on. (default = <code>1</code>)</p></li>
 <li><p><code>threshold</code> used in methods <code>THRESHOLD, INTERVAL-THRESHOLD</code>. The absolute change in between interim theta estimates to trigger the refresh. (default = <code>0.1</code>)</p></li>
 <li><p><code>position</code> used in methods <code>POSITION</code>. Item positions to trigger the refresh. (default = <code>1</code>)</p></li>
 </ul></dd>
+
+
 <dt>exposure_control</dt>
 <dd><p>a named list containing exposure control settings.</p><ul><li><p><code>method</code> the type of exposure control method. Accepts <code>NONE, ELIGIBILITY, BIGM, BIGM-BAYESIAN</code>. (default = <code>ELIGIBILITY</code>)</p></li>
 <li><p><code>M</code> used in methods <code>BIGM, BIGM-BAYESIAN</code>. the Big M penalty to use on item information.</p></li>
@@ -135,6 +147,8 @@ Default values are used for any unspecified parameters/slots.</p>
 <li><p><code>fading_factor</code> the fading factor to apply. (default = <code>.999</code>)</p></li>
 <li><p><code>diagnostic_stats</code> set to <code>TRUE</code> to generate segment-wise diagnostic statistics. (default = <code>FALSE</code>)</p></li>
 </ul></dd>
+
+
 <dt>stopping_criterion</dt>
 <dd><p>a named list containing stopping criterion.</p><ul><li><p><code>method</code> the type of stopping criterion. Accepts <code>FIXED</code>. (default = <code>FIXED</code>)</p></li>
 <li><p><code>test_length</code> test length.</p></li>
@@ -142,6 +156,8 @@ Default values are used for any unspecified parameters/slots.</p>
 <li><p><code>max_ni</code> the minimum number of items to administer.</p></li>
 <li><p><code>se_threshold</code> standard error threshold. Item administration is stopped when theta estimate standard error becomes lower than this value.</p></li>
 </ul></dd>
+
+
 <dt>interim_theta</dt>
 <dd><p>a named list containing interim theta estimation options.</p><ul><li><p><code>method</code> the type of estimation. Accepts <code>EAP, MLE, MLEF, EB, FB</code>. (default = <code>EAP</code>)</p></li>
 <li><p><code>shrinkage_correction</code> set <code>TRUE</code> to apply shrinkage correction. Used when <code>method</code> is <code>EAP</code>. (default = <code>FALSE</code>)</p></li>
@@ -159,6 +175,8 @@ Default values are used for any unspecified parameters/slots.</p>
 <li><p><code>fence_difficulty</code> difficulty parameters to use for <code>method = 'MLEF'</code>. This must have two values in total, for the lower and upper bound item respectively. (default = <code>c(-5, 5)</code>)</p></li>
 <li><p><code>hand_scored_attribute</code> (optional) the item attribute name for whether each item is hand-scored or not. The attribute should have <code>TRUE</code> (hand-scored) and <code>FALSE</code> (machine-scored) values. If a hand-scored item is administered to an examinee, the previous interim theta (or the starting theta if this occurs for the first item) is reused without updating the estimate.</p></li>
 </ul></dd>
+
+
 <dt>final_theta</dt>
 <dd><p>a named list containing final theta estimation options.</p><ul><li><p><code>method</code> the type of estimation. Accepts <code>EAP, MLE, MLEF, EB, FB</code>. (default = <code>EAP</code>)</p></li>
 <li><p><code>shrinkage_correction</code> set <code>TRUE</code> to apply shrinkage correction. Used when <code>method</code> is <code>EAP</code>. (default = <code>FALSE</code>)</p></li>
@@ -175,8 +193,11 @@ Default values are used for any unspecified parameters/slots.</p>
 <li><p><code>fence_slope</code> slope parameter to use for <code>method = 'MLEF'</code>. This must have two values in total, for the lower and upper bound item respectively. Use one value to use the same value for both bounds. (default = <code>5</code>)</p></li>
 <li><p><code>fence_difficulty</code> difficulty parameters to use for <code>method = 'MLEF'</code>. This must have two values in total, for the lower and upper bound item respectively. (default = <code>c(-5, 5)</code>)</p></li>
 </ul></dd>
+
+
 <dt>theta_grid</dt>
 <dd><p>the theta grid to use as quadrature points.</p></dd>
+
 </dl></div>
 
     <div id="ref-examples">
@@ -202,7 +223,7 @@ Default values are used for any unspecified parameters/slots.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

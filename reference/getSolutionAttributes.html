@@ -76,17 +76,24 @@
     <h2>Arguments</h2>
     <dl><dt>constraints</dt>
 <dd><p>a <code><a href="constraints-class.html">constraints</a></code> object.</p></dd>
+
+
 <dt>item_idx</dt>
 <dd><p>item indices from a solution.</p></dd>
+
+
 <dt>all_values</dt>
 <dd><p>if <code>TRUE</code>, return all values as-is without taking the mean when there are multiple values. If <code>FALSE</code>, return the mean when there are multiple values.
 This has an effect when there is a constraint on items per stimulus, where there are multiple values of number of items per stimulus.
 In this case, if <code>TRUE</code>, the number of items for every stimuli are returned as-is. If <code>FALSE</code>, the average number of items across stimuli is returned.
 (default = <code>FALSE</code>)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <ul><li><p>If <code>all_values == FALSE</code>, <code>getSolutionAttributes</code> returns a <code><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></code> containing constraints data and their associated attributes.</p></li>
+    
+
+<ul><li><p>If <code>all_values == FALSE</code>, <code>getSolutionAttributes</code> returns a <code><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></code> containing constraints data and their associated attributes.</p></li>
 <li><p>If <code>all_values == TRUE</code>, <code>getSolutionAttributes</code> returns a <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></code> containing attributes associated to each constraint.</p></li>
 </ul></div>
 
@@ -117,7 +124,7 @@ In this case, if <code>TRUE</code>, the number of items for every stimuli are re
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>
