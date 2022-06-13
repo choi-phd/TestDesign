@@ -52,6 +52,56 @@ NULL
 #' @name p_item
 NULL
 
+#' (C++) Calculate expected scores
+#'
+#' \code{e_*()} and \code{array_e_*()} are C++ functions for calculating expected scores.
+#'
+#' \code{e_*()} functions accept a single theta value, and \code{array_p_*()} functions accept multiple theta values.
+#'
+#' Currently supports unidimensional models.
+#'
+#' \itemize{
+#'   \item{\code{e_1pl()}, \code{array_e_1pl()}}: 1PL models
+#'   \item{\code{e_2pl()}, \code{array_e_2pl()}}: 2PL models
+#'   \item{\code{e_3pl()}, \code{array_e_3pl()}}: 3PL models
+#'   \item{\code{e_pc()}, \code{array_e_pc()}}: PC (partial credit) models
+#'   \item{\code{e_gpc()}, \code{array_e_gpc()}}: GPC (generalized partial credit) models
+#'   \item{\code{e_gr()}, \code{array_e_gr()}}: GR (graded response) models
+#' }
+#'
+#' @param x the theta value. This must be a column vector in matrix form for \code{array_e_*()} functions.
+#' @param a,b,c the item parameters.
+#'
+#' @examples
+#' x <- 0.5
+#'
+#' e_1pl(x, 1)
+#' e_2pl(x, 1, 2)
+#' e_3pl(x, 1, 2, 0.25)
+#' e_pc(x, c(0, 1))
+#' e_gpc(x, 2, c(0, 1))
+#' e_gr(x, 2, c(0, 2))
+#'
+#' x <- matrix(seq(-3, 3, 1)) # column vector in matrix form
+#'
+#' array_e_1pl(x, 1)
+#' array_e_2pl(x, 1, 2)
+#' array_e_3pl(x, 1, 2, 0.25)
+#' array_e_pc(x, c(0, 1))
+#' array_e_gpc(x, 2, c(0, 1))
+#' array_e_gr(x, 2, c(0, 2))
+#'
+#' @template 1pl-ref
+#' @template 2pl-ref
+#' @template 3pl-ref
+#' @template pc-ref
+#' @template gpc-ref
+#' @template gr-ref
+#'
+#' @name e_item
+#' @order 0
+NULL
+
 #' Calculate Fisher information (single item)
 #'
 #' \code{info_*} and \code{array_info_*} are functions to calculate Fisher information.
