@@ -37,6 +37,42 @@ e_gr <- function(x, a, b) {
     .Call('_TestDesign_e_gr', PACKAGE = 'TestDesign', x, a, b)
 }
 
+#' @rdname e_item
+#' @export
+array_e_1pl <- function(x, b) {
+    .Call('_TestDesign_array_e_1pl', PACKAGE = 'TestDesign', x, b)
+}
+
+#' @rdname e_item
+#' @export
+array_e_2pl <- function(x, a, b) {
+    .Call('_TestDesign_array_e_2pl', PACKAGE = 'TestDesign', x, a, b)
+}
+
+#' @rdname e_item
+#' @export
+array_e_3pl <- function(x, a, b, c) {
+    .Call('_TestDesign_array_e_3pl', PACKAGE = 'TestDesign', x, a, b, c)
+}
+
+#' @rdname e_item
+#' @export
+array_e_pc <- function(x, b) {
+    .Call('_TestDesign_array_e_pc', PACKAGE = 'TestDesign', x, b)
+}
+
+#' @rdname e_item
+#' @export
+array_e_gpc <- function(x, a, b) {
+    .Call('_TestDesign_array_e_gpc', PACKAGE = 'TestDesign', x, a, b)
+}
+
+#' @rdname e_item
+#' @export
+array_e_gr <- function(x, a, b) {
+    .Call('_TestDesign_array_e_gr', PACKAGE = 'TestDesign', x, a, b)
+}
+
 #' @rdname calc_info
 #' @export
 calc_info <- function(x, item_parm, ncat, model) {

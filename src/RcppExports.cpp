@@ -88,6 +88,83 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// array_e_1pl
+arma::colvec array_e_1pl(const arma::mat& x, const double& b);
+RcppExport SEXP _TestDesign_array_e_1pl(SEXP xSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_e_1pl(x, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_e_2pl
+arma::colvec array_e_2pl(const arma::mat& x, const double& a, const double& b);
+RcppExport SEXP _TestDesign_array_e_2pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_e_2pl(x, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_e_3pl
+arma::colvec array_e_3pl(const arma::mat& x, const double& a, const double& b, const double& c);
+RcppExport SEXP _TestDesign_array_e_3pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP, SEXP cSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
+    Rcpp::traits::input_parameter< const double& >::type c(cSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_e_3pl(x, a, b, c));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_e_pc
+arma::colvec array_e_pc(const arma::mat& x, const arma::rowvec& b);
+RcppExport SEXP _TestDesign_array_e_pc(SEXP xSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_e_pc(x, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_e_gpc
+arma::colvec array_e_gpc(const arma::mat& x, const double& a, const arma::rowvec& b);
+RcppExport SEXP _TestDesign_array_e_gpc(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_e_gpc(x, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_e_gr
+arma::colvec array_e_gr(const arma::mat& x, const double& a, const arma::rowvec& b);
+RcppExport SEXP _TestDesign_array_e_gr(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_e_gr(x, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
 // calc_info
 arma::colvec calc_info(const arma::rowvec& x, const arma::mat& item_parm, const arma::icolvec& ncat, const arma::icolvec& model);
 RcppExport SEXP _TestDesign_calc_info(SEXP xSEXP, SEXP item_parmSEXP, SEXP ncatSEXP, SEXP modelSEXP) {
@@ -714,6 +791,12 @@ static const R_CallMethodDef CallEntries[] = {
     {"_TestDesign_e_pc", (DL_FUNC) &_TestDesign_e_pc, 2},
     {"_TestDesign_e_gpc", (DL_FUNC) &_TestDesign_e_gpc, 3},
     {"_TestDesign_e_gr", (DL_FUNC) &_TestDesign_e_gr, 3},
+    {"_TestDesign_array_e_1pl", (DL_FUNC) &_TestDesign_array_e_1pl, 2},
+    {"_TestDesign_array_e_2pl", (DL_FUNC) &_TestDesign_array_e_2pl, 3},
+    {"_TestDesign_array_e_3pl", (DL_FUNC) &_TestDesign_array_e_3pl, 4},
+    {"_TestDesign_array_e_pc", (DL_FUNC) &_TestDesign_array_e_pc, 2},
+    {"_TestDesign_array_e_gpc", (DL_FUNC) &_TestDesign_array_e_gpc, 3},
+    {"_TestDesign_array_e_gr", (DL_FUNC) &_TestDesign_array_e_gr, 3},
     {"_TestDesign_calc_info", (DL_FUNC) &_TestDesign_calc_info, 4},
     {"_TestDesign_calc_info_matrix", (DL_FUNC) &_TestDesign_calc_info_matrix, 4},
     {"_TestDesign_calc_info_EB", (DL_FUNC) &_TestDesign_calc_info_EB, 4},
