@@ -64,7 +64,7 @@ calcEscore(object, theta)
 }
 }
 \description{
-\code{\link{calcEscore}} is a function to calculate expected scores.
+\code{\link{calcEscore}} is a function for calculating expected scores.
 }
 \examples{
 item_1     <- new("item_1PL", difficulty = 0.5)
