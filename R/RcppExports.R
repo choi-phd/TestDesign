@@ -263,6 +263,42 @@ array_info_gr <- function(x, a, b) {
     .Call('_TestDesign_array_info_gr', PACKAGE = 'TestDesign', x, a, b)
 }
 
+#' @rdname j_item
+#' @export
+j_1pl <- function(x, b, u) {
+    .Call('_TestDesign_j_1pl', PACKAGE = 'TestDesign', x, b, u)
+}
+
+#' @rdname j_item
+#' @export
+j_2pl <- function(x, a, b, u) {
+    .Call('_TestDesign_j_2pl', PACKAGE = 'TestDesign', x, a, b, u)
+}
+
+#' @rdname j_item
+#' @export
+j_3pl <- function(x, a, b, c, u) {
+    .Call('_TestDesign_j_3pl', PACKAGE = 'TestDesign', x, a, b, c, u)
+}
+
+#' @rdname j_item
+#' @export
+j_pc <- function(x, b, u) {
+    .Call('_TestDesign_j_pc', PACKAGE = 'TestDesign', x, b, u)
+}
+
+#' @rdname j_item
+#' @export
+j_gpc <- function(x, a, b, u) {
+    .Call('_TestDesign_j_gpc', PACKAGE = 'TestDesign', x, a, b, u)
+}
+
+#' @rdname j_item
+#' @export
+j_gr <- function(x, a, b, u) {
+    .Call('_TestDesign_j_gr', PACKAGE = 'TestDesign', x, a, b, u)
+}
+
 #' @rdname find_segment
 #' @export
 find_segment <- function(x, segment) {
