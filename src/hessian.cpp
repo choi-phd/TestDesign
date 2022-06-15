@@ -103,3 +103,128 @@ double h_gr(
   );
 
 }
+
+//' @rdname h_item
+//' @export
+// [[Rcpp::export]]
+arma::colvec array_h_1pl(
+  const arma::mat& x,
+  const double& b,
+  const double& u
+) {
+
+  int nx = x.n_rows;
+  arma::colvec h_array(nx);
+
+  for (int j = 0; j < nx; j++) {
+    h_array(j) = h_1pl(x.row(j), b, u);
+  }
+
+  return h_array;
+
+}
+
+//' @rdname h_item
+//' @export
+// [[Rcpp::export]]
+arma::colvec array_h_2pl(
+  const arma::mat& x,
+  const double& a,
+  const double& b,
+  const double& u
+) {
+
+  int nx = x.n_rows;
+  arma::colvec h_array(nx);
+
+  for (int j = 0; j < nx; j++) {
+    h_array(j) = h_2pl(x.row(j), a, b, u);
+  }
+
+  return h_array;
+
+}
+
+//' @rdname h_item
+//' @export
+// [[Rcpp::export]]
+arma::colvec array_h_3pl(
+  const arma::mat& x,
+  const double& a,
+  const double& b,
+  const double& c,
+  const double& u
+) {
+
+  int nx = x.n_rows;
+  arma::colvec h_array(nx);
+
+  for (int j = 0; j < nx; j++) {
+    h_array(j) = h_3pl(x.row(j), a, b, c, u);
+  }
+
+  return h_array;
+
+}
+
+//' @rdname h_item
+//' @export
+// [[Rcpp::export]]
+arma::colvec array_h_pc(
+  const arma::mat& x,
+  const arma::rowvec& b,
+  const double& u
+) {
+
+  int nx = x.n_rows;
+  arma::colvec h_array(nx);
+
+  for (int j = 0; j < nx; j++) {
+    h_array(j) = h_pc(x.row(j), b, u);
+  }
+
+  return h_array;
+
+}
+
+//' @rdname h_item
+//' @export
+// [[Rcpp::export]]
+arma::colvec array_h_gpc(
+  const arma::mat& x,
+  const double& a,
+  const arma::rowvec& b,
+  const double& u
+) {
+
+  int nx = x.n_rows;
+  arma::colvec h_array(nx);
+
+  for (int j = 0; j < nx; j++) {
+    h_array(j) = h_gpc(x.row(j), a, b, u);
+  }
+
+  return h_array;
+
+}
+
+//' @rdname h_item
+//' @export
+// [[Rcpp::export]]
+arma::colvec array_h_gr(
+  const arma::mat& x,
+  const double& a,
+  const arma::rowvec& b,
+  const double& u
+) {
+
+  int nx = x.n_rows;
+  arma::colvec h_array(nx);
+
+  for (int j = 0; j < nx; j++) {
+    h_array(j) = h_gr(x.row(j), a, b, u);
+  }
+
+  return h_array;
+
+}

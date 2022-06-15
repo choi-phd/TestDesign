@@ -109,6 +109,42 @@ h_gr <- function(x, a, b, u) {
     .Call('_TestDesign_h_gr', PACKAGE = 'TestDesign', x, a, b, u)
 }
 
+#' @rdname h_item
+#' @export
+array_h_1pl <- function(x, b, u) {
+    .Call('_TestDesign_array_h_1pl', PACKAGE = 'TestDesign', x, b, u)
+}
+
+#' @rdname h_item
+#' @export
+array_h_2pl <- function(x, a, b, u) {
+    .Call('_TestDesign_array_h_2pl', PACKAGE = 'TestDesign', x, a, b, u)
+}
+
+#' @rdname h_item
+#' @export
+array_h_3pl <- function(x, a, b, c, u) {
+    .Call('_TestDesign_array_h_3pl', PACKAGE = 'TestDesign', x, a, b, c, u)
+}
+
+#' @rdname h_item
+#' @export
+array_h_pc <- function(x, b, u) {
+    .Call('_TestDesign_array_h_pc', PACKAGE = 'TestDesign', x, b, u)
+}
+
+#' @rdname h_item
+#' @export
+array_h_gpc <- function(x, a, b, u) {
+    .Call('_TestDesign_array_h_gpc', PACKAGE = 'TestDesign', x, a, b, u)
+}
+
+#' @rdname h_item
+#' @export
+array_h_gr <- function(x, a, b, u) {
+    .Call('_TestDesign_array_h_gr', PACKAGE = 'TestDesign', x, a, b, u)
+}
+
 #' @rdname calc_info
 #' @export
 calc_info <- function(x, item_parm, ncat, model) {
