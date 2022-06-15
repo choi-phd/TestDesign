@@ -87,3 +87,128 @@ double j_gr(
   return (a * o / p(u));
 
 }
+
+//' @rdname j_item
+//' @export
+// [[Rcpp::export]]
+arma::colvec array_j_1pl(
+  const arma::mat& x,
+  const double& b,
+  const double& u
+) {
+
+  int nx = x.n_rows;
+  arma::colvec j_array(nx);
+
+  for (int j = 0; j < nx; j++) {
+    j_array(j) = j_1pl(x.row(j), b, u);
+  }
+
+  return j_array;
+
+}
+
+//' @rdname j_item
+//' @export
+// [[Rcpp::export]]
+arma::colvec array_j_2pl(
+  const arma::mat& x,
+  const double& a,
+  const double& b,
+  const double& u
+) {
+
+  int nx = x.n_rows;
+  arma::colvec j_array(nx);
+
+  for (int j = 0; j < nx; j++) {
+    j_array(j) = j_2pl(x.row(j), a, b, u);
+  }
+
+  return j_array;
+
+}
+
+//' @rdname j_item
+//' @export
+// [[Rcpp::export]]
+arma::colvec array_j_3pl(
+  const arma::mat& x,
+  const double& a,
+  const double& b,
+  const double& c,
+  const double& u
+) {
+
+  int nx = x.n_rows;
+  arma::colvec j_array(nx);
+
+  for (int j = 0; j < nx; j++) {
+    j_array(j) = j_3pl(x.row(j), a, b, c, u);
+  }
+
+  return j_array;
+
+}
+
+//' @rdname j_item
+//' @export
+// [[Rcpp::export]]
+arma::colvec array_j_pc(
+  const arma::mat& x,
+  const arma::rowvec& b,
+  const double& u
+) {
+
+  int nx = x.n_rows;
+  arma::colvec j_array(nx);
+
+  for (int j = 0; j < nx; j++) {
+    j_array(j) = j_pc(x.row(j), b, u);
+  }
+
+  return j_array;
+
+}
+
+//' @rdname j_item
+//' @export
+// [[Rcpp::export]]
+arma::colvec array_j_gpc(
+  const arma::mat& x,
+  const double& a,
+  const arma::rowvec& b,
+  const double& u
+) {
+
+  int nx = x.n_rows;
+  arma::colvec j_array(nx);
+
+  for (int j = 0; j < nx; j++) {
+    j_array(j) = j_gpc(x.row(j), a, b, u);
+  }
+
+  return j_array;
+
+}
+
+//' @rdname j_item
+//' @export
+// [[Rcpp::export]]
+arma::colvec array_j_gr(
+  const arma::mat& x,
+  const double& a,
+  const arma::rowvec& b,
+  const double& u
+) {
+
+  int nx = x.n_rows;
+  arma::colvec j_array(nx);
+
+  for (int j = 0; j < nx; j++) {
+    j_array(j) = j_gr(x.row(j), a, b, u);
+  }
+
+  return j_array;
+
+}
