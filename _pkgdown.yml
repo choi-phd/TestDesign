@@ -92,6 +92,7 @@ reference:
       - theta_EAP_matrix
       - p_1pl
       - info_1pl
+      - e_item
       - mle
       - mlef
       - eap
