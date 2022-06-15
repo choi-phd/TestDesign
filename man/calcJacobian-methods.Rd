@@ -15,6 +15,18 @@
 \alias{calcJacobian,item_GPC,numeric-method}
 \alias{calcJacobian,item_GR,numeric,numeric-method}
 \alias{calcJacobian,item_GR,numeric-method}
+\alias{calcJacobian,item_1PL,matrix,numeric-method}
+\alias{calcJacobian,item_1PL,matrix-method}
+\alias{calcJacobian,item_2PL,matrix,numeric-method}
+\alias{calcJacobian,item_2PL,matrix-method}
+\alias{calcJacobian,item_3PL,matrix,numeric-method}
+\alias{calcJacobian,item_3PL,matrix-method}
+\alias{calcJacobian,item_PC,matrix,numeric-method}
+\alias{calcJacobian,item_PC,matrix-method}
+\alias{calcJacobian,item_GPC,matrix,numeric-method}
+\alias{calcJacobian,item_GPC,matrix-method}
+\alias{calcJacobian,item_GR,matrix,numeric-method}
+\alias{calcJacobian,item_GR,matrix-method}
 \alias{calcJacobian,item_pool,numeric,numeric-method}
 \alias{calcJacobian,item_pool,numeric-method}
 \alias{calcJacobian,item_pool_cluster,numeric,list-method}
@@ -35,6 +47,18 @@ calcJacobian(object, theta, resp)
 
 \S4method{calcJacobian}{item_GR,numeric,numeric}(object, theta, resp)
 
+\S4method{calcJacobian}{item_1PL,matrix,numeric}(object, theta, resp)
+
+\S4method{calcJacobian}{item_2PL,matrix,numeric}(object, theta, resp)
+
+\S4method{calcJacobian}{item_3PL,matrix,numeric}(object, theta, resp)
+
+\S4method{calcJacobian}{item_PC,matrix,numeric}(object, theta, resp)
+
+\S4method{calcJacobian}{item_GPC,matrix,numeric}(object, theta, resp)
+
+\S4method{calcJacobian}{item_GR,matrix,numeric}(object, theta, resp)
+
 \S4method{calcJacobian}{item_pool,numeric,numeric}(object, theta, resp)
 
 \S4method{calcJacobian}{item_pool_cluster,numeric,list}(object, theta, resp)
@@ -44,7 +68,7 @@ calcJacobian(object, theta, resp)
 
 \item{theta}{theta values to use.}
 
-\item{resp}{the response data to use.}
+\item{resp}{the response value to use for each item.}
 }
 \value{
 \describe{
@@ -59,7 +83,7 @@ calcJacobian(object, theta, resp)
 }
 }
 \description{
-\code{\link{calcJacobian}} is a function to calculate the first derivative of the log-likelihood function.
+\code{\link{calcJacobian}} is a function for calculating the first derivative of the log-likelihood function.
 }
 \examples{
 item_1    <- new("item_1PL", difficulty = 0.5)
