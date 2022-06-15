@@ -15,6 +15,18 @@
 \alias{calcHessian,item_GPC,numeric-method}
 \alias{calcHessian,item_GR,numeric,numeric-method}
 \alias{calcHessian,item_GR,numeric-method}
+\alias{calcHessian,item_1PL,matrix,numeric-method}
+\alias{calcHessian,item_1PL,matrix-method}
+\alias{calcHessian,item_2PL,matrix,numeric-method}
+\alias{calcHessian,item_2PL,matrix-method}
+\alias{calcHessian,item_3PL,matrix,numeric-method}
+\alias{calcHessian,item_3PL,matrix-method}
+\alias{calcHessian,item_PC,matrix,numeric-method}
+\alias{calcHessian,item_PC,matrix-method}
+\alias{calcHessian,item_GPC,matrix,numeric-method}
+\alias{calcHessian,item_GPC,matrix-method}
+\alias{calcHessian,item_GR,matrix,numeric-method}
+\alias{calcHessian,item_GR,matrix-method}
 \alias{calcHessian,item_pool,numeric,numeric-method}
 \alias{calcHessian,item_pool,numeric-method}
 \alias{calcHessian,item_pool_cluster,numeric,list-method}
@@ -34,6 +46,18 @@ calcHessian(object, theta, resp)
 \S4method{calcHessian}{item_GPC,numeric,numeric}(object, theta, resp)
 
 \S4method{calcHessian}{item_GR,numeric,numeric}(object, theta, resp)
+
+\S4method{calcHessian}{item_1PL,matrix,numeric}(object, theta, resp)
+
+\S4method{calcHessian}{item_2PL,matrix,numeric}(object, theta, resp)
+
+\S4method{calcHessian}{item_3PL,matrix,numeric}(object, theta, resp)
+
+\S4method{calcHessian}{item_PC,matrix,numeric}(object, theta, resp)
+
+\S4method{calcHessian}{item_GPC,matrix,numeric}(object, theta, resp)
+
+\S4method{calcHessian}{item_GR,matrix,numeric}(object, theta, resp)
 
 \S4method{calcHessian}{item_pool,numeric,numeric}(object, theta, resp)
 
