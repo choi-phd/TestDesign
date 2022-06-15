@@ -65,10 +65,8 @@ setMethod(
   f = "calcHessian",
   signature = c("item_1PL", "numeric", "numeric"),
   definition = function(object, theta, resp) {
-    if (!(resp %in% c(0, 1))) {
-      return(NA)
-    }
-    return(-calcFisher(object, theta))
+    theta <- matrix(theta, , 1)
+    return(calcHessian(object, theta, resp))
   }
 )
 
@@ -78,10 +76,8 @@ setMethod(
   f = "calcHessian",
   signature = c("item_2PL", "numeric", "numeric"),
   definition = function(object, theta, resp) {
-    if (!(resp %in% c(0, 1))) {
-      return(NA)
-    }
-    return(-calcFisher(object, theta))
+    theta <- matrix(theta, , 1)
+    return(calcHessian(object, theta, resp))
   }
 )
 
@@ -91,11 +87,8 @@ setMethod(
   f = "calcHessian",
   signature = c("item_3PL", "numeric", "numeric"),
   definition = function(object, theta, resp) {
-    if (!(resp %in% c(0, 1))) {
-      return(NA)
-    }
-    prob <- calcProb(object, theta)
-    return(object@slope^2 * prob[, 1] * (prob[, 2] - object@guessing) * (object@guessing * resp - prob[, 2]^2) / (prob[, 2]^2 * (1 - object@guessing)^2))
+    theta <- matrix(theta, , 1)
+    return(calcHessian(object, theta, resp))
   }
 )
 
@@ -105,10 +98,8 @@ setMethod(
   f = "calcHessian",
   signature = c("item_PC", "numeric", "numeric"),
   definition = function(object, theta, resp) {
-    if (!(resp %in% 0:(object@ncat - 1))) {
-      return(NA)
-    }
-    return(-calcFisher(object, theta))
+    theta <- matrix(theta, , 1)
+    return(calcHessian(object, theta, resp))
   }
 )
 
@@ -118,10 +109,8 @@ setMethod(
   f = "calcHessian",
   signature = c("item_GPC", "numeric", "numeric"),
   definition = function(object, theta, resp) {
-    if (!(resp %in% 0:(object@ncat - 1))) {
-      return(NA)
-    }
-    return(-calcFisher(object, theta))
+    theta <- matrix(theta, , 1)
+    return(calcHessian(object, theta, resp))
   }
 )
 
@@ -131,20 +120,86 @@ setMethod(
   f = "calcHessian",
   signature = c("item_GR", "numeric", "numeric"),
   definition = function(object, theta, resp) {
+    theta <- matrix(theta, , 1)
+    return(calcHessian(object, theta, resp))
+  }
+)
+
+#' @rdname calcHessian-methods
+#' @aliases calcHessian,item_1PL,matrix-method
+setMethod(
+  f = "calcHessian",
+  signature = c("item_1PL", "matrix", "numeric"),
+  definition = function(object, theta, resp) {
+    if (!(resp %in% c(0, 1))) {
+      return(NA)
+    }
+    return(array_h_1pl(theta, object@difficulty, resp)[, 1])
+  }
+)
+
+#' @rdname calcHessian-methods
+#' @aliases calcHessian,item_2PL,matrix-method
+setMethod(
+  f = "calcHessian",
+  signature = c("item_2PL", "matrix", "numeric"),
+  definition = function(object, theta, resp) {
+    if (!(resp %in% c(0, 1))) {
+      return(NA)
+    }
+    return(array_h_2pl(theta, object@slope, object@difficulty, resp)[, 1])
+  }
+)
+
+#' @rdname calcHessian-methods
+#' @aliases calcHessian,item_3PL,matrix-method
+setMethod(
+  f = "calcHessian",
+  signature = c("item_3PL", "matrix", "numeric"),
+  definition = function(object, theta, resp) {
+    if (!(resp %in% c(0, 1))) {
+      return(NA)
+    }
+    return(array_h_3pl(theta, object@slope, object@difficulty, object@guessing, resp)[, 1])
+  }
+)
+
+#' @rdname calcHessian-methods
+#' @aliases calcHessian,item_PC,matrix-method
+setMethod(
+  f = "calcHessian",
+  signature = c("item_PC", "matrix", "numeric"),
+  definition = function(object, theta, resp) {
     if (!(resp %in% 0:(object@ncat - 1))) {
       return(NA)
     }
-    resp <- resp + 1
-    prob <- calcProb(object, theta)
-    ps <- matrix(NA, length(theta), object@ncat + 1)
-    ps[, 1] <- 1
-    ps[, object@ncat + 1] <- 0
-    for (k in 2:(object@ncat)) {
-      ps[, k] <- ps[, k - 1] - prob[, k - 1]
+    return(array_h_pc(theta, object@threshold, resp)[, 1])
+  }
+)
+
+#' @rdname calcHessian-methods
+#' @aliases calcHessian,item_GPC,matrix-method
+setMethod(
+  f = "calcHessian",
+  signature = c("item_GPC", "matrix", "numeric"),
+  definition = function(object, theta, resp) {
+    if (!(resp %in% 0:(object@ncat - 1))) {
+      return(NA)
     }
-    mat_Hessian <- object@slope^2 * ((ps[, resp] * (1 - ps[, resp]) * ((1 - ps[, resp]) - ps[, resp]) - ps[, resp + 1] * (1 - ps[, resp + 1]) * ((1 - ps[, resp + 1]) - ps[, resp + 1])) / prob[, resp]
-      - (ps[, resp] * (1 - ps[, resp]) - ps[, resp + 1] * (1 - ps[, resp + 1]))^2 / prob[, resp]^2)
-    return(mat_Hessian)
+    return(array_h_gpc(theta, object@slope, object@threshold, resp)[, 1])
+  }
+)
+
+#' @rdname calcHessian-methods
+#' @aliases calcHessian,item_GR,matrix-method
+setMethod(
+  f = "calcHessian",
+  signature = c("item_GR", "matrix", "numeric"),
+  definition = function(object, theta, resp) {
+    if (!(resp %in% 0:(object@ncat - 1))) {
+      return(NA)
+    }
+    return(array_h_gr(theta, object@slope, object@category, resp)[, 1])
   }
 )
 
