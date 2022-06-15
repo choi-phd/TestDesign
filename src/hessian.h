@@ -36,4 +36,39 @@ double h_gr(
   const arma::rowvec&,
   const double&);
 
+arma::colvec array_h_1pl(
+  const arma::mat&,
+  const double&,
+  const double&);
+
+arma::colvec array_h_2pl(
+  const arma::mat&,
+  const double&,
+  const double&,
+  const double&);
+
+arma::colvec array_h_3pl(
+  const arma::mat&,
+  const double&,
+  const double&,
+  const double&,
+  const double&);
+
+arma::colvec array_h_pc(
+  const arma::mat&,
+  const arma::rowvec&,
+  const double&);
+
+arma::colvec array_h_gpc(
+  const arma::mat&,
+  const double&,
+  const arma::rowvec&,
+  const double&);
+
+arma::colvec array_h_gr(
+  const arma::mat&,
+  const double&,
+  const arma::rowvec&,
+  const double&);
+
 #endif
