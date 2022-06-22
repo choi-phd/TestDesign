@@ -107,17 +107,19 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
   nfields    <- rowSums(!is.na(ipar))
   valid      <- logical(ni)
   pool@ipar  <- matrix(NA, nrow = ni, ncol = max(nfields) - 2)
+  pool@se    <- matrix(NA, nrow = ni, ncol = max(nfields) - 2)
 
-  load_se <- FALSE
-
-  if (!is.null(ipar_se)) {
+  # parse parameter SEs
+  while (!is.null(ipar_se)) {
     if (inherits(ipar_se, "data.frame")) {
       ipar_se <- ipar_se
-      load_se <- TRUE
-    } else if (inherits(ipar_se, "character")) {
-      ipar_se <- read.csv(ipar_se, header = TRUE, as.is = TRUE)
-      load_se <- TRUE
+      break
     }
+    if (inherits(ipar_se, "character")) {
+      ipar_se <- read.csv(ipar_se, header = TRUE, as.is = TRUE)
+      break
+    }
+    break
   }
 
   if (load_se) {
