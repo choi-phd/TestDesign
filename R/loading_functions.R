@@ -258,7 +258,12 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
 
     }
 
-    stop(paste("Item", i, ": unknown IRT model specified - valid models are 1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, or 6: GR"))
+    stop(
+      sprintf(
+        "Item %s: unexpected IRT model '%s' (valid models are 1PL, 2PL, 3PL, PC, GPC, GR)",
+        i, model[i]
+      )
+    )
 
   }
   if (sum(!valid) > 0) {
