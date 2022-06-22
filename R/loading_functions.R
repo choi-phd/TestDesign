@@ -122,8 +122,13 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
     break
   }
 
-  if (load_se) {
-    se <- matrix(NA, nrow = ni, ncol = max(nfields) - 2)
+  if (is.null(ipar_se)) {
+    ipar_se <- ipar
+    for (j in 1:dim(ipar)[2]) {
+      if (inherits(ipar_se[, j], "numeric")) {
+        ipar_se[, j] <- 0
+      }
+    }
   }
 
   for (i in 1:ni) {
