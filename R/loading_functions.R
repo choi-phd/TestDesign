@@ -250,11 +250,6 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
   pool@NCAT <- NCAT
   pool@parms <- parms
 
-  if (load_se) {
-    pool@se <- se
-  } else {
-    pool@se <- pool@ipar * 0
-  }
   if (max(rowSums(!is.na(pool@ipar))) != max(nfields) - 2) {
     pool@ipar <- pool@ipar[, 1:max(rowSums(!is.na(pool@ipar)))]
   }
