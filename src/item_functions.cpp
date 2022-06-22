@@ -48,15 +48,15 @@ arma::rowvec p_pc(
 ) {
 
   int nk = b.n_cols + 1;
-  rowvec xpart(nk);
+  arma::rowvec xpart(nk);
   xpart(0) = x(0);
 
   for (int k = 1; k < nk; k++) {
     xpart(k) = x(0) - b(k - 1);
   }
 
-  rowvec xmul = cumsum(xpart);
-  rowvec num = exp(xmul);
+  arma::rowvec xmul = cumsum(xpart);
+  arma::rowvec num = exp(xmul);
   double denom = sum(num);
 
   return num / denom;
@@ -73,15 +73,15 @@ arma::rowvec p_gpc(
 ) {
 
   int nk = b.n_cols + 1;
-  rowvec xpart(nk);
+  arma::rowvec xpart(nk);
   xpart(0) = a * x(0);
 
   for (int k = 1; k < nk; k++) {
     xpart(k) = a * (x(0) - b(k - 1));
   }
 
-  rowvec xmul = cumsum(xpart);
-  rowvec num = exp(xmul);
+  arma::rowvec xmul = cumsum(xpart);
+  arma::rowvec num = exp(xmul);
   double denom = sum(num);
 
   return num / denom;
@@ -98,7 +98,7 @@ arma::rowvec p_gr(
 ) {
 
   int nk = b.n_cols + 1;
-  rowvec p(nk), p_star(nk + 1);
+  arma::rowvec p(nk), p_star(nk + 1);
   p_star(0) = 1;
   p_star(nk) = 0;
 
@@ -122,7 +122,7 @@ arma::colvec array_p_1pl(
 ) {
 
   int nx = x.n_rows;
-  colvec p_array(nx);
+  arma::colvec p_array(nx);
 
   for (int j = 0; j < nx; j++) {
     p_array(j) = p_1pl(x.row(j), b);
@@ -142,7 +142,7 @@ arma::colvec array_p_2pl(
 ) {
 
   int nx = x.n_rows;
-  colvec p_array(nx);
+  arma::colvec p_array(nx);
 
   for (int j = 0; j < nx; j++) {
     p_array(j) = p_2pl(x.row(j), a, b);
@@ -163,7 +163,7 @@ arma::colvec array_p_3pl(
 ) {
 
   int nx = x.n_rows;
-  colvec p_array(nx);
+  arma::colvec p_array(nx);
 
   for (int j = 0; j < nx; j++) {
     p_array(j) = p_3pl(x.row(j), a, b, c);
@@ -183,7 +183,7 @@ arma::mat array_p_pc(
 
   int nx = x.n_rows;
   int nk = b.n_cols + 1;
-  mat p_array(nx, nk);
+  arma::mat p_array(nx, nk);
 
   for (int j = 0; j < nx; j++) {
     p_array.row(j) = p_pc(x.row(j), b);
@@ -204,7 +204,7 @@ arma::mat array_p_gpc(
 
   int nx = x.n_rows;
   int nk = b.n_cols + 1;
-  mat p_array(nx, nk);
+  arma::mat p_array(nx, nk);
 
   for (int j = 0; j < nx; j++) {
     p_array.row(j) = p_gpc(x.row(j), a, b);
@@ -225,7 +225,7 @@ arma::mat array_p_gr(
 
   int nx = x.n_rows;
   int nk = b.n_cols + 1;
-  mat p_array(nx, nk);
+  arma::mat p_array(nx, nk);
 
   for (int j = 0; j < nx; j++) {
     p_array.row(j) = p_gr(x.row(j), a, b);
@@ -279,7 +279,7 @@ double info_pc(
   const arma::rowvec& b
 ) {
 
-  rowvec p = p_pc(x, b);
+  arma::rowvec p = p_pc(x, b);
   int nk = b.n_cols + 1;
   double const_1 = 0, const_2 = 0;
 
@@ -301,7 +301,7 @@ double info_gpc(
   const arma::rowvec& b
 ) {
 
-  rowvec p = p_gpc(x, a, b);
+  arma::rowvec p = p_gpc(x, a, b);
   int nk = b.n_cols + 1;
   double const_1 = 0, const_2 = 0;
 
@@ -324,7 +324,7 @@ double info_gr(
 ) {
 
   int nk = b.n_cols + 1;
-  rowvec p_star(nk + 1);
+  arma::rowvec p_star(nk + 1);
   p_star(0) = 1;
   p_star(nk) = 0;
 
@@ -351,7 +351,7 @@ arma::colvec array_info_1pl(
 ) {
 
   int nx = x.n_rows;
-  colvec info_array(nx);
+  arma::colvec info_array(nx);
 
   for (int j = 0; j < nx; j++) {
     info_array(j) = info_1pl(x.row(j), b);
@@ -371,7 +371,7 @@ arma::colvec array_info_2pl(
 ) {
 
   int nx = x.n_rows;
-  colvec info_array(nx);
+  arma::colvec info_array(nx);
 
   for (int j = 0; j < nx; j++) {
     info_array(j) = info_2pl(x.row(j), a, b);
@@ -392,7 +392,7 @@ arma::colvec array_info_3pl(
 ) {
 
   int nx = x.n_rows;
-  colvec info_array(nx);
+  arma::colvec info_array(nx);
 
   for (int j = 0; j < nx; j++) {
     info_array(j) = info_3pl(x.row(j), a, b, c);
@@ -411,7 +411,7 @@ arma::colvec array_info_pc(
 ) {
 
   int nx = x.n_rows;
-  colvec info_array(nx);
+  arma::colvec info_array(nx);
 
   for (int j = 0; j < nx; j++) {
     info_array(j) = info_pc(x.row(j), b);
@@ -431,7 +431,7 @@ arma::colvec array_info_gpc(
 ) {
 
   int nx = x.n_rows;
-  colvec info_array(nx);
+  arma::colvec info_array(nx);
 
   for (int j = 0; j < nx; j++) {
     info_array(j) = info_gpc(x.row(j), a, b);
@@ -451,7 +451,7 @@ arma::colvec array_info_gr(
 ) {
 
   int nx = x.n_rows;
-  colvec info_array(nx);
+  arma::colvec info_array(nx);
 
   for (int j = 0; j < nx; j++) {
     info_array(j) = info_gr(x.row(j), a, b);
