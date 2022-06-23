@@ -1,4 +1,5 @@
-#include "item_functions.h"
+#include "item_probability.h"
+#include "expected_score.h"
 
 //' @rdname e_item
 //' @export

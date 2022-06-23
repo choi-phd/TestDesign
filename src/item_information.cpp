@@ -1,3 +1,4 @@
+#include "item_probability.h"
 #include "item_information.h"
 
 //' @rdname info_item

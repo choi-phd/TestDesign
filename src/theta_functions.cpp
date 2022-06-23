@@ -1,4 +1,3 @@
-#include "item_functions.h"
 #include "posterior_functions.h"
 #include "theta_functions.h"
 

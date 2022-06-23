@@ -1,4 +1,5 @@
-#include "item_functions.h"
+#include "item_information.h"
+#include "item_probability.h"
 #include "info_array_functions.h"
 
 //' @rdname calc_info
