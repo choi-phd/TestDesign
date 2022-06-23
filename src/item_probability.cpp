@@ -1,4 +1,4 @@
-#include "item_functions.h"
+#include "item_probability.h"
 
 // exp(x) / (1 + exp(x)) is equivalent to
 // 1 / (1 + exp(-x))
