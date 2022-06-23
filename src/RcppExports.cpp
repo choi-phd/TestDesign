@@ -402,160 +402,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// p_1pl
-double p_1pl(const arma::rowvec& x, const double& b);
-RcppExport SEXP _TestDesign_p_1pl(SEXP xSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::rowvec& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_1pl(x, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// p_2pl
-double p_2pl(const arma::rowvec& x, const double& a, const double& b);
-RcppExport SEXP _TestDesign_p_2pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::rowvec& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
-    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_2pl(x, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// p_3pl
-double p_3pl(const arma::rowvec& x, const double& a, const double& b, const double& c);
-RcppExport SEXP _TestDesign_p_3pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP, SEXP cSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::rowvec& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
-    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
-    Rcpp::traits::input_parameter< const double& >::type c(cSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_3pl(x, a, b, c));
-    return rcpp_result_gen;
-END_RCPP
-}
-// p_pc
-arma::rowvec p_pc(const arma::rowvec& x, const arma::rowvec& b);
-RcppExport SEXP _TestDesign_p_pc(SEXP xSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::rowvec& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const arma::rowvec& >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_pc(x, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// p_gpc
-arma::rowvec p_gpc(const arma::rowvec& x, const double& a, const arma::rowvec& b);
-RcppExport SEXP _TestDesign_p_gpc(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::rowvec& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
-    Rcpp::traits::input_parameter< const arma::rowvec& >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_gpc(x, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// p_gr
-arma::rowvec p_gr(const arma::rowvec& x, const double& a, const arma::rowvec& b);
-RcppExport SEXP _TestDesign_p_gr(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::rowvec& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
-    Rcpp::traits::input_parameter< const arma::rowvec& >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_gr(x, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// array_p_1pl
-arma::colvec array_p_1pl(const arma::mat& x, const double& b);
-RcppExport SEXP _TestDesign_array_p_1pl(SEXP xSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(array_p_1pl(x, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// array_p_2pl
-arma::colvec array_p_2pl(const arma::mat& x, const double& a, const double& b);
-RcppExport SEXP _TestDesign_array_p_2pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
-    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(array_p_2pl(x, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// array_p_3pl
-arma::colvec array_p_3pl(const arma::mat& x, const double& a, const double& b, const double& c);
-RcppExport SEXP _TestDesign_array_p_3pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP, SEXP cSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
-    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
-    Rcpp::traits::input_parameter< const double& >::type c(cSEXP);
-    rcpp_result_gen = Rcpp::wrap(array_p_3pl(x, a, b, c));
-    return rcpp_result_gen;
-END_RCPP
-}
-// array_p_pc
-arma::mat array_p_pc(const arma::mat& x, const arma::rowvec& b);
-RcppExport SEXP _TestDesign_array_p_pc(SEXP xSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const arma::rowvec& >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(array_p_pc(x, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// array_p_gpc
-arma::mat array_p_gpc(const arma::mat& x, const double& a, const arma::rowvec& b);
-RcppExport SEXP _TestDesign_array_p_gpc(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
-    Rcpp::traits::input_parameter< const arma::rowvec& >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(array_p_gpc(x, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// array_p_gr
-arma::mat array_p_gr(const arma::mat& x, const double& a, const arma::rowvec& b);
-RcppExport SEXP _TestDesign_array_p_gr(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
-    Rcpp::traits::input_parameter< const arma::rowvec& >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(array_p_gr(x, a, b));
-    return rcpp_result_gen;
-END_RCPP
-}
 // info_1pl
 double info_1pl(const arma::rowvec& x, const double& b);
 RcppExport SEXP _TestDesign_info_1pl(SEXP xSEXP, SEXP bSEXP) {
@@ -707,6 +553,160 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
     Rcpp::traits::input_parameter< const arma::rowvec& >::type b(bSEXP);
     rcpp_result_gen = Rcpp::wrap(array_info_gr(x, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// p_1pl
+double p_1pl(const arma::rowvec& x, const double& b);
+RcppExport SEXP _TestDesign_p_1pl(SEXP xSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(p_1pl(x, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// p_2pl
+double p_2pl(const arma::rowvec& x, const double& a, const double& b);
+RcppExport SEXP _TestDesign_p_2pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(p_2pl(x, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// p_3pl
+double p_3pl(const arma::rowvec& x, const double& a, const double& b, const double& c);
+RcppExport SEXP _TestDesign_p_3pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP, SEXP cSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
+    Rcpp::traits::input_parameter< const double& >::type c(cSEXP);
+    rcpp_result_gen = Rcpp::wrap(p_3pl(x, a, b, c));
+    return rcpp_result_gen;
+END_RCPP
+}
+// p_pc
+arma::rowvec p_pc(const arma::rowvec& x, const arma::rowvec& b);
+RcppExport SEXP _TestDesign_p_pc(SEXP xSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(p_pc(x, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// p_gpc
+arma::rowvec p_gpc(const arma::rowvec& x, const double& a, const arma::rowvec& b);
+RcppExport SEXP _TestDesign_p_gpc(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(p_gpc(x, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// p_gr
+arma::rowvec p_gr(const arma::rowvec& x, const double& a, const arma::rowvec& b);
+RcppExport SEXP _TestDesign_p_gr(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(p_gr(x, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_p_1pl
+arma::colvec array_p_1pl(const arma::mat& x, const double& b);
+RcppExport SEXP _TestDesign_array_p_1pl(SEXP xSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_p_1pl(x, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_p_2pl
+arma::colvec array_p_2pl(const arma::mat& x, const double& a, const double& b);
+RcppExport SEXP _TestDesign_array_p_2pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_p_2pl(x, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_p_3pl
+arma::colvec array_p_3pl(const arma::mat& x, const double& a, const double& b, const double& c);
+RcppExport SEXP _TestDesign_array_p_3pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP, SEXP cSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
+    Rcpp::traits::input_parameter< const double& >::type c(cSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_p_3pl(x, a, b, c));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_p_pc
+arma::mat array_p_pc(const arma::mat& x, const arma::rowvec& b);
+RcppExport SEXP _TestDesign_array_p_pc(SEXP xSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_p_pc(x, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_p_gpc
+arma::mat array_p_gpc(const arma::mat& x, const double& a, const arma::rowvec& b);
+RcppExport SEXP _TestDesign_array_p_gpc(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_p_gpc(x, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_p_gr
+arma::mat array_p_gr(const arma::mat& x, const double& a, const arma::rowvec& b);
+RcppExport SEXP _TestDesign_array_p_gr(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_p_gr(x, a, b));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1146,18 +1146,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_TestDesign_calc_info_EB", (DL_FUNC) &_TestDesign_calc_info_EB, 4},
     {"_TestDesign_calc_info_FB", (DL_FUNC) &_TestDesign_calc_info_FB, 5},
     {"_TestDesign_calc_MI_FB", (DL_FUNC) &_TestDesign_calc_MI_FB, 4},
-    {"_TestDesign_p_1pl", (DL_FUNC) &_TestDesign_p_1pl, 2},
-    {"_TestDesign_p_2pl", (DL_FUNC) &_TestDesign_p_2pl, 3},
-    {"_TestDesign_p_3pl", (DL_FUNC) &_TestDesign_p_3pl, 4},
-    {"_TestDesign_p_pc", (DL_FUNC) &_TestDesign_p_pc, 2},
-    {"_TestDesign_p_gpc", (DL_FUNC) &_TestDesign_p_gpc, 3},
-    {"_TestDesign_p_gr", (DL_FUNC) &_TestDesign_p_gr, 3},
-    {"_TestDesign_array_p_1pl", (DL_FUNC) &_TestDesign_array_p_1pl, 2},
-    {"_TestDesign_array_p_2pl", (DL_FUNC) &_TestDesign_array_p_2pl, 3},
-    {"_TestDesign_array_p_3pl", (DL_FUNC) &_TestDesign_array_p_3pl, 4},
-    {"_TestDesign_array_p_pc", (DL_FUNC) &_TestDesign_array_p_pc, 2},
-    {"_TestDesign_array_p_gpc", (DL_FUNC) &_TestDesign_array_p_gpc, 3},
-    {"_TestDesign_array_p_gr", (DL_FUNC) &_TestDesign_array_p_gr, 3},
     {"_TestDesign_info_1pl", (DL_FUNC) &_TestDesign_info_1pl, 2},
     {"_TestDesign_info_2pl", (DL_FUNC) &_TestDesign_info_2pl, 3},
     {"_TestDesign_info_3pl", (DL_FUNC) &_TestDesign_info_3pl, 4},
@@ -1170,6 +1158,18 @@ static const R_CallMethodDef CallEntries[] = {
     {"_TestDesign_array_info_pc", (DL_FUNC) &_TestDesign_array_info_pc, 2},
     {"_TestDesign_array_info_gpc", (DL_FUNC) &_TestDesign_array_info_gpc, 3},
     {"_TestDesign_array_info_gr", (DL_FUNC) &_TestDesign_array_info_gr, 3},
+    {"_TestDesign_p_1pl", (DL_FUNC) &_TestDesign_p_1pl, 2},
+    {"_TestDesign_p_2pl", (DL_FUNC) &_TestDesign_p_2pl, 3},
+    {"_TestDesign_p_3pl", (DL_FUNC) &_TestDesign_p_3pl, 4},
+    {"_TestDesign_p_pc", (DL_FUNC) &_TestDesign_p_pc, 2},
+    {"_TestDesign_p_gpc", (DL_FUNC) &_TestDesign_p_gpc, 3},
+    {"_TestDesign_p_gr", (DL_FUNC) &_TestDesign_p_gr, 3},
+    {"_TestDesign_array_p_1pl", (DL_FUNC) &_TestDesign_array_p_1pl, 2},
+    {"_TestDesign_array_p_2pl", (DL_FUNC) &_TestDesign_array_p_2pl, 3},
+    {"_TestDesign_array_p_3pl", (DL_FUNC) &_TestDesign_array_p_3pl, 4},
+    {"_TestDesign_array_p_pc", (DL_FUNC) &_TestDesign_array_p_pc, 2},
+    {"_TestDesign_array_p_gpc", (DL_FUNC) &_TestDesign_array_p_gpc, 3},
+    {"_TestDesign_array_p_gr", (DL_FUNC) &_TestDesign_array_p_gr, 3},
     {"_TestDesign_j_1pl", (DL_FUNC) &_TestDesign_j_1pl, 3},
     {"_TestDesign_j_2pl", (DL_FUNC) &_TestDesign_j_2pl, 4},
     {"_TestDesign_j_3pl", (DL_FUNC) &_TestDesign_j_3pl, 5},
