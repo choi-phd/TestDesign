@@ -1,5 +1,5 @@
-#ifndef _ITEM_FUNCTIONS_H
-#define _ITEM_FUNCTIONS_H
+#ifndef _ITEM_PROBABILITY_H
+#define _ITEM_PROBABILITY_H
 
 // [[Rcpp::depends(RcppArmadillo)]]
 
