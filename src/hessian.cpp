@@ -1,5 +1,6 @@
-#include "item_functions.h"
-#include "expected_score.h"
+#include "item_information.h"
+#include "item_probability.h"
+#include "hessian.h"
 
 //' @rdname h_item
 //' @export

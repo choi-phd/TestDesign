@@ -1,4 +1,4 @@
-#include "item_functions.h"
+#include "item_probability.h"
 #include "posterior_functions.h"
 
 //' @rdname calc_likelihood
