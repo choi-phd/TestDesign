@@ -1,13 +1,13 @@
 #ifndef _POSTERIOR_FUNCTIONS_H
 #define _POSTERIOR_FUNCTIONS_H
 
-double calc_likelihood (
 // [[Rcpp::depends(RcppArmadillo)]]
 
 #include <RcppArmadillo.h>
 using namespace Rcpp;
 using namespace arma;
 
+double calc_likelihood(
   const arma::rowvec&,
   const arma::mat&,
   const arma::irowvec&,
