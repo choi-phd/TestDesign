@@ -1,6 +1,12 @@
 #ifndef _EXPECTED_SCORE_H
 #define _EXPECTED_SCORE_H
 
+// [[Rcpp::depends(RcppArmadillo)]]
+
+#include <RcppArmadillo.h>
+using namespace Rcpp;
+using namespace arma;
+
 double e_1pl(
   const arma::rowvec&,
   const double&);

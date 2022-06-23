@@ -1,6 +1,12 @@
 #ifndef _ITEM_INFORMATION_H
 #define _ITEM_INFORMATION_H
 
+// [[Rcpp::depends(RcppArmadillo)]]
+
+#include <RcppArmadillo.h>
+using namespace Rcpp;
+using namespace arma;
+
 double info_1pl(
   const arma::rowvec&,
   const double&);
