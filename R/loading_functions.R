@@ -137,8 +137,8 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
     if (model[i] == 1 | model[i] == "1PL") {
 
       NCAT[i] <- 2
-      b    <- ipar[   i, 3]
-      b_se <- ipar_se[i, 3]
+      b    <- ipar[   i, 2 + 1]
+      b_se <- ipar_se[i, 2 + 1]
 
       valid[i] <- TRUE
 
@@ -155,10 +155,10 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
     if (model[i] == 2 | model[i] == "2PL") {
 
       NCAT[i] <- 2
-      a    <- ipar[   i, 3]
-      b    <- ipar[   i, 4]
-      a_se <- ipar_se[i, 3]
-      b_se <- ipar_se[i, 4]
+      a    <- ipar[   i, 2 + 1]
+      b    <- ipar[   i, 2 + 2]
+      a_se <- ipar_se[i, 2 + 1]
+      b_se <- ipar_se[i, 2 + 2]
 
       if (a <= 0) { valid[i] <- FALSE; next }
       valid[i] <- TRUE
@@ -176,12 +176,12 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
     if (model[i] == 3 | model[i] == "3PL") {
 
       NCAT[i] <- 2
-      a    <- ipar[   i, 3]
-      b    <- ipar[   i, 4]
-      c    <- ipar[   i, 5]
-      a_se <- ipar_se[i, 3]
-      b_se <- ipar_se[i, 4]
-      c_se <- ipar_se[i, 5]
+      a    <- ipar[   i, 2 + 1]
+      b    <- ipar[   i, 2 + 2]
+      c    <- ipar[   i, 2 + 3]
+      a_se <- ipar_se[i, 2 + 1]
+      b_se <- ipar_se[i, 2 + 2]
+      c_se <- ipar_se[i, 2 + 3]
 
       if (a <= 0) { valid[i] <- FALSE; next }
       if (c <  0) { valid[i] <- FALSE; next }
