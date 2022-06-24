@@ -105,9 +105,10 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
   NCAT       <- numeric(ni)
   parms      <- vector(mode = "list", length = ni)
   n_values   <- rowSums(!is.na(ipar))
+  n_pars     <- n_values - 2
   valid      <- logical(ni)
-  pool@ipar  <- matrix(NA, nrow = ni, ncol = max(n_values) - 2)
-  pool@se    <- matrix(NA, nrow = ni, ncol = max(n_values) - 2)
+  pool@ipar  <- matrix(NA, nrow = ni, ncol = max(n_pars))
+  pool@se    <- matrix(NA, nrow = ni, ncol = max(n_pars))
 
   # parse parameter SEs
   while (!is.null(ipar_se)) {
@@ -199,9 +200,9 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
 
     if (model[i] == 4 | model[i] == "PC") {
 
-      NCAT[i] <- n_values[i] - 1
-      b    <- as.numeric(ipar[   i, 3:n_values[i]])
-      b_se <- as.numeric(ipar_se[i, 3:n_values[i]])
+      NCAT[i] <- n_pars[i] + 1
+      b    <- as.numeric(ipar[   i, 2 + 1:n_pars[i]])
+      b_se <- as.numeric(ipar_se[i, 2 + 1:n_pars[i]])
 
       valid[i] <- TRUE
 
@@ -217,11 +218,11 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
 
     if (model[i] == 5 | model[i] == "GPC") {
 
-      NCAT[i] <- n_values[i] - 2
-      a    <- as.numeric(ipar[   i, 3])
-      b    <- as.numeric(ipar[   i, 4:n_values[i]])
-      a_se <- as.numeric(ipar_se[i, 3])
-      b_se <- as.numeric(ipar_se[i, 4:n_values[i]])
+      NCAT[i] <- (n_pars[i] - 1) + 1
+      a    <- as.numeric(ipar[   i, 2 + 1])
+      b    <- as.numeric(ipar[   i, 2 + 2:n_pars[i]])
+      a_se <- as.numeric(ipar_se[i, 2 + 1])
+      b_se <- as.numeric(ipar_se[i, 2 + 2:n_pars[i]])
 
       if (a <= 0) { valid[i] <- FALSE; next }
       valid[i] <- TRUE
@@ -238,11 +239,11 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
 
     if (model[i] == 6 | model[i] == "GR") {
 
-      NCAT[i] <- n_values[i] - 2
-      a    <- as.numeric(ipar[   i, 3])
-      b    <- as.numeric(ipar[   i, 4:n_values[i]])
-      a_se <- as.numeric(ipar_se[i, 3])
-      b_se <- as.numeric(ipar_se[i, 4:n_values[i]])
+      NCAT[i] <- (n_pars[i] - 1) + 1
+      a    <- as.numeric(ipar[   i, 2 + 1])
+      b    <- as.numeric(ipar[   i, 2 + 2:n_pars[i]])
+      a_se <- as.numeric(ipar_se[i, 2 + 1])
+      b_se <- as.numeric(ipar_se[i, 2 + 2:n_pars[i]])
 
       if (a <= 0)         { valid[i] <- FALSE; next }
       if (is.unsorted(b)) { valid[i] <- FALSE; next }
@@ -280,7 +281,7 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
   }
 
   tmp <- pool@raw
-  tmp[, 3:max(n_values)] <- pool@se
+  tmp[, 2 + 1:max(n_pars)] <- pool@se
   pool@raw_se <- tmp
 
   pool@unique <- unique
