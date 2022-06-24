@@ -105,7 +105,8 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
   NCAT       <- numeric(ni)
   parms      <- vector(mode = "list", length = ni)
   n_values   <- rowSums(!is.na(ipar))
-  n_pars     <- n_values - 2
+  n_nonpars  <- 2
+  n_pars     <- n_values - n_nonpars
   valid      <- logical(ni)
   pool@ipar  <- matrix(NA, nrow = ni, ncol = max(n_pars))
   pool@se    <- matrix(NA, nrow = ni, ncol = max(n_pars))
@@ -137,8 +138,8 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
     if (model[i] == 1 | model[i] == "1PL") {
 
       NCAT[i] <- 2
-      b    <- ipar[   i, 2 + 1]
-      b_se <- ipar_se[i, 2 + 1]
+      b    <- ipar[   i, n_nonpars + 1]
+      b_se <- ipar_se[i, n_nonpars + 1]
 
       valid[i] <- TRUE
 
@@ -155,10 +156,10 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
     if (model[i] == 2 | model[i] == "2PL") {
 
       NCAT[i] <- 2
-      a    <- ipar[   i, 2 + 1]
-      b    <- ipar[   i, 2 + 2]
-      a_se <- ipar_se[i, 2 + 1]
-      b_se <- ipar_se[i, 2 + 2]
+      a    <- ipar[   i, n_nonpars + 1]
+      b    <- ipar[   i, n_nonpars + 2]
+      a_se <- ipar_se[i, n_nonpars + 1]
+      b_se <- ipar_se[i, n_nonpars + 2]
 
       if (a <= 0) { valid[i] <- FALSE; next }
       valid[i] <- TRUE
@@ -176,12 +177,12 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
     if (model[i] == 3 | model[i] == "3PL") {
 
       NCAT[i] <- 2
-      a    <- ipar[   i, 2 + 1]
-      b    <- ipar[   i, 2 + 2]
-      c    <- ipar[   i, 2 + 3]
-      a_se <- ipar_se[i, 2 + 1]
-      b_se <- ipar_se[i, 2 + 2]
-      c_se <- ipar_se[i, 2 + 3]
+      a    <- ipar[   i, n_nonpars + 1]
+      b    <- ipar[   i, n_nonpars + 2]
+      c    <- ipar[   i, n_nonpars + 3]
+      a_se <- ipar_se[i, n_nonpars + 1]
+      b_se <- ipar_se[i, n_nonpars + 2]
+      c_se <- ipar_se[i, n_nonpars + 3]
 
       if (a <= 0) { valid[i] <- FALSE; next }
       if (c <  0) { valid[i] <- FALSE; next }
@@ -201,8 +202,8 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
     if (model[i] == 4 | model[i] == "PC") {
 
       NCAT[i] <- n_pars[i] + 1
-      b    <- as.numeric(ipar[   i, 2 + 1:n_pars[i]])
-      b_se <- as.numeric(ipar_se[i, 2 + 1:n_pars[i]])
+      b    <- as.numeric(ipar[   i, n_nonpars + 1:n_pars[i]])
+      b_se <- as.numeric(ipar_se[i, n_nonpars + 1:n_pars[i]])
 
       valid[i] <- TRUE
 
@@ -219,10 +220,10 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
     if (model[i] == 5 | model[i] == "GPC") {
 
       NCAT[i] <- (n_pars[i] - 1) + 1
-      a    <- as.numeric(ipar[   i, 2 + 1])
-      b    <- as.numeric(ipar[   i, 2 + 2:n_pars[i]])
-      a_se <- as.numeric(ipar_se[i, 2 + 1])
-      b_se <- as.numeric(ipar_se[i, 2 + 2:n_pars[i]])
+      a    <- as.numeric(ipar[   i, n_nonpars + 1])
+      b    <- as.numeric(ipar[   i, n_nonpars + 2:n_pars[i]])
+      a_se <- as.numeric(ipar_se[i, n_nonpars + 1])
+      b_se <- as.numeric(ipar_se[i, n_nonpars + 2:n_pars[i]])
 
       if (a <= 0) { valid[i] <- FALSE; next }
       valid[i] <- TRUE
@@ -240,10 +241,10 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
     if (model[i] == 6 | model[i] == "GR") {
 
       NCAT[i] <- (n_pars[i] - 1) + 1
-      a    <- as.numeric(ipar[   i, 2 + 1])
-      b    <- as.numeric(ipar[   i, 2 + 2:n_pars[i]])
-      a_se <- as.numeric(ipar_se[i, 2 + 1])
-      b_se <- as.numeric(ipar_se[i, 2 + 2:n_pars[i]])
+      a    <- as.numeric(ipar[   i, n_nonpars + 1])
+      b    <- as.numeric(ipar[   i, n_nonpars + 2:n_pars[i]])
+      a_se <- as.numeric(ipar_se[i, n_nonpars + 1])
+      b_se <- as.numeric(ipar_se[i, n_nonpars + 2:n_pars[i]])
 
       if (a <= 0)         { valid[i] <- FALSE; next }
       if (is.unsorted(b)) { valid[i] <- FALSE; next }
