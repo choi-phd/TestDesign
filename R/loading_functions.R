@@ -210,8 +210,8 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
       pool@model[i] <- "item_PC"
       parms[[i]] <- new("item_PC", threshold = b, ncat = NCAT[i])
 
-      pool@ipar[i, 1:(NCAT[i] - 1)] <- b
-      pool@se[  i, 1:(NCAT[i] - 1)] <- b_se
+      pool@ipar[i, 1:n_pars[i]] <- b
+      pool@se[  i, 1:n_pars[i]] <- b_se
 
       next
 
@@ -231,8 +231,8 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
       pool@model[i] <- "item_GPC"
       parms[[i]] <- new("item_GPC", slope = a, threshold = b, ncat = NCAT[i])
 
-      pool@ipar[i, 1:NCAT[i]] <- c(a   , b)
-      pool@se[  i, 1:NCAT[i]] <- c(a_se, b_se)
+      pool@ipar[i, 1:n_pars[i]] <- c(a   , b)
+      pool@se[  i, 1:n_pars[i]] <- c(a_se, b_se)
 
       next
 
@@ -253,8 +253,8 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
       pool@model[i] <- "item_GR"
       parms[[i]] <- new("item_GR", slope = a, category = b, ncat = NCAT[i])
 
-      pool@ipar[i, 1:NCAT[i]] <- c(a   , b)
-      pool@se[  i, 1:NCAT[i]] <- c(a_se, b_se)
+      pool@ipar[i, 1:n_pars[i]] <- c(a   , b)
+      pool@se[  i, 1:n_pars[i]] <- c(a_se, b_se)
 
       next
 
