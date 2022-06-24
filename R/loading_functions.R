@@ -104,10 +104,10 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
   model      <- ipar[[2]]
   NCAT       <- numeric(ni)
   parms      <- vector(mode = "list", length = ni)
-  nfields    <- rowSums(!is.na(ipar))
+  n_values   <- rowSums(!is.na(ipar))
   valid      <- logical(ni)
-  pool@ipar  <- matrix(NA, nrow = ni, ncol = max(nfields) - 2)
-  pool@se    <- matrix(NA, nrow = ni, ncol = max(nfields) - 2)
+  pool@ipar  <- matrix(NA, nrow = ni, ncol = max(n_values) - 2)
+  pool@se    <- matrix(NA, nrow = ni, ncol = max(n_values) - 2)
 
   # parse parameter SEs
   while (!is.null(ipar_se)) {
@@ -199,9 +199,9 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
 
     if (model[i] == 4 | model[i] == "PC") {
 
-      NCAT[i] <- nfields[i] - 1
-      b    <- as.numeric(ipar[   i, 3:nfields[i]])
-      b_se <- as.numeric(ipar_se[i, 3:nfields[i]])
+      NCAT[i] <- n_values[i] - 1
+      b    <- as.numeric(ipar[   i, 3:n_values[i]])
+      b_se <- as.numeric(ipar_se[i, 3:n_values[i]])
 
       valid[i] <- TRUE
 
@@ -217,11 +217,11 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
 
     if (model[i] == 5 | model[i] == "GPC") {
 
-      NCAT[i] <- nfields[i] - 2
+      NCAT[i] <- n_values[i] - 2
       a    <- as.numeric(ipar[   i, 3])
-      b    <- as.numeric(ipar[   i, 4:nfields[i]])
+      b    <- as.numeric(ipar[   i, 4:n_values[i]])
       a_se <- as.numeric(ipar_se[i, 3])
-      b_se <- as.numeric(ipar_se[i, 4:nfields[i]])
+      b_se <- as.numeric(ipar_se[i, 4:n_values[i]])
 
       if (a <= 0) { valid[i] <- FALSE; next }
       valid[i] <- TRUE
@@ -238,11 +238,11 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
 
     if (model[i] == 6 | model[i] == "GR") {
 
-      NCAT[i] <- nfields[i] - 2
+      NCAT[i] <- n_values[i] - 2
       a    <- as.numeric(ipar[   i, 3])
-      b    <- as.numeric(ipar[   i, 4:nfields[i]])
+      b    <- as.numeric(ipar[   i, 4:n_values[i]])
       a_se <- as.numeric(ipar_se[i, 3])
-      b_se <- as.numeric(ipar_se[i, 4:nfields[i]])
+      b_se <- as.numeric(ipar_se[i, 4:n_values[i]])
 
       if (a <= 0)         { valid[i] <- FALSE; next }
       if (is.unsorted(b)) { valid[i] <- FALSE; next }
@@ -275,12 +275,12 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
   pool@NCAT <- NCAT
   pool@parms <- parms
 
-  if (max(rowSums(!is.na(pool@ipar))) != max(nfields) - 2) {
+  if (max(rowSums(!is.na(pool@ipar))) != max(n_values) - 2) {
     pool@ipar <- pool@ipar[, 1:max(rowSums(!is.na(pool@ipar)))]
   }
 
   tmp <- pool@raw
-  tmp[, 3:max(nfields)] <- pool@se
+  tmp[, 3:max(n_values)] <- pool@se
   pool@raw_se <- tmp
 
   pool@unique <- unique
