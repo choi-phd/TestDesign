@@ -173,7 +173,7 @@ initializeShadowEngine <- function(constants, refresh_policy) {
 }
 
 #' @noRd
-getInfoFixedTheta <- function(item_selection, constants, info_cache, pool, model) {
+getInfoFixedTheta <- function(item_selection, constants, pool, model) {
 
   nj <- constants$nj
   o <- list()
