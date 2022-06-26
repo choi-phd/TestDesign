@@ -4,9 +4,9 @@ NULL
 #' @noRd
 initializePosterior <- function(prior, prior_par, config, constants, pool, posterior_constants) {
 
-  theta_grid <- constants$theta_q
-  nj         <- constants$nj
-  nq         <- constants$nq
+  theta_q <- constants$theta_q
+  nj      <- constants$nj
+  nq      <- constants$nq
 
   o <- list()
 
@@ -17,14 +17,14 @@ initializePosterior <- function(prior, prior_par, config, constants, pool, poste
     o$posterior <- generateDistributionFromPriorPar(
       toupper(config@interim_theta$prior_dist),
       config@interim_theta$prior_par,
-      theta_grid, nj
+      theta_q, nj
     )
   }
   if (is.null(prior) && !is.null(prior_par)) {
     o$posterior <- generateDistributionFromPriorPar(
       "NORMAL",
       prior_par,
-      theta_grid, nj
+      theta_q, nj
     )
   }
   if (is.vector(prior) && length(prior) == nq) {
