@@ -50,21 +50,21 @@ setMethod(
       }
     }
 
-    pool <- constraints@pool
+    item_pool <- constraints@pool
 
     nt <- length(config@item_selection$target_location)
 
     if (toupper(config@item_selection$method) == "MAXINFO") {
 
-      objective <- as.vector(config@item_selection$target_weight %*% calcFisher(pool, config@item_selection$target_location))
+      objective <- as.vector(config@item_selection$target_weight %*% calcFisher(item_pool, config@item_selection$target_location))
 
     } else if (toupper(config@item_selection$method) == "TIF") {
 
-      objective <- calcFisher(pool, config@item_selection$target_location)
+      objective <- calcFisher(item_pool, config@item_selection$target_location)
 
     } else if (toupper(config@item_selection$method) == "TCC") {
 
-      tmp <- lapply(pool@parms, calcEscore, config@item_selection$target_location)
+      tmp <- lapply(item_pool@parms, calcEscore, config@item_selection$target_location)
       objective <- t(do.call(rbind, tmp))
 
     }
@@ -93,7 +93,7 @@ setMethod(
     out@obj_value   <- results$obj_value
     out@solve_time  <- results$solve_time
     out@achieved    <- tmp
-    out@pool        <- pool
+    out@pool        <- item_pool
     out@config      <- config
     out@constraints <- constraints
 

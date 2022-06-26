@@ -2,7 +2,7 @@
 NULL
 
 #' @noRd
-initializePosterior <- function(prior, prior_par, config, constants, pool, posterior_constants) {
+initializePosterior <- function(prior, prior_par, config, constants, item_pool, posterior_constants) {
 
   theta_q <- constants$theta_q
   nj      <- constants$nj
@@ -40,7 +40,7 @@ initializePosterior <- function(prior, prior_par, config, constants, pool, poste
   interim_method <- toupper(config@interim_theta$method)
   final_method   <- toupper(config@final_theta$method)
   if (any(c(interim_method, final_method) %in% c("FB"))) {
-    o$ipar_list <- iparPosteriorSample(pool, posterior_constants$n_sample)
+    o$ipar_list <- iparPosteriorSample(item_pool, posterior_constants$n_sample)
   }
 
   return(o)

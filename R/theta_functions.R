@@ -6,7 +6,7 @@ estimateInterimTheta <- function(
   o, j, position,
   current_theta,
   augmented_posterior_record, posterior_record,
-  augmented_pool, pool, model,
+  augmented_item_pool, item_pool, model,
   augmented_item_index,
   augmented_item_resp,
   include_items_for_estimation,
@@ -50,7 +50,7 @@ estimateInterimTheta <- function(
   if (toupper(config@interim_theta$method) == "MLE") {
 
     interim_EAP <- computeEAPFromPosterior(augmented_posterior_record$posterior[j, ], constants$theta_q)
-    interim_MLE <- mle(augmented_pool,
+    interim_MLE <- mle(augmented_item_pool,
       select        = augmented_item_index,
       resp          = augmented_item_resp,
       start_theta   = interim_EAP$theta,
@@ -74,7 +74,7 @@ estimateInterimTheta <- function(
   if (toupper(config@interim_theta$method) == "MLEF") {
 
     interim_EAP <- computeEAPFromPosterior(augmented_posterior_record$posterior[j, ], constants$theta_q)
-    interim_MLEF <- mlef(augmented_pool,
+    interim_MLEF <- mlef(augmented_item_pool,
       select           = augmented_item_index,
       resp             = augmented_item_resp,
       fence_slope      = config@interim_theta$fence_slope,
@@ -108,8 +108,8 @@ estimateInterimTheta <- function(
 
     interim_EB <- theta_EB_single(
       posterior_constants$n_sample, current_theta$theta, current_theta$se,
-      pool@ipar[current_item, ],
-      o@administered_item_resp[position], pool@NCAT[current_item],
+      item_pool@ipar[current_item, ],
+      o@administered_item_resp[position], item_pool@NCAT[current_item],
       model[current_item], 1, c(current_theta$theta, current_theta$se)
     )[, 1]
 
@@ -135,8 +135,8 @@ estimateInterimTheta <- function(
     interim_FB <- theta_FB_single(
       posterior_constants$n_sample, current_theta$theta, current_theta$se,
       posterior_record$ipar_list[[current_item]],
-      pool@ipar[current_item, ],
-      o@administered_item_resp[position], pool@NCAT[current_item],
+      item_pool@ipar[current_item, ],
+      o@administered_item_resp[position], item_pool@NCAT[current_item],
       model[current_item], 1, c(current_theta$theta, current_theta$se)
     )[, 1]
 
@@ -155,7 +155,7 @@ estimateInterimTheta <- function(
 #' @noRd
 estimateFinalTheta <- function(
   o, j, position,
-  augmented_pool, pool, model,
+  augmented_item_pool, item_pool, model,
   augment_item_index,
   augment_item_resp,
   include_items_for_estimation,
@@ -200,7 +200,7 @@ estimateFinalTheta <- function(
     if (!is.null(include_items_for_estimation)) {
 
       final_MLE <- mle(
-        augmented_pool,
+        augmented_item_pool,
         select        = c(augment_item_index, o@administered_item_index[1:constants$max_ni]),
         resp          = c(augment_item_resp,  o@administered_item_resp[1:constants$max_ni]),
         start_theta   = o@interim_theta_est[constants$max_ni],
@@ -219,7 +219,7 @@ estimateFinalTheta <- function(
     if (is.null(include_items_for_estimation)) {
 
       final_MLE <- mle(
-        pool,
+        item_pool,
         select        = o@administered_item_index[1:constants$max_ni],
         resp          = o@administered_item_resp[1:constants$max_ni],
         start_theta   = o@interim_theta_est[constants$max_ni],
@@ -247,7 +247,7 @@ estimateFinalTheta <- function(
     if (!is.null(include_items_for_estimation)) {
 
       final_MLEF <- mlef(
-        augmented_pool,
+        augmented_item_pool,
         select           = c(augment_item_index, o@administered_item_index[1:constants$max_ni]),
         resp             = c(augment_item_resp,  o@administered_item_resp[1:constants$max_ni]),
         fence_slope      = config@final_theta$fence_slope,
@@ -268,7 +268,7 @@ estimateFinalTheta <- function(
     if (is.null(include_items_for_estimation)) {
 
       final_MLEF <- mlef(
-        pool,
+        item_pool,
         select           = o@administered_item_index[1:constants$max_ni],
         resp             = o@administered_item_resp[1:constants$max_ni],
         fence_slope      = config@final_theta$fence_slope,
@@ -301,8 +301,8 @@ estimateFinalTheta <- function(
 
     final_EB <- theta_EB(
       posterior_constants$n_sample, final_prior$theta, final_prior$se,
-      pool@ipar[o@administered_item_index[1:position], ],
-      o@administered_item_resp[1:position], pool@NCAT[o@administered_item_index[1:position]],
+      item_pool@ipar[o@administered_item_index[1:position], ],
+      o@administered_item_resp[1:position], item_pool@NCAT[o@administered_item_index[1:position]],
       model[o@administered_item_index[1:position]], 1, c(final_prior$theta, final_prior$se)
     )
 
@@ -326,8 +326,8 @@ estimateFinalTheta <- function(
     final_FB <- theta_FB(
       posterior_constants$n_sample, final_prior$theta, final_prior$se,
       posterior_record$ipar_list[o@administered_item_index[1:position]],
-      pool@ipar[o@administered_item_index[1:position], ],
-      o@administered_item_resp[1:position], pool@NCAT[o@administered_item_index[1:position]],
+      item_pool@ipar[o@administered_item_index[1:position], ],
+      o@administered_item_resp[1:position], item_pool@NCAT[o@administered_item_index[1:position]],
       model[o@administered_item_index[1:position]], 1, c(final_prior$theta, final_prior$se)
     )
 
