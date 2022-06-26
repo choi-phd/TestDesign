@@ -64,6 +64,10 @@ setMethod(
       }
     }
 
+    if (inherits(true_theta, "numeric")) {
+      true_theta <- matrix(true_theta, , 1)
+    }
+
     pool                  <- constraints@pool
     model                 <- sanitizeModel(pool@model)
     simulation_data_cache <- makeSimulationDataCache(
@@ -126,7 +130,7 @@ setMethod(
       o@simulee_id <- j
 
       if (!is.null(true_theta)) {
-        o@true_theta <- true_theta[j]
+        o@true_theta <- true_theta[j, ]
       }
 
       o@prior <- posterior_record$posterior[j, ]

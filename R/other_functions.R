@@ -20,7 +20,7 @@ getConstants <- function(constraints, config, arg_data, true_theta, max_info) {
     o$nj <- nrow(arg_data)
   }
   if (!is.null(true_theta)) {
-    o$nj <- length(true_theta)
+    o$nj <- nrow(true_theta)
   }
   if (is.null(o$nj)) {
     stop("either 'data' or 'true_theta' must be supplied")
