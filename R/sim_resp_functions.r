@@ -61,11 +61,22 @@ setMethod(
   f = "simResp",
   signature = c("item_1PL", "numeric"),
   definition = function(object, theta) {
-    prob   <- calcProb(object, theta)
-    random <- runif(length(theta))
-    resp   <- numeric(length(theta))
-    resp[prob[, 2] > random] <- 1
-    return(resp)
+    theta <- matrix(theta, , 1)
+    return(simResp(object, theta))
+  }
+)
+
+#' @rdname simResp-methods
+#' @aliases simResp,item_1PL,matrix-method
+setMethod(
+  f = "simResp",
+  signature = c("item_1PL", "matrix"),
+  definition = function(object, theta) {
+    p <- calcProb(object, theta)
+    r <- runif(nrow(theta))
+    response <- numeric(nrow(theta))
+    response[p[, 2] > r] <- 1
+    return(response)
   }
 )
 
@@ -75,11 +86,22 @@ setMethod(
   f = "simResp",
   signature = c("item_2PL", "numeric"),
   definition = function(object, theta) {
-    prob   <- calcProb(object, theta)
-    random <- runif(length(theta))
-    resp   <- numeric(length(theta))
-    resp[prob[, 2] > random] <- 1
-    return(resp)
+    theta <- matrix(theta, , 1)
+    return(simResp(object, theta))
+  }
+)
+
+#' @rdname simResp-methods
+#' @aliases simResp,item_2PL,matrix-method
+setMethod(
+  f = "simResp",
+  signature = c("item_2PL", "matrix"),
+  definition = function(object, theta) {
+    p <- calcProb(object, theta)
+    r <- runif(nrow(theta))
+    response <- numeric(nrow(theta))
+    response[p[, 2] > r] <- 1
+    return(response)
   }
 )
 
@@ -89,11 +111,22 @@ setMethod(
   f = "simResp",
   signature = c("item_3PL", "numeric"),
   definition = function(object, theta) {
-    prob   <- calcProb(object, theta)
-    random <- runif(length(theta))
-    resp   <- numeric(length(theta))
-    resp[prob[, 2] > random] <- 1
-    return(resp)
+    theta <- matrix(theta, , 1)
+    return(simResp(object, theta))
+  }
+)
+
+#' @rdname simResp-methods
+#' @aliases simResp,item_3PL,matrix-method
+setMethod(
+  f = "simResp",
+  signature = c("item_3PL", "matrix"),
+  definition = function(object, theta) {
+    p <- calcProb(object, theta)
+    r <- runif(nrow(theta))
+    response <- numeric(nrow(theta))
+    response[p[, 2] > r] <- 1
+    return(response)
   }
 )
 
@@ -103,15 +136,26 @@ setMethod(
   f = "simResp",
   signature = c("item_PC", "numeric"),
   definition = function(object, theta) {
-    prob   <- calcProb(object, theta)
-    random <- runif(length(theta))
-    resp   <- numeric(length(theta))
-    sump   <- numeric(length(theta))
+    theta <- matrix(theta, , 1)
+    return(simResp(object, theta))
+  }
+)
+
+#' @rdname simResp-methods
+#' @aliases simResp,item_PC,matrix-method
+setMethod(
+  f = "simResp",
+  signature = c("item_PC", "matrix"),
+  definition = function(object, theta) {
+    p <- calcProb(object, theta)
+    r <- runif(nrow(theta))
+    psum <- numeric(nrow(theta))
+    response <- numeric(nrow(theta))
     for (k in 1:(object@ncat - 1)) {
-      sump <- sump + prob[, k]
-      resp[random > sump] <- resp[random > sump] + 1
+      psum <- psum + p[, k]
+      response[r > psum] <- response[r > psum] + 1
     }
-    return(resp)
+    return(response)
   }
 )
 
@@ -121,15 +165,26 @@ setMethod(
   f = "simResp",
   signature = c("item_GPC", "numeric"),
   definition = function(object, theta) {
-    prob   <- calcProb(object, theta)
-    random <- runif(length(theta))
-    resp   <- numeric(length(theta))
-    sump   <- numeric(length(theta))
+    theta <- matrix(theta, , 1)
+    return(simResp(object, theta))
+  }
+)
+
+#' @rdname simResp-methods
+#' @aliases simResp,item_GPC,matrix-method
+setMethod(
+  f = "simResp",
+  signature = c("item_GPC", "matrix"),
+  definition = function(object, theta) {
+    p <- calcProb(object, theta)
+    r <- runif(nrow(theta))
+    psum <- numeric(nrow(theta))
+    response <- numeric(nrow(theta))
     for (k in 1:(object@ncat - 1)) {
-      sump <- sump + prob[, k]
-      resp[random > sump] <- resp[random > sump] + 1
+      psum <- psum + p[, k]
+      response[r > psum] <- response[r > psum] + 1
     }
-    return(resp)
+    return(response)
   }
 )
 
@@ -139,15 +194,26 @@ setMethod(
   f = "simResp",
   signature = c("item_GR", "numeric"),
   definition = function(object, theta) {
-    prob   <- calcProb(object, theta)
-    random <- runif(length(theta))
-    resp   <- numeric(length(theta))
-    sump   <- numeric(length(theta))
+    theta <- matrix(theta, , 1)
+    return(simResp(object, theta))
+  }
+)
+
+#' @rdname simResp-methods
+#' @aliases simResp,item_GR,matrix-method
+setMethod(
+  f = "simResp",
+  signature = c("item_GR", "matrix"),
+  definition = function(object, theta) {
+    p <- calcProb(object, theta)
+    r <- runif(nrow(theta))
+    psum <- numeric(nrow(theta))
+    response <- numeric(nrow(theta))
     for (k in 1:(object@ncat - 1)) {
-      sump <- sump + prob[, k]
-      resp[random > sump] <- resp[random > sump] + 1
+      psum <- psum + p[, k]
+      response[r > psum] <- response[r > psum] + 1
     }
-    return(resp)
+    return(response)
   }
 )
 
@@ -157,15 +223,30 @@ setMethod(
   f = "simResp",
   signature = c("item_pool", "numeric"),
   definition = function(object, theta) {
-    if (length(theta) > 0 && all(!is.na(theta))) {
-      data <- matrix(NA, length(theta), object@ni)
-      for (i in 1:object@ni) {
-        data[, i] <- simResp(object@parms[[i]], theta)
-      }
-      return(data)
-    } else {
-      stop("'theta' is empty, or contains missing values.")
+    theta <- matrix(theta, , 1)
+    return(simResp(object, theta))
+  }
+)
+
+#' @rdname simResp-methods
+#' @aliases simResp,item_pool,matrix-method
+setMethod(
+  f = "simResp",
+  signature = c("item_pool", "matrix"),
+  definition = function(object, theta) {
+    if (nrow(theta) == 0) {
+      stop("unexpected 'theta': is empty (should not be)")
     }
+    if (any(is.na(theta))) {
+      stop("unexpected 'theta': contains missing values (should not have any)")
+    }
+
+    response <- matrix(NA, nrow(theta), object@ni)
+    for (i in 1:object@ni) {
+      response[, i] <- simResp(object@parms[[i]], theta)
+    }
+    return(response)
+
   }
 )
 
