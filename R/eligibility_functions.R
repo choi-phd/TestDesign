@@ -431,8 +431,8 @@ parseDiagnosticStats <- function(
   for (j in 1:constants$nj) {
 
     tmp <- list()
-    tmp$true_theta         <- true_theta[j]
-    tmp$true_segment       <- find_segment(true_theta[j], constants$segment_cut)
+    tmp$true_theta         <- true_theta[j, ]
+    tmp$true_segment       <- find_segment(true_theta[j, ], constants$segment_cut)
     tmp$true_segment_count <- segment_record$count_true[j]
     o$elg_stats[[j]] <- tmp
 
@@ -467,8 +467,8 @@ parseDiagnosticStats <- function(
   for (j in 1:constants$nj) {
 
     tmp <- list()
-    tmp$true_theta         <- true_theta[j]
-    tmp$true_segment       <- find_segment(true_theta[j], constants$segment_cut)
+    tmp$true_theta         <- true_theta[j, ]
+    tmp$true_segment       <- find_segment(true_theta[j, ], constants$segment_cut)
     tmp$true_segment_count <- segment_record$count_true[j]
     o$elg_stats_nofade[[j]] <- tmp
 
