@@ -75,7 +75,7 @@ setMethod(
       response_data = data
     )
     constants             <- getConstants(constraints, config, data, true_theta, simulation_data_cache@max_info)
-    info_fixed_theta      <- getInfoFixedTheta(config@item_selection, constants, simulation_data_cache@info_grid, pool, model)
+    info_fixed_theta      <- getInfoFixedTheta(config@item_selection, constants, pool, model)
     posterior_constants   <- getPosteriorConstants(config)
     posterior_record      <- initializePosterior(prior, prior_par, config, constants, pool, posterior_constants)
     initial_theta         <- initializeTheta(config, constants, posterior_record)
