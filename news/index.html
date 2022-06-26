@@ -69,7 +69,11 @@
 <h3 id="bug-fixes-1-3-3-9000">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-3-3-9000"></a></h3>
 <ul><li>Fixed where <code><a href="../reference/Shadow-methods.html">Shadow()</a></code> was not working when <code>data</code> was supplied with <code>true_theta</code> left empty. (<a href="https://github.com/choi-phd/TestDesign/issues/118" class="external-link">#118</a>)</li>
 <li>Fixed where <code>BIGM</code> exposure control was ignoring the <code>M</code> value and defaulting to (maximum information + 1) even when it was supplied.</li>
+<li>Fixed where <code><a href="../reference/Shadow-methods.html">Shadow()</a></code> was not working when the <code>FIXED</code> item selection method was used with a single <code>$fixed_theta</code> value in the config. (<a href="https://github.com/choi-phd/TestDesign/issues/132" class="external-link">#132</a>)</li>
 </ul></div>
+<div class="section level3">
+<h3 id="updates-1-3-3-9000">Updates<a class="anchor" aria-label="anchor" href="#updates-1-3-3-9000"></a></h3>
+<ul><li>The <code>FIXED</code> item selection method for <code><a href="../reference/Shadow-methods.html">Shadow()</a></code> now does not approximate the supplied value to the nearest theta quadrature when computing information.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.3.3" id="testdesign-133">TestDesign 1.3.3<small>2022-05-16</small><a class="anchor" aria-label="anchor" href="#testdesign-133"></a></h2>
