@@ -107,13 +107,13 @@ setClass(
   slots = c(
     n_simulee       = "numeric",
     test_length     = "numeric",
-    true_theta      = "numeric_or_null",
-    est_theta       = "numeric_or_null",
-    est_theta_se    = "numeric_or_null",
-    diff            = "numeric_or_null",
+    true_theta      = "matrix_or_numeric_or_null",
+    est_theta       = "matrix_or_numeric_or_null",
+    est_theta_se    = "matrix_or_numeric_or_null",
+    diff            = "matrix_or_numeric_or_null",
     mse             = "numeric_or_null",
     bias            = "numeric_or_null",
-    corr            = "numeric_or_null",
+    corr            = "matrix_or_numeric_or_null",
     average_se      = "numeric",
     achieved        = "dataframe_or_null"
   ),
