@@ -4,12 +4,19 @@
 \name{simResp}
 \alias{simResp}
 \alias{simResp,item_1PL,numeric-method}
+\alias{simResp,item_1PL,matrix-method}
 \alias{simResp,item_2PL,numeric-method}
+\alias{simResp,item_2PL,matrix-method}
 \alias{simResp,item_3PL,numeric-method}
+\alias{simResp,item_3PL,matrix-method}
 \alias{simResp,item_PC,numeric-method}
+\alias{simResp,item_PC,matrix-method}
 \alias{simResp,item_GPC,numeric-method}
+\alias{simResp,item_GPC,matrix-method}
 \alias{simResp,item_GR,numeric-method}
+\alias{simResp,item_GR,matrix-method}
 \alias{simResp,item_pool,numeric-method}
+\alias{simResp,item_pool,matrix-method}
 \alias{simResp,item_pool_cluster,numeric-method}
 \alias{simResp,item_pool_cluster,list-method}
 \title{Simulate item response data}
@@ -18,17 +25,31 @@ simResp(object, theta)
 
 \S4method{simResp}{item_1PL,numeric}(object, theta)
 
+\S4method{simResp}{item_1PL,matrix}(object, theta)
+
 \S4method{simResp}{item_2PL,numeric}(object, theta)
+
+\S4method{simResp}{item_2PL,matrix}(object, theta)
 
 \S4method{simResp}{item_3PL,numeric}(object, theta)
 
+\S4method{simResp}{item_3PL,matrix}(object, theta)
+
 \S4method{simResp}{item_PC,numeric}(object, theta)
+
+\S4method{simResp}{item_PC,matrix}(object, theta)
 
 \S4method{simResp}{item_GPC,numeric}(object, theta)
 
+\S4method{simResp}{item_GPC,matrix}(object, theta)
+
 \S4method{simResp}{item_GR,numeric}(object, theta)
 
+\S4method{simResp}{item_GR,matrix}(object, theta)
+
 \S4method{simResp}{item_pool,numeric}(object, theta)
+
+\S4method{simResp}{item_pool,matrix}(object, theta)
 
 \S4method{simResp}{item_pool_cluster,numeric}(object, theta)
 
