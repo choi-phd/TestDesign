@@ -67,19 +67,19 @@ getPosteriorConstants <- function(config) {
 }
 
 #' @noRd
-generateDistributionFromPriorPar <- function(dist_type, prior_par, theta_grid, nj) {
+generateDistributionFromPriorPar <- function(dist_type, prior_par, theta_q, nj) {
 
-  nq <- length(theta_grid)
+  nq <- length(theta_q)
   m  <- NULL
 
   if (dist_type == "NORMAL" && is.vector(prior_par) && length(prior_par) == 2) {
-    x <- dnorm(theta_grid, mean = prior_par[1], sd = prior_par[2])
+    x <- dnorm(theta_q, mean = prior_par[1], sd = prior_par[2])
     m <- matrix(x, nj, nq, byrow = TRUE)
   }
   if (dist_type == "NORMAL" && is.matrix(prior_par) && all(dim(prior_par) == c(nj, 2))) {
     m <- matrix(NA, nj, nq, byrow = TRUE)
     for (j in 1:nj) {
-      m[j, ] <- dnorm(theta_grid, mean = prior_par[j, 1], sd = prior_par[j, 2])
+      m[j, ] <- dnorm(theta_q, mean = prior_par[j, 1], sd = prior_par[j, 2])
     }
   }
   if (dist_type == "UNIFORM") {
