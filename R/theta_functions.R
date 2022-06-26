@@ -1053,17 +1053,24 @@ setMethod(
 #' @noRd
 initializeTheta <- function(config, constants, posterior_record) {
   nj <- constants$nj
-  if (!is.null(config@item_selection$initial_theta)) {
-    if (length(config@item_selection$initial_theta) == 1) {
-      theta <- rep(config@item_selection$initial_theta, nj)
+  config_value <- config@item_selection$initial_theta
+  if (!is.null(config_value)) {
+    if (inherits(config_value, "numeric")) {
+      config_value <- matrix(config_value, , 1)
     }
-    if (length(config@item_selection$initial_theta) == nj) {
-      theta <- config@item_selection$initial_theta
+    if (nrow(config_value) == 1) {
+      theta <- matrix(config_value, nj, ncol(config_value), byrow = TRUE)
+      return(theta)
     }
-  } else {
-    theta <- as.vector(posterior_record$posterior %*% matrix(constants$theta_q, ncol = 1))
+    if (nrow(config_value) == nj) {
+      theta <- config_value
+      return(theta)
+    }
   }
-  return(theta)
+  if (is.null(config_value)) {
+    theta <- posterior_record$posterior %*% constants$theta_q
+    return(theta)
+  }
 }
 
 #' @noRd
@@ -1094,7 +1101,7 @@ parseInitialTheta <- function(config_theta, initial_theta, prior_par, nj, j, pos
   o <- list()
   theta_method <- toupper(config_theta$method)
   if (theta_method %in% c("EAP", "MLE", "MLEF")) {
-    o$theta <- initial_theta[j]
+    o$theta <- initial_theta[j, ]
   }
   if (theta_method %in% c("EB", "FB")) {
     o <- getInitialThetaPrior(config_theta, prior_par, nj, j, posterior_constants)
