@@ -75,11 +75,13 @@ setMethod(
       response_data = data
     )
     constants             <- getConstants(constraints, config, data, true_theta, simulation_data_cache@max_info)
-    info_fixed_theta      <- getInfoFixedTheta(config@item_selection, constants, pool, model)
     posterior_constants   <- getPosteriorConstants(config)
     posterior_record      <- initializePosterior(prior, prior_par, config, constants, pool, posterior_constants)
     initial_theta         <- initializeTheta(config, constants, posterior_record)
     exclude_index         <- getIndexOfExcludedEntry(exclude, constraints)
+
+    # Only used if config@item_selection$method = "FIXED"
+    info_fixed_theta      <- getInfoFixedTheta(config@item_selection, constants, pool, model)
 
     if (constants$use_shadow) {
       refresh_shadow <- initializeShadowEngine(constants, config@refresh_policy)
@@ -191,8 +193,13 @@ setMethod(
 
         position <- position + 1
         info_current_theta <- computeInfoAtCurrentTheta(
-          config@item_selection, j, info_fixed_theta, current_theta, pool, model,
-          posterior_record, simulation_data_cache@info_grid
+          config@item_selection, j,
+          info_fixed_theta,               # Only used if config@item_selection$method = "FIXED"
+          current_theta,
+          pool,
+          model,
+          posterior_record,
+          simulation_data_cache@info_grid # Only used if config@item_selection$method = "MPWI"
         )
 
         # Item position / simulee: do shadow test assembly
