@@ -137,6 +137,7 @@ getPriorSample <- function(arg_mean, arg_sd, posterior_constants) {
 #' @noRd
 getSegmentProb <- function(posterior_sample, constants) {
 
+  # find_segment() needs to be updated for multidimensional segments
   sample_segment                   <- find_segment(posterior_sample, constants$segment_cut)
   segment_distribution             <- table(sample_segment) / length(sample_segment)
   segment_classified               <- as.numeric(names(segment_distribution))

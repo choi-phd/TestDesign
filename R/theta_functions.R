@@ -1123,6 +1123,7 @@ parseThetaSegment <- function(current_theta, position, exposure_control, constan
   }
 
   if (constants$exposure_control_method %in% c("NONE", "ELIGIBILITY", "BIGM")) {
+    # find_segment() needs to be updated for multidimensional segments
     segment <- find_segment(current_theta$theta, segment_cut)
     return(segment)
   }

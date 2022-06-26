@@ -934,6 +934,7 @@ plotShadowExposure <- function(
   }
 
   theta_segment_index <- numeric(nj)
+  # find_segment() needs to be updated for multidimensional segments
   theta_segment_index <- find_segment(theta_value, segment_cut)
 
   segment_n    <- numeric(n_segment)

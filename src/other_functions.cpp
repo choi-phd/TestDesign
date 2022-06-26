@@ -7,6 +7,7 @@ using namespace Rcpp;
 IntegerVector find_segment(
   NumericVector x,
   NumericVector segment) {
+  // find_segment() needs to be updated for multidimensional segments
   int ns = segment.size();
   int nx = x.size();
   IntegerVector out(nx);
