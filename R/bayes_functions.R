@@ -75,22 +75,22 @@ generateDistributionFromPriorPar <- function(dist_type, prior_par, theta_q, nj) 
   if (dist_type == "NORMAL" && is.vector(prior_par) && length(prior_par) == 2) {
     x <- dnorm(theta_q, mean = prior_par[1], sd = prior_par[2])
     m <- matrix(x, nj, nq, byrow = TRUE)
+    return(m)
   }
   if (dist_type == "NORMAL" && is.matrix(prior_par) && all(dim(prior_par) == c(nj, 2))) {
     m <- matrix(NA, nj, nq, byrow = TRUE)
     for (j in 1:nj) {
       m[j, ] <- dnorm(theta_q, mean = prior_par[j, 1], sd = prior_par[j, 2])
     }
+    return(m)
   }
   if (dist_type == "UNIFORM") {
     x <- 1
     m <- matrix(x, nj, nq, byrow = TRUE)
-  }
-  if (is.null(m)) {
-    stop("unrecognized 'prior_par': must be a vector c(mean, sd), or a nj * 2 matrix")
+    return(m)
   }
 
-  return(m)
+  stop("unrecognized 'prior_par': must be a vector c(mean, sd), or a nj * 2 matrix")
 
 }
 
