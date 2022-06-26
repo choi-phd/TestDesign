@@ -3,6 +3,7 @@
 ## Bug fixes
 
 * Fixed where `Shadow()` was not working when `data` was supplied with `true_theta` left empty. (#118)
+* Fixed where `BIGM` exposure control was ignoring the `M` value and defaulting to (maximum information + 1) even when it was supplied.
 
 # TestDesign 1.3.3
 
