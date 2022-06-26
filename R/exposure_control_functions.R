@@ -210,6 +210,7 @@ getSegmentOf <- function(x, constants) {
 
   o <- list()
 
+  # find_segment() needs to be updated for multidimensional segments
   o$final_theta_est   <- find_segment(x@final_theta_est, constants$segment_cut)
 
   tmp                 <- sort(unique(x@theta_segment_index))
@@ -219,6 +220,7 @@ getSegmentOf <- function(x, constants) {
     return(o)
   }
 
+  # find_segment() needs to be updated for multidimensional segments
   o$true_theta        <- find_segment(x@true_theta, constants$segment_cut)
   return(o)
 
