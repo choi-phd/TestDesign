@@ -180,8 +180,7 @@ getInfoFixedTheta <- function(item_selection, constants, info_cache, pool, model
 
   if (!is.null(item_selection$fixed_theta)) {
     if (length(item_selection$fixed_theta) == 1) {
-      o$info_fixed_theta <- vector(mode = "list", length = nj)
-      o$info_fixed_theta <- info_cache[which.min(abs(constants$theta_grid - item_selection$fixed_theta)), ]
+      o$info_fixed_theta <- lapply(seq_len(nj), function(j) calc_info(item_selection$fixed_theta, pool@ipar, pool@NCAT, model))
       o$select_at_fixed_theta <- TRUE
     }
     if (length(item_selection$fixed_theta) == nj) {
