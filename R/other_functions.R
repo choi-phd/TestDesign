@@ -9,9 +9,12 @@ getConstants <- function(constraints, config, arg_data, true_theta, max_info) {
   o$ns <- constraints@ns
   o$nv <- constraints@nv
   o$theta_q <- config@theta_grid
-  o$nq      <- length(config@theta_grid)
-  o$min_q   <- min(config@theta_grid)
-  o$max_q   <- max(config@theta_grid)
+  if (inherits(o$theta_q, "numeric")) {
+    o$theta_q <- matrix(o$theta_q, , 1)
+  }
+  o$nq      <- nrow(o$theta_q)
+  o$min_q   <- min(o$theta_q)
+  o$max_q   <- max(o$theta_q)
 
   if (!is.null(arg_data)) {
     o$nj <- nrow(arg_data)
