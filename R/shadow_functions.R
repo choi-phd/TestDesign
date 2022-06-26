@@ -68,10 +68,10 @@ setMethod(
       true_theta <- matrix(true_theta, , 1)
     }
 
-    pool                  <- constraints@pool
-    model                 <- sanitizeModel(pool@model)
+    item_pool             <- constraints@pool
+    model                 <- sanitizeModel(item_pool@model)
     simulation_data_cache <- makeSimulationDataCache(
-      item_pool = pool,
+      item_pool = item_pool,
       info_type = "FISHER",
       theta_grid = config@theta_grid,
       seed = seed,
@@ -80,12 +80,12 @@ setMethod(
     )
     constants             <- getConstants(constraints, config, data, true_theta, simulation_data_cache@max_info)
     posterior_constants   <- getPosteriorConstants(config)
-    posterior_record      <- initializePosterior(prior, prior_par, config, constants, pool, posterior_constants)
+    posterior_record      <- initializePosterior(prior, prior_par, config, constants, item_pool, posterior_constants)
     initial_theta         <- initializeTheta(config, constants, posterior_record)
     exclude_index         <- getIndexOfExcludedEntry(exclude, constraints)
 
     # Only used if config@item_selection$method = "FIXED"
-    info_fixed_theta      <- getInfoFixedTheta(config@item_selection, constants, pool, model)
+    info_fixed_theta      <- getInfoFixedTheta(config@item_selection, constants, item_pool, model)
 
     if (constants$use_shadow) {
       refresh_shadow <- initializeShadowEngine(constants, config@refresh_policy)
@@ -141,7 +141,7 @@ setMethod(
       o@interim_theta_est           <- rep(NA_real_, constants$max_ni)
       o@interim_se_est              <- rep(NA_real_, constants$max_ni)
       o@shadow_test                 <- vector("list", constants$max_ni)
-      o@max_cat_pool                <- pool@max_cat
+      o@max_cat_pool                <- item_pool@max_cat
       o@test_length_constraints     <- constants$max_ni
       o@ni_pool                     <- constants$ni
       o@ns_pool                     <- constants$ns
@@ -185,8 +185,8 @@ setMethod(
       if (!is.null(include_items_for_estimation)) {
         augment_item_pool  <- include_items_for_estimation[[j]]$administered_item_pool
         augment_item_resp  <- include_items_for_estimation[[j]]$administered_item_resp
-        augment_item_index <- pool@ni + 1:augment_item_pool@ni
-        augmented_pool <- combineItemPool(pool, augment_item_pool, unique = FALSE, verbose = FALSE)
+        augment_item_index <- item_pool@ni + 1:augment_item_pool@ni
+        augmented_item_pool <- combineItemPool(item_pool, augment_item_pool, unique = FALSE, verbose = FALSE)
       }
 
       # Simulee: administer items
@@ -199,7 +199,7 @@ setMethod(
         info_current_theta <- computeInfoAtCurrentTheta(
           config@item_selection, j,
           current_theta,
-          pool,
+          item_pool,
           model,
           posterior_record,
           info_fixed_theta,               # Only used if config@item_selection$method = "FIXED"
@@ -292,7 +292,7 @@ setMethod(
 
         # Item position / simulee: record which item was administered
 
-        o@administered_item_ncat[position] <- pool@NCAT[o@administered_item_index[position]]
+        o@administered_item_ncat[position] <- item_pool@NCAT[o@administered_item_index[position]]
 
         # Item position / simulee: simulate examinee response
 
@@ -300,7 +300,7 @@ setMethod(
           # if seed is available, generate response data on the fly
           set.seed((seed * 345) + (j * 123) + o@administered_item_index[position])
           o@administered_item_resp[position] <- simResp(
-            pool[o@administered_item_index[position]],
+            item_pool[o@administered_item_index[position]],
             o@true_theta
           )
         }
@@ -336,14 +336,14 @@ setMethod(
           prob_resp_supplied_items <- apply(prob_resp_supplied_items, 1, prod)
 
           augmented_posterior_record <- updatePosterior(posterior_record, j, prob_resp_supplied_items)
-          augmented_pool             <- augmented_pool
+          augmented_item_pool        <- augmented_item_pool
           augmented_item_index       <- c(augment_item_index, o@administered_item_index[1:position])
           augmented_item_resp        <- c(augment_item_resp,  o@administered_item_resp[1:position])
 
         } else {
 
           augmented_posterior_record <- posterior_record
-          augmented_pool             <- pool
+          augmented_item_pool        <- item_pool
           augmented_item_index       <- o@administered_item_index[1:position]
           augmented_item_resp        <- o@administered_item_resp[1:position]
 
@@ -355,7 +355,7 @@ setMethod(
           o, j, position,
           current_theta,
           augmented_posterior_record, posterior_record,
-          augmented_pool, pool, model,
+          augmented_item_pool, item_pool, model,
           augmented_item_index,
           augmented_item_resp,
           include_items_for_estimation,
@@ -386,7 +386,7 @@ setMethod(
       # Simulee: test complete, estimate theta
       o <- estimateFinalTheta(
         o, j, position,
-        augmented_pool, pool, model,
+        augmented_item_pool, item_pool, model,
         augment_item_index,
         augment_item_resp,
         include_items_for_estimation,
@@ -460,7 +460,7 @@ setMethod(
 
     o                             <- new("output_Shadow_all")
     o@output                      <- o_list
-    o@pool                        <- pool
+    o@pool                        <- item_pool
     o@config                      <- config
     o@true_theta                  <- true_theta
     o@constraints                 <- constraints

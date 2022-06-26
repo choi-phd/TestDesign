@@ -96,20 +96,20 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
     }
   }
 
-  pool       <- new("item_pool")
-  pool@raw   <- ipar
-  ni         <- nrow(ipar)
-  pool@index <- 1:ni
-  pool@id    <- as.character(ipar[[1]])
-  model      <- ipar[[2]]
-  NCAT       <- numeric(ni)
-  parms      <- vector(mode = "list", length = ni)
-  n_values   <- rowSums(!is.na(ipar))
-  n_nonpars  <- 2
-  n_pars     <- n_values - n_nonpars
-  valid      <- logical(ni)
-  pool@ipar  <- matrix(NA, nrow = ni, ncol = max(n_pars))
-  pool@se    <- matrix(NA, nrow = ni, ncol = max(n_pars))
+  item_pool       <- new("item_pool")
+  item_pool@raw   <- ipar
+  ni              <- nrow(ipar)
+  item_pool@index <- 1:ni
+  item_pool@id    <- as.character(ipar[[1]])
+  model           <- ipar[[2]]
+  NCAT            <- numeric(ni)
+  parms           <- vector(mode = "list", length = ni)
+  n_values        <- rowSums(!is.na(ipar))
+  n_nonpars       <- 2
+  n_pars          <- n_values - n_nonpars
+  valid           <- logical(ni)
+  item_pool@ipar  <- matrix(NA, nrow = ni, ncol = max(n_pars))
+  item_pool@se    <- matrix(NA, nrow = ni, ncol = max(n_pars))
 
   # parse parameter SEs
   while (!is.null(ipar_se)) {
@@ -143,11 +143,11 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
 
       valid[i] <- TRUE
 
-      pool@model[i] <- "item_1PL"
+      item_pool@model[i] <- "item_1PL"
       parms[[i]] <- new("item_1PL", difficulty = b)
 
-      pool@ipar[i, 1] <- b
-      pool@se[  i, 1] <- b_se
+      item_pool@ipar[i, 1] <- b
+      item_pool@se[  i, 1] <- b_se
 
       next
 
@@ -164,11 +164,11 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
       if (a <= 0) { valid[i] <- FALSE; next }
       valid[i] <- TRUE
 
-      pool@model[i] <- "item_2PL"
+      item_pool@model[i] <- "item_2PL"
       parms[[i]] <- new("item_2PL", slope = a, difficulty = b)
 
-      pool@ipar[i, 1:2] <- c(a   , b)
-      pool@se[  i, 1:2] <- c(a_se, b_se)
+      item_pool@ipar[i, 1:2] <- c(a   , b)
+      item_pool@se[  i, 1:2] <- c(a_se, b_se)
 
       next
 
@@ -189,11 +189,11 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
       if (c >= 1) { valid[i] <- FALSE; next }
       valid[i] <- TRUE
 
-      pool@model[i] <- "item_3PL"
+      item_pool@model[i] <- "item_3PL"
       parms[[i]] <- new("item_3PL", slope = a, difficulty = b, guessing = c)
 
-      pool@ipar[i, 1:3] <- c(a   , b   , c)
-      pool@se[  i, 1:3] <- c(a_se, b_se, c_se)
+      item_pool@ipar[i, 1:3] <- c(a   , b   , c)
+      item_pool@se[  i, 1:3] <- c(a_se, b_se, c_se)
 
       next
 
@@ -207,11 +207,11 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
 
       valid[i] <- TRUE
 
-      pool@model[i] <- "item_PC"
+      item_pool@model[i] <- "item_PC"
       parms[[i]] <- new("item_PC", threshold = b, ncat = NCAT[i])
 
-      pool@ipar[i, 1:n_pars[i]] <- b
-      pool@se[  i, 1:n_pars[i]] <- b_se
+      item_pool@ipar[i, 1:n_pars[i]] <- b
+      item_pool@se[  i, 1:n_pars[i]] <- b_se
 
       next
 
@@ -228,11 +228,11 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
       if (a <= 0) { valid[i] <- FALSE; next }
       valid[i] <- TRUE
 
-      pool@model[i] <- "item_GPC"
+      item_pool@model[i] <- "item_GPC"
       parms[[i]] <- new("item_GPC", slope = a, threshold = b, ncat = NCAT[i])
 
-      pool@ipar[i, 1:n_pars[i]] <- c(a   , b)
-      pool@se[  i, 1:n_pars[i]] <- c(a_se, b_se)
+      item_pool@ipar[i, 1:n_pars[i]] <- c(a   , b)
+      item_pool@se[  i, 1:n_pars[i]] <- c(a_se, b_se)
 
       next
 
@@ -250,11 +250,11 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
       if (is.unsorted(b)) { valid[i] <- FALSE; next }
       valid[i] <- TRUE
 
-      pool@model[i] <- "item_GR"
+      item_pool@model[i] <- "item_GR"
       parms[[i]] <- new("item_GR", slope = a, category = b, ncat = NCAT[i])
 
-      pool@ipar[i, 1:n_pars[i]] <- c(a   , b)
-      pool@se[  i, 1:n_pars[i]] <- c(a_se, b_se)
+      item_pool@ipar[i, 1:n_pars[i]] <- c(a   , b)
+      item_pool@se[  i, 1:n_pars[i]] <- c(a_se, b_se)
 
       next
 
@@ -272,19 +272,19 @@ loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, uniq
     stop(paste("Check the parameters for the following item(s):", paste((1:ni)[!valid], collapse = ", "), "\n"))
   }
 
-  pool@ni <- ni
-  pool@max_cat <- max(NCAT)
-  pool@NCAT <- NCAT
-  pool@parms <- parms
+  item_pool@ni <- ni
+  item_pool@max_cat <- max(NCAT)
+  item_pool@NCAT <- NCAT
+  item_pool@parms <- parms
 
-  tmp <- pool@raw
-  tmp[, 2 + 1:max(n_pars)] <- pool@se
-  pool@raw_se <- tmp
+  tmp <- item_pool@raw
+  tmp[, 2 + 1:max(n_pars)] <- item_pool@se
+  item_pool@raw_se <- tmp
 
-  pool@unique <- unique
+  item_pool@unique <- unique
 
-  if (validObject(pool)) {
-    return(pool)
+  if (validObject(item_pool)) {
+    return(item_pool)
   }
 }
 

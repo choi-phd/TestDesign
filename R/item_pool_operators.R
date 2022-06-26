@@ -141,12 +141,12 @@ setMethod(
   f = "c",
   signature = "item_pool",
   definition = function(x, ...) {
-    arg  <- list(...)
-    pool <- x
+    arg <- list(...)
+    item_pool <- x
     for (p in arg) {
-      pool <- combineItemPool(pool, p)
+      item_pool <- combineItemPool(item_pool, p)
     }
-    return(pool)
+    return(item_pool)
   }
 )
 
