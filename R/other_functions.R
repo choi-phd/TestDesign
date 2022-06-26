@@ -201,8 +201,8 @@ getInfoFixedTheta <- function(item_selection, constants, pool, model) {
 #' @noRd
 computeInfoAtCurrentTheta <- function(
   item_selection, j,
-  info_fixed_theta,
   current_theta, pool, model, posterior_record,
+  info_fixed_theta,
   info_grid
 ) {
 

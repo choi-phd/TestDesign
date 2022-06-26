@@ -194,11 +194,11 @@ setMethod(
         position <- position + 1
         info_current_theta <- computeInfoAtCurrentTheta(
           config@item_selection, j,
-          info_fixed_theta,               # Only used if config@item_selection$method = "FIXED"
           current_theta,
           pool,
           model,
           posterior_record,
+          info_fixed_theta,               # Only used if config@item_selection$method = "FIXED"
           simulation_data_cache@info_grid # Only used if config@item_selection$method = "MPWI"
         )
 
