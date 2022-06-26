@@ -106,6 +106,10 @@ getConstants <- function(constraints, config, arg_data, true_theta, max_info) {
   } else {
     o$use_eligibility_control <- FALSE
   }
+  o$exposure_M <- config@exposure_control$M
+  if (is.null(o$exposure_M)) {
+    o$exposure_M <- max_info + 1
+  }
 
   o$max_exposure_rate   <- config@exposure_control$max_exposure_rate
   o$fading_factor       <- config@exposure_control$fading_factor
@@ -118,8 +122,6 @@ getConstants <- function(constraints, config, arg_data, true_theta, max_info) {
   if (!length(o$max_exposure_rate) %in% c(1, o$n_segment)) {
     stop("length(max_exposure_rate) must be 1 or n_segment")
   }
-
-  o$max_info <- max_info
 
   return(o)
 
