@@ -69,7 +69,7 @@ getPosteriorConstants <- function(config) {
 #' @noRd
 generateDistributionFromPriorPar <- function(dist_type, prior_par, theta_q, nj) {
 
-  nq <- length(theta_q)
+  nq <- nrow(theta_q)
   m  <- NULL
 
   if (dist_type == "NORMAL" && is.vector(prior_par) && length(prior_par) == 2) {
