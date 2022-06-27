@@ -8,6 +8,7 @@ getConstants <- function(constraints, config, arg_data, true_theta, max_info) {
   o$ni <- constraints@ni
   o$ns <- constraints@ns
   o$nv <- constraints@nv
+  o$nd <- 1
   o$theta_q <- config@theta_grid
   if (inherits(o$theta_q, "numeric")) {
     o$theta_q <- matrix(o$theta_q, , 1)

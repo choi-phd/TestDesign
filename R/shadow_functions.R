@@ -138,8 +138,8 @@ setMethod(
       o@administered_item_resp      <- rep(NA_real_, constants$max_ni)
       o@administered_stimulus_index <- NaN
       o@theta_segment_index         <- rep(NA_real_, constants$max_ni)
-      o@interim_theta_est           <- rep(NA_real_, constants$max_ni)
-      o@interim_se_est              <- rep(NA_real_, constants$max_ni)
+      o@interim_theta_est           <- matrix(NA_real_, constants$max_ni, constants$nd)
+      o@interim_se_est              <- matrix(NA_real_, constants$max_ni, constants$nd)
       o@shadow_test                 <- vector("list", constants$max_ni)
       o@max_cat_pool                <- item_pool@max_cat
       o@test_length_constraints     <- constants$max_ni
