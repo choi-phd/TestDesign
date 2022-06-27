@@ -137,13 +137,17 @@ setMethod(
   }
 
   if (plot_sum) {
-    plot(theta, y, xlab = "Theta", ylab = txt,
-         main = sprintf("%s from %s %i items", txt, txt_s, length(items)),
-         type = "l", col = color, ylim = ylim, ...)
+    plot(
+      theta, y, xlab = "Theta", ylab = txt,
+      main = sprintf("%s from %s %i items", txt, txt_s, length(items)),
+      type = "l", col = color, ylim = ylim, ...
+    )
   } else {
-    plot(theta, y[, items], xlab = "Theta", ylab = txt,
-        main = x@id[items],
-        type = "l", col = color, ylim = ylim, ...)
+    plot(
+      theta, y[, items], xlab = "Theta", ylab = txt,
+      main = x@id[items],
+      type = "l", col = color, ylim = ylim, ...
+    )
   }
 
   box()
