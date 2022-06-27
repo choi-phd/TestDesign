@@ -339,82 +339,14 @@ setMethod(
 ) {
 
   if (type == "audit") {
-
-    if (use_par) {
-      old_par <- par(no.readonly = TRUE)
-      on.exit({
-        par(old_par)
-      })
-      par(mar = c(2, 3, 1, 1) + 0.1)
-    }
-
-    n_items <- length(x@administered_item_index)
-    min_theta <- theta_range[1]
-    max_theta <- theta_range[2]
-
-    layout(rbind(c(1, 1), c(1, 1), c(1, 1), c(1, 1), c(2, 2)))
-
-    plot(1:n_items, seq(min_theta, max_theta, length = n_items), ylab = "Theta", type = "n", las = 1, xlim = c(0, n_items), xaxt = "n", yaxt = "n")
-    grid()
-
-    text(n_items / 2, max_theta, paste0("Examinee ID: ", x@simulee_id), adj = c(0.5, 0.5), cex = 2)
-    axis(1, at = 0:n_items, tick = TRUE, labels = 0:n_items, cex.axis = 1.5)
-    axis(2, at = min_theta:max_theta, labels = min_theta:max_theta, cex.axis = 1.5)
-    text(0.5, min_theta + 1.0, paste("Final Theta: ", round(x@final_theta_est, digits = 2), " SE: ", round(x@final_se_est, digits = 2)), cex = 1.5, adj = 0)
-
-    for (i in 1:n_items) {
-      ci_lower = x@interim_theta_est[i] - z_ci * x@interim_se_est[i]
-      ci_upper = x@interim_theta_est[i] + z_ci * x@interim_se_est[i]
-      lines(rep(i, 2)            , c(ci_lower, ci_upper), col = "purple4")
-      lines(c(i - 0.25, i + 0.25), c(ci_lower, ci_lower), col = "purple4")
-      lines(c(i - 0.25, i + 0.25), c(ci_upper, ci_upper), col = "purple4")
-    }
-    lines(0:n_items, c(x@initial_theta_est, x@interim_theta_est), lty = 3, col = "blue", lwd = 1.5)
-    points(0:n_items, c(x@initial_theta_est, x@interim_theta_est), pch = 16, cex = 2.5, col = "blue")
-    points(0:n_items, c(x@initial_theta_est, x@interim_theta_est), pch = 1, cex = 2.5, col = "purple4")
-    if (!is.null(x@true_theta)) {
-      abline(h = x@true_theta, lty = 1, col = "red")
-    }
-    for (i in 1:n_items) {
-      if (x@shadow_test_refreshed[i]) {
-        text(i, min_theta, "S", col = "red", cex = 1.5)
-      }
-    }
-
-    min_score <- 0
-    max_score <- x@max_cat_pool
-    plot(
-      1:n_items, seq(min_score, max_score, length.out = n_items),
-      type = "n", xaxt = "n", yaxt = "n",
-      xlim = c(0, n_items),
-      ylim = c(min_score - 1, max_score + 1),
-      ylab = "")
-    mtext("Position", side = 1, line = 1, outer = FALSE, cex = 1.5)
-    axis(2, at = (min_score + max_score) / 2, labels = "Response", cex.axis = 2, tick = FALSE)
-    for (i in 1:n_items) {
-      rect_x <- i
-      rect_y <- x@administered_item_resp[i]
-      if (!is.na(rect_y)) {
-
-        if (x@administered_item_ncat[i] == 2) {
-          if (x@administered_item_resp[i] == min_score) {
-            rect_col = "red"
-          } else {
-            rect_col = "lime green"
-          }
-        } else {
-          rect_col = "cyan2"
-        }
-        for (ii in 0:rect_y) {
-          rect(rect_x - 0.25, ii - 1, rect_x + 0.25, ii, col = rect_col, border = "black")
-        }
-
-      }
-
-    }
-
+    plotShadowAudit(
+      x,
+      theta_range,
+      z_ci,
+      use_par,
+      ...
+    )
     return(invisible(NULL))
-
   }
 
   if (type == "shadow") {
@@ -681,6 +613,9 @@ setMethod(
   if (!type %in% c("audit", "shadow", "info", "score", "exposure")) {
     stop("plot(output_Shadow_all): 'type' must be 'audit', 'shadow', 'info', 'score', or 'exposure'")
   }
+  if (!all(examinee_id %in% 1:length(x@output))) {
+    stop("plot(output_Shadow_all): 'examinee_id' out of bounds")
+  }
 
   if (type == "info") {
     plotShadowInfo(
@@ -696,7 +631,7 @@ setMethod(
 
   if (type == "audit") {
     plotShadowAudit(
-      x, examinee_id,
+      x@output[[examinee_id]],
       theta_range,
       z_ci,
       use_par,
@@ -865,19 +800,81 @@ plotShadowInfo <- function(x, examinee_id, position, info_type, ylim, theta, col
 }
 
 #' @noRd
-plotShadowAudit <- function(x, examinee_id, theta_range, z_ci, use_par, ...) {
+plotShadowAudit <- function(x, theta_range, z_ci, use_par, ...) {
 
-  if (!all(examinee_id %in% 1:length(x@output))) {
-    stop("plot(output_Shadow_all): 'examinee_id' out of bounds")
+  if (use_par) {
+    old_par <- par(no.readonly = TRUE)
+    on.exit({
+      par(old_par)
+    })
+    par(mar = c(2, 3, 1, 1) + 0.1)
   }
+
+  n_items <- length(x@administered_item_index)
+  min_theta <- theta_range[1]
+  max_theta <- theta_range[2]
+
+  layout(rbind(c(1, 1), c(1, 1), c(1, 1), c(1, 1), c(2, 2)))
+
+  plot(1:n_items, seq(min_theta, max_theta, length = n_items), ylab = "Theta", type = "n", las = 1, xlim = c(0, n_items), xaxt = "n", yaxt = "n")
+  grid()
+
+  text(n_items / 2, max_theta, paste0("Examinee ID: ", x@simulee_id), adj = c(0.5, 0.5), cex = 2)
+  axis(1, at = 0:n_items, tick = TRUE, labels = 0:n_items, cex.axis = 1.5)
+  axis(2, at = min_theta:max_theta, labels = min_theta:max_theta, cex.axis = 1.5)
+  text(0.5, min_theta + 1.0, paste("Final Theta: ", round(x@final_theta_est, digits = 2), " SE: ", round(x@final_se_est, digits = 2)), cex = 1.5, adj = 0)
+
+  for (i in 1:n_items) {
+    ci_lower = x@interim_theta_est[i] - z_ci * x@interim_se_est[i]
+    ci_upper = x@interim_theta_est[i] + z_ci * x@interim_se_est[i]
+    lines(rep(i, 2)            , c(ci_lower, ci_upper), col = "purple4")
+    lines(c(i - 0.25, i + 0.25), c(ci_lower, ci_lower), col = "purple4")
+    lines(c(i - 0.25, i + 0.25), c(ci_upper, ci_upper), col = "purple4")
+  }
+  lines(0:n_items, c(x@initial_theta_est, x@interim_theta_est), lty = 3, col = "blue", lwd = 1.5)
+  points(0:n_items, c(x@initial_theta_est, x@interim_theta_est), pch = 16, cex = 2.5, col = "blue")
+  points(0:n_items, c(x@initial_theta_est, x@interim_theta_est), pch = 1, cex = 2.5, col = "purple4")
+  if (!is.null(x@true_theta)) {
+    abline(h = x@true_theta, lty = 1, col = "red")
+  }
+  for (i in 1:n_items) {
+    if (x@shadow_test_refreshed[i]) {
+      text(i, min_theta, "S", col = "red", cex = 1.5)
+    }
+  }
+
+  min_score <- 0
+  max_score <- x@max_cat_pool
   plot(
-    x@output[[examinee_id]],
-    type = "audit",
-    theta_range = theta_range,
-    z_ci = z_ci,
-    use_par = use_par,
-    ...
-  )
+    1:n_items, seq(min_score, max_score, length.out = n_items),
+    type = "n", xaxt = "n", yaxt = "n",
+    xlim = c(0, n_items),
+    ylim = c(min_score - 1, max_score + 1),
+    ylab = "")
+  mtext("Position", side = 1, line = 1, outer = FALSE, cex = 1.5)
+  axis(2, at = (min_score + max_score) / 2, labels = "Response", cex.axis = 2, tick = FALSE)
+  for (i in 1:n_items) {
+    rect_x <- i
+    rect_y <- x@administered_item_resp[i]
+    if (!is.na(rect_y)) {
+
+      if (x@administered_item_ncat[i] == 2) {
+        if (x@administered_item_resp[i] == min_score) {
+          rect_col = "red"
+        } else {
+          rect_col = "lime green"
+        }
+      } else {
+        rect_col = "cyan2"
+      }
+      for (ii in 0:rect_y) {
+        rect(rect_x - 0.25, ii - 1, rect_x + 0.25, ii, col = rect_col, border = "black")
+      }
+
+    }
+
+  }
+
   return(invisible(NULL))
 
 }
