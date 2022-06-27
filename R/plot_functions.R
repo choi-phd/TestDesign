@@ -98,59 +98,59 @@ setMethod(
     rmse = FALSE,
     use_segment_label = TRUE,
     use_par = TRUE,
-    ...) {
+    ...
+) {
 
-    if (!is.null(select)) {
-      if (all(select %in% 1:x@ni)) {
-        items <- select
-      } else {
-        stop("'select' is out of bounds")
-      }
-      txt_s <- "selected"
+  if (!is.null(select)) {
+    if (all(select %in% 1:x@ni)) {
+      items <- select
     } else {
-      items <- 1:x@ni
-      txt_s <- "all"
+      stop("'select' is out of bounds")
     }
-
-    if (type == "info") {
-      if (toupper(info_type) == "FISHER") {
-        y <- calcFisher(subsetItemPool(x, items), theta)
-      } else {
-        stop("Invalid info_type specified")
-      }
-      txt <- "Information"
-    } else if (type == "score") {
-      y <- calcProb(subsetItemPool(x, items), theta)
-      y <- sapply(y, function(l) l %*% ((1:dim(l)[2]) - 1), simplify = TRUE)
-      txt <- "Expected score"
-    } else {
-      stop("'type' should be either 'info' or 'score' for an item_pool object")
-    }
-
-    if (plot_sum) {
-      y <- rowSums(y)
-    }
-
-    if (is.null(ylim)) {
-      ylim <- c(0, max(y))
-    }
-
-    if (plot_sum) {
-      plot(theta, y, xlab = "Theta", ylab = txt,
-           main = sprintf("%s from %s %i items", txt, txt_s, length(items)),
-           type = "l", col = color, ylim = ylim, ...)
-    } else {
-      plot(theta, y[, items], xlab = "Theta", ylab = txt,
-          main = x@id[items],
-          type = "l", col = color, ylim = ylim, ...)
-    }
-
-    box()
-
-    return(invisible(NULL))
-
+    txt_s <- "selected"
+  } else {
+    items <- 1:x@ni
+    txt_s <- "all"
   }
-)
+
+  if (type == "info") {
+    if (toupper(info_type) == "FISHER") {
+      y <- calcFisher(subsetItemPool(x, items), theta)
+    } else {
+      stop("Invalid info_type specified")
+    }
+    txt <- "Information"
+  } else if (type == "score") {
+    y <- calcProb(subsetItemPool(x, items), theta)
+    y <- sapply(y, function(l) l %*% ((1:dim(l)[2]) - 1), simplify = TRUE)
+    txt <- "Expected score"
+  } else {
+    stop("'type' should be either 'info' or 'score' for an item_pool object")
+  }
+
+  if (plot_sum) {
+    y <- rowSums(y)
+  }
+
+  if (is.null(ylim)) {
+    ylim <- c(0, max(y))
+  }
+
+  if (plot_sum) {
+    plot(theta, y, xlab = "Theta", ylab = txt,
+         main = sprintf("%s from %s %i items", txt, txt_s, length(items)),
+         type = "l", col = color, ylim = ylim, ...)
+  } else {
+    plot(theta, y[, items], xlab = "Theta", ylab = txt,
+        main = x@id[items],
+        type = "l", col = color, ylim = ylim, ...)
+  }
+
+  box()
+
+  return(invisible(NULL))
+
+})
 
 #' @docType methods
 #' @rdname plot-methods
@@ -172,88 +172,88 @@ setMethod(
     z_ci = 1.96,
     simple = TRUE,
     use_par = TRUE,
-    ...) {
+    ...
+) {
 
-    config      <- x@config
-    constraints <- x@constraints
-    continuum   <- theta
-    continuum   <- sort(c(continuum, config@item_selection$target_location))
-    idx <- which(x@MIP[[1]]$solution[1:constraints@ni] == 1)
+  config      <- x@config
+  constraints <- x@constraints
+  continuum   <- theta
+  continuum   <- sort(c(continuum, config@item_selection$target_location))
+  idx <- which(x@MIP[[1]]$solution[1:constraints@ni] == 1)
 
-    if (toupper(config@item_selection$method) == "MAXINFO") {
-      plot_type <- "info"
-    }
-    if (toupper(config@item_selection$method) == "TIF") {
-      plot_type <- "info"
-    }
-    if (toupper(config@item_selection$method) == "TCC") {
-      plot_type <- "score"
-    }
-
-    type_overridden <- FALSE
-    if (!is.null(type)) {
-      if (plot_type != type) {
-        plot_type <- type
-        type_overridden <- TRUE
-      }
-    }
-
-    if (plot_type == "info") {
-      mat_sub <- calcFisher(constraints@pool, continuum)[, idx]
-      vec_sub <- apply(mat_sub, 1, sum)
-      ylab    <- "Information"
-      title   <- "Test Information Function based on the assembled test"
-    }
-    if (plot_type == "score") {
-      l <- calcProb(constraints@pool, continuum)[idx]
-      for (i in 1:length(l)) {
-        prob_mat  <- l[[i]]
-        max_score <- dim(prob_mat)[2] - 1
-        prob_mat  <- prob_mat * matrix(c(0:max_score), dim(prob_mat)[1], dim(prob_mat)[2], byrow = T)
-        l[[i]]    <- apply(prob_mat, 1, sum)
-      }
-      vec_sub <- Reduce("+", l)
-      ylab    <- "Expected Score"
-      title   <- "Test Characteristic Curve based on the assembled test"
-    }
-
-    if (is.null(ylim)) {
-      ymax <- max(vec_sub, config@item_selection$target_value)
-      ylim <- c(0, ymax)
-    }
-
-    # Begin plot
-
-    plot(
-      continuum, vec_sub,
-      xlim = c(min(continuum), max(continuum)), ylim = ylim,
-      main = title, xlab = "Theta", ylab = ylab, type = "n", bty = "n", ...
-    )
-
-    if (!type_overridden) {
-      if (toupper(config@item_selection$method) != "MAXINFO") {
-        abline(h = config@item_selection$target_value, lty = 3, lwd = 1)
-      }
-      abline(v = config@item_selection$target_location, lty = 3, lwd = 1)
-    }
-
-    lines(continuum, vec_sub, lty = 1, lwd = 1, col = color)
-
-    if (!type_overridden) {
-      legend(
-      "topleft",
-      "Target locations",
-      bty = "o", bg = "white",
-      box.lty = 0, box.lwd = 0, box.col = "white",
-      lty = 3, lwd = 1, seg.len = 1, inset = c(0, .01))
-    }
-
-    box()
-
-    return(invisible(NULL))
-
+  if (toupper(config@item_selection$method) == "MAXINFO") {
+    plot_type <- "info"
   }
-)
+  if (toupper(config@item_selection$method) == "TIF") {
+    plot_type <- "info"
+  }
+  if (toupper(config@item_selection$method) == "TCC") {
+    plot_type <- "score"
+  }
+
+  type_overridden <- FALSE
+  if (!is.null(type)) {
+    if (plot_type != type) {
+      plot_type <- type
+      type_overridden <- TRUE
+    }
+  }
+
+  if (plot_type == "info") {
+    mat_sub <- calcFisher(constraints@pool, continuum)[, idx]
+    vec_sub <- apply(mat_sub, 1, sum)
+    ylab    <- "Information"
+    title   <- "Test Information Function based on the assembled test"
+  }
+  if (plot_type == "score") {
+    l <- calcProb(constraints@pool, continuum)[idx]
+    for (i in 1:length(l)) {
+      prob_mat  <- l[[i]]
+      max_score <- dim(prob_mat)[2] - 1
+      prob_mat  <- prob_mat * matrix(c(0:max_score), dim(prob_mat)[1], dim(prob_mat)[2], byrow = T)
+      l[[i]]    <- apply(prob_mat, 1, sum)
+    }
+    vec_sub <- Reduce("+", l)
+    ylab    <- "Expected Score"
+    title   <- "Test Characteristic Curve based on the assembled test"
+  }
+
+  if (is.null(ylim)) {
+    ymax <- max(vec_sub, config@item_selection$target_value)
+    ylim <- c(0, ymax)
+  }
+
+  # Begin plot
+
+  plot(
+    continuum, vec_sub,
+    xlim = c(min(continuum), max(continuum)), ylim = ylim,
+    main = title, xlab = "Theta", ylab = ylab, type = "n", bty = "n", ...
+  )
+
+  if (!type_overridden) {
+    if (toupper(config@item_selection$method) != "MAXINFO") {
+      abline(h = config@item_selection$target_value, lty = 3, lwd = 1)
+    }
+    abline(v = config@item_selection$target_location, lty = 3, lwd = 1)
+  }
+
+  lines(continuum, vec_sub, lty = 1, lwd = 1, col = color)
+
+  if (!type_overridden) {
+    legend(
+    "topleft",
+    "Target locations",
+    bty = "o", bg = "white",
+    box.lty = 0, box.lwd = 0, box.col = "white",
+    lty = 3, lwd = 1, seg.len = 1, inset = c(0, .01))
+  }
+
+  box()
+
+  return(invisible(NULL))
+
+})
 
 #' @docType methods
 #' @rdname plot-methods
@@ -275,45 +275,45 @@ setMethod(
     z_ci = 1.96,
     simple = TRUE,
     use_par = TRUE,
-    ...) {
+    ...
+) {
 
-    if (!type == "info") {
-      stop("'type' should be 'info' for constraints")
-    }
-    idx_n_items <- which(
-      toupper(x@constraints[["WHAT"]]) == "ITEM" &
-        toupper(x@constraints[["CONDITION"]]) == "")
-    n_items <- x@constraints[idx_n_items, ]["LB"][1, 1]
-    max_info <- numeric(length(theta))
-    for (i in 1:length(theta)) {
-      max_info[i] <- sum(sort(calcFisher(x@pool, theta[i]), TRUE)[1:n_items])
-    }
-    mean_info <- calcFisher(x@pool, theta)
-    mean_info <- apply(mean_info, 1, mean)
-    mean_info <- mean_info * n_items
-
-    if (is.null(ylim)) {
-      ylim <- c(0, max(max_info))
-    }
-
-    # Begin plot
-    tmp = sprintf("Maximum attainable test information and the randomly selected information")
-    plot(
-      0, 0,
-      type = "n", xlim = c(-3, 3), ylim = ylim,
-      xlab = "Theta", ylab = "Information", main = "Test information based on best items vs. random selection",
-      ...
-    )
-    grid()
-    lines(theta, max_info,  lty = 1, lwd = 1, col = color)
-    lines(theta, mean_info, lty = 2, lwd = 1, col = color)
-
-    box()
-
-    return(invisible(NULL))
-
+  if (!type == "info") {
+    stop("'type' should be 'info' for constraints")
   }
-)
+  idx_n_items <- which(
+    toupper(x@constraints[["WHAT"]]) == "ITEM" &
+      toupper(x@constraints[["CONDITION"]]) == "")
+  n_items <- x@constraints[idx_n_items, ]["LB"][1, 1]
+  max_info <- numeric(length(theta))
+  for (i in 1:length(theta)) {
+    max_info[i] <- sum(sort(calcFisher(x@pool, theta[i]), TRUE)[1:n_items])
+  }
+  mean_info <- calcFisher(x@pool, theta)
+  mean_info <- apply(mean_info, 1, mean)
+  mean_info <- mean_info * n_items
+
+  if (is.null(ylim)) {
+    ylim <- c(0, max(max_info))
+  }
+
+  # Begin plot
+  tmp = sprintf("Maximum attainable test information and the randomly selected information")
+  plot(
+    0, 0,
+    type = "n", xlim = c(-3, 3), ylim = ylim,
+    xlab = "Theta", ylab = "Information", main = "Test information based on best items vs. random selection",
+    ...
+  )
+  grid()
+  lines(theta, max_info,  lty = 1, lwd = 1, col = color)
+  lines(theta, mean_info, lty = 2, lwd = 1, col = color)
+
+  box()
+
+  return(invisible(NULL))
+
+})
 
 #' @docType methods
 #' @rdname plot-methods
@@ -335,315 +335,315 @@ setMethod(
     simple = FALSE,
     theta_type = "Estimated",
     use_par = TRUE,
-    ...) {
+    ...
+) {
 
-    if (type == "audit") {
+  if (type == "audit") {
 
-      if (use_par) {
-        old_par <- par(no.readonly = TRUE)
-        on.exit({
-          par(old_par)
-        })
-        par(mar = c(2, 3, 1, 1) + 0.1)
-      }
-
-      n_items <- length(x@administered_item_index)
-      min_theta <- theta_range[1]
-      max_theta <- theta_range[2]
-
-      layout(rbind(c(1, 1), c(1, 1), c(1, 1), c(1, 1), c(2, 2)))
-
-      plot(1:n_items, seq(min_theta, max_theta, length = n_items), ylab = "Theta", type = "n", las = 1, xlim = c(0, n_items), xaxt = "n", yaxt = "n")
-      grid()
-
-      text(n_items / 2, max_theta, paste0("Examinee ID: ", x@simulee_id), adj = c(0.5, 0.5), cex = 2)
-      axis(1, at = 0:n_items, tick = TRUE, labels = 0:n_items, cex.axis = 1.5)
-      axis(2, at = min_theta:max_theta, labels = min_theta:max_theta, cex.axis = 1.5)
-      text(0.5, min_theta + 1.0, paste("Final Theta: ", round(x@final_theta_est, digits = 2), " SE: ", round(x@final_se_est, digits = 2)), cex = 1.5, adj = 0)
-
-      for (i in 1:n_items) {
-        ci_lower = x@interim_theta_est[i] - z_ci * x@interim_se_est[i]
-        ci_upper = x@interim_theta_est[i] + z_ci * x@interim_se_est[i]
-        lines(rep(i, 2)            , c(ci_lower, ci_upper), col = "purple4")
-        lines(c(i - 0.25, i + 0.25), c(ci_lower, ci_lower), col = "purple4")
-        lines(c(i - 0.25, i + 0.25), c(ci_upper, ci_upper), col = "purple4")
-      }
-      lines(0:n_items, c(x@initial_theta_est, x@interim_theta_est), lty = 3, col = "blue", lwd = 1.5)
-      points(0:n_items, c(x@initial_theta_est, x@interim_theta_est), pch = 16, cex = 2.5, col = "blue")
-      points(0:n_items, c(x@initial_theta_est, x@interim_theta_est), pch = 1, cex = 2.5, col = "purple4")
-      if (!is.null(x@true_theta)) {
-        abline(h = x@true_theta, lty = 1, col = "red")
-      }
-      for (i in 1:n_items) {
-        if (x@shadow_test_refreshed[i]) {
-          text(i, min_theta, "S", col = "red", cex = 1.5)
-        }
-      }
-
-      min_score <- 0
-      max_score <- x@max_cat_pool
-      plot(
-        1:n_items, seq(min_score, max_score, length.out = n_items),
-        type = "n", xaxt = "n", yaxt = "n",
-        xlim = c(0, n_items),
-        ylim = c(min_score - 1, max_score + 1),
-        ylab = "")
-      mtext("Position", side = 1, line = 1, outer = FALSE, cex = 1.5)
-      axis(2, at = (min_score + max_score) / 2, labels = "Response", cex.axis = 2, tick = FALSE)
-      for (i in 1:n_items) {
-        rect_x <- i
-        rect_y <- x@administered_item_resp[i]
-        if (!is.na(rect_y)) {
-
-          if (x@administered_item_ncat[i] == 2) {
-            if (x@administered_item_resp[i] == min_score) {
-              rect_col = "red"
-            } else {
-              rect_col = "lime green"
-            }
-          } else {
-            rect_col = "cyan2"
-          }
-          for (ii in 0:rect_y) {
-            rect(rect_x - 0.25, ii - 1, rect_x + 0.25, ii, col = rect_col, border = "black")
-          }
-
-        }
-
-      }
-
-      return(invisible(NULL))
-
+    if (use_par) {
+      old_par <- par(no.readonly = TRUE)
+      on.exit({
+        par(old_par)
+      })
+      par(mar = c(2, 3, 1, 1) + 0.1)
     }
 
-    if (type == "shadow") {
+    n_items <- length(x@administered_item_index)
+    min_theta <- theta_range[1]
+    max_theta <- theta_range[2]
 
-      if (use_par) {
-        old_par <- par(no.readonly = TRUE)
-        on.exit({
-          par(old_par)
-        })
-        par(mar = c(2, 3, 1, 1) + 0.1, mfrow = c(1, 1))
+    layout(rbind(c(1, 1), c(1, 1), c(1, 1), c(1, 1), c(2, 2)))
+
+    plot(1:n_items, seq(min_theta, max_theta, length = n_items), ylab = "Theta", type = "n", las = 1, xlim = c(0, n_items), xaxt = "n", yaxt = "n")
+    grid()
+
+    text(n_items / 2, max_theta, paste0("Examinee ID: ", x@simulee_id), adj = c(0.5, 0.5), cex = 2)
+    axis(1, at = 0:n_items, tick = TRUE, labels = 0:n_items, cex.axis = 1.5)
+    axis(2, at = min_theta:max_theta, labels = min_theta:max_theta, cex.axis = 1.5)
+    text(0.5, min_theta + 1.0, paste("Final Theta: ", round(x@final_theta_est, digits = 2), " SE: ", round(x@final_se_est, digits = 2)), cex = 1.5, adj = 0)
+
+    for (i in 1:n_items) {
+      ci_lower = x@interim_theta_est[i] - z_ci * x@interim_se_est[i]
+      ci_upper = x@interim_theta_est[i] + z_ci * x@interim_se_est[i]
+      lines(rep(i, 2)            , c(ci_lower, ci_upper), col = "purple4")
+      lines(c(i - 0.25, i + 0.25), c(ci_lower, ci_lower), col = "purple4")
+      lines(c(i - 0.25, i + 0.25), c(ci_upper, ci_upper), col = "purple4")
+    }
+    lines(0:n_items, c(x@initial_theta_est, x@interim_theta_est), lty = 3, col = "blue", lwd = 1.5)
+    points(0:n_items, c(x@initial_theta_est, x@interim_theta_est), pch = 16, cex = 2.5, col = "blue")
+    points(0:n_items, c(x@initial_theta_est, x@interim_theta_est), pch = 1, cex = 2.5, col = "purple4")
+    if (!is.null(x@true_theta)) {
+      abline(h = x@true_theta, lty = 1, col = "red")
+    }
+    for (i in 1:n_items) {
+      if (x@shadow_test_refreshed[i]) {
+        text(i, min_theta, "S", col = "red", cex = 1.5)
       }
+    }
 
-      test_length  <- x@test_length_constraints
-      ni_pool      <- x@ni_pool
+    min_score <- 0
+    max_score <- x@max_cat_pool
+    plot(
+      1:n_items, seq(min_score, max_score, length.out = n_items),
+      type = "n", xaxt = "n", yaxt = "n",
+      xlim = c(0, n_items),
+      ylim = c(min_score - 1, max_score + 1),
+      ylab = "")
+    mtext("Position", side = 1, line = 1, outer = FALSE, cex = 1.5)
+    axis(2, at = (min_score + max_score) / 2, labels = "Response", cex.axis = 2, tick = FALSE)
+    for (i in 1:n_items) {
+      rect_x <- i
+      rect_y <- x@administered_item_resp[i]
+      if (!is.na(rect_y)) {
 
-      max_position <- sum(!is.na(x@administered_item_resp))
-
-      item_sequence <- x@administered_item_index
-      responses     <- x@administered_item_resp
-      item_ncat     <- x@administered_item_ncat
-
-      if (simple) {
-
-        used_items <- sort(unique(unlist(lapply(x@shadow_test, function(x) x$i))))
-        ni_used <- length(used_items)
-
-        i_sorted <- unlist(x@item_index_by_stimulus)
-        i_na     <- setdiff(1:ni_pool, i_sorted)
-        i_sorted <- c(i_sorted, i_na)
-
-        i_sorted <- i_sorted[i_sorted %in% used_items]
-
-        y_map <- rep(NA, ni_pool)
-        y_map[i_sorted] <- 1:ni_used
-
-      } else {
-
-        used_items <- 1:ni_pool
-
-        i_sorted <- unlist(x@item_index_by_stimulus)
-        i_na     <- setdiff(1:ni_pool, i_sorted)
-        i_sorted <- c(i_sorted, i_na)
-
-        y_map <- numeric(ni_pool)
-        y_map[i_sorted] <- 1:ni_pool
-
-      }
-
-      plot(
-        c(0.5, test_length + 0.5),
-        c(0.5, max(y_map, na.rm = TRUE) + 0.5),
-        type = "n", las = 1, xlim = c(0, test_length),
-        xaxt = "n", yaxt = "n", ylab = "")
-
-      y_adj_3 <- (strheight("S") / 3)
-      usr <- par("usr")
-
-      text(
-        test_length / 2,
-        (usr[3] / 2),
-        "Position",
-        adj = c(0.5, 0), cex = 1.0
-      )
-      axis(
-        2, at = max(y_map, na.rm = TRUE) / 2,
-        labels = "Items", cex.axis = 1.5, tick = FALSE, line = 0
-      )
-      text(
-        test_length / 2,
-        mean(c(usr[4], max(y_map, na.rm = TRUE))),
-        paste0("Examinee ID: ", x@simulee_id),
-        adj = c(0.5, 0.5), cex = 1
-      )
-      axis(
-        1,
-        at = 1:test_length,
-        tick = TRUE,
-        labels = 1:test_length,
-        cex.axis = 0.7
-      )
-
-      if (simple) {
-        text(
-          0,
-          1:ni_used,
-          used_items,
-          adj = c(0.5, 0.5), cex = 0.7
-        )
-      } else {
-        y_grid <- floor(seq(1, ni_pool, length = 80))
-        idx <- y_map %in% y_grid
-        text(
-          0,
-          y_map[idx],
-          used_items[idx],
-          adj = c(0.5, 0.5), cex = 0.7
-        )
-      }
-
-      # item grid
-
-      for (p in 1:max_position) {
-        for (y in na.omit(unique(y_map))) {
-          rect(
-            p - 0.25, y - 0.25,
-            p + 0.25, y + 0.25,
-            border = "gray88", lwd = 0.3
-          )
-        }
-        if (x@shadow_test_refreshed[p]) {
-          mtext(
-            "S", at = p,
-            side = 1, line = 0.3, col = "red", adj = c(0.5, 0.5), cex = 0.7)
-        }
-      }
-
-      # stimulus grid
-
-      if (x@set_based) {
-
-        for (s in 1:x@ns_pool) {
-
-          i_in_s <- x@item_index_by_stimulus[[s]]
-
-          if (!is.null(i_in_s)) {
-            i_in_s <- i_in_s[i_in_s %in% used_items]
-            if (length(i_in_s) > 0) {
-              for (p in 1:max_position) {
-                rect(
-                  p - 0.35, min(y_map[i_in_s]) - 0.5,
-                  p + 0.35, max(y_map[i_in_s]) + 0.5,
-                  border = "gray88", lwd = 0.5
-                )
-              }
-            }
+        if (x@administered_item_ncat[i] == 2) {
+          if (x@administered_item_resp[i] == min_score) {
+            rect_col = "red"
+          } else {
+            rect_col = "lime green"
           }
-
-        }
-      }
-
-      # selected stimuli
-
-      if (x@set_based) {
-
-        for (p in 1:max_position) {
-
-          selected_i      <- x@shadow_test[[p]]$i
-          administered_i  <- x@administered_item_index[p]
-          selected_s      <- x@shadow_test[[p]]$s
-          administered_s  <- x@administered_stimulus_index[p]
-
-          for (s in na.omit(unique(selected_s))) {
-
-            i_in_s <- x@item_index_by_stimulus[[s]]
-            i_in_s <- i_in_s[i_in_s %in% used_items]
-            if (!is.na(administered_s)) {
-              if (s == administered_s) {
-                col = "khaki"
-              } else {
-                col = "gray50"
-              }
-            } else {
-              col = "gray50"
-            }
-
-            rect(
-              p - 0.35, min(y_map[i_in_s]) - 0.5,
-              p + 0.35, max(y_map[i_in_s]) + 0.5,
-              border = "blue", col = col, lwd = 0.5)
-
-          }
-
-        }
-      }
-
-      # selected items
-
-      for (p in 1:max_position) {
-
-        selected_i     <- x@shadow_test[[p]]$i
-        administered_i <- x@administered_item_index[p]
-
-        for (i in selected_i) {
-          rect(
-            p - 0.25, y_map[i] - 0.25,
-            p + 0.25, y_map[i] + 0.25,
-            border = "black", lwd = 0.3
-          )
-        }
-
-      }
-
-      # administered items
-
-      for (p in 1:max_position) {
-
-        i <- x@administered_item_index[p]
-
-        if (p != max_position) {
-          for (pp in (p + 1):max_position) {
-            rect(
-              pp - 0.25, y_map[i] - 0.25,
-              pp + 0.25, y_map[i] + 0.25,
-              border = "gray33", col = "gray33", lwd = 0.3
-            )
-          }
-        }
-
-        if (item_ncat[p] == 2 && responses[p] == 0) {
-          rect_col = "red"
-        } else if (item_ncat[p] == 2 && responses[p] == 1) {
-          rect_col = "lime green"
         } else {
           rect_col = "cyan2"
         }
-
-        rect(
-          p - 0.25, y_map[i] - 0.25,
-          p + 0.25, y_map[i] + 0.25,
-          border = rect_col, col = rect_col, lwd = 0.3
-        )
+        for (ii in 0:rect_y) {
+          rect(rect_x - 0.25, ii - 1, rect_x + 0.25, ii, col = rect_col, border = "black")
+        }
 
       }
 
-      return(invisible(NULL))
+    }
+
+    return(invisible(NULL))
+
+  }
+
+  if (type == "shadow") {
+
+    if (use_par) {
+      old_par <- par(no.readonly = TRUE)
+      on.exit({
+        par(old_par)
+      })
+      par(mar = c(2, 3, 1, 1) + 0.1, mfrow = c(1, 1))
+    }
+
+    test_length  <- x@test_length_constraints
+    ni_pool      <- x@ni_pool
+
+    max_position <- sum(!is.na(x@administered_item_resp))
+
+    item_sequence <- x@administered_item_index
+    responses     <- x@administered_item_resp
+    item_ncat     <- x@administered_item_ncat
+
+    if (simple) {
+
+      used_items <- sort(unique(unlist(lapply(x@shadow_test, function(x) x$i))))
+      ni_used <- length(used_items)
+
+      i_sorted <- unlist(x@item_index_by_stimulus)
+      i_na     <- setdiff(1:ni_pool, i_sorted)
+      i_sorted <- c(i_sorted, i_na)
+
+      i_sorted <- i_sorted[i_sorted %in% used_items]
+
+      y_map <- rep(NA, ni_pool)
+      y_map[i_sorted] <- 1:ni_used
+
+    } else {
+
+      used_items <- 1:ni_pool
+
+      i_sorted <- unlist(x@item_index_by_stimulus)
+      i_na     <- setdiff(1:ni_pool, i_sorted)
+      i_sorted <- c(i_sorted, i_na)
+
+      y_map <- numeric(ni_pool)
+      y_map[i_sorted] <- 1:ni_pool
 
     }
 
+    plot(
+      c(0.5, test_length + 0.5),
+      c(0.5, max(y_map, na.rm = TRUE) + 0.5),
+      type = "n", las = 1, xlim = c(0, test_length),
+      xaxt = "n", yaxt = "n", ylab = "")
+
+    y_adj_3 <- (strheight("S") / 3)
+    usr <- par("usr")
+
+    text(
+      test_length / 2,
+      (usr[3] / 2),
+      "Position",
+      adj = c(0.5, 0), cex = 1.0
+    )
+    axis(
+      2, at = max(y_map, na.rm = TRUE) / 2,
+      labels = "Items", cex.axis = 1.5, tick = FALSE, line = 0
+    )
+    text(
+      test_length / 2,
+      mean(c(usr[4], max(y_map, na.rm = TRUE))),
+      paste0("Examinee ID: ", x@simulee_id),
+      adj = c(0.5, 0.5), cex = 1
+    )
+    axis(
+      1,
+      at = 1:test_length,
+      tick = TRUE,
+      labels = 1:test_length,
+      cex.axis = 0.7
+    )
+
+    if (simple) {
+      text(
+        0,
+        1:ni_used,
+        used_items,
+        adj = c(0.5, 0.5), cex = 0.7
+      )
+    } else {
+      y_grid <- floor(seq(1, ni_pool, length = 80))
+      idx <- y_map %in% y_grid
+      text(
+        0,
+        y_map[idx],
+        used_items[idx],
+        adj = c(0.5, 0.5), cex = 0.7
+      )
+    }
+
+    # item grid
+
+    for (p in 1:max_position) {
+      for (y in na.omit(unique(y_map))) {
+        rect(
+          p - 0.25, y - 0.25,
+          p + 0.25, y + 0.25,
+          border = "gray88", lwd = 0.3
+        )
+      }
+      if (x@shadow_test_refreshed[p]) {
+        mtext(
+          "S", at = p,
+          side = 1, line = 0.3, col = "red", adj = c(0.5, 0.5), cex = 0.7)
+      }
+    }
+
+    # stimulus grid
+
+    if (x@set_based) {
+
+      for (s in 1:x@ns_pool) {
+
+        i_in_s <- x@item_index_by_stimulus[[s]]
+
+        if (!is.null(i_in_s)) {
+          i_in_s <- i_in_s[i_in_s %in% used_items]
+          if (length(i_in_s) > 0) {
+            for (p in 1:max_position) {
+              rect(
+                p - 0.35, min(y_map[i_in_s]) - 0.5,
+                p + 0.35, max(y_map[i_in_s]) + 0.5,
+                border = "gray88", lwd = 0.5
+              )
+            }
+          }
+        }
+
+      }
+    }
+
+    # selected stimuli
+
+    if (x@set_based) {
+
+      for (p in 1:max_position) {
+
+        selected_i      <- x@shadow_test[[p]]$i
+        administered_i  <- x@administered_item_index[p]
+        selected_s      <- x@shadow_test[[p]]$s
+        administered_s  <- x@administered_stimulus_index[p]
+
+        for (s in na.omit(unique(selected_s))) {
+
+          i_in_s <- x@item_index_by_stimulus[[s]]
+          i_in_s <- i_in_s[i_in_s %in% used_items]
+          if (!is.na(administered_s)) {
+            if (s == administered_s) {
+              col = "khaki"
+            } else {
+              col = "gray50"
+            }
+          } else {
+            col = "gray50"
+          }
+
+          rect(
+            p - 0.35, min(y_map[i_in_s]) - 0.5,
+            p + 0.35, max(y_map[i_in_s]) + 0.5,
+            border = "blue", col = col, lwd = 0.5)
+
+        }
+
+      }
+    }
+
+    # selected items
+
+    for (p in 1:max_position) {
+
+      selected_i     <- x@shadow_test[[p]]$i
+      administered_i <- x@administered_item_index[p]
+
+      for (i in selected_i) {
+        rect(
+          p - 0.25, y_map[i] - 0.25,
+          p + 0.25, y_map[i] + 0.25,
+          border = "black", lwd = 0.3
+        )
+      }
+
+    }
+
+    # administered items
+
+    for (p in 1:max_position) {
+
+      i <- x@administered_item_index[p]
+
+      if (p != max_position) {
+        for (pp in (p + 1):max_position) {
+          rect(
+            pp - 0.25, y_map[i] - 0.25,
+            pp + 0.25, y_map[i] + 0.25,
+            border = "gray33", col = "gray33", lwd = 0.3
+          )
+        }
+      }
+
+      if (item_ncat[p] == 2 && responses[p] == 0) {
+        rect_col = "red"
+      } else if (item_ncat[p] == 2 && responses[p] == 1) {
+        rect_col = "lime green"
+      } else {
+        rect_col = "cyan2"
+      }
+
+      rect(
+        p - 0.25, y_map[i] - 0.25,
+        p + 0.25, y_map[i] + 0.25,
+        border = rect_col, col = rect_col, lwd = 0.3
+      )
+
+    }
+
+    return(invisible(NULL))
+
   }
-)
+
+})
 
 #' @docType methods
 #' @rdname plot-methods
@@ -671,64 +671,64 @@ setMethod(
     use_segment_label = TRUE,
     use_par = TRUE,
     theta_segment = NULL,
-    ...) {
+    ...
+) {
 
-    if (!missing("theta_segment")){
-      warning("argument 'theta_segment' is deprecated. Use 'theta_type' instead.")
-      theta_type <- theta_segment
-    }
-    if (!type %in% c("audit", "shadow", "info", "score", "exposure")) {
-      stop("plot(output_Shadow_all): 'type' must be 'audit', 'shadow', 'info', 'score', or 'exposure'")
-    }
-
-    if (type == "info") {
-      plotShadowInfo(
-        x, examinee_id, position,
-        info_type,
-        ylim, theta,
-        color,
-        use_par,
-        ...
-      )
-      return(invisible(NULL))
-    }
-
-    if (type == "audit") {
-      plotShadowAudit(
-        x, examinee_id,
-        theta_range,
-        z_ci,
-        use_par,
-        ...
-      )
-      return(invisible(NULL))
-    }
-
-    if (type == "shadow") {
-      plotShadowChart(
-        x, examinee_id,
-        simple,
-        use_par,
-        ...
-      )
-      return(invisible(NULL))
-    }
-
-    if (type == "exposure") {
-      plotShadowExposure(
-        x, theta_type,
-        segment,
-        use_segment_label,
-        color, color_final,
-        rmse,
-        use_par,
-        ...
-      )
-      return(invisible(NULL))
-    }
-
+  if (!missing("theta_segment")){
+    warning("argument 'theta_segment' is deprecated. Use 'theta_type' instead.")
+    theta_type <- theta_segment
   }
-)
+  if (!type %in% c("audit", "shadow", "info", "score", "exposure")) {
+    stop("plot(output_Shadow_all): 'type' must be 'audit', 'shadow', 'info', 'score', or 'exposure'")
+  }
+
+  if (type == "info") {
+    plotShadowInfo(
+      x, examinee_id, position,
+      info_type,
+      ylim, theta,
+      color,
+      use_par,
+      ...
+    )
+    return(invisible(NULL))
+  }
+
+  if (type == "audit") {
+    plotShadowAudit(
+      x, examinee_id,
+      theta_range,
+      z_ci,
+      use_par,
+      ...
+    )
+    return(invisible(NULL))
+  }
+
+  if (type == "shadow") {
+    plotShadowChart(
+      x, examinee_id,
+      simple,
+      use_par,
+      ...
+    )
+    return(invisible(NULL))
+  }
+
+  if (type == "exposure") {
+    plotShadowExposure(
+      x, theta_type,
+      segment,
+      use_segment_label,
+      color, color_final,
+      rmse,
+      use_par,
+      ...
+    )
+    return(invisible(NULL))
+  }
+
+})
 
 #' @noRd
 plotExposurePanel <- function(
@@ -1108,60 +1108,60 @@ setMethod(
     z_ci = 1.96,
     simple = TRUE,
     use_par = TRUE,
-    ...) {
+    ...
+) {
 
-    config      <- x@config
-    constraints <- x@constraints
-    continuum   <- theta
-    continuum   <- sort(c(continuum, config@item_selection$target_location))
+  config      <- x@config
+  constraints <- x@constraints
+  continuum   <- theta
+  continuum   <- sort(c(continuum, config@item_selection$target_location))
 
-    np <- length(x@output)
-    info_per_partition <- matrix(NA, np, length(continuum))
+  np <- length(x@output)
+  info_per_partition <- matrix(NA, np, length(continuum))
 
-    for (p in 1:np) {
-      i <- x@output[[p]]$i
-      mat_sub <- calcFisher(constraints@pool, continuum)[, i]
-      vec_sub <- apply(mat_sub, 1, sum)
-      info_per_partition[p, ] <- vec_sub
-    }
-    if (is.null(ylim)) {
-      ymax <- max(info_per_partition)
-      ylim <- c(0, ymax)
-    }
-
-    ylab  <- "Information"
-    if (x@partition_type == "test") {
-      title <- "Test information function of each partition"
-    }
-    if (x@partition_type == "pool") {
-      title <- "Pool information function of each partition"
-    }
-
-    # Begin plot
-
-    plot(
-      continuum, continuum,
-      xlim = c(min(continuum), max(continuum)), ylim = ylim,
-      main = title, xlab = "Theta", ylab = ylab, type = "n", bty = "n"
-    )
-
-    abline(v = config@item_selection$target_location, lty = 3, lwd = 1)
-
-    for (p in 1:np) {
-      lines(continuum, info_per_partition[p, ], lty = 1, lwd = 1, col = color)
-    }
-
-    legend(
-      "topleft",
-      "Target locations",
-      bty = "o", bg = "white",
-      box.lty = 0, box.lwd = 0, box.col = "white",
-      lty = 3, lwd = 1, seg.len = 1, inset = c(0, .01)
-    )
-
-    box()
-
-    return(invisible(NULL))
-
+  for (p in 1:np) {
+    i <- x@output[[p]]$i
+    mat_sub <- calcFisher(constraints@pool, continuum)[, i]
+    vec_sub <- apply(mat_sub, 1, sum)
+    info_per_partition[p, ] <- vec_sub
   }
-)
+  if (is.null(ylim)) {
+    ymax <- max(info_per_partition)
+    ylim <- c(0, ymax)
+  }
+
+  ylab  <- "Information"
+  if (x@partition_type == "test") {
+    title <- "Test information function of each partition"
+  }
+  if (x@partition_type == "pool") {
+    title <- "Pool information function of each partition"
+  }
+
+  # Begin plot
+
+  plot(
+    continuum, continuum,
+    xlim = c(min(continuum), max(continuum)), ylim = ylim,
+    main = title, xlab = "Theta", ylab = ylab, type = "n", bty = "n"
+  )
+
+  abline(v = config@item_selection$target_location, lty = 3, lwd = 1)
+
+  for (p in 1:np) {
+    lines(continuum, info_per_partition[p, ], lty = 1, lwd = 1, col = color)
+  }
+
+  legend(
+    "topleft",
+    "Target locations",
+    bty = "o", bg = "white",
+    box.lty = 0, box.lwd = 0, box.col = "white",
+    lty = 3, lwd = 1, seg.len = 1, inset = c(0, .01)
+  )
+
+  box()
+
+  return(invisible(NULL))
+
+})
