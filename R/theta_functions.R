@@ -21,8 +21,8 @@ estimateInterimTheta <- function(
       position > 1
     ) {
       # skip update and reuse previous interim theta estimate
-      o@interim_theta_est[position] <- o@interim_theta_est[position - 1]
-      o@interim_se_est[position]    <- o@interim_se_est[position - 1]
+      o@interim_theta_est[position, ] <- o@interim_theta_est[position - 1, ]
+      o@interim_se_est[position, ]    <- o@interim_se_est[position - 1, ]
       return(o)
     }
     if (
@@ -30,8 +30,8 @@ estimateInterimTheta <- function(
       position == 1
     ) {
       # skip update and reuse previous interim theta estimate (starting theta)
-      o@interim_theta_est[position] <- o@initial_theta_est
-      o@interim_se_est[position]    <- NA
+      o@interim_theta_est[position, ] <- o@initial_theta_est
+      o@interim_se_est[position, ]    <- NA
       return(o)
     }
   }
@@ -40,8 +40,8 @@ estimateInterimTheta <- function(
 
     interim_EAP <- computeEAPFromPosterior(augmented_posterior_record$posterior[j, ], constants$theta_q)
     interim_EAP <- applyShrinkageCorrection(interim_EAP, config@interim_theta)
-    o@interim_theta_est[position] <- interim_EAP$theta
-    o@interim_se_est[position]    <- interim_EAP$se
+    o@interim_theta_est[position, ] <- interim_EAP$theta
+    o@interim_se_est[position, ]    <- interim_EAP$se
 
     return(o)
 
@@ -64,8 +64,8 @@ estimateInterimTheta <- function(
       do_Fisher     = config@interim_theta$do_Fisher
     )
 
-    o@interim_theta_est[position] <- interim_MLE$th
-    o@interim_se_est[position]    <- interim_MLE$se
+    o@interim_theta_est[position, ] <- interim_MLE$th
+    o@interim_se_est[position, ]    <- interim_MLE$se
 
     return(o)
 
@@ -90,8 +90,8 @@ estimateInterimTheta <- function(
       do_Fisher        = config@interim_theta$do_Fisher
     )
 
-    o@interim_theta_est[position] <- interim_MLEF$th
-    o@interim_se_est[position]    <- interim_MLEF$se
+    o@interim_theta_est[position, ] <- interim_MLEF$th
+    o@interim_se_est[position, ]    <- interim_MLEF$se
 
     return(o)
 
@@ -113,11 +113,11 @@ estimateInterimTheta <- function(
       model[current_item], 1, c(current_theta$theta, current_theta$se)
     )[, 1]
 
-    interim_EB                    <- applyThin(interim_EB, posterior_constants)
+    interim_EB <- applyThin(interim_EB, posterior_constants)
 
-    o@posterior_sample            <- interim_EB
-    o@interim_theta_est[position] <- mean(interim_EB)
-    o@interim_se_est[position]    <- sd(interim_EB)
+    o@posterior_sample <- interim_EB
+    o@interim_theta_est[position, ] <- mean(interim_EB)
+    o@interim_se_est[position, ]    <- sd(interim_EB)
 
     return(o)
 
@@ -140,11 +140,11 @@ estimateInterimTheta <- function(
       model[current_item], 1, c(current_theta$theta, current_theta$se)
     )[, 1]
 
-    interim_FB                    <- applyThin(interim_FB, posterior_constants)
+    interim_FB <- applyThin(interim_FB, posterior_constants)
 
-    o@posterior_sample            <- interim_FB
-    o@interim_theta_est[position] <- mean(interim_FB)
-    o@interim_se_est[position]    <- sd(interim_FB)
+    o@posterior_sample <- interim_FB
+    o@interim_theta_est[position, ] <- mean(interim_FB)
+    o@interim_se_est[position, ]    <- sd(interim_FB)
 
     return(o)
 
@@ -169,8 +169,8 @@ estimateFinalTheta <- function(
 
     # Skip final theta estimation if methods are identical
 
-    o@final_theta_est <- o@interim_theta_est[position]
-    o@final_se_est    <- o@interim_se_est[position]
+    o@final_theta_est <- o@interim_theta_est[position, ]
+    o@final_se_est    <- o@interim_se_est[position, ]
 
     return(o)
 
@@ -203,7 +203,7 @@ estimateFinalTheta <- function(
         augmented_item_pool,
         select        = c(augment_item_index, o@administered_item_index[1:constants$max_ni]),
         resp          = c(augment_item_resp,  o@administered_item_resp[1:constants$max_ni]),
-        start_theta   = o@interim_theta_est[constants$max_ni],
+        start_theta   = o@interim_theta_est[constants$max_ni, ],
         max_iter      = config@final_theta$max_iter,
         crit          = config@final_theta$crit,
         theta_range   = config@final_theta$bound_ML,
@@ -222,7 +222,7 @@ estimateFinalTheta <- function(
         item_pool,
         select        = o@administered_item_index[1:constants$max_ni],
         resp          = o@administered_item_resp[1:constants$max_ni],
-        start_theta   = o@interim_theta_est[constants$max_ni],
+        start_theta   = o@interim_theta_est[constants$max_ni, ],
         max_iter      = config@final_theta$max_iter,
         crit          = config@final_theta$crit,
         theta_range   = config@final_theta$bound_ML,
@@ -252,7 +252,7 @@ estimateFinalTheta <- function(
         resp             = c(augment_item_resp,  o@administered_item_resp[1:constants$max_ni]),
         fence_slope      = config@final_theta$fence_slope,
         fence_difficulty = config@final_theta$fence_difficulty,
-        start_theta      = o@interim_theta_est[constants$max_ni],
+        start_theta      = o@interim_theta_est[constants$max_ni, ],
         max_iter         = config@final_theta$max_iter,
         crit             = config@final_theta$crit,
         theta_range      = config@final_theta$bound_ML,
@@ -273,7 +273,7 @@ estimateFinalTheta <- function(
         resp             = o@administered_item_resp[1:constants$max_ni],
         fence_slope      = config@final_theta$fence_slope,
         fence_difficulty = config@final_theta$fence_difficulty,
-        start_theta      = o@interim_theta_est[constants$max_ni],
+        start_theta      = o@interim_theta_est[constants$max_ni, ],
         max_iter         = config@final_theta$max_iter,
         crit             = config@final_theta$crit,
         theta_range      = config@final_theta$bound_ML,

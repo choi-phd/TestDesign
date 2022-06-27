@@ -364,10 +364,10 @@ setMethod(
           posterior_constants
         )
 
-        theta_change                   <- o@interim_theta_est[position] - current_theta$theta
+        theta_change                   <- o@interim_theta_est[position, ] - current_theta$theta
         current_theta$posterior_sample <- o@posterior_sample
-        current_theta$theta            <- o@interim_theta_est[position]
-        current_theta$se               <- o@interim_se_est[position]
+        current_theta$theta            <- o@interim_theta_est[position, ]
+        current_theta$se               <- o@interim_se_est[position, ]
 
         # Item position / simulee: prepare for the next item position
 

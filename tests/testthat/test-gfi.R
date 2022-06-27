@@ -25,7 +25,7 @@ test_that("GFI works", {
 
   for (item_position in 2:30) {
     shadow_test      <- solution@output[[1]]@shadow_test[[item_position]]$i
-    target_theta     <- solution@output[[1]]@interim_theta_est[item_position - 1]
+    target_theta     <- solution@output[[1]]@interim_theta_est[item_position - 1, ]
     shadow_test_info <- calcFisher(itempool_science[shadow_test], target_theta)
     shadow_test_info <- sum(shadow_test_info)
     expect_equal(shadow_test_info, target_value, tolerance = 0.05)
