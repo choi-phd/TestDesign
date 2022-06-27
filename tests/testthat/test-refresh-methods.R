@@ -48,7 +48,7 @@ test_that("refresh methods work", {
   solution  <- Shadow(cfg, constraints_science2, true_theta, data = resp_science)
 
   theta     <- solution@output[[1]]@interim_theta_est
-  delta     <- c(0, 0, abs(theta[2:30] - theta[1:29]))
+  delta     <- c(0, 0, abs(theta[2:30, ] - theta[1:29, ]))
   flag      <- c(delta > .1)[1:30]
   flag[1:2] <- TRUE
 
@@ -66,7 +66,7 @@ test_that("refresh methods work", {
   solution  <- Shadow(cfg, constraints_science2, true_theta, data = resp_science)
 
   theta     <- solution@output[[1]]@interim_theta_est
-  delta     <- c(0, 0, abs(theta[2:30] - theta[1:29]))
+  delta     <- c(0, 0, abs(theta[2:30, ] - theta[1:29, ]))
   flag      <- c(delta > .1)[1:30]
   flag[1:2] <- TRUE
   new_flag  <- rep(FALSE, 30)

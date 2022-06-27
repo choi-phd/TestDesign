@@ -15,7 +15,7 @@ for (m in methods) {
     )
     set.seed(1)
     solution <- Shadow(cfg, constraints_bayes, true_theta, data = resp_bayes)
-    last_interim_theta <- unlist(lapply(solution@output, function(x) x@interim_theta_est[30]))
+    last_interim_theta <- unlist(lapply(solution@output, function(x) x@interim_theta_est[30, ]))
     fit <- lm(last_interim_theta ~ true_theta)
     expect_gt(coef(fit)[2], 0.7)
 
