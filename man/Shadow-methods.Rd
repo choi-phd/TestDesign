@@ -42,9 +42,15 @@ Shadow(
 
 \item{data}{(optional) a matrix containing item response data to use in simulation. Either \code{true_theta} or \code{data} must be supplied.}
 
-\item{prior}{(optional) prior density at each \code{config@theta_grid}. This overrides \code{prior_par}. Can be a vector to use the same prior for all \emph{nj} participants, or a \emph{nj}-row matrix to use a different prior for each participant.}
+\item{prior}{(optional) density at each \code{config@theta_grid} to use as prior.
+Must be a length-\emph{nq} vector or a \emph{nj * nq} matrix.
+This overrides \code{prior_dist} and \code{prior_par} in the config.
+\code{prior} and \code{prior_par} cannot be used simultaneously.}
 
-\item{prior_par}{(optional) normal distribution parameters \code{c(mean, sd)} to use as prior. Can be a vector to use the same prior for all \emph{nj} participants, or a \emph{nj}-row matrix to use a different prior for each participant.}
+\item{prior_par}{(optional) normal distribution parameters \code{c(mean, sd)} to use as prior.
+Must be a length-\emph{nq} vector or a \emph{nj * nq} matrix.
+This overrides \code{prior_dist} and \code{prior_par} in the config.
+\code{prior} and \code{prior_par} cannot be used simultaneously.}
 
 \item{exclude}{(optional) a list containing item names in \code{$i} and set names in \code{$s} to exclude from selection for each participant. The length of the list must be equal to the number of participants.}
 
