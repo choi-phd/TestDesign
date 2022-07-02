@@ -29,7 +29,7 @@
 #' @importFrom methods new show validObject
 #' @importFrom logitnorm logit rlogitnorm
 #' @importFrom grDevices col2rgb dev.control dev.new dev.off pdf recordPlot dev.cur
-#' @importFrom stats runif dnorm rlnorm rnorm sd cor na.omit aggregate
+#' @importFrom stats rnorm runif dnorm dunif rlnorm sd cor na.omit aggregate
 #' @importFrom utils capture.output read.csv setTxtProgressBar txtProgressBar write.table packageVersion packageDescription menu combn
 #' @importFrom graphics abline lines axis grid layout legend mtext par plot.new points rect text strheight box
 #' @useDynLib TestDesign
