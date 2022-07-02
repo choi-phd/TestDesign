@@ -17,6 +17,35 @@ parsePriorParameters <- function(o, constants, prior_density_override, prior_par
     o$prior_par  <- prior_par_override
   }
 
+  o$prior_dist <- toupper(o$prior_dist)
+
+  # if prior_par is a vector, expand to an examinee-wise list
+  if (is.vector(o$prior_par)) {
+    o$prior_par <- lapply(1:constants$nj, function(x) o$prior_par)
+  }
+
+  # if prior_par is a matrix, expand to an examinee-wise list
+  if (is.matrix(o$prior_par)) {
+    o$prior_par <- apply(o$prior_par, 1, function(x) {x}, simplify = FALSE)
+  }
+
+  # if prior_par is a list, validate
+  if (is.list(o$prior_par)) {
+    if (length(o$prior_par) != constants$nj) {
+      stop("unexpected 'prior_par': could not be expanded to a length-nj list (must be a length-2 vector, an nj * 2 matrix, or a length-nj list)")
+    }
+    n_prior_par <- unlist(lapply(o$prior_par, length))
+    if (o$prior_dist == "NORMAL" & any(n_prior_par != 2)) {
+      stop("unexpected 'prior_par': for 'NORMAL' distribution, each list element must be a length-2 vector")
+    }
+    if (o$prior_dist == "UNIFORM" & any(n_prior_par != 2)) {
+      stop("unexpected 'prior_par': for 'UNIFORM' distribution, each list element must be a length-2 vector")
+    }
+    if (o$prior_dist == "RAW" & any(n_prior_par != constants$nq)) {
+      stop("unexpected 'prior_par': for 'RAW' distribution, each list element must be a length-nq vector")
+    }
+  }
+
   return(o)
 
 }
