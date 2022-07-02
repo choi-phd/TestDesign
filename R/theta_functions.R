@@ -159,7 +159,7 @@ estimateFinalTheta <- function(
   augment_item_index,
   augment_item_resp,
   include_items_for_estimation,
-  posterior_record, prior_par,
+  posterior_record,
   config,
   constants,
   posterior_constants
@@ -295,8 +295,10 @@ estimateFinalTheta <- function(
   if (toupper(config@final_theta$method) == "EB") {
 
     final_prior <- getInitialThetaPrior(
-      config@final_theta, prior_par, constants$nj, j,
-      posterior_constants)
+      config@final_theta,
+      j,
+      posterior_constants
+    )
 
     final_EB <- theta_EB(
       posterior_constants$n_sample, final_prior$theta, final_prior$se,
@@ -307,7 +309,7 @@ estimateFinalTheta <- function(
 
     final_EB           <- applyThin(final_EB, posterior_constants)
 
-    o@prior_par        <- final_prior$prior_par
+    o@prior_par        <- config@final_theta$prior_par[[j]]
     o@posterior_sample <- final_EB
     o@final_theta_est  <- mean(final_EB)
     o@final_se_est     <- sd(final_EB)
@@ -319,8 +321,10 @@ estimateFinalTheta <- function(
   if (toupper(config@final_theta$method) == "FB") {
 
     final_prior <- getInitialThetaPrior(
-      config@final_theta, prior_par, constants$nj, j,
-      posterior_constants)
+      config@final_theta,
+      j,
+      posterior_constants
+    )
 
     final_FB <- theta_FB(
       posterior_constants$n_sample, final_prior$theta, final_prior$se,
@@ -332,7 +336,7 @@ estimateFinalTheta <- function(
 
     final_FB           <- applyThin(final_FB, posterior_constants)
 
-    o@prior_par        <- final_prior$prior_par
+    o@prior_par        <- config@final_theta$prior_par[[j]]
     o@posterior_sample <- final_FB
     o@final_theta_est  <- mean(final_FB)
     o@final_se_est     <- sd(final_FB)
@@ -1073,7 +1077,7 @@ initializeTheta <- function(config, constants, posterior_record) {
 }
 
 #' @noRd
-getInitialThetaPrior <- function(config_theta, prior_par, nj, j, posterior_constants) {
+getInitialThetaPrior <- function(config_theta, j, posterior_constants) {
 
   o <- list()
 
@@ -1092,7 +1096,7 @@ getInitialThetaPrior <- function(config_theta, prior_par, nj, j, posterior_const
 }
 
 #' @noRd
-parseInitialTheta <- function(config_theta, initial_theta, prior_par, nj, j, posterior_constants) {
+parseInitialTheta <- function(config_theta, initial_theta, j, posterior_constants) {
 
   o <- list()
   theta_method <- toupper(config_theta$method)
@@ -1100,7 +1104,7 @@ parseInitialTheta <- function(config_theta, initial_theta, prior_par, nj, j, pos
     o$theta <- initial_theta[j, ]
   }
   if (theta_method %in% c("EB", "FB")) {
-    o <- getInitialThetaPrior(config_theta, prior_par, nj, j, posterior_constants)
+    o <- getInitialThetaPrior(config_theta, j, posterior_constants)
   }
 
   return(o)

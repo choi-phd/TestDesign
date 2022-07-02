@@ -151,9 +151,11 @@ setMethod(
       o@item_index_by_stimulus      <- constraints@item_index_by_stimulus
 
       current_theta <- parseInitialTheta(
-        config@interim_theta, initial_theta, prior_par,
-        constants$nj, j,
-        posterior_constants)
+        config@interim_theta,
+        initial_theta,
+        j,
+        posterior_constants
+      )
       o@initial_theta_est <- current_theta$theta
 
       # Simulee: initialize stimulus record
@@ -392,7 +394,7 @@ setMethod(
         augment_item_index,
         augment_item_resp,
         include_items_for_estimation,
-        posterior_record, prior_par,
+        posterior_record,
         config,
         constants,
         posterior_constants
