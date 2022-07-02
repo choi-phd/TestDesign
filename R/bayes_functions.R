@@ -132,16 +132,24 @@ generateDensityFromPriorPar <- function(config_theta, theta_q, nj) {
 }
 
 #' @noRd
-parsePriorPar <- function(prior_par, nj, j, config_prior_par) {
+generateSampleFromPriorPar <- function(config_theta, j, posterior_constants) {
 
-  if (is.vector(prior_par) && length(prior_par) == 2) {
-    return(prior_par)
+  if (config_theta$prior_dist == "NORMAL") {
+    prior_sample <- rnorm(
+      posterior_constants$n_sample,
+      mean = config_theta$prior_par[[j]][1],
+      sd   = config_theta$prior_par[[j]][2]
+    )
+    return(prior_sample)
   }
-  if (is.matrix(prior_par) && all(dim(prior_par) == c(nj, 2))) {
-    return(prior_par[j, ])
+  if (config_theta$prior_dist == "UNIFORM") {
+    prior_sample <- runif(
+      posterior_constants$n_sample,
+      min = config_theta$prior_par[[j]][1],
+      max = config_theta$prior_par[[j]][2]
+    )
+    return(prior_sample)
   }
-
-  return(config_prior_par)
 
 }
 
@@ -158,18 +166,6 @@ applyThin <- function(posterior_sample, posterior_constants) {
 
 }
 
-#' @noRd
-getPriorSample <- function(arg_mean, arg_sd, posterior_constants) {
-
-  prior_sample <- rnorm(
-    posterior_constants$n_sample,
-    mean = arg_mean,
-    sd   = arg_sd
-  )
-
-  return(prior_sample)
-
-}
 
 #' @noRd
 getSegmentProb <- function(posterior_sample, constants) {
