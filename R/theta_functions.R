@@ -1077,12 +1077,9 @@ getInitialThetaPrior <- function(config_theta, prior_par, nj, j, posterior_const
 
   o <- list()
 
-  o$prior_par <- parsePriorPar(
-    prior_par, nj, j, config_theta$prior_par
-  )
-
-  o$posterior_sample <- getPriorSample(
-    o$prior_par[1], o$prior_par[2],
+  o$posterior_sample <- generateSampleFromPriorPar(
+    config_theta,
+    j,
     posterior_constants
   )
 
