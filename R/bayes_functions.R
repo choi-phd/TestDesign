@@ -2,6 +2,26 @@
 NULL
 
 #' @noRd
+parsePriorParameters <- function(o, constants, prior_density_override, prior_par_override) {
+
+  # override config with prior arguments supplied to Shadow()
+  if (!is.null(prior_density_override) & !is.null(prior_par_override)) {
+    stop("unexpected 'prior' and 'prior_par': only one must be supplied to Shadow()")
+  }
+  if (!is.null(prior_density_override)) {
+    o$prior_dist <- "RAW"
+    o$prior_par  <- prior_density_override
+  }
+  if (!is.null(prior_par_override)) {
+    o$prior_dist <- "NORMAL"
+    o$prior_par  <- prior_par_override
+  }
+
+  return(o)
+
+}
+
+#' @noRd
 initializePosterior <- function(prior, prior_par, config, constants, item_pool, posterior_constants) {
 
   theta_q <- constants$theta_q
