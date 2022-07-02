@@ -51,40 +51,18 @@ parsePriorParameters <- function(o, constants, prior_density_override, prior_par
 }
 
 #' @noRd
-initializePosterior <- function(prior, prior_par, config, constants, item_pool, posterior_constants) {
-
-  theta_q <- constants$theta_q
-  nj      <- constants$nj
-  nq      <- constants$nq
+initializePosterior <- function(config, constants, item_pool, posterior_constants) {
 
   o <- list()
 
-  o$likelihood <- rep(1, nq)
+  o$likelihood <- rep(1, constants$nq)
   o$posterior  <- NULL
 
-  if (is.null(prior) && is.null(prior_par)) {
-    o$posterior <- generateDistributionFromPriorPar(
-      toupper(config@interim_theta$prior_dist),
-      config@interim_theta$prior_par,
-      theta_q, nj
-    )
-  }
-  if (is.null(prior) && !is.null(prior_par)) {
-    o$posterior <- generateDistributionFromPriorPar(
-      "NORMAL",
-      prior_par,
-      theta_q, nj
-    )
-  }
-  if (is.vector(prior) && length(prior) == nq) {
-    o$posterior <- matrix(prior, nj, nq, byrow = TRUE)
-  }
-  if (is.matrix(prior) && all(dim(prior) == c(nj, nq))) {
-    o$posterior <- prior
-  }
-  if (is.null(o$posterior)) {
-    stop("unrecognized 'prior': must be a vector of length nq, or a nj * nq matrix")
-  }
+  o$posterior <- generateDensityFromPriorPar(
+    config@interim_theta,
+    constants$theta_q,
+    constants$nj
+  )
 
   interim_method <- toupper(config@interim_theta$method)
   final_method   <- toupper(config@final_theta$method)
@@ -116,30 +94,40 @@ getPosteriorConstants <- function(config) {
 }
 
 #' @noRd
-generateDistributionFromPriorPar <- function(dist_type, prior_par, theta_q, nj) {
+generateDensityFromPriorPar <- function(config_theta, theta_q, nj) {
 
   nq <- nrow(theta_q)
-  m  <- NULL
+  prior_density <- NULL
 
-  if (dist_type == "NORMAL" && is.vector(prior_par) && length(prior_par) == 2) {
-    x <- dnorm(theta_q, mean = prior_par[1], sd = prior_par[2])
-    m <- matrix(x, nj, nq, byrow = TRUE)
-    return(m)
-  }
-  if (dist_type == "NORMAL" && is.matrix(prior_par) && all(dim(prior_par) == c(nj, 2))) {
-    m <- matrix(NA, nj, nq, byrow = TRUE)
+  if (config_theta$prior_dist == "NORMAL") {
+    prior_density <- matrix(NA, nj, nq, byrow = TRUE)
     for (j in 1:nj) {
-      m[j, ] <- dnorm(theta_q, mean = prior_par[j, 1], sd = prior_par[j, 2])
+      prior_density[j, ] <- dnorm(
+        theta_q,
+        mean = config_theta$prior_par[[j]][1],
+        sd   = config_theta$prior_par[[j]][2]
+      )
     }
-    return(m)
+    return(prior_density)
   }
-  if (dist_type == "UNIFORM") {
-    x <- 1
-    m <- matrix(x, nj, nq, byrow = TRUE)
-    return(m)
+  if (config_theta$prior_dist == "UNIFORM") {
+    prior_density <- matrix(1, nj, nq, byrow = TRUE)
+    for (j in 1:nj) {
+      prior_density[j, ] <- dunif(
+        theta_q,
+        min = config_theta$prior_par[[j]][1],
+        max = config_theta$prior_par[[j]][2]
+      )
+    }
+    return(prior_density)
   }
-
-  stop("unrecognized 'prior_par': must be a vector c(mean, sd), or a nj * 2 matrix")
+  if (config_theta$prior_dist == "RAW") {
+    prior_density <- matrix(NA, nj, nq, byrow = TRUE)
+    for (j in 1:nj) {
+      prior_density[j, 1:nq] <- config_theta$prior_par[[j]][1:nq]
+    }
+    return(prior_density)
+  }
 
 }
 

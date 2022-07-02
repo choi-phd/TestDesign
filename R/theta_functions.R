@@ -178,11 +178,10 @@ estimateFinalTheta <- function(
 
   if (toupper(config@final_theta$method == "EAP")) {
 
-    final_prior <- generateDistributionFromPriorPar(
-      toupper(config@final_theta$prior_dist),
-      config@final_theta$prior_par,
+    final_prior <- generateDensityFromPriorPar(
+      config@final_theta,
       constants$theta_q,
-      1
+      nj = 1
     )[1, ]
 
     o@posterior       <- o@likelihood * final_prior

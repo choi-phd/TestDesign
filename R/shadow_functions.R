@@ -82,7 +82,7 @@ setMethod(
     config@interim_theta  <- parsePriorParameters(config@interim_theta, constants, prior, prior_par)
     config@final_theta    <- parsePriorParameters(config@final_theta  , constants, prior, prior_par)
     posterior_constants   <- getPosteriorConstants(config)
-    posterior_record      <- initializePosterior(prior, prior_par, config, constants, item_pool, posterior_constants)
+    posterior_record      <- initializePosterior(config, constants, item_pool, posterior_constants)
     initial_theta         <- initializeTheta(config, constants, posterior_record)
     exclude_index         <- getIndexOfExcludedEntry(exclude, constraints)
 
