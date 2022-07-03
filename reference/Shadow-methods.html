@@ -118,11 +118,17 @@
 
 
 <dt>prior</dt>
-<dd><p>(optional) prior density at each <code>config@theta_grid</code>. This overrides <code>prior_par</code>. Can be a vector to use the same prior for all <em>nj</em> participants, or a <em>nj</em>-row matrix to use a different prior for each participant.</p></dd>
+<dd><p>(optional) density at each <code>config@theta_grid</code> to use as prior.
+Must be a length-<em>nq</em> vector or a <em>nj * nq</em> matrix.
+This overrides <code>prior_dist</code> and <code>prior_par</code> in the config.
+<code>prior</code> and <code>prior_par</code> cannot be used simultaneously.</p></dd>
 
 
 <dt>prior_par</dt>
-<dd><p>(optional) normal distribution parameters <code>c(mean, sd)</code> to use as prior. Can be a vector to use the same prior for all <em>nj</em> participants, or a <em>nj</em>-row matrix to use a different prior for each participant.</p></dd>
+<dd><p>(optional) normal distribution parameters <code>c(mean, sd)</code> to use as prior.
+Must be a length-<em>nq</em> vector or a <em>nj * nq</em> matrix.
+This overrides <code>prior_dist</code> and <code>prior_par</code> in the config.
+<code>prior</code> and <code>prior_par</code> cannot be used simultaneously.</p></dd>
 
 
 <dt>exclude</dt>
