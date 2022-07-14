@@ -39,7 +39,7 @@ estimateInterimTheta <- function(
   if (toupper(config@interim_theta$method) == "EAP") {
 
     interim_EAP <- computeEAPFromPosterior(augmented_posterior_record$posterior[j, ], constants$theta_q)
-    interim_EAP <- applyShrinkageCorrection(interim_EAP, config@interim_theta)
+    interim_EAP <- applyShrinkageCorrection(interim_EAP, config@interim_theta, j)
     o@interim_theta_est[position, ] <- interim_EAP$theta
     o@interim_se_est[position, ]    <- interim_EAP$se
 
@@ -186,7 +186,7 @@ estimateFinalTheta <- function(
 
     o@posterior       <- o@likelihood * final_prior
     final_EAP <- computeEAPFromPosterior(o@posterior, constants$theta_q)
-    final_EAP <- applyShrinkageCorrection(final_EAP, config@final_theta)
+    final_EAP <- applyShrinkageCorrection(final_EAP, config@final_theta, j)
     o@final_theta_est <- final_EAP$theta
     o@final_se_est    <- final_EAP$se
 
@@ -1156,10 +1156,10 @@ computeEAPFromPosterior <- function(posterior, theta_grid) {
 }
 
 #' @noRd
-applyShrinkageCorrection <- function(EAP, config_theta) {
+applyShrinkageCorrection <- function(EAP, config_theta, j) {
 
   if (toupper(config_theta$prior_dist) == "NORMAL" && config_theta$shrinkage_correction) {
-    prior_sd <- config_theta$prior_sd
+    prior_sd <- config_theta$prior_par[[j]][2]
     o        <- list()
     o$theta  <- EAP$theta * (1 + (EAP$se ** 2))
     o$se     <- EAP$se
