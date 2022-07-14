@@ -72,6 +72,7 @@
 <li>Fixed where <code><a href="../reference/Shadow-methods.html">Shadow()</a></code> was not working when the <code>FIXED</code> item selection method was used with a single <code>$fixed_theta</code> value in the config. (<a href="https://github.com/choi-phd/TestDesign/issues/132" class="external-link">#132</a>)</li>
 <li>Fixed where if interim theta estimation method was <code>EB</code> or <code>FB</code>, prior sample generation was ignoring prior distribution type and assuming normal distribution.</li>
 <li>Fixed where if prior distribution type was uniform, prior density generation was ignoring prior parameters and using U(0, 1).</li>
+<li>Fixed where EAP shrinkage correction was ignoring prior standard deviation when it was supplied in the config.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="updates-1-3-3-9000">Updates<a class="anchor" aria-label="anchor" href="#updates-1-3-3-9000"></a></h3>

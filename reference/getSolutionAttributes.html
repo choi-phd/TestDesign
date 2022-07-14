@@ -69,7 +69,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">getSolutionAttributes</span><span class="op">(</span><span class="va">constraints</span>, <span class="va">item_idx</span>, all_values <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">getSolutionAttributes</span><span class="op">(</span><span class="va">constraints</span>, <span class="va">item_idx</span>, all_values <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -99,18 +99,17 @@ In this case, if <code>TRUE</code>, the number of items for every stimuli are re
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="va">item_idx</span> <span class="op">&lt;-</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="fl">29</span>,  <span class="fl">33</span>,  <span class="fl">26</span>,  <span class="fl">36</span>,  <span class="fl">34</span>,
-    <span class="fl">295</span>, <span class="fl">289</span>, <span class="fl">296</span>, <span class="fl">291</span>, <span class="fl">126</span>,
-    <span class="fl">133</span>, <span class="fl">124</span>, <span class="fl">134</span>, <span class="fl">129</span>,  <span class="fl">38</span>,
-     <span class="fl">47</span>,  <span class="fl">39</span>,  <span class="fl">41</span>,  <span class="fl">46</span>,  <span class="fl">45</span>,
-    <span class="fl">167</span>, <span class="fl">166</span>, <span class="fl">170</span>, <span class="fl">168</span>, <span class="fl">113</span>,
-    <span class="fl">116</span>, <span class="fl">119</span>, <span class="fl">117</span>, <span class="fl">118</span>, <span class="fl">114</span><span class="op">)</span>
-
-<span class="fu">getSolutionAttributes</span><span class="op">(</span><span class="va">constraints_reading</span>, <span class="va">item_idx</span>, <span class="cn">FALSE</span><span class="op">)</span>
-<span class="fu">getSolutionAttributes</span><span class="op">(</span><span class="va">constraints_reading</span>, <span class="va">item_idx</span>, <span class="cn">TRUE</span><span class="op">)</span>
-
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="va">item_idx</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="fl">29</span>,  <span class="fl">33</span>,  <span class="fl">26</span>,  <span class="fl">36</span>,  <span class="fl">34</span>,</span>
+<span>    <span class="fl">295</span>, <span class="fl">289</span>, <span class="fl">296</span>, <span class="fl">291</span>, <span class="fl">126</span>,</span>
+<span>    <span class="fl">133</span>, <span class="fl">124</span>, <span class="fl">134</span>, <span class="fl">129</span>,  <span class="fl">38</span>,</span>
+<span>     <span class="fl">47</span>,  <span class="fl">39</span>,  <span class="fl">41</span>,  <span class="fl">46</span>,  <span class="fl">45</span>,</span>
+<span>    <span class="fl">167</span>, <span class="fl">166</span>, <span class="fl">170</span>, <span class="fl">168</span>, <span class="fl">113</span>,</span>
+<span>    <span class="fl">116</span>, <span class="fl">119</span>, <span class="fl">117</span>, <span class="fl">118</span>, <span class="fl">114</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">getSolutionAttributes</span><span class="op">(</span><span class="va">constraints_reading</span>, <span class="va">item_idx</span>, <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu">getSolutionAttributes</span><span class="op">(</span><span class="va">constraints_reading</span>, <span class="va">item_idx</span>, <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -69,29 +69,29 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">theta_EB</span><span class="op">(</span>
-  <span class="va">nx</span>,
-  <span class="va">theta_init</span>,
-  <span class="va">theta_prop</span>,
-  <span class="va">item_parm</span>,
-  <span class="va">resp</span>,
-  <span class="va">ncat</span>,
-  <span class="va">model</span>,
-  <span class="va">prior</span>,
-  <span class="va">prior_parm</span>
-<span class="op">)</span>
-
-<span class="fu">theta_EB_single</span><span class="op">(</span>
-  <span class="va">nx</span>,
-  <span class="va">theta_init</span>,
-  <span class="va">theta_prop</span>,
-  <span class="va">item_parm</span>,
-  <span class="va">resp</span>,
-  <span class="va">ncat</span>,
-  <span class="va">model</span>,
-  <span class="va">prior</span>,
-  <span class="va">prior_parm</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">theta_EB</span><span class="op">(</span></span>
+<span>  <span class="va">nx</span>,</span>
+<span>  <span class="va">theta_init</span>,</span>
+<span>  <span class="va">theta_prop</span>,</span>
+<span>  <span class="va">item_parm</span>,</span>
+<span>  <span class="va">resp</span>,</span>
+<span>  <span class="va">ncat</span>,</span>
+<span>  <span class="va">model</span>,</span>
+<span>  <span class="va">prior</span>,</span>
+<span>  <span class="va">prior_parm</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">theta_EB_single</span><span class="op">(</span></span>
+<span>  <span class="va">nx</span>,</span>
+<span>  <span class="va">theta_init</span>,</span>
+<span>  <span class="va">theta_prop</span>,</span>
+<span>  <span class="va">item_parm</span>,</span>
+<span>  <span class="va">resp</span>,</span>
+<span>  <span class="va">ncat</span>,</span>
+<span>  <span class="va">model</span>,</span>
+<span>  <span class="va">prior</span>,</span>
+<span>  <span class="va">prior_parm</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -174,30 +174,29 @@ Reading, MA: Addison-Wesley.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># item parameters</span>
-<span class="va">item_parm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
-  <span class="fl">1</span>, <span class="cn">NA</span>,   <span class="cn">NA</span>,
-  <span class="fl">1</span>,  <span class="fl">2</span>,   <span class="cn">NA</span>,
-  <span class="fl">1</span>,  <span class="fl">2</span>, <span class="fl">0.25</span>,
-  <span class="fl">0</span>,  <span class="fl">1</span>,   <span class="cn">NA</span>,
-  <span class="fl">2</span>,  <span class="fl">0</span>,    <span class="fl">1</span>,
-  <span class="fl">2</span>,  <span class="fl">0</span>,    <span class="fl">2</span><span class="op">)</span>,
-  nrow <span class="op">=</span> <span class="fl">6</span>,
-  byrow <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span>
-
-<span class="va">ncat</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span>
-<span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span>
-<span class="va">resp</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>
-
-<span class="va">nx</span> <span class="op">&lt;-</span> <span class="fl">100</span>
-<span class="va">theta_init</span> <span class="op">&lt;-</span> <span class="fl">0</span>
-<span class="va">theta_prop</span> <span class="op">&lt;-</span> <span class="fl">1.0</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
-<span class="fu">theta_EB_single</span><span class="op">(</span><span class="va">nx</span>, <span class="va">theta_init</span>, <span class="va">theta_prop</span>, <span class="va">item_parm</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span>, <span class="va">resp</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">ncat</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">model</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">theta_EB</span><span class="op">(</span><span class="va">nx</span>, <span class="va">theta_init</span>, <span class="va">theta_prop</span>, <span class="va">item_parm</span>, <span class="va">resp</span>, <span class="va">ncat</span>, <span class="va">model</span>, <span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
-
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># item parameters</span></span>
+<span><span class="va">item_parm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="fl">1</span>, <span class="cn">NA</span>,   <span class="cn">NA</span>,</span>
+<span>  <span class="fl">1</span>,  <span class="fl">2</span>,   <span class="cn">NA</span>,</span>
+<span>  <span class="fl">1</span>,  <span class="fl">2</span>, <span class="fl">0.25</span>,</span>
+<span>  <span class="fl">0</span>,  <span class="fl">1</span>,   <span class="cn">NA</span>,</span>
+<span>  <span class="fl">2</span>,  <span class="fl">0</span>,    <span class="fl">1</span>,</span>
+<span>  <span class="fl">2</span>,  <span class="fl">0</span>,    <span class="fl">2</span><span class="op">)</span>,</span>
+<span>  nrow <span class="op">=</span> <span class="fl">6</span>,</span>
+<span>  byrow <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ncat</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span></span>
+<span><span class="va">resp</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">nx</span> <span class="op">&lt;-</span> <span class="fl">100</span></span>
+<span><span class="va">theta_init</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">theta_prop</span> <span class="op">&lt;-</span> <span class="fl">1.0</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu">theta_EB_single</span><span class="op">(</span><span class="va">nx</span>, <span class="va">theta_init</span>, <span class="va">theta_prop</span>, <span class="va">item_parm</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span>, <span class="va">resp</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">ncat</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">model</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">theta_EB</span><span class="op">(</span><span class="va">nx</span>, <span class="va">theta_init</span>, <span class="va">theta_prop</span>, <span class="va">item_parm</span>, <span class="va">resp</span>, <span class="va">ncat</span>, <span class="va">model</span>, <span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

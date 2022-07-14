@@ -69,136 +69,136 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S4 method for item_pool</span>
-<span class="fu">plot</span><span class="op">(</span>
-  <span class="va">x</span>,
-  <span class="va">y</span>,
-  type <span class="op">=</span> <span class="st">"info"</span>,
-  theta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">0.1</span><span class="op">)</span>,
-  info_type <span class="op">=</span> <span class="st">"FISHER"</span>,
-  plot_sum <span class="op">=</span> <span class="cn">TRUE</span>,
-  select <span class="op">=</span> <span class="cn">NULL</span>,
-  examinee_id <span class="op">=</span> <span class="fl">1</span>,
-  position <span class="op">=</span> <span class="cn">NULL</span>,
-  theta_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>,
-  ylim <span class="op">=</span> <span class="cn">NULL</span>,
-  color <span class="op">=</span> <span class="st">"blue"</span>,
-  z_ci <span class="op">=</span> <span class="fl">1.96</span>,
-  simple <span class="op">=</span> <span class="cn">TRUE</span>,
-  theta_type <span class="op">=</span> <span class="st">"Estimated"</span>,
-  color_final <span class="op">=</span> <span class="st">"blue"</span>,
-  segment <span class="op">=</span> <span class="cn">NULL</span>,
-  rmse <span class="op">=</span> <span class="cn">FALSE</span>,
-  use_segment_label <span class="op">=</span> <span class="cn">TRUE</span>,
-  use_par <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for output_Static</span>
-<span class="fu">plot</span><span class="op">(</span>
-  <span class="va">x</span>,
-  <span class="va">y</span>,
-  type <span class="op">=</span> <span class="cn">NULL</span>,
-  theta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">0.1</span><span class="op">)</span>,
-  info_type <span class="op">=</span> <span class="st">"FISHER"</span>,
-  plot_sum <span class="op">=</span> <span class="cn">TRUE</span>,
-  select <span class="op">=</span> <span class="cn">NULL</span>,
-  examinee_id <span class="op">=</span> <span class="fl">1</span>,
-  position <span class="op">=</span> <span class="cn">NULL</span>,
-  theta_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>,
-  ylim <span class="op">=</span> <span class="cn">NULL</span>,
-  color <span class="op">=</span> <span class="st">"blue"</span>,
-  z_ci <span class="op">=</span> <span class="fl">1.96</span>,
-  simple <span class="op">=</span> <span class="cn">TRUE</span>,
-  use_par <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for constraints</span>
-<span class="fu">plot</span><span class="op">(</span>
-  <span class="va">x</span>,
-  <span class="va">y</span>,
-  type <span class="op">=</span> <span class="st">"info"</span>,
-  theta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">0.1</span><span class="op">)</span>,
-  info_type <span class="op">=</span> <span class="st">"FISHER"</span>,
-  plot_sum <span class="op">=</span> <span class="cn">TRUE</span>,
-  select <span class="op">=</span> <span class="cn">NULL</span>,
-  examinee_id <span class="op">=</span> <span class="fl">1</span>,
-  position <span class="op">=</span> <span class="cn">NULL</span>,
-  theta_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>,
-  ylim <span class="op">=</span> <span class="cn">NULL</span>,
-  color <span class="op">=</span> <span class="st">"blue"</span>,
-  z_ci <span class="op">=</span> <span class="fl">1.96</span>,
-  simple <span class="op">=</span> <span class="cn">TRUE</span>,
-  use_par <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for output_Shadow</span>
-<span class="fu">plot</span><span class="op">(</span>
-  <span class="va">x</span>,
-  <span class="va">y</span>,
-  type <span class="op">=</span> <span class="st">"audit"</span>,
-  theta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">0.1</span><span class="op">)</span>,
-  info_type <span class="op">=</span> <span class="st">"FISHER"</span>,
-  plot_sum <span class="op">=</span> <span class="cn">TRUE</span>,
-  select <span class="op">=</span> <span class="cn">NULL</span>,
-  examinee_id <span class="op">=</span> <span class="fl">1</span>,
-  theta_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>,
-  ylim <span class="op">=</span> <span class="cn">NULL</span>,
-  color <span class="op">=</span> <span class="st">"blue"</span>,
-  z_ci <span class="op">=</span> <span class="fl">1.96</span>,
-  simple <span class="op">=</span> <span class="cn">FALSE</span>,
-  theta_type <span class="op">=</span> <span class="st">"Estimated"</span>,
-  use_par <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for output_Shadow_all</span>
-<span class="fu">plot</span><span class="op">(</span>
-  <span class="va">x</span>,
-  <span class="va">y</span>,
-  type <span class="op">=</span> <span class="st">"audit"</span>,
-  theta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">0.1</span><span class="op">)</span>,
-  info_type <span class="op">=</span> <span class="st">"FISHER"</span>,
-  plot_sum <span class="op">=</span> <span class="cn">TRUE</span>,
-  select <span class="op">=</span> <span class="cn">NULL</span>,
-  examinee_id <span class="op">=</span> <span class="fl">1</span>,
-  position <span class="op">=</span> <span class="cn">NULL</span>,
-  theta_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>,
-  ylim <span class="op">=</span> <span class="cn">NULL</span>,
-  color <span class="op">=</span> <span class="st">"blue"</span>,
-  z_ci <span class="op">=</span> <span class="fl">1.96</span>,
-  simple <span class="op">=</span> <span class="cn">FALSE</span>,
-  theta_type <span class="op">=</span> <span class="st">"Estimated"</span>,
-  color_final <span class="op">=</span> <span class="st">"blue"</span>,
-  segment <span class="op">=</span> <span class="cn">NULL</span>,
-  rmse <span class="op">=</span> <span class="cn">FALSE</span>,
-  use_segment_label <span class="op">=</span> <span class="cn">TRUE</span>,
-  use_par <span class="op">=</span> <span class="cn">TRUE</span>,
-  theta_segment <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for output_Split</span>
-<span class="fu">plot</span><span class="op">(</span>
-  <span class="va">x</span>,
-  <span class="va">y</span>,
-  type <span class="op">=</span> <span class="cn">NULL</span>,
-  theta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">0.1</span><span class="op">)</span>,
-  info_type <span class="op">=</span> <span class="st">"FISHER"</span>,
-  plot_sum <span class="op">=</span> <span class="cn">TRUE</span>,
-  select <span class="op">=</span> <span class="cn">NULL</span>,
-  examinee_id <span class="op">=</span> <span class="fl">1</span>,
-  position <span class="op">=</span> <span class="cn">NULL</span>,
-  theta_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>,
-  ylim <span class="op">=</span> <span class="cn">NULL</span>,
-  color <span class="op">=</span> <span class="st">"blue"</span>,
-  z_ci <span class="op">=</span> <span class="fl">1.96</span>,
-  simple <span class="op">=</span> <span class="cn">TRUE</span>,
-  use_par <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for item_pool</span></span>
+<span><span class="fu">plot</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">y</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"info"</span>,</span>
+<span>  theta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>  info_type <span class="op">=</span> <span class="st">"FISHER"</span>,</span>
+<span>  plot_sum <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  select <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  examinee_id <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  position <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  theta_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>  ylim <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  color <span class="op">=</span> <span class="st">"blue"</span>,</span>
+<span>  z_ci <span class="op">=</span> <span class="fl">1.96</span>,</span>
+<span>  simple <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  theta_type <span class="op">=</span> <span class="st">"Estimated"</span>,</span>
+<span>  color_final <span class="op">=</span> <span class="st">"blue"</span>,</span>
+<span>  segment <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  rmse <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  use_segment_label <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  use_par <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for output_Static</span></span>
+<span><span class="fu">plot</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">y</span>,</span>
+<span>  type <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  theta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>  info_type <span class="op">=</span> <span class="st">"FISHER"</span>,</span>
+<span>  plot_sum <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  select <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  examinee_id <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  position <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  theta_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>  ylim <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  color <span class="op">=</span> <span class="st">"blue"</span>,</span>
+<span>  z_ci <span class="op">=</span> <span class="fl">1.96</span>,</span>
+<span>  simple <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  use_par <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for constraints</span></span>
+<span><span class="fu">plot</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">y</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"info"</span>,</span>
+<span>  theta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>  info_type <span class="op">=</span> <span class="st">"FISHER"</span>,</span>
+<span>  plot_sum <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  select <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  examinee_id <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  position <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  theta_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>  ylim <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  color <span class="op">=</span> <span class="st">"blue"</span>,</span>
+<span>  z_ci <span class="op">=</span> <span class="fl">1.96</span>,</span>
+<span>  simple <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  use_par <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for output_Shadow</span></span>
+<span><span class="fu">plot</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">y</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"audit"</span>,</span>
+<span>  theta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>  info_type <span class="op">=</span> <span class="st">"FISHER"</span>,</span>
+<span>  plot_sum <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  select <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  examinee_id <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  theta_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>  ylim <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  color <span class="op">=</span> <span class="st">"blue"</span>,</span>
+<span>  z_ci <span class="op">=</span> <span class="fl">1.96</span>,</span>
+<span>  simple <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  theta_type <span class="op">=</span> <span class="st">"Estimated"</span>,</span>
+<span>  use_par <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for output_Shadow_all</span></span>
+<span><span class="fu">plot</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">y</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"audit"</span>,</span>
+<span>  theta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>  info_type <span class="op">=</span> <span class="st">"FISHER"</span>,</span>
+<span>  plot_sum <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  select <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  examinee_id <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  position <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  theta_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>  ylim <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  color <span class="op">=</span> <span class="st">"blue"</span>,</span>
+<span>  z_ci <span class="op">=</span> <span class="fl">1.96</span>,</span>
+<span>  simple <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  theta_type <span class="op">=</span> <span class="st">"Estimated"</span>,</span>
+<span>  color_final <span class="op">=</span> <span class="st">"blue"</span>,</span>
+<span>  segment <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  rmse <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  use_segment_label <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  use_par <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  theta_segment <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for output_Split</span></span>
+<span><span class="fu">plot</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">y</span>,</span>
+<span>  type <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  theta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>  info_type <span class="op">=</span> <span class="st">"FISHER"</span>,</span>
+<span>  plot_sum <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  select <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  examinee_id <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  position <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  theta_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>  ylim <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  color <span class="op">=</span> <span class="st">"blue"</span>,</span>
+<span>  z_ci <span class="op">=</span> <span class="fl">1.96</span>,</span>
+<span>  simple <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  use_par <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -307,36 +307,35 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code>
-<span class="va">subitempool</span> <span class="op">&lt;-</span> <span class="va">itempool_science</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span>
-
-<span class="co">## Plot item information of a pool</span>
-<span class="fu">plot</span><span class="op">(</span><span class="va">subitempool</span><span class="op">)</span>
-<span class="fu">plot</span><span class="op">(</span><span class="va">itempool_science</span>, select <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span>
-
-<span class="co">## Plot expected score of a pool</span>
-<span class="fu">plot</span><span class="op">(</span><span class="va">subitempool</span>, type <span class="op">=</span> <span class="st">"score"</span><span class="op">)</span>
-<span class="fu">plot</span><span class="op">(</span><span class="va">itempool_science</span>, type <span class="op">=</span> <span class="st">"score"</span>, select <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span>
-
-<span class="co">## Plot assembly results from Static()</span>
-<span class="va">cfg</span> <span class="op">&lt;-</span> <span class="fu"><a href="createStaticTestConfig.html">createStaticTestConfig</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">solution</span> <span class="op">&lt;-</span> <span class="fu"><a href="Static-methods.html">Static</a></span><span class="op">(</span><span class="va">cfg</span>, <span class="va">constraints_science</span><span class="op">)</span>
-<span class="fu">plot</span><span class="op">(</span><span class="va">solution</span><span class="op">)</span>                 <span class="co"># defaults to the objective type</span>
-<span class="fu">plot</span><span class="op">(</span><span class="va">solution</span>, type <span class="op">=</span> <span class="st">"score"</span><span class="op">)</span> <span class="co"># plot expected scores</span>
-
-<span class="co">## Plot attainable information range from constraints</span>
-<span class="fu">plot</span><span class="op">(</span><span class="va">constraints_science</span><span class="op">)</span>
-
-<span class="co">## Plot assembly results from Shadow()</span>
-<span class="va">cfg</span> <span class="op">&lt;-</span> <span class="fu"><a href="createShadowTestConfig.html">createShadowTestConfig</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
-<span class="va">solution</span> <span class="op">&lt;-</span> <span class="fu"><a href="Shadow-methods.html">Shadow</a></span><span class="op">(</span><span class="va">cfg</span>, <span class="va">constraints_science</span>, true_theta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">plot</span><span class="op">(</span><span class="va">solution</span>, type <span class="op">=</span> <span class="st">'audit'</span> , examinee_id <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-<span class="fu">plot</span><span class="op">(</span><span class="va">solution</span>, type <span class="op">=</span> <span class="st">'shadow'</span>, examinee_id <span class="op">=</span> <span class="fl">1</span>, simple <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="co">## plot(solution, type = 'exposure')</span>
-
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span></span>
+<span><span class="va">subitempool</span> <span class="op">&lt;-</span> <span class="va">itempool_science</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co">## Plot item information of a pool</span></span>
+<span><span class="fu">plot</span><span class="op">(</span><span class="va">subitempool</span><span class="op">)</span></span>
+<span><span class="fu">plot</span><span class="op">(</span><span class="va">itempool_science</span>, select <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Plot expected score of a pool</span></span>
+<span><span class="fu">plot</span><span class="op">(</span><span class="va">subitempool</span>, type <span class="op">=</span> <span class="st">"score"</span><span class="op">)</span></span>
+<span><span class="fu">plot</span><span class="op">(</span><span class="va">itempool_science</span>, type <span class="op">=</span> <span class="st">"score"</span>, select <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Plot assembly results from Static()</span></span>
+<span><span class="va">cfg</span> <span class="op">&lt;-</span> <span class="fu"><a href="createStaticTestConfig.html">createStaticTestConfig</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">solution</span> <span class="op">&lt;-</span> <span class="fu"><a href="Static-methods.html">Static</a></span><span class="op">(</span><span class="va">cfg</span>, <span class="va">constraints_science</span><span class="op">)</span></span>
+<span><span class="fu">plot</span><span class="op">(</span><span class="va">solution</span><span class="op">)</span>                 <span class="co"># defaults to the objective type</span></span>
+<span><span class="fu">plot</span><span class="op">(</span><span class="va">solution</span>, type <span class="op">=</span> <span class="st">"score"</span><span class="op">)</span> <span class="co"># plot expected scores</span></span>
+<span></span>
+<span><span class="co">## Plot attainable information range from constraints</span></span>
+<span><span class="fu">plot</span><span class="op">(</span><span class="va">constraints_science</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Plot assembly results from Shadow()</span></span>
+<span><span class="va">cfg</span> <span class="op">&lt;-</span> <span class="fu"><a href="createShadowTestConfig.html">createShadowTestConfig</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">solution</span> <span class="op">&lt;-</span> <span class="fu"><a href="Shadow-methods.html">Shadow</a></span><span class="op">(</span><span class="va">cfg</span>, <span class="va">constraints_science</span>, true_theta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">plot</span><span class="op">(</span><span class="va">solution</span>, type <span class="op">=</span> <span class="st">'audit'</span> , examinee_id <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu">plot</span><span class="op">(</span><span class="va">solution</span>, type <span class="op">=</span> <span class="st">'shadow'</span>, examinee_id <span class="op">=</span> <span class="fl">1</span>, simple <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## plot(solution, type = 'exposure')</span></span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

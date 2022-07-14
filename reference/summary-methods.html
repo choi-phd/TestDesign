@@ -69,23 +69,23 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S4 method for item_pool</span>
-<span class="fu">summary</span><span class="op">(</span><span class="va">object</span><span class="op">)</span>
-
-<span class="co"># S4 method for item_attrib</span>
-<span class="fu">summary</span><span class="op">(</span><span class="va">object</span><span class="op">)</span>
-
-<span class="co"># S4 method for st_attrib</span>
-<span class="fu">summary</span><span class="op">(</span><span class="va">object</span><span class="op">)</span>
-
-<span class="co"># S4 method for constraints</span>
-<span class="fu">summary</span><span class="op">(</span><span class="va">object</span><span class="op">)</span>
-
-<span class="co"># S4 method for output_Static</span>
-<span class="fu">summary</span><span class="op">(</span><span class="va">object</span>, simple <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="co"># S4 method for output_Shadow_all</span>
-<span class="fu">summary</span><span class="op">(</span><span class="va">object</span>, simple <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for item_pool</span></span>
+<span><span class="fu">summary</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for item_attrib</span></span>
+<span><span class="fu">summary</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for st_attrib</span></span>
+<span><span class="fu">summary</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for constraints</span></span>
+<span><span class="fu">summary</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for output_Static</span></span>
+<span><span class="fu">summary</span><span class="op">(</span><span class="va">object</span>, simple <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for output_Shadow_all</span></span>
+<span><span class="fu">summary</span><span class="op">(</span><span class="va">object</span>, simple <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -101,20 +101,19 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">summary</span><span class="op">(</span><span class="va">itempool_science</span><span class="op">)</span>
-<span class="fu">summary</span><span class="op">(</span><span class="va">itemattrib_science</span><span class="op">)</span>
-
-<span class="va">cfg</span> <span class="op">&lt;-</span> <span class="fu"><a href="createStaticTestConfig.html">createStaticTestConfig</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">solution</span> <span class="op">&lt;-</span> <span class="fu"><a href="Static-methods.html">Static</a></span><span class="op">(</span><span class="va">cfg</span>, <span class="va">constraints_science</span><span class="op">)</span>
-<span class="fu">summary</span><span class="op">(</span><span class="va">solution</span><span class="op">)</span>
-<span class="fu">summary</span><span class="op">(</span><span class="va">solution</span>, simple <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="va">cfg</span> <span class="op">&lt;-</span> <span class="fu"><a href="createShadowTestConfig.html">createShadowTestConfig</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">solution</span> <span class="op">&lt;-</span> <span class="fu"><a href="Shadow-methods.html">Shadow</a></span><span class="op">(</span><span class="va">cfg</span>, <span class="va">constraints_science</span>, true_theta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">summary</span><span class="op">(</span><span class="va">solution</span><span class="op">)</span>
-<span class="fu">summary</span><span class="op">(</span><span class="va">solution</span>, simple <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">summary</span><span class="op">(</span><span class="va">itempool_science</span><span class="op">)</span></span>
+<span><span class="fu">summary</span><span class="op">(</span><span class="va">itemattrib_science</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">cfg</span> <span class="op">&lt;-</span> <span class="fu"><a href="createStaticTestConfig.html">createStaticTestConfig</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">solution</span> <span class="op">&lt;-</span> <span class="fu"><a href="Static-methods.html">Static</a></span><span class="op">(</span><span class="va">cfg</span>, <span class="va">constraints_science</span><span class="op">)</span></span>
+<span><span class="fu">summary</span><span class="op">(</span><span class="va">solution</span><span class="op">)</span></span>
+<span><span class="fu">summary</span><span class="op">(</span><span class="va">solution</span>, simple <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">cfg</span> <span class="op">&lt;-</span> <span class="fu"><a href="createShadowTestConfig.html">createShadowTestConfig</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">solution</span> <span class="op">&lt;-</span> <span class="fu"><a href="Shadow-methods.html">Shadow</a></span><span class="op">(</span><span class="va">cfg</span>, <span class="va">constraints_science</span>, true_theta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">summary</span><span class="op">(</span><span class="va">solution</span><span class="op">)</span></span>
+<span><span class="fu">summary</span><span class="op">(</span><span class="va">solution</span>, simple <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

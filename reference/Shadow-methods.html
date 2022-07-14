@@ -69,34 +69,34 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">Shadow</span><span class="op">(</span>
-  <span class="va">config</span>,
-  constraints <span class="op">=</span> <span class="cn">NULL</span>,
-  true_theta <span class="op">=</span> <span class="cn">NULL</span>,
-  data <span class="op">=</span> <span class="cn">NULL</span>,
-  prior <span class="op">=</span> <span class="cn">NULL</span>,
-  prior_par <span class="op">=</span> <span class="cn">NULL</span>,
-  exclude <span class="op">=</span> <span class="cn">NULL</span>,
-  include_items_for_estimation <span class="op">=</span> <span class="cn">NULL</span>,
-  force_solver <span class="op">=</span> <span class="cn">FALSE</span>,
-  session <span class="op">=</span> <span class="cn">NULL</span>,
-  seed <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for config_Shadow</span>
-<span class="fu">Shadow</span><span class="op">(</span>
-  <span class="va">config</span>,
-  constraints <span class="op">=</span> <span class="cn">NULL</span>,
-  true_theta <span class="op">=</span> <span class="cn">NULL</span>,
-  data <span class="op">=</span> <span class="cn">NULL</span>,
-  prior <span class="op">=</span> <span class="cn">NULL</span>,
-  prior_par <span class="op">=</span> <span class="cn">NULL</span>,
-  exclude <span class="op">=</span> <span class="cn">NULL</span>,
-  include_items_for_estimation <span class="op">=</span> <span class="cn">NULL</span>,
-  force_solver <span class="op">=</span> <span class="cn">FALSE</span>,
-  session <span class="op">=</span> <span class="cn">NULL</span>,
-  seed <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">Shadow</span><span class="op">(</span></span>
+<span>  <span class="va">config</span>,</span>
+<span>  constraints <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  true_theta <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  prior <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  prior_par <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  exclude <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  include_items_for_estimation <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  force_solver <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  session <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  seed <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for config_Shadow</span></span>
+<span><span class="fu">Shadow</span><span class="op">(</span></span>
+<span>  <span class="va">config</span>,</span>
+<span>  constraints <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  true_theta <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  prior <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  prior_par <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  exclude <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  include_items_for_estimation <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  force_solver <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  session <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  seed <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -177,11 +177,10 @@ Springer Science &amp; Business Media.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu"><a href="createShadowTestConfig.html">createShadowTestConfig</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">true_theta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
-<span class="va">solution</span> <span class="op">&lt;-</span> <span class="fu">Shadow</span><span class="op">(</span><span class="va">config</span>, <span class="va">constraints_science</span>, <span class="va">true_theta</span><span class="op">)</span>
-<span class="va">solution</span><span class="op">@</span><span class="va">output</span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu"><a href="createShadowTestConfig.html">createShadowTestConfig</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">true_theta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">solution</span> <span class="op">&lt;-</span> <span class="fu">Shadow</span><span class="op">(</span><span class="va">config</span>, <span class="va">constraints_science</span>, <span class="va">true_theta</span><span class="op">)</span></span>
+<span><span class="va">solution</span><span class="op">@</span><span class="va">output</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

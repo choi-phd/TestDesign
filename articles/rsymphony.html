@@ -138,15 +138,15 @@ ERROR: configuration failed for package ‘Rsymphony’</code></pre>
 <p><strong>Step 4.</strong> Open the file <code>Rsymphony/configure</code> by running the following line. This opens <code>nano</code> text editor, with <code>-c</code> option to make it display the line numbers.</p>
 <pre><code>sudo nano -c ./Rsymphony/configure</code></pre>
 <p>Comment out lines 51-55 by inserting <code>#</code>s at the beginning of each line, as shown below. Save it as the same file with Control + O, and when prompted for file name to write press Enter. Exit <code>nano</code> with Control + X.</p>
-<pre><code><span class="co">#if test ${status} -ne 0; then</span>
-<span class="co"># echo "Cannot find SYMPHONY libraries and headers."</span>
-<span class="co"># echo "See https://projects.coin-or.org/SYMPHONY."</span>
-<span class="co"># exit 1</span>
-<span class="co">#fi</span></code></pre>
+<pre><code><span><span class="co">#if test ${status} -ne 0; then</span></span>
+<span><span class="co"># echo "Cannot find SYMPHONY libraries and headers."</span></span>
+<span><span class="co"># echo "See https://projects.coin-or.org/SYMPHONY."</span></span>
+<span><span class="co"># exit 1</span></span>
+<span><span class="co">#fi</span></span></code></pre>
 <p><strong>Step 5.</strong> Open the file <code>Rsymphony/src/R_symphony.cc</code> by running the following line.</p>
 <pre><code>sudo nano -c ./Rsymphony/src/R_symphony.cc</code></pre>
 <p>Change line 12 <code>#include &lt;coin/symphony.h&gt;</code> as shown below. Save it as the same file with Control + O, and when prompted for file name to write press Enter. Exit with Control + X.</p>
-<pre><code><span class="co">#include &lt;symphony.h&gt;</span></code></pre>
+<pre><code><span><span class="co">#include &lt;symphony.h&gt;</span></span></code></pre>
 <p><strong>Step 6.</strong> Run the following line in terminal to install the modified Rsymphony package.</p>
 <pre><code>sudo R CMD install Rsymphony</code></pre>
 <p>This will make the Rsymphony solver package available in R.</p>
@@ -161,7 +161,7 @@ ERROR: configuration failed for package ‘Rsymphony’</code></pre>
 <p><strong>Step 1.</strong> Open the file <code>~/.R/Makevars</code> by running the following line.</p>
 <pre><code>sudo nano -c ~/.R/Makevars</code></pre>
 <p>The file will be empty in most cases. Add the following line to point R to the Fortran libraries. Save it as the same file with Control + O, and when prompted for file name to write press Enter. Exit with Control + X.</p>
-<pre><code><span class="va">FLIBS</span> <span class="op">=</span> <span class="op">-</span><span class="va">L</span><span class="op">/</span><span class="va">usr</span><span class="op">/</span><span class="va">local</span><span class="op">/</span><span class="va">gfortran</span><span class="op">/</span><span class="va">lib</span> <span class="op">-</span><span class="va">lgfortran</span> <span class="op">-</span><span class="va">lquadmath</span> <span class="op">-</span><span class="va">lm</span></code></pre>
+<pre><code><span><span class="va">FLIBS</span> <span class="op">=</span> <span class="op">-</span><span class="va">L</span><span class="op">/</span><span class="va">usr</span><span class="op">/</span><span class="va">local</span><span class="op">/</span><span class="va">gfortran</span><span class="op">/</span><span class="va">lib</span> <span class="op">-</span><span class="va">lgfortran</span> <span class="op">-</span><span class="va">lquadmath</span> <span class="op">-</span><span class="va">lm</span></span></code></pre>
 <p><strong>Step 2.</strong> Run the following line in terminal to install the modified Rsymphony package.</p>
 <pre><code>sudo R CMD install Rsymphony</code></pre>
 <p>This will make the Rsymphony solver package available in R.</p>

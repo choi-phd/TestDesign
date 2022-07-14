@@ -69,30 +69,30 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">eap</span><span class="op">(</span>
-  <span class="va">object</span>,
-  select <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">resp</span>,
-  theta_grid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">0.1</span><span class="op">)</span>,
-  prior <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">81</span>, <span class="fl">81</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for item_pool</span>
-<span class="fu">eap</span><span class="op">(</span>
-  <span class="va">object</span>,
-  select <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">resp</span>,
-  theta_grid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">0.1</span><span class="op">)</span>,
-  prior <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">81</span>, <span class="fl">81</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">EAP</span><span class="op">(</span><span class="va">object</span>, select <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">prior</span>, reset_prior <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="co"># S4 method for test</span>
-<span class="fu">EAP</span><span class="op">(</span><span class="va">object</span>, select <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">prior</span>, reset_prior <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="co"># S4 method for test_cluster</span>
-<span class="fu">EAP</span><span class="op">(</span><span class="va">object</span>, select <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">prior</span>, reset_prior <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">eap</span><span class="op">(</span></span>
+<span>  <span class="va">object</span>,</span>
+<span>  select <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">resp</span>,</span>
+<span>  theta_grid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>  prior <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">81</span>, <span class="fl">81</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for item_pool</span></span>
+<span><span class="fu">eap</span><span class="op">(</span></span>
+<span>  <span class="va">object</span>,</span>
+<span>  select <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">resp</span>,</span>
+<span>  theta_grid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>  prior <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">81</span>, <span class="fl">81</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">EAP</span><span class="op">(</span><span class="va">object</span>, select <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">prior</span>, reset_prior <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for test</span></span>
+<span><span class="fu">EAP</span><span class="op">(</span><span class="va">object</span>, select <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">prior</span>, reset_prior <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for test_cluster</span></span>
+<span><span class="fu">EAP</span><span class="op">(</span><span class="va">object</span>, select <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">prior</span>, reset_prior <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -131,10 +131,9 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">eap</span><span class="op">(</span><span class="va">itempool_fatigue</span>, resp <span class="op">=</span> <span class="va">resp_fatigue_data</span><span class="op">[</span><span class="fl">10</span>, <span class="op">]</span><span class="op">)</span>
-<span class="fu">eap</span><span class="op">(</span><span class="va">itempool_fatigue</span>, select <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">20</span>, resp <span class="op">=</span> <span class="va">resp_fatigue_data</span><span class="op">[</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span><span class="op">)</span>
-
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">eap</span><span class="op">(</span><span class="va">itempool_fatigue</span>, resp <span class="op">=</span> <span class="va">resp_fatigue_data</span><span class="op">[</span><span class="fl">10</span>, <span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu">eap</span><span class="op">(</span><span class="va">itempool_fatigue</span>, select <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">20</span>, resp <span class="op">=</span> <span class="va">resp_fatigue_data</span><span class="op">[</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span><span class="op">)</span></span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

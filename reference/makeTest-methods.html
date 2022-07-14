@@ -75,20 +75,20 @@ The functionality of this function is superseded by <code><a href="makeSimulatio
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">makeTest</span><span class="op">(</span>
-  <span class="va">object</span>,
-  theta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">0.1</span><span class="op">)</span>,
-  info_type <span class="op">=</span> <span class="st">"FISHER"</span>,
-  true_theta <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for item_pool</span>
-<span class="fu">makeTest</span><span class="op">(</span>
-  <span class="va">object</span>,
-  theta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">0.1</span><span class="op">)</span>,
-  info_type <span class="op">=</span> <span class="st">"FISHER"</span>,
-  true_theta <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">makeTest</span><span class="op">(</span></span>
+<span>  <span class="va">object</span>,</span>
+<span>  theta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>  info_type <span class="op">=</span> <span class="st">"FISHER"</span>,</span>
+<span>  true_theta <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for item_pool</span></span>
+<span><span class="fu">makeTest</span><span class="op">(</span></span>
+<span>  <span class="va">object</span>,</span>
+<span>  theta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>  info_type <span class="op">=</span> <span class="st">"FISHER"</span>,</span>
+<span>  true_theta <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -112,8 +112,7 @@ The functionality of this function is superseded by <code><a href="makeSimulatio
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">makeTest</span><span class="op">(</span><span class="va">itempool_science</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">makeTest</span><span class="op">(</span><span class="va">itempool_science</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

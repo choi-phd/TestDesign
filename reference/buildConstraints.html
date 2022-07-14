@@ -73,14 +73,14 @@ The constraints must be in the expected format; see the vignette in <code><a hre
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">buildConstraints</span><span class="op">(</span>
-  <span class="va">object</span>,
-  <span class="va">item_pool</span>,
-  <span class="va">item_attrib</span>,
-  st_attrib <span class="op">=</span> <span class="cn">NULL</span>,
-  pool <span class="op">=</span> <span class="cn">NULL</span>,
-  constraints <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">buildConstraints</span><span class="op">(</span></span>
+<span>  <span class="va">object</span>,</span>
+<span>  <span class="va">item_pool</span>,</span>
+<span>  <span class="va">item_attrib</span>,</span>
+<span>  st_attrib <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pool <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  constraints <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -118,30 +118,29 @@ The constraints must be in the expected format; see the vignette in <code><a hre
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co">## Read from objects:</span>
-<span class="va">constraints_science</span> <span class="op">&lt;-</span> <span class="fu">buildConstraints</span><span class="op">(</span><span class="va">constraints_science_data</span>,
-  <span class="va">itempool_science</span>, <span class="va">itemattrib_science</span><span class="op">)</span>
-<span class="va">constraints_reading</span> <span class="op">&lt;-</span> <span class="fu">buildConstraints</span><span class="op">(</span><span class="va">constraints_reading_data</span>,
-  <span class="va">itempool_reading</span>, <span class="va">itemattrib_reading</span>, <span class="va">stimattrib_reading</span><span class="op">)</span>
-
-<span class="co">## Read from data.frame:</span>
-<span class="va">constraints_science</span> <span class="op">&lt;-</span> <span class="fu">buildConstraints</span><span class="op">(</span><span class="va">constraints_science_data</span>,
-  <span class="va">itempool_science_data</span>, <span class="va">itemattrib_science_data</span><span class="op">)</span>
-<span class="va">constraints_reading</span> <span class="op">&lt;-</span> <span class="fu">buildConstraints</span><span class="op">(</span><span class="va">constraints_reading_data</span>,
-  <span class="va">itempool_reading_data</span>, <span class="va">itemattrib_reading_data</span>, <span class="va">stimattrib_reading_data</span><span class="op">)</span>
-
-<span class="co">## Read from file: write to tempdir() for illustration and clean afterwards</span>
-<span class="va">f1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"constraints_science.csv"</span><span class="op">)</span>
-<span class="va">f2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"itempool_science.csv"</span><span class="op">)</span>
-<span class="va">f3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"itemattrib_science.csv"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">constraints_science_data</span>, <span class="va">f1</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">itempool_science_data</span>   , <span class="va">f2</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">itemattrib_science_data</span> , <span class="va">f3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="va">constraints_science</span> <span class="op">&lt;-</span> <span class="fu">buildConstraints</span><span class="op">(</span><span class="va">f1</span>, <span class="va">f2</span>, <span class="va">f3</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.remove</a></span><span class="op">(</span><span class="va">f1</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.remove</a></span><span class="op">(</span><span class="va">f2</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.remove</a></span><span class="op">(</span><span class="va">f3</span><span class="op">)</span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co">## Read from objects:</span></span>
+<span><span class="va">constraints_science</span> <span class="op">&lt;-</span> <span class="fu">buildConstraints</span><span class="op">(</span><span class="va">constraints_science_data</span>,</span>
+<span>  <span class="va">itempool_science</span>, <span class="va">itemattrib_science</span><span class="op">)</span></span>
+<span><span class="va">constraints_reading</span> <span class="op">&lt;-</span> <span class="fu">buildConstraints</span><span class="op">(</span><span class="va">constraints_reading_data</span>,</span>
+<span>  <span class="va">itempool_reading</span>, <span class="va">itemattrib_reading</span>, <span class="va">stimattrib_reading</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Read from data.frame:</span></span>
+<span><span class="va">constraints_science</span> <span class="op">&lt;-</span> <span class="fu">buildConstraints</span><span class="op">(</span><span class="va">constraints_science_data</span>,</span>
+<span>  <span class="va">itempool_science_data</span>, <span class="va">itemattrib_science_data</span><span class="op">)</span></span>
+<span><span class="va">constraints_reading</span> <span class="op">&lt;-</span> <span class="fu">buildConstraints</span><span class="op">(</span><span class="va">constraints_reading_data</span>,</span>
+<span>  <span class="va">itempool_reading_data</span>, <span class="va">itemattrib_reading_data</span>, <span class="va">stimattrib_reading_data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Read from file: write to tempdir() for illustration and clean afterwards</span></span>
+<span><span class="va">f1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"constraints_science.csv"</span><span class="op">)</span></span>
+<span><span class="va">f2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"itempool_science.csv"</span><span class="op">)</span></span>
+<span><span class="va">f3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"itemattrib_science.csv"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">constraints_science_data</span>, <span class="va">f1</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">itempool_science_data</span>   , <span class="va">f2</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">itemattrib_science_data</span> , <span class="va">f3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">constraints_science</span> <span class="op">&lt;-</span> <span class="fu">buildConstraints</span><span class="op">(</span><span class="va">f1</span>, <span class="va">f2</span>, <span class="va">f3</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.remove</a></span><span class="op">(</span><span class="va">f1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.remove</a></span><span class="op">(</span><span class="va">f2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.remove</a></span><span class="op">(</span><span class="va">f3</span><span class="op">)</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
