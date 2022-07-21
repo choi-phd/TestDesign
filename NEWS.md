@@ -8,6 +8,7 @@
 * Fixed where if interim theta estimation method was `EB` or `FB`, prior sample generation was ignoring prior distribution type and assuming normal distribution.
 * Fixed where if prior distribution type was uniform, prior density generation was ignoring prior parameters and using U(0, 1).
 * Fixed where EAP shrinkage correction was ignoring prior standard deviation when it was supplied in the config.
+* Fixed where using MLEF would raise a `duplicate item IDs found` warning for R <= 3.6.
 
 ## Updates
 
