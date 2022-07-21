@@ -776,7 +776,8 @@ setMethod(
           ID    = c("FENCE_LB", "FENCE_UB"),
           MODEL = rep("2PL", 2),
           PAR1  = rep(fence_slope, length.out = 2),
-          PAR2  = fence_difficulty
+          PAR2  = fence_difficulty,
+          stringsAsFactors = FALSE
         )
         item_fence <- loadItemPool(ipar_fence)
         object     <- object + item_fence
