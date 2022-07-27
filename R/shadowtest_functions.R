@@ -179,7 +179,7 @@ selectItemFromShadowTest <- function(shadow_test, position, constants, x) {
 }
 
 #' @noRd
-shouldShadowTestBeRefreshed <- function(position, refresh_policy, refresh_shadow, theta_change, constants, stimulus_record) {
+shouldShadowTestBeRefreshed <- function(position, refresh_policy, refresh_schedule, theta_change, constants, stimulus_record) {
 
   refresh_method <- toupper(refresh_policy$method)
 
@@ -189,7 +189,7 @@ shouldShadowTestBeRefreshed <- function(position, refresh_policy, refresh_shadow
   if (refresh_method == "ALWAYS") {
     return(TRUE)
   }
-  if (refresh_method %in% c("POSITION", "INTERVAL") && refresh_shadow[position]) {
+  if (refresh_method %in% c("POSITION", "INTERVAL") && refresh_schedule[position]) {
     return(TRUE)
   }
   if (refresh_method == "THRESHOLD") {
@@ -198,7 +198,7 @@ shouldShadowTestBeRefreshed <- function(position, refresh_policy, refresh_shadow
     }
   }
   if (refresh_method == "INTERVAL-THRESHOLD") {
-    if (abs(theta_change) > refresh_policy$threshold && refresh_shadow[position]) {
+    if (abs(theta_change) > refresh_policy$threshold && refresh_schedule[position]) {
       return(TRUE)
     }
   }
