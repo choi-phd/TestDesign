@@ -179,7 +179,7 @@ selectItemFromShadowTest <- function(shadow_test, position, constants, x) {
 }
 
 #' @noRd
-shouldShadowBeRefreshed <- function(position, refresh_policy, refresh_shadow, theta_change, constants, stimulus_record) {
+shouldShadowTestBeRefreshed <- function(position, refresh_policy, refresh_shadow, theta_change, constants, stimulus_record) {
 
   refresh_method <- toupper(refresh_policy$method)
 
