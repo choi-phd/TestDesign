@@ -225,8 +225,10 @@ setMethod(
           )
 
           if (shouldShadowTestBeRefreshed(
-            position, config@refresh_policy, shadowtest_refresh_schedule,
-            theta_change, constants, stimulus_record
+            shadowtest_refresh_schedule,
+            position,
+            theta_change,
+            stimulus_record
           )) {
 
             if (!is.null(seed)) {

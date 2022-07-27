@@ -9,28 +9,55 @@ parseShadowTestRefreshSchedule <- function(constants, refresh_policy) {
   refresh_interval <- refresh_policy$interval
   test_length      <- constants$test_length
 
-  shadowtest_refresh_schedule    <- rep(FALSE, test_length)
-  shadowtest_refresh_schedule[1] <- TRUE
-  if (refresh_method %in% c("ALWAYS", "THRESHOLD")) {
-    shadowtest_refresh_schedule[1:test_length] <- TRUE
+  o <- list()
+  o$dynamic       <- FALSE
+  o$use_threshold <- FALSE
+  o$use_setbased  <- FALSE
+  o$schedule <- rep(FALSE, test_length)
+
+  o$schedule[1] <- TRUE
+
+  if (refresh_method %in% c("ALWAYS")) {
+    o$schedule[1:test_length] <- TRUE
+  }
+  if (refresh_method %in% c("THRESHOLD")) {
+    o$dynamic       <- TRUE
+    o$use_threshold <- TRUE
+    o$threshold     <- refresh_policy$threshold
+    # scheduled values are later overridden
+    o$schedule[1:test_length] <- TRUE
   }
   if (refresh_method %in% c("POSITION")) {
     if (!all(refresh_position %in% 1:test_length)) {
       stop("config@refresh_policy: $position must be within test length")
     }
-    shadowtest_refresh_schedule[refresh_position] <- TRUE
+    o$schedule[refresh_position] <- TRUE
   }
-  if (refresh_method %in% c("INTERVAL", "INTERVAL-THRESHOLD")) {
+  if (refresh_method %in% c("INTERVAL")) {
     if (!(refresh_interval >= 1 && refresh_interval <= test_length)) {
       stop("config@refresh_policy: $interval must be at least 1 and not greater than test length")
     }
-    shadowtest_refresh_schedule[seq(1, test_length, refresh_interval)] <- TRUE
+    o$schedule[seq(1, test_length, refresh_interval)] <- TRUE
   }
-  if (constants$set_based_refresh && !constants$set_based) {
-    stop(sprintf("config@refresh_policy: stimulus-based constraint is required for $method '%s'", refresh_method))
+  if (refresh_method %in% c("INTERVAL-THRESHOLD")) {
+    if (!(refresh_interval >= 1 && refresh_interval <= test_length)) {
+      stop("config@refresh_policy: $interval must be at least 1 and not greater than test length")
+    }
+    o$dynamic       <- TRUE
+    o$use_threshold <- TRUE
+    o$threshold     <- refresh_policy$threshold
+    o$schedule[seq(1, test_length, refresh_interval)] <- TRUE
+  }
+  if (refresh_method %in% c("STIMULUS", "SET", "PASSAGE")) {
+    if (!constants$set_based) {
+      stop(sprintf("config@refresh_policy: stimulus-based constraint is required for $method '%s'", refresh_method))
+    }
+    o$dynamic      <- TRUE
+    o$use_setbased <- TRUE
+    o$schedule[1:test_length] <- TRUE
   }
 
-  return(shadowtest_refresh_schedule)
+  return(o)
 
 }
 
@@ -179,33 +206,34 @@ selectItemFromShadowTest <- function(shadow_test, position, constants, x) {
 }
 
 #' @noRd
-shouldShadowTestBeRefreshed <- function(position, refresh_policy, refresh_schedule, theta_change, constants, stimulus_record) {
+shouldShadowTestBeRefreshed <- function(x, position, theta_change, stimulus_record) {
 
-  refresh_method <- toupper(refresh_policy$method)
+  scheduled_value <- x$schedule[position]
+  
+  if (!x$dynamic) {
+    return(scheduled_value)
+  }
 
-  if (position == 1) {
-    return(TRUE)
-  }
-  if (refresh_method == "ALWAYS") {
-    return(TRUE)
-  }
-  if (refresh_method %in% c("POSITION", "INTERVAL") && refresh_schedule[position]) {
-    return(TRUE)
-  }
-  if (refresh_method == "THRESHOLD") {
-    if (abs(theta_change) > refresh_policy$threshold) {
-      return(TRUE)
+  if (x$dynamic) {
+    if (x$use_threshold) {
+      if (abs(theta_change) > x$threshold) {
+        # for THRESHOLD method, if threshold is exceeded, then this always returns true
+        # for INTERVAL-THRESHOLD method, if threshold is exceeded, then this returns scheduled value 
+        # - (equivalent to & operation)
+        return(scheduled_value)
+      } else {
+        return(FALSE)
+      }
+    }
+    if (x$use_setbased) {
+      if (stimulus_record$just_finished_this_set) {
+        return(TRUE)
+      } else {
+        return(FALSE)
+      }
     }
   }
-  if (refresh_method == "INTERVAL-THRESHOLD") {
-    if (abs(theta_change) > refresh_policy$threshold && refresh_schedule[position]) {
-      return(TRUE)
-    }
-  }
-  if (constants$set_based_refresh && constants$set_based && stimulus_record$just_finished_this_set) {
-    return(TRUE)
-  }
-
-  return(FALSE)
+  
+  stop("unexpected error: could not parse shadowtest refresh schedule")
 
 }

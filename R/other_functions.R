@@ -97,13 +97,6 @@ getConstants <- function(constraints, config, arg_data, true_theta, max_info) {
     }
   }
 
-  refresh_method <- toupper(config@refresh_policy$method)
-  if (refresh_method %in% c("STIMULUS", "SET", "PASSAGE")) {
-    o$set_based_refresh <- TRUE
-  } else {
-    o$set_based_refresh <- FALSE
-  }
-
   o$exposure_control_method <- toupper(config@exposure_control$method)
   if (o$exposure_control_method %in% c("ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
     o$use_eligibility_control <- TRUE
