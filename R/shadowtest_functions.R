@@ -70,7 +70,7 @@ assembleShadowTest <- function(
 
     xdata_elg  <- applyEligibilityConstraintsToXdata(xdata, eligible_flag_in_current_theta_segment, constants, constraints)
     shadowtest <- runAssembly(config, constraints, xdata = xdata_elg, objective = info)
-    is_optimal <- isShadowtestOptimal(shadowtest)
+    is_optimal <- isShadowTestOptimal(shadowtest)
 
     if (is_optimal) {
       shadowtest$feasible <- TRUE
@@ -108,7 +108,7 @@ assembleShadowTest <- function(
 }
 
 #' @noRd
-isShadowtestOptimal <- function(shadowtest) {
+isShadowTestOptimal <- function(shadowtest) {
   return(isOptimal(shadowtest$status, shadowtest$solver))
 }
 
