@@ -95,7 +95,7 @@ setMethod(
     # Only used if config@item_selection$method = "FIXED"
     info_fixed_theta      <- getInfoFixedTheta(config@item_selection, constants, item_pool, model)
 
-    if (constants$use_shadow) {
+    if (constants$use_shadowtest) {
       shadowtest_refresh_schedule <- parseShadowTestRefreshSchedule(constants, config@refresh_policy)
     }
 
@@ -173,7 +173,7 @@ setMethod(
 
       # Simulee: initialize shadow test record
 
-      if (constants$use_shadow) {
+      if (constants$use_shadowtest) {
         o@shadow_test_feasible  <- logical(constants$test_length)
         o@shadow_test_refreshed <- logical(constants$test_length)
       }
@@ -218,7 +218,7 @@ setMethod(
 
         # Item position / simulee: do shadow test assembly
 
-        if (constants$use_shadow) {
+        if (constants$use_shadowtest) {
 
           o@theta_segment_index[position] <- parseThetaSegment(
             current_theta, position, config@exposure_control, constants
@@ -271,7 +271,7 @@ setMethod(
 
         }
 
-        if (!constants$use_shadow) {
+        if (!constants$use_shadowtest) {
 
           # Do traditional CAT
 
@@ -464,7 +464,7 @@ setMethod(
       constants
     )
 
-    if (constants$use_shadow) {
+    if (constants$use_shadowtest) {
       freq_infeasible <- table(unlist(lapply(1:constants$nj, function(j) sum(!o_list[[j]]@shadow_test_feasible))))
     } else {
       freq_infeasible <- NULL
