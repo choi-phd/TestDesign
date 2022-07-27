@@ -242,7 +242,7 @@ setMethod(
               constants,
               constraints
             )
-            is_optimal <- isShadowtestOptimal(shadowtest)
+            is_optimal <- isShadowTestOptimal(shadowtest)
             if (!is_optimal) {
               printSolverNewline(shadowtest$solver)
               msg <- getSolverStatusMessage(shadowtest$status, shadowtest$solver)
