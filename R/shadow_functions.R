@@ -96,7 +96,7 @@ setMethod(
     info_fixed_theta      <- getInfoFixedTheta(config@item_selection, constants, item_pool, model)
 
     if (constants$use_shadow) {
-      refresh_shadow <- initializeShadowEngine(constants, config@refresh_policy)
+      refresh_shadow <- parseShadowTestRefreshSchedule(constants, config@refresh_policy)
     }
 
     # Initialize exposure rate control

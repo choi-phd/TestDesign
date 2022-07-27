@@ -2,7 +2,7 @@
 NULL
 
 #' @noRd
-initializeShadowEngine <- function(constants, refresh_policy) {
+parseShadowTestRefreshSchedule <- function(constants, refresh_policy) {
 
   refresh_method   <- toupper(refresh_policy$method)
   refresh_position <- refresh_policy$position
