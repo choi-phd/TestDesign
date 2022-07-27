@@ -269,9 +269,11 @@ setMethod(
           o@shadow_test[[position]]$i         <- shadowtest$shadow_test$INDEX
           o@shadow_test[[position]]$s         <- shadowtest$shadow_test$STINDEX
 
-        } else {
+        }
 
-          # If not doing shadow
+        if (!constants$use_shadow) {
+
+          # Do traditional CAT
 
           o@administered_item_index[position] <- selectItem(info_current_theta, position, o)
 
