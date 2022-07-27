@@ -224,7 +224,7 @@ setMethod(
             current_theta, position, config@exposure_control, constants
           )
 
-          if (shouldShadowBeRefreshed(
+          if (shouldShadowTestBeRefreshed(
             position, config@refresh_policy, shadowtest_refresh_schedule,
             theta_change, constants, stimulus_record
           )) {
