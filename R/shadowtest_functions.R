@@ -9,28 +9,28 @@ parseShadowTestRefreshSchedule <- function(constants, refresh_policy) {
   refresh_interval <- refresh_policy$interval
   test_length      <- constants$test_length
 
-  refresh_shadow    <- rep(FALSE, test_length)
-  refresh_shadow[1] <- TRUE
+  shadowtest_refresh_schedule    <- rep(FALSE, test_length)
+  shadowtest_refresh_schedule[1] <- TRUE
   if (refresh_method %in% c("ALWAYS", "THRESHOLD")) {
-    refresh_shadow[1:test_length] <- TRUE
+    shadowtest_refresh_schedule[1:test_length] <- TRUE
   }
   if (refresh_method %in% c("POSITION")) {
     if (!all(refresh_position %in% 1:test_length)) {
       stop("config@refresh_policy: $position must be within test length")
     }
-    refresh_shadow[refresh_position] <- TRUE
+    shadowtest_refresh_schedule[refresh_position] <- TRUE
   }
   if (refresh_method %in% c("INTERVAL", "INTERVAL-THRESHOLD")) {
     if (!(refresh_interval >= 1 && refresh_interval <= test_length)) {
       stop("config@refresh_policy: $interval must be at least 1 and not greater than test length")
     }
-    refresh_shadow[seq(1, test_length, refresh_interval)] <- TRUE
+    shadowtest_refresh_schedule[seq(1, test_length, refresh_interval)] <- TRUE
   }
   if (constants$set_based_refresh && !constants$set_based) {
     stop(sprintf("config@refresh_policy: stimulus-based constraint is required for $method '%s'", refresh_method))
   }
 
-  return(refresh_shadow)
+  return(shadowtest_refresh_schedule)
 
 }
 
