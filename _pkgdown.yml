@@ -88,8 +88,6 @@ reference:
       - theta_EB
       - theta_FB
       - theta_FB_single
-      - theta_EAP
-      - theta_EAP_matrix
       - p_1pl
       - info_1pl
       - e_item

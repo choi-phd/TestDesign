@@ -1003,40 +1003,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// theta_EAP
-arma::colvec theta_EAP(const arma::mat& theta_grid, const arma::mat& item_parm, const arma::irowvec& resp, const arma::irowvec& ncat, const arma::irowvec& model, const int& prior, const arma::rowvec& prior_parm);
-RcppExport SEXP _TestDesign_theta_EAP(SEXP theta_gridSEXP, SEXP item_parmSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP priorSEXP, SEXP prior_parmSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type theta_grid(theta_gridSEXP);
-    Rcpp::traits::input_parameter< const arma::mat& >::type item_parm(item_parmSEXP);
-    Rcpp::traits::input_parameter< const arma::irowvec& >::type resp(respSEXP);
-    Rcpp::traits::input_parameter< const arma::irowvec& >::type ncat(ncatSEXP);
-    Rcpp::traits::input_parameter< const arma::irowvec& >::type model(modelSEXP);
-    Rcpp::traits::input_parameter< const int& >::type prior(priorSEXP);
-    Rcpp::traits::input_parameter< const arma::rowvec& >::type prior_parm(prior_parmSEXP);
-    rcpp_result_gen = Rcpp::wrap(theta_EAP(theta_grid, item_parm, resp, ncat, model, prior, prior_parm));
-    return rcpp_result_gen;
-END_RCPP
-}
-// theta_EAP_matrix
-arma::mat theta_EAP_matrix(const arma::mat& theta_grid, const arma::mat& item_parm, const arma::imat& resp, const arma::irowvec& ncat, const arma::irowvec& model, const int& prior, const arma::rowvec& prior_parm);
-RcppExport SEXP _TestDesign_theta_EAP_matrix(SEXP theta_gridSEXP, SEXP item_parmSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP priorSEXP, SEXP prior_parmSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type theta_grid(theta_gridSEXP);
-    Rcpp::traits::input_parameter< const arma::mat& >::type item_parm(item_parmSEXP);
-    Rcpp::traits::input_parameter< const arma::imat& >::type resp(respSEXP);
-    Rcpp::traits::input_parameter< const arma::irowvec& >::type ncat(ncatSEXP);
-    Rcpp::traits::input_parameter< const arma::irowvec& >::type model(modelSEXP);
-    Rcpp::traits::input_parameter< const int& >::type prior(priorSEXP);
-    Rcpp::traits::input_parameter< const arma::rowvec& >::type prior_parm(prior_parmSEXP);
-    rcpp_result_gen = Rcpp::wrap(theta_EAP_matrix(theta_grid, item_parm, resp, ncat, model, prior, prior_parm));
-    return rcpp_result_gen;
-END_RCPP
-}
 // theta_EB
 arma::mat theta_EB(const int& nx, const arma::rowvec& theta_init, const double& theta_prop, const arma::mat& item_parm, const arma::irowvec& resp, const arma::irowvec& ncat, const arma::irowvec& model, const int& prior, const arma::rowvec& prior_parm);
 RcppExport SEXP _TestDesign_theta_EB(SEXP nxSEXP, SEXP theta_initSEXP, SEXP theta_propSEXP, SEXP item_parmSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP priorSEXP, SEXP prior_parmSEXP) {
@@ -1190,8 +1156,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_TestDesign_calc_posterior", (DL_FUNC) &_TestDesign_calc_posterior, 7},
     {"_TestDesign_calc_posterior_function", (DL_FUNC) &_TestDesign_calc_posterior_function, 7},
     {"_TestDesign_calc_posterior_single", (DL_FUNC) &_TestDesign_calc_posterior_single, 7},
-    {"_TestDesign_theta_EAP", (DL_FUNC) &_TestDesign_theta_EAP, 7},
-    {"_TestDesign_theta_EAP_matrix", (DL_FUNC) &_TestDesign_theta_EAP_matrix, 7},
     {"_TestDesign_theta_EB", (DL_FUNC) &_TestDesign_theta_EB, 9},
     {"_TestDesign_theta_EB_single", (DL_FUNC) &_TestDesign_theta_EB_single, 9},
     {"_TestDesign_theta_FB", (DL_FUNC) &_TestDesign_theta_FB, 10},
