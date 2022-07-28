@@ -43,7 +43,7 @@ reference:
       - dataset_fatigue
       - dataset_bayes
   - title: "Item functions"
-    desc: "Functions for obtaining item information"
+    desc: "Functions for obtaining item properties"
     contents:
       - calcProb
       - calcEscore
@@ -67,6 +67,13 @@ reference:
       - output_Shadow-class
       - output_Shadow_all-class
       - output_Split-class
+  - title: "C++ functions"
+    contents:
+      - p_item
+      - e_item
+      - info_item
+      - j_item
+      - h_item
   - title: internal
     contents:
       - item_attrib-operators
@@ -89,15 +96,11 @@ reference:
       - calc_likelihood
       - calc_MI_FB
       - theta_EB
+      - theta_EB_single
       - theta_FB
       - theta_FB_single
       - theta_EAP
       - theta_EAP_matrix
-      - p_1pl
-      - info_1pl
-      - e_item
-      - j_item
-      - h_item
       - mle
       - mlef
       - eap
