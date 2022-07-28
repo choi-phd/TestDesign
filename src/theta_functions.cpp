@@ -164,16 +164,8 @@ arma::mat theta_EB_single(
   return out;
 }
 
-//' Calculate a fully Bayesian estimate of theta for an examinee
-//'
-//' Calculate a fully Bayesian estimate of theta for an examinee.
-//'
-//' @param nx The number of MCMC draws.
-//' @param theta_init A value for initial estimate of theta.
-//' @param theta_prop SD of the proposal distribution.
-//' @param items_list A list of item_parm matrices.
-//' @param item_init A matrix of item parameter estimates (one row per item).
-//' @template calc-params
+//' @rdname theta_FB
+//' @export
 // [[Rcpp::export]]
 arma::mat theta_FB(
   const int& nx,
@@ -268,16 +260,8 @@ arma::mat theta_FB(
   return out;
 }
 
-//' Calculate a fully Bayesian estimate of theta for a single item
-//'
-//' Calculate a fully Bayesian estimate of theta for a single item.
-//'
-//' @param nx The number of MCMC draws.
-//' @param theta_init A value for initial estimate of theta.
-//' @param theta_prop SD of the proposal distribution.
-//' @param item_mcmc A matrix of sampled item parameters for a single item.
-//' @param item_init A matrix of item parameter estimates (one row per item).
-//' @template calc-params
+//' @rdname theta_FB
+//' @export
 // [[Rcpp::export]]
 arma::mat theta_FB_single(
   const int& nx,

@@ -5,7 +5,7 @@
 \alias{calc_likelihood_function}
 \alias{calc_log_likelihood}
 \alias{calc_log_likelihood_function}
-\title{Calculate likelihoods}
+\title{(C++) For multiple items, calculate likelihoods}
 \usage{
 calc_likelihood(x, item_parm, resp, ncat, model)
 
@@ -24,9 +24,9 @@ calc_log_likelihood_function(
 )
 }
 \arguments{
-\item{x, theta_grid}{the theta value. This must be a column vector in matrix form for \code{calc_*_function} functions.}
+\item{x, theta_grid}{the theta value. This must be a column vector in matrix form for \code{calc_*_function()} functions.}
 
-\item{item_parm}{a matrix containing item parameters. Each row represents each item.}
+\item{item_parm}{a matrix containing item parameters. Each row should represent an item.}
 
 \item{resp}{a vector containing responses on each item.}
 
@@ -49,14 +49,14 @@ calc_log_likelihood_function(
 \item{prior_parm}{a vector containing parameters for the prior distribution.}
 }
 \description{
-\code{calc_likelihood} and \code{calc_likelihood_function} are functions to calculate likelihoods.
+\code{calc_likelihood()} and \code{calc_likelihood_function()} are functions for calculating likelihoods.
 }
 \details{
-\code{calc_log_likelihood} and \code{calc_log_likelihood_function} are functions to calculate log likelihoods.
+\code{calc_log_likelihood()} and \code{calc_log_likelihood_function()} are functions for calculating log likelihoods.
 
 These functions are designed for multiple items.
 
-\code{calc_*} functions accept a single theta value, and \code{calc_*_function} functions accept multiple theta values.
+\code{calc_*()} functions accept a single theta value, and \code{calc_*_function()} functions accept multiple theta values.
 
 Currently supports unidimensional models.
 }
@@ -82,9 +82,9 @@ l  <- calc_likelihood(x, item_parm, resp, ncat, model)
 ll <- calc_log_likelihood(x, item_parm, resp, ncat, model, 2, NA)
 log(l) == ll
 
-theta_grid <- matrix(seq(-3, 3, .1))
-l  <- calc_likelihood_function(theta_grid, item_parm, resp, ncat, model)
-ll <- calc_log_likelihood_function(theta_grid, item_parm, resp, ncat, model, 2, NA)
+x <- matrix(seq(-3, 3, .1))
+l  <- calc_likelihood_function(x, item_parm, resp, ncat, model)
+ll <- calc_log_likelihood_function(x, item_parm, resp, ncat, model, 2, NA)
 all(log(l) == ll)
 
 }

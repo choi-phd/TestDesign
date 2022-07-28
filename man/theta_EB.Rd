@@ -3,7 +3,7 @@
 \name{theta_EB}
 \alias{theta_EB}
 \alias{theta_EB_single}
-\title{Calculate theta estimates using EB (Empirical Bayes) method}
+\title{(C++) Calculate a theta estimate using EB (Empirical Bayes) method}
 \usage{
 theta_EB(
   nx,
@@ -32,17 +32,17 @@ theta_EB_single(
 \arguments{
 \item{nx}{the number of MCMC draws.}
 
-\item{theta_init}{initial estimate of theta.}
+\item{theta_init}{the initial estimate to use.}
 
-\item{theta_prop}{SD of the proposal distribution.}
+\item{theta_prop}{the SD of the proposal distribution.}
 
-\item{item_parm}{a matrix containing item parameters. Each row represents each item.}
+\item{item_parm}{a matrix containing item parameters. Each row should represent an item.}
 
-\item{resp}{a vector (or a value if for one item) containing responses on each item.}
+\item{resp}{a vector containing responses on each item.}
 
-\item{ncat}{a vector (or a value if for one item) containing the number of response categories of each item.}
+\item{ncat}{a vector containing the number of response categories of each item.}
 
-\item{model}{a vector (or a value if for one item) indicating item models of each item, using \itemize{
+\item{model}{a vector indicating item models of each item, using \itemize{
   \item{\code{1}}: 1PL model
   \item{\code{2}}: 2PL model
   \item{\code{3}}: 3PL model
@@ -59,10 +59,10 @@ theta_EB_single(
 \item{prior_parm}{a vector containing parameters for the prior distribution.}
 }
 \description{
-\code{theta_EB_single} and \code{theta_EB} are functions to calculate theta estimates using EB (Empirical Bayes) method.
+\code{theta_EB_single()} and \code{theta_EB()} are functions to calculate a theta estimate using EB (Empirical Bayes) method.
 }
 \details{
-\code{theta_EB_single} is designed for one item, and \code{theta_EB} is designed for multiple items.
+\code{theta_EB_single()} is designed for one item, and \code{theta_EB()} is designed for multiple items.
 
 Currently supports unidimensional models.
 }
@@ -90,38 +90,4 @@ set.seed(1)
 theta_EB_single(nx, theta_init, theta_prop, item_parm[1, ], resp[1], ncat[1], model[1], 1, c(0, 1))
 theta_EB(nx, theta_init, theta_prop, item_parm, resp, ncat, model, 1, c(0, 1))
 
-}
-\references{
-Rasch, G. (1960). \emph{Probabilistic models for some intelligence and attainment tests.}
-Copenhagen: Danish Institute for Educational Research.
-
-Lord, F. M. (1952). A theory of test scores (Psychometric Monograph No. 7). Richmond, VA: Psychometric Corporation.
-
-Birnbaum, A. (1957). \emph{Efficient design and use of tests of mental ability for various decision-making problems}
-(Series Report No. 58-16. Project No. 7755-23).
-Randolph Air Force Base, TX: USAF School of Aviation Medicine.
-
-Birnbaum, A. (1958). \emph{On the estimation of mental ability}
-(Series Report No. 15. Project No. 7755-23).
-Randolph Air Force Base, TX: USAF School of Aviation Medicine.
-
-Birnbaum, A. (1958). \emph{Further considerations of efficiency in tests of a mental ability}
-(Series Report No. 17. Project No. 7755-23).
-Randolph Air Force Base, TX: USAF School of Aviation Medicine.
-
-Birnbaum, A. (1968). Some latent trait models and their use in inferring an examinee's ability.
-In Lord, F. M., Novick, M. R. (eds.), \emph{Statistical Theories of Mental Test Scores}, 397-479.
-Reading, MA: Addison-Wesley.
-
-Masters, G. N. (1982). A Rasch model for partial credit scoring.
-\emph{Psychometrika, 47}(2), 149-174.
-
-Andrich, D. (1978). A rating formulation for ordered response categories.
-\emph{Psychometrika, 43}(4), 561-573.
-
-Muraki, E. (1992). A generalized partial credit model: Application of an EM algorithm.
-\emph{Applied Psychological Measurement, 16}(2), 159-176.
-
-Samejima, F. (1969). Estimation of latent ability using a response pattern of graded scores.
-\emph{Psychometrika Monograph, 17}.
 }

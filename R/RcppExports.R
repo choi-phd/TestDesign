@@ -517,30 +517,14 @@ theta_EB_single <- function(nx, theta_init, theta_prop, item_parm, resp, ncat, m
     .Call('_TestDesign_theta_EB_single', PACKAGE = 'TestDesign', nx, theta_init, theta_prop, item_parm, resp, ncat, model, prior, prior_parm)
 }
 
-#' Calculate a fully Bayesian estimate of theta for an examinee
-#'
-#' Calculate a fully Bayesian estimate of theta for an examinee.
-#'
-#' @param nx The number of MCMC draws.
-#' @param theta_init A value for initial estimate of theta.
-#' @param theta_prop SD of the proposal distribution.
-#' @param items_list A list of item_parm matrices.
-#' @param item_init A matrix of item parameter estimates (one row per item).
-#' @template calc-params
+#' @rdname theta_FB
+#' @export
 theta_FB <- function(nx, theta_init, theta_prop, items_list, item_init, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_theta_FB', PACKAGE = 'TestDesign', nx, theta_init, theta_prop, items_list, item_init, resp, ncat, model, prior, prior_parm)
 }
 
-#' Calculate a fully Bayesian estimate of theta for a single item
-#'
-#' Calculate a fully Bayesian estimate of theta for a single item.
-#'
-#' @param nx The number of MCMC draws.
-#' @param theta_init A value for initial estimate of theta.
-#' @param theta_prop SD of the proposal distribution.
-#' @param item_mcmc A matrix of sampled item parameters for a single item.
-#' @param item_init A matrix of item parameter estimates (one row per item).
-#' @template calc-params
+#' @rdname theta_FB
+#' @export
 theta_FB_single <- function(nx, theta_init, theta_prop, item_mcmc, item_init, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_theta_FB_single', PACKAGE = 'TestDesign', nx, theta_init, theta_prop, item_mcmc, item_init, resp, ncat, model, prior, prior_parm)
 }
