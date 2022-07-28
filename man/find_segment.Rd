@@ -2,17 +2,17 @@
 % Please edit documentation in R/RcppExports.R, R/cpp_theta_documents.r
 \name{find_segment}
 \alias{find_segment}
-\title{Classify theta into segments}
+\title{(C++) Classify theta values into segments using cutpoints}
 \usage{
 find_segment(x, segment)
 }
 \arguments{
 \item{x}{the theta value. This can be a vector.}
 
-\item{segment}{segment cutpoints.}
+\item{segment}{segment cutpoints. Values of \code{-Inf, Inf} are not implied and must be explicitly supplied if intended.}
 }
 \description{
-\code{find_segment} is a function to classify theta values into segments based on supplied cutpoints.
+\code{find_segment()} is a function to classify theta values into segments based on supplied cutpoints.
 }
 \examples{
 cuts <- c(-Inf, -2, 0, 2, Inf)

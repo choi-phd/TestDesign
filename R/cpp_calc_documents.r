@@ -1,17 +1,17 @@
 #' @include item_class.R
 NULL
 
-#' Calculate Fisher information (multiple items)
+#' (C++) For multiple items, calculate Fisher information
 #'
-#' \code{calc_info} and \code{calc_info_matrix} are functions to calculate Fisher information.
+#' \code{calc_info()} and \code{calc_info_matrix()} are functions for calculating Fisher information.
 #' These functions are designed for multiple items.
 #'
-#' \code{calc_info} accepts a single theta value, and \code{calc_info_matrix} accepts multiple theta values.
+#' \code{calc_info()} accepts a single theta value, and \code{calc_info_matrix()} accepts multiple theta values.
 #'
 #' Currently supports unidimensional models.
 #'
-#' @param x the theta value. This must be a column vector in matrix form for \code{array_info_*} functions.
-#' @param item_parm a matrix containing item parameters. Each row represents each item.
+#' @param x the theta value. This must be a column vector in matrix form for \code{calc_info_matrix()}.
+#' @param item_parm a matrix containing item parameters. Each row should represent an item.
 #' @param ncat a vector containing the number of response categories of each item.
 #' @param model a vector indicating item models of each item, using \itemize{
 #'   \item{\code{1}}: 1PL model
@@ -41,24 +41,10 @@ NULL
 #' # single theta example
 #' x <- 0.5
 #' calc_info(x, item_parm, ncat, model)
-#' # same as
-#' info_1pl(x, 1)
-#' info_2pl(x, 1, 2)
-#' info_3pl(x, 1, 2, 0.25)
-#' info_pc(x, c(0, 1))
-#' info_gpc(x, 2, c(0, 1))
-#' info_gr(x, 2, c(0, 2))
 #'
 #' # multiple thetas example
 #' x <- matrix(seq(0.1, 0.5, 0.1)) # column vector in matrix form
 #' calc_info_matrix(x, item_parm, ncat, model)
-#' # same as
-#' array_info_1pl(x, 1)
-#' array_info_2pl(x, 1, 2)
-#' array_info_3pl(x, 1, 2, 0.25)
-#' array_info_pc(x, c(0, 1))
-#' array_info_gpc(x, 2, c(0, 1))
-#' array_info_gr(x, 2, c(0, 2))
 #'
 #' @template 1pl-ref
 #' @template 2pl-ref
@@ -70,20 +56,20 @@ NULL
 #' @name calc_info
 NULL
 
-#' Calculate likelihoods
+#' (C++) For multiple items, calculate likelihoods
 #'
-#' \code{calc_likelihood} and \code{calc_likelihood_function} are functions to calculate likelihoods.
+#' \code{calc_likelihood()} and \code{calc_likelihood_function()} are functions for calculating likelihoods.
 #'
-#' \code{calc_log_likelihood} and \code{calc_log_likelihood_function} are functions to calculate log likelihoods.
+#' \code{calc_log_likelihood()} and \code{calc_log_likelihood_function()} are functions for calculating log likelihoods.
 #'
 #' These functions are designed for multiple items.
 #'
-#' \code{calc_*} functions accept a single theta value, and \code{calc_*_function} functions accept multiple theta values.
+#' \code{calc_*()} functions accept a single theta value, and \code{calc_*_function()} functions accept multiple theta values.
 #'
 #' Currently supports unidimensional models.
 #'
-#' @param x,theta_grid the theta value. This must be a column vector in matrix form for \code{calc_*_function} functions.
-#' @param item_parm a matrix containing item parameters. Each row represents each item.
+#' @param x,theta_grid the theta value. This must be a column vector in matrix form for \code{calc_*_function()} functions.
+#' @param item_parm a matrix containing item parameters. Each row should represent an item.
 #' @param resp a vector containing responses on each item.
 #' @param ncat a vector containing the number of response categories of each item.
 #' @param model a vector indicating item models of each item, using \itemize{
@@ -122,9 +108,9 @@ NULL
 #' ll <- calc_log_likelihood(x, item_parm, resp, ncat, model, 2, NA)
 #' log(l) == ll
 #'
-#' theta_grid <- matrix(seq(-3, 3, .1))
-#' l  <- calc_likelihood_function(theta_grid, item_parm, resp, ncat, model)
-#' ll <- calc_log_likelihood_function(theta_grid, item_parm, resp, ncat, model, 2, NA)
+#' x <- matrix(seq(-3, 3, .1))
+#' l  <- calc_likelihood_function(x, item_parm, resp, ncat, model)
+#' ll <- calc_log_likelihood_function(x, item_parm, resp, ncat, model, 2, NA)
 #' all(log(l) == ll)
 #'
 #' @template 1pl-ref

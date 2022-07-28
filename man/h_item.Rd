@@ -48,7 +48,7 @@ array_h_gr(x, a, b, u)
 \item{a, b, c}{the item parameters.}
 }
 \description{
-\code{h_*()} and \code{array_h_*()} are C++ functions for calculating the first derivative of the log-likelihood function.
+\code{h_*()} and \code{array_h_*()} are C++ functions for calculating the second derivative of the log-likelihood function.
 }
 \details{
 \code{h_*()} functions accept a single theta value, and \code{array_h_*()} functions accept multiple theta values.

@@ -1,21 +1,21 @@
 #' @include item_class.R
 NULL
 
-#' Calculate theta estimates using EB (Empirical Bayes) method
+#' (C++) Calculate a theta estimate using EB (Empirical Bayes) method
 #'
-#' \code{theta_EB_single} and \code{theta_EB} are functions to calculate theta estimates using EB (Empirical Bayes) method.
+#' \code{theta_EB_single()} and \code{theta_EB()} are functions to calculate a theta estimate using EB (Empirical Bayes) method.
 #'
-#' \code{theta_EB_single} is designed for one item, and \code{theta_EB} is designed for multiple items.
+#' \code{theta_EB_single()} is designed for one item, and \code{theta_EB()} is designed for multiple items.
 #'
 #' Currently supports unidimensional models.
 #'
 #' @param nx the number of MCMC draws.
-#' @param theta_init initial estimate of theta.
-#' @param theta_prop SD of the proposal distribution.
-#' @param item_parm a matrix containing item parameters. Each row represents each item.
-#' @param resp a vector (or a value if for one item) containing responses on each item.
-#' @param ncat a vector (or a value if for one item) containing the number of response categories of each item.
-#' @param model a vector (or a value if for one item) indicating item models of each item, using \itemize{
+#' @param theta_init the initial estimate to use.
+#' @param theta_prop the SD of the proposal distribution.
+#' @param item_parm a matrix containing item parameters. Each row should represent an item.
+#' @param resp a vector containing responses on each item.
+#' @param ncat a vector containing the number of response categories of each item.
+#' @param model a vector indicating item models of each item, using \itemize{
 #'   \item{\code{1}}: 1PL model
 #'   \item{\code{2}}: 2PL model
 #'   \item{\code{3}}: 3PL model
@@ -53,22 +53,47 @@ NULL
 #' theta_EB_single(nx, theta_init, theta_prop, item_parm[1, ], resp[1], ncat[1], model[1], 1, c(0, 1))
 #' theta_EB(nx, theta_init, theta_prop, item_parm, resp, ncat, model, 1, c(0, 1))
 #'
-#' @template 1pl-ref
-#' @template 2pl-ref
-#' @template 3pl-ref
-#' @template pc-ref
-#' @template gpc-ref
-#' @template gr-ref
-#'
 #' @name theta_EB
 NULL
 
-#' Classify theta into segments
+#' (C++) Calculate a theta estimate using FB (Full Bayes) method
 #'
-#' \code{find_segment} is a function to classify theta values into segments based on supplied cutpoints.
+#' \code{theta_FB_single()} and \code{theta_FB()} are functions to calculate a theta estimate using FB (Full Bayes) method.
+#'
+#' \code{theta_FB_single()} is designed for one item, and \code{theta_FB()} is designed for multiple items.
+#'
+#' Currently supports unidimensional models.
+#'
+#' @param nx the number of MCMC draws.
+#' @param theta_init the initial estimate to use.
+#' @param theta_prop the SD of the proposal distribution.
+#' @param item_mcmc,items_list sampled item parameters. Must be a matrix for \code{theta_FB_single()}, and a list of matrices for \code{theta_FB()}.
+#' @param item_init item parameter estimates. Must be a vector for \code{theta_FB_single()}, and a matrix for \code{theta_FB()}.
+#' @param resp a vector containing responses on each item.
+#' @param ncat a vector containing the number of response categories of each item.
+#' @param model a vector indicating item models of each item, using \itemize{
+#'   \item{\code{1}}: 1PL model
+#'   \item{\code{2}}: 2PL model
+#'   \item{\code{3}}: 3PL model
+#'   \item{\code{4}}: PC model
+#'   \item{\code{5}}: GPC model
+#'   \item{\code{6}}: GR model
+#' }
+#' @param prior an integer indicating the type of prior distribution, using \itemize{
+#'   \item{\code{1}}: normal distribution
+#'   \item{\code{2}}: uniform distribution
+#' }
+#' @param prior_parm a vector containing parameters for the prior distribution.
+#'
+#' @name theta_FB
+NULL
+
+#' (C++) Classify theta values into segments using cutpoints
+#'
+#' \code{find_segment()} is a function to classify theta values into segments based on supplied cutpoints.
 #'
 #' @param x the theta value. This can be a vector.
-#' @param segment segment cutpoints.
+#' @param segment segment cutpoints. Values of \code{-Inf, Inf} are not implied and must be explicitly supplied if intended.
 #'
 #' @examples
 #' cuts <- c(-Inf, -2, 0, 2, Inf)

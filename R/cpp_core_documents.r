@@ -1,27 +1,25 @@
 #' @include item_class.R
 NULL
 
-#' Calculate item response probability
+#' (C++) Calculate item response probability
 #'
-#' \code{p_*} and \code{array_p_*} are functions to calculate item response probability.
+#' \code{p_*()} and \code{array_p_*()} are C++ functions for calculating item response probability.
 #'
-#' \code{p_*} functions accept a single theta value, and \code{array_p_*} functions accept multiple theta values.
+#' \code{p_*()} functions accept a single theta value, and \code{array_p_*()} functions accept multiple theta values.
 #'
 #' Currently supports unidimensional models.
 #'
 #' \itemize{
-#'   \item{\code{p_1pl}, \code{array_p_1pl}}: 1PL models
-#'   \item{\code{p_2pl}, \code{array_p_2pl}}: 2PL models
-#'   \item{\code{p_3pl}, \code{array_p_3pl}}: 3PL models
-#'   \item{\code{p_pc}, \code{array_p_pc}}: PC (partial credit) models
-#'   \item{\code{p_gpc}, \code{array_p_gpc}}: GPC (generalized partial credit) models
-#'   \item{\code{p_gr}, \code{array_p_gr}}: GR (graded response) models
+#'   \item{\code{p_1pl()}, \code{array_p_1pl()}}: 1PL models
+#'   \item{\code{p_2pl()}, \code{array_p_2pl()}}: 2PL models
+#'   \item{\code{p_3pl()}, \code{array_p_3pl()}}: 3PL models
+#'   \item{\code{p_pc()}, \code{array_p_pc()}}: PC (partial credit) models
+#'   \item{\code{p_gpc()}, \code{array_p_gpc()}}: GPC (generalized partial credit) models
+#'   \item{\code{p_gr()}, \code{array_p_gr()}}: GR (graded response) models
 #' }
 #'
-#' @param x the theta value. This must be a column vector in matrix form for \code{array_p_*} functions.
-#' @param a the *a*-parameter.
-#' @param b the *b*-parameter.
-#' @param c the *c*-parameter.
+#' @param x the theta value. This must be a column vector in matrix form for \code{array_p_*()} functions.
+#' @param a,b,c the item parameters.
 #'
 #' @examples
 #' x <- 0.5
@@ -50,6 +48,7 @@ NULL
 #' @template gr-ref
 #'
 #' @name p_item
+#' @order 0
 NULL
 
 #' (C++) Calculate expected scores
@@ -102,28 +101,26 @@ NULL
 #' @order 0
 NULL
 
-#' Calculate Fisher information (single item)
+#' (C++) Calculate Fisher information
 #'
-#' \code{info_*} and \code{array_info_*} are functions to calculate Fisher information.
+#' \code{info_*()} and \code{array_info_*()} are functions for calculating Fisher information.
 #'
-#' \code{info_*} functions accept a single theta value, and \code{array_info_*} functions accept multiple theta values.
+#' \code{info_*()} functions accept a single theta value, and \code{array_info_*} functions accept multiple theta values.
 #'
 #' Currently supports unidimensional models.
 #'
 #' \itemize{
-#'   \item{\code{info_1pl}, \code{array_info_1pl}}: 1PL models
-#'   \item{\code{info_2pl}, \code{array_info_2pl}}: 2PL models
-#'   \item{\code{info_3pl}, \code{array_info_3pl}}: 3PL models
-#'   \item{\code{info_pc}, \code{array_info_pc}}: PC (partial credit) models
-#'   \item{\code{info_gpc}, \code{array_info_gpc}}: GPC (generalized partial credit) models
-#'   \item{\code{info_gr}, \code{array_info_gr}}: GR (graded response) models
+#'   \item{\code{info_1pl()}, \code{array_info_1pl()}}: 1PL models
+#'   \item{\code{info_2pl()}, \code{array_info_2pl()}}: 2PL models
+#'   \item{\code{info_3pl()}, \code{array_info_3pl()}}: 3PL models
+#'   \item{\code{info_pc()}, \code{array_info_pc()}}: PC (partial credit) models
+#'   \item{\code{info_gpc()}, \code{array_info_gpc()}}: GPC (generalized partial credit) models
+#'   \item{\code{info_gr()}, \code{array_info_gr()}}: GR (graded response) models
 #' }
 #'
-#' @param x the theta value. This must be a column vector in matrix form for \code{array_info_*} functions.
-#' @param a the *a*-parameter.
-#' @param b the *b*-parameter.
-#' @param c the *c*-parameter.
-#'
+#' @param x the theta value. This must be a column vector in matrix form for \code{array_info_*()} functions.
+#' @param a,b,c the item parameters.
+#' 
 #' @examples
 #' x <- 0.5
 #'
@@ -151,6 +148,7 @@ NULL
 #' @template gr-ref
 #'
 #' @name info_item
+#' @order 0
 NULL
 
 #' (C++) Calculate first derivative of log-likelihood
@@ -206,7 +204,7 @@ NULL
 
 #' (C++) Calculate second derivative of log-likelihood
 #'
-#' \code{h_*()} and \code{array_h_*()} are C++ functions for calculating the first derivative of the log-likelihood function.
+#' \code{h_*()} and \code{array_h_*()} are C++ functions for calculating the second derivative of the log-likelihood function.
 #'
 #' \code{h_*()} functions accept a single theta value, and \code{array_h_*()} functions accept multiple theta values.
 #'
