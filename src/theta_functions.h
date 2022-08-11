@@ -10,7 +10,7 @@ List theta_EAP(
   const int&,
   const arma::rowvec&);
 
-arma::mat theta_EAP_matrix(
+List theta_EAP_matrix(
   const arma::mat&,
   const arma::mat&,
   const arma::imat&,

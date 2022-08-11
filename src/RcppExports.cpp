@@ -1021,7 +1021,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // theta_EAP_matrix
-arma::mat theta_EAP_matrix(const arma::mat& theta_grid, const arma::mat& item_parm, const arma::imat& resp, const arma::irowvec& ncat, const arma::irowvec& model, const int& prior, const arma::rowvec& prior_parm);
+List theta_EAP_matrix(const arma::mat& theta_grid, const arma::mat& item_parm, const arma::imat& resp, const arma::irowvec& ncat, const arma::irowvec& model, const int& prior, const arma::rowvec& prior_parm);
 RcppExport SEXP _TestDesign_theta_EAP_matrix(SEXP theta_gridSEXP, SEXP item_parmSEXP, SEXP respSEXP, SEXP ncatSEXP, SEXP modelSEXP, SEXP priorSEXP, SEXP prior_parmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
