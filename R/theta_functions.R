@@ -165,11 +165,12 @@ estimateInterimTheta <- function(
 #' @noRd
 estimateFinalTheta <- function(
   o, j, position,
-  augmented_item_pool, item_pool, model_code,
-  augment_item_index,
-  augment_item_resp,
+  augmented_item_pool,
+  model_code,
+  augmented_item_index,
+  augmented_item_resp,
   include_items_for_estimation,
-  posterior_record,
+  ipar_sample_list,
   config,
   constants,
   posterior_constants
@@ -206,43 +207,20 @@ estimateFinalTheta <- function(
 
   if (toupper(config@final_theta$method) == "MLE") {
 
-    if (!is.null(include_items_for_estimation)) {
-
-      final_MLE <- mle(
-        augmented_item_pool,
-        select        = c(augment_item_index, o@administered_item_index[1:constants$max_ni]),
-        resp          = c(augment_item_resp,  o@administered_item_resp[1:constants$max_ni]),
-        start_theta   = o@interim_theta_est[constants$max_ni, ],
-        max_iter      = config@final_theta$max_iter,
-        crit          = config@final_theta$crit,
-        theta_range   = config@final_theta$bound_ML,
-        truncate      = config@final_theta$truncate_ML,
-        max_change    = config@final_theta$max_change,
-        use_step_size = config@final_theta$use_step_size,
-        step_size     = config@final_theta$step_size,
-        do_Fisher     = config@final_theta$do_Fisher
-      )
-
-    }
-
-    if (is.null(include_items_for_estimation)) {
-
-      final_MLE <- mle(
-        item_pool,
-        select        = o@administered_item_index[1:constants$max_ni],
-        resp          = o@administered_item_resp[1:constants$max_ni],
-        start_theta   = o@interim_theta_est[constants$max_ni, ],
-        max_iter      = config@final_theta$max_iter,
-        crit          = config@final_theta$crit,
-        theta_range   = config@final_theta$bound_ML,
-        truncate      = config@final_theta$truncate_ML,
-        max_change    = config@final_theta$max_change,
-        use_step_size = config@final_theta$use_step_size,
-        step_size     = config@final_theta$step_size,
-        do_Fisher     = config@final_theta$do_Fisher
-      )
-
-    }
+    final_MLE <- mle(
+      augmented_item_pool,
+      select        = augmented_item_index,
+      resp          = augmented_item_resp,
+      start_theta   = o@interim_theta_est[constants$max_ni, ],
+      max_iter      = config@final_theta$max_iter,
+      crit          = config@final_theta$crit,
+      theta_range   = config@final_theta$bound_ML,
+      truncate      = config@final_theta$truncate_ML,
+      max_change    = config@final_theta$max_change,
+      use_step_size = config@final_theta$use_step_size,
+      step_size     = config@final_theta$step_size,
+      do_Fisher     = config@final_theta$do_Fisher
+    )
 
     o@final_theta_est <- final_MLE$th
     o@final_se_est    <- final_MLE$se
@@ -253,47 +231,22 @@ estimateFinalTheta <- function(
 
   if (toupper(config@final_theta$method) == "MLEF") {
 
-    if (!is.null(include_items_for_estimation)) {
-
-      final_MLEF <- mlef(
-        augmented_item_pool,
-        select           = c(augment_item_index, o@administered_item_index[1:constants$max_ni]),
-        resp             = c(augment_item_resp,  o@administered_item_resp[1:constants$max_ni]),
-        fence_slope      = config@final_theta$fence_slope,
-        fence_difficulty = config@final_theta$fence_difficulty,
-        start_theta      = o@interim_theta_est[constants$max_ni, ],
-        max_iter         = config@final_theta$max_iter,
-        crit             = config@final_theta$crit,
-        theta_range      = config@final_theta$bound_ML,
-        truncate         = config@final_theta$truncate_ML,
-        max_change       = config@final_theta$max_change,
-        use_step_size    = config@final_theta$use_step_size,
-        step_size        = config@final_theta$step_size,
-        do_Fisher        = config@final_theta$do_Fisher
-      )
-
-    }
-
-    if (is.null(include_items_for_estimation)) {
-
-      final_MLEF <- mlef(
-        item_pool,
-        select           = o@administered_item_index[1:constants$max_ni],
-        resp             = o@administered_item_resp[1:constants$max_ni],
-        fence_slope      = config@final_theta$fence_slope,
-        fence_difficulty = config@final_theta$fence_difficulty,
-        start_theta      = o@interim_theta_est[constants$max_ni, ],
-        max_iter         = config@final_theta$max_iter,
-        crit             = config@final_theta$crit,
-        theta_range      = config@final_theta$bound_ML,
-        truncate         = config@final_theta$truncate_ML,
-        max_change       = config@final_theta$max_change,
-        use_step_size    = config@final_theta$use_step_size,
-        step_size        = config@final_theta$step_size,
-        do_Fisher        = config@final_theta$do_Fisher
-      )
-
-    }
+    final_MLEF <- mlef(
+      augmented_item_pool,
+      select        = augmented_item_index,
+      resp          = augmented_item_resp,
+      fence_slope      = config@final_theta$fence_slope,
+      fence_difficulty = config@final_theta$fence_difficulty,
+      start_theta      = o@interim_theta_est[constants$max_ni, ],
+      max_iter         = config@final_theta$max_iter,
+      crit             = config@final_theta$crit,
+      theta_range      = config@final_theta$bound_ML,
+      truncate         = config@final_theta$truncate_ML,
+      max_change       = config@final_theta$max_change,
+      use_step_size    = config@final_theta$use_step_size,
+      step_size        = config@final_theta$step_size,
+      do_Fisher        = config@final_theta$do_Fisher
+    )
 
     o@final_theta_est <- final_MLEF$th
     o@final_se_est    <- final_MLEF$se
@@ -304,6 +257,11 @@ estimateFinalTheta <- function(
 
   if (toupper(config@final_theta$method) == "EB") {
 
+    # TODO: needs to work with include_items_for_estimation
+    if (!is.null(include_items_for_estimation)) {
+      stop("EB with include_items_for_estimation is not available")
+    }
+
     final_prior <- getInitialThetaPrior(
       config@final_theta,
       j,
@@ -311,10 +269,15 @@ estimateFinalTheta <- function(
     )
 
     final_EB <- theta_EB(
-      posterior_constants$n_sample, final_prior$theta, final_prior$se,
-      item_pool@ipar[o@administered_item_index[1:position], ],
-      o@administered_item_resp[1:position], item_pool@NCAT[o@administered_item_index[1:position]],
-      model_code[o@administered_item_index[1:position]], 1, c(final_prior$theta, final_prior$se)
+      posterior_constants$n_sample,
+      final_prior$theta,
+      final_prior$se,
+      augmented_item_pool@ipar[o@administered_item_index[1:position], ],
+      augmented_item_resp,
+      augmented_item_pool@NCAT[o@administered_item_index[1:position]],
+      model_code[o@administered_item_index[1:position]],
+      1,
+      c(final_prior$theta, final_prior$se)
     )
 
     final_EB           <- applyThin(final_EB, posterior_constants)
@@ -330,6 +293,11 @@ estimateFinalTheta <- function(
 
   if (toupper(config@final_theta$method) == "FB") {
 
+    # TODO: needs to work with include_items_for_estimation
+    if (!is.null(include_items_for_estimation)) {
+      stop("FB with include_items_for_estimation is not available")
+    }
+
     final_prior <- getInitialThetaPrior(
       config@final_theta,
       j,
@@ -337,11 +305,16 @@ estimateFinalTheta <- function(
     )
 
     final_FB <- theta_FB(
-      posterior_constants$n_sample, final_prior$theta, final_prior$se,
-      posterior_record$ipar_list[o@administered_item_index[1:position]],
-      item_pool@ipar[o@administered_item_index[1:position], ],
-      o@administered_item_resp[1:position], item_pool@NCAT[o@administered_item_index[1:position]],
-      model_code[o@administered_item_index[1:position]], 1, c(final_prior$theta, final_prior$se)
+      posterior_constants$n_sample,
+      final_prior$theta,
+      final_prior$se,
+      ipar_sample_list[o@administered_item_index[1:position]],
+      augmented_item_pool@ipar[o@administered_item_index[1:position], ],
+      augmented_item_resp,
+      augmented_item_pool@NCAT[o@administered_item_index[1:position]],
+      model_code[o@administered_item_index[1:position]],
+      1,
+      c(final_prior$theta, final_prior$se)
     )
 
     final_FB           <- applyThin(final_FB, posterior_constants)
