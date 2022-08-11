@@ -1038,7 +1038,7 @@ setMethod(
 )
 
 #' @noRd
-parseInitialTheta <- function(config, constants, item_pool, posterior_constants) {
+parseInitialTheta <- function(config, constants, item_pool, posterior_constants, include_items_for_estimation) {
 
   o <- list()
 
@@ -1049,6 +1049,35 @@ parseInitialTheta <- function(config, constants, item_pool, posterior_constants)
     constants$theta_q,
     constants$nj
   )
+
+  # update likelihood and posterior using include_items_for_estimation
+
+  if (!is.null(include_items_for_estimation)) {
+
+    for (j in 1:constants$nj) {
+
+      prob_matrix_supplied_items <- calcProb(
+        include_items_for_estimation[[j]]$administered_item_pool,
+        constants$theta_q
+      )
+
+      n_supplied_items <- include_items_for_estimation[[j]]$administered_item_pool@ni
+
+      prob_resp_supplied_items <- sapply(
+        1:n_supplied_items,
+        function(i) {
+          resp <- include_items_for_estimation[[j]]$administered_item_resp[i] + 1
+          prob_matrix_supplied_items[[i]][, resp]
+        }
+      )
+      prob_resp_supplied_items <- apply(prob_resp_supplied_items, 1, prod)
+
+      o$likelihood[j, ] <- o$likelihood[j, ] * prob_resp_supplied_items
+      o$posterior[j, ]  <- o$posterior[j, ]  * prob_resp_supplied_items
+
+    }
+
+  }
 
   config_value <- config@item_selection$initial_theta
 
