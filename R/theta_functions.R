@@ -1171,6 +1171,18 @@ isFirstSegmentValid <- function(first_segment, n_segment, position) {
 }
 
 #' @noRd
+updateThetaPosterior <- function(o, prob_resp) {
+
+  o$posterior <-
+  o$posterior * prob_resp
+  o$likelihood <-
+  o$likelihood * prob_resp
+
+  return(o)
+
+}
+
+#' @noRd
 computeEAPFromPosterior <- function(posterior, theta_grid) {
   o <- list()
   o$theta <- sum(posterior * theta_grid) / sum(posterior)

@@ -324,7 +324,7 @@ setMethod(
 
         prob_matrix_current_item <- simulation_data_cache@prob_grid[[o@administered_item_index[position]]]
         prob_resp_current_item   <- prob_matrix_current_item[, o@administered_item_resp[position] + 1]
-        posterior_record <- updatePosterior(posterior_record, j, prob_resp_current_item)
+        current_theta <- updateThetaPosterior(current_theta, prob_resp_current_item)
 
         # Item position / simulee: utilize supplied items if necessary
 
