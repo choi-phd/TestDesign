@@ -1103,7 +1103,10 @@ parseInitialThetaOfThisExaminee <- function(config_theta, initial_theta, j, post
     o$theta <- initial_theta$theta[j, ]
   }
   if (theta_method %in% c("EB", "FB")) {
-    o <- getInitialThetaPrior(config_theta, j, posterior_constants)
+    x <- getInitialThetaPrior(config_theta, j, posterior_constants)
+    o$posterior_sample <- x$posterior_sample
+    o$theta            <- x$theta
+    o$se               <- x$se
   }
 
   return(o)
