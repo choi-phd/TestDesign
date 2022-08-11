@@ -1093,7 +1093,7 @@ parseInitialTheta <- function(config, constants, item_pool, posterior_constants,
     }
   }
   if (is.null(config_value)) {
-    o$theta <- o$posterior %*% constants$theta_q
+    o$theta <- (o$posterior %*% constants$theta_q) / apply(o$posterior, 1, sum)
   }
 
   return(o)
