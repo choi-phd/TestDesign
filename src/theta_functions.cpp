@@ -13,6 +13,9 @@ List theta_EAP(
   const int& prior,
   const arma::rowvec& prior_parm) {
 
+  // this function is not being called in other functions
+  // kept for archive and as a helper function
+
   int nq = theta_grid.n_rows;
 
   List o;
@@ -45,6 +48,9 @@ List theta_EAP_matrix(
   const arma::irowvec& model,
   const int& prior,
   const arma::rowvec& prior_parm) {
+
+  // this function is not being called in other functions
+  // kept for archive and as a helper function
 
   int nq = theta_grid.n_rows;
   int nj = resp.n_rows;
