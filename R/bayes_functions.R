@@ -93,6 +93,136 @@ getPosteriorConstants <- function(config) {
 
 }
 
+#' Generate item parameter samples using standard errors
+#'
+#' \code{\link{iparPosteriorSample}} is a function for generating item parameter samples.
+#'
+#' @param pool an \code{\linkS4class{item_pool}} object.
+#' @param n_sample the number of samples to draw.
+#'
+#' @return \code{\link{iparPosteriorSample}} returns a length-\emph{ni} list of item parameter matrices, with each matrix having \code{n_sample} rows.
+#'
+#' @examples
+#' ipar <- iparPosteriorSample(itempool_bayes, 5)
+#'
+#' @export
+iparPosteriorSample <- function(pool, n_sample = 500) {
+
+  requireNamespace("logitnorm")
+  ipar_list <- vector(mode = "list", length = pool@ni)
+
+  for (i in 1:pool@ni) {
+
+    if (pool@model[i] == "item_1PL") {
+      ipar_list[[i]]      <- matrix(NA, nrow = n_sample, ncol = 1)
+      ipar_list[[i]][, 1] <- rnorm(n_sample, pool@ipar[i, 1], pool@se[i, 1])
+
+    } else if (pool@model[i] == "item_2PL") {
+      a_hyp <- lnHyperPars(pool@ipar[i, 1], pool@se[i, 1])
+      ipar_list[[i]]      <- matrix(NA, nrow = n_sample, ncol = 2)
+      ipar_list[[i]][, 1] <- rlnorm(n_sample, a_hyp[1], a_hyp[2])
+      ipar_list[[i]][, 2] <- rnorm(n_sample, pool@ipar[i, 2], pool@se[i, 2])
+
+    } else if (pool@model[i] == "item_3PL") {
+      a_hyp <- lnHyperPars(pool@ipar[i, 1], pool@se[i, 1])
+      c_hyp <- logitHyperPars(pool@ipar[i, 3], pool@se[i, 3])
+      ipar_list[[i]]      <- matrix(NA, nrow = n_sample, ncol = 3)
+      ipar_list[[i]][, 1] <- rlnorm(n_sample, a_hyp[1], a_hyp[2])
+      ipar_list[[i]][, 2] <- rnorm(n_sample, pool@ipar[i, 2], pool@se[i, 2])
+      ipar_list[[i]][, 3] <- rlogitnorm(n_sample, mu = c_hyp[1], sigma = c_hyp[2])
+
+    } else if (pool@model[i] == "item_PC") {
+      ipar_list[[i]] <- matrix(NA, nrow = n_sample, ncol = pool@NCAT[i] - 1)
+      for (k in 1:(pool@NCAT[i] - 1)) {
+        ipar_list[[i]][, k] <- rnorm(n_sample, pool@ipar[i, k], pool@se[i, k])
+      }
+
+    } else if (pool@model[i] == "item_GPC") {
+      a_hyp <- lnHyperPars(pool@ipar[i, 1], pool@se[i, 1])
+      ipar_list[[i]]      <- matrix(NA, nrow = n_sample, ncol = pool@NCAT[i])
+      ipar_list[[i]][, 1] <- rlnorm(n_sample, a_hyp[1], a_hyp[2])
+      for (k in 1:(pool@NCAT[i] - 1)) {
+        ipar_list[[i]][, k + 1] <- rnorm(n_sample, pool@ipar[i, k + 1], pool@se[i, k + 1])
+      }
+
+    } else if (pool@model[i] == "item_GR") {
+      a_hyp <- lnHyperPars(pool@ipar[i, 1], pool@se[i, 1])
+      ipar_list[[i]]      <- matrix(NA, nrow = n_sample, ncol = pool@NCAT[i])
+      ipar_list[[i]][, 1] <- rlnorm(n_sample, a_hyp[1], a_hyp[2])
+      for (k in 1:(pool@NCAT[i] - 1)) {
+        ipar_list[[i]][, k + 1] <- rnorm(n_sample, pool@ipar[i, k + 1], pool@se[i, k + 1])
+      }
+      for (s in 1:n_sample) {
+        if (is.unsorted(ipar_list[[i]][s, 2:pool@NCAT[i]])) {
+          ipar_list[[i]][s, 2:pool@NCAT[i]] <- sort(ipar_list[[i]][s, 2:pool@NCAT[i]])
+        }
+      }
+
+    }
+  }
+  return(ipar_list)
+}
+
+#' Convert mean and standard deviation into log-normal distribution parameters
+#'
+#' \code{\link{lnHyperPars}} is a function for calculating parameters for a log-normal distribution, such that the distribution yields desired mean and standard deviation.
+#' Used for sampling the a-parameter.
+#'
+#' @param mean the desired mean.
+#' @param sd the desired standard deviation.
+#'
+#' @return \code{\link{lnHyperPars}} returns two values. These can be directly supplied to \code{\link{rlnorm}}.
+#'
+#' @examples
+#' pars <- lnHyperPars(2, 4)
+#' x <- rlnorm(1000000, pars[1], pars[2])
+#' mean(x) # close to 2
+#' sd(x)   # close to 4
+#'
+#' @export
+lnHyperPars <- function(mean, sd) {
+  location <- log(mean^2 / sqrt(sd^2 + mean^2))
+  scale    <- sqrt(log(1 + sd^2 / mean^2))
+  return(c(location, scale))
+}
+
+#' Convert mean and standard deviation into logit-normal distribution parameters
+#'
+#' \code{\link{logitHyperPars}} is a function for calculating parameters for a logit-normal distribution, such that the distribution yields desired mean and standard deviation.
+#' Used for sampling the c-parameter.
+#'
+#' @param mean the desired mean.
+#' @param sd the desired standard deviation.
+#'
+#' @return \code{\link{logitHyperPars}} returns two values. These can be directly supplied to \code{\link[logitnorm]{rlogitnorm}}.
+#'
+#' @examples
+#' pars <- logitHyperPars(0.2, 0.1)
+#' x <- logitnorm::rlogitnorm(1000000, pars[1], pars[2])
+#' mean(x) # close to 0.2
+#' sd(x)   # close to 0.1
+#'
+#' @export
+logitHyperPars <- function(mean, sd) {
+
+  n_max <- 10000
+  n     <- 0
+  logit_samples <- numeric(n_max)
+
+  while (n_max - n > 0) {
+    norm_sample <- rnorm(n_max - n, mean, sd)
+    idx <- (norm_sample >= 0) & (norm_sample <= 1)
+    norm_sample <- norm_sample[idx]
+    n_new <- n + length(norm_sample)
+    if (length(norm_sample) > 0) {
+      logit_samples[(n + 1):n_new] <- logitnorm::logit(norm_sample)
+    }
+    n <- n_new
+  }
+
+  return(c(mean(logit_samples), sd(logit_samples)))
+}
+
 #' @noRd
 generateDensityFromPriorPar <- function(config_theta, theta_q, nj) {
 
