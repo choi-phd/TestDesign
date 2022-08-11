@@ -1119,6 +1119,10 @@ parseInitialThetaOfThisExaminee <- function(config_theta, initial_theta, j, post
 
   o <- list()
   theta_method <- toupper(config_theta$method)
+
+  o$likelihood <- initial_theta$likelihood[j, ]
+  o$posterior  <- initial_theta$posterior[j, ]
+
   if (theta_method %in% c("EAP", "MLE", "MLEF")) {
     o$theta <- initial_theta$theta[j, ]
   }
