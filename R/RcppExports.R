@@ -478,29 +478,14 @@ calc_posterior_single <- function(x, item_parm, resp, ncat, model, prior, prior_
     .Call('_TestDesign_calc_posterior_single', PACKAGE = 'TestDesign', x, item_parm, resp, ncat, model, prior, prior_parm)
 }
 
-#' Calculate an EAP estimate of theta for one examinee
-#'
-#' Calculate an expected a posterior estimate of theta for one examinee.
-#'
-#' @param theta_grid An equi-spaced theta grid.
-#' @param item_parm A numeric matrix of item parameters.
-#' @template calc-params
+#' @rdname theta_EAP
+#' @export
 theta_EAP <- function(theta_grid, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_theta_EAP', PACKAGE = 'TestDesign', theta_grid, item_parm, resp, ncat, model, prior, prior_parm)
 }
 
-#' Calculate EAP estimates of theta for a group of examinees
-#'
-#' Calculate expected a posteriori estimates of theta for a group of examinees.
-#'
-#' @param theta_grid An equi-spaced theta grid.
-#' @param item_parm A numeric matrix of item parameters.
-#' @param resp A numeric matrix of item responses.
-#' @param ncat A numeric vector of the number of response categories by item.
-#' @param model A numeric vector of the IRT model by item (1: 1PL, 2: 2PL, 3: 3PL, 4: PC, 5: GPC, 6: GR).
-#' @param prior The type of prior distribution (1: normal, 2: uniform).
-#' @param prior_parm A numeric vector of hyperparameters for the prior distribution, c(mu, sigma) or c(ll, ul).
-#'
+#' @rdname theta_EAP
+#' @export
 theta_EAP_matrix <- function(theta_grid, item_parm, resp, ncat, model, prior, prior_parm) {
     .Call('_TestDesign_theta_EAP_matrix', PACKAGE = 'TestDesign', theta_grid, item_parm, resp, ncat, model, prior, prior_parm)
 }

@@ -1,6 +1,65 @@
 #' @include item_class.R
 NULL
 
+#' (C++) Calculate a theta estimate using EAP (expected a posteriori) method
+#'
+#' \code{theta_EAP()} and \code{theta_EAP_matrix()} are functions for calculating a theta estimate using EAP (expected a posteriori) method.
+#'
+#' \code{theta_EAP()} and \code{theta_EAP_matrix()} are designed for multiple items.
+#'
+#' \code{theta_EAP()} is designed for one examinee, and \code{theta_EAP_matrix()} is designed for multiple examinees.
+#'
+#' Currently supports unidimensional models.
+#'
+#' @param theta_grid theta quadrature points.
+#' @param item_parm a matrix containing item parameters.
+#' @param resp responses on each item. Must be a vector for \code{theta_EAP()}, and a matrix for \code{theta_EAP_matrix()}. Each row should represent an examinee.
+#' @param ncat a vector containing the number of response categories of each item.
+#' @param model a vector indicating item models of each item, using \itemize{
+#'   \item{\code{1}}: 1PL model
+#'   \item{\code{2}}: 2PL model
+#'   \item{\code{3}}: 3PL model
+#'   \item{\code{4}}: PC model
+#'   \item{\code{5}}: GPC model
+#'   \item{\code{6}}: GR model
+#' }
+#' @param prior an integer indicating the type of prior distribution, using \itemize{
+#'   \item{\code{1}}: normal distribution
+#'   \item{\code{2}}: uniform distribution
+#' }
+#' @param prior_parm a vector containing parameters for the prior distribution.
+#'
+#' @examples
+#' # item parameters
+#' item_parm <- matrix(c(
+#'   1, NA,   NA,
+#'   1,  2,   NA,
+#'   1,  2, 0.25,
+#'   0,  1,   NA,
+#'   2,  0,    1,
+#'   2,  0,    2),
+#'   nrow = 6,
+#'   byrow = TRUE
+#' )
+#'
+#' ncat  <- c(2, 2, 2, 3, 3, 3)
+#' model <- c(1, 2, 3, 4, 5, 6)
+#'
+#' # simulate response
+#' item_parm <- as.data.frame(item_parm)
+#' item_parm <- cbind(101:106, 1:6, item_parm)
+#' pool <- loadItemPool(item_parm)
+#' true_theta <- seq(-3, 3, 1)
+#' resp <- simResp(pool, true_theta)
+#'
+#' theta_grid <- matrix(seq(-3, 3, .1), , 1)
+#'
+#' theta_EAP(theta_grid, pool@ipar, resp[1, ], ncat, model, 1, c(1, 2))
+#' theta_EAP_matrix(theta_grid, pool@ipar, resp, ncat, model, 1, c(1, 2))
+#'
+#' @name theta_EAP
+NULL
+
 #' (C++) Calculate a theta estimate using EB (Empirical Bayes) method
 #'
 #' \code{theta_EB_single()} and \code{theta_EB()} are functions to calculate a theta estimate using EB (Empirical Bayes) method.
