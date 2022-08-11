@@ -55,6 +55,9 @@ reference:
       - simResp
       - subsetItemPool
       - combineItemPool
+      - iparPosteriorSample
+      - lnHyperPars
+      - logitHyperPars
   - title: "Object classes"
     contents:
       - item-classes
@@ -111,8 +114,5 @@ reference:
       - makeTestCluster
       - simulation_data_cache-class
       - makeSimulationDataCache
-      - lnHyperPars
-      - logitHyperPars
-      - iparPosteriorSample
       - RE
       - RMSE
