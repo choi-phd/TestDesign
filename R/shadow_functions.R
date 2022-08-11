@@ -397,11 +397,12 @@ setMethod(
       # Simulee: test complete, estimate theta
       o <- estimateFinalTheta(
         o, j, position,
-        augmented_item_pool, item_pool, model_code,
-        augment_item_index,
-        augment_item_resp,
+        augmented_item_pool,
+        model_code,
+        augmented_item_index,
+        augmented_item_resp,
         include_items_for_estimation,
-        posterior_record,
+        current_theta$ipar_list, # TODO: needs to be changed to its own variable
         config,
         constants,
         posterior_constants
