@@ -75,7 +75,7 @@ setMethod(
     }
 
     item_pool             <- constraints@pool
-    model                 <- sanitizeModel(item_pool@model)
+    model_code            <- sanitizeModel(item_pool@model)
     simulation_data_cache <- makeSimulationDataCache(
       item_pool = item_pool,
       info_type = "FISHER",
@@ -92,7 +92,7 @@ setMethod(
     exclude_index         <- getIndexOfExcludedEntry(exclude, constraints)
 
     # Only used if config@item_selection$method = "FIXED"
-    info_fixed_theta      <- getInfoFixedTheta(config@item_selection, constants, item_pool, model)
+    info_fixed_theta      <- getInfoFixedTheta(config@item_selection, constants, item_pool, model_code)
 
     if (constants$use_shadowtest) {
       shadowtest_refresh_schedule <- parseShadowTestRefreshSchedule(constants, config@refresh_policy)
@@ -207,7 +207,7 @@ setMethod(
           config@item_selection, j,
           current_theta,
           item_pool,
-          model,
+          model_code,
           posterior_record,
           info_fixed_theta,               # Only used if config@item_selection$method = "FIXED"
           simulation_data_cache@info_grid # Only used if config@item_selection$method = "MPWI"
@@ -366,7 +366,7 @@ setMethod(
           o, j, position,
           current_theta,
           augmented_posterior_record, posterior_record,
-          augmented_item_pool, item_pool, model,
+          augmented_item_pool, item_pool, model_code,
           augmented_item_index,
           augmented_item_resp,
           include_items_for_estimation,
@@ -397,7 +397,7 @@ setMethod(
       # Simulee: test complete, estimate theta
       o <- estimateFinalTheta(
         o, j, position,
-        augmented_item_pool, item_pool, model,
+        augmented_item_pool, item_pool, model_code,
         augment_item_index,
         augment_item_resp,
         include_items_for_estimation,
