@@ -89,6 +89,7 @@ setMethod(
     config@final_theta    <- parsePriorParameters(config@final_theta  , constants, prior, prior_par)
     posterior_constants   <- getPosteriorConstants(config)
     initial_theta         <- parseInitialTheta(config, constants, item_pool, posterior_constants)
+    item_parameter_sample <- generateItemParameterSample(config, item_pool, posterior_constants)
     exclude_index         <- getIndexOfExcludedEntry(exclude, constraints)
 
     # Only used if config@item_selection$method = "FIXED"
@@ -204,12 +205,14 @@ setMethod(
 
         position <- position + 1
         info_current_theta <- computeInfoAtCurrentTheta(
-          config@item_selection, j,
+          config@item_selection,
+          j,
           current_theta,
           item_pool,
           model_code,
-          info_fixed_theta,               # Only used if config@item_selection$method = "FIXED"
-          simulation_data_cache@info_grid # Only used if config@item_selection$method = "MPWI"
+          info_fixed_theta,                # Only used if config@item_selection$method = "FIXED"
+          simulation_data_cache@info_grid, # Only used if config@item_selection$method = "MPWI"
+          item_parameter_sample            # Only used if config@item_selection$method = "FB"
         )
 
         # Item position / simulee: do shadow test assembly
@@ -368,7 +371,7 @@ setMethod(
           augmented_item_index,
           augmented_item_resp,
           include_items_for_estimation,
-          augmented_current_theta$ipar_list, # TODO: needs to be changed to its own variable
+          item_parameter_sample,
           config,
           constants,
           posterior_constants
@@ -401,7 +404,7 @@ setMethod(
         augmented_item_index,
         augmented_item_resp,
         include_items_for_estimation,
-        current_theta$ipar_list, # TODO: needs to be changed to its own variable
+        item_parameter_sample,
         config,
         constants,
         posterior_constants

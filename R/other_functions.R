@@ -164,10 +164,14 @@ getInfoFixedTheta <- function(item_selection, constants, item_pool, model) {
 
 #' @noRd
 computeInfoAtCurrentTheta <- function(
-  item_selection, j,
-  current_theta, item_pool, model_code,
+  item_selection,
+  j,
+  current_theta,
+  item_pool,
+  model_code,
   info_fixed_theta,
-  info_grid
+  info_grid,
+  item_parameter_sample
 ) {
 
   item_method <- toupper(item_selection$method)
@@ -198,13 +202,13 @@ computeInfoAtCurrentTheta <- function(
   if (item_method == "FB" & info_type == "FISHER") {
     info <- calc_info_FB(
       matrix(current_theta$posterior_sample),
-      current_theta$ipar_list, item_pool@NCAT, model_code)[, 1]
+      item_parameter_sample, item_pool@NCAT, model_code)[, 1]
     return(info)
   }
   if (item_method == "FB" & info_type %in% c("MI", "MUTUAL")) {
     info <- calc_MI_FB(
       matrix(current_theta$posterior_sample),
-      current_theta$ipar_list, item_pool@NCAT, model_code)[, 1]
+      item_parameter_sample, item_pool@NCAT, model_code)[, 1]
     return(info)
   }
 }
