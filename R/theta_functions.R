@@ -6,7 +6,7 @@ estimateInterimTheta <- function(
   o, j, position,
   current_theta,
   augmented_posterior_record, posterior_record,
-  augmented_item_pool, item_pool, model_code,
+  augmented_item_pool, model_code,
   augmented_item_index,
   augmented_item_resp,
   include_items_for_estimation,
@@ -108,8 +108,8 @@ estimateInterimTheta <- function(
 
     interim_EB <- theta_EB_single(
       posterior_constants$n_sample, current_theta$theta, current_theta$se,
-      item_pool@ipar[current_item, ],
-      o@administered_item_resp[position], item_pool@NCAT[current_item],
+      augmented_item_pool@ipar[current_item, ],
+      o@administered_item_resp[position], augmented_item_pool@NCAT[current_item],
       model_code[current_item], 1, c(current_theta$theta, current_theta$se)
     )[, 1]
 
@@ -135,8 +135,8 @@ estimateInterimTheta <- function(
     interim_FB <- theta_FB_single(
       posterior_constants$n_sample, current_theta$theta, current_theta$se,
       posterior_record$ipar_list[[current_item]],
-      item_pool@ipar[current_item, ],
-      o@administered_item_resp[position], item_pool@NCAT[current_item],
+      augmented_item_pool@ipar[current_item, ],
+      o@administered_item_resp[position], augmented_item_pool@NCAT[current_item],
       model_code[current_item], 1, c(current_theta$theta, current_theta$se)
     )[, 1]
 

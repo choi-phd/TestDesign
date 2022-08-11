@@ -366,7 +366,7 @@ setMethod(
           o, j, position,
           current_theta,
           augmented_posterior_record, posterior_record,
-          augmented_item_pool, item_pool, model_code,
+          augmented_item_pool, model_code,
           augmented_item_index,
           augmented_item_resp,
           include_items_for_estimation,
