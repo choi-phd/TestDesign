@@ -140,7 +140,7 @@ setMethod(
         o@true_theta <- true_theta[j, ]
       }
 
-      o@prior <- posterior_record$posterior[j, ]
+      o@prior <- initial_theta$posterior[j, ]
       o@administered_item_index     <- rep(NA_real_, constants$max_ni)
       o@administered_item_resp      <- rep(NA_real_, constants$max_ni)
       o@administered_stimulus_index <- NaN
