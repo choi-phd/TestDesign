@@ -88,7 +88,7 @@ setMethod(
     config@interim_theta  <- parsePriorParameters(config@interim_theta, constants, prior, prior_par)
     config@final_theta    <- parsePriorParameters(config@final_theta  , constants, prior, prior_par)
     posterior_constants   <- getPosteriorConstants(config)
-    initial_theta         <- parseInitialTheta(config, constants, item_pool, posterior_constants)
+    initial_theta         <- parseInitialTheta(config, constants, item_pool, posterior_constants, include_items_for_estimation)
     item_parameter_sample <- generateItemParameterSample(config, item_pool, posterior_constants)
     exclude_index         <- getIndexOfExcludedEntry(exclude, constraints)
 
@@ -156,6 +156,7 @@ setMethod(
       o@set_based                   <- constants$set_based
       o@item_index_by_stimulus      <- constraints@item_index_by_stimulus
 
+      # Simulee: initialize theta estimate
       current_theta <- parseInitialThetaOfThisExaminee(
         config@interim_theta,
         initial_theta,
@@ -332,23 +333,7 @@ setMethod(
 
         if (!is.null(include_items_for_estimation)) {
 
-          prob_matrix_supplied_items <- calcProb(
-            include_items_for_estimation[[j]]$administered_item_pool,
-            constants$theta_q
-          )
-
-          n_supplied_items <- include_items_for_estimation[[j]]$administered_item_pool@ni
-
-          prob_resp_supplied_items <- sapply(
-            1:n_supplied_items,
-            function(i) {
-              resp <- include_items_for_estimation[[j]]$administered_item_resp[i] + 1
-              prob_matrix_supplied_items[[i]][, resp]
-            }
-          )
-          prob_resp_supplied_items <- apply(prob_resp_supplied_items, 1, prod)
-
-          augmented_current_theta    <- updateThetaPosterior(current_theta, prob_resp_supplied_items)
+          augmented_current_theta    <- current_theta
           augmented_item_pool        <- augmented_item_pool
           augmented_item_index       <- c(augment_item_index, o@administered_item_index[1:position])
           augmented_item_resp        <- c(augment_item_resp,  o@administered_item_resp[1:position])
