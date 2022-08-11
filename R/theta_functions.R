@@ -4,12 +4,12 @@ NULL
 #' @noRd
 estimateInterimTheta <- function(
   o, j, position,
-  current_theta,
-  augmented_posterior_record, posterior_record,
+  augmented_current_theta,
   augmented_item_pool, model_code,
   augmented_item_index,
   augmented_item_resp,
   include_items_for_estimation,
+  ipar_sample_list,
   config,
   constants,
   posterior_constants
@@ -38,7 +38,7 @@ estimateInterimTheta <- function(
 
   if (toupper(config@interim_theta$method) == "EAP") {
 
-    interim_EAP <- computeEAPFromPosterior(augmented_posterior_record$posterior[j, ], constants$theta_q)
+    interim_EAP <- computeEAPFromPosterior(augmented_current_theta$posterior, constants$theta_q)
     interim_EAP <- applyShrinkageCorrection(interim_EAP, config@interim_theta, j)
     o@interim_theta_est[position, ] <- interim_EAP$theta
     o@interim_se_est[position, ]    <- interim_EAP$se
@@ -49,7 +49,7 @@ estimateInterimTheta <- function(
 
   if (toupper(config@interim_theta$method) == "MLE") {
 
-    interim_EAP <- computeEAPFromPosterior(augmented_posterior_record$posterior[j, ], constants$theta_q)
+    interim_EAP <- computeEAPFromPosterior(augmented_current_theta$posterior, constants$theta_q)
     interim_MLE <- mle(augmented_item_pool,
       select        = augmented_item_index,
       resp          = augmented_item_resp,
@@ -73,7 +73,7 @@ estimateInterimTheta <- function(
 
   if (toupper(config@interim_theta$method) == "MLEF") {
 
-    interim_EAP <- computeEAPFromPosterior(augmented_posterior_record$posterior[j, ], constants$theta_q)
+    interim_EAP <- computeEAPFromPosterior(augmented_current_theta$posterior, constants$theta_q)
     interim_MLEF <- mlef(augmented_item_pool,
       select           = augmented_item_index,
       resp             = augmented_item_resp,
@@ -107,10 +107,15 @@ estimateInterimTheta <- function(
     current_item <- o@administered_item_index[position]
 
     interim_EB <- theta_EB_single(
-      posterior_constants$n_sample, current_theta$theta, current_theta$se,
+      posterior_constants$n_sample,
+      augmented_current_theta$theta,
+      augmented_current_theta$se,
       augmented_item_pool@ipar[current_item, ],
-      o@administered_item_resp[position], augmented_item_pool@NCAT[current_item],
-      model_code[current_item], 1, c(current_theta$theta, current_theta$se)
+      o@administered_item_resp[position],
+      augmented_item_pool@NCAT[current_item],
+      model_code[current_item],
+      1,
+      c(augmented_current_theta$theta, augmented_current_theta$se)
     )[, 1]
 
     interim_EB <- applyThin(interim_EB, posterior_constants)
@@ -133,11 +138,16 @@ estimateInterimTheta <- function(
     current_item <- o@administered_item_index[position]
 
     interim_FB <- theta_FB_single(
-      posterior_constants$n_sample, current_theta$theta, current_theta$se,
-      posterior_record$ipar_list[[current_item]],
+      posterior_constants$n_sample,
+      augmented_current_theta$theta,
+      augmented_current_theta$se,
+      ipar_sample_list[[current_item]],
       augmented_item_pool@ipar[current_item, ],
-      o@administered_item_resp[position], augmented_item_pool@NCAT[current_item],
-      model_code[current_item], 1, c(current_theta$theta, current_theta$se)
+      o@administered_item_resp[position],
+      augmented_item_pool@NCAT[current_item],
+      model_code[current_item],
+      1,
+      c(augmented_current_theta$theta, augmented_current_theta$se)
     )[, 1]
 
     interim_FB <- applyThin(interim_FB, posterior_constants)

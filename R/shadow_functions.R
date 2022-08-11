@@ -364,12 +364,12 @@ setMethod(
         # Item position / simulee: estimate theta
         o <- estimateInterimTheta(
           o, j, position,
-          current_theta,
-          augmented_posterior_record, posterior_record,
+          augmented_current_theta,
           augmented_item_pool, model_code,
           augmented_item_index,
           augmented_item_resp,
           include_items_for_estimation,
+          augmented_current_theta$ipar_list, # TODO: needs to be changed to its own variable
           config,
           constants,
           posterior_constants
