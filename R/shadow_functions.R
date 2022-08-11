@@ -208,7 +208,6 @@ setMethod(
           current_theta,
           item_pool,
           model_code,
-          posterior_record,
           info_fixed_theta,               # Only used if config@item_selection$method = "FIXED"
           simulation_data_cache@info_grid # Only used if config@item_selection$method = "MPWI"
         )
