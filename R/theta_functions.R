@@ -1055,26 +1055,44 @@ setMethod(
 )
 
 #' @noRd
-parseInitialTheta <- function(config, constants, posterior_record) {
-  nj <- constants$nj
+parseInitialTheta <- function(config, constants, item_pool, posterior_constants) {
+
+  o <- list()
+
+  o$likelihood <- matrix(1, constants$nj, constants$nq)
+
+  o$posterior <- generateDensityFromPriorPar(
+    config@interim_theta,
+    constants$theta_q,
+    constants$nj
+  )
+
+  interim_method <- toupper(config@interim_theta$method)
+  final_method   <- toupper(config@final_theta$method)
+  if (any(c(interim_method, final_method) %in% c("FB"))) {
+    o$ipar_list <- iparPosteriorSample(item_pool, posterior_constants$n_sample)
+    # TODO: needs to be migrated to its own function
+  }
+
   config_value <- config@item_selection$initial_theta
+
   if (!is.null(config_value)) {
     if (inherits(config_value, "numeric")) {
       config_value <- matrix(config_value, , 1)
     }
     if (nrow(config_value) == 1) {
-      theta <- matrix(config_value, nj, ncol(config_value), byrow = TRUE)
-      return(theta)
+      o$theta <- matrix(config_value, constants$nj, ncol(config_value), byrow = TRUE)
     }
-    if (nrow(config_value) == nj) {
-      theta <- config_value
-      return(theta)
+    if (nrow(config_value) == constants$nj) {
+      o$theta <- config_value
     }
   }
   if (is.null(config_value)) {
-    theta <- posterior_record$posterior %*% constants$theta_q
-    return(theta)
+    o$theta <- o$posterior %*% constants$theta_q
   }
+
+  return(o)
+
 }
 
 #' @noRd

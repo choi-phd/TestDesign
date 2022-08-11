@@ -51,30 +51,6 @@ parsePriorParameters <- function(o, constants, prior_density_override, prior_par
 }
 
 #' @noRd
-initializePosterior <- function(config, constants, item_pool, posterior_constants) {
-
-  o <- list()
-
-  o$likelihood <- matrix(1, constants$nj, constants$nq)
-  o$posterior  <- NULL
-
-  o$posterior <- generateDensityFromPriorPar(
-    config@interim_theta,
-    constants$theta_q,
-    constants$nj
-  )
-
-  interim_method <- toupper(config@interim_theta$method)
-  final_method   <- toupper(config@final_theta$method)
-  if (any(c(interim_method, final_method) %in% c("FB"))) {
-    o$ipar_list <- iparPosteriorSample(item_pool, posterior_constants$n_sample)
-  }
-
-  return(o)
-
-}
-
-#' @noRd
 getPosteriorConstants <- function(config) {
 
   o <- list()
