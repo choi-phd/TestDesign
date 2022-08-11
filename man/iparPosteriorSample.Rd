@@ -2,19 +2,22 @@
 % Please edit documentation in R/shadow_functions.R
 \name{iparPosteriorSample}
 \alias{iparPosteriorSample}
-\title{Sample item parameter estimates from their posterior distributions}
+\title{Generate item parameter samples using standard errors}
 \usage{
 iparPosteriorSample(pool, n_sample = 500)
 }
 \arguments{
-\item{pool}{An \code{\linkS4class{item_pool}} object.}
+\item{pool}{an \code{\linkS4class{item_pool}} object.}
 
-\item{n_sample}{An integer as the number of sampled parameters.}
+\item{n_sample}{the number of samples to draw.}
+}
+\value{
+\code{\link{iparPosteriorSample}} returns a length-\emph{ni} list of item parameter matrices, with each matrix having \code{n_sample} rows.
 }
 \description{
-Sample item parameter estimates from their posterior distributions.
+\code{\link{iparPosteriorSample}} is a function for generating item parameter samples.
 }
 \examples{
-ipar <- iparPosteriorSample(itempool_science, 5)
+ipar <- iparPosteriorSample(itempool_bayes, 5)
 
 }
