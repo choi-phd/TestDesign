@@ -52,7 +52,7 @@ List theta_EAP(
 //' @param prior_parm A numeric vector of hyperparameters for the prior distribution, c(mu, sigma) or c(ll, ul).
 //'
 // [[Rcpp::export]]
-arma::mat theta_EAP_matrix(
+List theta_EAP_matrix(
   const arma::mat& theta_grid,
   const arma::mat& item_parm,
   const arma::imat& resp,
@@ -63,7 +63,7 @@ arma::mat theta_EAP_matrix(
 
   int nq = theta_grid.n_rows;
   int nj = resp.n_rows;
-  mat out(nj, 2);
+  List o(nj);
 
   for (int j = 0; j < nj; j++) {
     rowvec const_term(3);
@@ -75,11 +75,16 @@ arma::mat theta_EAP_matrix(
       const_term(1) += x(0) * pos;        // unidimensional
       const_term(2) += x(0) * x(0) * pos; // unidimensional
     }
-    out(j, 0) = const_term(1) / const_term(0);
-    out(j, 1) = sqrt(const_term(2) / const_term(0) - out(j, 0) * out(j, 0));
+
+    List x;
+    double theta = const_term(1) / const_term(0);
+    x["theta"] = theta;
+    x["se"] = sqrt(const_term(2) / const_term(0) - theta * theta);
+    o(j) = x;
+
   }
 
-  return out;
+  return o;
 
 }
 
