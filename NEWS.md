@@ -1,3 +1,9 @@
+# TestDesign 1.3.4.9000
+
+## Bug fixes
+
+* Fixed where using `include_items_for_estimation` argument of `Shadow()` was not being reflected in the initial theta estimate.
+
 # TestDesign 1.3.4
 
 ## Bug fixes
