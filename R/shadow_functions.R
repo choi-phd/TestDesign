@@ -384,8 +384,8 @@ setMethod(
 
         if (position == constants$max_ni) {
           done <- TRUE
-          o@likelihood <- posterior_record$likelihood[j, ]
-          o@posterior  <- posterior_record$posterior[j, ]
+          o@likelihood <- current_theta$likelihood
+          o@posterior  <- current_theta$posterior
         }
 
         if (has_progress_pkg) {
