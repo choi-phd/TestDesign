@@ -286,15 +286,3 @@ getSegmentProb <- function(posterior_sample, constants) {
   return(segment_prob)
 
 }
-
-#' @noRd
-updatePosterior <- function(posterior_record, j, prob_resp) {
-
-  posterior_record$posterior[j, ] <-
-  posterior_record$posterior[j, ] * prob_resp
-  posterior_record$likelihood[j, ] <-
-  posterior_record$likelihood[j, ] * prob_resp
-
-  return(posterior_record)
-
-}
