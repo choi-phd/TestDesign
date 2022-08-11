@@ -55,7 +55,7 @@ initializePosterior <- function(config, constants, item_pool, posterior_constant
 
   o <- list()
 
-  o$likelihood <- rep(1, constants$nq)
+  o$likelihood <- matrix(1, constants$nj, constants$nq)
   o$posterior  <- NULL
 
   o$posterior <- generateDensityFromPriorPar(
@@ -316,8 +316,8 @@ updatePosterior <- function(posterior_record, j, prob_resp) {
 
   posterior_record$posterior[j, ] <-
   posterior_record$posterior[j, ] * prob_resp
-  posterior_record$likelihood     <-
-  posterior_record$likelihood     * prob_resp
+  posterior_record$likelihood[j, ] <-
+  posterior_record$likelihood[j, ] * prob_resp
 
   return(posterior_record)
 
