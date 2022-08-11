@@ -346,14 +346,14 @@ setMethod(
           )
           prob_resp_supplied_items <- apply(prob_resp_supplied_items, 1, prod)
 
-          augmented_posterior_record <- updatePosterior(posterior_record, j, prob_resp_supplied_items)
+          augmented_current_theta    <- updateThetaPosterior(current_theta, prob_resp_supplied_items)
           augmented_item_pool        <- augmented_item_pool
           augmented_item_index       <- c(augment_item_index, o@administered_item_index[1:position])
           augmented_item_resp        <- c(augment_item_resp,  o@administered_item_resp[1:position])
 
         } else {
 
-          augmented_posterior_record <- posterior_record
+          augmented_current_theta    <- current_theta
           augmented_item_pool        <- item_pool
           augmented_item_index       <- o@administered_item_index[1:position]
           augmented_item_resp        <- o@administered_item_resp[1:position]
