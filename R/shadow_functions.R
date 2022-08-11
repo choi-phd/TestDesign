@@ -659,15 +659,17 @@ logitHyperPars <- function(mean, sd) {
   return(c(mean(logit_samples), sd(logit_samples)))
 }
 
-#' Sample item parameter estimates from their posterior distributions
+#' Generate item parameter samples using standard errors
 #'
-#' Sample item parameter estimates from their posterior distributions.
+#' \code{\link{iparPosteriorSample}} is a function for generating item parameter samples.
 #'
-#' @param pool An \code{\linkS4class{item_pool}} object.
-#' @param n_sample An integer as the number of sampled parameters.
+#' @param pool an \code{\linkS4class{item_pool}} object.
+#' @param n_sample the number of samples to draw.
+#'
+#' @return \code{\link{iparPosteriorSample}} returns a length-\emph{ni} list of item parameter matrices, with each matrix having \code{n_sample} rows.
 #'
 #' @examples
-#' ipar <- iparPosteriorSample(itempool_science, 5)
+#' ipar <- iparPosteriorSample(itempool_bayes, 5)
 #'
 #' @export
 iparPosteriorSample <- function(pool, n_sample = 500) {
