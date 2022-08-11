@@ -1050,13 +1050,6 @@ parseInitialTheta <- function(config, constants, item_pool, posterior_constants)
     constants$nj
   )
 
-  interim_method <- toupper(config@interim_theta$method)
-  final_method   <- toupper(config@final_theta$method)
-  if (any(c(interim_method, final_method) %in% c("FB"))) {
-    o$ipar_list <- iparPosteriorSample(item_pool, posterior_constants$n_sample)
-    # TODO: needs to be migrated to its own function
-  }
-
   config_value <- config@item_selection$initial_theta
 
   if (!is.null(config_value)) {

@@ -200,6 +200,21 @@ logitHyperPars <- function(mean, sd) {
 }
 
 #' @noRd
+generateItemParameterSample <- function(config, item_pool, posterior_constants) {
+
+  o <- NULL
+
+  interim_method <- toupper(config@interim_theta$method)
+  final_method   <- toupper(config@final_theta$method)
+  if (any(c(interim_method, final_method) %in% c("FB"))) {
+    o <- iparPosteriorSample(item_pool, posterior_constants$n_sample)
+  }
+
+  return(o)
+
+}
+
+#' @noRd
 generateDensityFromPriorPar <- function(config_theta, theta_q, nj) {
 
   nq <- nrow(theta_q)
