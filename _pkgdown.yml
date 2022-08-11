@@ -74,6 +74,8 @@ reference:
       - info_item
       - j_item
       - h_item
+      - theta_EAP
+      - theta_EAP_matrix
   - title: internal
     contents:
       - item_attrib-operators
@@ -99,8 +101,6 @@ reference:
       - theta_EB_single
       - theta_FB
       - theta_FB_single
-      - theta_EAP
-      - theta_EAP_matrix
       - mle
       - mlef
       - eap
