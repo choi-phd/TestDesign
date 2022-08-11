@@ -178,8 +178,6 @@ setMethod(
         o@shadow_test_refreshed <- logical(constants$test_length)
       }
 
-      posterior_record$likelihood <- rep(1, constants$nq)
-
       theta_change <- 10000
       done         <- FALSE
       position     <- 0
@@ -387,7 +385,7 @@ setMethod(
 
         if (position == constants$max_ni) {
           done <- TRUE
-          o@likelihood <- posterior_record$likelihood
+          o@likelihood <- posterior_record$likelihood[j, ]
           o@posterior  <- posterior_record$posterior[j, ]
         }
 
