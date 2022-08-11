@@ -1,7 +1,7 @@
 #ifndef _THETA_FUNCTIONS_H
 #define _THETA_FUNCTIONS_H
 
-arma::colvec theta_EAP(
+List theta_EAP(
   const arma::mat&,
   const arma::mat&,
   const arma::irowvec&,

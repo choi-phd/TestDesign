@@ -9,7 +9,7 @@
 //' @param item_parm A numeric matrix of item parameters.
 //' @template calc-params
 // [[Rcpp::export]]
-arma::colvec theta_EAP(
+List theta_EAP(
   const arma::mat& theta_grid,
   const arma::mat& item_parm,
   const arma::irowvec& resp,
@@ -20,7 +20,7 @@ arma::colvec theta_EAP(
 
   int nq = theta_grid.n_rows;
 
-  colvec out(2);
+  List o;
   colvec const_term(3, fill::zeros);
 
   for (int q = 0; q < nq; q++) {
@@ -31,10 +31,11 @@ arma::colvec theta_EAP(
     const_term(2) += x(0) * x(0) * pos; // unidimensional
   }
 
-  out(0) = const_term(1) / const_term(0);
-  out(1) = sqrt(const_term(2) / const_term(0) - out(0) * out(0));
+  double theta = const_term(1) / const_term(0);
+  o["theta"] = theta;
+  o["se"] = sqrt(const_term(2) / const_term(0) - theta * theta);
 
-  return out;
+  return o;
 
 }
 
