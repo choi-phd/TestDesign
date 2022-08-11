@@ -1055,7 +1055,7 @@ setMethod(
 )
 
 #' @noRd
-initializeTheta <- function(config, constants, posterior_record) {
+parseInitialTheta <- function(config, constants, posterior_record) {
   nj <- constants$nj
   config_value <- config@item_selection$initial_theta
   if (!is.null(config_value)) {
