@@ -21,7 +21,7 @@ reference:
       - buildConstraints
       - toggleConstraints
   - title: "Test assembly functions"
-    desc: "Functions for perfoming test assembly"
+    desc: "Functions for performing test assembly"
     contents:
       - createStaticTestConfig
       - createShadowTestConfig
