@@ -6,7 +6,7 @@ estimateInterimTheta <- function(
   o, j, position,
   current_theta,
   augmented_posterior_record, posterior_record,
-  augmented_item_pool, item_pool, model,
+  augmented_item_pool, item_pool, model_code,
   augmented_item_index,
   augmented_item_resp,
   include_items_for_estimation,
@@ -110,7 +110,7 @@ estimateInterimTheta <- function(
       posterior_constants$n_sample, current_theta$theta, current_theta$se,
       item_pool@ipar[current_item, ],
       o@administered_item_resp[position], item_pool@NCAT[current_item],
-      model[current_item], 1, c(current_theta$theta, current_theta$se)
+      model_code[current_item], 1, c(current_theta$theta, current_theta$se)
     )[, 1]
 
     interim_EB <- applyThin(interim_EB, posterior_constants)
@@ -137,7 +137,7 @@ estimateInterimTheta <- function(
       posterior_record$ipar_list[[current_item]],
       item_pool@ipar[current_item, ],
       o@administered_item_resp[position], item_pool@NCAT[current_item],
-      model[current_item], 1, c(current_theta$theta, current_theta$se)
+      model_code[current_item], 1, c(current_theta$theta, current_theta$se)
     )[, 1]
 
     interim_FB <- applyThin(interim_FB, posterior_constants)
@@ -155,7 +155,7 @@ estimateInterimTheta <- function(
 #' @noRd
 estimateFinalTheta <- function(
   o, j, position,
-  augmented_item_pool, item_pool, model,
+  augmented_item_pool, item_pool, model_code,
   augment_item_index,
   augment_item_resp,
   include_items_for_estimation,
@@ -304,7 +304,7 @@ estimateFinalTheta <- function(
       posterior_constants$n_sample, final_prior$theta, final_prior$se,
       item_pool@ipar[o@administered_item_index[1:position], ],
       o@administered_item_resp[1:position], item_pool@NCAT[o@administered_item_index[1:position]],
-      model[o@administered_item_index[1:position]], 1, c(final_prior$theta, final_prior$se)
+      model_code[o@administered_item_index[1:position]], 1, c(final_prior$theta, final_prior$se)
     )
 
     final_EB           <- applyThin(final_EB, posterior_constants)
@@ -331,7 +331,7 @@ estimateFinalTheta <- function(
       posterior_record$ipar_list[o@administered_item_index[1:position]],
       item_pool@ipar[o@administered_item_index[1:position], ],
       o@administered_item_resp[1:position], item_pool@NCAT[o@administered_item_index[1:position]],
-      model[o@administered_item_index[1:position]], 1, c(final_prior$theta, final_prior$se)
+      model_code[o@administered_item_index[1:position]], 1, c(final_prior$theta, final_prior$se)
     )
 
     final_FB           <- applyThin(final_FB, posterior_constants)
