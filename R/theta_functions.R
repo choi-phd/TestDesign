@@ -1120,7 +1120,7 @@ parseInitialThetaOfThisExaminee <- function(config_theta, initial_theta, j, post
   o <- list()
   theta_method <- toupper(config_theta$method)
   if (theta_method %in% c("EAP", "MLE", "MLEF")) {
-    o$theta <- initial_theta[j, ]
+    o$theta <- initial_theta$theta[j, ]
   }
   if (theta_method %in% c("EB", "FB")) {
     o <- getInitialThetaPrior(config_theta, j, posterior_constants)
