@@ -1097,7 +1097,7 @@ getInitialThetaPrior <- function(config_theta, j, posterior_constants) {
 }
 
 #' @noRd
-parseInitialTheta <- function(config_theta, initial_theta, j, posterior_constants) {
+parseInitialThetaOfThisExaminee <- function(config_theta, initial_theta, j, posterior_constants) {
 
   o <- list()
   theta_method <- toupper(config_theta$method)
