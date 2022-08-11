@@ -9,7 +9,7 @@ estimateInterimTheta <- function(
   augmented_item_index,
   augmented_item_resp,
   include_items_for_estimation,
-  ipar_sample_list,
+  item_parameter_sample, # only used for FB
   config,
   constants,
   posterior_constants
@@ -141,7 +141,7 @@ estimateInterimTheta <- function(
       posterior_constants$n_sample,
       augmented_current_theta$theta,
       augmented_current_theta$se,
-      ipar_sample_list[[current_item]],
+      item_parameter_sample[[current_item]],
       augmented_item_pool@ipar[current_item, ],
       o@administered_item_resp[position],
       augmented_item_pool@NCAT[current_item],
@@ -170,7 +170,7 @@ estimateFinalTheta <- function(
   augmented_item_index,
   augmented_item_resp,
   include_items_for_estimation,
-  ipar_sample_list,
+  item_parameter_sample, # only used for FB
   config,
   constants,
   posterior_constants
@@ -308,7 +308,7 @@ estimateFinalTheta <- function(
       posterior_constants$n_sample,
       final_prior$theta,
       final_prior$se,
-      ipar_sample_list[o@administered_item_index[1:position]],
+      item_parameter_sample[o@administered_item_index[1:position]],
       augmented_item_pool@ipar[o@administered_item_index[1:position], ],
       augmented_item_resp,
       augmented_item_pool@NCAT[o@administered_item_index[1:position]],
