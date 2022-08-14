@@ -612,16 +612,33 @@ plotShadowAudit <- function(x, theta_range, z_ci, use_par, ...) {
   axis(2, at = min_theta:max_theta, labels = min_theta:max_theta, cex.axis = 1.5)
   text(0.5, min_theta + 1.0, paste("Final Theta: ", round(x@final_theta_est, digits = 2), " SE: ", round(x@final_se_est, digits = 2)), cex = 1.5, adj = 0)
 
-  for (i in 1:n_items) {
-    ci_lower = x@interim_theta_est[i] - z_ci * x@interim_se_est[i]
-    ci_upper = x@interim_theta_est[i] + z_ci * x@interim_se_est[i]
+  for (i in 0:n_items) {
+    if (i == 0) {
+      if (!inherits(x@initial_theta_est, "list")) {
+        next
+      }
+      if (is.null(x@initial_theta_est$se)) {
+        next
+      }
+      ci_lower <- x@initial_theta_est$theta - z_ci * x@initial_theta_est$se
+      ci_upper <- x@initial_theta_est$theta + z_ci * x@initial_theta_est$se
+    }
+    if (i > 0) {
+      ci_lower <- x@interim_theta_est[i] - z_ci * x@interim_se_est[i]
+      ci_upper <- x@interim_theta_est[i] + z_ci * x@interim_se_est[i]
+    }
     lines(rep(i, 2)            , c(ci_lower, ci_upper), col = "purple4")
     lines(c(i - 0.25, i + 0.25), c(ci_lower, ci_lower), col = "purple4")
     lines(c(i - 0.25, i + 0.25), c(ci_upper, ci_upper), col = "purple4")
   }
-  lines(0:n_items, c(x@initial_theta_est, x@interim_theta_est), lty = 3, col = "blue", lwd = 1.5)
-  points(0:n_items, c(x@initial_theta_est, x@interim_theta_est), pch = 16, cex = 2.5, col = "blue")
-  points(0:n_items, c(x@initial_theta_est, x@interim_theta_est), pch = 1, cex = 2.5, col = "purple4")
+  if (!inherits(x@initial_theta_est, "list")) {
+    o <- list()
+    o$theta <- x@initial_theta_est
+    x@initial_theta_est <- o
+  }
+  lines(0:n_items, c(x@initial_theta_est$theta, x@interim_theta_est), lty = 3, col = "blue", lwd = 1.5)
+  points(0:n_items, c(x@initial_theta_est$theta, x@interim_theta_est), pch = 16, cex = 2.5, col = "blue")
+  points(0:n_items, c(x@initial_theta_est$theta, x@interim_theta_est), pch = 1, cex = 2.5, col = "purple4")
   if (!is.null(x@true_theta)) {
     abline(h = x@true_theta, lty = 1, col = "red")
   }
