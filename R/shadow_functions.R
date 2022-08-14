@@ -163,7 +163,7 @@ setMethod(
         j,
         posterior_constants
       )
-      o@initial_theta_est <- current_theta$theta
+      o@initial_theta_est <- current_theta
 
       # Simulee: initialize stimulus record
 
