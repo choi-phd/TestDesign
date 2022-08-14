@@ -1096,6 +1096,10 @@ parseInitialTheta <- function(config, constants, item_pool, posterior_constants,
   }
   if (is.null(config_value)) {
     o$theta <- (o$posterior %*% constants$theta_q) / apply(o$posterior, 1, sum)
+    o$se <- o$theta * 0
+    for (j in 1:constants$nj) {
+      o$se[j, ] <- sqrt(sum(o$posterior[j, ] * (constants$theta_q - o$theta[j, ]) ** 2) / sum(o$posterior[j, ]))
+    }
   }
 
   return(o)
@@ -1133,6 +1137,7 @@ parseInitialThetaOfThisExaminee <- function(config_theta, initial_theta, j, post
 
   if (theta_method %in% c("EAP", "MLE", "MLEF")) {
     o$theta <- initial_theta$theta[j, ]
+    o$se    <- initial_theta$se[j, ]
   }
   if (theta_method %in% c("EB", "FB")) {
     x <- getInitialThetaPrior(config_theta, j, posterior_constants)
