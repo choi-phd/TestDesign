@@ -384,6 +384,9 @@ createShadowTestConfig <- function(
       }
     }
   }
+
+  cfg@MIP$solver <- toupper(cfg@MIP$solver)
+
   if (!is.null(theta_grid)) {
     cfg@theta_grid <- theta_grid
   }
