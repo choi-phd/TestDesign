@@ -164,6 +164,8 @@ createStaticTestConfig <- function(item_selection = NULL, MIP = NULL) {
     }
   }
 
+  cfg@MIP$solver <- toupper(cfg@MIP$solver)
+
   if (is.null(item_selection$target_weight)) {
     cfg@item_selection$target_weight <- rep(1, length(cfg@item_selection$target_location))
   }
