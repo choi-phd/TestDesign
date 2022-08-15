@@ -3,11 +3,14 @@ test_that("partitioning methods work", {
   skip_on_cran()
   skip_on_ci()
 
+  solver <- detectBestSolver()
+  skip_if(solver == "lpSolve")
+
   # discrete assembly
 
   set.seed(1)
 
-  config <- createStaticTestConfig(MIP = list(solver = "LPSYMPHONY", time_limit = 300, obj_tol = 0.25))
+  config <- createStaticTestConfig(MIP = list(solver = solver, time_limit = 300, obj_tol = 0.25))
   constraints <- constraints_science[1:10]
 
   n_partition <- 4
@@ -36,7 +39,7 @@ test_that("partitioning methods work", {
 
   set.seed(1)
 
-  config <- createStaticTestConfig(MIP = list(solver = "LPSYMPHONY", time_limit = 300, obj_tol = 0.25))
+  config <- createStaticTestConfig(MIP = list(solver = solver, time_limit = 300, obj_tol = 0.25))
   constraints <- constraints_reading[1:5]
 
   n_partition <- 2

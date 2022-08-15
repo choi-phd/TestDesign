@@ -1,12 +1,14 @@
 test_that("refresh methods work", {
 
+  solver <- detectBestSolver()
+
   set.seed(1)
   true_theta <- 0
   resp_science <- simResp(itempool_science, true_theta)
   constraints_science2 <- toggleConstraints(constraints_science, off = c(14:20, 32:36))
 
   cfg <- createShadowTestConfig(
-    MIP = list(solver = "LPSOLVE"),
+    MIP = list(solver = solver),
     refresh_policy = list(
       method = "ALWAYS"
     )
@@ -16,7 +18,7 @@ test_that("refresh methods work", {
   expect_equal(all(solution@output[[1]]@shadow_test_refreshed), TRUE)
 
   cfg <- createShadowTestConfig(
-    MIP = list(solver = "LPSOLVE"),
+    MIP = list(solver = solver),
     refresh_policy = list(
       method = "POSITION",
       position = c(1, 10, 20)
@@ -27,7 +29,7 @@ test_that("refresh methods work", {
   expect_equal(which(solution@output[[1]]@shadow_test_refreshed), c(1, 10, 20))
 
   cfg <- createShadowTestConfig(
-    MIP = list(solver = "LPSOLVE"),
+    MIP = list(solver = solver),
     refresh_policy = list(
       method = "INTERVAL",
       interval = 3
@@ -38,7 +40,7 @@ test_that("refresh methods work", {
   expect_equal(which(solution@output[[1]]@shadow_test_refreshed), seq(1, 30, 3))
 
   cfg <- createShadowTestConfig(
-    MIP = list(solver = "LPSOLVE"),
+    MIP = list(solver = solver),
     refresh_policy = list(
       method = "THRESHOLD",
       threshold = .1
@@ -55,7 +57,7 @@ test_that("refresh methods work", {
   expect_equal(solution@output[[1]]@shadow_test_refreshed, flag)
 
   cfg <- createShadowTestConfig(
-    MIP = list(solver = "LPSOLVE"),
+    MIP = list(solver = solver),
     refresh_policy = list(
       method = "INTERVAL-THRESHOLD",
       threshold = .1,

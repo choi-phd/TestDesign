@@ -2,6 +2,8 @@ test_that("GFI works", {
 
   skip_on_cran()
 
+  solver <- detectBestSolver()
+
   set.seed(1)
   true_theta <- 0
   resp_science <- simResp(itempool_science, true_theta)
@@ -17,7 +19,7 @@ test_that("GFI works", {
       method = "BIGM"
     ),
     MIP = list(
-      solver = "LPSOLVE"
+      solver = solver
     )
   )
   set.seed(1)
