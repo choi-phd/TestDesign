@@ -1,3 +1,5 @@
+solver <- detectBestSolver()
+
 set.seed(1)
 true_theta <- runif(10, -3, 3)
 resp_bayes <- simResp(itempool_bayes, true_theta)
@@ -10,7 +12,7 @@ for (m in methods) {
   test_that(test_name, {
 
     cfg <- createShadowTestConfig(
-      MIP = list(solver = "LPSOLVE"),
+      MIP = list(solver = solver),
       interim_theta = list(method = m)
     )
     set.seed(1)
@@ -29,7 +31,7 @@ for (m in methods) {
   test_that(test_name, {
 
     cfg <- createShadowTestConfig(
-      MIP = list(solver = "LPSOLVE"),
+      MIP = list(solver = solver),
       final_theta = list(method = m)
     )
     set.seed(1)
