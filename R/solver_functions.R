@@ -491,3 +491,31 @@ testSolver <- function(solver) {
   return("")
 
 }
+
+#' Detect best solver
+#'
+#' @return the package name of the best available solver on the system.
+#'
+#' @examples
+#' solver <- detectBestSolver()
+#' cfg <- createStaticTestConfig(MIP = list(solver = solver))
+#' cfg <- createShadowTestConfig(MIP = list(solver = solver))
+#'
+#' @docType methods
+#' @export
+detectBestSolver <- function() {
+  solver_list <- c(
+    "gurobi", "lpsymphony", "Rsymphony", "lpSolve"
+  )
+  for (solver in solver_list) {
+    is_solver_available <- suppressWarnings(requireNamespace(solver, quietly = TRUE))
+    if (!is_solver_available) {
+      next
+    }
+    is_solver_functional <- testSolver(solver)
+    if (is_solver_functional == "") {
+      return(solver)
+    }
+  }
+  stop("a functional solver is not available on this system")
+}
