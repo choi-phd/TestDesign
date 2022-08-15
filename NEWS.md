@@ -1,5 +1,9 @@
 # TestDesign 1.3.4.9000
 
+## Updates
+
+* Added `detectBestSolver()` for detecting the best available solver on the system.
+
 ## Bug fixes
 
 * Fixed where using `include_items_for_estimation` argument of `Shadow()` was not being reflected in the initial theta estimate.
