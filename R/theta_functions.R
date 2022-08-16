@@ -1050,6 +1050,8 @@ parseInitialTheta <- function(config, constants, item_pool, posterior_constants,
     constants$nj
   )
 
+  o$theta_q <- constants$theta_q
+
   # update likelihood and posterior using include_items_for_estimation
 
   if (!is.null(include_items_for_estimation)) {
