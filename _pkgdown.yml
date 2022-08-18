@@ -58,6 +58,7 @@ reference:
       - iparPosteriorSample
       - lnHyperPars
       - logitHyperPars
+      - detectBestSolver
   - title: "Object classes"
     contents:
       - item-classes
