@@ -567,8 +567,14 @@ plotShadowInfo <- function(x, examinee_id, position, info_type, ylim, theta, col
       legend_col   <- c(legend_col, "black")
     }
     if (position == 1) {
-      abline(v = o@initial_theta_est, col = "black", lty = 2)
-      legend_label <- c(legend_label, sprintf("Initial theta = %.3f", o@initial_theta_est))
+      if (inherits(o@initial_theta_est, "numeric")) {
+        initial_theta <- o@initial_theta_est
+      }
+      if (inherits(o@initial_theta_est, "list")) {
+        initial_theta <- o@initial_theta_est$theta
+      }
+      abline(v = initial_theta, col = "black", lty = 2)
+      legend_label <- c(legend_label, sprintf("Initial theta = %.3f", initial_theta))
       legend_lty   <- c(legend_lty, 2)
       legend_col   <- c(legend_col, "black")
     }
