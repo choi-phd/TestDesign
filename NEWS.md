@@ -8,6 +8,7 @@
 ## Bug fixes
 
 * Fixed where using `include_items_for_estimation` argument of `Shadow()` was not being reflected in the initial theta estimate.
+* Fixed where using `gurobi` solver would raise an 'unused argument' error.
 
 # TestDesign 1.3.4
 
