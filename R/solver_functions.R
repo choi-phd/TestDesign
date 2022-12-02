@@ -307,14 +307,12 @@ runMIP <- function(solver, obj, mat, dir, rhs, maximize, types,
     if (!is.null(gap_limit)) {
       MIP <- gurobi::gurobi(
         model = list(obj = obj, modelsense = ifelse(maximize, "max", "min"), rhs = rhs, sense = constraints_dir, vtype = types, A = mat),
-        params = list(MIPGap = gap_limit, TimeLimit = time_limit, LogToConsole = verbosity),
-        env = NULL
+        params = list(MIPGap = gap_limit, TimeLimit = time_limit, LogToConsole = verbosity)
       )
     } else {
       MIP <- gurobi::gurobi(
         model = list(obj = obj, modelsense = ifelse(maximize, "max", "min"), rhs = rhs, sense = constraints_dir, vtype = types, A = mat),
-        params = list(TimeLimit = time_limit, LogToConsole = verbosity),
-        env = NULL
+        params = list(TimeLimit = time_limit, LogToConsole = verbosity)
       )
     }
 
