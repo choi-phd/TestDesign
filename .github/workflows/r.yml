@@ -55,7 +55,6 @@ jobs:
             any::mirtCAT
             any::testthat
             any::progress
-            any::lpsymphony
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2

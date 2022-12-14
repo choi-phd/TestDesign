@@ -258,26 +258,7 @@ runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
 runMIP <- function(solver, obj, mat, dir, rhs, maximize, types,
                    verbosity, time_limit, gap_limit_abs, gap_limit) {
 
-  if (solver == "LPSYMPHONY") {
-
-    if (!is.null(gap_limit_abs)) {
-      MIP <- lpsymphony::lpsymphony_solve_LP(
-        obj, mat, dir, rhs,
-        max = maximize, types = types,
-        verbosity = verbosity,
-        time_limit = time_limit,
-        gap_limit = gap_limit_abs
-      )
-    } else {
-      MIP <- lpsymphony::lpsymphony_solve_LP(
-        obj, mat, dir, rhs,
-        max = maximize, types = types,
-        verbosity = verbosity,
-        time_limit = time_limit
-      )
-    }
-
-  } else if (solver == "RSYMPHONY") {
+  if (solver == "RSYMPHONY") {
 
     if (!is.null(gap_limit_abs)) {
       MIP <- Rsymphony::Rsymphony_solve_LP(
@@ -338,9 +319,7 @@ runMIP <- function(solver, obj, mat, dir, rhs, maximize, types,
 #' @noRd
 isOptimal <- function(status, solver) {
   is_optimal <- FALSE
-  if (toupper(solver) == "LPSYMPHONY") {
-    is_optimal <- names(status) %in% c("TM_OPTIMAL_SOLUTION_FOUND", "PREP_OPTIMAL_SOLUTION_FOUND", "TM_TARGET_GAP_ACHIEVED")
-  } else if (toupper(solver) == "RSYMPHONY") {
+  if (toupper(solver) == "RSYMPHONY") {
     is_optimal <- names(status) %in% c("TM_OPTIMAL_SOLUTION_FOUND", "PREP_OPTIMAL_SOLUTION_FOUND", "TM_TARGET_GAP_ACHIEVED")
   } else if (toupper(solver) == "GUROBI") {
     is_optimal <- status %in% c("OPTIMAL")
@@ -354,9 +333,7 @@ isOptimal <- function(status, solver) {
 
 #' @noRd
 getSolverStatusMessage <- function(status, solver) {
-  if (toupper(solver) == "LPSYMPHONY") {
-    tmp <- sprintf("MIP solver returned non-zero status: %s", names(status))
-  } else if (toupper(solver) == "RSYMPHONY") {
+  if (toupper(solver) == "RSYMPHONY") {
     tmp <- sprintf("MIP solver returned non-zero status: %s", names(status))
   } else if (toupper(solver) == "GUROBI") {
     tmp <- sprintf("MIP solver returned non-zero status: %s", status)
@@ -370,9 +347,7 @@ getSolverStatusMessage <- function(status, solver) {
 
 #' @noRd
 printSolverNewline <- function(solver) {
-  if (toupper(solver) == "LPSYMPHONY") {
-    cat("\n")
-  } else if (toupper(solver) == "RSYMPHONY") {
+  if (toupper(solver) == "RSYMPHONY") {
     cat("\n")
   }
 }
@@ -381,12 +356,12 @@ printSolverNewline <- function(solver) {
 validateSolver <- function(config, constraints, purpose = NULL) {
 
   if (constraints@set_based) {
-    if (!toupper(config@MIP$solver) %in%  c("LPSYMPHONY", "RSYMPHONY", "GUROBI")) {
+    if (!toupper(config@MIP$solver) %in%  c("RSYMPHONY", "GUROBI")) {
 
       if (!interactive()) {
         txt <- paste(
           sprintf("Set-based assembly with %s is not allowed in non-interactive mode", config@MIP$solver),
-          "(allowed solvers: LPSYMPHONY, RSYMPHONY, or GUROBI)",
+          "(allowed solvers: RSYMPHONY, or GUROBI)",
           sep = " "
         )
         warning(txt)
@@ -395,7 +370,7 @@ validateSolver <- function(config, constraints, purpose = NULL) {
 
       txt <- paste(
         sprintf("Set-based assembly with %s takes a long time.", config@MIP$solver),
-        "Recommended solvers: LPSYMPHONY, RSYMPHONY, or GUROBI",
+        "Recommended solvers: RSYMPHONY, or GUROBI",
         sep = "\n"
       )
 
@@ -415,12 +390,12 @@ validateSolver <- function(config, constraints, purpose = NULL) {
   }
 
   if (purpose == "SPLIT") {
-    if (!toupper(config@MIP$solver) %in%  c("LPSYMPHONY", "RSYMPHONY", "GUROBI")) {
+    if (!toupper(config@MIP$solver) %in%  c("RSYMPHONY", "GUROBI")) {
 
       if (!interactive()) {
         txt <- paste(
           sprintf("Split() with %s is not allowed in non-interactive mode", config@MIP$solver),
-          "(allowed solvers: LPSYMPHONY, RSYMPHONY, or GUROBI)",
+          "(allowed solvers: RSYMPHONY, or GUROBI)",
           sep = " "
         )
         warning(txt)
@@ -429,7 +404,7 @@ validateSolver <- function(config, constraints, purpose = NULL) {
 
       txt <- paste(
         sprintf("Split() with %s takes a long time.", config@MIP$solver),
-        "Recommended solvers: LPSYMPHONY, RSYMPHONY, or GUROBI",
+        "Recommended solvers: RSYMPHONY, or GUROBI",
         sep = "\n"
       )
 
@@ -450,7 +425,7 @@ validateSolver <- function(config, constraints, purpose = NULL) {
 
 #' Test solver
 #'
-#' @param solver a solver package name. Accepts \code{lpSolve, Rsymphony, lpsymphony, gurobi, Rglpk}.
+#' @param solver a solver package name. Accepts \code{lpSolve, Rsymphony, gurobi, Rglpk}.
 #'
 #' @return empty string \code{""} if solver works. A string containing error messages otherwise.
 #'
@@ -503,7 +478,7 @@ testSolver <- function(solver) {
 #' @export
 detectBestSolver <- function() {
   solver_list <- c(
-    "gurobi", "lpsymphony", "Rsymphony", "lpSolve"
+    "gurobi", "Rsymphony", "lpSolve"
   )
   for (solver in solver_list) {
     is_solver_available <- suppressWarnings(requireNamespace(solver, quietly = TRUE))

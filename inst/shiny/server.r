@@ -110,8 +110,8 @@ server <- function(input, output, session) {
           "shiny_constraints_data",
           "Constraints (raw data.frame)")
 
-        if (isolate(v$constraints@set_based & !input$solvertype %in% c("lpsymphony", "Rsymphony", "gurobi"))) {
-          v <- updateLogs(v, "Warning: set-based assembly requires 'lpsymphony', 'Rsymphony' or 'gurobi'.")
+        if (isolate(v$constraints@set_based & !input$solvertype %in% c("Rsymphony", "gurobi"))) {
+          v <- updateLogs(v, "Warning: set-based assembly requires 'Rsymphony' or 'gurobi'.")
         }
 
       } else {

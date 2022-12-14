@@ -51,10 +51,10 @@ resp <- simResp(itempool_reading, true_theta)
 test_that("excluding stimuli works", {
 
   skip_on_cran() # lpsymphony causes ASAN heap-buffer-overflow
-  skip_if_not_installed("lpsymphony")
+  skip_if_not_installed("Rsymphony")
 
   cfg <- createShadowTestConfig(
-    MIP = list(solver = "lpsymphony")
+    MIP = list(solver = "Rsymphony")
   )
 
   set.seed(1)
@@ -116,4 +116,3 @@ test_that("excluding stimuli works", {
   expect_equal(o, FALSE)
 
 })
-
