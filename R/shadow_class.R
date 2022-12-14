@@ -41,7 +41,7 @@ setClass("config_Shadow",
       burn_in                   = 100,
       post_burn_in              = 500,
       thin                      = 1,
-      jump_factor               = 1
+      jump_factor               = 2.4
     ),
     exclude_policy = list(
       method = "HARD",
@@ -263,7 +263,7 @@ setClass("config_Shadow",
 #'   \item{\code{burn_in}} the number of chains from the start to discard. (default = \code{100})
 #'   \item{\code{post_burn_in}} the number of chains to use after discarding the first \code{burn_in} chains. (default = \code{500})
 #'   \item{\code{thin}} thinning interval to apply. \code{1} represents no thinning. (default = \code{1})
-#'   \item{\code{jump_factor}} the jump factor to use. \code{1} represents no jumping. (default = \code{1})
+#'   \item{\code{jump_factor}} the jump (scaling) factor for the proposal distribution. \code{1} represents no jumping. (default = \code{2.4})
 #' }
 #' @param exclude_policy a named list containing the exclude policy for use with the \code{exclude} argument in \code{\link{Shadow}}.
 #' \itemize{
