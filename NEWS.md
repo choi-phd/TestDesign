@@ -4,6 +4,7 @@
 
 * Added `detectBestSolver()` for detecting the best available solver on the system.
 * `plot(type = "audit")` now plots the initial theta SE when available.
+* Removed support for the `lpsymphony` solver because of installation issues. Users may use the `Rsymphony` solver as an alternative.
 
 ## Bug fixes
 

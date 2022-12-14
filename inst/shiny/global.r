@@ -5,7 +5,7 @@ suppressPackageStartupMessages(library(shinyjs, quietly = TRUE, warn.conflicts =
 library(DT, quietly = TRUE, warn.conflicts = FALSE)
 library(TestDesign, quietly = TRUE)
 
-solvers <- c("lpSolve", "Rsymphony", "lpsymphony", "gurobi", "Rglpk")
+solvers <- c("lpSolve", "Rsymphony", "gurobi", "Rglpk")
 accepted_files <- c("text/csv", "text/comma-separated-values,text/plain", ".csv")
 css_y <- "overflow-y:scroll; max-height: 65vh"
 

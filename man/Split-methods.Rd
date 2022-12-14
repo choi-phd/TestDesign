@@ -49,7 +49,7 @@ When constructing parallel pools, each pool is constructed so that it contains a
 }
 \examples{
 \dontrun{
-config <- createStaticTestConfig(MIP = list(solver = "LPSYMPHONY"))
+config <- createStaticTestConfig(MIP = list(solver = "RSYMPHONY"))
 constraints <- constraints_science[1:10]
 
 solution <- Split(config, constraints, n_partition = 4, partition_type = "test"))

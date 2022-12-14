@@ -8,7 +8,7 @@
 testSolver(solver)
 }
 \arguments{
-\item{solver}{a solver package name. Accepts \code{lpSolve, Rsymphony, lpsymphony, gurobi, Rglpk}.}
+\item{solver}{a solver package name. Accepts \code{lpSolve, Rsymphony, gurobi, Rglpk}.}
 }
 \value{
 empty string \code{""} if solver works. A string containing error messages otherwise.

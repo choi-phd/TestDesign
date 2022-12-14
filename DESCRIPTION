@@ -15,7 +15,7 @@ Authors@R: c(
 Maintainer: Seung W. Choi <schoi@austin.utexas.edu>
 Description: Uses the optimal test design approach by Birnbaum (1968, ISBN:9781593119348) and
     van der Linden (2018) <doi:10.1201/9781315117430> to construct fixed, adaptive, and parallel tests.
-    Supports the following mixed-integer programming (MIP) solver packages: 'lpsymphony', 'Rsymphony',
+    Supports the following mixed-integer programming (MIP) solver packages: 'Rsymphony',
     'gurobi', 'lpSolve', and 'Rglpk'. The 'gurobi' package is not available from CRAN; see <https://www.gurobi.com/downloads/>.
 URL: https://choi-phd.github.io/TestDesign/ (documentation)
 BugReports: https://github.com/choi-phd/TestDesign/issues/
@@ -25,7 +25,6 @@ biocViews:
 Imports: Rcpp (>= 1.0.0), methods, lpSolve, foreach, logitnorm, crayon
 SystemRequirements: C++11
 Suggests:
-    lpsymphony,
     Rsymphony,
     gurobi,
     Rglpk,
