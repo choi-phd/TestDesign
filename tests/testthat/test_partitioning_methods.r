@@ -39,7 +39,10 @@ test_that("partitioning methods work", {
 
   set.seed(1)
 
-  config <- createStaticTestConfig(MIP = list(solver = solver, time_limit = 300, obj_tol = 0.25))
+  config <- createStaticTestConfig(
+    MIP = list(solver = solver, time_limit = 300, obj_tol = 0.25),
+    item_selection = list(target_location = c(-2.5, -1.5, -0.5, 0.5, 1.5, 2.5))
+  )
   constraints <- constraints_reading[1:5]
 
   n_partition <- 2
@@ -50,11 +53,11 @@ test_that("partitioning methods work", {
   }
 
   n_partition <- 2
-  o <- Split(config, constraints, n_partition = n_partition, partition_type = "pool", partition_size_range = c(90, 110))
+  o <- Split(config, constraints, n_partition = n_partition, partition_type = "pool", partition_size_range = c(140, 160))
   for (partition in o@output) {
     subpool <- constraints@pool[partition$i]
-    expect_gte(subpool@ni,  90)
-    expect_lte(subpool@ni, 110)
+    expect_gte(subpool@ni, 140)
+    expect_lte(subpool@ni, 160)
   }
 
 })
