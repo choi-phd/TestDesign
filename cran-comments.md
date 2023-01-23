@@ -5,7 +5,6 @@
 * Local:
 * * Windows 11 (R 4.2.2)
 * GitHub Actions:
-* * macOS 12 Monterey (R-release)
 * * macOS 11 Big Sur (R-release)
 * * Windows Server 2022 (R-release)
 * * Windows Server 2019 (R-release)
