@@ -7,7 +7,7 @@ NULL
 #'
 #' \code{p_*()} functions accept a single theta value, and \code{array_p_*()} functions accept multiple theta values.
 #'
-#' Currently supports unidimensional models.
+#' Supports unidimensional and multidimensional models.
 #'
 #' \itemize{
 #'   \item{\code{p_1pl()}, \code{array_p_1pl()}}: 1PL models
@@ -16,10 +16,17 @@ NULL
 #'   \item{\code{p_pc()}, \code{array_p_pc()}}: PC (partial credit) models
 #'   \item{\code{p_gpc()}, \code{array_p_gpc()}}: GPC (generalized partial credit) models
 #'   \item{\code{p_gr()}, \code{array_p_gr()}}: GR (graded response) models
+#'   \item{\code{p_m_2pl()}, \code{array_p_m_2pl()}}: multidimensional 2PL models
+#'   \item{\code{p_m_3pl()}, \code{array_p_m_3pl()}}: multidimensional 3PL models
+#'   \item{\code{p_m_gpc()}, \code{array_p_m_gpc()}}: multidimensional GPC models
+#'   \item{\code{p_m_gr()}, \code{array_p_m_gr()}}: multidimensional GR models
 #' }
 #'
-#' @param x the theta value. This must be a column vector in matrix form for \code{array_p_*()} functions.
-#' @param a,b,c,d the item parameters.
+#' @param x the theta value. The number of columns should correspond to the number of dimensions.
+#' For \code{array_*()} functions, the number of theta values must correspond to the number of rows.
+#' @param a the \emph{a}-parameter.
+#' @param b,d the difficulty parameter. \code{b} is used for unidimensional items, and \code{d} is used for multidimensional items.
+#' @param c the \emph{c}-parameter.
 #'
 #' @examples
 #' x <- 0.5
@@ -31,7 +38,7 @@ NULL
 #' p_gpc(x, 2, c(0, 1))
 #' p_gr(x, 2, c(0, 2))
 #'
-#' x <- matrix(seq(0.1, 0.5, 0.1)) # column vector in matrix form
+#' x <- matrix(seq(0.1, 0.5, 0.1)) # three theta values, unidimensional
 #'
 #' array_p_1pl(x, 1)
 #' array_p_2pl(x, 1, 2)
@@ -57,7 +64,7 @@ NULL
 #'
 #' \code{e_*()} functions accept a single theta value, and \code{array_p_*()} functions accept multiple theta values.
 #'
-#' Currently supports unidimensional models.
+#' Supports unidimensional and multidimensional models.
 #'
 #' \itemize{
 #'   \item{\code{e_1pl()}, \code{array_e_1pl()}}: 1PL models
@@ -66,10 +73,17 @@ NULL
 #'   \item{\code{e_pc()}, \code{array_e_pc()}}: PC (partial credit) models
 #'   \item{\code{e_gpc()}, \code{array_e_gpc()}}: GPC (generalized partial credit) models
 #'   \item{\code{e_gr()}, \code{array_e_gr()}}: GR (graded response) models
+#'   \item{\code{e_m_2pl()}, \code{array_e_m_2pl()}}: multidimensional 2PL models
+#'   \item{\code{e_m_3pl()}, \code{array_e_m_3pl()}}: multidimensional 3PL models
+#'   \item{\code{e_m_gpc()}, \code{array_e_m_gpc()}}: multidimensional GPC models
+#'   \item{\code{e_m_gr()}, \code{array_e_m_gr()}}: multidimensional GR models
 #' }
 #'
-#' @param x the theta value. This must be a column vector in matrix form for \code{array_e_*()} functions.
-#' @param a,b,c,d the item parameters.
+#' @param x the theta value. The number of columns should correspond to the number of dimensions.
+#' For \code{array_*()} functions, the number of theta values must correspond to the number of rows.
+#' @param a the \emph{a}-parameter.
+#' @param b,d the difficulty parameter. \code{b} is used for unidimensional items, and \code{d} is used for multidimensional items.
+#' @param c the \emph{c}-parameter.
 #'
 #' @examples
 #' x <- 0.5
@@ -81,7 +95,7 @@ NULL
 #' e_gpc(x, 2, c(0, 1))
 #' e_gr(x, 2, c(0, 2))
 #'
-#' x <- matrix(seq(-3, 3, 1)) # column vector in matrix form
+#' x <- matrix(seq(-3, 3, 1)) # three theta values, unidimensional
 #'
 #' array_e_1pl(x, 1)
 #' array_e_2pl(x, 1, 2)
@@ -107,7 +121,7 @@ NULL
 #'
 #' \code{info_*()} functions accept a single theta value, and \code{array_info_*} functions accept multiple theta values.
 #'
-#' Currently supports unidimensional models.
+#' Supports unidimensional and multidimensional models.
 #'
 #' \itemize{
 #'   \item{\code{info_1pl()}, \code{array_info_1pl()}}: 1PL models
@@ -116,10 +130,25 @@ NULL
 #'   \item{\code{info_pc()}, \code{array_info_pc()}}: PC (partial credit) models
 #'   \item{\code{info_gpc()}, \code{array_info_gpc()}}: GPC (generalized partial credit) models
 #'   \item{\code{info_gr()}, \code{array_info_gr()}}: GR (graded response) models
+#'   \item{\code{info_m_2pl()}, \code{array_info_m_2pl()}}: multidimensional 2PL models
+#'   \item{\code{info_m_3pl()}, \code{array_info_m_3pl()}}: multidimensional 3PL models
+#'   \item{\code{info_m_gpc()}, \code{array_info_m_gpc()}}: multidimensional GPC models
+#'   \item{\code{info_m_gr()}, \code{array_info_m_gr()}}: multidimensional GR models
+#'   \item{Directional information for a specific angle}
+#'   \itemize{
+#'     \item{\code{thisdirinfo_m_2pl()}, \code{array_thisdirinfo_m_2pl()}}: multidimensional 2PL models
+#'     \item{\code{thisdirinfo_m_3pl()}, \code{array_thisdirinfo_m_3pl()}}: multidimensional 3PL models
+#'     \item{\code{thisdirinfo_m_gpc()}, \code{array_thisdirinfo_m_gpc()}}: multidimensional GPC models
+#'     \item{\code{thisdirinfo_m_gr()}, \code{array_thisdirinfo_m_gr()}}: multidimensional GR models
+#'   }
 #' }
 #'
-#' @param x the theta value. This must be a column vector in matrix form for \code{array_info_*()} functions.
-#' @param a,b,c,d the item parameters.
+#' @param x the theta value. The number of columns should correspond to the number of dimensions.
+#' For \code{array_*()} functions, the number of theta values must correspond to the number of rows.
+#' @param a the \emph{a}-parameter.
+#' @param b,d the difficulty parameter. \code{b} is used for unidimensional items, and \code{d} is used for multidimensional items.
+#' @param c the \emph{c}-parameter.
+#' @param alpha_vec the alpha angle vector. Used for directional information in \code{thisdirinfo_*()} and \code{array_thisdirinfo_*()}.
 #'
 #' @examples
 #' x <- 0.5
@@ -131,7 +160,7 @@ NULL
 #' info_gpc(x, 2, c(0, 1))
 #' info_gr(x, 2, c(0, 2))
 #'
-#' x <- matrix(seq(0.1, 0.5, 0.1)) # column vector in matrix form
+#' x <- matrix(seq(0.1, 0.5, 0.1)) # three theta values, unidimensional
 #'
 #' array_info_1pl(x, 1)
 #' array_info_2pl(x, 1, 2)
@@ -157,7 +186,7 @@ NULL
 #'
 #' \code{j_*()} functions accept a single theta value, and \code{array_j_*()} functions accept multiple theta values.
 #'
-#' Currently supports unidimensional models.
+#' Supports unidimensional and multidimensional models.
 #'
 #' \itemize{
 #'   \item{\code{j_1pl()}, \code{array_j_1pl()}}: 1PL models
@@ -166,10 +195,17 @@ NULL
 #'   \item{\code{j_pc()}, \code{array_j_pc()}}: PC (partial credit) models
 #'   \item{\code{j_gpc()}, \code{array_j_gpc()}}: GPC (generalized partial credit) models
 #'   \item{\code{j_gr()}, \code{array_j_gr()}}: GR (graded response) models
+#'   \item{\code{j_m_2pl()}, \code{array_j_m_2pl()}}: multidimensional 2PL models
+#'   \item{\code{j_m_3pl()}, \code{array_j_m_3pl()}}: multidimensional 3PL models
+#'   \item{\code{j_m_gpc()}, \code{array_j_m_gpc()}}: multidimensional GPC models
+#'   \item{\code{j_m_gr()}, \code{array_j_m_gr()}}: multidimensional GR models
 #' }
 #'
-#' @param x the theta value. This must be a column vector in matrix form for \code{array_j_*()} functions.
-#' @param a,b,c,d the item parameters.
+#' @param x the theta value. The number of columns should correspond to the number of dimensions.
+#' For \code{array_*()} functions, the number of theta values must correspond to the number of rows.
+#' @param a the \emph{a}-parameter.
+#' @param b,d the difficulty parameter. \code{b} is used for unidimensional items, and \code{d} is used for multidimensional items.
+#' @param c the \emph{c}-parameter.
 #' @param u the response value.
 #'
 #' @examples
@@ -183,7 +219,7 @@ NULL
 #' j_gpc(x, 2, c(0, 1), u)
 #' j_gr(x, 2, c(0, 2), u)
 #'
-#' x <- matrix(seq(-3, 3, 1)) # column vector in matrix form
+#' x <- matrix(seq(-3, 3, 1)) # three theta values, unidimensional
 #' array_j_1pl(x, 1, u)
 #' array_j_2pl(x, 1, 2, u)
 #' array_j_3pl(x, 1, 2, 0.25, u)
@@ -208,7 +244,7 @@ NULL
 #'
 #' \code{h_*()} functions accept a single theta value, and \code{array_h_*()} functions accept multiple theta values.
 #'
-#' Currently supports unidimensional models.
+#' Supports unidimensional and multidimensional models.
 #'
 #' \itemize{
 #'   \item{\code{h_1pl()}, \code{array_h_1pl()}}: 1PL models
@@ -217,10 +253,17 @@ NULL
 #'   \item{\code{h_pc()}, \code{array_h_pc()}}: PC (partial credit) models
 #'   \item{\code{h_gpc()}, \code{array_h_gpc()}}: GPC (generalized partial credit) models
 #'   \item{\code{h_gr()}, \code{array_h_gr()}}: GR (graded response) models
+#'   \item{\code{h_m_2pl()}, \code{array_h_m_2pl()}}: multidimensional 2PL models
+#'   \item{\code{h_m_3pl()}, \code{array_h_m_3pl()}}: multidimensional 3PL models
+#'   \item{\code{h_m_gpc()}, \code{array_h_m_gpc()}}: multidimensional GPC models
+#'   \item{\code{h_m_gr()}, \code{array_h_m_gr()}}: multidimensional GR models
 #' }
 #'
-#' @param x the theta value. This must be a column vector in matrix form for \code{array_h_*()} functions.
-#' @param a,b,c,d the item parameters.
+#' @param x the theta value. The number of columns should correspond to the number of dimensions.
+#' For \code{array_*()} functions, the number of theta values must correspond to the number of rows.
+#' @param a the \emph{a}-parameter.
+#' @param b,d the difficulty parameter. \code{b} is used for unidimensional items, and \code{d} is used for multidimensional items.
+#' @param c the \emph{c}-parameter.
 #' @param u the response value.
 #'
 #' @examples
@@ -234,7 +277,7 @@ NULL
 #' h_gpc(x, 2, c(0, 1), u)
 #' h_gr(x, 2, c(0, 2), u)
 #'
-#' x <- matrix(seq(-3, 3, 1)) # column vector in matrix form
+#' x <- matrix(seq(-3, 3, 1)) # three theta values, unidimensional
 #' array_h_1pl(x, 1, u)
 #' array_h_2pl(x, 1, 2, u)
 #' array_h_3pl(x, 1, 2, 0.25, u)
@@ -251,4 +294,17 @@ NULL
 #'
 #' @name h_item
 #' @order 0
+NULL
+
+#' Calculate alpha angles from a-parameters
+#'
+#' \code{a_to_alpha} is a function for converting an a-parameter vector to an alpha angle vector.
+#' The returned values are in the radian metric.
+#'
+#' @param a the \emph{a}-parameter vector.
+#'
+#' @examples
+#' a_to_alpha(c(1, 1))
+#'
+#' @name a_to_alpha
 NULL
