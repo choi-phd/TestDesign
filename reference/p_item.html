@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TestDesign</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.0</span>
       </span>
     </div>
 
@@ -73,47 +73,76 @@
 <span></span>
 <span><span class="fu">p_2pl</span><span class="op">(</span><span class="va">x</span>, <span class="va">a</span>, <span class="va">b</span><span class="op">)</span></span>
 <span></span>
+<span><span class="fu">p_m_2pl</span><span class="op">(</span><span class="va">x</span>, <span class="va">a</span>, <span class="va">d</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">p_3pl</span><span class="op">(</span><span class="va">x</span>, <span class="va">a</span>, <span class="va">b</span>, <span class="va">c</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">p_m_3pl</span><span class="op">(</span><span class="va">x</span>, <span class="va">a</span>, <span class="va">d</span>, <span class="va">c</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">p_pc</span><span class="op">(</span><span class="va">x</span>, <span class="va">b</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">p_gpc</span><span class="op">(</span><span class="va">x</span>, <span class="va">a</span>, <span class="va">b</span><span class="op">)</span></span>
 <span></span>
+<span><span class="fu">p_m_gpc</span><span class="op">(</span><span class="va">x</span>, <span class="va">a</span>, <span class="va">d</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">p_gr</span><span class="op">(</span><span class="va">x</span>, <span class="va">a</span>, <span class="va">b</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">p_m_gr</span><span class="op">(</span><span class="va">x</span>, <span class="va">a</span>, <span class="va">d</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">array_p_1pl</span><span class="op">(</span><span class="va">x</span>, <span class="va">b</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">array_p_2pl</span><span class="op">(</span><span class="va">x</span>, <span class="va">a</span>, <span class="va">b</span><span class="op">)</span></span>
 <span></span>
+<span><span class="fu">array_p_m_2pl</span><span class="op">(</span><span class="va">x</span>, <span class="va">a</span>, <span class="va">d</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">array_p_3pl</span><span class="op">(</span><span class="va">x</span>, <span class="va">a</span>, <span class="va">b</span>, <span class="va">c</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">array_p_m_3pl</span><span class="op">(</span><span class="va">x</span>, <span class="va">a</span>, <span class="va">d</span>, <span class="va">c</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">array_p_pc</span><span class="op">(</span><span class="va">x</span>, <span class="va">b</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">array_p_gpc</span><span class="op">(</span><span class="va">x</span>, <span class="va">a</span>, <span class="va">b</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">array_p_gr</span><span class="op">(</span><span class="va">x</span>, <span class="va">a</span>, <span class="va">b</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">array_p_m_gpc</span><span class="op">(</span><span class="va">x</span>, <span class="va">a</span>, <span class="va">d</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">array_p_gr</span><span class="op">(</span><span class="va">x</span>, <span class="va">a</span>, <span class="va">b</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">array_p_m_gr</span><span class="op">(</span><span class="va">x</span>, <span class="va">a</span>, <span class="va">d</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
-<dd><p>the theta value. This must be a column vector in matrix form for <code>array_p_*()</code> functions.</p></dd>
+<dd><p>the theta value. The number of columns should correspond to the number of dimensions.
+For <code>array_*()</code> functions, the number of theta values must correspond to the number of rows.</p></dd>
 
 
-<dt>a, b, c</dt>
-<dd><p>the item parameters.</p></dd>
+<dt>b, d</dt>
+<dd><p>the difficulty parameter. <code>b</code> is used for unidimensional items, and <code>d</code> is used for multidimensional items.</p></dd>
+
+
+<dt>a</dt>
+<dd><p>the <em>a</em>-parameter.</p></dd>
+
+
+<dt>c</dt>
+<dd><p>the <em>c</em>-parameter.</p></dd>
 
 </dl></div>
     <div id="details">
     <h2>Details</h2>
     <p><code>p_*()</code> functions accept a single theta value, and <code>array_p_*()</code> functions accept multiple theta values.</p>
-<p>Currently supports unidimensional models.</p>
+<p>Supports unidimensional and multidimensional models.</p>
 <ul><li><p><code>p_1pl()</code>, <code>array_p_1pl()</code>: 1PL models</p></li>
 <li><p><code>p_2pl()</code>, <code>array_p_2pl()</code>: 2PL models</p></li>
 <li><p><code>p_3pl()</code>, <code>array_p_3pl()</code>: 3PL models</p></li>
 <li><p><code>p_pc()</code>, <code>array_p_pc()</code>: PC (partial credit) models</p></li>
 <li><p><code>p_gpc()</code>, <code>array_p_gpc()</code>: GPC (generalized partial credit) models</p></li>
 <li><p><code>p_gr()</code>, <code>array_p_gr()</code>: GR (graded response) models</p></li>
+<li><p><code>p_m_2pl()</code>, <code>array_p_m_2pl()</code>: multidimensional 2PL models</p></li>
+<li><p><code>p_m_3pl()</code>, <code>array_p_m_3pl()</code>: multidimensional 3PL models</p></li>
+<li><p><code>p_m_gpc()</code>, <code>array_p_m_gpc()</code>: multidimensional GPC models</p></li>
+<li><p><code>p_m_gr()</code>, <code>array_p_m_gr()</code>: multidimensional GR models</p></li>
 </ul></div>
     <div id="references">
     <h2>References</h2>
@@ -153,7 +182,7 @@ Reading, MA: Addison-Wesley.</p>
 <span><span class="fu">p_gpc</span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">p_gr</span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span> <span class="co"># column vector in matrix form</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span> <span class="co"># three theta values, unidimensional</span></span>
 <span></span>
 <span><span class="fu">array_p_1pl</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu">array_p_2pl</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span></span>
@@ -175,7 +204,7 @@ Reading, MA: Addison-Wesley.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
