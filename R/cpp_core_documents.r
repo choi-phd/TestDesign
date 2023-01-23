@@ -69,7 +69,7 @@ NULL
 #' }
 #'
 #' @param x the theta value. This must be a column vector in matrix form for \code{array_e_*()} functions.
-#' @param a,b,c the item parameters.
+#' @param a,b,c,d the item parameters.
 #'
 #' @examples
 #' x <- 0.5
