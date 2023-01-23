@@ -1233,6 +1233,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// j_m_2pl
+arma::rowvec j_m_2pl(const arma::rowvec& x, const arma::rowvec& a, const double& d, const double& u);
+RcppExport SEXP _TestDesign_j_m_2pl(SEXP xSEXP, SEXP aSEXP, SEXP dSEXP, SEXP uSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const double& >::type u(uSEXP);
+    rcpp_result_gen = Rcpp::wrap(j_m_2pl(x, a, d, u));
+    return rcpp_result_gen;
+END_RCPP
+}
 // j_3pl
 double j_3pl(const arma::rowvec& x, const double& a, const double& b, const double& c, const double& u);
 RcppExport SEXP _TestDesign_j_3pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP, SEXP cSEXP, SEXP uSEXP) {
@@ -1245,6 +1259,21 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double& >::type c(cSEXP);
     Rcpp::traits::input_parameter< const double& >::type u(uSEXP);
     rcpp_result_gen = Rcpp::wrap(j_3pl(x, a, b, c, u));
+    return rcpp_result_gen;
+END_RCPP
+}
+// j_m_3pl
+arma::rowvec j_m_3pl(const arma::rowvec& x, const arma::rowvec& a, const double& d, const double& c, const double& u);
+RcppExport SEXP _TestDesign_j_m_3pl(SEXP xSEXP, SEXP aSEXP, SEXP dSEXP, SEXP cSEXP, SEXP uSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const double& >::type c(cSEXP);
+    Rcpp::traits::input_parameter< const double& >::type u(uSEXP);
+    rcpp_result_gen = Rcpp::wrap(j_m_3pl(x, a, d, c, u));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1275,6 +1304,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// j_m_gpc
+arma::rowvec j_m_gpc(const arma::rowvec& x, const arma::rowvec& a, const arma::rowvec& d, const double& u);
+RcppExport SEXP _TestDesign_j_m_gpc(SEXP xSEXP, SEXP aSEXP, SEXP dSEXP, SEXP uSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const double& >::type u(uSEXP);
+    rcpp_result_gen = Rcpp::wrap(j_m_gpc(x, a, d, u));
+    return rcpp_result_gen;
+END_RCPP
+}
 // j_gr
 double j_gr(const arma::rowvec& x, const double& a, const arma::rowvec& b, const double& u);
 RcppExport SEXP _TestDesign_j_gr(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP, SEXP uSEXP) {
@@ -1286,6 +1329,20 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const arma::rowvec& >::type b(bSEXP);
     Rcpp::traits::input_parameter< const double& >::type u(uSEXP);
     rcpp_result_gen = Rcpp::wrap(j_gr(x, a, b, u));
+    return rcpp_result_gen;
+END_RCPP
+}
+// j_m_gr
+arma::rowvec j_m_gr(const arma::rowvec& x, const arma::rowvec& a, const arma::rowvec& d, const double& u);
+RcppExport SEXP _TestDesign_j_m_gr(SEXP xSEXP, SEXP aSEXP, SEXP dSEXP, SEXP uSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const double& >::type u(uSEXP);
+    rcpp_result_gen = Rcpp::wrap(j_m_gr(x, a, d, u));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1705,10 +1762,14 @@ static const R_CallMethodDef CallEntries[] = {
     {"_TestDesign_array_p_m_gr", (DL_FUNC) &_TestDesign_array_p_m_gr, 3},
     {"_TestDesign_j_1pl", (DL_FUNC) &_TestDesign_j_1pl, 3},
     {"_TestDesign_j_2pl", (DL_FUNC) &_TestDesign_j_2pl, 4},
+    {"_TestDesign_j_m_2pl", (DL_FUNC) &_TestDesign_j_m_2pl, 4},
     {"_TestDesign_j_3pl", (DL_FUNC) &_TestDesign_j_3pl, 5},
+    {"_TestDesign_j_m_3pl", (DL_FUNC) &_TestDesign_j_m_3pl, 5},
     {"_TestDesign_j_pc", (DL_FUNC) &_TestDesign_j_pc, 3},
     {"_TestDesign_j_gpc", (DL_FUNC) &_TestDesign_j_gpc, 4},
+    {"_TestDesign_j_m_gpc", (DL_FUNC) &_TestDesign_j_m_gpc, 4},
     {"_TestDesign_j_gr", (DL_FUNC) &_TestDesign_j_gr, 4},
+    {"_TestDesign_j_m_gr", (DL_FUNC) &_TestDesign_j_m_gr, 4},
     {"_TestDesign_array_j_1pl", (DL_FUNC) &_TestDesign_array_j_1pl, 3},
     {"_TestDesign_array_j_2pl", (DL_FUNC) &_TestDesign_array_j_2pl, 4},
     {"_TestDesign_array_j_3pl", (DL_FUNC) &_TestDesign_array_j_3pl, 5},

@@ -169,7 +169,7 @@ NULL
 #' }
 #'
 #' @param x the theta value. This must be a column vector in matrix form for \code{array_j_*()} functions.
-#' @param a,b,c the item parameters.
+#' @param a,b,c,d the item parameters.
 #' @param u the response value.
 #'
 #' @examples

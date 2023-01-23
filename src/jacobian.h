@@ -12,9 +12,22 @@ double j_2pl(
   const double&,
   const double&);
 
-double j_3pl(
+arma::rowvec j_m_2pl(
+  const arma::rowvec&,
   const arma::rowvec&,
   const double&,
+  const double&);
+
+double j_3pl(
+  const arma::rowvec&,
+  const arma::rowvec&,
+  const double&,
+  const double&,
+  const double&);
+
+arma::rowvec j_m_3pl(
+  const arma::rowvec&,
+  const arma::rowvec&,
   const double&,
   const double&,
   const double&);
@@ -30,9 +43,21 @@ double j_gpc(
   const arma::rowvec&,
   const double&);
 
+arma::rowvec j_m_gpc(
+  const arma::rowvec&,
+  const arma::rowvec&,
+  const arma::rowvec&,
+  const double&);
+
 double j_gr(
   const arma::rowvec&,
   const double&,
+  const arma::rowvec&,
+  const double&);
+
+arma::rowvec j_m_gr(
+  const arma::rowvec&,
+  const arma::rowvec&,
   const arma::rowvec&,
   const double&);
 
