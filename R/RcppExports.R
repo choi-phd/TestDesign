@@ -111,8 +111,20 @@ h_2pl <- function(x, a, b, u) {
 
 #' @rdname h_item
 #' @export
+h_m_2pl <- function(x, a, d, u) {
+    .Call('_TestDesign_h_m_2pl', PACKAGE = 'TestDesign', x, a, d, u)
+}
+
+#' @rdname h_item
+#' @export
 h_3pl <- function(x, a, b, c, u) {
     .Call('_TestDesign_h_3pl', PACKAGE = 'TestDesign', x, a, b, c, u)
+}
+
+#' @rdname h_item
+#' @export
+h_m_3pl <- function(x, a, d, c, u) {
+    .Call('_TestDesign_h_m_3pl', PACKAGE = 'TestDesign', x, a, d, c, u)
 }
 
 #' @rdname h_item
@@ -129,8 +141,20 @@ h_gpc <- function(x, a, b, u) {
 
 #' @rdname h_item
 #' @export
+h_m_gpc <- function(x, a, d, u) {
+    .Call('_TestDesign_h_m_gpc', PACKAGE = 'TestDesign', x, a, d, u)
+}
+
+#' @rdname h_item
+#' @export
 h_gr <- function(x, a, b, u) {
     .Call('_TestDesign_h_gr', PACKAGE = 'TestDesign', x, a, b, u)
+}
+
+#' @rdname h_item
+#' @export
+h_m_gr <- function(x, a, d, u) {
+    .Call('_TestDesign_h_m_gr', PACKAGE = 'TestDesign', x, a, d, u)
 }
 
 #' @rdname h_item
