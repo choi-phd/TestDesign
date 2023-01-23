@@ -1,5 +1,6 @@
 #include "item_information.h"
 #include "item_probability.h"
+#include "expected_score.h"
 #include "hessian.h"
 
 //' @rdname h_item
@@ -28,6 +29,18 @@ double h_2pl(
 //' @rdname h_item
 //' @export
 // [[Rcpp::export]]
+arma::mat h_m_2pl(
+  const arma::rowvec& x,
+  const arma::rowvec& a,
+  const double& d,
+  const double& u
+) {
+  return (-info_m_2pl(x, a, d));
+}
+
+//' @rdname h_item
+//' @export
+// [[Rcpp::export]]
 double h_3pl(
   const arma::rowvec& x,
   const double& a,
@@ -40,6 +53,23 @@ double h_3pl(
     pow(a, 2) * (1 - p) * (p - c) *
     ((c * u) - pow(p, 2)) / (pow(p, 2) * pow(1 - c, 2))
   );
+}
+
+//' @rdname h_item
+//' @export
+// [[Rcpp::export]]
+arma::mat h_m_3pl(
+  const arma::rowvec& x,
+  const arma::rowvec& a,
+  const double& d,
+  const double& c,
+  const double& u
+) {
+  double p = p_m_3pl(x, a, d, c);
+  arma::mat h =
+    (a.t() * a) * (1 - p) * (p - c) *
+    ((c * u) - pow(p, 2)) / (pow(p, 2) * pow(1 - c, 2));
+  return h;
 }
 
 //' @rdname h_item
@@ -63,6 +93,18 @@ double h_gpc(
   const double& u
 ) {
   return (-info_gpc(x, a, b));
+}
+
+//' @rdname h_item
+//' @export
+// [[Rcpp::export]]
+arma::mat h_m_gpc(
+  const arma::rowvec& x,
+  const arma::rowvec& a,
+  const arma::rowvec& d,
+  const double& u
+) {
+  return (-info_m_gpc(x, a, d));
 }
 
 //' @rdname h_item
@@ -98,6 +140,46 @@ double h_gr(
 
   return (
     pow(a, 2) * (
+      (o / p(u)) -
+      (pow(oo, 2) / pow(p(u), 2))
+    )
+  );
+
+}
+
+//' @rdname h_item
+//' @export
+// [[Rcpp::export]]
+arma::mat h_m_gr(
+  const arma::rowvec& x,
+  const arma::rowvec& a,
+  const arma::rowvec& d,
+  const double& u
+) {
+
+  int nk = d.n_elem + 1;
+
+  arma::rowvec p = p_m_gr(x, a, d);
+
+  arma::rowvec p_star(nk + 1);
+  p_star(0) = 1;
+  p_star(nk) = 0;
+
+  for (int k = 1; k < nk; k++) {
+    p_star(k) = p_star(k - 1) - p(k - 1);
+  }
+
+  double o = (
+    (p_star(u    ) * (1 - p_star(u    )) * (1 - (2 * p_star(u    )))) -
+    (p_star(u + 1) * (1 - p_star(u + 1)) * (1 - (2 * p_star(u + 1))))
+  );
+  double oo = (
+    (p_star(u    ) * (1 - p_star(u    ))) -
+    (p_star(u + 1) * (1 - p_star(u + 1)))
+  );
+
+  return (
+    (a.t() * a) * (
       (o / p(u)) -
       (pow(oo, 2) / pow(p(u), 2))
     )
