@@ -16,9 +16,20 @@ double p_2pl(
   const double&,
   const double&);
 
+double p_m_2pl(
+  const arma::rowvec&,
+  const arma::rowvec&,
+  const double&);
+
 double p_3pl(
   const arma::rowvec&,
   const double&,
+  const double&,
+  const double&);
+
+double p_m_3pl(
+  const arma::rowvec&,
+  const arma::rowvec&,
   const double&,
   const double&);
 
@@ -31,9 +42,19 @@ arma::rowvec p_gpc(
   const double&,
   const arma::rowvec&);
 
+arma::rowvec p_m_gpc(
+  const arma::rowvec&,
+  const arma::rowvec&,
+  const arma::rowvec&);
+
 arma::rowvec p_gr(
   const arma::rowvec&,
   const double&,
+  const arma::rowvec&);
+
+arma::rowvec p_m_gr(
+  const arma::rowvec&,
+  const arma::rowvec&,
   const arma::rowvec&);
 
 arma::colvec array_p_1pl(
@@ -45,9 +66,20 @@ arma::colvec array_p_2pl(
   const double&,
   const double&);
 
+arma::colvec array_p_m_2pl(
+  const arma::mat&,
+  const arma::rowvec&,
+  const double&);
+
 arma::colvec array_p_3pl(
   const arma::mat&,
   const double&,
+  const double&,
+  const double&);
+
+arma::colvec array_p_m_3pl(
+  const arma::mat&,
+  const arma::rowvec&,
   const double&,
   const double&);
 
@@ -60,9 +92,19 @@ arma::mat array_p_gpc(
   const double&,
   const arma::rowvec&);
 
+arma::mat array_p_m_gpc(
+  const arma::mat&,
+  const arma::rowvec&,
+  const arma::rowvec&);
+
 arma::mat array_p_gr(
   const arma::mat&,
   const double&,
+  const arma::rowvec&);
+
+arma::mat array_p_m_gr(
+  const arma::mat&,
+  const arma::rowvec&,
   const arma::rowvec&);
 
 #endif
