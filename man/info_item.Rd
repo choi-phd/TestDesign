@@ -113,9 +113,16 @@ array_dirinfo_m_gr(x, a, d)
 array_thisdirinfo_m_gr(x, alpha_vec, a, d)
 }
 \arguments{
-\item{x}{the theta value. This must be a column vector in matrix form for \code{array_info_*()} functions.}
+\item{x}{the theta value. The number of columns should correspond to the number of dimensions.
+For \code{array_*()} functions, the number of theta values must correspond to the number of rows.}
 
-\item{a, b, c, d}{the item parameters.}
+\item{b, d}{the difficulty parameter. \code{b} is used for unidimensional items, and \code{d} is used for multidimensional items.}
+
+\item{a}{the \emph{a}-parameter.}
+
+\item{alpha_vec}{the alpha angle vector. Used for directional information in \code{thisdirinfo_*()} and \code{array_thisdirinfo_*()}.}
+
+\item{c}{the \emph{c}-parameter.}
 }
 \description{
 \code{info_*()} and \code{array_info_*()} are functions for calculating Fisher information.
@@ -123,7 +130,7 @@ array_thisdirinfo_m_gr(x, alpha_vec, a, d)
 \details{
 \code{info_*()} functions accept a single theta value, and \code{array_info_*} functions accept multiple theta values.
 
-Currently supports unidimensional models.
+Supports unidimensional and multidimensional models.
 
 \itemize{
   \item{\code{info_1pl()}, \code{array_info_1pl()}}: 1PL models
@@ -132,6 +139,17 @@ Currently supports unidimensional models.
   \item{\code{info_pc()}, \code{array_info_pc()}}: PC (partial credit) models
   \item{\code{info_gpc()}, \code{array_info_gpc()}}: GPC (generalized partial credit) models
   \item{\code{info_gr()}, \code{array_info_gr()}}: GR (graded response) models
+  \item{\code{info_m_2pl()}, \code{array_info_m_2pl()}}: multidimensional 2PL models
+  \item{\code{info_m_3pl()}, \code{array_info_m_3pl()}}: multidimensional 3PL models
+  \item{\code{info_m_gpc()}, \code{array_info_m_gpc()}}: multidimensional GPC models
+  \item{\code{info_m_gr()}, \code{array_info_m_gr()}}: multidimensional GR models
+  \item{Directional information for a specific angle}
+  \itemize{
+    \item{\code{thisdirinfo_m_2pl()}, \code{array_thisdirinfo_m_2pl()}}: multidimensional 2PL models
+    \item{\code{thisdirinfo_m_3pl()}, \code{array_thisdirinfo_m_3pl()}}: multidimensional 3PL models
+    \item{\code{thisdirinfo_m_gpc()}, \code{array_thisdirinfo_m_gpc()}}: multidimensional GPC models
+    \item{\code{thisdirinfo_m_gr()}, \code{array_thisdirinfo_m_gr()}}: multidimensional GR models
+  }
 }
 }
 \examples{
@@ -144,7 +162,7 @@ info_pc(x, c(0, 1))
 info_gpc(x, 2, c(0, 1))
 info_gr(x, 2, c(0, 2))
 
-x <- matrix(seq(0.1, 0.5, 0.1)) # column vector in matrix form
+x <- matrix(seq(0.1, 0.5, 0.1)) # three theta values, unidimensional
 
 array_info_1pl(x, 1)
 array_info_2pl(x, 1, 2)

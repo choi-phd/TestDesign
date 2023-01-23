@@ -53,11 +53,16 @@ array_h_gpc(x, a, b, u)
 array_h_gr(x, a, b, u)
 }
 \arguments{
-\item{x}{the theta value. This must be a column vector in matrix form for \code{array_h_*()} functions.}
+\item{x}{the theta value. The number of columns should correspond to the number of dimensions.
+For \code{array_*()} functions, the number of theta values must correspond to the number of rows.}
+
+\item{b, d}{the difficulty parameter. \code{b} is used for unidimensional items, and \code{d} is used for multidimensional items.}
 
 \item{u}{the response value.}
 
-\item{a, b, c, d}{the item parameters.}
+\item{a}{the \emph{a}-parameter.}
+
+\item{c}{the \emph{c}-parameter.}
 }
 \description{
 \code{h_*()} and \code{array_h_*()} are C++ functions for calculating the second derivative of the log-likelihood function.
@@ -65,7 +70,7 @@ array_h_gr(x, a, b, u)
 \details{
 \code{h_*()} functions accept a single theta value, and \code{array_h_*()} functions accept multiple theta values.
 
-Currently supports unidimensional models.
+Supports unidimensional and multidimensional models.
 
 \itemize{
   \item{\code{h_1pl()}, \code{array_h_1pl()}}: 1PL models
@@ -74,6 +79,10 @@ Currently supports unidimensional models.
   \item{\code{h_pc()}, \code{array_h_pc()}}: PC (partial credit) models
   \item{\code{h_gpc()}, \code{array_h_gpc()}}: GPC (generalized partial credit) models
   \item{\code{h_gr()}, \code{array_h_gr()}}: GR (graded response) models
+  \item{\code{h_m_2pl()}, \code{array_h_m_2pl()}}: multidimensional 2PL models
+  \item{\code{h_m_3pl()}, \code{array_h_m_3pl()}}: multidimensional 3PL models
+  \item{\code{h_m_gpc()}, \code{array_h_m_gpc()}}: multidimensional GPC models
+  \item{\code{h_m_gr()}, \code{array_h_m_gr()}}: multidimensional GR models
 }
 }
 \examples{
@@ -87,7 +96,7 @@ h_pc(x, c(0, 1), u)
 h_gpc(x, 2, c(0, 1), u)
 h_gr(x, 2, c(0, 2), u)
 
-x <- matrix(seq(-3, 3, 1)) # column vector in matrix form
+x <- matrix(seq(-3, 3, 1)) # three theta values, unidimensional
 array_h_1pl(x, 1, u)
 array_h_2pl(x, 1, 2, u)
 array_h_3pl(x, 1, 2, 0.25, u)
