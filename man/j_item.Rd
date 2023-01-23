@@ -53,11 +53,16 @@ array_j_gpc(x, a, b, u)
 array_j_gr(x, a, b, u)
 }
 \arguments{
-\item{x}{the theta value. This must be a column vector in matrix form for \code{array_j_*()} functions.}
+\item{x}{the theta value. The number of columns should correspond to the number of dimensions.
+For \code{array_*()} functions, the number of theta values must correspond to the number of rows.}
+
+\item{b, d}{the difficulty parameter. \code{b} is used for unidimensional items, and \code{d} is used for multidimensional items.}
 
 \item{u}{the response value.}
 
-\item{a, b, c, d}{the item parameters.}
+\item{a}{the \emph{a}-parameter.}
+
+\item{c}{the \emph{c}-parameter.}
 }
 \description{
 \code{j_*()} and \code{array_j_*()} are C++ functions for calculating the first derivative of the log-likelihood function.
@@ -65,7 +70,7 @@ array_j_gr(x, a, b, u)
 \details{
 \code{j_*()} functions accept a single theta value, and \code{array_j_*()} functions accept multiple theta values.
 
-Currently supports unidimensional models.
+Supports unidimensional and multidimensional models.
 
 \itemize{
   \item{\code{j_1pl()}, \code{array_j_1pl()}}: 1PL models
@@ -74,6 +79,10 @@ Currently supports unidimensional models.
   \item{\code{j_pc()}, \code{array_j_pc()}}: PC (partial credit) models
   \item{\code{j_gpc()}, \code{array_j_gpc()}}: GPC (generalized partial credit) models
   \item{\code{j_gr()}, \code{array_j_gr()}}: GR (graded response) models
+  \item{\code{j_m_2pl()}, \code{array_j_m_2pl()}}: multidimensional 2PL models
+  \item{\code{j_m_3pl()}, \code{array_j_m_3pl()}}: multidimensional 3PL models
+  \item{\code{j_m_gpc()}, \code{array_j_m_gpc()}}: multidimensional GPC models
+  \item{\code{j_m_gr()}, \code{array_j_m_gr()}}: multidimensional GR models
 }
 }
 \examples{
@@ -87,7 +96,7 @@ j_pc(x, c(0, 1), u)
 j_gpc(x, 2, c(0, 1), u)
 j_gr(x, 2, c(0, 2), u)
 
-x <- matrix(seq(-3, 3, 1)) # column vector in matrix form
+x <- matrix(seq(-3, 3, 1)) # three theta values, unidimensional
 array_j_1pl(x, 1, u)
 array_j_2pl(x, 1, 2, u)
 array_j_3pl(x, 1, 2, 0.25, u)
