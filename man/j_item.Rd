@@ -4,10 +4,14 @@
 \alias{j_item}
 \alias{j_1pl}
 \alias{j_2pl}
+\alias{j_m_2pl}
 \alias{j_3pl}
+\alias{j_m_3pl}
 \alias{j_pc}
 \alias{j_gpc}
+\alias{j_m_gpc}
 \alias{j_gr}
+\alias{j_m_gr}
 \alias{array_j_1pl}
 \alias{array_j_2pl}
 \alias{array_j_3pl}
@@ -20,13 +24,21 @@ j_1pl(x, b, u)
 
 j_2pl(x, a, b, u)
 
+j_m_2pl(x, a, d, u)
+
 j_3pl(x, a, b, c, u)
+
+j_m_3pl(x, a, d, c, u)
 
 j_pc(x, b, u)
 
 j_gpc(x, a, b, u)
 
+j_m_gpc(x, a, d, u)
+
 j_gr(x, a, b, u)
+
+j_m_gr(x, a, d, u)
 
 array_j_1pl(x, b, u)
 
@@ -45,7 +57,7 @@ array_j_gr(x, a, b, u)
 
 \item{u}{the response value.}
 
-\item{a, b, c}{the item parameters.}
+\item{a, b, c, d}{the item parameters.}
 }
 \description{
 \code{j_*()} and \code{array_j_*()} are C++ functions for calculating the first derivative of the log-likelihood function.

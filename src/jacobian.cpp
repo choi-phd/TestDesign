@@ -28,6 +28,18 @@ double j_2pl(
 //' @rdname j_item
 //' @export
 // [[Rcpp::export]]
+arma::rowvec j_m_2pl(
+  const arma::rowvec& x,
+  const arma::rowvec& a,
+  const double& d,
+  const double& u
+) {
+  return (a * (u - e_m_2pl(x, a, d)));
+}
+
+//' @rdname j_item
+//' @export
+// [[Rcpp::export]]
 double j_3pl(
   const arma::rowvec& x,
   const double& a,
@@ -36,6 +48,20 @@ double j_3pl(
   const double& u
 ) {
   double e = e_3pl(x, a, b, c);
+  return (a * (u - e) * (e - c) / (e * (1.0 - c)));
+}
+
+//' @rdname j_item
+//' @export
+// [[Rcpp::export]]
+arma::rowvec j_m_3pl(
+  const arma::rowvec& x,
+  const arma::rowvec& a,
+  const double& d,
+  const double& c,
+  const double& u
+) {
+  double e = e_m_3pl(x, a, d, c);
   return (a * (u - e) * (e - c) / (e * (1.0 - c)));
 }
 
@@ -65,6 +91,18 @@ double j_gpc(
 //' @rdname j_item
 //' @export
 // [[Rcpp::export]]
+arma::rowvec j_m_gpc(
+  const arma::rowvec& x,
+  const arma::rowvec& a,
+  const arma::rowvec& d,
+  const double& u
+) {
+  return (a * (u - e_m_gpc(x, a, d)));
+}
+
+//' @rdname j_item
+//' @export
+// [[Rcpp::export]]
 double j_gr(
   const arma::rowvec& x,
   const double& a,
@@ -75,6 +113,33 @@ double j_gr(
   int nk = b.n_elem + 1;
 
   arma::rowvec p = p_gr(x, a, b);
+
+  arma::rowvec p_star(nk + 1);
+  p_star(0) = 1;
+  p_star(nk) = 0;
+
+  for (int k = 1; k < nk; k++) {
+    p_star(k) = p_star(k - 1) - p(k - 1);
+  }
+
+  double o = ((p_star(u) * (1 - p_star(u))) - (p_star(u + 1) * (1 - p_star(u + 1))));
+  return (a * o / p(u));
+
+}
+
+//' @rdname j_item
+//' @export
+// [[Rcpp::export]]
+arma::rowvec j_m_gr(
+  const arma::rowvec& x,
+  const arma::rowvec& a,
+  const arma::rowvec& d,
+  const double& u
+) {
+
+  int nk = d.n_elem + 1;
+
+  arma::rowvec p = p_m_gr(x, a, d);
 
   arma::rowvec p_star(nk + 1);
   p_star(0) = 1;
