@@ -1,3 +1,9 @@
+# TestDesign 1.4.0.9000
+
+## Updates
+
+* Added C++ functions for multidimensional items.
+
 # TestDesign 1.4.0
 
 ## Updates
