@@ -16,9 +16,20 @@ double e_2pl(
   const double&,
   const double&);
 
+double e_m_2pl(
+  const arma::rowvec&,
+  const arma::rowvec&,
+  const double&);
+
 double e_3pl(
   const arma::rowvec&,
   const double&,
+  const double&,
+  const double&);
+
+double e_m_3pl(
+  const arma::rowvec&,
+  const arma::rowvec&,
   const double&,
   const double&);
 
@@ -31,9 +42,19 @@ double e_gpc(
   const double&,
   const arma::rowvec&);
 
+double e_m_gpc(
+  const arma::rowvec&,
+  const arma::rowvec&,
+  const arma::rowvec&);
+
 double e_gr(
   const arma::rowvec&,
   const double&,
+  const arma::rowvec&);
+
+double e_m_gr(
+  const arma::rowvec&,
+  const arma::rowvec&,
   const arma::rowvec&);
 
 arma::colvec array_e_1pl(

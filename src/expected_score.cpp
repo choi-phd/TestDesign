@@ -25,6 +25,17 @@ double e_2pl(
 //' @rdname e_item
 //' @export
 // [[Rcpp::export]]
+double e_m_2pl(
+  const arma::rowvec& x,
+  const arma::rowvec& a,
+  const double& d
+) {
+  return p_m_2pl(x, a, d);
+}
+
+//' @rdname e_item
+//' @export
+// [[Rcpp::export]]
 double e_3pl(
   const arma::rowvec& x,
   const double& a,
@@ -32,6 +43,18 @@ double e_3pl(
   const double& c
 ) {
   return p_3pl(x, a, b, c);
+}
+
+//' @rdname e_item
+//' @export
+// [[Rcpp::export]]
+double e_m_3pl(
+  const arma::rowvec& x,
+  const arma::rowvec& a,
+  const double& d,
+  const double& c
+) {
+  return p_m_3pl(x, a, d, c);
 }
 
 //' @rdname e_item
@@ -62,6 +85,19 @@ double e_gpc(
 //' @rdname e_item
 //' @export
 // [[Rcpp::export]]
+double e_m_gpc(
+  const arma::rowvec& x,
+  const arma::rowvec& a,
+  const arma::rowvec& d
+) {
+  arma::colvec k = arma::regspace(0, d.n_elem);
+  arma::rowvec p = p_m_gpc(x, a, d);
+  return arma::as_scalar(p * k);
+}
+
+//' @rdname e_item
+//' @export
+// [[Rcpp::export]]
 double e_gr(
   const arma::rowvec& x,
   const double& a,
@@ -69,6 +105,19 @@ double e_gr(
 ) {
   arma::colvec k = arma::regspace(0, b.n_elem);
   arma::rowvec p = p_gr(x, a, b);
+  return arma::as_scalar(p * k);
+}
+
+//' @rdname e_item
+//' @export
+// [[Rcpp::export]]
+double e_m_gr(
+  const arma::rowvec& x,
+  const arma::rowvec& a,
+  const arma::rowvec& d
+) {
+  arma::colvec k = arma::regspace(0, d.n_elem);
+  arma::rowvec p = p_m_gr(x, a, d);
   return arma::as_scalar(p * k);
 }
 
