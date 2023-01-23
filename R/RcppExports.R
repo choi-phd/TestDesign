@@ -15,8 +15,20 @@ e_2pl <- function(x, a, b) {
 
 #' @rdname e_item
 #' @export
+e_m_2pl <- function(x, a, d) {
+    .Call('_TestDesign_e_m_2pl', PACKAGE = 'TestDesign', x, a, d)
+}
+
+#' @rdname e_item
+#' @export
 e_3pl <- function(x, a, b, c) {
     .Call('_TestDesign_e_3pl', PACKAGE = 'TestDesign', x, a, b, c)
+}
+
+#' @rdname e_item
+#' @export
+e_m_3pl <- function(x, a, d, c) {
+    .Call('_TestDesign_e_m_3pl', PACKAGE = 'TestDesign', x, a, d, c)
 }
 
 #' @rdname e_item
@@ -33,8 +45,20 @@ e_gpc <- function(x, a, b) {
 
 #' @rdname e_item
 #' @export
+e_m_gpc <- function(x, a, d) {
+    .Call('_TestDesign_e_m_gpc', PACKAGE = 'TestDesign', x, a, d)
+}
+
+#' @rdname e_item
+#' @export
 e_gr <- function(x, a, b) {
     .Call('_TestDesign_e_gr', PACKAGE = 'TestDesign', x, a, b)
+}
+
+#' @rdname e_item
+#' @export
+e_m_gr <- function(x, a, d) {
+    .Call('_TestDesign_e_m_gr', PACKAGE = 'TestDesign', x, a, d)
 }
 
 #' @rdname e_item
