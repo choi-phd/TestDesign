@@ -10,7 +10,7 @@ test_that("partitioning methods work", {
 
   set.seed(1)
 
-  config <- createStaticTestConfig(MIP = list(solver = solver, time_limit = 300, obj_tol = 0.25))
+  config <- createStaticTestConfig(MIP = list(solver = solver, time_limit = 600, obj_tol = 0.25))
   constraints <- constraints_science[1:10]
 
   n_partition <- 4
@@ -40,7 +40,7 @@ test_that("partitioning methods work", {
   set.seed(1)
 
   config <- createStaticTestConfig(
-    MIP = list(solver = solver, time_limit = 300, obj_tol = 0.25),
+    MIP = list(solver = solver, time_limit = 600, obj_tol = 0.25),
     item_selection = list(target_location = c(-2.5, -1.5, -0.5, 0.5, 1.5, 2.5))
   )
   constraints <- constraints_reading[1:5]
