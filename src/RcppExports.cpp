@@ -402,6 +402,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// a_to_alpha
+arma::rowvec a_to_alpha(const arma::rowvec& a);
+RcppExport SEXP _TestDesign_a_to_alpha(SEXP aSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    rcpp_result_gen = Rcpp::wrap(a_to_alpha(a));
+    return rcpp_result_gen;
+END_RCPP
+}
 // info_1pl
 double info_1pl(const arma::rowvec& x, const double& b);
 RcppExport SEXP _TestDesign_info_1pl(SEXP xSEXP, SEXP bSEXP) {
@@ -427,6 +438,46 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// info_m_2pl
+arma::mat info_m_2pl(const arma::rowvec& x, const arma::rowvec& a, const double& d);
+RcppExport SEXP _TestDesign_info_m_2pl(SEXP xSEXP, SEXP aSEXP, SEXP dSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(info_m_2pl(x, a, d));
+    return rcpp_result_gen;
+END_RCPP
+}
+// dirinfo_m_2pl
+double dirinfo_m_2pl(const arma::rowvec& x, const arma::rowvec& a, const double& d);
+RcppExport SEXP _TestDesign_dirinfo_m_2pl(SEXP xSEXP, SEXP aSEXP, SEXP dSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(dirinfo_m_2pl(x, a, d));
+    return rcpp_result_gen;
+END_RCPP
+}
+// thisdirinfo_m_2pl
+double thisdirinfo_m_2pl(const arma::rowvec& x, const arma::rowvec& alpha_vec, const arma::rowvec& a, const double& d);
+RcppExport SEXP _TestDesign_thisdirinfo_m_2pl(SEXP xSEXP, SEXP alpha_vecSEXP, SEXP aSEXP, SEXP dSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type alpha_vec(alpha_vecSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(thisdirinfo_m_2pl(x, alpha_vec, a, d));
+    return rcpp_result_gen;
+END_RCPP
+}
 // info_3pl
 double info_3pl(const arma::rowvec& x, const double& a, const double& b, const double& c);
 RcppExport SEXP _TestDesign_info_3pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP, SEXP cSEXP) {
@@ -438,6 +489,49 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
     Rcpp::traits::input_parameter< const double& >::type c(cSEXP);
     rcpp_result_gen = Rcpp::wrap(info_3pl(x, a, b, c));
+    return rcpp_result_gen;
+END_RCPP
+}
+// info_m_3pl
+arma::mat info_m_3pl(const arma::rowvec& x, const arma::rowvec& a, const double& d, const double& c);
+RcppExport SEXP _TestDesign_info_m_3pl(SEXP xSEXP, SEXP aSEXP, SEXP dSEXP, SEXP cSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const double& >::type c(cSEXP);
+    rcpp_result_gen = Rcpp::wrap(info_m_3pl(x, a, d, c));
+    return rcpp_result_gen;
+END_RCPP
+}
+// dirinfo_m_3pl
+double dirinfo_m_3pl(const arma::rowvec& x, const arma::rowvec& a, const double& d, const double& c);
+RcppExport SEXP _TestDesign_dirinfo_m_3pl(SEXP xSEXP, SEXP aSEXP, SEXP dSEXP, SEXP cSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const double& >::type c(cSEXP);
+    rcpp_result_gen = Rcpp::wrap(dirinfo_m_3pl(x, a, d, c));
+    return rcpp_result_gen;
+END_RCPP
+}
+// thisdirinfo_m_3pl
+double thisdirinfo_m_3pl(const arma::rowvec& x, const arma::rowvec& alpha_vec, const arma::rowvec& a, const double& d, const double& c);
+RcppExport SEXP _TestDesign_thisdirinfo_m_3pl(SEXP xSEXP, SEXP alpha_vecSEXP, SEXP aSEXP, SEXP dSEXP, SEXP cSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type alpha_vec(alpha_vecSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const double& >::type c(cSEXP);
+    rcpp_result_gen = Rcpp::wrap(thisdirinfo_m_3pl(x, alpha_vec, a, d, c));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -466,6 +560,46 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// info_m_gpc
+arma::mat info_m_gpc(const arma::rowvec& x, const arma::rowvec& a, const arma::rowvec& d);
+RcppExport SEXP _TestDesign_info_m_gpc(SEXP xSEXP, SEXP aSEXP, SEXP dSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(info_m_gpc(x, a, d));
+    return rcpp_result_gen;
+END_RCPP
+}
+// dirinfo_m_gpc
+double dirinfo_m_gpc(const arma::rowvec& x, const arma::rowvec& a, const arma::rowvec& d);
+RcppExport SEXP _TestDesign_dirinfo_m_gpc(SEXP xSEXP, SEXP aSEXP, SEXP dSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(dirinfo_m_gpc(x, a, d));
+    return rcpp_result_gen;
+END_RCPP
+}
+// thisdirinfo_m_gpc
+double thisdirinfo_m_gpc(const arma::rowvec& x, const arma::rowvec& alpha_vec, const arma::rowvec& a, const arma::rowvec& d);
+RcppExport SEXP _TestDesign_thisdirinfo_m_gpc(SEXP xSEXP, SEXP alpha_vecSEXP, SEXP aSEXP, SEXP dSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type alpha_vec(alpha_vecSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(thisdirinfo_m_gpc(x, alpha_vec, a, d));
+    return rcpp_result_gen;
+END_RCPP
+}
 // info_gr
 double info_gr(const arma::rowvec& x, const double& a, const arma::rowvec& b);
 RcppExport SEXP _TestDesign_info_gr(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
@@ -476,6 +610,46 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
     Rcpp::traits::input_parameter< const arma::rowvec& >::type b(bSEXP);
     rcpp_result_gen = Rcpp::wrap(info_gr(x, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// info_m_gr
+arma::mat info_m_gr(const arma::rowvec& x, const arma::rowvec& a, const arma::rowvec& d);
+RcppExport SEXP _TestDesign_info_m_gr(SEXP xSEXP, SEXP aSEXP, SEXP dSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(info_m_gr(x, a, d));
+    return rcpp_result_gen;
+END_RCPP
+}
+// dirinfo_m_gr
+double dirinfo_m_gr(const arma::rowvec& x, const arma::rowvec& a, const arma::rowvec& d);
+RcppExport SEXP _TestDesign_dirinfo_m_gr(SEXP xSEXP, SEXP aSEXP, SEXP dSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(dirinfo_m_gr(x, a, d));
+    return rcpp_result_gen;
+END_RCPP
+}
+// thisdirinfo_m_gr
+double thisdirinfo_m_gr(const arma::rowvec& x, const arma::rowvec& alpha_vec, const arma::rowvec& a, const arma::rowvec& d);
+RcppExport SEXP _TestDesign_thisdirinfo_m_gr(SEXP xSEXP, SEXP alpha_vecSEXP, SEXP aSEXP, SEXP dSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type alpha_vec(alpha_vecSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(thisdirinfo_m_gr(x, alpha_vec, a, d));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -504,6 +678,46 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// array_info_m_2pl
+List array_info_m_2pl(const arma::mat& x, const arma::rowvec& a, const double& d);
+RcppExport SEXP _TestDesign_array_info_m_2pl(SEXP xSEXP, SEXP aSEXP, SEXP dSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_info_m_2pl(x, a, d));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_dirinfo_m_2pl
+arma::colvec array_dirinfo_m_2pl(const arma::mat& x, const arma::rowvec& a, const double& d);
+RcppExport SEXP _TestDesign_array_dirinfo_m_2pl(SEXP xSEXP, SEXP aSEXP, SEXP dSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_dirinfo_m_2pl(x, a, d));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_thisdirinfo_m_2pl
+arma::colvec array_thisdirinfo_m_2pl(const arma::mat& x, const arma::rowvec& alpha_vec, const arma::rowvec& a, const double& d);
+RcppExport SEXP _TestDesign_array_thisdirinfo_m_2pl(SEXP xSEXP, SEXP alpha_vecSEXP, SEXP aSEXP, SEXP dSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type alpha_vec(alpha_vecSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_thisdirinfo_m_2pl(x, alpha_vec, a, d));
+    return rcpp_result_gen;
+END_RCPP
+}
 // array_info_3pl
 arma::colvec array_info_3pl(const arma::mat& x, const double& a, const double& b, const double& c);
 RcppExport SEXP _TestDesign_array_info_3pl(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP, SEXP cSEXP) {
@@ -515,6 +729,49 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
     Rcpp::traits::input_parameter< const double& >::type c(cSEXP);
     rcpp_result_gen = Rcpp::wrap(array_info_3pl(x, a, b, c));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_info_m_3pl
+List array_info_m_3pl(const arma::mat& x, const arma::rowvec& a, const double& d, const double& c);
+RcppExport SEXP _TestDesign_array_info_m_3pl(SEXP xSEXP, SEXP aSEXP, SEXP dSEXP, SEXP cSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const double& >::type c(cSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_info_m_3pl(x, a, d, c));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_dirinfo_m_3pl
+arma::colvec array_dirinfo_m_3pl(const arma::mat& x, const arma::rowvec& a, const double& d, const double& c);
+RcppExport SEXP _TestDesign_array_dirinfo_m_3pl(SEXP xSEXP, SEXP aSEXP, SEXP dSEXP, SEXP cSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const double& >::type c(cSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_dirinfo_m_3pl(x, a, d, c));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_thisdirinfo_m_3pl
+arma::colvec array_thisdirinfo_m_3pl(const arma::mat& x, const arma::rowvec& alpha_vec, const arma::rowvec& a, const double& d, const double& c);
+RcppExport SEXP _TestDesign_array_thisdirinfo_m_3pl(SEXP xSEXP, SEXP alpha_vecSEXP, SEXP aSEXP, SEXP dSEXP, SEXP cSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type alpha_vec(alpha_vecSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const double& >::type c(cSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_thisdirinfo_m_3pl(x, alpha_vec, a, d, c));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -543,6 +800,46 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// array_info_m_gpc
+List array_info_m_gpc(const arma::mat& x, const arma::rowvec& a, const arma::rowvec& d);
+RcppExport SEXP _TestDesign_array_info_m_gpc(SEXP xSEXP, SEXP aSEXP, SEXP dSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_info_m_gpc(x, a, d));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_dirinfo_m_gpc
+arma::colvec array_dirinfo_m_gpc(const arma::mat& x, const arma::rowvec& a, const arma::rowvec& d);
+RcppExport SEXP _TestDesign_array_dirinfo_m_gpc(SEXP xSEXP, SEXP aSEXP, SEXP dSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_dirinfo_m_gpc(x, a, d));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_thisdirinfo_m_gpc
+arma::colvec array_thisdirinfo_m_gpc(const arma::mat& x, const arma::rowvec& alpha_vec, const arma::rowvec& a, const arma::rowvec& d);
+RcppExport SEXP _TestDesign_array_thisdirinfo_m_gpc(SEXP xSEXP, SEXP alpha_vecSEXP, SEXP aSEXP, SEXP dSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type alpha_vec(alpha_vecSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_thisdirinfo_m_gpc(x, alpha_vec, a, d));
+    return rcpp_result_gen;
+END_RCPP
+}
 // array_info_gr
 arma::colvec array_info_gr(const arma::mat& x, const double& a, const arma::rowvec& b);
 RcppExport SEXP _TestDesign_array_info_gr(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP) {
@@ -553,6 +850,46 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
     Rcpp::traits::input_parameter< const arma::rowvec& >::type b(bSEXP);
     rcpp_result_gen = Rcpp::wrap(array_info_gr(x, a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_info_m_gr
+List array_info_m_gr(const arma::mat& x, const arma::rowvec& a, const arma::rowvec& d);
+RcppExport SEXP _TestDesign_array_info_m_gr(SEXP xSEXP, SEXP aSEXP, SEXP dSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_info_m_gr(x, a, d));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_dirinfo_m_gr
+arma::colvec array_dirinfo_m_gr(const arma::mat& x, const arma::rowvec& a, const arma::rowvec& d);
+RcppExport SEXP _TestDesign_array_dirinfo_m_gr(SEXP xSEXP, SEXP aSEXP, SEXP dSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_dirinfo_m_gr(x, a, d));
+    return rcpp_result_gen;
+END_RCPP
+}
+// array_thisdirinfo_m_gr
+arma::colvec array_thisdirinfo_m_gr(const arma::mat& x, const arma::rowvec& alpha_vec, const arma::rowvec& a, const arma::rowvec& d);
+RcppExport SEXP _TestDesign_array_thisdirinfo_m_gr(SEXP xSEXP, SEXP alpha_vecSEXP, SEXP aSEXP, SEXP dSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type alpha_vec(alpha_vecSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(array_thisdirinfo_m_gr(x, alpha_vec, a, d));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1252,18 +1589,43 @@ static const R_CallMethodDef CallEntries[] = {
     {"_TestDesign_calc_info_EB", (DL_FUNC) &_TestDesign_calc_info_EB, 4},
     {"_TestDesign_calc_info_FB", (DL_FUNC) &_TestDesign_calc_info_FB, 5},
     {"_TestDesign_calc_MI_FB", (DL_FUNC) &_TestDesign_calc_MI_FB, 4},
+    {"_TestDesign_a_to_alpha", (DL_FUNC) &_TestDesign_a_to_alpha, 1},
     {"_TestDesign_info_1pl", (DL_FUNC) &_TestDesign_info_1pl, 2},
     {"_TestDesign_info_2pl", (DL_FUNC) &_TestDesign_info_2pl, 3},
+    {"_TestDesign_info_m_2pl", (DL_FUNC) &_TestDesign_info_m_2pl, 3},
+    {"_TestDesign_dirinfo_m_2pl", (DL_FUNC) &_TestDesign_dirinfo_m_2pl, 3},
+    {"_TestDesign_thisdirinfo_m_2pl", (DL_FUNC) &_TestDesign_thisdirinfo_m_2pl, 4},
     {"_TestDesign_info_3pl", (DL_FUNC) &_TestDesign_info_3pl, 4},
+    {"_TestDesign_info_m_3pl", (DL_FUNC) &_TestDesign_info_m_3pl, 4},
+    {"_TestDesign_dirinfo_m_3pl", (DL_FUNC) &_TestDesign_dirinfo_m_3pl, 4},
+    {"_TestDesign_thisdirinfo_m_3pl", (DL_FUNC) &_TestDesign_thisdirinfo_m_3pl, 5},
     {"_TestDesign_info_pc", (DL_FUNC) &_TestDesign_info_pc, 2},
     {"_TestDesign_info_gpc", (DL_FUNC) &_TestDesign_info_gpc, 3},
+    {"_TestDesign_info_m_gpc", (DL_FUNC) &_TestDesign_info_m_gpc, 3},
+    {"_TestDesign_dirinfo_m_gpc", (DL_FUNC) &_TestDesign_dirinfo_m_gpc, 3},
+    {"_TestDesign_thisdirinfo_m_gpc", (DL_FUNC) &_TestDesign_thisdirinfo_m_gpc, 4},
     {"_TestDesign_info_gr", (DL_FUNC) &_TestDesign_info_gr, 3},
+    {"_TestDesign_info_m_gr", (DL_FUNC) &_TestDesign_info_m_gr, 3},
+    {"_TestDesign_dirinfo_m_gr", (DL_FUNC) &_TestDesign_dirinfo_m_gr, 3},
+    {"_TestDesign_thisdirinfo_m_gr", (DL_FUNC) &_TestDesign_thisdirinfo_m_gr, 4},
     {"_TestDesign_array_info_1pl", (DL_FUNC) &_TestDesign_array_info_1pl, 2},
     {"_TestDesign_array_info_2pl", (DL_FUNC) &_TestDesign_array_info_2pl, 3},
+    {"_TestDesign_array_info_m_2pl", (DL_FUNC) &_TestDesign_array_info_m_2pl, 3},
+    {"_TestDesign_array_dirinfo_m_2pl", (DL_FUNC) &_TestDesign_array_dirinfo_m_2pl, 3},
+    {"_TestDesign_array_thisdirinfo_m_2pl", (DL_FUNC) &_TestDesign_array_thisdirinfo_m_2pl, 4},
     {"_TestDesign_array_info_3pl", (DL_FUNC) &_TestDesign_array_info_3pl, 4},
+    {"_TestDesign_array_info_m_3pl", (DL_FUNC) &_TestDesign_array_info_m_3pl, 4},
+    {"_TestDesign_array_dirinfo_m_3pl", (DL_FUNC) &_TestDesign_array_dirinfo_m_3pl, 4},
+    {"_TestDesign_array_thisdirinfo_m_3pl", (DL_FUNC) &_TestDesign_array_thisdirinfo_m_3pl, 5},
     {"_TestDesign_array_info_pc", (DL_FUNC) &_TestDesign_array_info_pc, 2},
     {"_TestDesign_array_info_gpc", (DL_FUNC) &_TestDesign_array_info_gpc, 3},
+    {"_TestDesign_array_info_m_gpc", (DL_FUNC) &_TestDesign_array_info_m_gpc, 3},
+    {"_TestDesign_array_dirinfo_m_gpc", (DL_FUNC) &_TestDesign_array_dirinfo_m_gpc, 3},
+    {"_TestDesign_array_thisdirinfo_m_gpc", (DL_FUNC) &_TestDesign_array_thisdirinfo_m_gpc, 4},
     {"_TestDesign_array_info_gr", (DL_FUNC) &_TestDesign_array_info_gr, 3},
+    {"_TestDesign_array_info_m_gr", (DL_FUNC) &_TestDesign_array_info_m_gr, 3},
+    {"_TestDesign_array_dirinfo_m_gr", (DL_FUNC) &_TestDesign_array_dirinfo_m_gr, 3},
+    {"_TestDesign_array_thisdirinfo_m_gr", (DL_FUNC) &_TestDesign_array_thisdirinfo_m_gr, 4},
     {"_TestDesign_p_1pl", (DL_FUNC) &_TestDesign_p_1pl, 2},
     {"_TestDesign_p_2pl", (DL_FUNC) &_TestDesign_p_2pl, 3},
     {"_TestDesign_p_m_2pl", (DL_FUNC) &_TestDesign_p_m_2pl, 3},

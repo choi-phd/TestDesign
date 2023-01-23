@@ -4,46 +4,118 @@
 \alias{info_item}
 \alias{info_1pl}
 \alias{info_2pl}
+\alias{info_m_2pl}
+\alias{dirinfo_m_2pl}
+\alias{thisdirinfo_m_2pl}
 \alias{info_3pl}
+\alias{info_m_3pl}
+\alias{dirinfo_m_3pl}
+\alias{thisdirinfo_m_3pl}
 \alias{info_pc}
 \alias{info_gpc}
+\alias{info_m_gpc}
+\alias{dirinfo_m_gpc}
+\alias{thisdirinfo_m_gpc}
 \alias{info_gr}
+\alias{info_m_gr}
+\alias{dirinfo_m_gr}
+\alias{thisdirinfo_m_gr}
 \alias{array_info_1pl}
 \alias{array_info_2pl}
+\alias{array_info_m_2pl}
+\alias{array_dirinfo_m_2pl}
+\alias{array_thisdirinfo_m_2pl}
 \alias{array_info_3pl}
+\alias{array_info_m_3pl}
+\alias{array_dirinfo_m_3pl}
+\alias{array_thisdirinfo_m_3pl}
 \alias{array_info_pc}
 \alias{array_info_gpc}
+\alias{array_info_m_gpc}
+\alias{array_dirinfo_m_gpc}
+\alias{array_thisdirinfo_m_gpc}
 \alias{array_info_gr}
+\alias{array_info_m_gr}
+\alias{array_dirinfo_m_gr}
+\alias{array_thisdirinfo_m_gr}
 \title{(C++) Calculate Fisher information}
 \usage{
 info_1pl(x, b)
 
 info_2pl(x, a, b)
 
+info_m_2pl(x, a, d)
+
+dirinfo_m_2pl(x, a, d)
+
+thisdirinfo_m_2pl(x, alpha_vec, a, d)
+
 info_3pl(x, a, b, c)
+
+info_m_3pl(x, a, d, c)
+
+dirinfo_m_3pl(x, a, d, c)
+
+thisdirinfo_m_3pl(x, alpha_vec, a, d, c)
 
 info_pc(x, b)
 
 info_gpc(x, a, b)
 
+info_m_gpc(x, a, d)
+
+dirinfo_m_gpc(x, a, d)
+
+thisdirinfo_m_gpc(x, alpha_vec, a, d)
+
 info_gr(x, a, b)
+
+info_m_gr(x, a, d)
+
+dirinfo_m_gr(x, a, d)
+
+thisdirinfo_m_gr(x, alpha_vec, a, d)
 
 array_info_1pl(x, b)
 
 array_info_2pl(x, a, b)
 
+array_info_m_2pl(x, a, d)
+
+array_dirinfo_m_2pl(x, a, d)
+
+array_thisdirinfo_m_2pl(x, alpha_vec, a, d)
+
 array_info_3pl(x, a, b, c)
+
+array_info_m_3pl(x, a, d, c)
+
+array_dirinfo_m_3pl(x, a, d, c)
+
+array_thisdirinfo_m_3pl(x, alpha_vec, a, d, c)
 
 array_info_pc(x, b)
 
 array_info_gpc(x, a, b)
 
+array_info_m_gpc(x, a, d)
+
+array_dirinfo_m_gpc(x, a, d)
+
+array_thisdirinfo_m_gpc(x, alpha_vec, a, d)
+
 array_info_gr(x, a, b)
+
+array_info_m_gr(x, a, d)
+
+array_dirinfo_m_gr(x, a, d)
+
+array_thisdirinfo_m_gr(x, alpha_vec, a, d)
 }
 \arguments{
 \item{x}{the theta value. This must be a column vector in matrix form for \code{array_info_*()} functions.}
 
-\item{a, b, c}{the item parameters.}
+\item{a, b, c, d}{the item parameters.}
 }
 \description{
 \code{info_*()} and \code{array_info_*()} are functions for calculating Fisher information.
