@@ -277,8 +277,20 @@ p_2pl <- function(x, a, b) {
 
 #' @rdname p_item
 #' @export
+p_m_2pl <- function(x, a, d) {
+    .Call('_TestDesign_p_m_2pl', PACKAGE = 'TestDesign', x, a, d)
+}
+
+#' @rdname p_item
+#' @export
 p_3pl <- function(x, a, b, c) {
     .Call('_TestDesign_p_3pl', PACKAGE = 'TestDesign', x, a, b, c)
+}
+
+#' @rdname p_item
+#' @export
+p_m_3pl <- function(x, a, d, c) {
+    .Call('_TestDesign_p_m_3pl', PACKAGE = 'TestDesign', x, a, d, c)
 }
 
 #' @rdname p_item
@@ -295,8 +307,20 @@ p_gpc <- function(x, a, b) {
 
 #' @rdname p_item
 #' @export
+p_m_gpc <- function(x, a, d) {
+    .Call('_TestDesign_p_m_gpc', PACKAGE = 'TestDesign', x, a, d)
+}
+
+#' @rdname p_item
+#' @export
 p_gr <- function(x, a, b) {
     .Call('_TestDesign_p_gr', PACKAGE = 'TestDesign', x, a, b)
+}
+
+#' @rdname p_item
+#' @export
+p_m_gr <- function(x, a, d) {
+    .Call('_TestDesign_p_m_gr', PACKAGE = 'TestDesign', x, a, d)
 }
 
 #' @rdname p_item
@@ -313,8 +337,20 @@ array_p_2pl <- function(x, a, b) {
 
 #' @rdname p_item
 #' @export
+array_p_m_2pl <- function(x, a, d) {
+    .Call('_TestDesign_array_p_m_2pl', PACKAGE = 'TestDesign', x, a, d)
+}
+
+#' @rdname p_item
+#' @export
 array_p_3pl <- function(x, a, b, c) {
     .Call('_TestDesign_array_p_3pl', PACKAGE = 'TestDesign', x, a, b, c)
+}
+
+#' @rdname p_item
+#' @export
+array_p_m_3pl <- function(x, a, d, c) {
+    .Call('_TestDesign_array_p_m_3pl', PACKAGE = 'TestDesign', x, a, d, c)
 }
 
 #' @rdname p_item
@@ -331,8 +367,20 @@ array_p_gpc <- function(x, a, b) {
 
 #' @rdname p_item
 #' @export
+array_p_m_gpc <- function(x, a, d) {
+    .Call('_TestDesign_array_p_m_gpc', PACKAGE = 'TestDesign', x, a, d)
+}
+
+#' @rdname p_item
+#' @export
 array_p_gr <- function(x, a, b) {
     .Call('_TestDesign_array_p_gr', PACKAGE = 'TestDesign', x, a, b)
+}
+
+#' @rdname p_item
+#' @export
+array_p_m_gr <- function(x, a, d) {
+    .Call('_TestDesign_array_p_m_gr', PACKAGE = 'TestDesign', x, a, d)
 }
 
 #' @rdname j_item
