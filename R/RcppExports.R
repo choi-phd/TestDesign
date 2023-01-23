@@ -191,6 +191,12 @@ calc_MI_FB <- function(x, items_list, ncat, model) {
     .Call('_TestDesign_calc_MI_FB', PACKAGE = 'TestDesign', x, items_list, ncat, model)
 }
 
+#' @rdname a_to_alpha
+#' @export
+a_to_alpha <- function(a) {
+    .Call('_TestDesign_a_to_alpha', PACKAGE = 'TestDesign', a)
+}
+
 #' @rdname info_item
 #' @export
 info_1pl <- function(x, b) {
@@ -205,8 +211,44 @@ info_2pl <- function(x, a, b) {
 
 #' @rdname info_item
 #' @export
+info_m_2pl <- function(x, a, d) {
+    .Call('_TestDesign_info_m_2pl', PACKAGE = 'TestDesign', x, a, d)
+}
+
+#' @rdname info_item
+#' @export
+dirinfo_m_2pl <- function(x, a, d) {
+    .Call('_TestDesign_dirinfo_m_2pl', PACKAGE = 'TestDesign', x, a, d)
+}
+
+#' @rdname info_item
+#' @export
+thisdirinfo_m_2pl <- function(x, alpha_vec, a, d) {
+    .Call('_TestDesign_thisdirinfo_m_2pl', PACKAGE = 'TestDesign', x, alpha_vec, a, d)
+}
+
+#' @rdname info_item
+#' @export
 info_3pl <- function(x, a, b, c) {
     .Call('_TestDesign_info_3pl', PACKAGE = 'TestDesign', x, a, b, c)
+}
+
+#' @rdname info_item
+#' @export
+info_m_3pl <- function(x, a, d, c) {
+    .Call('_TestDesign_info_m_3pl', PACKAGE = 'TestDesign', x, a, d, c)
+}
+
+#' @rdname info_item
+#' @export
+dirinfo_m_3pl <- function(x, a, d, c) {
+    .Call('_TestDesign_dirinfo_m_3pl', PACKAGE = 'TestDesign', x, a, d, c)
+}
+
+#' @rdname info_item
+#' @export
+thisdirinfo_m_3pl <- function(x, alpha_vec, a, d, c) {
+    .Call('_TestDesign_thisdirinfo_m_3pl', PACKAGE = 'TestDesign', x, alpha_vec, a, d, c)
 }
 
 #' @rdname info_item
@@ -223,8 +265,44 @@ info_gpc <- function(x, a, b) {
 
 #' @rdname info_item
 #' @export
+info_m_gpc <- function(x, a, d) {
+    .Call('_TestDesign_info_m_gpc', PACKAGE = 'TestDesign', x, a, d)
+}
+
+#' @rdname info_item
+#' @export
+dirinfo_m_gpc <- function(x, a, d) {
+    .Call('_TestDesign_dirinfo_m_gpc', PACKAGE = 'TestDesign', x, a, d)
+}
+
+#' @rdname info_item
+#' @export
+thisdirinfo_m_gpc <- function(x, alpha_vec, a, d) {
+    .Call('_TestDesign_thisdirinfo_m_gpc', PACKAGE = 'TestDesign', x, alpha_vec, a, d)
+}
+
+#' @rdname info_item
+#' @export
 info_gr <- function(x, a, b) {
     .Call('_TestDesign_info_gr', PACKAGE = 'TestDesign', x, a, b)
+}
+
+#' @rdname info_item
+#' @export
+info_m_gr <- function(x, a, d) {
+    .Call('_TestDesign_info_m_gr', PACKAGE = 'TestDesign', x, a, d)
+}
+
+#' @rdname info_item
+#' @export
+dirinfo_m_gr <- function(x, a, d) {
+    .Call('_TestDesign_dirinfo_m_gr', PACKAGE = 'TestDesign', x, a, d)
+}
+
+#' @rdname info_item
+#' @export
+thisdirinfo_m_gr <- function(x, alpha_vec, a, d) {
+    .Call('_TestDesign_thisdirinfo_m_gr', PACKAGE = 'TestDesign', x, alpha_vec, a, d)
 }
 
 #' @rdname info_item
@@ -241,8 +319,44 @@ array_info_2pl <- function(x, a, b) {
 
 #' @rdname info_item
 #' @export
+array_info_m_2pl <- function(x, a, d) {
+    .Call('_TestDesign_array_info_m_2pl', PACKAGE = 'TestDesign', x, a, d)
+}
+
+#' @rdname info_item
+#' @export
+array_dirinfo_m_2pl <- function(x, a, d) {
+    .Call('_TestDesign_array_dirinfo_m_2pl', PACKAGE = 'TestDesign', x, a, d)
+}
+
+#' @rdname info_item
+#' @export
+array_thisdirinfo_m_2pl <- function(x, alpha_vec, a, d) {
+    .Call('_TestDesign_array_thisdirinfo_m_2pl', PACKAGE = 'TestDesign', x, alpha_vec, a, d)
+}
+
+#' @rdname info_item
+#' @export
 array_info_3pl <- function(x, a, b, c) {
     .Call('_TestDesign_array_info_3pl', PACKAGE = 'TestDesign', x, a, b, c)
+}
+
+#' @rdname info_item
+#' @export
+array_info_m_3pl <- function(x, a, d, c) {
+    .Call('_TestDesign_array_info_m_3pl', PACKAGE = 'TestDesign', x, a, d, c)
+}
+
+#' @rdname info_item
+#' @export
+array_dirinfo_m_3pl <- function(x, a, d, c) {
+    .Call('_TestDesign_array_dirinfo_m_3pl', PACKAGE = 'TestDesign', x, a, d, c)
+}
+
+#' @rdname info_item
+#' @export
+array_thisdirinfo_m_3pl <- function(x, alpha_vec, a, d, c) {
+    .Call('_TestDesign_array_thisdirinfo_m_3pl', PACKAGE = 'TestDesign', x, alpha_vec, a, d, c)
 }
 
 #' @rdname info_item
@@ -259,8 +373,44 @@ array_info_gpc <- function(x, a, b) {
 
 #' @rdname info_item
 #' @export
+array_info_m_gpc <- function(x, a, d) {
+    .Call('_TestDesign_array_info_m_gpc', PACKAGE = 'TestDesign', x, a, d)
+}
+
+#' @rdname info_item
+#' @export
+array_dirinfo_m_gpc <- function(x, a, d) {
+    .Call('_TestDesign_array_dirinfo_m_gpc', PACKAGE = 'TestDesign', x, a, d)
+}
+
+#' @rdname info_item
+#' @export
+array_thisdirinfo_m_gpc <- function(x, alpha_vec, a, d) {
+    .Call('_TestDesign_array_thisdirinfo_m_gpc', PACKAGE = 'TestDesign', x, alpha_vec, a, d)
+}
+
+#' @rdname info_item
+#' @export
 array_info_gr <- function(x, a, b) {
     .Call('_TestDesign_array_info_gr', PACKAGE = 'TestDesign', x, a, b)
+}
+
+#' @rdname info_item
+#' @export
+array_info_m_gr <- function(x, a, d) {
+    .Call('_TestDesign_array_info_m_gr', PACKAGE = 'TestDesign', x, a, d)
+}
+
+#' @rdname info_item
+#' @export
+array_dirinfo_m_gr <- function(x, a, d) {
+    .Call('_TestDesign_array_dirinfo_m_gr', PACKAGE = 'TestDesign', x, a, d)
+}
+
+#' @rdname info_item
+#' @export
+array_thisdirinfo_m_gr <- function(x, alpha_vec, a, d) {
+    .Call('_TestDesign_array_thisdirinfo_m_gr', PACKAGE = 'TestDesign', x, alpha_vec, a, d)
 }
 
 #' @rdname p_item
