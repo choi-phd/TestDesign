@@ -12,9 +12,22 @@ double h_2pl(
   const double&,
   const double&);
 
+arma::mat h_m_2pl(
+  const arma::rowvec&,
+  const arma::rowvec&,
+  const double&,
+  const double&);
+
 double h_3pl(
   const arma::rowvec&,
   const double&,
+  const double&,
+  const double&,
+  const double&);
+
+arma::mat h_m_3pl(
+  const arma::rowvec&,
+  const arma::rowvec&,
   const double&,
   const double&,
   const double&);
@@ -30,9 +43,21 @@ double h_gpc(
   const arma::rowvec&,
   const double&);
 
+arma::mat h_m_gpc(
+  const arma::rowvec&,
+  const arma::rowvec&,
+  const arma::rowvec&,
+  const double&);
+
 double h_gr(
   const arma::rowvec&,
   const double&,
+  const arma::rowvec&,
+  const double&);
+
+arma::mat h_m_gr(
+  const arma::rowvec&,
+  const arma::rowvec&,
   const arma::rowvec&,
   const double&);
 

@@ -4,10 +4,14 @@
 \alias{h_item}
 \alias{h_1pl}
 \alias{h_2pl}
+\alias{h_m_2pl}
 \alias{h_3pl}
+\alias{h_m_3pl}
 \alias{h_pc}
 \alias{h_gpc}
+\alias{h_m_gpc}
 \alias{h_gr}
+\alias{h_m_gr}
 \alias{array_h_1pl}
 \alias{array_h_2pl}
 \alias{array_h_3pl}
@@ -20,13 +24,21 @@ h_1pl(x, b, u)
 
 h_2pl(x, a, b, u)
 
+h_m_2pl(x, a, d, u)
+
 h_3pl(x, a, b, c, u)
+
+h_m_3pl(x, a, d, c, u)
 
 h_pc(x, b, u)
 
 h_gpc(x, a, b, u)
 
+h_m_gpc(x, a, d, u)
+
 h_gr(x, a, b, u)
+
+h_m_gr(x, a, d, u)
 
 array_h_1pl(x, b, u)
 
@@ -45,7 +57,7 @@ array_h_gr(x, a, b, u)
 
 \item{u}{the response value.}
 
-\item{a, b, c}{the item parameters.}
+\item{a, b, c, d}{the item parameters.}
 }
 \description{
 \code{h_*()} and \code{array_h_*()} are C++ functions for calculating the second derivative of the log-likelihood function.
