@@ -13,7 +13,7 @@ getXdataOfAdministered <- function(constants, position, output, stimulus_record,
   nv <- constants$nv
   ni <- constants$ni
 
-  # Include administered items in selection
+  # include administered items
 
   o$xmat <- matrix(0, position - 1, nv)
   o$xdir <- rep("==", position - 1)
@@ -26,7 +26,7 @@ getXdataOfAdministered <- function(constants, position, output, stimulus_record,
     return(o)
   }
 
-  # Include administered stimulus in selection
+  # include sets being administered
 
   unique_administered_stimulus_index <- na.omit(unique(output@administered_stimulus_index))
   unique_ns <- length(unique_administered_stimulus_index)
@@ -47,40 +47,20 @@ getXdataOfAdministered <- function(constants, position, output, stimulus_record,
 
   }
 
-  if (unique_ns > 0 && stimulus_record$just_finished_this_set) {
+  # constrain set sizes for fully administered sets
 
-    o$smat <- matrix(0, unique_ns, nv)
-    o$sdir <- rep("==", unique_ns)
-    o$srhs <- rep(0,    unique_ns)
-    for (s in 1:unique_ns) {
-      stimulus_id                      <- unique_administered_stimulus_index[s]
-      all_items_of_stimulus            <- constraints@item_index_by_stimulus[[stimulus_id]]
-      n_administered_items_of_stimulus <- sum(output@administered_stimulus_index[1:(position - 1)] == stimulus_id, na.rm = TRUE)
-      o$smat[s, all_items_of_stimulus] <- 1
-      o$srhs[s]                        <- n_administered_items_of_stimulus
-    }
+  administered_stimulus_index <- stimulus_record$administered_stimulus_index
+  administered_stimulus_size  <- stimulus_record$administered_stimulus_size
+  ns_completed <- length(administered_stimulus_index)
 
-    o$xmat <- rbind(o$xmat, o$smat)
-    o$xdir <-     c(o$xdir, o$sdir)
-    o$xrhs <-     c(o$xrhs, o$srhs)
+  if (unique_ns > 0 && ns_completed > 0) {
 
-  }
-
-  # include administered set
-
-  just_finished_this_set       <- stimulus_record$just_finished_this_set
-  finished_stimulus_index      <- stimulus_record$finished_stimulus_index
-  finished_stimulus_item_count <- stimulus_record$finished_stimulus_item_count
-  n_finished_stimulus          <- length(finished_stimulus_index)
-
-  if (unique_ns > 0 && !just_finished_this_set && n_finished_stimulus > 0) {
-
-    o$smat <- matrix(0, nrow = n_finished_stimulus, ncol = nv)
-    o$sdir <- rep("==", n_finished_stimulus)
-    o$srhs <- finished_stimulus_item_count
-    for (s in 1:n_finished_stimulus) {
-      stimulus_id <- constraints@item_index_by_stimulus[[finished_stimulus_index[s]]]
-      o$smat[s, stimulus_id] <- 1
+    o$smat <- matrix(0, ns_completed, nv)
+    o$sdir <- rep("==", ns_completed)
+    o$srhs <- administered_stimulus_size
+    for (s in 1:ns_completed) {
+      i <- constraints@item_index_by_stimulus[[administered_stimulus_index[s]]]
+      o$smat[s, i] <- 1
     }
 
     o$xmat <- rbind(o$xmat, o$smat)
@@ -124,6 +104,10 @@ getXdataOfExcludedEntry <- function(constants, exclude_index) {
 
   nv <- constants$nv
   ni <- constants$ni
+
+  if (is.null(exclude_index)) {
+    return(o)
+  }
 
   # Exclude specified items
   o$xmat <- matrix(0, 1, nv)
