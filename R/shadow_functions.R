@@ -266,7 +266,7 @@ setMethod(
 
           # Select an item from shadow test
 
-          selection <- selectItemFromShadowTest(shadowtest$shadow_test, position, constants, o)
+          selection <- selectItemFromShadowTest(shadowtest$shadow_test, position, constants, o, stimulus_record)
           o@administered_item_index[position] <- selection$item_selected
           o@shadow_test[[position]]$i         <- shadowtest$shadow_test$INDEX
           o@shadow_test[[position]]$s         <- shadowtest$shadow_test$STINDEX
@@ -284,24 +284,16 @@ setMethod(
         # Item position / simulee: record which stimulus was administered
 
         if (constants$set_based) {
+
           o@administered_stimulus_index[position] <- selection$stimulus_selected
 
-          if (selection$is_last_item_in_this_set) {
-            stimulus_record$just_finished_this_set <- TRUE
-          } else {
-            stimulus_record$just_finished_this_set <- FALSE
-          }
+          stimulus_record <- updateCompletedStimulusRecord(
+            stimulus_record,
+            selection,
+            o@administered_stimulus_index,
+            position
+          )
 
-          if (!is.na(selection$stimulus_of_previous_item)) {
-            if (selection$new_stimulus_selected && selection$stimulus_of_previous_item > 0) {
-              stimulus_record$finished_stimulus_index <- c(
-              stimulus_record$finished_stimulus_index,
-              selection$stimulus_of_previous_item)
-              stimulus_record$finished_stimulus_item_count <- c(
-              stimulus_record$finished_stimulus_item_count,
-              sum(o@administered_stimulus_index[1:(position - 1)] == selection$stimulus_of_previous_item, na.rm = TRUE))
-            }
-          }
         }
 
         # Item position / simulee: record which item was administered
