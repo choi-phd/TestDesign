@@ -140,65 +140,82 @@ isShadowTestOptimal <- function(shadowtest) {
 }
 
 #' @noRd
-selectItemFromShadowTest <- function(shadow_test, position, constants, x) {
+selectItemFromShadowTest <- function(shadow_test, position, constants, x, stimulus_record) {
 
   o <- list()
 
-  o$n_remaining <- constants$test_length - position
-  o$is_last_item_in_this_set <- FALSE
-  o$new_stimulus_selected    <- FALSE
+  # filter out administered items ----------------------------------------------
+  shadow_test <- subset(shadow_test, !(shadow_test$INDEX %in% x@administered_item_index))
 
-  o$stimulus_of_previous_item <- 0
+  if (constants$set_based) {
 
-  remaining <- which(!shadow_test[["INDEX"]] %in% x@administered_item_index[0:(position - 1)])
+    # if set-based and we just completed a set, select a new set ---------------
+    # this is also triggered at the start of test
+    if (stimulus_record$just_finished_a_set) {
+      current_stimulus_index <- shadow_test$STINDEX[1]
+    }
 
-  if (position == 1 & !constants$set_based) {
-    idx                 <- remaining[1]
-    o$item_selected     <- shadow_test[["INDEX"]][idx]
-    o$stimulus_selected <- NA
+    # if set-based and we are in mid-set, read from previous item --------------
+    if (!stimulus_record$just_finished_a_set) {
+      current_stimulus_index <- x@administered_stimulus_index[position - 1]
+    }
+
   }
-  if (position == 1 & constants$set_based) {
-    idx                 <- remaining[1]
-    o$item_selected     <- shadow_test[["INDEX"]][idx]
-    o$stimulus_selected <- shadow_test[["STINDEX"]][idx]
-  }
-  if (position > 1 & !constants$set_based) {
-    idx                 <- remaining[1]
-    o$item_selected     <- shadow_test[["INDEX"]][idx]
-    o$stimulus_selected <- NA
-  }
-  if (position > 1 & constants$set_based) {
-    o$stimulus_of_previous_item <- x@administered_stimulus_index[position - 1]
-    if (!is.na(o$stimulus_of_previous_item)) {
-      remaining_items_within_stimulus <- shadow_test[["STINDEX"]][remaining] == o$stimulus_of_previous_item
-      if (any(remaining_items_within_stimulus, na.rm = TRUE)) {
-        idx <- remaining[which(remaining_items_within_stimulus)][1]
-      } else {
-        idx <- remaining[1]
+
+  # filter to current set ------------------------------------------------------
+  if (constants$set_based) {
+
+    if (!is.na(current_stimulus_index)) {
+
+      shadow_test_filtered <- subset(shadow_test, shadow_test$STINDEX == current_stimulus_index)
+
+      # sometimes this leads to no items available -------------------------------
+      # this is because the # of items in the set may change between shadowtests
+      # e.g.) 4 items have been given out from set S1
+      # for position 5, set S1 had 6 items
+      # after giving 5th item, code thinks set S1 is not completed yet
+      # thus code sets is_last_item_in_this_set to FALSE
+      # for position 6, refresh is triggered from schedule and set S1 has 5 items
+      # in this case, shadow_test_filtered will have 0 rows
+      # another set has to be selected if this happens
+
+      if (nrow(shadow_test_filtered) == 0) {
+
+        current_stimulus_index <- shadow_test$STINDEX[1]
+        shadow_test_filtered <- subset(shadow_test, shadow_test$STINDEX == current_stimulus_index)
+
       }
+
+      shadow_test <- shadow_test_filtered
+
     }
-    if (is.na(o$stimulus_of_previous_item)) {
-      idx <- remaining[1]
+
+    if (is.na(current_stimulus_index)) {
+      # this happens when a discrete item is selected from a mixed pool
+      # do nothing
     }
-    o$item_selected     <- shadow_test[["INDEX"]][idx]
-    o$stimulus_selected <- shadow_test[["STINDEX"]][idx]
+
   }
 
+  # select item
+  o$item_selected <- shadow_test$INDEX[1]
 
-  if (is.na(
-    o$stimulus_of_previous_item != o$stimulus_selected) |
-    o$stimulus_of_previous_item != o$stimulus_selected) {
-    o$new_stimulus_selected <- TRUE
+  if (constants$set_based) {
+    o$stimulus_selected <- shadow_test$STINDEX[1]
   }
 
-  if (sum(shadow_test[["STINDEX"]][remaining] == o$stimulus_selected, na.rm = TRUE) == 1) {
-    o$is_last_item_in_this_set <- TRUE
-  }
-  if (is.na(o$stimulus_selected)) {
-    o$is_last_item_in_this_set <- TRUE
-  }
-  if (o$n_remaining == 0) {
-    o$is_last_item_in_this_set <- TRUE
+  if (constants$set_based) {
+
+    # this is used to trigger a shadowtest refresh
+    o$is_last_item_in_this_set <- nrow(shadow_test) == 1
+    # the next item may have to be selected from another set even if this is FALSE
+
+    # if a discrete item is selected from a mixed pool
+    # treat it as size-one set
+    if (is.na(o$stimulus_selected)) {
+      o$is_last_item_in_this_set <- TRUE
+    }
+
   }
 
   return(o)
@@ -209,7 +226,7 @@ selectItemFromShadowTest <- function(shadow_test, position, constants, x) {
 shouldShadowTestBeRefreshed <- function(x, position, theta_change, stimulus_record) {
 
   scheduled_value <- x$schedule[position]
-  
+
   if (!x$dynamic) {
     return(scheduled_value)
   }
@@ -218,7 +235,7 @@ shouldShadowTestBeRefreshed <- function(x, position, theta_change, stimulus_reco
     if (x$use_threshold) {
       if (abs(theta_change) > x$threshold) {
         # for THRESHOLD method, if threshold is exceeded, then this always returns true
-        # for INTERVAL-THRESHOLD method, if threshold is exceeded, then this returns scheduled value 
+        # for INTERVAL-THRESHOLD method, if threshold is exceeded, then this returns scheduled value
         # - (equivalent to & operation)
         return(scheduled_value)
       } else {
@@ -226,14 +243,93 @@ shouldShadowTestBeRefreshed <- function(x, position, theta_change, stimulus_reco
       }
     }
     if (x$use_setbased) {
-      if (stimulus_record$just_finished_this_set) {
+      if (stimulus_record$just_finished_a_set) {
         return(TRUE)
       } else {
         return(FALSE)
       }
     }
   }
-  
+
   stop("unexpected error: could not parse shadowtest refresh schedule")
+
+}
+
+#' @noRd
+updateCompletedStimulusRecord <- function(
+  stimulus_record,
+  selection,
+  administered_stimulus_index,
+  position
+) {
+
+  if (selection$is_last_item_in_this_set) {
+
+    # trigger shadow test refresh for next item
+    stimulus_record$just_finished_a_set <- TRUE
+
+    # if this item is discrete
+    if (is.na(selection$stimulus_selected)) {
+      return(stimulus_record)
+    }
+
+    # record the number of items from this set
+    # so that the next shadow test can take account for it
+
+    stimulus_record$administered_stimulus_index <- c(
+      stimulus_record$administered_stimulus_index,
+      selection$stimulus_selected
+    )
+    stimulus_record$administered_stimulus_size <- c(
+      stimulus_record$administered_stimulus_size,
+      sum(administered_stimulus_index == selection$stimulus_selected, na.rm = TRUE)
+    )
+
+    return(stimulus_record)
+
+  }
+
+  if (!selection$is_last_item_in_this_set) {
+
+    # a new set may have been selected when is_last_item_in_this_set is FALSE
+    # detect this and populate stimulus_record accordingly
+
+    stimulus_record$just_finished_a_set <- FALSE
+
+    if (position == 1) {
+      return(stimulus_record)
+    }
+
+    # if the previous item was a discrete item then there is nothing to populate
+    if (is.na(administered_stimulus_index[position - 1])) {
+      return(stimulus_record)
+    }
+
+    if (
+      administered_stimulus_index[position] ==
+      administered_stimulus_index[position - 1]
+    ) {
+      return(stimulus_record)
+    }
+
+    if (
+      administered_stimulus_index[position - 1] %in%
+      stimulus_record$administered_stimulus_index
+    ) {
+      return(stimulus_record)
+    }
+
+    stimulus_record$administered_stimulus_index <- c(
+      stimulus_record$administered_stimulus_index,
+      administered_stimulus_index[position - 1]
+    )
+    stimulus_record$administered_stimulus_size <- c(
+      stimulus_record$administered_stimulus_size,
+      sum(administered_stimulus_index == administered_stimulus_index[position - 1], na.rm = TRUE)
+    )
+
+  }
+
+  return(stimulus_record)
 
 }

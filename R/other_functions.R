@@ -216,9 +216,9 @@ computeInfoAtCurrentTheta <- function(
 #' @noRd
 initializeStimulusRecord <- function() {
   o <- list()
-  o$just_finished_this_set <- TRUE
-  o$finished_stimulus_index      <- NULL
-  o$finished_stimulus_item_count <- NULL
+  o$just_finished_a_set         <- TRUE
+  o$administered_stimulus_index <- NULL
+  o$administered_stimulus_size  <- NULL
   return(o)
 }
 
