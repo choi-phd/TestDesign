@@ -184,16 +184,20 @@ runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
 
   if (!is.null(constraints@stim_order)) {
     constraints@item_attrib@data$tmpsort <- 1:constraints@ni
-    constraints@item_attrib@data <- merge(constraints@item_attrib@data,
-                                     constraints@st_attrib@data[c("STINDEX", "STID", constraints@stim_order_by)],
-                                     by = "STID", all.x = TRUE, sort = FALSE)
+    constraints@item_attrib@data <- merge(
+      constraints@item_attrib@data,
+      constraints@st_attrib@data[c("STINDEX", "STID", constraints@stim_order_by)],
+      by = "STID", all.x = TRUE, sort = FALSE
+    )
     constraints@item_attrib@data <- constraints@item_attrib@data[order(constraints@item_attrib@data$tmpsort), ]
     constraints@item_attrib@data <- constraints@item_attrib@data[, !(colnames(constraints@item_attrib@data) %in% "tmpsort")]
   } else if (!is.null(constraints@st_attrib)) {
     constraints@item_attrib@data$tmpsort <- 1:constraints@ni
-    constraints@item_attrib@data <- merge(constraints@item_attrib@data,
-                                     constraints@st_attrib@data[c("STINDEX", "STID")],
-                                     by = "STID", all.x = TRUE, sort = FALSE)
+    constraints@item_attrib@data <- merge(
+      constraints@item_attrib@data,
+      constraints@st_attrib@data[c("STINDEX", "STID")],
+      by = "STID", all.x = TRUE, sort = FALSE
+    )
     constraints@item_attrib@data <- constraints@item_attrib@data[order(constraints@item_attrib@data$tmpsort), ]
     constraints@item_attrib@data <- constraints@item_attrib@data[, !(colnames(constraints@item_attrib@data) %in% "tmpsort")]
   }
@@ -214,30 +218,30 @@ runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
       if (any(is.na(shadow_test[["STID"]]))) {
         shadow_test          <- data.frame(cbind(.sequence = 1:nrow(shadow_test), shadow_test))
         shadow_test_discrete <- shadow_test[is.na(shadow_test[["STID"]]), ]
-        shadow_test_discrete <- data.frame(cbind(shadow_test_discrete, meanInfo = shadow_test_discrete$info))
+        shadow_test_discrete <- data.frame(cbind(shadow_test_discrete, set_info = shadow_test_discrete$info))
         shadow_test_stimulus <- shadow_test[!is.na(shadow_test[["STID"]]), ]
-        mean_info <- tapply(shadow_test_stimulus$info, shadow_test_stimulus[["STID"]], mean)
-        mean_info <- data.frame(STID = names(mean_info), meanInfo = mean_info)
-        shadow_test_stimulus <- merge(shadow_test_stimulus, mean_info, by = "STID", all.x = TRUE, sort = FALSE)
+        set_info <- tapply(shadow_test_stimulus$info, shadow_test_stimulus[["STID"]], mean)
+        set_info <- data.frame(STID = names(set_info), set_info = set_info)
+        shadow_test_stimulus <- merge(shadow_test_stimulus, set_info, by = "STID", all.x = TRUE, sort = FALSE)
         shadow_test          <- rbind(shadow_test_discrete, shadow_test_stimulus)
         shadow_test          <- shadow_test[order(shadow_test$.sequence), ]
         shadow_test          <- shadow_test[-1]
       } else {
-        mean_info   <- tapply(shadow_test$info, shadow_test[["STID"]], mean)
-        mean_info   <- data.frame(STID = names(mean_info), meanInfo = mean_info)
-        shadow_test <- merge(shadow_test, mean_info, by = "STID", all.x = TRUE, sort = FALSE)
+        set_info <- tapply(shadow_test$info, shadow_test$STID, mean)
+        set_info <- data.frame(STID = names(set_info), set_info = set_info)
+        shadow_test <- merge(shadow_test, set_info, by = "STID", all.x = TRUE, sort = FALSE)
       }
     }
   }
 
   if (sort_by_info) {
-    shadow_test <- shadow_test[order(shadow_test[["info"]], decreasing = TRUE), ]
+    shadow_test <- shadow_test[order(shadow_test$info, decreasing = TRUE), ]
   }
   if (constraints@set_based) {
-    shadow_test <- shadow_test[order(shadow_test[["STID"]]), ]
+    shadow_test <- shadow_test[order(shadow_test$STID), ]
   }
   if (constraints@set_based & sort_by_info) {
-    shadow_test <- shadow_test[order(shadow_test[["meanInfo"]], decreasing = TRUE), ]
+    shadow_test <- shadow_test[order(shadow_test$set_info, decreasing = TRUE), ]
   }
   if (!is.null(constraints@item_order_by)) {
     shadow_test <- shadow_test[order(shadow_test[[constraints@item_order_by]]), ]
