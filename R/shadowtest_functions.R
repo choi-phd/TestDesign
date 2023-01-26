@@ -333,3 +333,17 @@ updateCompletedStimulusRecord <- function(
   return(stimulus_record)
 
 }
+
+#' @noRd
+appendMeanInfo <- function(shadow_test, v, mean_info_name) {
+
+  mean_info <- tapply(shadow_test$info, shadow_test[v], mean)
+  mean_info <- data.frame(v = names(mean_info), mean_info = mean_info)
+  names(mean_info) <- c(v, mean_info_name)
+  shadow_test <- merge(
+    shadow_test, mean_info, by = v, all.x = TRUE, sort = FALSE
+  )
+
+  return(shadow_test)
+
+}

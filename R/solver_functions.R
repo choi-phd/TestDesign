@@ -215,20 +215,21 @@ runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
     shadow_test    <- data.frame(cbind(shadow_test, info))
     if (constraints@set_based) {
       if (any(is.na(shadow_test[["STID"]]))) {
-        shadow_test          <- data.frame(cbind(.sequence = 1:nrow(shadow_test), shadow_test))
-        shadow_test_discrete <- shadow_test[is.na(shadow_test[["STID"]]), ]
+
+        # if is a mixed test
+
+        shadow_test_discrete <- shadow_test[is.na(shadow_test$STID), ]
         shadow_test_discrete <- data.frame(cbind(shadow_test_discrete, set_info = shadow_test_discrete$info))
-        shadow_test_stimulus <- shadow_test[!is.na(shadow_test[["STID"]]), ]
-        set_info <- tapply(shadow_test_stimulus$info, shadow_test_stimulus[["STID"]], mean)
-        set_info <- data.frame(STID = names(set_info), set_info = set_info)
-        shadow_test_stimulus <- merge(shadow_test_stimulus, set_info, by = "STID", all.x = TRUE, sort = FALSE)
-        shadow_test          <- rbind(shadow_test_discrete, shadow_test_stimulus)
-        shadow_test          <- shadow_test[order(shadow_test$.sequence), ]
-        shadow_test          <- shadow_test[-1]
+
+        shadow_test_setbased <- shadow_test[!is.na(shadow_test$STID), ]
+        shadow_test_setbased <- appendMeanInfo(shadow_test_setbased, "STID", "set_info")
+
+        shadow_test <- rbind(shadow_test_discrete, shadow_test_setbased)
+
       } else {
-        set_info <- tapply(shadow_test$info, shadow_test$STID, mean)
-        set_info <- data.frame(STID = names(set_info), set_info = set_info)
-        shadow_test <- merge(shadow_test, set_info, by = "STID", all.x = TRUE, sort = FALSE)
+
+        shadow_test <- appendMeanInfo(shadow_test, "STID", "set_info")
+
       }
     }
   }
