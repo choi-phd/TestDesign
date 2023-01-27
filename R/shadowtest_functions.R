@@ -140,7 +140,7 @@ isShadowTestOptimal <- function(shadowtest) {
 }
 
 #' @noRd
-selectItemFromShadowTest <- function(shadow_test, position, constants, x, stimulus_record) {
+selectItemFromShadowTest <- function(shadow_test, position, constants, x, previous_selection) {
 
   o <- list()
 
@@ -151,12 +151,12 @@ selectItemFromShadowTest <- function(shadow_test, position, constants, x, stimul
 
     # if set-based and we just completed a set, select a new set ---------------
     # this is also triggered at the start of test
-    if (stimulus_record$just_finished_a_set) {
+    if (previous_selection$is_last_item_in_this_set) {
       current_stimulus_index <- shadow_test$STINDEX[1]
     }
 
     # if set-based and we are in mid-set, read from previous item --------------
-    if (!stimulus_record$just_finished_a_set) {
+    if (!previous_selection$is_last_item_in_this_set) {
       current_stimulus_index <- x@administered_stimulus_index[position - 1]
     }
 
@@ -223,7 +223,7 @@ selectItemFromShadowTest <- function(shadow_test, position, constants, x, stimul
 }
 
 #' @noRd
-shouldShadowTestBeRefreshed <- function(x, position, theta_change, stimulus_record) {
+shouldShadowTestBeRefreshed <- function(x, position, theta_change, previous_selection) {
 
   scheduled_value <- x$schedule[position]
 
@@ -243,7 +243,7 @@ shouldShadowTestBeRefreshed <- function(x, position, theta_change, stimulus_reco
       }
     }
     if (x$use_setbased) {
-      if (stimulus_record$just_finished_a_set) {
+      if (previous_selection$is_last_item_in_this_set) {
         return(TRUE)
       } else {
         return(FALSE)
@@ -264,9 +264,6 @@ updateCompletedStimulusRecord <- function(
 ) {
 
   if (selection$is_last_item_in_this_set) {
-
-    # trigger shadow test refresh for next item
-    stimulus_record$just_finished_a_set <- TRUE
 
     # if this item is discrete
     if (is.na(selection$stimulus_selected)) {
@@ -293,8 +290,6 @@ updateCompletedStimulusRecord <- function(
 
     # a new set may have been selected when is_last_item_in_this_set is FALSE
     # detect this and populate stimulus_record accordingly
-
-    stimulus_record$just_finished_a_set <- FALSE
 
     if (position == 1) {
       return(stimulus_record)

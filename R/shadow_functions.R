@@ -165,11 +165,15 @@ setMethod(
       )
       o@initial_theta_est <- current_theta
 
+      # Simulee: initialize selection
+      selection <- list()
+
       # Simulee: initialize stimulus record
 
       if (constants$set_based) {
         o@administered_stimulus_index <- rep(NA_real_, constants$max_ni)
         stimulus_record <- initializeStimulusRecord()
+        selection$is_last_item_in_this_set <- TRUE
       }
 
       # Simulee: initialize shadow test record
@@ -228,7 +232,7 @@ setMethod(
             shadowtest_refresh_schedule,
             position,
             theta_change,
-            stimulus_record
+            selection
           )) {
 
             if (!is.null(seed)) {
@@ -266,7 +270,10 @@ setMethod(
 
           # Select an item from shadow test
 
-          selection <- selectItemFromShadowTest(shadowtest$shadow_test, position, constants, o, stimulus_record)
+          selection <- selectItemFromShadowTest(
+            shadowtest$shadow_test, position, constants, o,
+            selection
+          )
           o@administered_item_index[position] <- selection$item_selected
           o@shadow_test[[position]]$i         <- shadowtest$shadow_test$INDEX
           o@shadow_test[[position]]$s         <- shadowtest$shadow_test$STINDEX
