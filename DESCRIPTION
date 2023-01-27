@@ -1,8 +1,8 @@
 Package: TestDesign
 Type: Package
 Title: Optimal Test Design Approach to Fixed and Adaptive Test Construction
-Version: 1.5.0.9000
-Date: 2023-1-23
+Version: 1.5.1
+Date: 2023-1-26
 Authors@R: c(
     person("Seung W.", "Choi",
         email = "schoi@austin.utexas.edu",
@@ -23,7 +23,7 @@ License: GPL (>= 2)
 Depends: R (>= 2.10)
 biocViews:
 Imports: Rcpp (>= 1.0.0), methods, lpSolve, foreach, logitnorm, crayon
-SystemRequirements: C++11
+SystemRequirements: C++17
 Suggests:
     Rsymphony,
     gurobi,

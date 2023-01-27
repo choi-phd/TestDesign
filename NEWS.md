@@ -1,8 +1,9 @@
-# TestDesign 1.5.0
+# TestDesign 1.5.1
 
 ## Updates
 
 * Added C++ functions for multidimensional items.
+* Updated C++ specification to C++17 to meet CRAN requirements.
 
 # TestDesign 1.4.0
 
