@@ -1,4 +1,6 @@
-# TestDesign 1.5.0
+# TestDesign 1.5.1
+
+This is a resubmission. The previous version 1.5.0 had a C++ specification that did not meet the requirement. The C++ specification is bumped to C++17 in this submission.
 
 ## Test environments
 
