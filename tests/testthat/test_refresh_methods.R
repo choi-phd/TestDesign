@@ -7,6 +7,7 @@ test_that("refresh methods work", {
   resp_science <- simResp(itempool_science, true_theta)
   constraints_science2 <- toggleConstraints(constraints_science, off = c(14:20, 32:36))
 
+  # ----------------------------------------------------------------------------
   cfg <- createShadowTestConfig(
     MIP = list(solver = solver),
     refresh_policy = list(
@@ -17,6 +18,7 @@ test_that("refresh methods work", {
   solution <- Shadow(cfg, constraints_science2, true_theta, data = resp_science)
   expect_equal(all(solution@output[[1]]@shadow_test_refreshed), TRUE)
 
+  # ----------------------------------------------------------------------------
   cfg <- createShadowTestConfig(
     MIP = list(solver = solver),
     refresh_policy = list(
@@ -28,6 +30,7 @@ test_that("refresh methods work", {
   solution <- Shadow(cfg, constraints_science2, true_theta, data = resp_science)
   expect_equal(which(solution@output[[1]]@shadow_test_refreshed), c(1, 10, 20))
 
+  # ----------------------------------------------------------------------------
   cfg <- createShadowTestConfig(
     MIP = list(solver = solver),
     refresh_policy = list(
@@ -39,6 +42,7 @@ test_that("refresh methods work", {
   solution <- Shadow(cfg, constraints_science2, true_theta, data = resp_science)
   expect_equal(which(solution@output[[1]]@shadow_test_refreshed), seq(1, 30, 3))
 
+  # ----------------------------------------------------------------------------
   cfg <- createShadowTestConfig(
     MIP = list(solver = solver),
     refresh_policy = list(
@@ -56,6 +60,7 @@ test_that("refresh methods work", {
 
   expect_equal(solution@output[[1]]@shadow_test_refreshed, flag)
 
+  # ----------------------------------------------------------------------------
   cfg <- createShadowTestConfig(
     MIP = list(solver = solver),
     refresh_policy = list(
@@ -76,5 +81,24 @@ test_that("refresh methods work", {
 
   expect_equal(solution@output[[1]]@shadow_test_refreshed, new_flag)
 
+  # ----------------------------------------------------------------------------
+  skip_if(solver == "lpSolve")
+
+  set.seed(1)
+  true_theta <- 0
+  resp_reading <- simResp(itempool_reading, true_theta)
+
+  # ----------------------------------------------------------------------------
+  cfg <- createShadowTestConfig(
+    MIP = list(solver = solver),
+    refresh_policy = list(
+      method = "SET"
+    )
+  )
+  set.seed(1)
+  solution  <- Shadow(cfg, constraints_reading, true_theta, data = resp_reading)
+
+  expected_schedule <- !duplicated(solution@output[[1]]@administered_stimulus_index)
+  expect_equal(solution@output[[1]]@shadow_test_refreshed, expected_schedule)
 
 })
