@@ -113,7 +113,6 @@
   rmse = FALSE,
   use_segment_label = TRUE,
   use_par = TRUE,
-  theta_segment = NULL,
   ...
 )
 
@@ -197,8 +196,6 @@
 \item{use_par}{if \code{FALSE}, graphical parameters are not overridden inside the function. (default = \code{TRUE})}
 
 \item{...}{arguments to pass onto \code{\link[graphics]{plot}}.}
-
-\item{theta_segment}{(deprecated) use \code{theta_type} argument instead.}
 }
 \description{
 Extension of plot() for objects in TestDesign package

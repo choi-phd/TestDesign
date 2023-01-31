@@ -4,14 +4,7 @@
 \alias{buildConstraints}
 \title{Build constraints (shortcut to other loading functions)}
 \usage{
-buildConstraints(
-  object,
-  item_pool,
-  item_attrib,
-  st_attrib = NULL,
-  pool = NULL,
-  constraints = NULL
-)
+buildConstraints(object, item_pool, item_attrib, st_attrib = NULL)
 }
 \arguments{
 \item{object}{constraint specifications. Can be a data.frame or the file path of a .csv file. See the vignette for the expected format.}
@@ -21,10 +14,6 @@ buildConstraints(
 \item{item_attrib}{item attributes. Can be an \code{\linkS4class{item_attrib}} object, a data.frame or the file path of a .csv file.}
 
 \item{st_attrib}{(optional) stimulus attributes. Can be an \code{\linkS4class{st_attrib}} object, a data.frame or the file path of a .csv file.}
-
-\item{pool}{(deprecated) use \code{item_pool} argument instead.}
-
-\item{constraints}{(deprecated) use \code{object} argument instead.}
 }
 \value{
 \code{\link{buildConstraints}} returns a \code{\linkS4class{constraints}} object. This object is used in \code{\link{Static}} and \code{\link{Shadow}}.
