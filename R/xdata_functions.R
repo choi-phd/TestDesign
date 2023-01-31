@@ -2,7 +2,7 @@
 NULL
 
 #' @noRd
-getXdataOfAdministered <- function(constants, position, x, stimulus_record, constraints) {
+getXdataOfAdministered <- function(constants, position, x, groupings_record, constraints) {
 
   o <- list()
 
@@ -49,17 +49,17 @@ getXdataOfAdministered <- function(constants, position, x, stimulus_record, cons
 
   # constrain set sizes for fully administered sets
 
-  administered_stimulus_index <- stimulus_record$administered_stimulus_index
-  administered_stimulus_size  <- stimulus_record$administered_stimulus_size
-  ns_completed <- length(administered_stimulus_index)
+  completed_stimulus_index <- groupings_record$completed_stimulus_index
+  completed_stimulus_size  <- groupings_record$completed_stimulus_size
+  ns_completed <- length(completed_stimulus_index)
 
   if (unique_ns > 0 && ns_completed > 0) {
 
     o$smat <- matrix(0, ns_completed, nv)
     o$sdir <- rep("==", ns_completed)
-    o$srhs <- administered_stimulus_size
+    o$srhs <- completed_stimulus_size
     for (s in 1:ns_completed) {
-      i <- constraints@item_index_by_stimulus[[administered_stimulus_index[s]]]
+      i <- constraints@item_index_by_stimulus[[completed_stimulus_index[s]]]
       o$smat[s, i] <- 1
     }
 

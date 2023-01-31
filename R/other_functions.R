@@ -214,10 +214,10 @@ computeInfoAtCurrentTheta <- function(
 }
 
 #' @noRd
-initializeStimulusRecord <- function() {
+initializeCompletedGroupingsRecord <- function() {
   o <- list()
-  o$administered_stimulus_index <- NULL
-  o$administered_stimulus_size  <- NULL
+  o$completed_stimulus_index <- NULL
+  o$completed_stimulus_size  <- NULL
   return(o)
 }
 
