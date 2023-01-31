@@ -32,19 +32,19 @@ getConstants <- function(constraints, config, arg_data, true_theta, max_info) {
     if (is.null(constraints)) {
       stop(sprintf("config@content_balancing: 'constraints' must be supplied when $method is '%s'", content_balancing_method))
     }
-    o$use_shadowtest <- TRUE
-    o$set_based      <- constraints@set_based
-    o$test_length    <- constraints@test_length
-    o$min_ni         <- constraints@test_length
-    o$max_ni         <- constraints@test_length
-    o$max_se         <- NULL
+    o$use_shadowtest    <- TRUE
+    o$group_by_stimulus <- constraints@set_based
+    o$test_length       <- constraints@test_length
+    o$min_ni            <- constraints@test_length
+    o$max_ni            <- constraints@test_length
+    o$max_se            <- NULL
   } else {
-    o$use_shadowtest <- FALSE
-    o$set_based      <- FALSE
-    o$test_length    <- NULL
-    o$min_ni         <- config@stopping_criterion$min_ni
-    o$max_ni         <- config@stopping_criterion$max_ni
-    o$max_se         <- config@stopping_criterion$se_threshold
+    o$use_shadowtest    <- FALSE
+    o$group_by_stimulus <- FALSE
+    o$test_length       <- NULL
+    o$min_ni            <- config@stopping_criterion$min_ni
+    o$max_ni            <- config@stopping_criterion$max_ni
+    o$max_se            <- config@stopping_criterion$se_threshold
   }
 
   o$exclude_method <- toupper(config@exclude_policy$method)

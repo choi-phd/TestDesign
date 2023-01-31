@@ -79,9 +79,9 @@ countConstraints <- function(constraints, item_idx) {
     stop("'constraints' must be a 'constraints' class object")
   }
 
-  set_based   <- constraints@set_based
-  item_attrib <- constraints@item_attrib
-  constraints <- constraints@constraints
+  group_by_stimulus <- constraints@set_based
+  item_attrib       <- constraints@item_attrib
+  constraints       <- constraints@constraints
 
   nc <- nrow(constraints)
   list_constraints <- vector(mode = "list", length = nc)
@@ -106,7 +106,7 @@ countConstraints <- function(constraints, item_idx) {
     }
   }
 
-  if (set_based) {
+  if (group_by_stimulus) {
     for (index in stim_constraints) {
       if (constraints[["TYPE"]][index] %in% c("NUMBER", "COUNT")) {
         tmp <- item_attrib@data[item_idx, ]

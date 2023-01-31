@@ -888,7 +888,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL) {
       stop("constraints: stimulus-based constraints require 'STID' column in item_attrib@data")
     }
 
-    set_based <- TRUE
+    group_by_stimulus <- TRUE
     constraints[["ST_COUNT"]] <- NA
 
     id <- c(item_attrib@data[["ID"]], st_attrib@data[["STID"]])
@@ -916,7 +916,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL) {
     }
 
   } else if (length(item_constraints) > 0) {
-    set_based <- FALSE
+    group_by_stimulus <- FALSE
     nv <- ni
     id <- item_attrib@data[["ID"]]
     item_index_by_stimulus <- NULL
@@ -929,20 +929,20 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL) {
     x <- constraints[index, ]
     validate_constraints <- validateConstraintData(x, item_attrib)
   }
-  if (set_based) {
+  if (group_by_stimulus) {
     for (index in stim_constraints) {
       x <- constraints[index, ]
       validate_constraints <- validateConstraintData(x, st_attrib)
     }
   }
 
-  constants           <- list()
-  constants$ni        <- ni
-  constants$ns        <- ns
-  constants$nv        <- nv
-  constants$set_based <- set_based
-  constants$i_by_s    <- item_index_by_stimulus
-  constants$s_by_i    <- stimulus_index_by_item
+  constants                   <- list()
+  constants$ni                <- ni
+  constants$ns                <- ns
+  constants$nv                <- nv
+  constants$group_by_stimulus <- group_by_stimulus
+  constants$i_by_s            <- item_index_by_stimulus
+  constants$s_by_i            <- stimulus_index_by_item
   constants <- getLBUBInConstraintData(constants, constraints, item_constraints, stim_constraints)
 
   for (index in item_constraints) {
@@ -954,7 +954,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL) {
 
       if (toupper(constraints[["CONDITION"]][index]) %in% c("", " ", "PER TEST", "TEST")) {
 
-        if (set_based && !common_stimulus_length) {
+        if (group_by_stimulus && !common_stimulus_length) {
           n_LB_eq_UB <- sum(stimulus_length_LB == stimulus_length_UB)
           n_LB_ne_UB <- sum(stimulus_length_LB != stimulus_length_UB)
           tmp_mat <- matrix(0, nrow = ns + n_LB_ne_UB, ncol = nv)
@@ -984,7 +984,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL) {
         }
       } else if (toupper(constraints[["CONDITION"]][index]) %in% c("PER STIMULUS", "PER PASSAGE", "PER SET", "PER TESTLET")) {
 
-        if (!set_based) {
+        if (!group_by_stimulus) {
           stop(sprintf("Constraints must include at least one 'STIMULUS' under WHAT for CONDITION: %s", toupper(constraints[["CONDITION"]][index])))
         }
 
@@ -1005,7 +1005,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL) {
 
   }
 
-  if (set_based) {
+  if (group_by_stimulus) {
     for (index in stim_constraints) {
 
       list_constraints[[index]] <- parseConstraintData(constraints[index, ], st_attrib, constants)
@@ -1052,7 +1052,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL) {
   o@mat   <- mat
   o@dir   <- dir
   o@rhs   <- rhs
-  o@set_based              <- set_based
+  o@set_based              <- group_by_stimulus
   o@item_order             <- item_order
   o@item_order_by          <- item_order_by
   o@stim_order             <- stim_order

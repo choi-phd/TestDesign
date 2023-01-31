@@ -133,7 +133,7 @@ initializeExposureRecord <- function(exposure_control, constants) {
     o$r_ijk_nofade <- o$r_ijk
   }
 
-  if (!constants$set_based) {
+  if (!constants$group_by_stimulus) {
     return(o)
   }
 
@@ -157,7 +157,7 @@ getInitialEligibilityStats <- function(o, initial_stats, constants) {
   o$a_ijk <- initial_stats$a_ijk
   o$r_ijk <- initial_stats$r_ijk
 
-  if (!constants$set_based) {
+  if (!constants$group_by_stimulus) {
     return(o)
   }
 
@@ -178,22 +178,22 @@ initializeExposureRecordSegmentwise <- function(constants) {
   n_segment     <- constants$n_segment
   fading_factor <- constants$fading_factor
 
-  if (!constants$set_based) {
+  if (!constants$group_by_stimulus) {
     o$a_g_i <- replicate(n_segment, matrix(0, nrow = nj, ncol = ni), simplify = FALSE)
     o$e_g_i <- replicate(n_segment, matrix(0, nrow = nj, ncol = ni), simplify = FALSE)
   }
-  if (constants$set_based) {
+  if (constants$group_by_stimulus) {
     o$a_g_i <- replicate(n_segment, matrix(0, nrow = nj, ncol = ni), simplify = FALSE)
     o$e_g_i <- replicate(n_segment, matrix(0, nrow = nj, ncol = ni), simplify = FALSE)
     o$a_g_s <- replicate(n_segment, matrix(0, nrow = nj, ncol = ns), simplify = FALSE)
     o$e_g_s <- replicate(n_segment, matrix(0, nrow = nj, ncol = ns), simplify = FALSE)
   }
 
-  if (fading_factor != 1 & !constants$set_based) {
+  if (fading_factor != 1 & !constants$group_by_stimulus) {
     o$a_g_i_nofade <- replicate(n_segment, matrix(0, nrow = nj, ncol = ni), simplify = FALSE)
     o$e_g_i_nofade <- replicate(n_segment, matrix(0, nrow = nj, ncol = ni), simplify = FALSE)
   }
-  if (fading_factor != 1 & constants$set_based) {
+  if (fading_factor != 1 & constants$group_by_stimulus) {
     o$a_g_i_nofade <- replicate(n_segment, matrix(0, nrow = nj, ncol = ni), simplify = FALSE)
     o$e_g_i_nofade <- replicate(n_segment, matrix(0, nrow = nj, ncol = ni), simplify = FALSE)
     o$a_g_s_nofade <- replicate(n_segment, matrix(0, nrow = nj, ncol = ns), simplify = FALSE)
@@ -269,7 +269,7 @@ updateExposureRecordSegmentwise <- function(o, j, x, constants) {
     }
   }
 
-  if (!constants$set_based) {
+  if (!constants$group_by_stimulus) {
     return(o)
   }
 
@@ -290,11 +290,11 @@ updateExposureRecordSegmentwise <- function(o, j, x, constants) {
 #' @noRd
 initializeUsageMatrix <- function(constants) {
 
-  if (!constants$set_based) {
+  if (!constants$group_by_stimulus) {
     o <- matrix(FALSE, nrow = constants$nj, ncol = constants$ni)
     return(o)
   }
-  if (constants$set_based) {
+  if (constants$group_by_stimulus) {
     o <- matrix(FALSE, nrow = constants$nj, ncol = constants$nv)
     return(o)
   }
@@ -306,7 +306,7 @@ updateUsageMatrix <- function(usage_matrix, j, x, constants) {
 
   usage_matrix[j, x@administered_item_index] <- TRUE
 
-  if (!constants$set_based) {
+  if (!constants$group_by_stimulus) {
     return(usage_matrix)
   }
 
@@ -319,14 +319,14 @@ updateUsageMatrix <- function(usage_matrix, j, x, constants) {
 #' @noRd
 aggregateUsageMatrix <- function(usage_matrix, constants, constraints) {
 
-  if (!constants$set_based) {
+  if (!constants$group_by_stimulus) {
     o <- matrix(NA, constants$ni, 2)
     colnames(o) <- c("Item", "Item ER")
     o[, 1] <- 1:constants$ni
     o[, 2] <- apply(usage_matrix, 2, sum) / constants$nj
     return(o)
   }
-  if (constants$set_based) {
+  if (constants$group_by_stimulus) {
     o <- matrix(NA, constants$ni, 4)
     colnames(o) <- c("Item", "Stimulus", "Item ER", "Stimulus ER")
     x <- apply(usage_matrix, 2, sum) / constants$nj
