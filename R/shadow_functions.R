@@ -168,11 +168,11 @@ setMethod(
       # Simulee: initialize selection
       selection <- list()
 
-      # Simulee: initialize stimulus record
+      # Simulee: initialize completed groupings (item sets) record
 
       if (constants$set_based) {
         o@administered_stimulus_index <- rep(NA_real_, constants$max_ni)
-        stimulus_record <- initializeStimulusRecord()
+        groupings_record <- initializeCompletedGroupingsRecord()
         selection$is_last_item_in_this_set <- TRUE
       }
 
@@ -242,7 +242,7 @@ setMethod(
               j, position, o,
               eligibility_flag,
               exclude_index,
-              stimulus_record,
+              groupings_record,
               info_current_theta,
               config,
               constants,
@@ -294,10 +294,10 @@ setMethod(
 
           o@administered_stimulus_index[position] <- selection$stimulus_selected
 
-          stimulus_record <- updateCompletedStimulusRecord(
-            stimulus_record,
+          groupings_record <- updateCompletedGroupingsRecordForStimulus(
+            groupings_record,
             selection,
-            o@administered_stimulus_index,
+            o,
             position
           )
 

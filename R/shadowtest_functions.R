@@ -66,7 +66,7 @@ assembleShadowTest <- function(
   j, position, o,
   eligibility_flag,
   exclude_index,
-  stimulus_record,
+  groupings_record,
   info,
   config,
   constants,
@@ -75,7 +75,7 @@ assembleShadowTest <- function(
 
   administered_stimulus_index <- na.omit(unique(o@administered_stimulus_index))
 
-  xdata         <- getXdataOfAdministered(constants, position, o, stimulus_record, constraints)
+  xdata         <- getXdataOfAdministered(constants, position, o, groupings_record, constraints)
   if (constants$exclude_method == "HARD") {
     xdata_exclude <- getXdataOfExcludedEntry(constants, exclude_index[[j]])
     xdata         <- combineXdata(xdata, xdata_exclude)
@@ -256,10 +256,10 @@ shouldShadowTestBeRefreshed <- function(x, position, theta_change, previous_sele
 }
 
 #' @noRd
-updateCompletedStimulusRecord <- function(
-  stimulus_record,
+updateCompletedGroupingsRecordForStimulus <- function(
+  groupings_record,
   selection,
-  administered_stimulus_index,
+  o,
   position
 ) {
 
@@ -267,65 +267,65 @@ updateCompletedStimulusRecord <- function(
 
     # if this item is discrete
     if (is.na(selection$stimulus_selected)) {
-      return(stimulus_record)
+      return(groupings_record)
     }
 
     # record the number of items from this set
     # so that the next shadow test can take account for it
 
-    stimulus_record$administered_stimulus_index <- c(
-      stimulus_record$administered_stimulus_index,
+    groupings_record$completed_stimulus_index <- c(
+      groupings_record$completed_stimulus_index,
       selection$stimulus_selected
     )
-    stimulus_record$administered_stimulus_size <- c(
-      stimulus_record$administered_stimulus_size,
-      sum(administered_stimulus_index == selection$stimulus_selected, na.rm = TRUE)
+    groupings_record$completed_stimulus_size <- c(
+      groupings_record$completed_stimulus_size,
+      sum(o@administered_stimulus_index == selection$stimulus_selected, na.rm = TRUE)
     )
 
-    return(stimulus_record)
+    return(groupings_record)
 
   }
 
   if (!selection$is_last_item_in_this_set) {
 
     # a new set may have been selected when is_last_item_in_this_set is FALSE
-    # detect this and populate stimulus_record accordingly
+    # detect this and populate groupings_record accordingly
 
     if (position == 1) {
-      return(stimulus_record)
+      return(groupings_record)
     }
 
     # if the previous item was a discrete item then there is nothing to populate
-    if (is.na(administered_stimulus_index[position - 1])) {
-      return(stimulus_record)
+    if (is.na(o@administered_stimulus_index[position - 1])) {
+      return(groupings_record)
     }
 
     if (
-      administered_stimulus_index[position] ==
-      administered_stimulus_index[position - 1]
+      o@administered_stimulus_index[position] ==
+      o@administered_stimulus_index[position - 1]
     ) {
-      return(stimulus_record)
+      return(groupings_record)
     }
 
     if (
-      administered_stimulus_index[position - 1] %in%
-      stimulus_record$administered_stimulus_index
+      o@administered_stimulus_index[position - 1] %in%
+      groupings_record$completed_stimulus_index
     ) {
-      return(stimulus_record)
+      return(groupings_record)
     }
 
-    stimulus_record$administered_stimulus_index <- c(
-      stimulus_record$administered_stimulus_index,
-      administered_stimulus_index[position - 1]
+    groupings_record$completed_stimulus_index <- c(
+      groupings_record$completed_stimulus_index,
+      o@administered_stimulus_index[position - 1]
     )
-    stimulus_record$administered_stimulus_size <- c(
-      stimulus_record$administered_stimulus_size,
-      sum(administered_stimulus_index == administered_stimulus_index[position - 1], na.rm = TRUE)
+    groupings_record$completed_stimulus_size <- c(
+      groupings_record$completed_stimulus_size,
+      sum(o@administered_stimulus_index == o@administered_stimulus_index[position - 1], na.rm = TRUE)
     )
 
   }
 
-  return(stimulus_record)
+  return(groupings_record)
 
 }
 
