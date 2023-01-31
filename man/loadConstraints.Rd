@@ -4,7 +4,7 @@
 \alias{loadConstraints}
 \title{Load constraints}
 \usage{
-loadConstraints(object, pool, item_attrib, st_attrib = NULL, file = NULL)
+loadConstraints(object, pool, item_attrib, st_attrib = NULL)
 }
 \arguments{
 \item{object}{constraint specifications. Can be a \code{\link{data.frame}} or the file path of a .csv file. See the vignette for the expected format.}
@@ -14,8 +14,6 @@ loadConstraints(object, pool, item_attrib, st_attrib = NULL, file = NULL)
 \item{item_attrib}{an \code{\linkS4class{item_attrib}} object. Use \code{\link{loadItemAttrib}} for this.}
 
 \item{st_attrib}{(optional) an \code{\linkS4class{st_attrib}} object. Use \code{\link{loadStAttrib}} for this.}
-
-\item{file}{(deprecated) use \code{object} argument instead.}
 }
 \value{
 \code{\link{loadConstraints}} returns a \code{\linkS4class{constraints}} object. This object is used in \code{\link{Static}} and \code{\link{Shadow}}.
@@ -38,12 +36,6 @@ write.csv(constraints_science_data, f, row.names = FALSE)
 constraints_science <- loadConstraints(f,
   itempool_science, itemattrib_science)
 file.remove(f)
-
-## TestDesign 1.1.0 - Deprecated arguments
-\dontrun{
-loadConstraints(object = "consts.csv", pool, item_attrib) # is equivalent to
-loadConstraints(file   = "consts.csv", pool, item_attrib) # pre 1.1.0
-}
 
 }
 \seealso{

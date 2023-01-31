@@ -6,14 +6,12 @@
 \alias{loadStAttrib}
 \title{Load set/stimulus/passage attributes}
 \usage{
-loadStAttrib(object, item_attrib, file = NULL)
+loadStAttrib(object, item_attrib)
 }
 \arguments{
 \item{object}{set attributes. Can be a \code{\link{data.frame}} or the file path of a .csv file. The content should at least include the column 'STID' referring to the column 'STID' in the \code{data} slot of the \code{\linkS4class{item_attrib}} object.}
 
 \item{item_attrib}{an \code{\linkS4class{item_attrib}} object. Use \code{\link{loadItemAttrib}} for this.}
-
-\item{file}{(deprecated) use \code{object} argument instead.}
 }
 \value{
 \code{\link{loadStAttrib}} returns a \code{\linkS4class{st_attrib}} object.
@@ -37,12 +35,6 @@ f <- file.path(tempdir(), "stimattrib_reading.csv")
 write.csv(stimattrib_reading_data, f, row.names = FALSE)
 stimattrib_reading <- loadStAttrib(f, itemattrib_reading)
 file.remove(f)
-
-## TestDesign 1.1.0 - Deprecated arguments
-\dontrun{
-loadStAttrib(object = "satt.csv", item_attrib) # is equivalent to
-loadStAttrib(file   = "satt.csv", item_attrib) # pre 1.1.0
-}
 
 }
 \seealso{

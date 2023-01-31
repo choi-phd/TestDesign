@@ -6,14 +6,12 @@
 \alias{loadItemAttrib}
 \title{Load item attributes}
 \usage{
-loadItemAttrib(object, pool, file = NULL)
+loadItemAttrib(object, pool)
 }
 \arguments{
 \item{object}{item attributes. Can be a \code{\link{data.frame}} or the file path of a .csv file. The content should at least include column 'ID' that matches with the \code{\linkS4class{item_pool}} object.}
 
 \item{pool}{an \code{\linkS4class{item_pool}} object. Use \code{\link{loadItemPool}} for this.}
-
-\item{file}{(deprecated) use \code{object} argument instead.}
 }
 \value{
 \code{\link{loadItemAttrib}} returns an \code{\linkS4class{item_attrib}} object.
@@ -36,12 +34,6 @@ f <- file.path(tempdir(), "itemattrib_science.csv")
 write.csv(itemattrib_science_data, f, row.names = FALSE)
 itemattrib_science <- loadItemAttrib(f, itempool_science)
 file.remove(f)
-
-## TestDesign 1.1.0 - Deprecated arguments
-\dontrun{
-loadItemAttrib(object = "iatt.csv", pool) # is equivalent to
-loadItemAttrib(file   = "iatt.csv", pool) # pre 1.1.0
-}
 
 }
 \seealso{
