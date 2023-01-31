@@ -3,6 +3,7 @@
 ## Updates
 
 * Updated `vignette('constraints')`.
+* Removed deprecated arguments.
 
 ## Bug fixes
 
