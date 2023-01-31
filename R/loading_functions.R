@@ -15,8 +15,6 @@ NULL
 #'
 #' @param ipar item parameters. Can be a \code{\link{data.frame}} or the file path of a .csv file. The content should at least include columns 'ID' and 'MODEL'.
 #' @param ipar_se (optional) standard errors. Can be a \code{\link{data.frame}} or the file path of a .csv file.
-#' @param file (deprecated) use \code{ipar} argument instead.
-#' @param se_file (deprecated) use \code{ipar_se} argument instead.
 #' @param unique if \code{TRUE}, item IDs must be unique to create a valid \code{\linkS4class{item_pool}} object. (default = \code{FALSE})
 #'
 #' @return \code{\link{loadItemPool}} returns an \code{\linkS4class{item_pool}} object.
@@ -46,25 +44,10 @@ NULL
 #' itempool_science <- loadItemPool(f)
 #' file.remove(f)
 #'
-#' ## TestDesign 1.1.0 - Deprecated arguments
-#' \dontrun{
-#' loadItemPool(ipar = "ipar.csv", ipar_se = "se.csv") # is equivalent to
-#' loadItemPool(file = "ipar.csv", se_file = "se.csv") # pre 1.1.0
-#' }
-#'
 #' @seealso \code{\link{dataset_science}}, \code{\link{dataset_reading}}, \code{\link{dataset_fatigue}}, \code{\link{dataset_bayes}} for examples.
 #'
 #' @export
-loadItemPool <- function(ipar, ipar_se = NULL, file = NULL, se_file = NULL, unique = FALSE) {
-
-  if (!missing("se_file")){
-    warning("argument 'se_file' is deprecated. Use 'ipar_se' instead.")
-    ipar_se <- se_file
-  }
-  if (!missing("file")){
-    warning("argument 'file' is deprecated. Use 'ipar' instead.")
-    ipar <- file
-  }
+loadItemPool <- function(ipar, ipar_se = NULL, unique = FALSE) {
 
   if (!is.null(ipar)) {
     if (inherits(ipar, "data.frame")) {
@@ -320,7 +303,6 @@ setClass("item_attrib",
 #'
 #' @param object item attributes. Can be a \code{\link{data.frame}} or the file path of a .csv file. The content should at least include column 'ID' that matches with the \code{\linkS4class{item_pool}} object.
 #' @template pool_param
-#' @template deprecated_file_object_param
 #'
 #' @return \code{\link{loadItemAttrib}} returns an \code{\linkS4class{item_attrib}} object.
 #'
@@ -339,25 +321,15 @@ setClass("item_attrib",
 #' itemattrib_science <- loadItemAttrib(f, itempool_science)
 #' file.remove(f)
 #'
-#' ## TestDesign 1.1.0 - Deprecated arguments
-#' \dontrun{
-#' loadItemAttrib(object = "iatt.csv", pool) # is equivalent to
-#' loadItemAttrib(file   = "iatt.csv", pool) # pre 1.1.0
-#' }
-#'
 #' @seealso \code{\link{dataset_science}}, \code{\link{dataset_reading}}, \code{\link{dataset_fatigue}}, \code{\link{dataset_bayes}} for examples.
 #'
 #' @export
-loadItemAttrib <- function(object, pool, file = NULL) {
+loadItemAttrib <- function(object, pool) {
 
   if (is.null(pool) || !inherits(pool, "item_pool")) {
     stop("'pool' is missing or is not an 'item_pool' object.")
   }
 
-  if (!missing("file")){
-    warning("argument 'file' is deprecated. Use 'object' instead.")
-    object <- file
-  }
   if (!is.null(object)) {
     if (inherits(object, "data.frame")) {
       item_attrib <- object
@@ -440,7 +412,6 @@ setClassUnion("stattrib_or_null", c("st_attrib", "NULL"))
 #'
 #' @param object set attributes. Can be a \code{\link{data.frame}} or the file path of a .csv file. The content should at least include the column 'STID' referring to the column 'STID' in the \code{data} slot of the \code{\linkS4class{item_attrib}} object.
 #' @template item_attrib_param
-#' @template deprecated_file_object_param
 #'
 #' @return \code{\link{loadStAttrib}} returns a \code{\linkS4class{st_attrib}} object.
 #'
@@ -460,24 +431,13 @@ setClassUnion("stattrib_or_null", c("st_attrib", "NULL"))
 #' stimattrib_reading <- loadStAttrib(f, itemattrib_reading)
 #' file.remove(f)
 #'
-#' ## TestDesign 1.1.0 - Deprecated arguments
-#' \dontrun{
-#' loadStAttrib(object = "satt.csv", item_attrib) # is equivalent to
-#' loadStAttrib(file   = "satt.csv", item_attrib) # pre 1.1.0
-#' }
-#'
 #' @seealso \code{\link{dataset_reading}} for examples.
 #'
 #' @export
-loadStAttrib <- function(object, item_attrib, file = NULL) {
+loadStAttrib <- function(object, item_attrib) {
 
   if (is.null(item_attrib) || !inherits(item_attrib, "item_attrib")) {
     stop("'item_attrib' is missing or is not an 'item_attrib' object.")
-  }
-
-  if (!missing("file")){
-    warning("Argument deprecated. Use 'object' instead.")
-    object <- file
   }
 
   if (!is.null(object)) {
@@ -740,7 +700,6 @@ setClass("constraints",
 #' @template pool_param
 #' @template item_attrib_param
 #' @template st_attrib_param
-#' @template deprecated_file_object_param
 #'
 #' @return \code{\link{loadConstraints}} returns a \code{\linkS4class{constraints}} object. This object is used in \code{\link{Static}} and \code{\link{Shadow}}.
 #'
@@ -758,16 +717,10 @@ setClass("constraints",
 #'   itempool_science, itemattrib_science)
 #' file.remove(f)
 #'
-#' ## TestDesign 1.1.0 - Deprecated arguments
-#' \dontrun{
-#' loadConstraints(object = "consts.csv", pool, item_attrib) # is equivalent to
-#' loadConstraints(file   = "consts.csv", pool, item_attrib) # pre 1.1.0
-#' }
-#'
 #' @seealso \code{\link{dataset_science}}, \code{\link{dataset_reading}}, \code{\link{dataset_fatigue}}, \code{\link{dataset_bayes}} for examples.
 #'
 #' @export
-loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = NULL) {
+loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL) {
 
   if (!inherits(pool, "item_pool")) {
     stop("'pool' argument must be an 'item_pool' object")
@@ -779,11 +732,6 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
     if (!inherits(st_attrib, "st_attrib")) {
       stop("'st_attrib' argument must be a 'st_attrib' object")
     }
-  }
-
-  if (!missing("file")){
-    warning("argument 'file' is deprecated. Use 'object' instead.")
-    object <- file
   }
 
   if (!is.null(object)) {
@@ -1014,8 +962,6 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 #' @param item_pool item parameters. Can be a \code{\linkS4class{item_pool}} object, a data.frame or the file path of a .csv file.
 #' @param item_attrib item attributes. Can be an \code{\linkS4class{item_attrib}} object, a data.frame or the file path of a .csv file.
 #' @param st_attrib (optional) stimulus attributes. Can be an \code{\linkS4class{st_attrib}} object, a data.frame or the file path of a .csv file.
-#' @param pool (deprecated) use \code{item_pool} argument instead.
-#' @param constraints (deprecated) use \code{object} argument instead.
 #'
 #' @return \code{\link{buildConstraints}} returns a \code{\linkS4class{constraints}} object. This object is used in \code{\link{Static}} and \code{\link{Shadow}}.
 #'
@@ -1044,16 +990,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
 #' file.remove(f2)
 #' file.remove(f3)
 #' @export
-buildConstraints <- function(object, item_pool, item_attrib, st_attrib = NULL, pool = NULL, constraints = NULL) {
-
-  if (!missing("pool")){
-    warning("argument 'pool' is deprecated. Use 'item_pool' instead.")
-    item_pool <- pool
-  }
-  if (!missing("constraints")){
-    warning("argument 'constraints' is deprecated. Use 'object' instead.")
-    object <- constraints
-  }
+buildConstraints <- function(object, item_pool, item_attrib, st_attrib = NULL) {
 
   if (!inherits(item_pool, "item_pool")) {
     item_pool <- loadItemPool(item_pool)

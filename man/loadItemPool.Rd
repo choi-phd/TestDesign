@@ -4,16 +4,12 @@
 \alias{loadItemPool}
 \title{Load item pool}
 \usage{
-loadItemPool(ipar, ipar_se = NULL, file = NULL, se_file = NULL, unique = FALSE)
+loadItemPool(ipar, ipar_se = NULL, unique = FALSE)
 }
 \arguments{
 \item{ipar}{item parameters. Can be a \code{\link{data.frame}} or the file path of a .csv file. The content should at least include columns 'ID' and 'MODEL'.}
 
 \item{ipar_se}{(optional) standard errors. Can be a \code{\link{data.frame}} or the file path of a .csv file.}
-
-\item{file}{(deprecated) use \code{ipar} argument instead.}
-
-\item{se_file}{(deprecated) use \code{ipar_se} argument instead.}
 
 \item{unique}{if \code{TRUE}, item IDs must be unique to create a valid \code{\linkS4class{item_pool}} object. (default = \code{FALSE})}
 }
@@ -48,12 +44,6 @@ f <- file.path(tempdir(), "itempool_science.csv")
 write.csv(itempool_science_data, f, row.names = FALSE)
 itempool_science <- loadItemPool(f)
 file.remove(f)
-
-## TestDesign 1.1.0 - Deprecated arguments
-\dontrun{
-loadItemPool(ipar = "ipar.csv", ipar_se = "se.csv") # is equivalent to
-loadItemPool(file = "ipar.csv", se_file = "se.csv") # pre 1.1.0
-}
 
 }
 \seealso{

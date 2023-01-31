@@ -40,7 +40,6 @@ NULL
 #' @param rmse used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. If \code{TRUE}, display the RMSE value for each segment. (default = \code{FALSE})
 #' @param use_segment_label used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. If \code{TRUE}, display the segment label for each segment. (default = \code{TRUE})
 #' @param use_par if \code{FALSE}, graphical parameters are not overridden inside the function. (default = \code{TRUE})
-#' @param theta_segment (deprecated) use \code{theta_type} argument instead.
 #' @param ... arguments to pass onto \code{\link[graphics]{plot}}.
 #'
 #' @examples
@@ -390,14 +389,9 @@ setMethod(
     rmse = FALSE,
     use_segment_label = TRUE,
     use_par = TRUE,
-    theta_segment = NULL,
     ...
 ) {
 
-  if (!missing("theta_segment")){
-    warning("argument 'theta_segment' is deprecated. Use 'theta_type' instead.")
-    theta_type <- theta_segment
-  }
   if (!type %in% c("audit", "shadow", "info", "score", "exposure")) {
     stop("plot(output_Shadow_all): 'type' must be 'audit', 'shadow', 'info', 'score', or 'exposure'")
   }
