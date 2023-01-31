@@ -87,17 +87,17 @@ setMethod(
       )
     }
 
-    out             <- new("output_Static")
-    out@MIP         <- list(results$MIP)
-    out@selected    <- results$shadow_test
-    out@obj_value   <- results$obj_value
-    out@solve_time  <- results$solve_time
-    out@achieved    <- tmp
-    out@pool        <- item_pool
-    out@config      <- config
-    out@constraints <- constraints
+    o             <- new("output_Static")
+    o@MIP         <- list(results$MIP)
+    o@selected    <- results$shadow_test
+    o@obj_value   <- results$obj_value
+    o@solve_time  <- results$solve_time
+    o@achieved    <- tmp
+    o@pool        <- item_pool
+    o@config      <- config
+    o@constraints <- constraints
 
-    return(out)
+    return(o)
 
   }
 )

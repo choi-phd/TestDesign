@@ -5,79 +5,79 @@ NULL
 #' @docType methods
 #' @rdname summary-methods
 setMethod("summary", "item_pool", function(object) {
-  out <- new("summary_item_pool")
-  out@ni           <- object@ni
-  tmp              <- as.data.frame(table(object@model))
-  colnames(tmp)    <- c("model", "items")
-  out@ni_per_model <- tmp
-  out@has_se       <- any(na.omit(object@se) > 0)
-  return(out)
+  o <- new("summary_item_pool")
+  o@ni           <- object@ni
+  x              <- as.data.frame(table(object@model))
+  colnames(x)    <- c("model", "items")
+  o@ni_per_model <- x
+  o@has_se       <- any(na.omit(object@se) > 0)
+  return(o)
 })
 
 #' @aliases summary,item_attrib-method
 #' @docType methods
 #' @rdname summary-methods
 setMethod("summary", "item_attrib", function(object) {
-  out <- new("summary_item_attrib")
-  out@attribs <- names(object@data)
-  out@levels  <- list()
-  for (a in out@attribs) {
-    out@levels[[a]] <- sort(unique(object@data[[a]]))
+  o <- new("summary_item_attrib")
+  o@attribs <- names(object@data)
+  o@levels  <- list()
+  for (a in o@attribs) {
+    o@levels[[a]] <- sort(unique(object@data[[a]]))
   }
-  return(out)
+  return(o)
 })
 
 #' @aliases summary,st_attrib-method
 #' @docType methods
 #' @rdname summary-methods
 setMethod("summary", "st_attrib", function(object) {
-  out <- new("summary_st_attrib")
-  out@attribs <- names(object@data)
-  out@levels  <- list()
-  for (a in out@attribs) {
-    out@levels[[a]] <- sort(unique(object@data[[a]]))
+  o <- new("summary_st_attrib")
+  o@attribs <- names(object@data)
+  o@levels  <- list()
+  for (a in o@attribs) {
+    o@levels[[a]] <- sort(unique(object@data[[a]]))
   }
-  return(out)
+  return(o)
 })
 
 #' @aliases summary,constraints-method
 #' @docType methods
 #' @rdname summary-methods
 setMethod("summary", "constraints", function(object) {
-  out <- new("summary_constraints")
-  out@n_constraints     <- dim(object@constraints)[1]
-  out@n_mip_constraints <- sum(unlist(lapply(object@list_constraints, function(x) x@nc)))
-  out@test_length       <- object@test_length
-  out@set_based         <- object@set_based
-  return(out)
+  o <- new("summary_constraints")
+  o@n_constraints     <- dim(object@constraints)[1]
+  o@n_mip_constraints <- sum(unlist(lapply(object@list_constraints, function(x) x@nc)))
+  o@test_length       <- object@test_length
+  o@set_based         <- object@set_based
+  return(o)
 })
 
 #' @aliases summary,output_Static-method
 #' @docType methods
 #' @rdname summary-methods
 setMethod("summary", "output_Static", function(object, simple = FALSE) {
-  out <- new("summary_output_Static")
-  out@n_targets        <- length(object@config@item_selection$target_location)
-  out@obj_type         <- object@config@item_selection$method
-  out@target_location  <- object@config@item_selection$target_location
-  out@selected_items   <- object@selected[['INDEX']]
-  out@set_based        <- object@constraints@set_based
-  out@n_selected_sets  <- NULL
-  if (out@set_based) {
-    out@n_selected_sets <- length(unique(object@selected[['STID']]))
+  o <- new("summary_output_Static")
+  o@n_targets        <- length(object@config@item_selection$target_location)
+  o@obj_type         <- object@config@item_selection$method
+  o@target_location  <- object@config@item_selection$target_location
+  o@selected_items   <- object@selected[['INDEX']]
+  o@set_based        <- object@constraints@set_based
+  o@n_selected_sets  <- NULL
+  if (o@set_based) {
+    o@n_selected_sets <- length(unique(object@selected[['STID']]))
   }
-  subpool   <- subsetItemPool(object@pool, out@selected_items)
-  info      <- calcFisher(subpool, out@target_location)
-  out@info  <- rowSums(info)
-  out@score <- calcEscore(subpool, out@target_location)
+  subpool   <- subsetItemPool(object@pool, o@selected_items)
+  info      <- calcFisher(subpool, o@target_location)
+  o@info  <- rowSums(info)
+  o@score <- calcEscore(subpool, o@target_location)
 
   if (!simple) {
-    out@achieved <- object@achieved
+    o@achieved <- object@achieved
   } else {
-    out@achieved <- NULL
+    o@achieved <- NULL
   }
 
-  return(out)
+  return(o)
 
 })
 
@@ -85,19 +85,19 @@ setMethod("summary", "output_Static", function(object, simple = FALSE) {
 #' @docType methods
 #' @rdname summary-methods
 setMethod("summary", "output_Shadow_all", function(object, simple = FALSE) {
-  out <- new("summary_output_Shadow_all")
-  out@n_simulee    <- length(object@output)
-  out@test_length  <- object@constraints@test_length
-  out@est_theta    <- sapply(object@output, function(x) x@final_theta_est)
-  out@est_theta_se <- sapply(object@output, function(x) x@final_se_est)
-  out@true_theta   <- object@true_theta
-  if (!is.null(out@true_theta)) {
-    out@diff <- out@est_theta - out@true_theta
-    out@mse  <- mean(out@diff ** 2)
-    out@bias <- mean(out@diff)
-    out@corr <- cor(out@est_theta, out@true_theta)
+  o <- new("summary_output_Shadow_all")
+  o@n_simulee    <- length(object@output)
+  o@test_length  <- object@constraints@test_length
+  o@est_theta    <- sapply(object@output, function(x) x@final_theta_est)
+  o@est_theta_se <- sapply(object@output, function(x) x@final_se_est)
+  o@true_theta   <- object@true_theta
+  if (!is.null(o@true_theta)) {
+    o@diff <- o@est_theta - o@true_theta
+    o@mse  <- mean(o@diff ** 2)
+    o@bias <- mean(o@diff)
+    o@corr <- cor(o@est_theta, o@true_theta)
   }
-  out@average_se <- mean(out@est_theta_se)
+  o@average_se <- mean(o@est_theta_se)
 
   # achieved attribute matching each constraint
   nc <- length(object@constraints@list_constraints)
@@ -129,11 +129,11 @@ setMethod("summary", "output_Shadow_all", function(object, simple = FALSE) {
   tmp <- cbind(tmp, mean = a_mean, sd = a_sd, min = a_min, max = a_max)
 
   if (!simple) {
-    out@achieved <- tmp
+    o@achieved <- tmp
   } else {
-    out@achieved <- NULL
+    o@achieved <- NULL
   }
 
-  return(out)
+  return(o)
 
 })
