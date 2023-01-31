@@ -2,7 +2,7 @@
 NULL
 
 #' @noRd
-getXdataOfAdministered <- function(constants, position, output, stimulus_record, constraints) {
+getXdataOfAdministered <- function(constants, position, x, stimulus_record, constraints) {
 
   o <- list()
 
@@ -19,7 +19,7 @@ getXdataOfAdministered <- function(constants, position, output, stimulus_record,
   o$xdir <- rep("==", position - 1)
   o$xrhs <- rep(1   , position - 1)
   for (p in 1:(position - 1)) {
-    o$xmat[p, output@administered_item_index[p]] <- 1
+    o$xmat[p, x@administered_item_index[p]] <- 1
   }
 
   if (!constants$set_based) {
@@ -28,7 +28,7 @@ getXdataOfAdministered <- function(constants, position, output, stimulus_record,
 
   # include sets being administered
 
-  unique_administered_stimulus_index <- na.omit(unique(output@administered_stimulus_index))
+  unique_administered_stimulus_index <- na.omit(unique(x@administered_stimulus_index))
   unique_ns <- length(unique_administered_stimulus_index)
 
   if (unique_ns > 0) {
