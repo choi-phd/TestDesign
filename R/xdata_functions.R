@@ -22,7 +22,7 @@ getXdataOfAdministered <- function(constants, position, x, groupings_record, con
     o$xmat[p, x@administered_item_index[p]] <- 1
   }
 
-  if (!constants$set_based) {
+  if (!constants$group_by_stimulus) {
     return(o)
   }
 
@@ -115,7 +115,7 @@ getXdataOfExcludedEntry <- function(constants, exclude_index) {
   o$xrhs <- rep(0   , 1)
   o$xmat[1, exclude_index$i] <- 1
 
-  if (!constants$set_based) {
+  if (!constants$group_by_stimulus) {
     return(o)
   }
 
@@ -144,7 +144,7 @@ getInfoOfExcludedEntry <- function(info, exclude_index, constants) {
   info[exclude_index$i, 1] <-
   info[exclude_index$i, 1] - constants$exclude_M
 
-  if (!constants$set_based) {
+  if (!constants$group_by_stimulus) {
     return(info)
   }
 

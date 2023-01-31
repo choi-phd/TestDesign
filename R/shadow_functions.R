@@ -153,7 +153,7 @@ setMethod(
       o@test_length_constraints     <- constants$max_ni
       o@ni_pool                     <- constants$ni
       o@ns_pool                     <- constants$ns
-      o@set_based                   <- constants$set_based
+      o@set_based                   <- constants$group_by_stimulus
       o@item_index_by_stimulus      <- constraints@item_index_by_stimulus
 
       # Simulee: initialize theta estimate
@@ -170,7 +170,7 @@ setMethod(
 
       # Simulee: initialize completed groupings (item sets) record
 
-      if (constants$set_based) {
+      if (constants$group_by_stimulus) {
         o@administered_stimulus_index <- rep(NA_real_, constants$max_ni)
         groupings_record <- initializeCompletedGroupingsRecord()
         selection$is_last_item_in_this_set <- TRUE
@@ -290,7 +290,7 @@ setMethod(
 
         # Item position / simulee: record which stimulus was administered
 
-        if (constants$set_based) {
+        if (constants$group_by_stimulus) {
 
           o@administered_stimulus_index[position] <- selection$stimulus_selected
 

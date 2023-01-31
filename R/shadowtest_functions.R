@@ -49,7 +49,7 @@ parseShadowTestRefreshSchedule <- function(constants, refresh_policy) {
     o$schedule[seq(1, test_length, refresh_interval)] <- TRUE
   }
   if (refresh_method %in% c("STIMULUS", "SET", "PASSAGE")) {
-    if (!constants$set_based) {
+    if (!constants$group_by_stimulus) {
       stop(sprintf("config@refresh_policy: stimulus-based constraint is required for $method '%s'", refresh_method))
     }
     o$dynamic      <- TRUE
@@ -147,7 +147,7 @@ selectItemFromShadowTest <- function(shadow_test, position, constants, x, previo
   # filter out administered items ----------------------------------------------
   shadow_test <- subset(shadow_test, !(shadow_test$INDEX %in% x@administered_item_index))
 
-  if (constants$set_based) {
+  if (constants$group_by_stimulus) {
 
     # if set-based and we just completed a set, select a new set ---------------
     # this is also triggered at the start of test
@@ -163,7 +163,7 @@ selectItemFromShadowTest <- function(shadow_test, position, constants, x, previo
   }
 
   # filter to current set ------------------------------------------------------
-  if (constants$set_based) {
+  if (constants$group_by_stimulus) {
 
     if (!is.na(current_stimulus_index)) {
 
@@ -200,11 +200,11 @@ selectItemFromShadowTest <- function(shadow_test, position, constants, x, previo
   # select item
   o$item_selected <- shadow_test$INDEX[1]
 
-  if (constants$set_based) {
+  if (constants$group_by_stimulus) {
     o$stimulus_selected <- shadow_test$STINDEX[1]
   }
 
-  if (constants$set_based) {
+  if (constants$group_by_stimulus) {
 
     # this is used to trigger a shadowtest refresh
     o$is_last_item_in_this_set <- nrow(shadow_test) == 1

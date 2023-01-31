@@ -231,14 +231,14 @@ parseConstraintData <- function(x, attrib, constants) {
     nx     <- constants$ns
   }
 
-  ni        <- constants$ni
-  ns        <- constants$ns
-  nv        <- constants$nv
-  set_based <- constants$set_based
-  i_by_s    <- constants$i_by_s
-  s_by_i    <- constants$s_by_i
-  i_count   <- constants$i_count
-  s_count   <- constants$s_count
+  ni                <- constants$ni
+  ns                <- constants$ns
+  nv                <- constants$nv
+  group_by_stimulus <- constants$group_by_stimulus
+  i_by_s            <- constants$i_by_s
+  s_by_i            <- constants$s_by_i
+  i_count           <- constants$i_count
+  s_count           <- constants$s_count
 
   o <- new("constraint")
   o@constraint    <- x$CONSTRAINT
@@ -454,7 +454,7 @@ parseConstraintData <- function(x, attrib, constants) {
     o@dir <- "=="
     o@rhs <- length(idx)
 
-    if (nx == ni && set_based) {
+    if (nx == ni && group_by_stimulus) {
       s <- na.omit(unique(s_by_i[idx]))
       o@mat[1, nx_pad + s] <- 1
       o@rhs <- o@rhs + length(s)

@@ -19,7 +19,7 @@ flagIneligible <- function(exposure_record, constants, item_index_by_stimulus, s
   p_random <- matrix(runif(n_segment * ni), n_segment, ni)
   o$i[p_random >= p_e_i] <- 0
 
-  if (!constants$set_based) {
+  if (!constants$group_by_stimulus) {
     return(o)
   }
 
@@ -48,7 +48,7 @@ flagIneligible <- function(exposure_record, constants, item_index_by_stimulus, s
 getEligibilityFlagInSegment <- function(eligiblity_flag, segment, constants) {
   o <- list()
   o$i <- eligiblity_flag$i[segment, ]
-  if (!constants$set_based) {
+  if (!constants$group_by_stimulus) {
     return(o)
   }
   o$s <- eligiblity_flag$s[segment, ]
@@ -61,7 +61,7 @@ flagAdministeredAsEligible <- function(eligibility_flag_in_current_theta_segment
   eligibility_flag_in_current_theta_segment$i[
     x@administered_item_index[0:(position - 1)]
   ] <- 1
-  if (!constants$set_based) {
+  if (!constants$group_by_stimulus) {
     return(eligibility_flag_in_current_theta_segment)
   }
 
@@ -137,7 +137,7 @@ applyFading <- function(exposure_record, segments_to_apply, constants) {
   exposure_record$a_ijk[segments_to_apply, ] <- fading_factor * exposure_record$a_ijk[segments_to_apply, ]
   exposure_record$r_ijk[segments_to_apply, ] <- fading_factor * exposure_record$r_ijk[segments_to_apply, ]
 
-  if (!constants$set_based) {
+  if (!constants$group_by_stimulus) {
     return(exposure_record)
   }
 
@@ -200,7 +200,7 @@ incrementAlpha <- function(exposure_record, segments_to_apply, segment_prob, x, 
     exposure_record$a_ijk_nofade[segments_to_apply, administered_i] + segment_prob
   }
 
-  if (!constants$set_based) {
+  if (!constants$group_by_stimulus) {
     return(exposure_record)
   }
 
@@ -235,7 +235,7 @@ incrementRho <- function(o, segments_to_apply, segment_prob, eligibility_flag, t
     o$r_ijk_nofade <- o$r_ijk_nofade + r_flag_i * segments_to_apply * segment_prob
   }
 
-  if (!constants$set_based) {
+  if (!constants$group_by_stimulus) {
     return(o)
   }
 
@@ -256,7 +256,7 @@ clipEligibilityRates <- function(o, constants) {
   o$p_e_i[is.na(o$p_e_i) | o$a_ijk == 0] <- 1
   o$p_e_i[o$p_e_i > 1] <- 1
 
-  if (!constants$set_based) {
+  if (!constants$group_by_stimulus) {
     return(o)
   }
 
@@ -303,7 +303,7 @@ adjustAlphaToReduceSpike <- function(o, segment_prob_of_final_theta, segments_vi
     o$a_ijk[segment_visited, items_to_apply] + segment_prob_of_final_theta
   }
 
-  if (!constants$set_based) {
+  if (!constants$group_by_stimulus) {
     return(o)
   }
 
@@ -369,7 +369,7 @@ updateEligibilityRates <- function(o, constants) {
     o$p_e_i <- 1 - nf_ijk + (max_exposure_rate / p_a_ijk * p_r_ijk * nf_ijk)
   }
 
-  if (!constants$set_based) {
+  if (!constants$group_by_stimulus) {
     return(o)
   }
 
@@ -441,7 +441,7 @@ parseDiagnosticStats <- function(
     e_g_i <- do.call(rbind, e_g_i)
     o$elg_stats[[j]]$e_g_i <- e_g_i
 
-    if (constants$set_based) {
+    if (constants$group_by_stimulus) {
 
       a_g_s <- lapply(exposure_record_detailed$a_g_s, function(x) { x[j, ] })
       a_g_s <- do.call(rbind, a_g_s)
@@ -477,7 +477,7 @@ parseDiagnosticStats <- function(
     e_g_i_nofade <- do.call(rbind, e_g_i_nofade)
     o$elg_stats_nofade[[j]]$e_g_i_nofade <- e_g_i_nofade
 
-    if (constants$set_based) {
+    if (constants$group_by_stimulus) {
 
       a_g_s_nofade <- lapply(exposure_record_detailed$a_g_s_nofade, function(x) { x[j, ] })
       a_g_s_nofade <- do.call(rbind, a_g_s_nofade)
