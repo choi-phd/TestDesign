@@ -398,11 +398,11 @@ loadItemAttrib <- function(object, pool, file = NULL) {
   }
   item_attrib <- data.frame(cbind(INDEX = 1:nrow(item_attrib), item_attrib))
 
-  out <- new("item_attrib")
-  out@data <- item_attrib
+  o <- new("item_attrib")
+  o@data <- item_attrib
 
-  if (validObject(out)) {
-    return(out)
+  if (validObject(o)) {
+    return(o)
   }
 }
 
@@ -506,11 +506,11 @@ loadStAttrib <- function(object, item_attrib, file = NULL) {
     stop("The 'STID' column in 'st_attrib' content must have all unique values in the 'STID' column of 'item_attrib' content.")
   }
 
-  out <- new("st_attrib")
-  out@data <- st_attrib
+  o <- new("st_attrib")
+  o@data <- st_attrib
 
-  if (validObject(out)) {
-    return(out)
+  if (validObject(o)) {
+    return(o)
   }
 }
 
@@ -978,30 +978,30 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
     }
   }
 
-  out <- new("constraints")
-  out@constraints      <- constraints
-  out@list_constraints <- list_constraints
-  out@pool             <- pool
-  out@item_attrib      <- item_attrib
-  out@st_attrib        <- st_attrib
-  out@test_length      <- constants$i_count$LB
-  out@nv    <- nv
-  out@ni    <- ni
-  out@ns    <- ns
-  out@id    <- id
-  out@index <- index
-  out@mat   <- mat
-  out@dir   <- dir
-  out@rhs   <- rhs
-  out@set_based              <- set_based
-  out@item_order             <- item_order
-  out@item_order_by          <- item_order_by
-  out@stim_order             <- stim_order
-  out@stim_order_by          <- stim_order_by
-  out@item_index_by_stimulus <- item_index_by_stimulus
-  out@stimulus_index_by_item <- stimulus_index_by_item
+  o <- new("constraints")
+  o@constraints      <- constraints
+  o@list_constraints <- list_constraints
+  o@pool             <- pool
+  o@item_attrib      <- item_attrib
+  o@st_attrib        <- st_attrib
+  o@test_length      <- constants$i_count$LB
+  o@nv    <- nv
+  o@ni    <- ni
+  o@ns    <- ns
+  o@id    <- id
+  o@index <- index
+  o@mat   <- mat
+  o@dir   <- dir
+  o@rhs   <- rhs
+  o@set_based              <- set_based
+  o@item_order             <- item_order
+  o@item_order_by          <- item_order_by
+  o@stim_order             <- stim_order
+  o@stim_order_by          <- stim_order_by
+  o@item_index_by_stimulus <- item_index_by_stimulus
+  o@stimulus_index_by_item <- stimulus_index_by_item
 
-  return(out)
+  return(o)
 }
 
 #' Build constraints (shortcut to other loading functions)

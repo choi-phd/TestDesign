@@ -328,7 +328,7 @@ setMethod("print", "output_Shadow", function(x) {
     cat("  True theta           :", x@true_theta, "\n")
     cat("  Final theta estimate :", x@final_theta_est, "\n")
     cat("  Final SE estimate    :", x@final_se_est, "\n")
-    output <- data.frame(
+    o <- data.frame(
       stage          = 1:length(x@administered_item_index),
       stimulus_index = ifelse(is.nan(x@administered_stimulus_index), rep(NA, length(x@administered_item_index)), x@administered_stimulus_index),
       item_index     = x@administered_item_index,
@@ -338,7 +338,7 @@ setMethod("print", "output_Shadow", function(x) {
       interim_se     = x@interim_se_est,
       theta_segment  = x@theta_segment_index
     )
-    print(output)
+    print(o)
   } else {
     cat("empty 'output_Shadow' object")
   }

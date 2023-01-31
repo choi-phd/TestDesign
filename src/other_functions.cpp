@@ -10,17 +10,17 @@ IntegerVector find_segment(
   // find_segment() needs to be updated for multidimensional segments
   int ns = segment.size();
   int nx = x.size();
-  IntegerVector out(nx);
+  IntegerVector o(nx);
 
   for (int j = 0; j < nx; j++) {
     for (int k = 1; k < ns; k++) {
       if (x[j] <= segment[k]) {
-        out[j] = k;
+        o[j] = k;
         break;
       }
     }
   }
 
-  return out;
+  return o;
 
 }

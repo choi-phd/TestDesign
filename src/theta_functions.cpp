@@ -93,7 +93,7 @@ arma::mat theta_EB(
   const int& prior,
   const arma::rowvec& prior_parm) {
 
-  mat out(nx, 1);
+  mat o(nx, 1);
   rowvec x_0 = theta_init;
   double density_0 = calc_posterior(x_0, item_parm, resp, ncat, model, prior, prior_parm);
 
@@ -113,10 +113,10 @@ arma::mat theta_EB(
       x_0 = x_1;
       density_0 = density_1;
     }
-    out.row(j) = x_0;
+    o.row(j) = x_0;
   }
 
-  return out;
+  return o;
 }
 
 //' @rdname theta_EB
@@ -133,7 +133,7 @@ arma::mat theta_EB_single(
   const int& prior,
   const arma::rowvec& prior_parm) {
 
-  mat out(nx, 1);
+  mat o(nx, 1);
   rowvec x_0 = theta_init;
   double density_0 = calc_posterior_single(x_0, item_parm, resp, ncat, model, prior, prior_parm);
 
@@ -154,11 +154,11 @@ arma::mat theta_EB_single(
       x_0 = x_1;
       density_0 = density_1;
     }
-    out.row(j) = x_0;
+    o.row(j) = x_0;
 
   }
 
-  return out;
+  return o;
 }
 
 //' @rdname theta_FB
@@ -176,7 +176,7 @@ arma::mat theta_FB(
   const int& prior,
   const arma::rowvec& prior_parm) {
 
-  mat out(nx, 1);
+  mat o(nx, 1);
 
   rowvec x_0 = theta_init;
   int ni = item_init.n_rows;
@@ -248,13 +248,13 @@ arma::mat theta_FB(
       const_0 = const_1;
     }
 
-    out.row(j) = x_0;
+    o.row(j) = x_0;
 
   }
 
   PutRNGstate();
 
-  return out;
+  return o;
 }
 
 //' @rdname theta_FB
@@ -272,7 +272,7 @@ arma::mat theta_FB_single(
   const int& prior,
   const arma::rowvec& prior_parm) {
 
-  mat out(nx, 1);
+  mat o(nx, 1);
   rowvec x_0 = theta_init;
   int ns = item_mcmc.n_rows;
 
@@ -304,9 +304,9 @@ arma::mat theta_FB_single(
       x_0 = x_1;
       const_0 = const_1;
     }
-    out.row(j) = x_0;
+    o.row(j) = x_0;
   }
 
-  return out;
+  return o;
 
 }
