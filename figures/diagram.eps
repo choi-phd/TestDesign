@@ -1,8 +1,8 @@
 %!PS-Adobe-3.0 EPSF-3.0
-%%DocumentNeededResources: font Courier
-%%+ font Courier-Bold
-%%+ font Courier-Oblique
-%%+ font Courier-BoldOblique
+%%DocumentNeededResources: font Helvetica
+%%+ font Helvetica-Bold
+%%+ font Helvetica-Oblique
+%%+ font Helvetica-BoldOblique
 %%+ font Symbol
 %%Title: R Graphics Output
 %%Creator: R Software
@@ -54,32 +54,32 @@
            >>
          ] setcolorspace } bind def
 /srgb { setcolor } bind def
-%%IncludeResource: font Courier
-/Courier findfont
+%%IncludeResource: font Helvetica
+/Helvetica findfont
 dup length dict begin
   {1 index /FID ne {def} {pop pop} ifelse} forall
   /Encoding ISOLatin1Encoding def
   currentdict
   end
 /Font1 exch definefont pop
-%%IncludeResource: font Courier-Bold
-/Courier-Bold findfont
+%%IncludeResource: font Helvetica-Bold
+/Helvetica-Bold findfont
 dup length dict begin
   {1 index /FID ne {def} {pop pop} ifelse} forall
   /Encoding ISOLatin1Encoding def
   currentdict
   end
 /Font2 exch definefont pop
-%%IncludeResource: font Courier-Oblique
-/Courier-Oblique findfont
+%%IncludeResource: font Helvetica-Oblique
+/Helvetica-Oblique findfont
 dup length dict begin
   {1 index /FID ne {def} {pop pop} ifelse} forall
   /Encoding ISOLatin1Encoding def
   currentdict
   end
 /Font3 exch definefont pop
-%%IncludeResource: font Courier-BoldOblique
-/Courier-BoldOblique findfont
+%%IncludeResource: font Helvetica-BoldOblique
+/Helvetica-BoldOblique findfont
 dup length dict begin
   {1 index /FID ne {def} {pop pop} ifelse} forall
   /Encoding ISOLatin1Encoding def
@@ -197,6 +197,19 @@ np
 -8.82 4.40 l
 cp p3
 np
+446.40 206.50 m
+0 -88.71 l
+o
+np
+446.40 163.03 m
+0 -0.89 l
+o
+np
+ 441.99 166.55 m
+4.41 -8.81 l
+4.41 8.81 l
+cp p3
+np
 704.64 206.50 m
 0 -88.71 l
 o
@@ -226,8 +239,9 @@ np
 0 -46.48 l
 cp p3
 /Font1 findfont 12 s
-446.40 476.44 (Item pool) .5 0 t
-446.40 462.04 (loadItemPool\(\)) .5 0 t
+446.40 475.50 (Item pool) .5 0 t
+407.39 461.10 (loadItemP) 0 ta
+-0.600 (ool\(\)) tb gr
 /bg { 0.7490 0.7490 0.7490 srgb } def
 np
  372.80 356.79 m
@@ -242,8 +256,11 @@ np
 154.94 0 l
 0 -46.49 l
 cp p3
-446.40 387.73 (Item attributes) .5 0 t
-446.40 373.33 (loadItemAttrib\(\)) .5 0 t
+408.38 386.80 (Item attr) 0 ta
+0.180 (ib) tb
+-0.240 (utes) tb gr
+405.39 372.40 (loadItemAttr) 0 ta
+0.180 (ib\(\)) tb gr
 /bg { 0.7490 0.7490 0.7490 srgb } def
 np
  566.48 356.79 m
@@ -258,8 +275,12 @@ np
 154.94 0 l
 0 -46.49 l
 cp p3
-640.08 387.73 (Stimulus attributes) .5 0 t
-640.08 373.33 (loadStAttrib\(\)) .5 0 t
+590.73 386.80 (Stim) 0 ta
+-0.120 (ulus attr) tb
+0.180 (ib) tb
+-0.240 (utes) tb gr
+605.07 372.40 (loadStAttr) 0 ta
+0.180 (ib\(\)) tb gr
 /bg { 0.7490 0.7490 0.7490 srgb } def
 np
  372.80 268.08 m
@@ -274,8 +295,10 @@ np
 154.94 0 l
 0 -46.48 l
 cp p3
-446.40 299.03 (Constraints) .5 0 t
-446.40 284.63 (loadConstraints\(\)) .5 0 t
+416.06 298.09 (Constr) 0 ta
+-0.120 (aints) tb gr
+400.72 283.69 (loadConstr) 0 ta
+-0.120 (aints\(\)) tb gr
 /bg { 0.7490 0.7490 0.7490 srgb } def
 np
  114.56 179.38 m
@@ -290,8 +313,12 @@ np
 154.94 0 l
 0 -46.49 l
 cp p3
-188.16 210.32 (Fixed-form Assembly) .5 0 t
-188.16 195.92 (Static\(\)) .5 0 t
+130.31 209.39 (Fix) 0 ta
+-0.360 (ed-f) tb
+-0.360 (or) tb
+0.300 (m Assemb) tb
+-0.240 (ly) tb gr
+188.16 194.99 (Static\(\)) .5 0 t
 /bg { 0.4980 0.4980 0.4980 srgb } def
 np
  353.43 173.57 m
@@ -306,7 +333,9 @@ np
 193.68 0 l
 0 -58.11 l
 cp p3
-446.40 203.12 (Optimal Test Assembly) .5 0 t
+384.72 202.19 (Optimal T) 0 ta
+-1.440 (est Assemb) tb
+-0.240 (ly) tb gr
 np
  631.04 179.38 m
 0 46.48 l
@@ -320,8 +349,11 @@ np
 154.94 0 l
 0 -46.49 l
 cp p3
-704.64 210.32 (Adaptive Assembly) .5 0 t
-704.64 195.92 (Shadow\(\)) .5 0 t
+653.62 209.39 (Adaptiv) 0 ta
+-0.300 (e Assemb) tb
+-0.240 (ly) tb gr
+678.97 194.99 (Shado) 0 ta
+-0.180 (w\(\)) tb gr
 /bg { 0.7490 0.7490 0.7490 srgb } def
 np
  114.56 75.18 m
@@ -336,16 +368,33 @@ np
 154.94 0 l
 0 -77.47 l
 cp p3
-188.16 128.82 (Maximum information) .5 0 t
-188.16 114.42 (Target TIF) .5 0 t
-188.16 100.02 (Target TCC) .5 0 t
-1 1 1 srgb
+130.82 127.88 (Maxim) 0 ta
+-0.120 (um inf) tb
+-0.360 (or) tb
+0.300 (mation) tb gr
+160.15 113.48 (T) 0 ta
+-1.440 (arget TIF) tb gr
+156.82 99.08 (T) 0 ta
+-1.440 (arget TCC) tb gr
+/bg { 0.7490 0.7490 0.7490 srgb } def
 np
- 368.93 79.06 m
-0 77.47 l
+ 372.80 90.68 m
+0 46.48 l
+154.95 0 l
+0 -46.48 l
+cp p2
+/bg { 1 1 1 srgb } def
+np
+ 368.93 94.55 m
+0 46.48 l
 154.94 0 l
-0 -77.47 l
+0 -46.48 l
 cp p3
+382.55 120.68 (Multiple-f) 0 ta
+-0.360 (or) tb
+0.300 (m Assemb) tb
+-0.240 (ly) tb gr
+446.40 106.28 (Split\(\)) .5 0 t
 /bg { 0.7490 0.7490 0.7490 srgb } def
 np
  631.04 75.18 m
@@ -354,17 +403,18 @@ np
 0 -77.47 l
 cp p2
 /bg { 1 1 1 srgb } def
-0 0 0 srgb
 np
  627.17 79.06 m
 0 77.47 l
 154.94 0 l
 0 -77.47 l
 cp p3
-704.64 136.02 (Linear-on-the-fly) .5 0 t
-704.64 121.62 (MST on the fly) .5 0 t
-704.64 107.22 (Fully adaptive) .5 0 t
-704.64 92.82 (Hybrid) .5 0 t
+704.64 135.08 (Linear-on-the-fly) .5 0 t
+704.64 120.68 (MST on the fly) .5 0 t
+667.63 106.28 (Fully adaptiv) 0 ta
+-0.300 (e) tb gr
+687.31 91.88 (Hybr) 0 ta
+0.180 (id) tb gr
 ep
 %%Trailer
 %%Pages: 1
