@@ -4,7 +4,7 @@
 <!-- badges: start -->
 
 [![R build
-status](https://github.com/choi-phd/TestDesign/workflows/build/badge.svg)](https://github.com/choi-phd/TestDesign/actions)
+status](https://github.com/choi-phd/TestDesign/actions/workflows/r.yml/badge.svg)](https://github.com/choi-phd/TestDesign/actions)
 [![Number of
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/TestDesign?color=lightgrey)](https://cran.r-project.org/package=TestDesign)
 <!-- badges: end -->
