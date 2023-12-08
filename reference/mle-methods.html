@@ -194,8 +194,33 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">mle</span><span class="op">(</span><span class="va">itempool_fatigue</span>, resp <span class="op">=</span> <span class="va">resp_fatigue_data</span><span class="op">[</span><span class="fl">10</span>, <span class="op">]</span><span class="op">)</span></span>
-<span><span class="fu">mle</span><span class="op">(</span><span class="va">itempool_fatigue</span>, select <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">20</span>, resp <span class="op">=</span> <span class="va">resp_fatigue_data</span><span class="op">[</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">mle</span><span class="op">(</span><span class="va">itempool_fatigue</span>, resp <span class="op">=</span> <span class="va">resp_fatigue_data</span><span class="op">[</span><span class="fl">10</span>, <span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $th</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.1112582</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.06490829</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $conv</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $trunc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="fu">mle</span><span class="op">(</span><span class="va">itempool_fatigue</span>, select <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">20</span>, resp <span class="op">=</span> <span class="va">resp_fatigue_data</span><span class="op">[</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $th</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.1573182</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1329886</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $conv</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $trunc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+</code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

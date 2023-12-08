@@ -99,17 +99,110 @@ In this case, if <code>TRUE</code>, the number of items for every stimuli are re
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="va">item_idx</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="fl">29</span>,  <span class="fl">33</span>,  <span class="fl">26</span>,  <span class="fl">36</span>,  <span class="fl">34</span>,</span>
-<span>    <span class="fl">295</span>, <span class="fl">289</span>, <span class="fl">296</span>, <span class="fl">291</span>, <span class="fl">126</span>,</span>
-<span>    <span class="fl">133</span>, <span class="fl">124</span>, <span class="fl">134</span>, <span class="fl">129</span>,  <span class="fl">38</span>,</span>
-<span>     <span class="fl">47</span>,  <span class="fl">39</span>,  <span class="fl">41</span>,  <span class="fl">46</span>,  <span class="fl">45</span>,</span>
-<span>    <span class="fl">167</span>, <span class="fl">166</span>, <span class="fl">170</span>, <span class="fl">168</span>, <span class="fl">113</span>,</span>
-<span>    <span class="fl">116</span>, <span class="fl">119</span>, <span class="fl">117</span>, <span class="fl">118</span>, <span class="fl">114</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">getSolutionAttributes</span><span class="op">(</span><span class="va">constraints_reading</span>, <span class="va">item_idx</span>, <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="fu">getSolutionAttributes</span><span class="op">(</span><span class="va">constraints_reading</span>, <span class="va">item_idx</span>, <span class="cn">TRUE</span><span class="op">)</span></span>
-<span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">item_idx</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="fl">29</span>,  <span class="fl">33</span>,  <span class="fl">26</span>,  <span class="fl">36</span>,  <span class="fl">34</span>,</span></span>
+<span class="r-in"><span>    <span class="fl">295</span>, <span class="fl">289</span>, <span class="fl">296</span>, <span class="fl">291</span>, <span class="fl">126</span>,</span></span>
+<span class="r-in"><span>    <span class="fl">133</span>, <span class="fl">124</span>, <span class="fl">134</span>, <span class="fl">129</span>,  <span class="fl">38</span>,</span></span>
+<span class="r-in"><span>     <span class="fl">47</span>,  <span class="fl">39</span>,  <span class="fl">41</span>,  <span class="fl">46</span>,  <span class="fl">45</span>,</span></span>
+<span class="r-in"><span>    <span class="fl">167</span>, <span class="fl">166</span>, <span class="fl">170</span>, <span class="fl">168</span>, <span class="fl">113</span>,</span></span>
+<span class="r-in"><span>    <span class="fl">116</span>, <span class="fl">119</span>, <span class="fl">117</span>, <span class="fl">118</span>, <span class="fl">114</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">getSolutionAttributes</span><span class="op">(</span><span class="va">constraints_reading</span>, <span class="va">item_idx</span>, <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    CONSTRAINT CONSTRAINT_ID   TYPE     WHAT                   CONDITION LB UB</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           1            C1 NUMBER     ITEM                             30 30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2           2            C2 NUMBER STIMULUS                              6  6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3           3            C3 NUMBER     ITEM                Per Stimulus  4  6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4           4            C4 NUMBER     ITEM                CONTENT == 1 15 15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5           5            C5 NUMBER     ITEM                CONTENT == 2 15 15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6           6            C6 NUMBER     ITEM                  SUBCONTENT  1  3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7           7            C7 NUMBER     ITEM     SUBCONTENT %in% c(1, 8)  3  5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8           8            C8 NUMBER     ITEM     SUBCONTENT %in% c(2, 9)  3  5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9           9            C9 NUMBER     ITEM    SUBCONTENT %in% c(3, 10)  3  5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10         10           C10 NUMBER     ITEM    SUBCONTENT %in% c(4, 11)  3  5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11         11           C11 NUMBER     ITEM    SUBCONTENT %in% c(5, 12)  3  5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12         12           C12 NUMBER     ITEM    SUBCONTENT %in% c(6, 13)  3  5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13         13           C13 NUMBER     ITEM    SUBCONTENT %in% c(7, 14)  3  5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14         14           C14 NUMBER     ITEM TYPE == "CR" &amp; CONTENT == 1  1  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15         15           C15 NUMBER     ITEM TYPE == "CR" &amp; CONTENT == 2  1  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16         16           C16 NUMBER     ITEM                TYPE == "MC" 28 28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17         17           C17 NUMBER     ITEM                    DOK &gt;= 2 15 30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18         18           C18  ORDER  PASSAGE                     CONTENT NA NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    ONOFF COUNT ST_COUNT solution mean        sd min max</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          303       NA       30   NA        NA  NA  NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2           NA       35        6   NA        NA  NA  NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3           NA       NA       NA    5 0.8944272   4   6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4          182       NA       15   NA        NA  NA  NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5          121       NA       15   NA        NA  NA  NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6          303       NA       NA   NA        NA  NA  NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7           31       NA        5   NA        NA  NA  NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8           57       NA        4   NA        NA  NA  NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9           35       NA        4   NA        NA  NA  NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10          53       NA        4   NA        NA  NA  NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11          41       NA        4   NA        NA  NA  NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12          44       NA        4   NA        NA  NA  NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13          42       NA        5   NA        NA  NA  NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14          19       NA        1   NA        NA  NA  NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15          14       NA        1   NA        NA  NA  NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16         270       NA       28   NA        NA  NA  NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17         275       NA       25   NA        NA  NA  NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18   OFF    NA       NA       NA   NA        NA  NA  NA</span>
+<span class="r-in"><span><span class="fu">getSolutionAttributes</span><span class="op">(</span><span class="va">constraints_reading</span>, <span class="va">item_idx</span>, <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5 6 6 5 4 4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[8]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[9]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[10]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[11]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[12]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[13]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[14]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[15]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[16]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[17]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[18]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -173,24 +173,70 @@ Reading, MA: Addison-Wesley.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">0.5</span></span>
-<span></span>
-<span><span class="fu">p_1pl</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="fu">p_2pl</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="fu">p_3pl</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">0.25</span><span class="op">)</span></span>
-<span><span class="fu">p_pc</span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">p_gpc</span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">p_gr</span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span> <span class="co"># three theta values, unidimensional</span></span>
-<span></span>
-<span><span class="fu">array_p_1pl</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="fu">array_p_2pl</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="fu">array_p_3pl</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">0.25</span><span class="op">)</span></span>
-<span><span class="fu">array_p_pc</span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">array_p_gpc</span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">array_p_gr</span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">0.5</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">p_1pl</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.3775407</span>
+<span class="r-in"><span><span class="fu">p_2pl</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1824255</span>
+<span class="r-in"><span><span class="fu">p_3pl</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">0.25</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.3868191</span>
+<span class="r-in"><span><span class="fu">p_pc</span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]      [,2]      [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.2740686 0.4518628 0.2740686</span>
+<span class="r-in"><span><span class="fu">p_gpc</span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]      [,2]      [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.2119416 0.5761169 0.2119416</span>
+<span class="r-in"><span><span class="fu">p_gr</span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]      [,2]       [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.2689414 0.6836327 0.04742587</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span> <span class="co"># three theta values, unidimensional</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">array_p_1pl</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.2890505</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.3100255</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.3318122</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.3543437</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.3775407</span>
+<span class="r-in"><span><span class="fu">array_p_2pl</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.1301085</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.1418511</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.1544653</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.1679816</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.1824255</span>
+<span class="r-in"><span><span class="fu">array_p_3pl</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">0.25</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.3475814</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.3563883</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.3658489</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.3759862</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.3868191</span>
+<span class="r-in"><span><span class="fu">array_p_pc</span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]      [,2]      [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.3914661 0.4326369 0.1758970</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.3609829 0.4409055 0.1981116</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.3311062 0.4469466 0.2219471</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.3020641 0.4506267 0.2473092</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.2740686 0.4518628 0.2740686</span>
+<span class="r-in"><span><span class="fu">array_p_gpc</span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]      [,2]       [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.4126605 0.5040247 0.08331473</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.3580355 0.5341262 0.10783823</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.3056751 0.5569763 0.13734866</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.2566827 0.5712578 0.17205954</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.2119416 0.5761169 0.21194156</span>
+<span class="r-in"><span><span class="fu">array_p_gr</span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]      [,2]       [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.4501660 0.5279527 0.02188127</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.4013123 0.5720907 0.02659699</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.3543437 0.6133608 0.03229546</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.3100255 0.6508088 0.03916572</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.2689414 0.6836327 0.04742587</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

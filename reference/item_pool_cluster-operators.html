@@ -101,12 +101,14 @@ makeItemPoolCluster(x, ..., names = NULL)
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span></span>
-<span><span class="va">cluster</span> <span class="op">&lt;-</span> <span class="fu">makeItemPoolCluster</span><span class="op">(</span><span class="va">itempool_science</span>, <span class="va">itempool_reading</span><span class="op">)</span></span>
-<span><span class="va">cluster1</span> <span class="op">&lt;-</span> <span class="fu">makeItemPoolCluster</span><span class="op">(</span><span class="va">itempool_science</span>, <span class="va">itempool_reading</span><span class="op">)</span></span>
-<span><span class="va">cluster2</span> <span class="op">&lt;-</span> <span class="fu">makeItemPoolCluster</span><span class="op">(</span><span class="va">cluster1</span><span class="op">@</span><span class="va">pools</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">cluster1</span><span class="op">@</span><span class="va">pools</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="va">cluster1</span> <span class="op">==</span> <span class="va">cluster2</span>  <span class="co">## TRUE</span></span>
-<span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">cluster</span> <span class="op">&lt;-</span> <span class="fu">makeItemPoolCluster</span><span class="op">(</span><span class="va">itempool_science</span>, <span class="va">itempool_reading</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cluster1</span> <span class="op">&lt;-</span> <span class="fu">makeItemPoolCluster</span><span class="op">(</span><span class="va">itempool_science</span>, <span class="va">itempool_reading</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cluster2</span> <span class="op">&lt;-</span> <span class="fu">makeItemPoolCluster</span><span class="op">(</span><span class="va">cluster1</span><span class="op">@</span><span class="va">pools</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">cluster1</span><span class="op">@</span><span class="va">pools</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cluster1</span> <span class="op">==</span> <span class="va">cluster2</span>  <span class="co">## TRUE</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

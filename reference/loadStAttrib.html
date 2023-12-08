@@ -104,23 +104,25 @@ loadStAttrib can read stimulus attributes a data.frame or a .csv file."><!-- mat
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co">## Read from data.frame:</span></span>
-<span><span class="va">itempool_reading</span>   <span class="op">&lt;-</span> <span class="fu"><a href="loadItemPool.html">loadItemPool</a></span><span class="op">(</span><span class="va">itempool_reading_data</span><span class="op">)</span></span>
-<span><span class="va">itemattrib_reading</span> <span class="op">&lt;-</span> <span class="fu"><a href="loadItemAttrib.html">loadItemAttrib</a></span><span class="op">(</span><span class="va">itemattrib_reading_data</span>, <span class="va">itempool_reading</span><span class="op">)</span></span>
-<span><span class="va">stimattrib_reading</span> <span class="op">&lt;-</span> <span class="fu">loadStAttrib</span><span class="op">(</span><span class="va">stimattrib_reading_data</span>, <span class="va">itemattrib_reading</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## Read from file: write to tempdir() for illustration and clean afterwards</span></span>
-<span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"stimattrib_reading.csv"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">stimattrib_reading_data</span>, <span class="va">f</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="va">stimattrib_reading</span> <span class="op">&lt;-</span> <span class="fu">loadStAttrib</span><span class="op">(</span><span class="va">f</span>, <span class="va">itemattrib_reading</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.remove</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## TestDesign 1.1.0 - Deprecated arguments</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span><span class="fu">loadStAttrib</span><span class="op">(</span>object <span class="op">=</span> <span class="st">"satt.csv"</span>, <span class="va">item_attrib</span><span class="op">)</span> <span class="co"># is equivalent to</span></span>
-<span><span class="fu">loadStAttrib</span><span class="op">(</span>file   <span class="op">=</span> <span class="st">"satt.csv"</span>, <span class="va">item_attrib</span><span class="op">)</span> <span class="co"># pre 1.1.0</span></span>
-<span><span class="op">}</span></span>
-<span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Read from data.frame:</span></span></span>
+<span class="r-in"><span><span class="va">itempool_reading</span>   <span class="op">&lt;-</span> <span class="fu"><a href="loadItemPool.html">loadItemPool</a></span><span class="op">(</span><span class="va">itempool_reading_data</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">itemattrib_reading</span> <span class="op">&lt;-</span> <span class="fu"><a href="loadItemAttrib.html">loadItemAttrib</a></span><span class="op">(</span><span class="va">itemattrib_reading_data</span>, <span class="va">itempool_reading</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">stimattrib_reading</span> <span class="op">&lt;-</span> <span class="fu">loadStAttrib</span><span class="op">(</span><span class="va">stimattrib_reading_data</span>, <span class="va">itemattrib_reading</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Read from file: write to tempdir() for illustration and clean afterwards</span></span></span>
+<span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"stimattrib_reading.csv"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">stimattrib_reading_data</span>, <span class="va">f</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">stimattrib_reading</span> <span class="op">&lt;-</span> <span class="fu">loadStAttrib</span><span class="op">(</span><span class="va">f</span>, <span class="va">itemattrib_reading</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.remove</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## TestDesign 1.1.0 - Deprecated arguments</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu">loadStAttrib</span><span class="op">(</span>object <span class="op">=</span> <span class="st">"satt.csv"</span>, <span class="va">item_attrib</span><span class="op">)</span> <span class="co"># is equivalent to</span></span></span>
+<span class="r-in"><span><span class="fu">loadStAttrib</span><span class="op">(</span>file   <span class="op">=</span> <span class="st">"satt.csv"</span>, <span class="va">item_attrib</span><span class="op">)</span> <span class="co"># pre 1.1.0</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -117,16 +117,70 @@ as.data.frame(x, row.names = NULL, optional = FALSE, ...)</code></pre></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">stimattrib_reading</span></span>
-<span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">stimattrib_reading</span></span></span>
+<span class="r-in"><span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    STINDEX STID NITEM CONTENT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        1 S751     9       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        2 S757     5       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        3 S760    11       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        4 S762    11       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5        5 S765    11       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6        6 S772    11       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7        7 S774    11       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8        8 S781     8       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9        9 S786    11       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10      10 S790     6       1</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 35  4</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 35</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "STINDEX" "STID"    "NITEM"   "CONTENT"</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    STINDEX STID NITEM CONTENT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        1 S751     9       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        2 S757     5       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        3 S760    11       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        4 S762    11       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5        5 S765    11       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6        6 S772    11       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7        7 S774    11       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8        8 S781     8       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9        9 S786    11       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10      10 S790     6       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11      11 S806     8       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12      12 S809    10       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13      13 S812    11       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14      14 S813    11       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15      15 S815     9       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16      16 S820     7       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17      17 S824     8       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18      18 S833     6       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19      19 S836     6       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20      20 S852     6       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21      21 S866     9       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22      22 S867     8       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23      23 S887    11       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24      24 S899     7       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25      25 S904     5       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26      26 S913     8       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27      27 S915     7       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28      28 S918     9       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29      29 S922    11       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30      30 S924    11       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31      31 S926    12       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32      32 S927     7       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33      33 S934     7       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34      34 S936     9       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35      35 S944     6       2</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

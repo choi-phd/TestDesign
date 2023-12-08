@@ -82,11 +82,13 @@
 
       
 
-      </header><script src="split_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Using Split() for creating parallel tests/pools</h1>
-                        <h4 data-toc-skip class="author">Sangdon Lim</h4>
+      <h1 data-toc-skip>Using Split() for creating parallel
+tests/pools</h1>
+                        <h4 data-toc-skip class="author">Sangdon
+Lim</h4>
             
       
       <small class="dont-index">Source: <a href="https://github.com/choi-phd/TestDesign/blob/HEAD/vignettes/split.Rmd" class="external-link"><code>vignettes/split.Rmd</code></a></small>
@@ -100,9 +102,21 @@
 <div class="section level3">
 <h3 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h3>
-<p>This document explains how to use <code><a href="../reference/Split-methods.html">Split()</a></code> to create parallel tests or sub-pools. The partitioning method used in <code><a href="../reference/Split-methods.html">Split()</a></code> is an experimental method that we developed (a manuscript forthcoming). The <code><a href="../reference/Split-methods.html">Split()</a></code> function can be used to split an existing item pool into multiple tests or sub-pools, optimally assembled to have minimal information difference between all partition pairs, subject to additional constraints described below.</p>
-<p>When used to create parallel tests, the method ensures that all tests satisfy all content constraints. A unique and practical benefit of the method is when it is used to create parallel sub-pools. The pools created this way are constructed so that they contain at least one complete test that satisfies all content constraints.</p>
-<p>The <code><a href="../reference/Split-methods.html">Split()</a></code> function is available from <em>TestDesign</em> version 1.3.0. Interested users can look forward to our manuscript currently in preparation.</p>
+<p>This document explains how to use <code><a href="../reference/Split-methods.html">Split()</a></code> to create
+parallel tests or sub-pools. The partitioning method used in
+<code><a href="../reference/Split-methods.html">Split()</a></code> is an experimental method that we developed (a
+manuscript forthcoming). The <code><a href="../reference/Split-methods.html">Split()</a></code> function can be used
+to split an existing item pool into multiple tests or sub-pools,
+optimally assembled to have minimal information difference between all
+partition pairs, subject to additional constraints described below.</p>
+<p>When used to create parallel tests, the method ensures that all tests
+satisfy all content constraints. A unique and practical benefit of the
+method is when it is used to create parallel sub-pools. The pools
+created this way are constructed so that they contain at least one
+complete test that satisfies all content constraints.</p>
+<p>The <code><a href="../reference/Split-methods.html">Split()</a></code> function is available from
+<em>TestDesign</em> version 1.3.0. Interested users can look forward to
+our manuscript currently in preparation.</p>
 </div>
 <div class="section level3">
 <h3 id="example-discrete-items-science-pool">Example: discrete items (<code>science</code> pool)<a class="anchor" aria-label="anchor" href="#example-discrete-items-science-pool"></a>
@@ -125,7 +139,8 @@
 <div class="section level3">
 <h3 id="example-set-based-items-reading-pool">Example: set-based items (<code>reading</code> pool)<a class="anchor" aria-label="anchor" href="#example-set-based-items-reading-pool"></a>
 </h3>
-<p><code><a href="../reference/Split-methods.html">Split()</a></code> retains the set-based structure in a way that each item set is assigned to only one partition.</p>
+<p><code><a href="../reference/Split-methods.html">Split()</a></code> retains the set-based structure in a way that
+each item set is assigned to only one partition.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cfg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/createStaticTestConfig.html">createStaticTestConfig</a></span><span class="op">(</span></span>
 <span>  MIP <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>solver <span class="op">=</span> <span class="st">"GUROBI"</span>, obj_tol <span class="op">=</span> <span class="fl">0.25</span><span class="op">)</span>,</span>
@@ -136,7 +151,9 @@
 <code class="sourceCode R"><span><span class="va">parallel_tests</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Split-methods.html">Split</a></span><span class="op">(</span><span class="va">cfg</span>, <span class="va">constraints</span>, n_partition <span class="op">=</span> <span class="fl">3</span>, partition_type <span class="op">=</span> <span class="st">"test"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plot-methods.html">plot</a></span><span class="op">(</span><span class="va">parallel_tests</span><span class="op">)</span></span></code></pre></div>
 <p><img src="setbased-test-1.svg" width="95%" style="display: block; margin: auto;"></p>
-<p>Because partitions are created by assigning intact item sets, a solution that exactly matches certain partition sizes may not exist. The code below allows partition sizes to vary between 140 and 160.</p>
+<p>Because partitions are created by assigning intact item sets, a
+solution that exactly matches certain partition sizes may not exist. The
+code below allows partition sizes to vary between 140 and 160.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">parallel_pools</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Split-methods.html">Split</a></span><span class="op">(</span></span>
 <span>  <span class="va">cfg</span>, <span class="va">constraints</span>, n_partition <span class="op">=</span> <span class="fl">2</span>, partition_type <span class="op">=</span> <span class="st">"pool"</span>,</span>

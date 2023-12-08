@@ -136,18 +136,21 @@ c(x, ...)
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="va">itempool_science</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">]</span></span>
-<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">itempool_science</span>, <span class="va">itempool_reading</span><span class="op">)</span></span>
-<span><span class="va">p3</span> <span class="op">&lt;-</span> <span class="va">p2</span> <span class="op">-</span> <span class="va">p1</span></span>
-<span></span>
-<span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="va">itempool_science</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">500</span><span class="op">]</span></span>
-<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="va">itempool_science</span> <span class="op">-</span> <span class="va">p1</span></span>
-<span><span class="va">p3</span> <span class="op">&lt;-</span> <span class="va">itempool_science</span><span class="op">[</span><span class="fl">501</span><span class="op">:</span><span class="fl">1000</span><span class="op">]</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">p2</span>, <span class="va">p3</span><span class="op">)</span>  <span class="co">## TRUE</span></span>
-<span></span>
-<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">p1</span> <span class="op">+</span> <span class="va">p3</span></span>
-<span><span class="va">p</span> <span class="op">==</span> <span class="va">itempool_science</span> <span class="co">## TRUE</span></span>
-<span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="va">itempool_science</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">itempool_science</span>, <span class="va">itempool_reading</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">p3</span> <span class="op">&lt;-</span> <span class="va">p2</span> <span class="op">-</span> <span class="va">p1</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="va">itempool_science</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">500</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="va">itempool_science</span> <span class="op">-</span> <span class="va">p1</span></span></span>
+<span class="r-in"><span><span class="va">p3</span> <span class="op">&lt;-</span> <span class="va">itempool_science</span><span class="op">[</span><span class="fl">501</span><span class="op">:</span><span class="fl">1000</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">p2</span>, <span class="va">p3</span><span class="op">)</span>  <span class="co">## TRUE</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">p1</span> <span class="op">+</span> <span class="va">p3</span></span></span>
+<span class="r-in"><span><span class="va">p</span> <span class="op">==</span> <span class="va">itempool_science</span> <span class="co">## TRUE</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -82,7 +82,7 @@
 
       
 
-      </header><script src="rsymphony_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Installing Rsymphony solver package on Mac</h1>
@@ -99,78 +99,122 @@
 <div class="section level3">
 <h3 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h3>
-<p>Rsymphony is one of solver packages supported by TestDesign. As of Rsymphony version 0.1.29, Mac users may encounter error messages as below when trying to install the package from R.</p>
+<p>Rsymphony is one of solver packages supported by TestDesign. As of
+Rsymphony version 0.1.29, Mac users may encounter error messages as
+below when trying to install the package from R.</p>
 <pre><code>* installing *source* package ‘Rsymphony’ ...
 ** package ‘Rsymphony’ successfully unpacked and MD5 sums checked
 ** using staged installation
 Cannot find SYMPHONY libraries and headers.
 See &lt;https://projects.coin-or.org/SYMPHONY&gt;.
 ERROR: configuration failed for package ‘Rsymphony’</code></pre>
-<p>This document describes a potential fix to this problem. An admin account is required.</p>
+<p>This document describes a potential fix to this problem. An admin
+account is required.</p>
 <p><br><br></p>
 </div>
 <div class="section level3">
 <h3 id="install-symphony-libraries">Install SYMPHONY libraries<a class="anchor" aria-label="anchor" href="#install-symphony-libraries"></a>
 </h3>
-<p>The cause of the error is that Rsymphony requires SYMPHONY libraries, but the libraries are not properly installed. The goal of this section is to install the libraries.</p>
-<p><strong>Step 1.</strong> Open the terminal from Launchpad. Switch to the admin account on your system by running the following line in the terminal prompt. Make sure to replace <code>username</code> with the actual username of the admin account. Type in the account password once prompted.</p>
+<p>The cause of the error is that Rsymphony requires SYMPHONY libraries,
+but the libraries are not properly installed. The goal of this section
+is to install the libraries.</p>
+<p><strong>Step 1.</strong> Open the terminal from Launchpad. Switch to
+the admin account on your system by running the following line in the
+terminal prompt. Make sure to replace <code>username</code> with the
+actual username of the admin account. Type in the account password once
+prompted.</p>
 <pre><code>su username</code></pre>
-<p><strong>Step 2.</strong> Install the <code>homebrew</code> package manager as needed by following the instructions on <a href="https://brew.sh/" class="external-link uri">https://brew.sh/</a>. The purpose of this step is to allow installing SYMPHONY with it.</p>
-<p><strong>Step 3.</strong> Install SYMPHONY and its dependencies by running the following in terminal. Each line must be run separately.</p>
+<p><strong>Step 2.</strong> Install the <code>homebrew</code> package
+manager as needed by following the instructions on <a href="https://brew.sh/" class="external-link uri">https://brew.sh/</a>. The purpose of
+this step is to allow installing SYMPHONY with it.</p>
+<p><strong>Step 3.</strong> Install SYMPHONY and its dependencies by
+running the following in terminal. Each line must be run separately.</p>
 <pre><code>brew tap coin-or-tools/coinor</code></pre>
 <pre><code>brew install symphony</code></pre>
 <pre><code>brew install pkg-config</code></pre>
 <pre><code>brew cask install gfortran</code></pre>
-<p>Rsymphony solver package should now be able to locate the SYMPHONY libraries. Retry installing the Rsymphony solver package in R.</p>
+<p>Rsymphony solver package should now be able to locate the SYMPHONY
+libraries. Retry installing the Rsymphony solver package in R.</p>
 <p>If the install fails, proceed to the next step.</p>
 <p><br><br></p>
 </div>
 <div class="section level3">
-<h3 id="modify-the-rsymphony-solver-package-to-manually-point-to-symphony-libraries">Modify the Rsymphony solver package to manually point to SYMPHONY libraries<a class="anchor" aria-label="anchor" href="#modify-the-rsymphony-solver-package-to-manually-point-to-symphony-libraries"></a>
+<h3 id="modify-the-rsymphony-solver-package-to-manually-point-to-symphony-libraries">Modify the Rsymphony solver package to manually point to SYMPHONY
+libraries<a class="anchor" aria-label="anchor" href="#modify-the-rsymphony-solver-package-to-manually-point-to-symphony-libraries"></a>
 </h3>
-<p><strong>Step 1.</strong> Install <code>wget</code> by running the following line in terminal. The purpose of this step is to allow downloading the package file directly from CRAN servers.</p>
+<p><strong>Step 1.</strong> Install <code>wget</code> by running the
+following line in terminal. The purpose of this step is to allow
+downloading the package file directly from CRAN servers.</p>
 <pre><code>brew install wget</code></pre>
-<p><strong>Step 2.</strong> Run the following line in terminal to download the Rsymphony solver package.</p>
+<p><strong>Step 2.</strong> Run the following line in terminal to
+download the Rsymphony solver package.</p>
 <pre><code>sudo wget https://cran.revolutionanalytics.com/src/contrib/Rsymphony_0.1-29.tar.gz</code></pre>
-<p><strong>Step 3.</strong> Unpack the downloaded file by running the following line.</p>
+<p><strong>Step 3.</strong> Unpack the downloaded file by running the
+following line.</p>
 <pre><code>sudo tar -xzvf Rsymphony_0.1-29.tar.gz</code></pre>
-<p><strong>Step 4.</strong> Open the file <code>Rsymphony/configure</code> by running the following line. This opens <code>nano</code> text editor, with <code>-c</code> option to make it display the line numbers.</p>
+<p><strong>Step 4.</strong> Open the file
+<code>Rsymphony/configure</code> by running the following line. This
+opens <code>nano</code> text editor, with <code>-c</code> option to make
+it display the line numbers.</p>
 <pre><code>sudo nano -c ./Rsymphony/configure</code></pre>
-<p>Comment out lines 51-55 by inserting <code>#</code>s at the beginning of each line, as shown below. Save it as the same file with Control + O, and when prompted for file name to write press Enter. Exit <code>nano</code> with Control + X.</p>
+<p>Comment out lines 51-55 by inserting <code>#</code>s at the beginning
+of each line, as shown below. Save it as the same file with Control + O,
+and when prompted for file name to write press Enter. Exit
+<code>nano</code> with Control + X.</p>
 <pre><code><span><span class="co">#if test ${status} -ne 0; then</span></span>
 <span><span class="co"># echo "Cannot find SYMPHONY libraries and headers."</span></span>
 <span><span class="co"># echo "See https://projects.coin-or.org/SYMPHONY."</span></span>
 <span><span class="co"># exit 1</span></span>
 <span><span class="co">#fi</span></span></code></pre>
-<p><strong>Step 5.</strong> Open the file <code>Rsymphony/src/R_symphony.cc</code> by running the following line.</p>
+<p><strong>Step 5.</strong> Open the file
+<code>Rsymphony/src/R_symphony.cc</code> by running the following
+line.</p>
 <pre><code>sudo nano -c ./Rsymphony/src/R_symphony.cc</code></pre>
-<p>Change line 12 <code>#include &lt;coin/symphony.h&gt;</code> as shown below. Save it as the same file with Control + O, and when prompted for file name to write press Enter. Exit with Control + X.</p>
+<p>Change line 12 <code>#include &lt;coin/symphony.h&gt;</code> as shown
+below. Save it as the same file with Control + O, and when prompted for
+file name to write press Enter. Exit with Control + X.</p>
 <pre><code><span><span class="co">#include &lt;symphony.h&gt;</span></span></code></pre>
-<p><strong>Step 6.</strong> Run the following line in terminal to install the modified Rsymphony package.</p>
+<p><strong>Step 6.</strong> Run the following line in terminal to
+install the modified Rsymphony package.</p>
 <pre><code>sudo R CMD install Rsymphony</code></pre>
 <p>This will make the Rsymphony solver package available in R.</p>
-<p>Do NOT run <code>install.packages('Rsymphony')</code> within R after Step 6. Doing so will trigger a re-install of the unmodified package.</p>
-<p>If Step 6 fails with <code>--lgfortran</code> error, proceed to the next step.</p>
+<p>Do NOT run <code>install.packages('Rsymphony')</code> within R after
+Step 6. Doing so will trigger a re-install of the unmodified
+package.</p>
+<p>If Step 6 fails with <code>--lgfortran</code> error, proceed to the
+next step.</p>
 <p><br><br></p>
 </div>
 <div class="section level3">
 <h3 id="tell-r-where-fortran-libraries-are-located">Tell R where Fortran libraries are located<a class="anchor" aria-label="anchor" href="#tell-r-where-fortran-libraries-are-located"></a>
 </h3>
-<p>The cause of the error is that R needs Fortran libraries to build the package, but it does not know where they are. They are already available on your system: when you installed SYMPHONY libraries in the previous step, it installed gcc library as a requirement, which contains Fortran libraries as well.</p>
-<p><strong>Step 1.</strong> Open the file <code>~/.R/Makevars</code> by running the following line.</p>
+<p>The cause of the error is that R needs Fortran libraries to build the
+package, but it does not know where they are. They are already available
+on your system: when you installed SYMPHONY libraries in the previous
+step, it installed gcc library as a requirement, which contains Fortran
+libraries as well.</p>
+<p><strong>Step 1.</strong> Open the file <code>~/.R/Makevars</code> by
+running the following line.</p>
 <pre><code>sudo nano -c ~/.R/Makevars</code></pre>
-<p>The file will be empty in most cases. Add the following line to point R to the Fortran libraries. Save it as the same file with Control + O, and when prompted for file name to write press Enter. Exit with Control + X.</p>
+<p>The file will be empty in most cases. Add the following line to point
+R to the Fortran libraries. Save it as the same file with Control + O,
+and when prompted for file name to write press Enter. Exit with Control
++ X.</p>
 <pre><code><span><span class="va">FLIBS</span> <span class="op">=</span> <span class="op">-</span><span class="va">L</span><span class="op">/</span><span class="va">usr</span><span class="op">/</span><span class="va">local</span><span class="op">/</span><span class="va">gfortran</span><span class="op">/</span><span class="va">lib</span> <span class="op">-</span><span class="va">lgfortran</span> <span class="op">-</span><span class="va">lquadmath</span> <span class="op">-</span><span class="va">lm</span></span></code></pre>
-<p><strong>Step 2.</strong> Run the following line in terminal to install the modified Rsymphony package.</p>
+<p><strong>Step 2.</strong> Run the following line in terminal to
+install the modified Rsymphony package.</p>
 <pre><code>sudo R CMD install Rsymphony</code></pre>
 <p>This will make the Rsymphony solver package available in R.</p>
-<p>Do NOT run <code>install.packages('Rsymphony')</code> within R after Step 2. Doing so will trigger a re-install of the unmodified package.</p>
+<p>Do NOT run <code>install.packages('Rsymphony')</code> within R after
+Step 2. Doing so will trigger a re-install of the unmodified
+package.</p>
 <p><br><br></p>
 </div>
 <div class="section level3">
 <h3 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a>
 </h3>
-<p>For further reference, please refer to these following external links.</p>
+<p>For further reference, please refer to these following external
+links.</p>
 <ul>
 <li><a href="https://stackoverflow.com/questions/32129191/osx-installing-rsymphony-linking-headers-and-libs/37599406" class="external-link uri">https://stackoverflow.com/questions/32129191/osx-installing-rsymphony-linking-headers-and-libs/37599406</a></li>
 <li><a href="https://stackoverflow.com/questions/42215523/installing-rsymphony-using-rstudio-on-macos" class="external-link uri">https://stackoverflow.com/questions/42215523/installing-rsymphony-using-rstudio-on-macos</a></li>

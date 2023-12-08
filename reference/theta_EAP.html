@@ -121,33 +121,96 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># item parameters</span></span>
-<span><span class="va">item_parm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>  <span class="fl">1</span>, <span class="cn">NA</span>,   <span class="cn">NA</span>,</span>
-<span>  <span class="fl">1</span>,  <span class="fl">2</span>,   <span class="cn">NA</span>,</span>
-<span>  <span class="fl">1</span>,  <span class="fl">2</span>, <span class="fl">0.25</span>,</span>
-<span>  <span class="fl">0</span>,  <span class="fl">1</span>,   <span class="cn">NA</span>,</span>
-<span>  <span class="fl">2</span>,  <span class="fl">0</span>,    <span class="fl">1</span>,</span>
-<span>  <span class="fl">2</span>,  <span class="fl">0</span>,    <span class="fl">2</span><span class="op">)</span>,</span>
-<span>  nrow <span class="op">=</span> <span class="fl">6</span>,</span>
-<span>  byrow <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">ncat</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span></span>
-<span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># simulate response</span></span>
-<span><span class="va">item_parm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">item_parm</span><span class="op">)</span></span>
-<span><span class="va">item_parm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fl">101</span><span class="op">:</span><span class="fl">106</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="va">item_parm</span><span class="op">)</span></span>
-<span><span class="va">pool</span> <span class="op">&lt;-</span> <span class="fu"><a href="loadItemPool.html">loadItemPool</a></span><span class="op">(</span><span class="va">item_parm</span><span class="op">)</span></span>
-<span><span class="va">true_theta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">resp</span> <span class="op">&lt;-</span> <span class="fu"><a href="simResp-methods.html">simResp</a></span><span class="op">(</span><span class="va">pool</span>, <span class="va">true_theta</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">theta_grid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">.1</span><span class="op">)</span>, , <span class="fl">1</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">theta_EAP</span><span class="op">(</span><span class="va">theta_grid</span>, <span class="va">pool</span><span class="op">@</span><span class="va">ipar</span>, <span class="va">resp</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span>, <span class="va">ncat</span>, <span class="va">model</span>, <span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">theta_EAP_matrix</span><span class="op">(</span><span class="va">theta_grid</span>, <span class="va">pool</span><span class="op">@</span><span class="va">ipar</span>, <span class="va">resp</span>, <span class="va">ncat</span>, <span class="va">model</span>, <span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># item parameters</span></span></span>
+<span class="r-in"><span><span class="va">item_parm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fl">1</span>, <span class="cn">NA</span>,   <span class="cn">NA</span>,</span></span>
+<span class="r-in"><span>  <span class="fl">1</span>,  <span class="fl">2</span>,   <span class="cn">NA</span>,</span></span>
+<span class="r-in"><span>  <span class="fl">1</span>,  <span class="fl">2</span>, <span class="fl">0.25</span>,</span></span>
+<span class="r-in"><span>  <span class="fl">0</span>,  <span class="fl">1</span>,   <span class="cn">NA</span>,</span></span>
+<span class="r-in"><span>  <span class="fl">2</span>,  <span class="fl">0</span>,    <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>  <span class="fl">2</span>,  <span class="fl">0</span>,    <span class="fl">2</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  nrow <span class="op">=</span> <span class="fl">6</span>,</span></span>
+<span class="r-in"><span>  byrow <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">ncat</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># simulate response</span></span></span>
+<span class="r-in"><span><span class="va">item_parm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">item_parm</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">item_parm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fl">101</span><span class="op">:</span><span class="fl">106</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="va">item_parm</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">pool</span> <span class="op">&lt;-</span> <span class="fu"><a href="loadItemPool.html">loadItemPool</a></span><span class="op">(</span><span class="va">item_parm</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">true_theta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">resp</span> <span class="op">&lt;-</span> <span class="fu"><a href="simResp-methods.html">simResp</a></span><span class="op">(</span><span class="va">pool</span>, <span class="va">true_theta</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">theta_grid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">.1</span><span class="op">)</span>, , <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">theta_EAP</span><span class="op">(</span><span class="va">theta_grid</span>, <span class="va">pool</span><span class="op">@</span><span class="va">ipar</span>, <span class="va">resp</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span>, <span class="va">ncat</span>, <span class="va">model</span>, <span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $theta</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -1.536257</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.7754473</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="fu">theta_EAP_matrix</span><span class="op">(</span><span class="va">theta_grid</span>, <span class="va">pool</span><span class="op">@</span><span class="va">ipar</span>, <span class="va">resp</span>, <span class="va">ncat</span>, <span class="va">model</span>, <span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]$theta</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -1.536257</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]$se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.7754473</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]$theta</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.4914265</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]$se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.6365066</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]$theta</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.1161107</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]$se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.57629</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]$theta</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.4914265</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]$se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.6365066</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[5]]$theta</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.856916</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[5]]$se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.556842</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[6]]$theta</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.345399</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[6]]$se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.4701189</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[7]]$theta</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.532291</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[7]]$se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.3933497</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
