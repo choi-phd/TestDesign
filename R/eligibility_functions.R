@@ -56,15 +56,19 @@ getEligibilityFlagInSegment <- function(eligiblity_flag, segment, constants) {
 }
 
 #' @noRd
-flagAdministeredAsEligible <- function(o, x, position, constants) {
+flagAdministeredAsEligible <- function(eligibility_flag_in_current_theta_segment, x, position, constants) {
 
-  o$i[x@administered_item_index[0:(position - 1)]] <- 1
+  eligibility_flag_in_current_theta_segment$i[
+    x@administered_item_index[0:(position - 1)]
+  ] <- 1
   if (!constants$set_based) {
-    return(o)
+    return(eligibility_flag_in_current_theta_segment)
   }
 
-  o$s[x@administered_stimulus_index[0:(position - 1)]] <- 1
-  return(o)
+  eligibility_flag_in_current_theta_segment$s[
+    x@administered_stimulus_index[0:(position - 1)]
+  ] <- 1
+  return(eligibility_flag_in_current_theta_segment)
 
 }
 
