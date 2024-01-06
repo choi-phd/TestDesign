@@ -61,8 +61,10 @@ setClass("config_Static",
       msg <- sprintf("config@item_selection: unexpected $info_type '%s' (accepts FISHER)", toupper(object@item_selection$info_type))
       err <- c(err, msg)
     }
-    if (!toupper(object@MIP$solver) %in% c("RSYMPHONY", "GUROBI", "LPSOLVE", "RGLPK")) {
-      msg <- sprintf("config@MIP: unexpected $solver (accepts Rsymphony, gurobi, lpSolve, or Rglpk)", object@MIP$solver)
+    if (!object@MIP$solver %in% c("RSYMPHONY", "GUROBI", "LPSOLVE", "RGLPK")) {
+      # only capitalized names are valid values;
+      # the rest of the package assumes this is capitalized
+      msg <- sprintf("config@MIP: unrecognized $solver '%s' (accepts RSYMPHONY, GUROBI, LPSOLVE, or RGLPK)", object@MIP$solver)
       err <- c(err, msg)
     }
 
@@ -164,6 +166,8 @@ createStaticTestConfig <- function(item_selection = NULL, MIP = NULL) {
     }
   }
 
+  # ensure the solver name is capitalized here;
+  # the rest of the package assumes this is already done
   cfg@MIP$solver <- toupper(cfg@MIP$solver)
 
   if (is.null(item_selection$target_weight)) {

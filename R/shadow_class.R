@@ -108,14 +108,17 @@ setClass("config_Shadow",
     theta_grid                  = seq(-4, 4, .1)
   ),
   validity = function(object) {
+
     err <- NULL
-    if (!toupper(object@MIP$solver) %in% c("RSYMPHONY", "LPSOLVE", "GUROBI", "RGLPK")) {
-      msg <- sprintf("config@MIP: unrecognized $solver '%s' (accepts RSYMPHONY, LPSOLVE, GUROBI, RGLPK)", object@MIP$solver)
+    if (!object@MIP$solver %in% c("RSYMPHONY", "GUROBI", "LPSOLVE", "RGLPK")) {
+      # only capitalized names are valid values;
+      # the rest of the package assumes this is capitalized
+      msg <- sprintf("config@MIP: unrecognized $solver '%s' (accepts RSYMPHONY, GUROBI, LPSOLVE, or RGLPK)", object@MIP$solver)
       err <- c(err, msg)
     }
 
-    for (solver_name in c("gurobi", "Rsymphony", "Rglpk")) {
-      if (toupper(object@MIP$solver) == toupper(solver_name)) {
+    for (solver_name in c("Rsymphony", "gurobi", "Rglpk")) {
+      if (object@MIP$solver == toupper(solver_name)) {
         if (!requireNamespace(solver_name, quietly = TRUE)) {
           msg <- sprintf("config@MIP: could not find the specified solver package '%s'", solver_name)
           err <- c(err, msg)
@@ -385,6 +388,8 @@ createShadowTestConfig <- function(
     }
   }
 
+  # ensure the solver name is capitalized here;
+  # the rest of the package assumes this is already done
   cfg@MIP$solver <- toupper(cfg@MIP$solver)
 
   if (!is.null(theta_grid)) {

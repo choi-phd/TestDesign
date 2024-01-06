@@ -28,7 +28,7 @@ runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
   dir   <- constraints@dir
   rhs   <- constraints@rhs
 
-  solver        <- toupper(config@MIP$solver)
+  solver        <- config@MIP$solver
   verbosity     <- config@MIP$verbosity
   time_limit    <- config@MIP$time_limit
   gap_limit     <- config@MIP$gap_limit
@@ -259,8 +259,10 @@ runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
 }
 
 #' @noRd
-runMIP <- function(solver, obj, mat, dir, rhs, maximize, types,
-                   verbosity, time_limit, gap_limit_abs, gap_limit) {
+runMIP <- function(
+  solver, obj, mat, dir, rhs, maximize, types,
+  verbosity, time_limit, gap_limit_abs, gap_limit
+) {
 
   if (solver == "RSYMPHONY") {
 
@@ -281,7 +283,11 @@ runMIP <- function(solver, obj, mat, dir, rhs, maximize, types,
       )
     }
 
-  } else if (solver == "GUROBI") {
+    return(MIP)
+
+  }
+
+  if (solver == "GUROBI") {
 
     constraints_dir <- dir
     constraints_dir[constraints_dir == "=="] <- "="
@@ -303,55 +309,81 @@ runMIP <- function(solver, obj, mat, dir, rhs, maximize, types,
 
     MIP[["solution"]] <- MIP$x
 
-  } else if (solver == "LPSOLVE") {
+    return(MIP)
+
+  }
+
+  if (solver == "LPSOLVE") {
 
     binary_vec <- which(types == "B")
 
     MIP <- lpSolve::lp(direction = ifelse(maximize, "max", "min"), obj, mat, dir, rhs, binary.vec = binary_vec, presolve = TRUE)
 
-  } else if (solver == "RGLPK") {
+    return(MIP)
+
+  }
+
+  if (solver == "RGLPK") {
 
     MIP <- Rglpk::Rglpk_solve_LP(obj, mat, dir, rhs, max = maximize, types = types,
       control = list(verbose = ifelse(verbosity != -2, TRUE, FALSE), presolve = FALSE, tm_limit = time_limit * 1000))
 
-  }
+    return(MIP)
 
-  return(MIP)
+  }
 
 }
 
 #' @noRd
 isOptimal <- function(status, solver) {
+  # assume the 'solver' argument is already capitalized; toupper() is expensive!
+  # this is done only once at config generation
   is_optimal <- FALSE
-  if (toupper(solver) == "RSYMPHONY") {
+  if (solver == "RSYMPHONY") {
     is_optimal <- names(status) %in% c("TM_OPTIMAL_SOLUTION_FOUND", "PREP_OPTIMAL_SOLUTION_FOUND", "TM_TARGET_GAP_ACHIEVED")
-  } else if (toupper(solver) == "GUROBI") {
-    is_optimal <- status %in% c("OPTIMAL")
-  } else if (toupper(solver) == "LPSOLVE") {
-    is_optimal <- status == 0
-  } else if (toupper(solver) == "RGLPK") {
-    is_optimal <- status == 0
+    return(is_optimal)
   }
-  return(is_optimal)
+  if (solver == "GUROBI") {
+    is_optimal <- status %in% c("OPTIMAL")
+    return(is_optimal)
+  }
+  if (solver == "LPSOLVE") {
+    is_optimal <- status == 0
+    return(is_optimal)
+  }
+  if (solver == "RGLPK") {
+    is_optimal <- status == 0
+    return(is_optimal)
+  }
 }
 
 #' @noRd
 getSolverStatusMessage <- function(status, solver) {
-  if (toupper(solver) == "RSYMPHONY") {
-    tmp <- sprintf("MIP solver returned non-zero status: %s", names(status))
-  } else if (toupper(solver) == "GUROBI") {
-    tmp <- sprintf("MIP solver returned non-zero status: %s", status)
-  } else if (toupper(solver) == "LPSOLVE") {
-    tmp <- sprintf("MIP solver returned non-zero status: %s", status)
-  } else if (toupper(solver) == "RGLPK") {
-    tmp <- sprintf("MIP solver returned non-zero status: %s", status)
+  # assume the 'solver' argument is already capitalized; toupper() is expensive!
+  # this is done only once at config generation
+  if (solver == "RSYMPHONY") {
+    msg <- sprintf("MIP solver returned non-zero status: %s", names(status))
+    return(msg)
   }
-  return(tmp)
+  if (solver == "GUROBI") {
+    msg <- sprintf("MIP solver returned non-zero status: %s", status)
+    return(msg)
+  }
+  if (solver == "LPSOLVE") {
+    msg <- sprintf("MIP solver returned non-zero status: %s", status)
+    return(msg)
+  }
+  if (solver == "RGLPK") {
+    msg <- sprintf("MIP solver returned non-zero status: %s", status)
+    return(msg)
+  }
 }
 
 #' @noRd
 printSolverNewline <- function(solver) {
-  if (toupper(solver) == "RSYMPHONY") {
+  # assume the 'solver' argument is already capitalized; toupper() is expensive!
+  # this is done only once at config generation
+  if (solver == "RSYMPHONY") {
     cat("\n")
   }
 }
@@ -360,7 +392,7 @@ printSolverNewline <- function(solver) {
 validateSolver <- function(config, constraints, purpose = NULL) {
 
   if (constraints@set_based) {
-    if (!toupper(config@MIP$solver) %in%  c("RSYMPHONY", "GUROBI")) {
+    if (!config@MIP$solver %in% c("RSYMPHONY", "GUROBI")) {
 
       if (!interactive()) {
         txt <- paste(
@@ -394,7 +426,7 @@ validateSolver <- function(config, constraints, purpose = NULL) {
   }
 
   if (purpose == "SPLIT") {
-    if (!toupper(config@MIP$solver) %in%  c("RSYMPHONY", "GUROBI")) {
+    if (!config@MIP$solver %in% c("RSYMPHONY", "GUROBI")) {
 
       if (!interactive()) {
         txt <- paste(
