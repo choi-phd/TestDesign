@@ -1,3 +1,9 @@
+# TestDesign 1.5.1.9000
+
+## Bug fixes
+
+* Fixed where `c()` and `combineConstraints()` were incorrectly combining constraints.
+
 # TestDesign 1.5.1
 
 ## Updates
