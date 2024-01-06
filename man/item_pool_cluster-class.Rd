@@ -5,7 +5,7 @@
 \alias{item_pool_cluster-class}
 \title{Class 'item_pool_cluster': an item pool}
 \description{
-\code{\linkS4class{item_pool_cluster}} is an S4 class to represent a group of item pools.
+\code{\linkS4class{item_pool_cluster}} is an S4 class for representing a group of item pools.
 }
 \section{Slots}{
 

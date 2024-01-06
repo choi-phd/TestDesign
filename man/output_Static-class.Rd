@@ -5,7 +5,7 @@
 \alias{output_Static-class}
 \title{Class 'output_Static': fixed-form assembly solution}
 \description{
-\code{\linkS4class{output_Static}} is an S4 class to represent a fixed-form assembly solution.
+\code{\linkS4class{output_Static}} is an S4 class for representing a fixed-form assembly solution.
 }
 \section{Slots}{
 
