@@ -108,17 +108,17 @@ applyEligibilityConstraintsToXdata <- function(xdata, eligibility_flag_in_curren
 }
 
 #' @noRd
-applyEligibilityConstraintsToInfo <- function(o, eligibility_flag_in_current_theta_segment, config, constants) {
+applyEligibilityConstraintsToInfo <- function(info, eligibility_flag_in_current_theta_segment, config, constants) {
 
   if (config@item_selection$method == "GFI") {
-    o[eligibility_flag_in_current_theta_segment$i == 0] <-
-    o[eligibility_flag_in_current_theta_segment$i == 0] + constants$exposure_M # add because GFI performs minimization
-    return(o)
+    info[eligibility_flag_in_current_theta_segment$i == 0] <-
+    info[eligibility_flag_in_current_theta_segment$i == 0] + constants$exposure_M # add because GFI performs minimization
+    return(info)
   }
   if (config@item_selection$method != "GFI") {
-    o[eligibility_flag_in_current_theta_segment$i == 0] <-
-    o[eligibility_flag_in_current_theta_segment$i == 0] - constants$exposure_M
-    return(o)
+    info[eligibility_flag_in_current_theta_segment$i == 0] <-
+    info[eligibility_flag_in_current_theta_segment$i == 0] - constants$exposure_M
+    return(info)
   }
 
 }
