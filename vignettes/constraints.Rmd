@@ -6,15 +6,15 @@ vignette: >
   %\VignetteIndexEntry{Creating constraints in TestDesign package}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
 <br/>
 
-### Introduction
+## Introduction
 
-This document explains how to create constraints data for `loadConstraints()`. In test assembly, practitioners often want to select items satisfying various types of constraints. As of *TestDesign* version 1.1.0, constraints can be read in from `data.frame` objects or `.csv` spreadsheet files. Data is expected to be in the following structure:
+This document explains how to create constraints data for `loadConstraints()`. Automated test assembly in practice is often desired to assemble a test so that its contents adhere to a test blueprint, which asserts various requirements the assembled test should satisfy. As of *TestDesign* version 1.1.0, constraints can be read in from `data.frame` objects or `.csv` spreadsheet files. The input data is expected to be in the following structure:
 
 ```{r echo = FALSE, message = FALSE}
 library(knitr)
@@ -39,25 +39,36 @@ knitr::kable(constraints_science_data[1:5, ]) %>%
   column_spec(7, "3em")
 ```
 
-Constraints data must have seven columns, named as `CONSTRAINT_ID`, `TYPE`, `WHAT`, `CONDITION`, `LB`, `UB`, `ONOFF` on the first row. Beginning from the second row, each row must have corresponding values for each column. A convenient way to creating constraints is to use a spreadsheet application (e.g. Excel) and work on the content from there.
+Constraints data must have seven columns, named as `CONSTRAINT_ID`, `TYPE`, `WHAT`, `CONDITION`, `LB`, `UB`, `ONOFF` on the first row. Beginning from the second row, each row must have corresponding values for each column. A convenient way for working with constraints is to use a spreadsheet application (e.g. Excel) and work on the content from there.
+
+Readers are also encouraged to tinker with example constraints included in the package:
+
+- `constraints_science_data` (all discrete items)
+- `constraints_reading_data` (set-based blueprint)
+- `constraints_fatigue_data` (uses enemy items)
+- `constraints_bayes_data` (uses word count constraints)
 
 <br/>
 
-***
+## Content balancing with shadow-test approach
 
-#### CONSTRAINT_ID
+This section aims to provide context on why the constraints input format does not have a column for weights.
 
-This column serves as identifiers. Character values can be used as long as the values are unique.
+The *TestDesign* package performs content balancing using the shadow-test approach (van der Linden & Reese, 1998).  This means that the test will be assembled in a way that strictly satisfies all constraints with no violations. The reader may be familiar with the use of weights in test blueprints for indicating which constraints should be prioritized. These constraint-wise weights are mainly needed when traditional content balancing methods are used, where items are selected one by one. When items are selected one by one, there is a fundamental limitation that there is no guarantee that the resulting test will satisfy all constraints. For this reason, weights are used as supplements to traditional content balancing to work around this limitation, to guide the item selection process in a way that the number of violated constraints is minimized.
+
+Unlike with traditional content balancing methods, the shadow-test approach operates without needing weights. This is because the shadow-test approach directly finds a combination of items that satisfies all constraints, and therefore has no need to prioritize certain constraints to satisfy, as would be needed in traditional content balancing methods that select items one by one.
 
 <br/>
 
-***
+## Required columns
 
-#### TYPE
+### Column 1: CONSTRAINT_ID
+
+This column specifies the identifier of each constraint. Character values can be used as long as the values are unique.
+
+### Column 2: TYPE
 
 This column specifies the type of constraint. Following values are expected: `Number`, `Order`, `Enemy`, `Include`, `Exclude`, `AllorNone`.
-
-<br/>
 
 * `Number` specifies the constraint to be applied to the number of selected items (if `WHAT` column is `Item`), or to the number of selected item sets (if `WHAT` column is `Stimulus`). For example, the following row tells the solver to select a total of 30 items.
 
@@ -72,9 +83,6 @@ knitr::kable(constraints_science_data[1, ], row.names = FALSE) %>%
   column_spec(6, "3em") %>%
   column_spec(7, "3em")
 ```
-
-<br/>
-<br/>
 
 * `Sum` specifies the constraint to be applied to the sum of attributes of selected items (if `WHAT` column is `Item`), or of selected item sets (if `WHAT` column is `Stimulus`). For example, the following row tells the solver to keep the sum of `WORDS` between 500--600.
 
@@ -92,9 +100,6 @@ knitr::kable(tmp, row.names = FALSE) %>%
   column_spec(7, "3em")
 ```
 
-<br/>
-<br/>
-
 * `Order` specifies the selection to be made in ascending order. The following row tells the solver to select the items in ascending `LEVEL`, based on supplied attributes.
 
 ```{r, echo = FALSE}
@@ -108,9 +113,6 @@ knitr::kable(constraints_science_data[32, ], row.names = FALSE) %>%
   column_spec(6, "3em") %>%
   column_spec(7, "3em")
 ```
-
-<br/>
-<br/>
 
 * `Enemy` specifies the items (or item sets) matching the condition to be treated as enemy items. To tell the solver to select at most one of the two items:
 
@@ -126,9 +128,6 @@ knitr::kable(constraints_science_data[33, ], row.names = FALSE) %>%
   column_spec(7, "3em")
 ```
 
-<br/>
-<br/>
-
 * `Include` specifies the items matching the condition to be always included in selection. For example, the following row tells the solver to include items `SC00003` and `SC00004`:
 
 ```{r, echo = FALSE}
@@ -142,9 +141,6 @@ knitr::kable(constraints_science_data[34, ], row.names = FALSE) %>%
   column_spec(6, "3em") %>%
   column_spec(7, "3em")
 ```
-
-<br/>
-<br/>
 
 * `Exclude` specifies the items matching the condition to be always excluded from selection. The following row tells the solver to exclude items that match `PTBIS < 0.15`, based on supplied item attributes.
 
@@ -160,9 +156,6 @@ knitr::kable(constraints_science_data[35, ], row.names = FALSE) %>%
   column_spec(7, "3em")
 ```
 
-<br/>
-<br/>
-
 * `AllOrNone` specifies the items matching the condition to be either all included or all excluded. To tell the solver to either select items `SC00005` and `SC00006` at the same time or exclude them at the same time:
 
 ```{r, echo = FALSE}
@@ -177,19 +170,11 @@ knitr::kable(constraints_science_data[36, ], row.names = FALSE) %>%
   column_spec(7, "3em")
 ```
 
-<br/>
-
-***
-
-#### WHAT
+### Column 3: WHAT
 
 This column specifies the unit of assembly the constraint uses. Expected values are `Item` or `Stimulus`.
 
-<br/>
-
-***
-
-#### CONDITION
+### Column 4: CONDITION
 
 This column specifies the condition of the constraint. An R expression returning logical values (`TRUE` or `FALSE`) is expected. The variables supplied in item attributes can be used in the expression as variable names.
 
@@ -246,11 +231,7 @@ knitr::kable(constraints_reading_data[3, ], row.names = FALSE) %>%
   column_spec(7, "3em")
 ```
 
-<br/>
-
-***
-
-#### LB and UB
+### Column 5-6: LB and UB
 
 These two columns specify lower and upper bounds on the number of selected items. These must be specified when `TYPE` is `Number`, and otherwise must be left empty.
 
@@ -270,9 +251,6 @@ knitr::kable(constraints_fatigue_data[1, ], row.names = FALSE) %>%
   column_spec(7, "3em")
 ```
 
-<br/>
-<br/>
-
 * To select 15 to 30 items satisfying `DOK >= 2`:
 
 ```{r, echo = FALSE}
@@ -287,11 +265,7 @@ knitr::kable(constraints_reading_data[17, ], row.names = FALSE) %>%
   column_spec(7, "3em")
 ```
 
-<br/>
-
-***
-
-#### ONOFF
+### Column 7: ONOFF
 
 Set this to `OFF` to turn off the constraint from being applied. `ON` or leaving it blank applies the constraint. The following example specifies the order constraint to be not applied.
 
@@ -306,5 +280,11 @@ knitr::kable(constraints_reading_data[18, ], row.names = FALSE) %>%
   column_spec(6, "3em") %>%
   column_spec(7, "3em", background = "cyan")
 ```
+
+<br/>
+
+## References
+
+van der Linden W. J., Reese L. M. (1998). A model for optimal constrained adaptive testing. *Applied Psychological Measurement, 22*(3), 259-270.  https://doi.org/10.1177/01466216980223006
 
 <br/>
