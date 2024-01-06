@@ -63,7 +63,7 @@ theta_FB_single(
 \item{item_mcmc, items_list}{sampled item parameters. Must be a matrix for \code{theta_FB_single()}, and a list of matrices for \code{theta_FB()}.}
 }
 \description{
-\code{theta_FB_single()} and \code{theta_FB()} are functions to calculate a theta estimate using FB (Full Bayes) method.
+\code{theta_FB_single()} and \code{theta_FB()} are functions for calculating a theta estimate using FB (Full Bayes) method.
 }
 \details{
 \code{theta_FB_single()} is designed for one item, and \code{theta_FB()} is designed for multiple items.

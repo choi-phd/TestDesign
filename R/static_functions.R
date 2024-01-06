@@ -3,7 +3,7 @@ NULL
 
 #' Run fixed-form test assembly
 #'
-#' \code{\link{Static}} is a test assembly function to perform fixed-form test assembly based on the generalized shadow-test framework.
+#' \code{\link{Static}} is a test assembly function for performing fixed-form test assembly based on the generalized shadow-test framework.
 #'
 #' @template config_Static-param
 #' @template constraints-param

@@ -23,7 +23,7 @@ In this case, if \code{TRUE}, the number of items for every stimuli are returned
 }
 }
 \description{
-\code{\link{getSolutionAttributes}} is a helper function to retrieve constraints-related attributes from a solution.
+\code{\link{getSolutionAttributes}} is a helper function for retrieving constraints-related attributes from a solution.
 }
 \examples{
 item_idx <-

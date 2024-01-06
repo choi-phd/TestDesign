@@ -21,7 +21,7 @@ Static(config, constraints, force_solver = FALSE)
 \code{\link{Static}} returns a \code{\linkS4class{output_Static}} object containing the selected items.
 }
 \description{
-\code{\link{Static}} is a test assembly function to perform fixed-form test assembly based on the generalized shadow-test framework.
+\code{\link{Static}} is a test assembly function for performing fixed-form test assembly based on the generalized shadow-test framework.
 }
 \examples{
 config_science <- createStaticTestConfig(

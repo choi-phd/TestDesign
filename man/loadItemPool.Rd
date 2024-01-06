@@ -32,7 +32,7 @@ loadItemPool(ipar, ipar_se = NULL, unique = FALSE)
 }
 }
 \description{
-\code{\link{loadItemPool}} is a data loading function to create an \code{\linkS4class{item_pool}} object.
+\code{\link{loadItemPool}} is a data loading function for creating an \code{\linkS4class{item_pool}} object.
 \code{\link{loadItemPool}} can read item parameters and standard errors from a \code{\link{data.frame}} or a .csv file.
 }
 \examples{

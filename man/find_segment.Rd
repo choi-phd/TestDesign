@@ -12,7 +12,7 @@ find_segment(x, segment)
 \item{segment}{segment cutpoints. Values of \code{-Inf, Inf} are not implied and must be explicitly supplied if intended.}
 }
 \description{
-\code{find_segment()} is a function to classify theta values into segments based on supplied cutpoints.
+\code{find_segment()} is a function for classifying theta values into segments based on supplied cutpoints.
 }
 \examples{
 cuts <- c(-Inf, -2, 0, 2, Inf)

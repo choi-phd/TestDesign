@@ -17,7 +17,7 @@ toggleConstraints(object, on = NULL, off = NULL)
 \code{\link{toggleConstraints}} returns the updated \code{\linkS4class{constraints}} object.
 }
 \description{
-\code{\link{toggleConstraints}} is a function to toggle individual constraints in a \code{\linkS4class{constraints}} object.
+\code{\link{toggleConstraints}} is a function for toggling individual constraints in a \code{\linkS4class{constraints}} object.
 }
 \examples{
 constraints_science2 <- toggleConstraints(constraints_science, off = 32:36)

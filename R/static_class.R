@@ -76,7 +76,7 @@ setClass("config_Static",
 
 #' Create a config_Static object
 #'
-#' \code{\link{createStaticTestConfig}} is a config function to create a \code{\linkS4class{config_Static}} object for Static (fixed-form) test assembly.
+#' \code{\link{createStaticTestConfig}} is a config function for creating a \code{\linkS4class{config_Static}} object for Static (fixed-form) test assembly.
 #' Default values are used for any unspecified parameters/slots.
 #'
 #' @param item_selection a named list containing item selection criteria.

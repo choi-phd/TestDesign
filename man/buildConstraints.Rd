@@ -19,7 +19,7 @@ buildConstraints(object, item_pool, item_attrib, st_attrib = NULL)
 \code{\link{buildConstraints}} returns a \code{\linkS4class{constraints}} object. This object is used in \code{\link{Static}} and \code{\link{Shadow}}.
 }
 \description{
-\code{\link{buildConstraints}} is a data loading function to create a \code{\linkS4class{constraints}} object.
+\code{\link{buildConstraints}} is a data loading function for creating a \code{\linkS4class{constraints}} object.
 \code{\link{buildConstraints}} is a shortcut that calls other data loading functions.
 The constraints must be in the expected format; see the vignette in \code{vignette("constraints")}.
 }

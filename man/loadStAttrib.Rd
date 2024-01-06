@@ -21,7 +21,7 @@ loadStAttrib(object, item_attrib)
 }
 }
 \description{
-\code{\link{loadStAttrib}} is a data loading function to create an \code{\linkS4class{st_attrib}} object.
+\code{\link{loadStAttrib}} is a data loading function for creating an \code{\linkS4class{st_attrib}} object.
 \code{\link{loadStAttrib}} can read stimulus attributes a \code{\link{data.frame}} or a .csv file.
 }
 \examples{

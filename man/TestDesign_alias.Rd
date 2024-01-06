@@ -13,7 +13,7 @@ OAT()
 \code{\link{app}} and \code{\link{OAT}} are aliases of \code{\link{TestDesign}}.
 }
 \details{
-\code{\link{TestDesign}} is a caller function to open the Shiny interface of TestDesign package.
+\code{\link{TestDesign}} is a caller function for opening the Shiny interface of TestDesign package.
 }
 \examples{
 

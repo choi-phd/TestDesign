@@ -5,7 +5,7 @@
 \alias{constraints-class}
 \title{Class 'constraints': a set of constraints}
 \description{
-\code{\linkS4class{constraints}} is an S4 class to represent a set of constraints and its associated objects.
+\code{\linkS4class{constraints}} is an S4 class for representing a set of constraints and its associated objects.
 }
 \details{
 See \code{\link{constraints-operators}} for object manipulation functions.
