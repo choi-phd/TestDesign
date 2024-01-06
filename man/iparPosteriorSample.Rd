@@ -2,7 +2,7 @@
 % Please edit documentation in R/bayes_functions.R
 \name{iparPosteriorSample}
 \alias{iparPosteriorSample}
-\title{Generate item parameter samples using standard errors}
+\title{Generate item parameter samples for Bayesian purposes}
 \usage{
 iparPosteriorSample(pool, n_sample = 500)
 }
@@ -16,8 +16,10 @@ iparPosteriorSample(pool, n_sample = 500)
 }
 \description{
 \code{\link{iparPosteriorSample}} is a function for generating item parameter samples.
+Used for the FB (full-Bayesian) estimation method.
 }
 \examples{
 ipar <- iparPosteriorSample(itempool_bayes, 5)
+ipar <- iparPosteriorSample(itempool_science, 5) # no variation
 
 }

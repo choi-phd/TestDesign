@@ -31,7 +31,10 @@ NULL
 #'   \item{\code{parms}} a list containing the item object of each item.
 #'   \item{\code{ipar}} a matrix containing all item parameters.
 #'   \item{\code{se}} a matrix containing all item parameter standard errors. The values will be 0 if the argument \code{ipar_se} was not supplied.
-#'   \item{\code{raw}} the original input \code{\link{data.frame}} used to create this object.
+#'   \item{\code{raw}} the original input \code{ipar} argument used to create this object.
+#'   \item{\code{raw_se}} the original input \code{ipar_se} argument used to create this object.
+#'   If the argument was not supplied, this will be in the same structure with the \code{ipar} argument but the item parameter values will be filled with 0s.
+#'   \item{\code{unique}} the original input \code{unique} argument used to create this object.
 #' }
 #'
 #' @examples
@@ -336,10 +339,11 @@ setClass("item_attrib",
 
 #' Load item attributes
 #'
-#' \code{\link{loadItemAttrib}} can read item attributes a \code{\link{data.frame}} or a .csv file.
 #' \code{\link{loadItemAttrib}} is a data loading function for creating an \code{\linkS4class{item_attrib}} object.
+#' \code{\link{loadItemAttrib}} can read item attributes from a \code{\link{data.frame}} or a .csv file.
 #'
-#' @param object item attributes. Can be a \code{\link{data.frame}} or the file path of a .csv file. The content should at least include column 'ID' that matches with the \code{\linkS4class{item_pool}} object.
+#' @param object item attributes. Can be a \code{\link{data.frame}} or the file path of a .csv file.
+#' The content should at least include an 'ID' column that matches with item IDs (the 'ID' column) of the \code{\linkS4class{item_pool}} object.
 #' @template pool_param
 #'
 #' @return \code{\link{loadItemAttrib}} returns an \code{\linkS4class{item_attrib}} object.
@@ -486,15 +490,16 @@ setClassUnion("stattrib_or_null", c("st_attrib", "NULL"))
 #' Load set/stimulus/passage attributes
 #'
 #' \code{\link{loadStAttrib}} is a data loading function for creating an \code{\linkS4class{st_attrib}} object.
-#' \code{\link{loadStAttrib}} can read stimulus attributes a \code{\link{data.frame}} or a .csv file.
+#' \code{\link{loadStAttrib}} can read itemset-level attributes from a \code{\link{data.frame}} or a .csv file.
 #'
-#' @param object set attributes. Can be a \code{\link{data.frame}} or the file path of a .csv file. The content should at least include the column 'STID' referring to the column 'STID' in the \code{data} slot of the \code{\linkS4class{item_attrib}} object.
+#' @param object itemset-level attributes. Can be a \code{\link{data.frame}} or the file path of a .csv file.
+#' The content should at least include an 'STID' column that matches with itemset IDs (the 'STID' column) of the \code{\linkS4class{item_attrib}} object.
 #' @template item_attrib_param
 #'
 #' @return \code{\link{loadStAttrib}} returns a \code{\linkS4class{st_attrib}} object.
 #'
 #' \itemize{
-#'   \item{\code{data}} a \code{\link{data.frame}} containing stimulus attributes.
+#'   \item{\code{data}} a \code{\link{data.frame}} containing itemset-level attributes.
 #' }
 #'
 #' @examples

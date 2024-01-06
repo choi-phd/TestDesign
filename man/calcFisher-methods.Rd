@@ -68,8 +68,6 @@ calcFisher(object, theta)
     \item{\emph{ni} denotes the number of items in the \code{\linkS4class{item_pool}} object.}
   }}
 }
-
-A vector of Fisher information values over theta (nq values) for a single item or a matrix of dimension (nq, ni) for an "item_pool".
 }
 \description{
 \code{\link{calcFisher}} is a function for calculating Fisher information.

@@ -28,7 +28,10 @@ loadItemPool(ipar, ipar_se = NULL, unique = FALSE)
   \item{\code{parms}} a list containing the item object of each item.
   \item{\code{ipar}} a matrix containing all item parameters.
   \item{\code{se}} a matrix containing all item parameter standard errors. The values will be 0 if the argument \code{ipar_se} was not supplied.
-  \item{\code{raw}} the original input \code{\link{data.frame}} used to create this object.
+  \item{\code{raw}} the original input \code{ipar} argument used to create this object.
+  \item{\code{raw_se}} the original input \code{ipar_se} argument used to create this object.
+  If the argument was not supplied, this will be in the same structure with the \code{ipar} argument but the item parameter values will be filled with 0s.
+  \item{\code{unique}} the original input \code{unique} argument used to create this object.
 }
 }
 \description{
