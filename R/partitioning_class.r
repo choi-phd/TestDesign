@@ -3,7 +3,7 @@ NULL
 
 #' Class 'output_Split': partitioning solution
 #'
-#' \code{\linkS4class{output_Split}} is an S4 class to represent the partitioning solution of an item pool.
+#' \code{\linkS4class{output_Split}} is an S4 class for representing the partitioning solution of an item pool.
 #'
 #' @slot output a list containing item/set indices of each partition.
 #' @slot feasible for partitioning into sub-pools, \code{TRUE} indicates the complete assignment problem was feasible.

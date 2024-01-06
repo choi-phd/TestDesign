@@ -5,7 +5,7 @@
 \alias{output_Shadow-class}
 \title{Class 'output_Shadow': adaptive assembly solution for one simulee}
 \description{
-\code{\linkS4class{output_Shadow}} is an S4 class to represent the adaptive assembly solution for one simulee.
+\code{\linkS4class{output_Shadow}} is an S4 class for representing the adaptive assembly solution for one simulee.
 }
 \section{Slots}{
 

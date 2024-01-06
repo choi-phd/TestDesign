@@ -5,7 +5,7 @@
 \alias{item_pool-class}
 \title{Class 'item_pool': an item pool}
 \description{
-\code{\linkS4class{item_pool}} is an S4 class to represent an item pool.
+\code{\linkS4class{item_pool}} is an S4 class for representing an item pool.
 }
 \details{
 See \code{\link{item_pool-operators}} for object manipulation functions.
