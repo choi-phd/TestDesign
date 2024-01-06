@@ -44,7 +44,7 @@ calcLocation(object)
 }
 }
 \description{
-\code{\link{calcLocation}} is a function to calculate the central location (overall difficulty) of items.
+\code{\link{calcLocation}} is a function for calculating the central location (overall difficulty) of items.
 }
 \examples{
 item_1      <- new("item_1PL", difficulty = 0.5)

@@ -72,7 +72,7 @@ calcFisher(object, theta)
 A vector of Fisher information values over theta (nq values) for a single item or a matrix of dimension (nq, ni) for an "item_pool".
 }
 \description{
-\code{\link{calcFisher}} is a function to calculate Fisher information.
+\code{\link{calcFisher}} is a function for calculating Fisher information.
 }
 \examples{
 item_1      <- new("item_1PL", difficulty = 0.5)

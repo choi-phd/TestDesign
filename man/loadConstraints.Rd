@@ -19,7 +19,7 @@ loadConstraints(object, pool, item_attrib, st_attrib = NULL)
 \code{\link{loadConstraints}} returns a \code{\linkS4class{constraints}} object. This object is used in \code{\link{Static}} and \code{\link{Shadow}}.
 }
 \description{
-\code{\link{loadConstraints}} is a data loading function to create a \code{\linkS4class{constraints}} object.
+\code{\link{loadConstraints}} is a data loading function for creating a \code{\linkS4class{constraints}} object.
 \code{\link{loadConstraints}} can read constraints from a data.frame or a .csv file.
 The contents must be in the expected format; see the vignette in \code{vignette("constraints")}.
 }

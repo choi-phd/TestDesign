@@ -3,7 +3,7 @@ NULL
 
 #' Run adaptive test assembly
 #'
-#' \code{\link{Shadow}} is a test assembly function to perform adaptive test assembly based on the generalized shadow-test framework.
+#' \code{\link{Shadow}} is a test assembly function for performing adaptive test assembly based on the generalized shadow-test framework.
 #'
 #' @template config_Shadow-param
 #' @template constraints-param

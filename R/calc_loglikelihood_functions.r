@@ -3,7 +3,7 @@ NULL
 
 #' Calculate log-likelihood
 #'
-#' \code{\link{calcLogLikelihood}} is a function to calculate log-likelihood values.
+#' \code{\link{calcLogLikelihood}} is a function for calculating log-likelihood values.
 #'
 #' @param object an \code{\linkS4class{item_pool}} object.
 #' @param theta theta values to use.

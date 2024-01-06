@@ -131,7 +131,7 @@ createShadowTestConfig(
 \item{theta_grid}{the theta grid to use as quadrature points.}
 }
 \description{
-\code{\link{createShadowTestConfig}} is a config function to create a \code{\linkS4class{config_Shadow}} object for Shadow test assembly.
+\code{\link{createShadowTestConfig}} is a config function for creating a \code{\linkS4class{config_Shadow}} object for Shadow test assembly.
 Default values are used for any unspecified parameters/slots.
 }
 \examples{

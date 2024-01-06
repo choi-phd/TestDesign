@@ -101,7 +101,7 @@ MLE(
 }
 }
 \description{
-\code{\link{mle}} is a function to compute maximum likelihood estimates of theta.
+\code{\link{mle}} is a function for computing maximum likelihood estimates of theta.
 }
 \examples{
 mle(itempool_fatigue, resp = resp_fatigue_data[10, ])

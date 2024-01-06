@@ -26,7 +26,7 @@ a list containing the following entries:
 }
 }
 \description{
-\code{\link{runAssembly}} is a function to perform test assembly. This function is used internally in \code{\link{Static}} and \code{\link{Shadow}}.
+\code{\link{runAssembly}} is a function for performing test assembly. This function is used internally in \code{\link{Static}} and \code{\link{Shadow}}.
 }
 \references{
 van der Linden, W. J. (2005).

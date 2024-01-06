@@ -3,7 +3,7 @@ NULL
 
 #' Calculate central location (overall difficulty)
 #'
-#' \code{\link{calcLocation}} is a function to calculate the central location (overall difficulty) of items.
+#' \code{\link{calcLocation}} is a function for calculating the central location (overall difficulty) of items.
 #'
 #' @param object an \code{\link{item}} or an \code{\linkS4class{item_pool}} object.
 #'

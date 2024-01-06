@@ -21,8 +21,8 @@ loadItemAttrib(object, pool)
 }
 }
 \description{
-\code{\link{loadItemAttrib}} is a data loading function to create an \code{\linkS4class{item_attrib}} object.
 \code{\link{loadItemAttrib}} can read item attributes a \code{\link{data.frame}} or a .csv file.
+\code{\link{loadItemAttrib}} is a data loading function for creating an \code{\linkS4class{item_attrib}} object.
 }
 \examples{
 ## Read from data.frame:

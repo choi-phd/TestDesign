@@ -3,7 +3,7 @@ NULL
 
 #' Calculate item response probabilities
 #'
-#' \code{\link{calcProb}} is a function to calculate item response probabilities.
+#' \code{\link{calcProb}} is a function for calculating item response probabilities.
 #'
 #' @param object an \code{\link{item}} or an \code{\linkS4class{item_pool}} object.
 #' @param theta theta values to use.

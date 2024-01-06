@@ -72,7 +72,7 @@ calcProb(object, theta)
 }
 }
 \description{
-\code{\link{calcProb}} is a function to calculate item response probabilities.
+\code{\link{calcProb}} is a function for calculating item response probabilities.
 }
 \examples{
 item_1      <- new("item_1PL", difficulty = 0.5)

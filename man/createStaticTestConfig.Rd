@@ -33,7 +33,7 @@ createStaticTestConfig(item_selection = NULL, MIP = NULL)
 \code{\link{createStaticTestConfig}} returns a \code{\linkS4class{config_Static}} object. This object is used in \code{\link{Static}}.
 }
 \description{
-\code{\link{createStaticTestConfig}} is a config function to create a \code{\linkS4class{config_Static}} object for Static (fixed-form) test assembly.
+\code{\link{createStaticTestConfig}} is a config function for creating a \code{\linkS4class{config_Static}} object for Static (fixed-form) test assembly.
 Default values are used for any unspecified parameters/slots.
 }
 \examples{

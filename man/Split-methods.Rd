@@ -43,7 +43,7 @@ For set-based item pools, the default partition size is (pool size / number of p
 \code{\link{partition}} returns an \code{\linkS4class{output_Split}} object containing item/set indices of created tests/pools.
 }
 \description{
-\code{\link{Split}} is a function to split a pool into multiple parallel tests or pools.
+\code{\link{Split}} is a function for splitting a pool into multiple parallel tests or pools.
 When constructing parallel tests, each test is constructed to satisfy all constraints.
 When constructing parallel pools, each pool is constructed so that it contains a test that satisfies all constraints.
 }

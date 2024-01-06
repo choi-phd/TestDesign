@@ -59,7 +59,7 @@ theta_EB_single(
 \item{prior_parm}{a vector containing parameters for the prior distribution.}
 }
 \description{
-\code{theta_EB_single()} and \code{theta_EB()} are functions to calculate a theta estimate using EB (Empirical Bayes) method.
+\code{theta_EB_single()} and \code{theta_EB()} are functions for calculating a theta estimate using EB (Empirical Bayes) method.
 }
 \details{
 \code{theta_EB_single()} is designed for one item, and \code{theta_EB()} is designed for multiple items.

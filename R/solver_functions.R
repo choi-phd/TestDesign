@@ -3,7 +3,7 @@ NULL
 
 #' Run Test Assembly
 #'
-#' \code{\link{runAssembly}} is a function to perform test assembly. This function is used internally in \code{\link{Static}} and \code{\link{Shadow}}.
+#' \code{\link{runAssembly}} is a function for performing test assembly. This function is used internally in \code{\link{Static}} and \code{\link{Shadow}}.
 #'
 #' @param config a \code{\linkS4class{config_Static}} or a \code{\linkS4class{config_Shadow}} object containing configuration options. Use \code{\link{createStaticTestConfig}} and \code{\link{createShadowTestConfig}} for this.
 #' @param constraints a \code{\linkS4class{constraints}} object. Use \code{\link{loadConstraints}} for this.
