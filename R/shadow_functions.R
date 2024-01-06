@@ -185,7 +185,7 @@ setMethod(
 
       # Simulee: flag ineligibile items
 
-      if (constants$use_eligibility_control) {
+      if (constants$use_exposure_control) {
         eligible_flag <- flagIneligible(exposure_record, constants, constraints@item_index_by_stimulus, seed, j)
       }
 

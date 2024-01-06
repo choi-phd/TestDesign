@@ -411,7 +411,10 @@ parseDiagnosticStats <- function(
 
   o <- list()
 
-  if (!constants$use_eligibility_control | !config@exposure_control$diagnostic_stats) {
+  if (
+    !constants$use_exposure_control |
+    !config@exposure_control$diagnostic_stats
+  ) {
     return(o)
   }
 
