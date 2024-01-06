@@ -210,13 +210,15 @@ setMethod(
     if (length(resp) != object@ni) {
       stop("length(resp) does not match item_pool@ni")
     }
-    if (length(theta) > 0 && all(!is.na(theta))) {
-      mat_Jacobian <- matrix(NA, length(theta), object@ni)
-      for (i in 1:object@ni) {
-        mat_Jacobian[, i] <- calcJacobian(object@parms[[i]], theta, resp[i])
-      }
-    } else {
-      stop("'theta' is empty, or contains missing values.")
+    if (length(theta) == 0) {
+      stop("the 'theta' argument is empty; it must have at least one value.")
+    }
+    if (any(is.na(theta))) {
+      stop("the 'theta' argument contains missing values; it must not have any.")
+    }
+    mat_Jacobian <- matrix(NA, length(theta), object@ni)
+    for (i in 1:object@ni) {
+      mat_Jacobian[, i] <- calcJacobian(object@parms[[i]], theta, resp[i])
     }
     return(mat_Jacobian)
   }
@@ -228,13 +230,15 @@ setMethod(
   f = "calcJacobian",
   signature = c("item_pool_cluster", "numeric", "list"),
   definition = function(object, theta, resp) {
-    if (length(theta) > 0 && all(!is.na(theta))) {
-      mat_Jacobian <- vector(mode = "list", length = object@np)
-      for (i in 1:object@np) {
-        mat_Jacobian[[i]] <- calcJacobian(object@pools[[i]], theta, resp[[i]])
-      }
-    } else {
-      stop("'theta' is empty, or contains missing values.")
+    if (length(theta) == 0) {
+      stop("the 'theta' argument is empty; it must have at least one value.")
+    }
+    if (any(is.na(theta))) {
+      stop("the 'theta' argument contains missing values; it must not have any.")
+    }
+    mat_Jacobian <- vector(mode = "list", length = object@np)
+    for (i in 1:object@np) {
+      mat_Jacobian[[i]] <- calcJacobian(object@pools[[i]], theta, resp[[i]])
     }
     return(mat_Jacobian)
   }

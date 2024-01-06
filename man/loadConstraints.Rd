@@ -7,7 +7,7 @@
 loadConstraints(object, pool, item_attrib, st_attrib = NULL)
 }
 \arguments{
-\item{object}{constraint specifications. Can be a \code{\link{data.frame}} or the file path of a .csv file. See the vignette for the expected format.}
+\item{object}{constraint specifications. Can be a \code{\link{data.frame}} or the file path of a .csv file. See the vignette for a description of the expected format.}
 
 \item{pool}{an \code{\linkS4class{item_pool}} object. Use \code{\link{loadItemPool}} for this.}
 
@@ -21,7 +21,7 @@ loadConstraints(object, pool, item_attrib, st_attrib = NULL)
 \description{
 \code{\link{loadConstraints}} is a data loading function for creating a \code{\linkS4class{constraints}} object.
 \code{\link{loadConstraints}} can read constraints from a data.frame or a .csv file.
-The contents must be in the expected format; see the vignette in \code{vignette("constraints")}.
+The contents must be in the expected format; see the vignette in \code{vignette("constraints")} for a documentation.
 }
 \examples{
 ## Read from data.frame:

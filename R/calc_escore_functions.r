@@ -190,11 +190,13 @@ setMethod(
   f = "calcEscore",
   signature = c("item_pool", "matrix"),
   definition = function(object, theta) {
-    if (length(theta) > 0 && all(!is.na(theta))) {
-      expected_score <- as.vector(Reduce("+", lapply(object@parms, calcEscore, theta)))
-    } else {
-      stop("'theta' is empty, or contains missing values.")
+    if (nrow(theta) == 0) {
+      stop("the 'theta' argument is empty; it must have at least one value.")
     }
+    if (any(is.na(theta))) {
+      stop("the 'theta' argument contains missing values; it must not have any.")
+    }
+    expected_score <- as.vector(Reduce("+", lapply(object@parms, calcEscore, theta)))
     return(expected_score)
   }
 )
@@ -205,11 +207,13 @@ setMethod(
   f = "calcEscore",
   signature = c("item_pool_cluster", "numeric"),
   definition = function(object, theta) {
-    if (length(theta) > 0 && all(!is.na(theta))) {
-      expected_score <- lapply(object@pools, calcEscore, theta)
-    } else {
-      stop("'theta' is empty, or contains missing values.")
+    if (length(theta) == 0) {
+      stop("the 'theta' argument is empty; it must have at least one value.")
     }
+    if (any(is.na(theta))) {
+      stop("the 'theta' argument contains missing values; it must not have any.")
+    }
+    expected_score <- lapply(object@pools, calcEscore, theta)
     return(expected_score)
   }
 )

@@ -50,14 +50,32 @@ NULL
 loadItemPool <- function(ipar, ipar_se = NULL, unique = FALSE) {
 
   if (!is.null(ipar)) {
-    if (inherits(ipar, "data.frame")) {
-      ipar <- ipar
-    } else if (inherits(ipar, "character")) {
-      ipar <- read.csv(ipar, header = TRUE, as.is = TRUE)
-    } else if (inherits(ipar, "SingleGroupClass")) {
-      if (requireNamespace("mirt", quietly = TRUE)) {
+    while(TRUE) {
+      if (inherits(ipar, "data.frame")) {
+        ipar <- ipar
+        break
+      }
+      if (inherits(ipar, "character")) {
+        if (length(ipar) != 1) {
+          stop("the 'ipar' argument expects only one filepath; but it was not one.")
+        }
+        if (!file.exists(ipar)) {
+          stop(
+            sprintf(
+              "the file specified in the 'ipar' argument does not exist: %s",
+              ipar
+            )
+          )
+        }
+        ipar <- read.csv(ipar, header = TRUE, as.is = TRUE)
+        break
+      }
+      if (inherits(ipar, "SingleGroupClass")) {
+        if (!requireNamespace("mirt", quietly = TRUE)) {
+          stop("'mirt' package is required to read SingleGroupClass objects.")
+        }
         if (ipar@Model$nfact > 1) {
-          stop(sprintf("model is not unidimensional: %s factors", ipar@Model$nfact))
+          stop(sprintf("item model is not unidimensional: %s factors", ipar@Model$nfact))
         }
         tmp     <- mirt::coef(ipar, IRTpars = TRUE, simplify = TRUE)$items
         item_id <- rownames(tmp)
@@ -73,9 +91,9 @@ loadItemPool <- function(ipar, ipar_se = NULL, unique = FALSE) {
             "unrecognized itemtype: %s",
             paste0(unsupported, collapse = " ")))
         }
-      } else {
-        stop("'mirt' package required to read SingleGroupClass objects")
+        break
       }
+      stop("the 'ipar' argument could not be used to read data; it was not a data frame or a valid filepath, or a mirt SingleGroupClass object.")
     }
   }
 
@@ -101,10 +119,21 @@ loadItemPool <- function(ipar, ipar_se = NULL, unique = FALSE) {
       break
     }
     if (inherits(ipar_se, "character")) {
+      if (length(ipar_se) != 1) {
+          stop("the 'ipar_se' argument expects only one filepath; but it was not one.")
+        }
+        if (!file.exists(ipar_se)) {
+          stop(
+            sprintf(
+              "the file specified in the 'ipar_se' argument does not exist: %s",
+              ipar_se
+            )
+          )
+        }
       ipar_se <- read.csv(ipar_se, header = TRUE, as.is = TRUE)
       break
     }
-    break
+    stop("the 'ipar_se' argument could not be used to read data; it was not a data frame or a valid filepath.")
   }
 
   if (is.null(ipar_se)) {
@@ -245,14 +274,19 @@ loadItemPool <- function(ipar, ipar_se = NULL, unique = FALSE) {
 
     stop(
       sprintf(
-        "Item %s: unexpected IRT model '%s' (valid models are 1PL, 2PL, 3PL, PC, GPC, GR)",
-        i, model[i]
+        "Item %s (%s): unexpected IRT model '%s' (valid models are 1PL, 2PL, 3PL, PC, GPC, GR)",
+        i, ipar[["ID"]][i], model[i]
       )
     )
 
   }
   if (sum(!valid) > 0) {
-    stop(paste("Check the parameters for the following item(s):", paste((1:ni)[!valid], collapse = ", "), "\n"))
+    invalid_items <- which(!valid)
+    invalid_items <- sprintf("row %s (%s)", invalid_items, ipar[["ID"]][invalid_items])
+    stop(sprintf(
+      "some items had invalid item parameters; check the following item(s): %s",
+      paste(invalid_items, collapse = ", ")
+    ))
   }
 
   item_pool@ni <- ni
@@ -269,6 +303,7 @@ loadItemPool <- function(ipar, ipar_se = NULL, unique = FALSE) {
   if (validObject(item_pool)) {
     return(item_pool)
   }
+
 }
 
 #' @rdname loadItemAttrib
@@ -281,16 +316,19 @@ setClass("item_attrib",
   ),
   validity = function(object) {
     if (!("ID" %in% names(object@data))) {
-      stop("The 'ID' column must be present.")
+      stop("the 'ID' column does not exist; it must be present.")
     }
     if (any(object@data[["ID"]] %in% c("", " ", "NA", "N/A"))) {
-      stop("The 'ID' column in must not include empty or NA values.")
+      stop("the 'ID' column has empty or NA values; it must not have any.")
     }
     if (length(unique(object@data[["ID"]])) != nrow(object@data)) {
-      stop("The 'ID' column in must not have any duplicate values.")
+      stop("the 'ID' column has duplicate values; it must be all unique.")
     }
     if (!identical(object@data[["INDEX"]], 1:length(object@data[["INDEX"]]))) {
-      stop(sprintf("The 'INDEX' column must be equal to 1:%s.", length(object@data[["INDEX"]])))
+      stop(sprintf(
+        "the 'INDEX' column must be equal to 1:%s.",
+        length(object@data[["INDEX"]])
+      ))
     }
     return(TRUE)
   }
@@ -326,15 +364,40 @@ setClass("item_attrib",
 #' @export
 loadItemAttrib <- function(object, pool) {
 
-  if (is.null(pool) || !inherits(pool, "item_pool")) {
-    stop("'pool' is missing or is not an 'item_pool' object.")
+  if (is.null(pool)) {
+    stop("the 'pool' argument is missing.")
+  }
+
+  if (!inherits(pool, "item_pool")) {
+    stop("the 'pool' argument is not an 'item_pool' object.")
+  }
+
+  if (!validObject(pool)) {
+    stop("the 'pool' argument is not a valid 'item_pool' object.")
   }
 
   if (!is.null(object)) {
-    if (inherits(object, "data.frame")) {
-      item_attrib <- object
-    } else if (inherits(object, "character")) {
-      item_attrib <- read.csv(object, header = TRUE, as.is = TRUE)
+    while (TRUE) {
+      if (inherits(object, "data.frame")) {
+        item_attrib <- object
+        break
+      }
+      if (inherits(object, "character")) {
+        if (length(object) != 1) {
+          stop("the 'object' argument expects only one filepath; but it was not one.")
+        }
+        if (!file.exists(object)) {
+          stop(
+            sprintf(
+              "the file specified in the 'object' argument does not exist: %s",
+              object
+            )
+          )
+        }
+        item_attrib <- read.csv(object, header = TRUE, as.is = TRUE)
+        break
+      }
+      stop("the 'object' argument could not be used to read data; it was not a data frame or a valid filepath.")
     }
   }
 
@@ -344,17 +407,28 @@ loadItemAttrib <- function(object, pool) {
     item_attrib[["ID"]] <- as.character(item_attrib[["ID"]])
   }
 
-  if (!all(sort(pool@id) == sort(item_attrib[["ID"]]))) {
-    stop("The 'ID' values must match pool@id.")
-  } else if (!all(pool@id == item_attrib[["ID"]])) {
-    item_attrib <- merge(data.frame(ID = pool@id), item_attrib, by = "ID")[, names(item_attrib)] # re-ordering cols in attrib
+  # consistency check with item pool ID values ---------------------------------
+
+  if (length(pool@id) != length(item_attrib[["ID"]])) {
+    stop("the 'ID' column values of supplied item attributes must exactly match pool@id; they do not have the same # of IDs.")
   }
 
-  if (nrow(item_attrib) != pool@ni) {
-    stop("The number of rows must match pool@ni.")
+  if (!all(sort(pool@id) == sort(item_attrib[["ID"]]))) {
+    stop("the 'ID' column values of supplied item attributes must exactly match pool@id; they do not match after sorting.")
+  }
+
+  if (!all(pool@id == item_attrib[["ID"]])) {
+    # IDs match but are in different row orders
+    # attempt to match row orders here
+    known_column_order <- names(item_attrib)
+    item_attrib <- merge(
+      data.frame(ID = pool@id), item_attrib, by = "ID"
+    )
+    item_attrib <- item_attrib[, known_column_order]
   }
 
   if ("STID" %in% names(item_attrib)) {
+    # parse stimulus IDs
     idx <- item_attrib[["STID"]] %in% c("", " ", "N/A")
     if (any(idx)) {
       item_attrib[["STID"]][idx] <- NA
@@ -366,7 +440,7 @@ loadItemAttrib <- function(object, pool) {
 
   if ("INDEX" %in% names(item_attrib)) {
     item_attrib$INDEX <- NULL
-    warning("The 'INDEX' column was ignored because it is reserved for internal use.")
+    warning("the 'INDEX' column was ignored because it is reserved for internal use.")
   }
   item_attrib <- data.frame(cbind(INDEX = 1:nrow(item_attrib), item_attrib))
 
@@ -376,6 +450,7 @@ loadItemAttrib <- function(object, pool) {
   if (validObject(o)) {
     return(o)
   }
+
 }
 
 #' @rdname loadStAttrib
@@ -388,16 +463,19 @@ setClass("st_attrib",
   ),
   validity = function(object) {
     if (!("STID" %in% names(object@data))) {
-      stop("The 'STID' column must be present.")
+      stop("the 'STID' column does not exist; it must be present.")
     }
-    if (any(object@data[["STID"]] %in% c("", " ", NA))) {
-      stop("The 'STID' column in must not include empty or NA values.")
+    if (any(object@data[["STID"]] %in% c("", " ", "NA", "N/A"))) {
+      stop("the 'STID' column has empty or NA values; it must not have any.")
     }
     if (length(unique(object@data[["STID"]])) != nrow(object@data)) {
-      stop("The 'STID' column in must not have any duplicate values.")
+      stop("the 'STID' column has duplicate values; it must be all unique.")
     }
     if (!identical(object@data[["STINDEX"]], 1:length(object@data[["STINDEX"]]))) {
-      stop(sprintf("The 'STINDEX' column must be equal to 1:%s.", length(object@data[["STINDEX"]])))
+      stop(sprintf(
+        "the 'STINDEX' column must be equal to 1:%s.",
+        length(object@data[["STINDEX"]])
+      ))
     }
     return(TRUE)
   }
@@ -436,15 +514,40 @@ setClassUnion("stattrib_or_null", c("st_attrib", "NULL"))
 #' @export
 loadStAttrib <- function(object, item_attrib) {
 
-  if (is.null(item_attrib) || !inherits(item_attrib, "item_attrib")) {
-    stop("'item_attrib' is missing or is not an 'item_attrib' object.")
+  if (is.null(item_attrib)) {
+    stop("the 'item_attrib' argument is missing.")
+  }
+
+  if (!inherits(item_attrib, "item_attrib")) {
+    stop("the 'item_attrib' argument is not an 'item_attrib' object.")
+  }
+
+  if (!validObject(item_attrib)) {
+    stop("the 'item_attrib' argument is not a valid 'item_attrib' object.")
   }
 
   if (!is.null(object)) {
-    if (inherits(object, "data.frame")) {
-      st_attrib <- object
-    } else if (inherits(object, "character")) {
-      st_attrib <- read.csv(object, header = TRUE, as.is = TRUE)
+    while (TRUE) {
+      if (inherits(object, "data.frame")) {
+        st_attrib <- object
+        break
+      }
+      if (inherits(object, "character")) {
+        if (length(object) != 1) {
+          stop("the 'object' argument expects only one filepath; but it was not one.")
+        }
+        if (!file.exists(object)) {
+          stop(
+            sprintf(
+              "the file specified in the 'object' argument does not exist: %s",
+              object
+            )
+          )
+        }
+        st_attrib <- read.csv(object, header = TRUE, as.is = TRUE)
+        break
+      }
+      stop("the 'object' argument could not be used to read data; it was not a data frame or a valid filepath.")
     }
   }
 
@@ -455,15 +558,23 @@ loadStAttrib <- function(object, item_attrib) {
   }
   if ("STINDEX" %in% names(st_attrib)) {
     st_attrib$STINDEX <- NULL
-    warning("The 'STINDEX' column was ignored because it is reserved for internal use.")
+    warning("the 'STINDEX' column was ignored because it is reserved for internal use.")
   }
   st_attrib <- data.frame(cbind(STINDEX = 1:nrow(st_attrib), st_attrib))
 
   if (!("STID" %in% names(item_attrib@data))) {
-    stop("'item_attrib' must have 'STID' column.")
+    stop("the 'item_attrib' argument does not have an 'STID' column; it must have one.")
   }
-  if (!all(unique(na.omit(item_attrib@data[["STID"]])) %in% st_attrib[["STID"]])) {
-    stop("The 'STID' column in 'st_attrib' content must have all unique values in the 'STID' column of 'item_attrib' content.")
+  expected_ids  <- unique(na.omit(item_attrib@data[["STID"]]))
+  actual_ids    <- st_attrib[["STID"]]
+  undefined_ids <- setdiff(expected_ids, actual_ids)
+  if (length(undefined_ids) > 0) {
+    stop(sprintf(
+      "%s %s %s",
+      "all unique 'STID's in the 'item_attrib' object must appear in the 'STID' column of the 'object' argument;",
+      "this condition was not met. see these STIDs:",
+      paste(undefined_ids, collapse = ", ")
+    ))
   }
 
   o <- new("st_attrib")
@@ -694,9 +805,9 @@ setClass("constraints",
 #'
 #' \code{\link{loadConstraints}} is a data loading function for creating a \code{\linkS4class{constraints}} object.
 #' \code{\link{loadConstraints}} can read constraints from a data.frame or a .csv file.
-#' The contents must be in the expected format; see the vignette in \code{vignette("constraints")}.
+#' The contents must be in the expected format; see the vignette in \code{vignette("constraints")} for a documentation.
 #'
-#' @param object constraint specifications. Can be a \code{\link{data.frame}} or the file path of a .csv file. See the vignette for the expected format.
+#' @param object constraint specifications. Can be a \code{\link{data.frame}} or the file path of a .csv file. See the vignette for a description of the expected format.
 #' @template pool_param
 #' @template item_attrib_param
 #' @template st_attrib_param

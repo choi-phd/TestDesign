@@ -40,7 +40,7 @@ setMethod(
   definition = function(config, constraints, force_solver = FALSE) {
 
     if (!validObject(config)) {
-      stop("'config' object is not valid.")
+      stop("the 'config' argument is not a valid 'config_Static' object.")
     }
 
     if (!force_solver) {
