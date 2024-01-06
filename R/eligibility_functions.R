@@ -145,17 +145,6 @@ applyFading <- function(o, segments_to_apply, constants) {
 }
 
 #' @noRd
-getEligibleFlagInSegment <- function(eligible_flag, segment, constants) {
-  o <- list()
-  o$i <- eligible_flag$i[segment, ]
-  if (!constants$set_based) {
-    return(o)
-  }
-  o$s <- eligible_flag$s[segment, ]
-  return(o)
-}
-
-#' @noRd
 incrementN <- function(o, segments_to_apply, segment_prob, constants) {
 
   o$n_jk[segments_to_apply] <-
