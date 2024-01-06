@@ -204,13 +204,15 @@ setMethod(
   f = "calcFisher",
   signature = c("item_pool", "matrix"),
   definition = function(object, theta) {
-    if (nrow(theta) > 0 && all(!is.na(theta))) {
-      info_Fisher <- matrix(NA, nrow(theta), object@ni)
-      for (i in 1:object@ni) {
-        info_Fisher[, i] <- calcFisher(object@parms[[i]], theta)
-      }
-    } else {
-      stop("'theta' is empty, or contains missing values.")
+    if (nrow(theta) == 0) {
+      stop("the 'theta' argument is empty; it must have at least one value.")
+    }
+    if (any(is.na(theta))) {
+      stop("the 'theta' argument contains missing values; it must not have any.")
+    }
+    info_Fisher <- matrix(NA, nrow(theta), object@ni)
+    for (i in 1:object@ni) {
+      info_Fisher[, i] <- calcFisher(object@parms[[i]], theta)
     }
     return(info_Fisher)
   }
@@ -223,13 +225,15 @@ setMethod(
   f = "calcFisher",
   signature = c("item_pool_cluster", "numeric"),
   definition = function(object, theta) {
-    if (length(theta) > 0 && all(!is.na(theta))) {
-      info_Fisher <- vector(mode = "list", length = object@np)
-      for (i in 1:object@np) {
-        info_Fisher[[i]] <- calcFisher(object@pools[[i]], theta)
-      }
-    } else {
-      stop("'theta' is empty, or contains missing values.")
+    if (length(theta) == 0) {
+      stop("the 'theta' argument is empty; it must have at least one value.")
+    }
+    if (any(is.na(theta))) {
+      stop("the 'theta' argument contains missing values; it must not have any.")
+    }
+    info_Fisher <- vector(mode = "list", length = object@np)
+    for (i in 1:object@np) {
+      info_Fisher[[i]] <- calcFisher(object@pools[[i]], theta)
     }
     return(info_Fisher)
   }
