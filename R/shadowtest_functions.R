@@ -84,7 +84,7 @@ assembleShadowTest <- function(
     info <- getInfoOfExcludedEntry(info, exclude_index[[j]], constants)
   }
 
-  if (constants$use_eligibility_control) {
+  if (constants$use_exposure_control) {
 
     # Get eligible items in the current theta segment
     current_segment <- o@theta_segment_index[position]
@@ -93,7 +93,7 @@ assembleShadowTest <- function(
 
   }
 
-  if (constants$use_eligibility_control && constants$exposure_control_method %in% c("ELIGIBILITY")) {
+  if (constants$use_exposure_control && constants$exposure_control_method %in% c("ELIGIBILITY")) {
 
     xdata_elg  <- applyEligibilityConstraintsToXdata(xdata, eligible_flag_in_current_theta_segment, constants, constraints)
     shadowtest <- runAssembly(config, constraints, xdata = xdata_elg, objective = info)
@@ -111,7 +111,7 @@ assembleShadowTest <- function(
 
   }
 
-  if (constants$use_eligibility_control && constants$exposure_control_method %in% c("BIGM", "BIGM-BAYESIAN")) {
+  if (constants$use_exposure_control && constants$exposure_control_method %in% c("BIGM", "BIGM-BAYESIAN")) {
 
     # Do Big-M based exposure control: penalize item info
     info <- applyEligibilityConstraintsToInfo(
@@ -124,7 +124,7 @@ assembleShadowTest <- function(
 
   }
 
-  if (!constants$use_eligibility_control) {
+  if (!constants$use_exposure_control) {
 
     shadowtest <- runAssembly(config, constraints, xdata = xdata, objective = info)
     shadowtest$feasible <- TRUE

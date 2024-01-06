@@ -11,7 +11,7 @@ doExposureControl <- function(
   constants
 ) {
 
-  if (!constants$use_eligibility_control) {
+  if (!constants$use_exposure_control) {
     return(exposure_record)
   }
 
@@ -95,7 +95,7 @@ initializeSegmentRecord <- function(constants) {
 
   o <- list()
 
-  if (!constants$use_eligibility_control) {
+  if (!constants$use_exposure_control) {
     return(o)
   }
 
