@@ -64,7 +64,7 @@ parseShadowTestRefreshSchedule <- function(constants, refresh_policy) {
 #' @noRd
 assembleShadowTest <- function(
   j, position, o,
-  eligible_flag,
+  eligibility_flag,
   exclude_index,
   stimulus_record,
   info,
@@ -88,14 +88,14 @@ assembleShadowTest <- function(
 
     # Get eligible items in the current theta segment
     current_segment <- o@theta_segment_index[position]
-    eligible_flag_in_current_theta_segment <- getEligibleFlagInSegment(eligible_flag, current_segment, constants)
-    eligible_flag_in_current_theta_segment <- flagAdministeredAsEligible(eligible_flag_in_current_theta_segment, o, position, constants)
+    eligibility_flag_in_current_theta_segment <- getEligibilityFlagInSegment(eligibility_flag, current_segment, constants)
+    eligibility_flag_in_current_theta_segment <- flagAdministeredAsEligible(eligibility_flag_in_current_theta_segment, o, position, constants)
 
   }
 
   if (constants$use_exposure_control && constants$exposure_control_method %in% c("ELIGIBILITY")) {
 
-    xdata_elg  <- applyEligibilityConstraintsToXdata(xdata, eligible_flag_in_current_theta_segment, constants, constraints)
+    xdata_elg  <- applyEligibilityConstraintsToXdata(xdata, eligibility_flag_in_current_theta_segment, constants, constraints)
     shadowtest <- runAssembly(config, constraints, xdata = xdata_elg, objective = info)
     is_optimal <- isShadowTestOptimal(shadowtest)
 
@@ -115,7 +115,7 @@ assembleShadowTest <- function(
 
     # Do Big-M based exposure control: penalize item info
     info <- applyEligibilityConstraintsToInfo(
-      info, eligible_flag_in_current_theta_segment, config, constants
+      info, eligibility_flag_in_current_theta_segment, config, constants
     )
 
     shadowtest <- runAssembly(config, constraints, xdata = xdata, objective = info)
