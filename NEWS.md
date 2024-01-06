@@ -1,5 +1,9 @@
 # TestDesign 1.5.1.9000
 
+## Updates
+
+* Updated `vignette('constraints')`.
+
 ## Bug fixes
 
 * Fixed where `c()` and `combineConstraints()` were incorrectly combining constraints.
