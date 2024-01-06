@@ -87,30 +87,33 @@ combineConstraintsData <- function(raw1, raw2) {
 #' @export
 combineConstraints <- function(x1, x2) {
 
-  if (!inherits(x1, "constraints") || !inherits(x2, "constraints")) {
-    stop("operands must be 'constraints' objects")
+  if (!inherits(x1, "constraints")) {
+    stop("the 'x1' argument is not a 'constraints' object.")
+  }
+  if (!inherits(x2, "constraints")) {
+    stop("the 'x2' argument is not a 'constraints' object.")
   }
   if (!validObject(x1)) {
-    stop("'x1' is not a valid 'constraints' object")
+    stop("'x1' is not a valid 'constraints' object.")
   }
   if (!validObject(x2)) {
-    stop("'x2' is not a valid 'constraints' object")
+    stop("'x2' is not a valid 'constraints' object.")
   }
 
   if (!identical(x1@pool, x2@pool)) {
-    stop("@pool does not match")
+    stop("@pool does not match between 'constraints' objects.")
   }
   if (!identical(x1@item_attrib, x2@item_attrib)) {
-    stop("@item_attrib does not match")
+    stop("@item_attrib does not match between 'constraints' objects.")
   }
   if (!identical(x1@st_attrib, x2@st_attrib)) {
-    stop("@st_attrib does not match")
+    stop("@st_attrib does not match between 'constraints' objects.")
   }
 
   raw <- combineConstraintsData(x1@constraints, x2@constraints)
   o   <- loadConstraints(raw, x1@pool, x1@item_attrib, x1@st_attrib)
 
-  id     <- c(x1@constraints$CONSTRAINT, x1@constraints$CONSTRAINT)
+  id <- c(x1@constraints$CONSTRAINT, x1@constraints$CONSTRAINT)
   if (sum(duplicated(id)) > 0) {
     warning(sprintf("duplicate constraint IDs were removed: %s", paste0(id[duplicated(id)], collapse = ", ")))
   }
@@ -166,7 +169,7 @@ toggleConstraints <- function(object, on = NULL, off = NULL) {
 
   nc <- nrow(object@constraints)
   if (length(intersect(on, off)) > 0) {
-    stop("toggleConstraints: 'on' and 'off' must have no values in common")
+    stop("toggleConstraints(): 'on' and 'off' arguments have overlapping values; there must be no overlap")
   }
   if (!"ONOFF" %in% names(object@constraints)) {
     object@constraints[["ONOFF"]] <- ""
@@ -190,7 +193,7 @@ toggleConstraints <- function(object, on = NULL, off = NULL) {
 
   if (!is.null(on)) {
     if (any(!is.element(on, 1:nc))) {
-      stop(sprintf("toggleConstraints: 'on' should be within c(1:nc), nc = %s", nc))
+      stop(sprintf("toggleConstraints(): the 'on' argument is out of bounds; should be within c(1:nc), nc = %s", nc))
     }
     for (index in on) {
       object@list_constraints[[index]]@suspend <- FALSE
@@ -199,7 +202,7 @@ toggleConstraints <- function(object, on = NULL, off = NULL) {
   }
   if (!is.null(off)) {
     if (any(!is.element(off, 1:nc))) {
-      stop(sprintf("toggleConstraints: 'off' should be within c(1:nc), nc = %s", nc))
+      stop(sprintf("toggleConstraints(): the 'off' argument is out of bounds; it should be within c(1:nc), nc = %s", nc))
     }
     for (index in off) {
       object@list_constraints[[index]]@suspend <- TRUE

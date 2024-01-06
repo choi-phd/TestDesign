@@ -33,14 +33,14 @@ sanitizeConstraintsData <- function(x) {
 #' @noRd
 validateLBUB <- function(x, allow_range = TRUE) {
   if (any(c(x$LB, x$UB) < 0)) {
-      stop(sprintf("constraint %s: LB and UB must be >= 0", x$CONSTRAINT))
-    }
+    stop(sprintf("constraint %s: LB and UB must be >= 0; this condition was not met.", x$CONSTRAINT))
+  }
   if (x$LB > x$UB) {
-    stop(sprintf("constraint %s: LB <= UB must be TRUE", x$CONSTRAINT))
+    stop(sprintf("constraint %s: LB <= UB must be TRUE; this condition was not met.", x$CONSTRAINT))
   }
   if (!allow_range) {
     if (x$LB != x$UB) {
-      stop(sprintf("constraint %s: LB == UB must be TRUE for test length", x$CONSTRAINT))
+      stop(sprintf("constraint %s: LB == UB must be TRUE for test length; this condition was not met.", x$CONSTRAINT))
     }
   }
 }
@@ -50,7 +50,7 @@ validateExpression <- function(x, attrib, unit_name, use_lt) {
 
   try_parse <- try(parse(text = x$CONDITION))
   if (inherits(try_parse, "try-error")) {
-    stop(sprintf("constraint %s: '%s' is not a valid expression", x$CONSTRAINT, x$CONDITION))
+    stop(sprintf("constraint %s: '%s' is not a valid expression.", x$CONSTRAINT, x$CONDITION))
   }
 
   idx <- with(attrib@data, eval(try_parse))
