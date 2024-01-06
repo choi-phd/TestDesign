@@ -10,7 +10,7 @@ NULL
 
 #' Load item pool
 #'
-#' \code{\link{loadItemPool}} is a data loading function to create an \code{\linkS4class{item_pool}} object.
+#' \code{\link{loadItemPool}} is a data loading function for creating an \code{\linkS4class{item_pool}} object.
 #' \code{\link{loadItemPool}} can read item parameters and standard errors from a \code{\link{data.frame}} or a .csv file.
 #'
 #' @param ipar item parameters. Can be a \code{\link{data.frame}} or the file path of a .csv file. The content should at least include columns 'ID' and 'MODEL'.
@@ -298,8 +298,8 @@ setClass("item_attrib",
 
 #' Load item attributes
 #'
-#' \code{\link{loadItemAttrib}} is a data loading function to create an \code{\linkS4class{item_attrib}} object.
 #' \code{\link{loadItemAttrib}} can read item attributes a \code{\link{data.frame}} or a .csv file.
+#' \code{\link{loadItemAttrib}} is a data loading function for creating an \code{\linkS4class{item_attrib}} object.
 #'
 #' @param object item attributes. Can be a \code{\link{data.frame}} or the file path of a .csv file. The content should at least include column 'ID' that matches with the \code{\linkS4class{item_pool}} object.
 #' @template pool_param
@@ -407,7 +407,7 @@ setClassUnion("stattrib_or_null", c("st_attrib", "NULL"))
 
 #' Load set/stimulus/passage attributes
 #'
-#' \code{\link{loadStAttrib}} is a data loading function to create an \code{\linkS4class{st_attrib}} object.
+#' \code{\link{loadStAttrib}} is a data loading function for creating an \code{\linkS4class{st_attrib}} object.
 #' \code{\link{loadStAttrib}} can read stimulus attributes a \code{\link{data.frame}} or a .csv file.
 #'
 #' @param object set attributes. Can be a \code{\link{data.frame}} or the file path of a .csv file. The content should at least include the column 'STID' referring to the column 'STID' in the \code{data} slot of the \code{\linkS4class{item_attrib}} object.
@@ -476,7 +476,7 @@ loadStAttrib <- function(object, item_attrib) {
 
 #' Class 'constraint': a single constraint
 #'
-#' \code{\linkS4class{constraint}} is an S4 class to represent a single constraint.
+#' \code{\linkS4class{constraint}} is an S4 class for representing a single constraint.
 #'
 #' @slot constraint the numeric index of the constraint.
 #' @slot constraint_id the character ID of the constraint.
@@ -551,7 +551,7 @@ setClass("constraint",
 
 #' Class 'constraints': a set of constraints
 #'
-#' \code{\linkS4class{constraints}} is an S4 class to represent a set of constraints and its associated objects.
+#' \code{\linkS4class{constraints}} is an S4 class for representing a set of constraints and its associated objects.
 #'
 #' See \code{\link{constraints-operators}} for object manipulation functions.
 #'
@@ -692,7 +692,7 @@ setClass("constraints",
 
 #' Load constraints
 #'
-#' \code{\link{loadConstraints}} is a data loading function to create a \code{\linkS4class{constraints}} object.
+#' \code{\link{loadConstraints}} is a data loading function for creating a \code{\linkS4class{constraints}} object.
 #' \code{\link{loadConstraints}} can read constraints from a data.frame or a .csv file.
 #' The contents must be in the expected format; see the vignette in \code{vignette("constraints")}.
 #'
@@ -954,7 +954,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL) {
 
 #' Build constraints (shortcut to other loading functions)
 #'
-#' \code{\link{buildConstraints}} is a data loading function to create a \code{\linkS4class{constraints}} object.
+#' \code{\link{buildConstraints}} is a data loading function for creating a \code{\linkS4class{constraints}} object.
 #' \code{\link{buildConstraints}} is a shortcut that calls other data loading functions.
 #' The constraints must be in the expected format; see the vignette in \code{vignette("constraints")}.
 #'

@@ -148,7 +148,7 @@ setMethod(
 
 #' Toggle constraints
 #'
-#' \code{\link{toggleConstraints}} is a function to toggle individual constraints in a \code{\linkS4class{constraints}} object.
+#' \code{\link{toggleConstraints}} is a function for toggling individual constraints in a \code{\linkS4class{constraints}} object.
 #'
 #' @param object a \code{\linkS4class{constraints}} object from \code{\link{loadConstraints}}.
 #' @param on constraint indices to mark as active. Also accepts character IDs.

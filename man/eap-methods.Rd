@@ -52,7 +52,7 @@ EAP(object, select = NULL, prior, reset_prior = FALSE)
 }
 }
 \description{
-\code{\link{eap}} is a function to compute expected a posteriori estimates of theta.
+\code{\link{eap}} is a function for computing expected a posteriori estimates of theta.
 }
 \examples{
 eap(itempool_fatigue, resp = resp_fatigue_data[10, ])

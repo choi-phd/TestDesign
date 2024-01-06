@@ -5,7 +5,7 @@
 \alias{constraint-class}
 \title{Class 'constraint': a single constraint}
 \description{
-\code{\linkS4class{constraint}} is an S4 class to represent a single constraint.
+\code{\linkS4class{constraint}} is an S4 class for representing a single constraint.
 }
 \section{Slots}{
 

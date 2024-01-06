@@ -3,7 +3,7 @@ NULL
 
 #' Calculate second derivative of log-likelihood
 #'
-#' \code{\link{calcHessian}} is a function to calculate the second derivative of the log-likelihood function.
+#' \code{\link{calcHessian}} is a function for calculating the second derivative of the log-likelihood function.
 #'
 #' \describe{
 #'   \item{\emph{notations}}{\itemize{

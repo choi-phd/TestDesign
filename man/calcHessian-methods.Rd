@@ -77,7 +77,7 @@ calcHessian(object, theta, resp)
 }
 }
 \description{
-\code{\link{calcHessian}} is a function to calculate the second derivative of the log-likelihood function.
+\code{\link{calcHessian}} is a function for calculating the second derivative of the log-likelihood function.
 }
 \details{
 \describe{

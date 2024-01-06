@@ -721,7 +721,7 @@ addSolutionToConstraintData <- function(x, attrib, item_idx, all_values) {
 
 #' Retrieve constraints-related attributes from solution
 #'
-#' \code{\link{getSolutionAttributes}} is a helper function to retrieve constraints-related attributes from a solution.
+#' \code{\link{getSolutionAttributes}} is a helper function for retrieving constraints-related attributes from a solution.
 #'
 #' @param constraints a \code{\linkS4class{constraints}} object.
 #' @param item_idx item indices from a solution.

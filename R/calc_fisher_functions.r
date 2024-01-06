@@ -3,7 +3,7 @@ NULL
 
 #' Calculate Fisher information
 #'
-#' \code{\link{calcFisher}} is a function to calculate Fisher information.
+#' \code{\link{calcFisher}} is a function for calculating Fisher information.
 #'
 #' @param object an \code{\link{item}} or an \code{\linkS4class{item_pool}} object.
 #' @param theta theta values to use.

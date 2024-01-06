@@ -103,7 +103,7 @@ getSetStructureConstraints <- function(constraints) {
 
 #' Split an item pool into partitions
 #'
-#' \code{\link{Split}} is a function to split a pool into multiple parallel tests or pools.
+#' \code{\link{Split}} is a function for splitting a pool into multiple parallel tests or pools.
 #' When constructing parallel tests, each test is constructed to satisfy all constraints.
 #' When constructing parallel pools, each pool is constructed so that it contains a test that satisfies all constraints.
 #'

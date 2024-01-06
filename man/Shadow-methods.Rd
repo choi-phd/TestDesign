@@ -70,7 +70,7 @@ This overrides \code{prior_dist} and \code{prior_par} in the config.
 \code{\link{Shadow}} returns an \code{\linkS4class{output_Shadow_all}} object containing assembly results.
 }
 \description{
-\code{\link{Shadow}} is a test assembly function to perform adaptive test assembly based on the generalized shadow-test framework.
+\code{\link{Shadow}} is a test assembly function for performing adaptive test assembly based on the generalized shadow-test framework.
 }
 \examples{
 config <- createShadowTestConfig()

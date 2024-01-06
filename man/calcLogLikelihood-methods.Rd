@@ -30,7 +30,7 @@ calcLogLikelihood(object, theta, resp)
 \code{\link{calcLogLikelihood}} returns values of log-likelihoods.
 }
 \description{
-\code{\link{calcLogLikelihood}} is a function to calculate log-likelihood values.
+\code{\link{calcLogLikelihood}} is a function for calculating log-likelihood values.
 }
 \examples{
 j_pool   <- calcLogLikelihood(itempool_science, seq(-3, 3, 1), 0)

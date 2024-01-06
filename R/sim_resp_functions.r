@@ -3,7 +3,7 @@ NULL
 
 #' Simulate item response data
 #'
-#' \code{\link{simResp}} is a function to simulate item response data.
+#' \code{\link{simResp}} is a function for simulating item response data.
 #'
 #' \describe{
 #'   \item{\emph{notations}}{\itemize{

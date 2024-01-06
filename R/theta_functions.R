@@ -326,7 +326,7 @@ estimateFinalTheta <- function(
 
 #' Compute maximum likelihood estimates of theta
 #'
-#' \code{\link{mle}} is a function to compute maximum likelihood estimates of theta.
+#' \code{\link{mle}} is a function for computing maximum likelihood estimates of theta.
 #'
 #' @param object an \code{\linkS4class{item_pool}} object.
 #' @param select (optional) if item indices are supplied, only the specified items are used.
@@ -642,7 +642,7 @@ setMethod(
 
 #' Compute maximum likelihood estimates of theta using fence items
 #'
-#' \code{\link{mlef}} is a function to compute maximum likelihood estimates of theta using fence items.
+#' \code{\link{mlef}} is a function for computing maximum likelihood estimates of theta using fence items.
 #'
 #' @param object an \code{\linkS4class{item_pool}} object.
 #' @param select (optional) if item indices are supplied, only the specified items are used.
@@ -854,7 +854,7 @@ setMethod(
 
 #' Compute expected a posteriori estimates of theta
 #'
-#' \code{\link{eap}} is a function to compute expected a posteriori estimates of theta.
+#' \code{\link{eap}} is a function for computing expected a posteriori estimates of theta.
 #'
 #' @param object an \code{\linkS4class{item_pool}} object.
 #' @param select (optional) if item indices are supplied, only the specified items are used.

@@ -62,7 +62,7 @@ NULL
 
 #' (C++) Calculate a theta estimate using EB (Empirical Bayes) method
 #'
-#' \code{theta_EB_single()} and \code{theta_EB()} are functions to calculate a theta estimate using EB (Empirical Bayes) method.
+#' \code{theta_EB_single()} and \code{theta_EB()} are functions for calculating a theta estimate using EB (Empirical Bayes) method.
 #'
 #' \code{theta_EB_single()} is designed for one item, and \code{theta_EB()} is designed for multiple items.
 #'
@@ -117,7 +117,7 @@ NULL
 
 #' (C++) Calculate a theta estimate using FB (Full Bayes) method
 #'
-#' \code{theta_FB_single()} and \code{theta_FB()} are functions to calculate a theta estimate using FB (Full Bayes) method.
+#' \code{theta_FB_single()} and \code{theta_FB()} are functions for calculating a theta estimate using FB (Full Bayes) method.
 #'
 #' \code{theta_FB_single()} is designed for one item, and \code{theta_FB()} is designed for multiple items.
 #'
@@ -149,7 +149,7 @@ NULL
 
 #' (C++) Classify theta values into segments using cutpoints
 #'
-#' \code{find_segment()} is a function to classify theta values into segments based on supplied cutpoints.
+#' \code{find_segment()} is a function for classifying theta values into segments based on supplied cutpoints.
 #'
 #' @param x the theta value. This can be a vector.
 #' @param segment segment cutpoints. Values of \code{-Inf, Inf} are not implied and must be explicitly supplied if intended.

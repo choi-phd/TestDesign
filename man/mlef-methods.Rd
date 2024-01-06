@@ -80,7 +80,7 @@ mlef(
 }
 }
 \description{
-\code{\link{mlef}} is a function to compute maximum likelihood estimates of theta using fence items.
+\code{\link{mlef}} is a function for computing maximum likelihood estimates of theta using fence items.
 }
 \examples{
 mlef(itempool_fatigue, resp = resp_fatigue_data[10, ])
