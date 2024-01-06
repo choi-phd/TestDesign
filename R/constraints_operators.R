@@ -74,8 +74,10 @@ combineConstraintsData <- function(raw1, raw2) {
 
   raw       <- rbind(raw1, raw2)
 
-  idx       <- which(!duplicated(raw$CONSTRAINT))
+  idx       <- which(!duplicated(raw$CONSTRAINT_ID))
   raw       <- raw[idx, ]
+
+  raw$CONSTRAINT <- NULL # because this will be recreated in loadConstraints()
 
   return(raw)
 
