@@ -20,8 +20,6 @@ NULL
 #'   }}
 #' }
 #'
-#' A vector of Fisher information values over theta (nq values) for a single item or a matrix of dimension (nq, ni) for an "item_pool".
-#'
 #' @examples
 #' item_1      <- new("item_1PL", difficulty = 0.5)
 #' item_2      <- new("item_2PL", slope = 1.0, difficulty = 0.5)

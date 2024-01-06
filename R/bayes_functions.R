@@ -78,9 +78,10 @@ getBayesianConstants <- function(config, constants) {
 
 }
 
-#' Generate item parameter samples using standard errors
+#' Generate item parameter samples for Bayesian purposes
 #'
 #' \code{\link{iparPosteriorSample}} is a function for generating item parameter samples.
+#' Used for the FB (full-Bayesian) estimation method.
 #'
 #' @param pool an \code{\linkS4class{item_pool}} object.
 #' @param n_sample the number of samples to draw.
@@ -89,6 +90,7 @@ getBayesianConstants <- function(config, constants) {
 #'
 #' @examples
 #' ipar <- iparPosteriorSample(itempool_bayes, 5)
+#' ipar <- iparPosteriorSample(itempool_science, 5) # no variation
 #'
 #' @export
 iparPosteriorSample <- function(pool, n_sample = 500) {
