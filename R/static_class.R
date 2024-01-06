@@ -181,7 +181,7 @@ createStaticTestConfig <- function(item_selection = NULL, MIP = NULL) {
 
 #' Class 'output_Static': fixed-form assembly solution
 #'
-#' \code{\linkS4class{output_Static}} is an S4 class to represent a fixed-form assembly solution.
+#' \code{\linkS4class{output_Static}} is an S4 class for representing a fixed-form assembly solution.
 #'
 #' @slot MIP a list containing the result from MIP solver.
 #' @slot selected a \code{\link{data.frame}} containing the selected items and their attributes.

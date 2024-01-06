@@ -404,7 +404,7 @@ createShadowTestConfig <- function(
 
 #' Class 'output_Shadow_all': a set of adaptive assembly solutions
 #'
-#' \code{\linkS4class{output_Shadow_all}} is an S4 class to represent a set of adaptive assembly solutions.
+#' \code{\linkS4class{output_Shadow_all}} is an S4 class for representing a set of adaptive assembly solutions.
 #'
 #' \describe{
 #'   \item{\emph{notations}}{\itemize{
@@ -482,7 +482,7 @@ setClass("output_Shadow_all",
 
 #' Class 'output_Shadow': adaptive assembly solution for one simulee
 #'
-#' \code{\linkS4class{output_Shadow}} is an S4 class to represent the adaptive assembly solution for one simulee.
+#' \code{\linkS4class{output_Shadow}} is an S4 class for representing the adaptive assembly solution for one simulee.
 #'
 #' @slot simulee_id the numeric ID of the simulee.
 #' @slot true_theta the true theta of the simulee, if was specified.
@@ -580,7 +580,7 @@ setClass("output_Shadow",
   }
 )
 
-#' An S4 class to represent the exposure rate plot
+#' An S4 class for representing the exposure rate plot
 #'
 #' @noRd
 setClass("exposure_rate_plot",

@@ -3,7 +3,7 @@ NULL
 
 #' Class 'simulation_data_cache': data cache for Shadow()
 #'
-#' \code{\linkS4class{simulation_data_cache}} is an S4 class to represent data cache for Shadow().
+#' \code{\linkS4class{simulation_data_cache}} is an S4 class for representing data cache for Shadow().
 #'
 #' @slot item_pool the \code{\linkS4class{item_pool}} object.
 #' @slot theta_grid the theta grid to use as quadrature points.
@@ -53,7 +53,7 @@ setClass("simulation_data_cache",
 
 #' Class 'test': data cache for simulations
 #'
-#' \code{\linkS4class{test}} is an S4 class to represent data cache for running simulations.
+#' \code{\linkS4class{test}} is an S4 class for representing data cache for running simulations.
 #' Despite the name, this class does not represent a test and is not related to a test. That is, test length is not stored in this class.
 #' This class is only kept for backwards compatibility.
 #' The functionality of this class is superseded by \code{\linkS4class{simulation_data_cache}}.
@@ -103,7 +103,7 @@ setClass("test",
 
 #' Class 'test_cluster': data cache for simulations
 #'
-#' \code{\linkS4class{test_cluster}} is an S4 class to represent data cache for running simulations.
+#' \code{\linkS4class{test_cluster}} is an S4 class for representing data cache for running simulations.
 #' Despite the name, this class does not represent a series of tests and is not related to a series of tests. That is, test length is not stored in this class.
 #' This class is only kept for backwards compatibility.
 #'

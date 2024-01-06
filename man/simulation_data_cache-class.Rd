@@ -5,7 +5,7 @@
 \alias{simulation_data_cache-class}
 \title{Class 'simulation_data_cache': data cache for Shadow()}
 \description{
-\code{\linkS4class{simulation_data_cache}} is an S4 class to represent data cache for Shadow().
+\code{\linkS4class{simulation_data_cache}} is an S4 class for representing data cache for Shadow().
 }
 \section{Slots}{
 

@@ -5,7 +5,7 @@
 \alias{output_Shadow_all-class}
 \title{Class 'output_Shadow_all': a set of adaptive assembly solutions}
 \description{
-\code{\linkS4class{output_Shadow_all}} is an S4 class to represent a set of adaptive assembly solutions.
+\code{\linkS4class{output_Shadow_all}} is an S4 class for representing a set of adaptive assembly solutions.
 }
 \details{
 \describe{

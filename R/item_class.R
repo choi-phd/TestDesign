@@ -212,7 +212,7 @@ setClass("item_GR",
 
 #' Class 'item_pool': an item pool
 #'
-#' \code{\linkS4class{item_pool}} is an S4 class to represent an item pool.
+#' \code{\linkS4class{item_pool}} is an S4 class for representing an item pool.
 #'
 #' See \code{\link{item_pool-operators}} for object manipulation functions.
 #'
@@ -274,7 +274,7 @@ setClass("item_pool",
 
 #' Class 'item_pool_cluster': an item pool
 #'
-#' \code{\linkS4class{item_pool_cluster}} is an S4 class to represent a group of item pools.
+#' \code{\linkS4class{item_pool_cluster}} is an S4 class for representing a group of item pools.
 #'
 #' @slot np the number of item pools.
 #' @slot pools a list of \code{\linkS4class{item_pool}} objects.
