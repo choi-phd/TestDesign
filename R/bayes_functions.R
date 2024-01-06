@@ -101,36 +101,41 @@ iparPosteriorSample <- function(pool, n_sample = 500) {
     if (pool@model[i] == "item_1PL") {
       ipar_list[[i]]      <- matrix(NA, nrow = n_sample, ncol = 1)
       ipar_list[[i]][, 1] <- rnorm(n_sample, pool@ipar[i, 1], pool@se[i, 1])
-
-    } else if (pool@model[i] == "item_2PL") {
+      next
+    }
+    if (pool@model[i] == "item_2PL") {
       a_hyp <- lnHyperPars(pool@ipar[i, 1], pool@se[i, 1])
       ipar_list[[i]]      <- matrix(NA, nrow = n_sample, ncol = 2)
       ipar_list[[i]][, 1] <- rlnorm(n_sample, a_hyp[1], a_hyp[2])
       ipar_list[[i]][, 2] <- rnorm(n_sample, pool@ipar[i, 2], pool@se[i, 2])
-
-    } else if (pool@model[i] == "item_3PL") {
+      next
+    }
+    if (pool@model[i] == "item_3PL") {
       a_hyp <- lnHyperPars(pool@ipar[i, 1], pool@se[i, 1])
       c_hyp <- logitHyperPars(pool@ipar[i, 3], pool@se[i, 3])
       ipar_list[[i]]      <- matrix(NA, nrow = n_sample, ncol = 3)
       ipar_list[[i]][, 1] <- rlnorm(n_sample, a_hyp[1], a_hyp[2])
       ipar_list[[i]][, 2] <- rnorm(n_sample, pool@ipar[i, 2], pool@se[i, 2])
       ipar_list[[i]][, 3] <- rlogitnorm(n_sample, mu = c_hyp[1], sigma = c_hyp[2])
-
-    } else if (pool@model[i] == "item_PC") {
+      next
+    }
+    if (pool@model[i] == "item_PC") {
       ipar_list[[i]] <- matrix(NA, nrow = n_sample, ncol = pool@NCAT[i] - 1)
       for (k in 1:(pool@NCAT[i] - 1)) {
         ipar_list[[i]][, k] <- rnorm(n_sample, pool@ipar[i, k], pool@se[i, k])
       }
-
-    } else if (pool@model[i] == "item_GPC") {
+      next
+    }
+    if (pool@model[i] == "item_GPC") {
       a_hyp <- lnHyperPars(pool@ipar[i, 1], pool@se[i, 1])
       ipar_list[[i]]      <- matrix(NA, nrow = n_sample, ncol = pool@NCAT[i])
       ipar_list[[i]][, 1] <- rlnorm(n_sample, a_hyp[1], a_hyp[2])
       for (k in 1:(pool@NCAT[i] - 1)) {
         ipar_list[[i]][, k + 1] <- rnorm(n_sample, pool@ipar[i, k + 1], pool@se[i, k + 1])
       }
-
-    } else if (pool@model[i] == "item_GR") {
+      next
+    }
+    if (pool@model[i] == "item_GR") {
       a_hyp <- lnHyperPars(pool@ipar[i, 1], pool@se[i, 1])
       ipar_list[[i]]      <- matrix(NA, nrow = n_sample, ncol = pool@NCAT[i])
       ipar_list[[i]][, 1] <- rlnorm(n_sample, a_hyp[1], a_hyp[2])
@@ -142,7 +147,7 @@ iparPosteriorSample <- function(pool, n_sample = 500) {
           ipar_list[[i]][s, 2:pool@NCAT[i]] <- sort(ipar_list[[i]][s, 2:pool@NCAT[i]])
         }
       }
-
+      next
     }
   }
   return(ipar_list)
