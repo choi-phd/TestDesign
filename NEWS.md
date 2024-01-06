@@ -4,6 +4,7 @@
 
 * Updated `vignette('constraints')`.
 * Removed deprecated arguments.
+* Updated documentation and validation error/warning messages. Also improved input validation in some functions.
 
 ## Bug fixes
 
