@@ -2,12 +2,10 @@
 output: github_document
 ---
 
-# TestDesign <img src="man/figures/testdesign_logo.png" align="right" width="192px" height="100%"/>
-
-<!-- badges: start -->
 [![R build status](https://github.com/choi-phd/TestDesign/actions/workflows/r.yml/badge.svg)](https://github.com/choi-phd/TestDesign/actions)
 [![Number of downloads](https://cranlogs.r-pkg.org/badges/grand-total/TestDesign?color=lightgrey)](https://cran.r-project.org/package=TestDesign)
-<!-- badges: end -->
+
+# TestDesign <img src="man/figures/testdesign_logo.png" align="right" width="192px" height="100%"/>
 
 Optimal **Test Design** Approach to Fixed and Adaptive Test Construction
 
