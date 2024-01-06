@@ -186,7 +186,7 @@ setMethod(
       # Simulee: flag ineligibile items
 
       if (constants$use_exposure_control) {
-        eligible_flag <- flagIneligible(exposure_record, constants, constraints@item_index_by_stimulus, seed, j)
+        eligibility_flag <- flagIneligible(exposure_record, constants, constraints@item_index_by_stimulus, seed, j)
       }
 
       # Simulee: create augmented pool if applicable
@@ -236,7 +236,7 @@ setMethod(
             }
             shadowtest <- assembleShadowTest(
               j, position, o,
-              eligible_flag,
+              eligibility_flag,
               exclude_index,
               stimulus_record,
               info_current_theta,
@@ -395,7 +395,7 @@ setMethod(
         exposure_record, segment_record,
         o, j,
         current_theta,
-        eligible_flag,
+        eligibility_flag,
         config,
         constants
       )
