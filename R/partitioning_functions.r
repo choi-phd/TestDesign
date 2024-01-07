@@ -46,16 +46,34 @@ getDecisionVariablesOfItemForMultipool <- function(item_idx, nv_per_bin, n_bins)
 
 #' @noRd
 splitSolutionToBins <- function(solution, n_bins, ni_per_bin, nv_per_bin) {
+
   o <- list()
+
   for (b in 1:n_bins) {
-    i <- (b - 1) * nv_per_bin + 1:ni_per_bin
-    s <- (b - 1) * nv_per_bin + (ni_per_bin + 1):nv_per_bin
     o[[b]] <- list()
-    o[[b]]$i <- which(solution[i] == 1)
-    o[[b]]$s <- which(solution[s] == 1)
   }
   names(o) <- 1:n_bins
+
+  # if ni_per_bin == nv_per_bin, then it is discrete (not set-based)
+
+  for (b in 1:n_bins) {
+    i <- (b - 1) * nv_per_bin + 1:ni_per_bin
+    o[[b]]$i <- which(solution[i] == 1)
+  }
+
+  if (ni_per_bin == nv_per_bin) {
+    return(o)
+  }
+
+  # if ni_per_bin < nv_per_bin, then it is set-based
+
+  for (b in 1:n_bins) {
+    s <- (b - 1) * nv_per_bin + (ni_per_bin + 1):nv_per_bin
+    o[[b]]$s <- which(solution[s] == 1)
+  }
+
   return(o)
+
 }
 
 #' @noRd
