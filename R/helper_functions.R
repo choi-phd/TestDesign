@@ -70,6 +70,11 @@ setMethod(
 #' @noRd
 countConstraints <- function(constraints, item_idx) {
 
+  # this is an orphaned function; this is not being used anywhere.
+  # getSolutionAttributes() has the same functionality but better.
+  # that function also tallys for ENEMY, INCLUDE, EXCLUDE, ALLORNONE constraints,
+  # this function does not.
+
   if (!inherits(constraints, "constraints")) {
     stop("'constraints' must be a 'constraints' class object")
   }
