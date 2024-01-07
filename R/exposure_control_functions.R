@@ -7,7 +7,6 @@ doExposureControl <- function(
   o, j,
   current_theta,
   eligibility_flag,
-  config,
   constants
 ) {
 
