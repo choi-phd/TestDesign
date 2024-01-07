@@ -124,46 +124,46 @@ applyEligibilityConstraintsToInfo <- function(info, eligibility_flag_in_current_
 }
 
 #' @noRd
-applyFading <- function(o, segments_to_apply, constants) {
+applyFading <- function(exposure_record, segments_to_apply, constants) {
 
   fading_factor <- constants$fading_factor
 
-  o$n_jk[segments_to_apply]    <- fading_factor * o$n_jk[segments_to_apply]
+  exposure_record$n_jk[segments_to_apply]    <- fading_factor * exposure_record$n_jk[segments_to_apply]
 
-  if (!is.null(o$f_jk)) {
-    o$f_jk[segments_to_apply]  <- fading_factor * o$f_jk[segments_to_apply]
+  if (!is.null(exposure_record$f_jk)) {
+    exposure_record$f_jk[segments_to_apply]  <- fading_factor * exposure_record$f_jk[segments_to_apply]
   }
 
-  o$a_ijk[segments_to_apply, ] <- fading_factor * o$a_ijk[segments_to_apply, ]
-  o$r_ijk[segments_to_apply, ] <- fading_factor * o$r_ijk[segments_to_apply, ]
+  exposure_record$a_ijk[segments_to_apply, ] <- fading_factor * exposure_record$a_ijk[segments_to_apply, ]
+  exposure_record$r_ijk[segments_to_apply, ] <- fading_factor * exposure_record$r_ijk[segments_to_apply, ]
 
   if (!constants$set_based) {
-    return(o)
+    return(exposure_record)
   }
 
-  o$a_sjk[segments_to_apply, ] <- fading_factor * o$a_sjk[segments_to_apply, ]
-  o$r_sjk[segments_to_apply, ] <- fading_factor * o$r_sjk[segments_to_apply, ]
+  exposure_record$a_sjk[segments_to_apply, ] <- fading_factor * exposure_record$a_sjk[segments_to_apply, ]
+  exposure_record$r_sjk[segments_to_apply, ] <- fading_factor * exposure_record$r_sjk[segments_to_apply, ]
 
-  return(o)
+  return(exposure_record)
 
 }
 
 #' @noRd
-incrementN <- function(o, segments_to_apply, segment_prob, constants) {
+incrementN <- function(exposure_record, segments_to_apply, segment_prob, constants) {
 
-  o$n_jk[segments_to_apply] <-
-  o$n_jk[segments_to_apply] + segment_prob
+  exposure_record$n_jk[segments_to_apply] <-
+  exposure_record$n_jk[segments_to_apply] + segment_prob
   if (constants$fading_factor != 1) {
-    o$n_jk_nofade[segments_to_apply] <-
-    o$n_jk_nofade[segments_to_apply] + segment_prob
+    exposure_record$n_jk_nofade[segments_to_apply] <-
+    exposure_record$n_jk_nofade[segments_to_apply] + segment_prob
   }
 
-  return(o)
+  return(exposure_record)
 
 }
 
 #' @noRd
-incrementPhi <- function(o, segments_to_apply, segment_prob, theta_is_feasible) {
+incrementPhi <- function(exposure_record, segments_to_apply, segment_prob, theta_is_feasible) {
 
   # for soft constraint exposure control, incrementPhi() is not called for the purpose of code optimization
   # technically, incrementPhi() should be always called because test is always feasible when using soft constraint exposure control
@@ -172,16 +172,16 @@ incrementPhi <- function(o, segments_to_apply, segment_prob, theta_is_feasible) 
   # see updateEligibilityRates()
 
   if (theta_is_feasible) {
-    o$f_jk[segments_to_apply] <-
-    o$f_jk[segments_to_apply] + segment_prob
+    exposure_record$f_jk[segments_to_apply] <-
+    exposure_record$f_jk[segments_to_apply] + segment_prob
   }
 
-  return(o)
+  return(exposure_record)
 
 }
 
 #' @noRd
-incrementAlpha <- function(o, segments_to_apply, segment_prob, x, constants) {
+incrementAlpha <- function(exposure_record, segments_to_apply, segment_prob, x, constants) {
 
   # van der Linden & Veldkamp (2007)
   # Conditional Item-Exposure Control in Adaptive Testing Using Item-Ineligibility Probabilities
@@ -193,27 +193,27 @@ incrementAlpha <- function(o, segments_to_apply, segment_prob, x, constants) {
 
   administered_i <- x@administered_item_index
 
-  o$a_ijk[segments_to_apply, administered_i] <-
-  o$a_ijk[segments_to_apply, administered_i] + segment_prob
+  exposure_record$a_ijk[segments_to_apply, administered_i] <-
+  exposure_record$a_ijk[segments_to_apply, administered_i] + segment_prob
   if (constants$fading_factor != 1) {
-    o$a_ijk_nofade[segments_to_apply, administered_i] <-
-    o$a_ijk_nofade[segments_to_apply, administered_i] + segment_prob
+    exposure_record$a_ijk_nofade[segments_to_apply, administered_i] <-
+    exposure_record$a_ijk_nofade[segments_to_apply, administered_i] + segment_prob
   }
 
   if (!constants$set_based) {
-    return(o)
+    return(exposure_record)
   }
 
   administered_s <- na.omit(x@administered_stimulus_index)
 
-  o$a_sjk[segments_to_apply, administered_s] <-
-  o$a_sjk[segments_to_apply, administered_s] + segment_prob
+  exposure_record$a_sjk[segments_to_apply, administered_s] <-
+  exposure_record$a_sjk[segments_to_apply, administered_s] + segment_prob
   if (constants$fading_factor != 1) {
-    o$a_sjk_nofade[segments_to_apply, administered_s] <-
-    o$a_sjk_nofade[segments_to_apply, administered_s] + segment_prob
+    exposure_record$a_sjk_nofade[segments_to_apply, administered_s] <-
+    exposure_record$a_sjk_nofade[segments_to_apply, administered_s] + segment_prob
   }
 
-  return(o)
+  return(exposure_record)
 
 }
 
