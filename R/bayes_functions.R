@@ -20,7 +20,10 @@ parsePriorParameters <- function(config_theta, constants, prior_density_override
   config_theta$prior_dist <- toupper(config_theta$prior_dist)
 
   # if prior_par is a vector, expand to an examinee-wise list
-  if (is.vector(config_theta$prior_par)) {
+  if (
+    is.vector(config_theta$prior_par) &
+    !is.list(config_theta$prior_par) # because a list is also a vector
+  ) {
     config_theta$prior_par <- lapply(1:constants$nj, function(x) config_theta$prior_par)
   }
 
