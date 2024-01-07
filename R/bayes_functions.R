@@ -54,7 +54,7 @@ parsePriorParameters <- function(config_theta, constants, prior_density_override
 }
 
 #' @noRd
-getPosteriorConstants <- function(config) {
+getPosteriorConstants <- function(config, constants) {
 
   o <- list()
 
@@ -67,6 +67,12 @@ getPosteriorConstants <- function(config) {
     o$thin        <- config@MCMC$thin
     o$jump_factor <- config@MCMC$jump_factor
   }
+
+  # generate prior densities from config
+  o$final_theta_prior_densities <- generateDensityFromPriorPar(
+    config@final_theta,
+    constants$theta_q
+  )
 
   return(o)
 
@@ -218,9 +224,10 @@ generateItemParameterSample <- function(config, item_pool, posterior_constants) 
 }
 
 #' @noRd
-generateDensityFromPriorPar <- function(config_theta, theta_q, nj) {
+generateDensityFromPriorPar <- function(config_theta, theta_q) {
 
   nq <- nrow(theta_q)
+  nj <- length(config_theta$prior_par) # this is an examinee-wise list
   prior_density <- NULL
 
   if (config_theta$prior_dist == "NORMAL") {
