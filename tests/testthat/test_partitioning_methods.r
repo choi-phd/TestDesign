@@ -26,6 +26,7 @@ test_that("partitioning methods work", {
   for (partition in o@output) {
     subpool <- constraints@pool[partition$i]
     expect_equal(subpool@ni, constraints@test_length)
+    expect_true(length(partition$s) == 0)
   }
 
   n_partition <- 4
@@ -33,6 +34,7 @@ test_that("partitioning methods work", {
   for (partition in o@output) {
     subpool <- constraints@pool[partition$i]
     expect_equal(subpool@ni, constraints@pool@ni / n_partition)
+    expect_true(length(partition$s) == 0)
   }
 
   n_partition <- 3
@@ -41,6 +43,7 @@ test_that("partitioning methods work", {
     subpool <- constraints@pool[partition$i]
     expect_gte(subpool@ni, 60)
     expect_lte(subpool@ni, 70)
+    expect_true(length(partition$s) == 0)
   }
 
   # set-based assembly
@@ -61,6 +64,7 @@ test_that("partitioning methods work", {
   for (partition in o@output) {
     subpool <- constraints@pool[partition$i]
     expect_equal(subpool@ni, constraints@test_length)
+    expect_true(length(partition$s) > 0)
   }
 
   n_partition <- 2
@@ -69,6 +73,7 @@ test_that("partitioning methods work", {
     subpool <- constraints@pool[partition$i]
     expect_gte(subpool@ni, 140)
     expect_lte(subpool@ni, 160)
+    expect_true(length(partition$s) > 0)
   }
 
 })
