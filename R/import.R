@@ -1,26 +1,56 @@
 # Program: TestDesign
-# Original Author: Seung Choi
-# Assumptions: D = 1.0; the minimum score is 0 for all items
+# Original author, repo maintainer, package maintainer: Seung W. Choi
+# Joined author, codebase maintainer: Sangdon Lim
+# Assumptions: D = 1.0; the minimum score is 0 for all items.
 
-# Naming conventions
-# Use lowerCamelCase for S3 and S4 function names.
-# Use snake_case for arguments.
-# Use snake_case for class names.
-# Use snake_case for local objects inside functions.
-# Use snake_case for global objects (example datasets).
-# Use snake_case for S3 list slot names and S4 class slot names.
+# Naming conventions -----------------------------------------------------------
+# - Use one-word UpperCamelCase for major function names (Static(), Shadow(), Split()).
+# - Use lowerCamelCase for S3 and S4 function names.
+# - Use snake_case for arguments.
+# - Use snake_case for class names.
+# - Use snake_case for local objects inside functions.
+# - Use snake_case for global objects (example datasets).
+# - Use snake_case for S3 list slot names and S4 class slot names.
 
-# Function documentation conventions
-# Use lower case for the first letter and end with a period.
+# Documentation conventions: exported functions --------------------------------
+# Introducing lines:
+# - Introducing lines should be in the below format:
+# - \code{\link{functionName}} is a function for *ing ...
+# Argument descriptions:
+# - Use lower case for the first letter and end with a period.
+# - Optional argument descriptions should start with "(optional)"
+# - Arguments with default values should be stated as "(default = \code{value})".
+# Returned object descriptions:
+# - Returned objects should be documented.
+# - This should be in the below format:
+# - \code{\link{functionName}} returns ...
 
-# Error message conventions
-# Use lower case for the first letter and end with a period.
-# Use single quotes for all non-slot references.
-# Retain original capitalization of references (e.g. (x) "'Theta'", (o) "'theta'").
-# # Prioritize this when beginning a sentence with reference.
-# Use appropriate slot operators (@, $) for slot references. Do not encapsulate with quotes.
-# Do not disambiguate references. (e.g. (x) "Argument 'x' must be blah.", (o) "'x' must be blah.")
-# Always give full names for slot references. (e.g. "@foo$bar")
+# Documentation conventions: internal functions --------------------------------
+# - Fully document all internal functions.
+
+# Error/validation message conventions -----------------------------------------
+# - Use lower case for the first letter and end with a period.
+# - Use single quotes for all non-slot references.
+# - Retain original capitalization of references (e.g. (o) "'theta'", (x) "'Theta'").
+#   - Prioritize this when beginning a sentence with reference.
+# - Use appropriate slot operators (@, $) for slot references.
+#   - This is meant to help users who may not be familiar with the S4 accessor @.
+#   - Always encapsulate with quotes. (e.g. (o) "slot "@theta" is malformed" (x) "slot @theta is malformed")
+# - Always disambiguate the type of the referenced object. (e.g. (o) "argument 'x' must be blah.", (x) "'x' must be blah.")
+# - Explicitly state what is observed and what is expected.
+#   - (e.g. (o) "the value is not positive; it must be positive.")
+#   - (e.g. (x) "the value must be positive.")
+
+# Code conventions -------------------------------------------------------------
+#
+# Promoting debuggable code:
+# - Left-to-right assignments/piping of any type are not allowed in codebase: %>%, |>, ->
+# - Do not chain multiple functions. It kills debuggability.
+# - In short, no tidyverse.
+#
+# Promoting readable code:
+# - Spell out variable names. Abbreviations are not allowed.
+# - Do not comment out old code.
 
 #' @import lpSolve
 #' @import Rcpp methods
