@@ -54,7 +54,7 @@ parsePriorParameters <- function(config_theta, constants, prior_density_override
 }
 
 #' @noRd
-getPosteriorConstants <- function(config, constants) {
+getBayesianConstants <- function(config, constants) {
 
   o <- list()
 
@@ -209,14 +209,14 @@ logitHyperPars <- function(mean, sd) {
 }
 
 #' @noRd
-generateItemParameterSample <- function(config, item_pool, posterior_constants) {
+generateItemParameterSample <- function(config, item_pool, bayesian_constants) {
 
   o <- NULL
 
   interim_method <- toupper(config@interim_theta$method)
   final_method   <- toupper(config@final_theta$method)
   if (any(c(interim_method, final_method) %in% c("FB"))) {
-    o <- iparPosteriorSample(item_pool, posterior_constants$n_sample)
+    o <- iparPosteriorSample(item_pool, bayesian_constants$n_sample)
   }
 
   return(o)
@@ -263,11 +263,11 @@ generateDensityFromPriorPar <- function(config_theta, theta_q) {
 }
 
 #' @noRd
-generateSampleFromPriorPar <- function(config_theta, j, posterior_constants) {
+generateSampleFromPriorPar <- function(config_theta, j, bayesian_constants) {
 
   if (config_theta$prior_dist == "NORMAL") {
     prior_sample <- rnorm(
-      posterior_constants$n_sample,
+      bayesian_constants$n_sample,
       mean = config_theta$prior_par[[j]][1],
       sd   = config_theta$prior_par[[j]][2]
     )
@@ -275,7 +275,7 @@ generateSampleFromPriorPar <- function(config_theta, j, posterior_constants) {
   }
   if (config_theta$prior_dist == "UNIFORM") {
     prior_sample <- runif(
-      posterior_constants$n_sample,
+      bayesian_constants$n_sample,
       min = config_theta$prior_par[[j]][1],
       max = config_theta$prior_par[[j]][2]
     )
@@ -285,12 +285,12 @@ generateSampleFromPriorPar <- function(config_theta, j, posterior_constants) {
 }
 
 #' @noRd
-applyThin <- function(posterior_sample, posterior_constants) {
+applyThin <- function(posterior_sample, bayesian_constants) {
 
   posterior_sample <- posterior_sample[seq(
-    from = posterior_constants$burn_in + 1,
-    to   = posterior_constants$n_sample,
-    by   = posterior_constants$thin
+    from = bayesian_constants$burn_in + 1,
+    to   = bayesian_constants$n_sample,
+    by   = bayesian_constants$thin
   )]
 
   return(posterior_sample)
