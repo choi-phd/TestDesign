@@ -396,7 +396,6 @@ setMethod(
         o, j,
         current_theta,
         eligibility_flag,
-        config,
         constants
       )
       exposure_record_detailed <- doExposureControlDetailed(
