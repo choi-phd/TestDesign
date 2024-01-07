@@ -40,7 +40,7 @@ For set-based item pools, the default partition size is (pool size / number of p
 \item{force_solver}{if \code{TRUE}, do not check whether the solver is one of recommended solvers for complex problems (set-based assembly, partitioning). (default = \code{FALSE})}
 }
 \value{
-\code{\link{partition}} returns an \code{\linkS4class{output_Split}} object containing item/set indices of created tests/pools.
+\code{\link{Split}} returns an \code{\linkS4class{output_Split}} object containing item/set indices of created tests/pools.
 }
 \description{
 \code{\link{Split}} is a function for splitting a pool into multiple parallel tests or pools.
