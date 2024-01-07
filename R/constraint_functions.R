@@ -1,6 +1,6 @@
 
 #' @noRd
-normalizeConstraintData <- function(x) {
+sanitizeConstraintsData <- function(x) {
 
   names(x)    <- toupper(names(x))
 

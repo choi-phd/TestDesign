@@ -801,7 +801,7 @@ loadConstraints <- function(object, pool, item_attrib, st_attrib = NULL, file = 
     }
   }
 
-  constraints <- normalizeConstraintData(constraints)
+  constraints <- sanitizeConstraintsData(constraints)
 
   # Validation: Pool
   ni <- pool@ni
