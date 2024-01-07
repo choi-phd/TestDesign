@@ -12,7 +12,7 @@ estimateInterimTheta <- function(
   item_parameter_sample, # only used for FB
   config,
   constants,
-  posterior_constants
+  bayesian_constants
 ) {
 
   if (constants$use_hand_scored) {
@@ -107,7 +107,7 @@ estimateInterimTheta <- function(
     current_item <- o@administered_item_index[position]
 
     interim_EB <- theta_EB_single(
-      posterior_constants$n_sample,
+      bayesian_constants$n_sample,
       augmented_current_theta$theta,
       augmented_current_theta$se,
       augmented_item_pool@ipar[current_item, ],
@@ -118,7 +118,7 @@ estimateInterimTheta <- function(
       c(augmented_current_theta$theta, augmented_current_theta$se)
     )[, 1]
 
-    interim_EB <- applyThin(interim_EB, posterior_constants)
+    interim_EB <- applyThin(interim_EB, bayesian_constants)
 
     o@posterior_sample <- interim_EB
     o@interim_theta_est[position, ] <- mean(interim_EB)
@@ -138,7 +138,7 @@ estimateInterimTheta <- function(
     current_item <- o@administered_item_index[position]
 
     interim_FB <- theta_FB_single(
-      posterior_constants$n_sample,
+      bayesian_constants$n_sample,
       augmented_current_theta$theta,
       augmented_current_theta$se,
       item_parameter_sample[[current_item]],
@@ -150,7 +150,7 @@ estimateInterimTheta <- function(
       c(augmented_current_theta$theta, augmented_current_theta$se)
     )[, 1]
 
-    interim_FB <- applyThin(interim_FB, posterior_constants)
+    interim_FB <- applyThin(interim_FB, bayesian_constants)
 
     o@posterior_sample <- interim_FB
     o@interim_theta_est[position, ] <- mean(interim_FB)
@@ -173,7 +173,7 @@ estimateFinalTheta <- function(
   item_parameter_sample, # only used for FB
   config,
   constants,
-  posterior_constants
+  bayesian_constants
 ) {
 
   if (identical(config@final_theta, config@interim_theta)) {
@@ -189,7 +189,7 @@ estimateFinalTheta <- function(
 
   if (toupper(config@final_theta$method == "EAP")) {
 
-    o@posterior       <- o@likelihood * posterior_constants$final_theta_prior_densities[j, ]
+    o@posterior       <- o@likelihood * bayesian_constants$final_theta_prior_densities[j, ]
     final_EAP <- computeEAPFromPosterior(o@posterior, constants$theta_q)
     final_EAP <- applyShrinkageCorrection(final_EAP, config@final_theta, j)
     o@final_theta_est <- final_EAP$theta
@@ -259,11 +259,11 @@ estimateFinalTheta <- function(
     final_prior <- getInitialThetaPrior(
       config@final_theta,
       j,
-      posterior_constants
+      bayesian_constants
     )
 
     final_EB <- theta_EB(
-      posterior_constants$n_sample,
+      bayesian_constants$n_sample,
       final_prior$theta,
       final_prior$se,
       augmented_item_pool@ipar[o@administered_item_index[1:position], ],
@@ -274,7 +274,7 @@ estimateFinalTheta <- function(
       c(final_prior$theta, final_prior$se)
     )
 
-    final_EB           <- applyThin(final_EB, posterior_constants)
+    final_EB           <- applyThin(final_EB, bayesian_constants)
 
     o@prior_par        <- config@final_theta$prior_par[[j]]
     o@posterior_sample <- final_EB
@@ -295,11 +295,11 @@ estimateFinalTheta <- function(
     final_prior <- getInitialThetaPrior(
       config@final_theta,
       j,
-      posterior_constants
+      bayesian_constants
     )
 
     final_FB <- theta_FB(
-      posterior_constants$n_sample,
+      bayesian_constants$n_sample,
       final_prior$theta,
       final_prior$se,
       item_parameter_sample[o@administered_item_index[1:position]],
@@ -311,7 +311,7 @@ estimateFinalTheta <- function(
       c(final_prior$theta, final_prior$se)
     )
 
-    final_FB           <- applyThin(final_FB, posterior_constants)
+    final_FB           <- applyThin(final_FB, bayesian_constants)
 
     o@prior_par        <- config@final_theta$prior_par[[j]]
     o@posterior_sample <- final_FB
@@ -1032,7 +1032,7 @@ setMethod(
 )
 
 #' @noRd
-parseInitialTheta <- function(config, constants, item_pool, posterior_constants, include_items_for_estimation) {
+parseInitialTheta <- function(config, constants, item_pool, bayesian_constants, include_items_for_estimation) {
 
   o <- list()
 
@@ -1100,26 +1100,26 @@ parseInitialTheta <- function(config, constants, item_pool, posterior_constants,
 }
 
 #' @noRd
-getInitialThetaPrior <- function(config_theta, j, posterior_constants) {
+getInitialThetaPrior <- function(config_theta, j, bayesian_constants) {
 
   o <- list()
 
   o$posterior_sample <- generateSampleFromPriorPar(
     config_theta,
     j,
-    posterior_constants
+    bayesian_constants
   )
 
-  o$posterior_sample <- applyThin(o$posterior_sample, posterior_constants)
+  o$posterior_sample <- applyThin(o$posterior_sample, bayesian_constants)
   o$theta            <- mean(o$posterior_sample)
-  o$se               <- sd(o$posterior_sample) * posterior_constants$jump_factor
+  o$se               <- sd(o$posterior_sample) * bayesian_constants$jump_factor
 
   return(o)
 
 }
 
 #' @noRd
-parseInitialThetaOfThisExaminee <- function(config_theta, initial_theta, j, posterior_constants) {
+parseInitialThetaOfThisExaminee <- function(config_theta, initial_theta, j, bayesian_constants) {
 
   o <- list()
   theta_method <- toupper(config_theta$method)
@@ -1133,7 +1133,7 @@ parseInitialThetaOfThisExaminee <- function(config_theta, initial_theta, j, post
     o$se    <- initial_theta$se[j, ]
   }
   if (theta_method %in% c("EB", "FB")) {
-    x <- getInitialThetaPrior(config_theta, j, posterior_constants)
+    x <- getInitialThetaPrior(config_theta, j, bayesian_constants)
     o$posterior_sample <- x$posterior_sample
     o$theta            <- x$theta
     o$se               <- x$se

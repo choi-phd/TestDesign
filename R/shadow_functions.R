@@ -87,9 +87,9 @@ setMethod(
     constants             <- getConstants(constraints, config, data, true_theta, simulation_data_cache@max_info)
     config@interim_theta  <- parsePriorParameters(config@interim_theta, constants, prior, prior_par)
     config@final_theta    <- parsePriorParameters(config@final_theta  , constants, prior, prior_par)
-    posterior_constants   <- getPosteriorConstants(config, constants)
-    initial_theta         <- parseInitialTheta(config, constants, item_pool, posterior_constants, include_items_for_estimation)
-    item_parameter_sample <- generateItemParameterSample(config, item_pool, posterior_constants)
+    bayesian_constants    <- getBayesianConstants(config, constants)
+    initial_theta         <- parseInitialTheta(config, constants, item_pool, bayesian_constants, include_items_for_estimation)
+    item_parameter_sample <- generateItemParameterSample(config, item_pool, bayesian_constants)
     exclude_index         <- getIndexOfExcludedEntry(exclude, constraints)
 
     # Only used if config@item_selection$method = "FIXED"
@@ -161,7 +161,7 @@ setMethod(
         config@interim_theta,
         initial_theta,
         j,
-        posterior_constants
+        bayesian_constants
       )
       o@initial_theta_est <- current_theta
 
@@ -351,7 +351,7 @@ setMethod(
           item_parameter_sample,
           config,
           constants,
-          posterior_constants
+          bayesian_constants
         )
 
         theta_change                   <- o@interim_theta_est[position, ] - current_theta$theta
@@ -384,7 +384,7 @@ setMethod(
         item_parameter_sample,
         config,
         constants,
-        posterior_constants
+        bayesian_constants
       )
 
       # Simulee: record item usage
