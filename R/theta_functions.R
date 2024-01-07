@@ -189,13 +189,7 @@ estimateFinalTheta <- function(
 
   if (toupper(config@final_theta$method == "EAP")) {
 
-    final_prior <- generateDensityFromPriorPar(
-      config@final_theta,
-      constants$theta_q,
-      nj = 1
-    )[1, ]
-
-    o@posterior       <- o@likelihood * final_prior
+    o@posterior       <- o@likelihood * posterior_constants$final_theta_prior_densities[j, ]
     final_EAP <- computeEAPFromPosterior(o@posterior, constants$theta_q)
     final_EAP <- applyShrinkageCorrection(final_EAP, config@final_theta, j)
     o@final_theta_est <- final_EAP$theta
@@ -1046,8 +1040,7 @@ parseInitialTheta <- function(config, constants, item_pool, posterior_constants,
 
   o$posterior <- generateDensityFromPriorPar(
     config@interim_theta,
-    constants$theta_q,
-    constants$nj
+    constants$theta_q
   )
 
   o$theta_q <- constants$theta_q
