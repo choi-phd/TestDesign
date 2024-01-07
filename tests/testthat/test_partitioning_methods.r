@@ -6,12 +6,20 @@ test_that("partitioning methods work", {
   solver <- detectBestSolver()
   skip_if(solver == "lpSolve")
 
+  # make a small pool, because existing pools are too big for codetests
+  itempool    <- loadItemPool(itempool_science_data[1:200, ])
+  itemattrib  <- loadItemAttrib(itemattrib_science_data[1:200, ], itempool)
+  constraints <- loadConstraints(constraints_science_data[1:10, ], itempool, itemattrib)
+
   # discrete assembly
 
   set.seed(1)
-
-  config <- createStaticTestConfig(MIP = list(solver = solver, time_limit = 600, obj_tol = 0.25))
-  constraints <- constraints_science[1:10]
+  config <- createStaticTestConfig(
+    MIP = list(
+      solver = solver, time_limit = 600, obj_tol = 0.25,
+      verbosity = 1
+    )
+  )
 
   n_partition <- 4
   o <- Split(config, constraints, n_partition = n_partition, partition_type = "test")
@@ -28,11 +36,11 @@ test_that("partitioning methods work", {
   }
 
   n_partition <- 3
-  o <- Split(config, constraints, n_partition = n_partition, partition_type = "pool", partition_size_range = c(320, 340))
+  o <- Split(config, constraints, n_partition = n_partition, partition_type = "pool", partition_size_range = c(60, 70))
   for (partition in o@output) {
     subpool <- constraints@pool[partition$i]
-    expect_gte(subpool@ni, 320)
-    expect_lte(subpool@ni, 340)
+    expect_gte(subpool@ni, 60)
+    expect_lte(subpool@ni, 70)
   }
 
   # set-based assembly
@@ -40,7 +48,10 @@ test_that("partitioning methods work", {
   set.seed(1)
 
   config <- createStaticTestConfig(
-    MIP = list(solver = solver, time_limit = 600, obj_tol = 0.25),
+    MIP = list(
+      solver = solver, time_limit = 600, obj_tol = 0.25,
+      verbosity = 1
+    ),
     item_selection = list(target_location = c(-2.5, -1.5, -0.5, 0.5, 1.5, 2.5))
   )
   constraints <- constraints_reading[1:5]
