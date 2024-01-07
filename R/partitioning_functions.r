@@ -116,7 +116,7 @@ getSetStructureConstraints <- function(constraints) {
 #' For set-based item pools, the default partition size is (pool size / number of partitions) +/- smallest set size.
 #' @template force_solver_param
 #'
-#' @return \code{\link{partition}} returns an \code{\linkS4class{output_Split}} object containing item/set indices of created tests/pools.
+#' @return \code{\link{Split}} returns an \code{\linkS4class{output_Split}} object containing item/set indices of created tests/pools.
 #'
 #' @examples
 #' \dontrun{
