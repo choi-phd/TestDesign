@@ -87,7 +87,7 @@ setMethod(
     constants             <- getConstants(constraints, config, data, true_theta, simulation_data_cache@max_info)
     config@interim_theta  <- parsePriorParameters(config@interim_theta, constants, prior, prior_par)
     config@final_theta    <- parsePriorParameters(config@final_theta  , constants, prior, prior_par)
-    posterior_constants   <- getPosteriorConstants(config)
+    posterior_constants   <- getPosteriorConstants(config, constants)
     initial_theta         <- parseInitialTheta(config, constants, item_pool, posterior_constants, include_items_for_estimation)
     item_parameter_sample <- generateItemParameterSample(config, item_pool, posterior_constants)
     exclude_index         <- getIndexOfExcludedEntry(exclude, constraints)
