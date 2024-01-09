@@ -3,6 +3,7 @@
 ## Bug fixes
 
 * Fixed where `c()` and `combineConstraints()` were incorrectly combining constraints.
+* Fixed where when examinee-wise priors were supplied for final theta estimation with EAP, the first examinee's prior was being used for all examinees.
 
 # TestDesign 1.5.1
 
