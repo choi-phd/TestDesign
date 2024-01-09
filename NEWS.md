@@ -4,6 +4,7 @@
 
 * Fixed where `c()` and `combineConstraints()` were incorrectly combining constraints.
 * Fixed where when examinee-wise priors were supplied for final theta estimation with EAP, the first examinee's prior was being used for all examinees.
+* Fixed where `Split()` was erroneously returning set indices even when the input item pool was entirely comprised of discrete items.
 
 # TestDesign 1.5.1
 
