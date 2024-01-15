@@ -99,15 +99,17 @@ Lim</h4>
     
     
 <p><br></p>
-<div class="section level3">
-<h3 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-</h3>
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
 <p>This document explains how to create constraints data for
-<code><a href="../reference/loadConstraints.html">loadConstraints()</a></code>. In test assembly, practitioners often
-want to select items satisfying various types of constraints. As of
-<em>TestDesign</em> version 1.1.0, constraints can be read in from
-<code>data.frame</code> objects or <code>.csv</code> spreadsheet files.
-Data is expected to be in the following structure:</p>
+<code><a href="../reference/loadConstraints.html">loadConstraints()</a></code>. Automated test assembly in practice is
+often desired to assemble a test so that its contents adhere to a test
+blueprint, which asserts various requirements the assembled test should
+satisfy. As of <em>TestDesign</em> version 1.1.0, constraints can be
+read in from <code>data.frame</code> objects or <code>.csv</code>
+spreadsheet files. The input data is expected to be in the following
+structure:</p>
 <table class="table table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;">
@@ -248,26 +250,65 @@ STANDARD == 1
 <code>CONSTRAINT_ID</code>, <code>TYPE</code>, <code>WHAT</code>,
 <code>CONDITION</code>, <code>LB</code>, <code>UB</code>,
 <code>ONOFF</code> on the first row. Beginning from the second row, each
-row must have corresponding values for each column. A convenient way to
-creating constraints is to use a spreadsheet application (e.g. Excel)
-and work on the content from there.</p>
+row must have corresponding values for each column. A convenient way for
+working with constraints is to use a spreadsheet application
+(e.g. Excel) and work on the content from there.</p>
+<p>Readers are also encouraged to tinker with example constraints
+included in the package:</p>
+<ul>
+<li>
+<code>constraints_science_data</code> (all discrete items)</li>
+<li>
+<code>constraints_reading_data</code> (set-based blueprint)</li>
+<li>
+<code>constraints_fatigue_data</code> (uses enemy items)</li>
+<li>
+<code>constraints_bayes_data</code> (uses word count
+constraints)</li>
+</ul>
 <p><br></p>
-<hr>
-<div class="section level4">
-<h4 id="constraint_id">CONSTRAINT_ID<a class="anchor" aria-label="anchor" href="#constraint_id"></a>
-</h4>
-<p>This column serves as identifiers. Character values can be used as
-long as the values are unique.</p>
-<p><br></p>
-<hr>
 </div>
-<div class="section level4">
-<h4 id="type">TYPE<a class="anchor" aria-label="anchor" href="#type"></a>
-</h4>
+<div class="section level2">
+<h2 id="content-balancing-with-shadow-test-approach">Content balancing with shadow-test approach<a class="anchor" aria-label="anchor" href="#content-balancing-with-shadow-test-approach"></a>
+</h2>
+<p>This section aims to provide context on why the constraints input
+format does not have a column for weights.</p>
+<p>The <em>TestDesign</em> package performs content balancing using the
+shadow-test approach (van der Linden &amp; Reese, 1998). This means that
+the test will be assembled in a way that strictly satisfies all
+constraints with no violations. The reader may be familiar with the use
+of weights in test blueprints for indicating which constraints should be
+prioritized. These constraint-wise weights are mainly needed when
+traditional content balancing methods are used, where items are selected
+one by one. When items are selected one by one, there is a fundamental
+limitation that there is no guarantee that the resulting test will
+satisfy all constraints. For this reason, weights are used as
+supplements to traditional content balancing to work around this
+limitation, to guide the item selection process in a way that the number
+of violated constraints is minimized.</p>
+<p>Unlike with traditional content balancing methods, the shadow-test
+approach operates without needing weights. This is because the
+shadow-test approach directly finds a combination of items that
+satisfies all constraints, and therefore has no need to prioritize
+certain constraints to satisfy, as would be needed in traditional
+content balancing methods that select items one by one.</p>
+<p><br></p>
+</div>
+<div class="section level2">
+<h2 id="required-columns">Required columns<a class="anchor" aria-label="anchor" href="#required-columns"></a>
+</h2>
+<div class="section level3">
+<h3 id="column-1-constraint_id">Column 1: CONSTRAINT_ID<a class="anchor" aria-label="anchor" href="#column-1-constraint_id"></a>
+</h3>
+<p>This column specifies the identifier of each constraint. Character
+values can be used as long as the values are unique.</p>
+</div>
+<div class="section level3">
+<h3 id="column-2-type">Column 2: TYPE<a class="anchor" aria-label="anchor" href="#column-2-type"></a>
+</h3>
 <p>This column specifies the type of constraint. Following values are
 expected: <code>Number</code>, <code>Order</code>, <code>Enemy</code>,
 <code>Include</code>, <code>Exclude</code>, <code>AllorNone</code>.</p>
-<p><br></p>
 <ul>
 <li>
 <code>Number</code> specifies the constraint to be applied to the
@@ -322,7 +363,6 @@ Item
 </td>
 </tr></tbody>
 </table>
-<p><br><br></p>
 <ul>
 <li>
 <code>Sum</code> specifies the constraint to be applied to the sum
@@ -378,7 +418,6 @@ WORDS
 </td>
 </tr></tbody>
 </table>
-<p><br><br></p>
 <ul>
 <li>
 <code>Order</code> specifies the selection to be made in ascending
@@ -430,7 +469,6 @@ LEVEL
 </td>
 </tr></tbody>
 </table>
-<p><br><br></p>
 <ul>
 <li>
 <code>Enemy</code> specifies the items (or item sets) matching the
@@ -482,7 +520,6 @@ ID %in% c(“SC00001”, “SC00002”)
 </td>
 </tr></tbody>
 </table>
-<p><br><br></p>
 <ul>
 <li>
 <code>Include</code> specifies the items matching the condition to
@@ -535,7 +572,6 @@ ID %in% c(“SC00003”, “SC00004”)
 </td>
 </tr></tbody>
 </table>
-<p><br><br></p>
 <ul>
 <li>
 <code>Exclude</code> specifies the items matching the condition to
@@ -588,7 +624,6 @@ PTBIS &lt; 0.15
 </td>
 </tr></tbody>
 </table>
-<p><br><br></p>
 <ul>
 <li>
 <code>AllOrNone</code> specifies the items matching the condition to
@@ -641,20 +676,16 @@ ID %in% c(“SC00005”, “SC00006”)
 </td>
 </tr></tbody>
 </table>
-<p><br></p>
-<hr>
 </div>
-<div class="section level4">
-<h4 id="what">WHAT<a class="anchor" aria-label="anchor" href="#what"></a>
-</h4>
+<div class="section level3">
+<h3 id="column-3-what">Column 3: WHAT<a class="anchor" aria-label="anchor" href="#column-3-what"></a>
+</h3>
 <p>This column specifies the unit of assembly the constraint uses.
 Expected values are <code>Item</code> or <code>Stimulus</code>.</p>
-<p><br></p>
-<hr>
 </div>
-<div class="section level4">
-<h4 id="condition">CONDITION<a class="anchor" aria-label="anchor" href="#condition"></a>
-</h4>
+<div class="section level3">
+<h3 id="column-4-condition">Column 4: CONDITION<a class="anchor" aria-label="anchor" href="#column-4-condition"></a>
+</h3>
 <p>This column specifies the condition of the constraint. An R
 expression returning logical values (<code>TRUE</code> or
 <code>FALSE</code>) is expected. The variables supplied in item
@@ -826,12 +857,10 @@ Per Stimulus
 </td>
 </tr></tbody>
 </table>
-<p><br></p>
-<hr>
 </div>
-<div class="section level4">
-<h4 id="lb-and-ub">LB and UB<a class="anchor" aria-label="anchor" href="#lb-and-ub"></a>
-</h4>
+<div class="section level3">
+<h3 id="column-5-6-lb-and-ub">Column 5-6: LB and UB<a class="anchor" aria-label="anchor" href="#column-5-6-lb-and-ub"></a>
+</h3>
 <p>These two columns specify lower and upper bounds on the number of
 selected items. These must be specified when <code>TYPE</code> is
 <code>Number</code>, and otherwise must be left empty.</p>
@@ -885,7 +914,6 @@ Item
 </td>
 </tr></tbody>
 </table>
-<p><br><br></p>
 <ul>
 <li>To select 15 to 30 items satisfying <code>DOK &gt;= 2</code>:</li>
 </ul>
@@ -936,12 +964,10 @@ DOK &gt;= 2
 </td>
 </tr></tbody>
 </table>
-<p><br></p>
-<hr>
 </div>
-<div class="section level4">
-<h4 id="onoff">ONOFF<a class="anchor" aria-label="anchor" href="#onoff"></a>
-</h4>
+<div class="section level3">
+<h3 id="column-7-onoff">Column 7: ONOFF<a class="anchor" aria-label="anchor" href="#column-7-onoff"></a>
+</h3>
 <p>Set this to <code>OFF</code> to turn off the constraint from being
 applied. <code>ON</code> or leaving it blank applies the constraint. The
 following example specifies the order constraint to be not applied.</p>
@@ -994,11 +1020,21 @@ OFF
 <p><br></p>
 </div>
 </div>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<p>van der Linden W. J., Reese L. M. (1998). A model for optimal
+constrained adaptive testing. <em>Applied Psychological Measurement,
+22</em>(3), 259-270. <a href="https://doi.org/10.1177/01466216980223006" class="external-link uri">https://doi.org/10.1177/01466216980223006</a></p>
+<p><br></p>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-      </div>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
+</div>
 
 </div>
 
