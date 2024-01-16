@@ -302,17 +302,17 @@ initializeUsageMatrix <- function(constants) {
 }
 
 #' @noRd
-updateUsageMatrix <- function(o, j, x, constants) {
+updateUsageMatrix <- function(usage_matrix, j, x, constants) {
 
-  o[j, x@administered_item_index] <- TRUE
+  usage_matrix[j, x@administered_item_index] <- TRUE
 
   if (!constants$set_based) {
-    return(o)
+    return(usage_matrix)
   }
 
-  o[j, constants$ni + x@administered_stimulus_index] <- TRUE
+  usage_matrix[j, constants$ni + x@administered_stimulus_index] <- TRUE
 
-  return(o)
+  return(usage_matrix)
 
 }
 
