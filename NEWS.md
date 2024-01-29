@@ -5,6 +5,7 @@
 * Updated `vignette('constraints')`.
 * Removed deprecated arguments.
 * Updated documentation and validation error/warning messages. Also improved input validation in some functions.
+* Package compilation now imports BLAS_LIBS and FLIBS as PKG_LIBS across platforms (submitted by Jeroen Ooms)
 
 ## Bug fixes
 
