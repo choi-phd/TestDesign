@@ -1,5 +1,9 @@
 # TestDesign 1.5.1.9000
 
+## New features
+
+* `Split()` gains a new argument `n_maximum_partitions_per_item` for allowing items to be assigned to multiple partitions.
+
 ## Updates
 
 * Updated `vignette('constraints')`.
