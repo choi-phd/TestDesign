@@ -114,6 +114,11 @@ getSetStructureConstraints <- function(constraints) {
 #' @param partition_size_range (optional) two integer values for the desired range for the size of a partition. Has no effect when \code{partition_type} is \code{test}.
 #' For discrete item pools, the default partition size is (pool size / number of partitions).
 #' For set-based item pools, the default partition size is (pool size / number of partitions) +/- smallest set size.
+#' @param n_maximum_partitions_per_item (optional) the number of times an item can be assigned to a partition.
+#' Setting this to 1 is equivalent to requiring all partitions to be mutually exclusive.
+#' A caveat is that when this is equal to \code{n_partition}, the assembled partitions will be identical to each other,
+#' because \code{\link{Split}} aims to minimize the test information difference between all partitions.
+#' (default = \code{1})
 #' @template force_solver_param
 #'
 #' @return \code{\link{Split}} returns an \code{\linkS4class{output_Split}} object containing item/set indices of created tests/pools.
@@ -133,7 +138,11 @@ getSetStructureConstraints <- function(constraints) {
 #' @export
 setGeneric(
   name = "Split",
-  def = function(config, constraints, n_partition, partition_type, partition_size_range = NULL, force_solver = FALSE) {
+  def = function(
+    config, constraints,
+    n_partition, partition_type, partition_size_range = NULL,
+    n_maximum_partitions_per_item = 1,
+    force_solver = FALSE) {
     standardGeneric("Split")
   }
 )
@@ -144,7 +153,12 @@ setGeneric(
 setMethod(
   f = "Split",
   signature = c("config_Static"),
-  definition = function(config, constraints, n_partition, partition_type, partition_size_range = NULL, force_solver = FALSE) {
+  definition = function(
+    config, constraints,
+    n_partition, partition_type, partition_size_range = NULL,
+    n_maximum_partitions_per_item = 1,
+    force_solver = FALSE
+  ) {
 
     if (!validObject(config)) {
       stop("'config' object is not valid.")
@@ -178,16 +192,17 @@ setMethod(
     # Step 1. Make base bins
 
     # bin partial assignment constraint: an item must be assigned to no more than one bin
+    # (or x bins, if n_maximum_partitions_per_item > 1)
     # n of constraints = ni
-    mat_bpa <- matrix(0, ni, nv_total_with_dev)
+    mat_bpa_ub <- matrix(0, ni, nv_total_with_dev)
     for (i in 1:ni) {
-      mat_bpa[
+      mat_bpa_ub[
         i,
         getDecisionVariablesOfItemForMultipool(i, nv, n_bins)
       ] <- 1
     }
-    dir_bpa <- rep("<=", ni)
-    rhs_bpa <- rep(1   , ni)
+    dir_bpa_ub <- rep("<=", ni)
+    rhs_bpa_ub <- rep(n_maximum_partitions_per_item, ni)
 
     # bin size constraint:
     mat_bs <- matrix(0, n_bins, nv_total_with_dev)
@@ -258,9 +273,9 @@ setMethod(
     rhs_l <- config@MIP$obj_tol
 
     # aggregate all constraints
-    mat <- rbind(mat_bpa, mat_bs, mat_c, mat_i, mat_l)
-    dir <-     c(dir_bpa, dir_bs, dir_c, dir_i, dir_l)
-    rhs <-     c(rhs_bpa, rhs_bs, rhs_c, rhs_i, rhs_l)
+    mat <- rbind(mat_bpa_ub, mat_bs, mat_c, mat_i, mat_l)
+    dir <-     c(dir_bpa_ub, dir_bs, dir_c, dir_i, dir_l)
+    rhs <-     c(rhs_bpa_ub, rhs_bs, rhs_c, rhs_i, rhs_l)
 
     # main optimization
     obj <- rep(0, nv)
@@ -315,9 +330,14 @@ setMethod(
     # Step 2. Grow each bin --------------------------------------------------------
 
     # bin full assignment constraint: an item must be assigned to exactly one bin
-    mat_bfa <- mat_bpa
-    dir_bfa <- rep("==", ni)
-    rhs_bfa <- rhs_bpa
+    # or at least 1 bin, if n_maximum_partitions_per_item >= 1
+    mat_bfa_ub <- mat_bpa_ub
+    dir_bfa_ub <- dir_bpa_ub
+    rhs_bfa_ub <- rhs_bpa_ub
+
+    mat_bfa_lb <- mat_bpa_ub
+    dir_bfa_lb <- rep(">=", length(dir_bpa_ub))
+    rhs_bfa_lb <- rep(1   , length(rhs_bpa_ub))
 
     # bin size constraint:
     if (!constraints@set_based & is.null(partition_size_range)) {
@@ -389,9 +409,9 @@ setMethod(
     }
 
     # combine all constraints
-    mat <- rbind(mat_bfa, mat_bs, mat_be, mat_ss, mat_i, mat_l)
-    dir <-     c(dir_bfa, dir_bs, dir_be, dir_ss, dir_i, dir_l)
-    rhs <-     c(rhs_bfa, rhs_bs, rhs_be, rhs_ss, rhs_i, rhs_l)
+    mat <- rbind(mat_bfa_ub, mat_bfa_lb, mat_bs, mat_be, mat_ss, mat_i, mat_l)
+    dir <-     c(dir_bfa_ub, dir_bfa_lb, dir_bs, dir_be, dir_ss, dir_i, dir_l)
+    rhs <-     c(rhs_bfa_ub, rhs_bfa_lb, rhs_bs, rhs_be, rhs_ss, rhs_i, rhs_l)
 
     # main optimization
     obj <- rep(0, nv_total_with_dev)
@@ -422,10 +442,10 @@ setMethod(
     }
     if (!isOptimal(o2$status, config@MIP$solver)) {
       feasible[2] <- FALSE
-      # retry using partial assignment
-      mat <- rbind(mat_bpa, mat_bs, mat_be, mat_ss, mat_i, mat_l)
-      dir <-     c(dir_bpa, dir_bs, dir_be, dir_ss, dir_i, dir_l)
-      rhs <-     c(rhs_bpa, rhs_bs, rhs_be, rhs_ss, rhs_i, rhs_l)
+      # retry using partial assignment (some items don't have to be assigned to a bin)
+      mat <- rbind(mat_bpa_ub, mat_bs, mat_be, mat_ss, mat_i, mat_l)
+      dir <-     c(dir_bpa_ub, dir_bs, dir_be, dir_ss, dir_i, dir_l)
+      rhs <-     c(rhs_bpa_ub, rhs_bs, rhs_be, rhs_ss, rhs_i, rhs_l)
       o2 <- runMIP(
         solver = config@MIP$solver,
         obj = obj,
