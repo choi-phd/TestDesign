@@ -79,6 +79,7 @@ When constructing parallel pools, each pool is constructed so that it contains a
 <span>  <span class="va">n_partition</span>,</span>
 <span>  <span class="va">partition_type</span>,</span>
 <span>  partition_size_range <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  n_maximum_partitions_per_item <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  force_solver <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -89,6 +90,7 @@ When constructing parallel pools, each pool is constructed so that it contains a
 <span>  <span class="va">n_partition</span>,</span>
 <span>  <span class="va">partition_type</span>,</span>
 <span>  partition_size_range <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  n_maximum_partitions_per_item <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  force_solver <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -115,6 +117,14 @@ When constructing parallel pools, each pool is constructed so that it contains a
 <dd><p>(optional) two integer values for the desired range for the size of a partition. Has no effect when <code>partition_type</code> is <code>test</code>.
 For discrete item pools, the default partition size is (pool size / number of partitions).
 For set-based item pools, the default partition size is (pool size / number of partitions) +/- smallest set size.</p></dd>
+
+
+<dt>n_maximum_partitions_per_item</dt>
+<dd><p>(optional) the number of times an item can be assigned to a partition.
+Setting this to 1 is equivalent to requiring all partitions to be mutually exclusive.
+A caveat is that when this is equal to <code>n_partition</code>, the assembled partitions will be identical to each other,
+because <code>Split</code> aims to minimize the test information difference between all partitions.
+(default = <code>1</code>)</p></dd>
 
 
 <dt>force_solver</dt>
