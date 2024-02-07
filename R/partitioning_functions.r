@@ -171,6 +171,10 @@ setMethod(
       }
     }
 
+    if (n_maximum_partitions_per_item >= n_partition) {
+      message("the supplied value of 'n_maximum_partitions_per_item' is equal to (or larger than) the supplied value of 'n_partition'. This will result in all assembled partitions to be identical, because that is where information difference is minimized.")
+    }
+
     itempool          <- constraints@pool
     ni                <- constraints@ni
     nv                <- constraints@nv
