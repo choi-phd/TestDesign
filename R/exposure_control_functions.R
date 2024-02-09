@@ -110,6 +110,12 @@ initializeSegmentRecord <- function(constants) {
 #' @noRd
 initializeExposureRecord <- function(exposure_control, constants) {
 
+  # the j subscript used here is intentional and should not be removed.
+  # the notation scheme is from van der Linden, W. J., & Veldkamp, B. P. (2007).
+  # for example, a_ijk here is interpreted as:
+  # - the number of examinees until j-th examinee who was in theta segment k and was administered item i.
+  # - see how this interpretation does not imply the variable is a three-dimensional array.
+
   o <- list()
 
   ni <- constants$ni
