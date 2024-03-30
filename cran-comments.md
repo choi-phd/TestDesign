@@ -1,4 +1,6 @@
-# TestDesign 1.6.0
+# TestDesign 1.6.1
+
+This is a resubmission. The previous version 1.6.0 had a markup error in getSolution-methods.Rd; the error was fixed in this submission.
 
 ## Test environments
 
