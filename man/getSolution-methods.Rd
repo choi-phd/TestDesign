@@ -20,7 +20,7 @@ getSolution(object, examinee = NA, position = NA, index_only = TRUE)
 
 \item{position}{(optional) if supplied, display the item attributes of the assembled test at that item position. If not supplied, display the item attributes of the administered items. Used when the 'object' argument is an \code{\linkS4class{output_Shadow}} object.}
 
-\item{index_only}{if \code{TRUE}, only print item indices. if \code{FALSE}, print all item attributes. (default = {TRUE})}
+\item{index_only}{if \code{TRUE}, only print item indices. if \code{FALSE}, print all item attributes. (default = \code{TRUE})}
 }
 \value{
 Item attributes of solution items.
