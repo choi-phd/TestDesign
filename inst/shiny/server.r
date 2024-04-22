@@ -214,7 +214,7 @@ server <- function(input, output, session) {
         if (input$simulee_id != "") {
           v <- updateLogs(v, sprintf("Created plots for simulee %i", v$simulee_id))
 
-          plot(v$fit, v$simulee_id, type = "audit")
+          plot(v$fit, examinee_id = v$simulee_id, type = "audit")
           p <- recordPlot()
           dev.off()
 
@@ -224,7 +224,7 @@ server <- function(input, output, session) {
             sprintf("Audit trail plot for simulee %i", v$simulee_id)
           )
 
-          plot(v$fit, v$simulee_id, type = "shadow", simple = TRUE)
+          plot(v$fit, examinee_id = v$simulee_id, type = "shadow", simple = TRUE)
           p <- recordPlot()
           dev.off()
 
