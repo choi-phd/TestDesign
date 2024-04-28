@@ -239,6 +239,10 @@ server <- function(input, output, session) {
   })
 
   observeEvent(input$obtainable_info_range_button, {
+
+    if (!(v$itempool_exists & v$constraints_exists)) {
+      v <- updateLogs(v, "Cannot generate info range plot; item pool and constraints must be loaded.")
+    }
     if (v$itempool_exists & v$constraints_exists) {
 
       plot(v$constraints)
