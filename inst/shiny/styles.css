@@ -4,7 +4,8 @@
 
 h2 {
   font-size: 170%;
-} /* bold title */
+  font-weight: bold;
+}
 
 h3 {
   font-size: 12px;
