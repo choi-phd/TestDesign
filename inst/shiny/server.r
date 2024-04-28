@@ -2,7 +2,7 @@ server <- function(input, output, session) {
   v <- reactiveValues(
     itempool_exists = FALSE,
     itemse_exists = FALSE,
-    const_exists = FALSE,
+    constraints_exists = FALSE,
     itemtext_exists = FALSE,
     stimattrib_exists = FALSE,
     problemtype = 0,
