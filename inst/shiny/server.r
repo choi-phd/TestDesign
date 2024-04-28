@@ -171,7 +171,7 @@ server <- function(input, output, session) {
     shinyjs::toggle("objtype",                        condition = input$problemtype == 1)
     shinyjs::toggle("item_selection_target_location", condition = input$problemtype == 1)
     shinyjs::toggle("item_selection_target_value",    condition = input$problemtype == 1)
-    shinyjs::toggle("maxinfo_button",                 condition = input$problemtype == 1)
+    shinyjs::toggle("obtainable_info_range_button",   condition = input$problemtype == 1)
     shinyjs::toggle("exposure_dropdown",              condition = input$problemtype == 2)
     shinyjs::toggle("theta_settings",                 condition = input$problemtype == 2)
     shinyjs::toggle("item_selection_method",          condition = input$problemtype == 2)
@@ -238,7 +238,7 @@ server <- function(input, output, session) {
     }
   })
 
-  observeEvent(input$maxinfo_button, {
+  observeEvent(input$obtainable_info_range_button, {
     if (v$itempool_exists & v$constraints_exists) {
 
       plot(v$constraints)
@@ -256,7 +256,7 @@ server <- function(input, output, session) {
     }
     updateCheckboxGroupButtons(
       session = session,
-      inputId = "maxinfo_button",
+      inputId = "obtainable_info_range_button",
       selected = character(0)
     )
   })

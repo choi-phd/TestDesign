@@ -57,7 +57,7 @@ ui <- fluidPage(
       h3(""),
 
       checkboxGroupButtons(
-        inputId = "maxinfo_button", justified = TRUE,
+        inputId = "obtainable_info_range_button", justified = TRUE,
         choices = c("Obtainable info range"), checkIcon = list(yes = icon("less-than-equal"), no = icon("less-than-equal"))
       ),
 
