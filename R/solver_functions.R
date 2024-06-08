@@ -153,7 +153,7 @@ runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
     gap_limit_abs, gap_limit
   )
 
-  if (config@MIP$retry > 0 & !isOptimal(MIP$status, solver)) {
+  if (config@MIP$retry > 0 & !isSolutionOptimal(MIP$status, solver)) {
     # if errors, run again to check if it is indeed an error
     # some solvers error even when a solution exists
     n_retry <- 0
@@ -165,13 +165,13 @@ runAssembly <- function(config, constraints, xdata = NULL, objective = NULL) {
         verbosity, time_limit,
         gap_limit_abs, gap_limit
       )
-      if (isOptimal(MIP$status, solver) | n_retry == config@MIP$retry) {
+      if (isSolutionOptimal(MIP$status, solver) | n_retry == config@MIP$retry) {
         break
       }
     }
   }
 
-  if (!isOptimal(MIP$status, solver)) {
+  if (!isSolutionOptimal(MIP$status, solver)) {
     return(list(solver = solver, status = MIP$status, MIP = MIP, selected = NULL))
   }
 
@@ -335,7 +335,7 @@ runMIP <- function(
 }
 
 #' @noRd
-isOptimal <- function(status, solver) {
+isSolutionOptimal <- function(status, solver) {
   # assume the 'solver' argument is already capitalized; toupper() is expensive!
   # this is done only once at config generation
   is_optimal <- FALSE
