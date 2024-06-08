@@ -1,8 +1,33 @@
 #' @include shadow_functions.R
 NULL
 
-#' @noRd
-getXdataOfAdministered <- function(constants, position, x, groupings_record, constraints) {
+#' (Internal) Obtain constraint matrix-data of administered items/sets
+#'
+#' \code{\link{getXdataOfAdministered}} is an internal function for obtaining constraint matrix-data of administered items/sets.
+#' Specifically, it returns a constraint matrix-data that tells the solver to include items/sets that are already administered to the current examinee.
+#' This is necessary for shadow-test assembly for adaptive test assembly.
+#'
+#' @template parameter_simulation_constants
+#' @template parameter_position
+#' @param x an \code{\linkS4class{output_Shadow}} object, containing data for a single examinee.
+#' @template parameter_groupings_record
+#' @param constraints a \code{\linkS4class{constraints}} object.
+#'
+#' @returns \code{\link{getXdataOfAdministered}} returns a constraint matrix-data.
+#' A constraint matrix-data is a named list containing the following:
+#' \describe{
+#'   \item{\code{xmat}}{a (\emph{nc}, \emph{ni}) matrix for the left-hand side in a MIP problem.}
+#'   \item{\code{xdir}}{a length-\emph{nc}) vector of relational operators, for comparing the two sides in a MIP problem.}
+#'   \item{\code{xrhs}}{a length-\emph{nc}) vector, for the right-hand side in a MIP problem.}
+#' }
+#'
+#' @keywords internal
+getXdataOfAdministered <- function(
+  simulation_constants,
+  position, x,
+  groupings_record,
+  constraints
+) {
 
   o <- list()
 
@@ -10,8 +35,8 @@ getXdataOfAdministered <- function(constants, position, x, groupings_record, con
     return(o)
   }
 
-  nv <- constants$nv
-  ni <- constants$ni
+  nv <- simulation_constants$nv
+  ni <- simulation_constants$ni
 
   # include administered items
 
@@ -22,7 +47,7 @@ getXdataOfAdministered <- function(constants, position, x, groupings_record, con
     o$xmat[p, x@administered_item_index[p]] <- 1
   }
 
-  if (!constants$group_by_stimulus) {
+  if (!simulation_constants$group_by_stimulus) {
     return(o)
   }
 
@@ -97,13 +122,38 @@ getIndexOfExcludedEntry <- function(exclude, constraints) {
 
 }
 
-#' @noRd
-getXdataOfExcludedEntry <- function(constants, exclude_index) {
+#' (Internal) Translate item exclusion instructions into a constraint matrix-data
+#'
+#' @template parameter_simulation_constants
+#' @param exclude_index a named list containing item/set indices that need to be excluded.
+#'
+#' @returns \code{\link{getXdataOfExcludedEntry}} returns
+#' a named list containing a constraint matrix-data.
+#' \itemize{
+#'   \item{\code{xmat} The left-hand side multipliers on decision variables.}
+#'   \item{\code{xdir} The relation operator.}
+#'   \item{\code{xrhs} The right-hand side value.}
+#' }
+#'
+#' @examples
+#' simulation_constants <- list(
+#'   nv = 5,
+#'   ni = 5,
+#'   group_by_stimulus = FALSE
+#' )
+#' exclude_index <- list(
+#'   i = c(1, 2)
+#' )
+#' \dontrun{
+#' getXdataOfExcludedEntry(simulation_constants, exclude_index)
+#' }
+#' @keywords internal
+getXdataOfExcludedEntry <- function(simulation_constants, exclude_index) {
 
   o <- list()
 
-  nv <- constants$nv
-  ni <- constants$ni
+  nv <- simulation_constants$nv
+  ni <- simulation_constants$ni
 
   if (is.null(exclude_index)) {
     return(o)
@@ -115,7 +165,7 @@ getXdataOfExcludedEntry <- function(constants, exclude_index) {
   o$xrhs <- rep(0   , 1)
   o$xmat[1, exclude_index$i] <- 1
 
-  if (!constants$group_by_stimulus) {
+  if (!simulation_constants$group_by_stimulus) {
     return(o)
   }
 
@@ -138,18 +188,27 @@ combineXdata <- function(x1, x2) {
 
 }
 
-#' @noRd
-getInfoOfExcludedEntry <- function(info, exclude_index, constants) {
+#' (Internal) Apply information penalty on items to be excluded
+#'
+#' @param info a one-row matrix containing information values on each item.
+#' @param exclude_index a named list containing item/set indices that need to be excluded.
+#' @template parameter_simulation_constants
+#'
+#' @returns \code{\link{getInfoOfExcludedEntry}} returns
+#' an updated one-row matrix containing information values.
+#'
+#' @keywords internal
+getInfoOfExcludedEntry <- function(info, exclude_index, simulation_constants) {
 
   info[exclude_index$i, 1] <-
-  info[exclude_index$i, 1] - constants$exclude_M
+  info[exclude_index$i, 1] - simulation_constants$exclude_M
 
-  if (!constants$group_by_stimulus) {
+  if (!simulation_constants$group_by_stimulus) {
     return(info)
   }
 
   info[exclude_index$s, 1] <-
-  info[exclude_index$s, 1] - constants$exclude_M
+  info[exclude_index$s, 1] - simulation_constants$exclude_M
 
   return(info)
 

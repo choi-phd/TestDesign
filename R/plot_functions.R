@@ -6,8 +6,8 @@ NULL
 #'   \item{\code{\linkS4class{item_pool}}}: plot information and expected scores.
 #'   \item{\code{\linkS4class{constraints}}}: plot information range based on the test length constraint.
 #'   \item{\code{\linkS4class{output_Static}}}: plot information and expected scores based on the fixed assembly solution.
-#'   \item{\code{\linkS4class{output_Shadow_all}}}: plot audit trail, shadow test chart, and exposure rates from the adaptive assembly solution.
-#'   \item{\code{\linkS4class{output_Shadow}}}: plot audit trail and shadow test chart from the adaptive assembly solution.
+#'   \item{\code{\linkS4class{output_Shadow_all}}}: plot audit trail, shadowtest chart, and exposure rates from the adaptive assembly solution.
+#'   \item{\code{\linkS4class{output_Shadow}}}: plot audit trail and shadowtest chart from the adaptive assembly solution.
 #' }
 #' @param y not used, exists for compatibility with \code{\link[graphics]{plot}} in the base R package.
 #' @param type the type of plot.
@@ -15,7 +15,7 @@ NULL
 #'    \item{\code{info} plots information from \code{\linkS4class{item_pool}}, \code{\linkS4class{output_Static}}, and \code{\linkS4class{output_Shadow_all}}.}
 #'    \item{\code{score} plots expected scores from \code{\linkS4class{item_pool}} and \code{\linkS4class{output_Static}}.}
 #'    \item{\code{audit} plots audit trail from \code{\linkS4class{output_Shadow_all}} and \code{\linkS4class{output_Shadow}}.}
-#'    \item{\code{shadow} plots shadow test chart from \code{\linkS4class{output_Shadow_all}} and \code{\linkS4class{output_Shadow}}.}
+#'    \item{\code{shadow} plots shadowtest chart from \code{\linkS4class{output_Shadow_all}} and \code{\linkS4class{output_Shadow}}.}
 #'    \item{\code{exposure} plots exposure rates from \code{\linkS4class{output_Shadow_all}}.}
 #' }
 #' @param theta the theta grid to use in plotting. (default = \code{seq(-3, 3, .1)})
@@ -447,7 +447,25 @@ setMethod(
 
 })
 
-#' @noRd
+#' (Internal) Draw an exposure rate plot
+#'
+#' \code{\link{plotExposurePanel}} is an internal function for
+#' drawing an exposure rate plot for a single theta segment.
+#'
+#' @param item_exposure_rate exposure rates for each item.
+#' @param item_exposure_rate_final exposure rates for each item, treating items administered in non-true segments as not exposed. Conceptually this will never exceed \code{item_exposure_rate}.
+#' @param stim_exposure_rate exposure rates for each stimulus.
+#' @param stim_index the stimulus index each item belongs to.
+#' @param max_rate target exposure rate for each theta segment.
+#' @param title the title of this plot panel.
+#' @param color the color for exposure rate bars. (default = \code{blue})
+#' @param color_final the color for exposure rate bars, treating items administered in non-true segments as not exposed. (default = \code{yellow})
+#' @param color_stim the color for stimulus groupings. (default = \code{red})
+#' @param color_threshold the color for the target exposure rate bar. (default = \code{dark gray})
+#' @param simple not used.
+#' @param ... arguments to pass onto \code{\link{plot}}.
+#'
+#' @keywords internal
 plotExposurePanel <- function(
   item_exposure_rate, item_exposure_rate_final = NULL,
   stim_exposure_rate = NULL, stim_index = NULL,
@@ -508,7 +526,7 @@ plotShadowInfo <- function(x, examinee_id, position, info_type, ylim, theta, col
     txt <- "administered items"
   } else {
     i <- o@shadow_test[[position]]$i
-    txt <- sprintf("shadow test at position %s", position)
+    txt <- sprintf("shadowtest at position %s", position)
   }
 
   p <- x@pool[i]

@@ -74,7 +74,18 @@ subsetItemPool <- function(x, i = NULL) {
 
 }
 
-#' @noRd
+#' (Internal) Combine item pool data
+#'
+#' \code{\link{combineItemPoolData}} is an internal function for combining item pool data.
+#' Columns that exist on only one side are filled in with NA values.
+#'
+#' @param raw1,raw2 a \code{\link{data.frame}} containing item pool data.
+#' @param unique if \code{TRUE}, rows that have duplicate IDs are removed.
+#'
+#' @returns \code{\link{combineItemPoolData}} returns a \code{\link{data.frame}} containing the combined item pool data.
+#' This can be supplied to \code{\link{loadItemPool}}.
+#'
+#' @keywords internal
 combineItemPoolData <- function(raw1, raw2, unique) {
 
   tmp       <- setdiff(names(raw1), names(raw2))

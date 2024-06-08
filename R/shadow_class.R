@@ -236,7 +236,7 @@ setClass("config_Shadow",
 
 #' Create a config_Shadow object
 #'
-#' \code{\link{createShadowTestConfig}} is a config function for creating a \code{\linkS4class{config_Shadow}} object for Shadow test assembly.
+#' \code{\link{createShadowTestConfig}} is a config function for creating a \code{\linkS4class{config_Shadow}} object for shadowtest assembly.
 #' Default values are used for any unspecified parameters/slots.
 #'
 #' @param item_selection a named list containing item selection criteria.
@@ -273,7 +273,7 @@ setClass("config_Shadow",
 #'   \item{\code{method}} the type of policy. Accepts \code{HARD, SOFT}. (default = \code{HARD})
 #'   \item{\code{M}} the Big M penalty to use on item information. Used in the \code{SOFT} method.
 #' }
-#' @param refresh_policy a named list containing the refresh policy for when to obtain a new shadow test.
+#' @param refresh_policy a named list containing the refresh policy for when to obtain a new shadowtest.
 #' \itemize{
 #'   \item{\code{method}} the type of policy. Accepts \code{ALWAYS, POSITION, INTERVAL, THRESHOLD, INTERVAL-THRESHOLD, STIMULUS, SET, PASSAGE}. (default = \code{ALWAYS})
 #'   \item{\code{interval}} used in methods \code{INTERVAL, INTERVAL-THRESHOLD}. Set to 1 to refresh at each position, 2 to refresh at every two positions, and so on. (default = \code{1})
@@ -498,7 +498,7 @@ setClass("output_Shadow_all",
 #' @slot administered_item_resp item responses from the simulee at each position.
 #' @slot administered_item_ncat the number of categories of each administered item.
 #' @slot administered_stimulus_index stimulus IDs administered at each position.
-#' @slot shadow_test_refreshed \code{TRUE} indicates the shadow test was refreshed for the position.
+#' @slot shadow_test_refreshed \code{TRUE} indicates the shadowtest was refreshed for the position.
 #' @slot shadow_test_feasible \code{TRUE} indicates the MIP was feasible with all constraints.
 #' @slot solve_time elapsed time in running the solver at each position.
 #' @slot initial_theta_est initial theta estimate.
@@ -510,7 +510,7 @@ setClass("output_Shadow_all",
 #' @slot posterior the posterior distribution after completing test.
 #' @slot posterior_sample posterior samples of interim theta before the estimation of final theta. \code{mean(posterior_sample) == interim_theta_est[test_length]} holds.
 #' @slot likelihood the likelihood distribution after completing test.
-#' @slot shadow_test the list containing the item IDs within the shadow test used in each position.
+#' @slot shadow_test the list containing the item IDs within the shadowtest used in each position.
 #' @slot max_cat_pool the maximum number of response categories the item pool had.
 #' @slot ni_pool the total number of items the item pool had.
 #' @slot ns_pool the total number of stimuli the item pool had.

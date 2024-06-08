@@ -7,18 +7,23 @@
 runAssembly(config, constraints, xdata = NULL, objective = NULL)
 }
 \arguments{
-\item{config}{a \code{\linkS4class{config_Static}} or a \code{\linkS4class{config_Shadow}} object containing configuration options. Use \code{\link{createStaticTestConfig}} and \code{\link{createShadowTestConfig}} for this.}
+\item{config}{a \code{\linkS4class{config_Static}} or a \code{\linkS4class{config_Shadow}} object containing configuration options.
+Use \code{\link{createStaticTestConfig}} and \code{\link{createShadowTestConfig}} for this.}
 
 \item{constraints}{a \code{\linkS4class{constraints}} object. Use \code{\link{loadConstraints}} for this.}
 
-\item{xdata}{a list containing extra constraints in MIP form, to force-include previously administered items.}
+\item{xdata}{a list containing extra constraints in MIP form,
+for various purposes such as including previously administered items,
+and excluding ineligible items.}
 
-\item{objective}{the information value for each item in the pool.}
+\item{objective}{the objective coefficients used for decision variables.
+This is usually the information value for each item in the pool.}
 }
 \value{
-a list containing the following entries:
+\code{\link{runAssembly}} returns a list containing the following entries:
 \itemize{
   \item{\code{MIP}} a list containing the result from MIP solver.
+  \item{\code{solver}} the name of the MIP solver.
   \item{\code{status}} the MIP status value, indicating whether an optimal solution was found.
   \item{\code{shadow_test}} the attributes of the selected items.
   \item{\code{obj_value}} the objective value of the solution.
@@ -33,3 +38,4 @@ van der Linden, W. J. (2005).
 \emph{Linear models for optimal test design.}
 Springer Science & Business Media.
 }
+\keyword{internal}

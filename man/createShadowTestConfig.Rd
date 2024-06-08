@@ -60,7 +60,7 @@ createShadowTestConfig(
   \item{\code{M}} the Big M penalty to use on item information. Used in the \code{SOFT} method.
 }}
 
-\item{refresh_policy}{a named list containing the refresh policy for when to obtain a new shadow test.
+\item{refresh_policy}{a named list containing the refresh policy for when to obtain a new shadowtest.
 \itemize{
   \item{\code{method}} the type of policy. Accepts \code{ALWAYS, POSITION, INTERVAL, THRESHOLD, INTERVAL-THRESHOLD, STIMULUS, SET, PASSAGE}. (default = \code{ALWAYS})
   \item{\code{interval}} used in methods \code{INTERVAL, INTERVAL-THRESHOLD}. Set to 1 to refresh at each position, 2 to refresh at every two positions, and so on. (default = \code{1})
@@ -131,7 +131,7 @@ createShadowTestConfig(
 \item{theta_grid}{the theta grid to use as quadrature points.}
 }
 \description{
-\code{\link{createShadowTestConfig}} is a config function for creating a \code{\linkS4class{config_Shadow}} object for Shadow test assembly.
+\code{\link{createShadowTestConfig}} is a config function for creating a \code{\linkS4class{config_Shadow}} object for shadowtest assembly.
 Default values are used for any unspecified parameters/slots.
 }
 \examples{

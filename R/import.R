@@ -27,6 +27,7 @@
 
 # Documentation conventions: internal functions --------------------------------
 # - Fully document all internal functions.
+# - in progress (22 to go)
 
 # Error/validation message conventions -----------------------------------------
 # - Use lower case for the first letter and end with a period.
@@ -65,7 +66,15 @@
 #' @useDynLib TestDesign
 NULL
 
-#' @noRd
+#' (Internal) Package startup functions
+#'
+#' \code{\link{.onAttach}} is an internal function called when the package is first loaded.
+#'
+#' @param libname,pkgname not used; only defined for compatibility.
+#'
+#' @returns \code{\link{.onAttach}} does not return anything.
+#'
+#' @keywords internal
 .onAttach <- function(libname, pkgname) {
 
   skip_solver_test <- FALSE
