@@ -1,8 +1,26 @@
 #' @include shadow_functions.R
 NULL
 
-#' @noRd
-parsePriorParameters <- function(config_theta, constants, prior_density_override, prior_par_override) {
+#' (Internal) Parse prior parameters from viable sources
+#'
+#' \code{\link{parsePriorParameters}} is an internal function for parsing prior parameters from viable sources
+#'
+#' @param config_theta a list containing theta estimation configurations.
+#' @template parameter_simulation_constants
+#' @param prior_density_override (optional) if supplied, treated as \code{RAW} distribution densities and overrides config values.
+#' @param prior_par_override (optional) if supplied, treated as \code{NORMAL} distribution parameters and overrides config values.
+#'
+#' @returns \code{\link{parsePriorParameters}} returns a named list containing:
+#' \describe{
+#'   \item{\code{prior_dist}}{the type of distribution. One of \code{NORMAL, UNIFORM, RAW}.}
+#'   \item{\code{prior_par}}{an examinee-wise list containing prior parameters.}
+#' }
+#'
+#' @keywords internal
+parsePriorParameters <- function(
+  config_theta, simulation_constants,
+  prior_density_override, prior_par_override
+) {
 
   # override config with prior arguments supplied to Shadow()
   if (!is.null(prior_density_override) & !is.null(prior_par_override)) {
@@ -24,7 +42,7 @@ parsePriorParameters <- function(config_theta, constants, prior_density_override
     is.vector(config_theta$prior_par) &
     !is.list(config_theta$prior_par) # because a list is also a vector
   ) {
-    config_theta$prior_par <- lapply(1:constants$nj, function(x) config_theta$prior_par)
+    config_theta$prior_par <- lapply(1:simulation_constants$nj, function(x) config_theta$prior_par)
   }
 
   # if prior_par is a matrix, expand to an examinee-wise list
@@ -34,7 +52,7 @@ parsePriorParameters <- function(config_theta, constants, prior_density_override
 
   # if prior_par is a list, validate
   if (is.list(config_theta$prior_par)) {
-    if (length(config_theta$prior_par) != constants$nj) {
+    if (length(config_theta$prior_par) != simulation_constants$nj) {
       stop("unexpected 'prior_par': could not be expanded to a length-nj list (must be a length-2 vector, an nj * 2 matrix, or a length-nj list)")
     }
     n_prior_par <- unlist(lapply(config_theta$prior_par, length))
@@ -44,7 +62,7 @@ parsePriorParameters <- function(config_theta, constants, prior_density_override
     if (config_theta$prior_dist == "UNIFORM" & any(n_prior_par != 2)) {
       stop("unexpected 'prior_par': for 'UNIFORM' distribution, each list element must be a length-2 vector")
     }
-    if (config_theta$prior_dist == "RAW" & any(n_prior_par != constants$nq)) {
+    if (config_theta$prior_dist == "RAW" & any(n_prior_par != simulation_constants$nq)) {
       stop("unexpected 'prior_par': for 'RAW' distribution, each list element must be a length-nq vector")
     }
   }
@@ -53,8 +71,26 @@ parsePriorParameters <- function(config_theta, constants, prior_density_override
 
 }
 
-#' @noRd
-getBayesianConstants <- function(config, constants) {
+#' (Internal) Parse Bayesian-related constants
+#'
+#' \code{\link{getBayesianConstants}} is an internal function for parsing Bayesian-related constants
+#'
+#' @param config a \code{\linkS4class{config_Shadow}} object.
+#' @template parameter_simulation_constants
+#'
+#' @returns \code{\link{getBayesianConstants}} returns a named list containing:
+#' \describe{
+#'   \item{\code{final_theta_prior_densities}}{prior densities for final theta estimation for all examinees.}
+#' }
+#' If interim or final theta estimation method is \code{EB} or \code{FB}, the following are included in the list:
+#' \describe{
+#'   \item{\code{n_sample}}{the length of MCMC chain for theta estimation.}
+#'   \item{\code{burn_in}}{the length of MCMC chain to trim from the start of the chain.}
+#'   \item{\code{thin}}{the thinning interval to apply to the chain.}
+#'   \item{\code{jump_factor}}{the scaling factor.}
+#' }
+#' @keywords internal
+getBayesianConstants <- function(config, simulation_constants) {
 
   o <- list()
 
@@ -71,7 +107,7 @@ getBayesianConstants <- function(config, constants) {
   # generate prior densities from config
   o$final_theta_prior_densities <- generateDensityFromPriorPar(
     config@final_theta,
-    constants$theta_q
+    simulation_constants$theta_q
   )
 
   return(o)
@@ -215,7 +251,20 @@ logitHyperPars <- function(mean, sd) {
   return(c(mean(logit_samples), sd(logit_samples)))
 }
 
-#' @noRd
+#' (Internal) Generate item parameter samples for Bayesian purposes
+#'
+#' \code{\link{generateItemParameterSample}} is a function for generating item parameter samples.
+#' Used for the FB (full-Bayesian) estimation method.
+#'
+#' @param config a \code{\linkS4class{config_Shadow}} object.
+#' @param item_pool an \code{\linkS4class{item_pool}} object.
+#' @param bayesian_constants a named list containing Bayesian constants.
+#'
+#' @return If either the interim or the final theta estimation method is \code{FB},
+#' \code{\link{generateItemParameterSample}} returns a length-\emph{ni} list of item parameter matrices, with each matrix having \code{n_sample} rows.
+#' Otherwise, the function returns NULL.
+#'
+#' @keywords internal
 generateItemParameterSample <- function(config, item_pool, bayesian_constants) {
 
   o <- NULL
@@ -230,7 +279,20 @@ generateItemParameterSample <- function(config, item_pool, bayesian_constants) {
 
 }
 
-#' @noRd
+#' (Internal) Convert prior parameters to distribution densities
+#'
+#' \code{\link{generateDensityFromPriorPar}} is an internal function for converting prior parameters to distribution densities.
+#'
+#' @param config_theta a list containing theta estimation configurations.
+#' @param theta_q a list containing all quadrature points.
+#'
+#' @returns \code{\link{parsePriorParameters}} returns a named list containing:
+#' \describe{
+#'   \item{\code{prior_dist}}{the type of distribution. One of \code{NORMAL, UNIFORM, RAW}.}
+#'   \item{\code{prior_par}}{an examinee-wise list containing prior parameters.}
+#' }
+#'
+#' @keywords internal
 generateDensityFromPriorPar <- function(config_theta, theta_q) {
 
   nq <- nrow(theta_q)
@@ -269,7 +331,18 @@ generateDensityFromPriorPar <- function(config_theta, theta_q) {
 
 }
 
-#' @noRd
+#' (Internal) Generate random theta samples from prior distribution
+#'
+#' \code{\link{generateSampleFromPriorPar}} is an internal function for
+#' generating random theta samples from prior distribution.
+#'
+#' @param config_theta a named list containing theta estimation configurations.
+#' @param j the examinee index to perform the sample generation.
+#' @param bayesian_constants a named list containing Bayesian constants.
+#'
+#' @returns \code{\link{generateSampleFromPriorPar}} returns \code{n_sample} theta samples.
+#'
+#' @keywords internal
 generateSampleFromPriorPar <- function(config_theta, j, bayesian_constants) {
 
   if (config_theta$prior_dist == "NORMAL") {
@@ -291,7 +364,17 @@ generateSampleFromPriorPar <- function(config_theta, j, bayesian_constants) {
 
 }
 
-#' @noRd
+#' (Internal) Thin a MCMC chain
+#'
+#' \code{\link{applyThin}} is an internal function for
+#' thinning a Markov chain. Burn-in is also applied.
+#'
+#' @param posterior_sample a vector containing values in a Markov chain.
+#' @param bayesian_constants a named list containing Bayesian constants.
+#'
+#' @returns \code{\link{applyThin}} returns an updated Markov chain.
+#'
+#' @keywords internal
 applyThin <- function(posterior_sample, bayesian_constants) {
 
   posterior_sample <- posterior_sample[seq(
@@ -304,15 +387,25 @@ applyThin <- function(posterior_sample, bayesian_constants) {
 
 }
 
-
-#' @noRd
-getSegmentProb <- function(posterior_sample, constants) {
+#' (Internal) Convert a theta distribution to segment-wise classification probabilities
+#'
+#' \code{\link{getSegmentProb}} is an internal function for
+#' converting a theta distribution to segment-wise classification probabilities
+#' This is used for \code{BIGM-BAYESIAN} exposure control.
+#'
+#' @param posterior_sample a vector containing values in a Markov chain.
+#' @template parameter_simulation_constants
+#'
+#' @returns \code{\link{getSegmentProb}} returns a vector of segment-wise classification probabilities.
+#'
+#' @keywords internal
+getSegmentProb <- function(posterior_sample, simulation_constants) {
 
   # find_segment() needs to be updated for multidimensional segments
-  sample_segment                   <- find_segment(posterior_sample, constants$segment_cut)
+  sample_segment                   <- find_segment(posterior_sample, simulation_constants$segment_cut)
   segment_distribution             <- table(sample_segment) / length(sample_segment)
   segment_classified               <- as.numeric(names(segment_distribution))
-  segment_prob                     <- numeric(constants$n_segment)
+  segment_prob                     <- numeric(simulation_constants$n_segment)
   segment_prob[segment_classified] <- segment_distribution
 
   return(segment_prob)

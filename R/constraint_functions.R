@@ -1,5 +1,14 @@
 
-#' @noRd
+#' (Internal) Sanitize constraints data
+#'
+#' \code{\link{sanitizeConstraintsData}} is an internal function for
+#' sanitizing constraints data.
+#'
+#' @param x a \code{\link{data.frame}} containing constraints data.
+#'
+#' @returns \code{\link{sanitizeConstraintsData}} returns sanitized constraints data.
+#'
+#' @keywords internal
 sanitizeConstraintsData <- function(x) {
 
   names(x)    <- toupper(names(x))
@@ -30,7 +39,18 @@ sanitizeConstraintsData <- function(x) {
 
 }
 
-#' @noRd
+#' (Internal) Validate constraint lower/upper bounds
+#'
+#' \code{\link{validateLBUB}} is an internal function for
+#' validating a constraint's lower/upper bounds.
+#'
+#' @param x a \code{\link{data.frame}} row containing a single constraint data.
+#' @param allow_range whether to allow unequal LB and UB values as valid. (default = \code{TRUE})
+#'
+#' @returns \code{\link{validateLBUB}} does not return any values;
+#' it \code{\link{stop}}s if the input constraint is not valid.
+#'
+#' @keywords internal
 validateLBUB <- function(x, allow_range = TRUE) {
   if (any(c(x$LB, x$UB) < 0)) {
     stop(sprintf("constraint %s: LB and UB must be >= 0; this condition was not met.", x$CONSTRAINT))
@@ -45,7 +65,22 @@ validateLBUB <- function(x, allow_range = TRUE) {
   }
 }
 
-#' @noRd
+#' (Internal) Validate constraint condition expression
+#'
+#' \code{\link{validateExpression}} is an internal function for
+#' validating a constraint's condition expression.
+#'
+#' @param x a \code{\link{data.frame}} row containing a single constraint data.
+#' @param attrib an \code{\linkS4class{item_attrib}} object or a \code{\linkS4class{st_attrib}} object.
+#' @param unit_name \code{items} or \code{stimuli}.
+#' @param use_lt
+#' if \code{TRUE}, will raise an error when number of matching items/stimuli is less than 2.
+#' if \code{FALSE}, will raise an error when number of matching items/stimuli is 0.
+#'
+#' @returns \code{\link{validateExpression}} does not return any values;
+#' it \code{\link{stop}}s if the input constraint is not valid.
+#'
+#' @keywords internal
 validateExpression <- function(x, attrib, unit_name, use_lt) {
 
   try_parse <- try(parse(text = x$CONDITION))
@@ -63,7 +98,19 @@ validateExpression <- function(x, attrib, unit_name, use_lt) {
 
 }
 
-#' @noRd
+#' (Internal) Validate constraint for completeness of its required attribute column
+#'
+#' \code{\link{validateFullColumn}} is an internal function for
+#' validating a constraint for whether its required attribute column is complete (i.e., does not have NA values).
+#'
+#' @param x a \code{\link{data.frame}} row containing a single constraint data.
+#' @param attrib an \code{\linkS4class{item_attrib}} object or a \code{\linkS4class{st_attrib}} object.
+#' @param class_name \code{item_attrib} or \code{st_attrib}.
+#'
+#' @returns \code{\link{validateFullColumn}} does not return any values;
+#' it \code{\link{stop}}s if the input constraint is not valid.
+#'
+#' @keywords internal
 validateFullColumn <- function(x, attrib, class_name) {
 
   if (!(x$CONDITION %in% names(attrib@data))) {
@@ -76,7 +123,19 @@ validateFullColumn <- function(x, attrib, class_name) {
 
 }
 
-#' @noRd
+#' (Internal) Validate constraint (wrapper for other validators)
+#'
+#' \code{\link{validateConstraintData}} is an internal function for
+#' validating a constraint. This is a wrapper function that calls other validator functions
+#' depending on the constraint.
+#'
+#' @param x a \code{\link{data.frame}} row containing a single constraint data.
+#' @param attrib an \code{\linkS4class{item_attrib}} object or a \code{\linkS4class{st_attrib}} object.
+#'
+#' @returns \code{\link{validateConstraintData}} does not return any values;
+#' it \code{\link{stop}}s if the input constraint is not valid.
+#'
+#' @keywords internal
 validateConstraintData <- function(x, attrib) {
 
   if (inherits(attrib, "item_attrib")) {
@@ -194,32 +253,57 @@ validateConstraintData <- function(x, attrib) {
 
 }
 
-#' @noRd
-getLBUBInConstraintData <- function(o, x, item_constraints, stim_constraints) {
+#' (Internal) Parse item/stimulus lower/upper bounds from constraints data
+#'
+#' \code{\link{getLBUBInConstraintData}} is an internal function for
+#' parsing maximum item/stimulus lower/upper bounds from constraints data.
+#'
+#' @param constants a names list containing constants.
+#' @param constraints a \code{\link{data.frame}} containing constraints data.
+#' @param item_constraints row numbers indicating which are item-level constraints.
+#' @param stim_constraints row numbers indicating which are stimulus-level constraints.
+#'
+#' @returns \code{\link{getLBUBInConstraintData}} returns an updated list of constants.
+#'
+#' @keywords internal
+getLBUBInConstraintData <- function(
+  constants, constraints, item_constraints, stim_constraints
+) {
 
   for (i in item_constraints) {
-    if (x$TYPE[i] %in% c("NUMBER", "COUNT")) {
-      if (toupper(x$CONDITION[i]) %in% c("", " ", "PER TEST", "TEST")) {
-        o$i_count$LB <- round(x$LB[i])
-        o$i_count$UB <- round(x$UB[i])
+    if (constraints$TYPE[i] %in% c("NUMBER", "COUNT")) {
+      if (toupper(constraints$CONDITION[i]) %in% c("", " ", "PER TEST", "TEST")) {
+        constants$i_count$LB <- round(constraints$LB[i])
+        constants$i_count$UB <- round(constraints$UB[i])
       }
     }
   }
 
   for (s in stim_constraints) {
-    if (x$TYPE[s] %in% c("NUMBER", "COUNT")) {
-      if (toupper(x$CONDITION[s]) %in% c("", " ", "PER TEST", "TEST")) {
-        o$s_count$LB <- round(x$LB[s])
-        o$s_count$UB <- round(x$UB[s])
+    if (constraints$TYPE[s] %in% c("NUMBER", "COUNT")) {
+      if (toupper(constraints$CONDITION[s]) %in% c("", " ", "PER TEST", "TEST")) {
+        constants$s_count$LB <- round(constraints$LB[s])
+        constants$s_count$UB <- round(constraints$UB[s])
       }
     }
   }
 
-  return(o)
+  return(constants)
 
 }
 
-#' @noRd
+#' (Internal) Parse a constraint data into an object
+#'
+#' \code{\link{parseConstraintData}} is an internal function for
+#' parsing data for a single constraint.
+#'
+#' @param x a \code{\link{data.frame}} row containing a single constraint data.
+#' @param attrib an \code{\linkS4class{item_attrib}} object or a \code{\linkS4class{st_attrib}} object.
+#' @param constants a named list containing constants.
+#'
+#' @returns \code{\link{parseConstraintData}} returns a \code{\linkS4class{constraint}} object.
+#'
+#' @keywords internal
 parseConstraintData <- function(x, attrib, constants) {
 
   if (inherits(attrib, "item_attrib")) {
@@ -527,7 +611,17 @@ parseConstraintData <- function(x, attrib, constants) {
 
 }
 
-#' @noRd
+#' (Internal) Count number of pool items that match a constraint
+#'
+#' \code{\link{addCountsToConstraintData}} is an internal function for
+#' counting the number of items in the pool that match a constraint.
+#'
+#' @param x a \code{\link{data.frame}} containing a single constraint data.
+#' @param attrib an \code{\linkS4class{item_attrib}} object or a \code{\linkS4class{st_attrib}} object.
+#'
+#' @returns \code{\link{addCountsToConstraintData}} returns an updated \code{\link{data.frame}}.
+#'
+#' @keywords internal
 addCountsToConstraintData <- function(x, attrib) {
 
   if (inherits(attrib, "item_attrib")) {
@@ -590,7 +684,21 @@ addCountsToConstraintData <- function(x, attrib) {
 
 }
 
-#' @noRd
+#' (Internal) Count number of items in a solution that match a constraint
+#'
+#' \code{\link{addSolutionToConstraintData}} is an internal function for
+#' counting the number of items in a solution that match a constraint.
+#'
+#' @param x a \code{\link{data.frame}} containing a single constraint data.
+#' @param attrib an \code{\linkS4class{item_attrib}} object.
+#' @param item_idx item indices in the solution.
+#' @param all_values for set-based assembly,
+#' \code{TRUE} returns all values for each set,
+#' \code{FALSE} returns descriptive statisistics.
+#'
+#' @returns \code{\link{addSolutionToConstraintData}} returns an updated \code{\link{data.frame}}.
+#'
+#' @keywords internal
 addSolutionToConstraintData <- function(x, attrib, item_idx, all_values) {
 
   # attrib must be item_attrib

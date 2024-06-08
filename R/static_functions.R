@@ -5,8 +5,8 @@ NULL
 #'
 #' \code{\link{Static}} is a test assembly function for performing fixed-form test assembly based on the generalized shadow-test framework.
 #'
-#' @template config_Static-param
-#' @template constraints-param
+#' @template parameter_config_Static
+#' @template parameter_constraints
 #' @template force_solver_param
 #'
 #' @return \code{\link{Static}} returns a \code{\linkS4class{output_Static}} object containing the selected items.

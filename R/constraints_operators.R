@@ -64,7 +64,17 @@ subsetConstraints <- function(x, i = NULL) {
 
 }
 
-#' @noRd
+#' (Internal) Combine constraints data
+#'
+#' \code{\link{combineConstraintsData}} is an internal function for combining constraints data.
+#' Columns that exist on only one side are filled in with NA values.
+#'
+#' @param raw1,raw2 a \code{\link{data.frame}} containing constraints data.
+#'
+#' @returns \code{\link{combineConstraintsData}} returns a \code{\link{data.frame}} containing the combined constraints data.
+#' This can be supplied to \code{\link{loadConstraints}}.
+#'
+#' @keywords internal
 combineConstraintsData <- function(raw1, raw2) {
 
   tmp       <- setdiff(names(raw1), names(raw2))

@@ -5,8 +5,8 @@ NULL
 #'
 #' \code{\link{Shadow}} is a test assembly function for performing adaptive test assembly based on the generalized shadow-test framework.
 #'
-#' @template config_Shadow-param
-#' @template constraints-param
+#' @template parameter_config_Shadow
+#' @template parameter_constraints
 #' @param true_theta (optional) true theta values to use in simulation. Either \code{true_theta} or \code{data} must be supplied.
 #' @param data (optional) a matrix containing item response data to use in simulation. Either \code{true_theta} or \code{data} must be supplied.
 #' @param prior (optional) density at each \code{config@theta_grid} to use as prior.
@@ -84,27 +84,27 @@ setMethod(
       true_theta = true_theta,
       response_data = data
     )
-    constants             <- getConstants(constraints, config, data, true_theta, simulation_data_cache@max_info)
-    config@interim_theta  <- parsePriorParameters(config@interim_theta, constants, prior, prior_par)
-    config@final_theta    <- parsePriorParameters(config@final_theta  , constants, prior, prior_par)
-    bayesian_constants    <- getBayesianConstants(config, constants)
-    initial_theta         <- parseInitialTheta(config, constants, item_pool, bayesian_constants, include_items_for_estimation)
+    simulation_constants  <- getConstants(constraints, config, data, true_theta, simulation_data_cache@max_info)
+    config@interim_theta  <- parsePriorParameters(config@interim_theta, simulation_constants, prior, prior_par)
+    config@final_theta    <- parsePriorParameters(config@final_theta  , simulation_constants, prior, prior_par)
+    bayesian_constants    <- getBayesianConstants(config, simulation_constants)
+    initial_theta         <- parseInitialTheta(config, simulation_constants, item_pool, bayesian_constants, include_items_for_estimation)
     item_parameter_sample <- generateItemParameterSample(config, item_pool, bayesian_constants)
     exclude_index         <- getIndexOfExcludedEntry(exclude, constraints)
 
     # Only used if config@item_selection$method = "FIXED"
-    info_fixed_theta      <- getInfoFixedTheta(config@item_selection, constants, item_pool, model_code)
+    info_fixed_theta      <- getInfoFixedTheta(config@item_selection, simulation_constants, item_pool, model_code)
 
-    if (constants$use_shadowtest) {
-      shadowtest_refresh_schedule <- parseShadowTestRefreshSchedule(constants, config@refresh_policy)
+    if (simulation_constants$use_shadowtest) {
+      shadowtest_refresh_schedule <- parseShadowTestRefreshSchedule(simulation_constants, config@refresh_policy)
     }
 
     # Initialize exposure rate control
-    if (constants$exposure_control_method %in% c("NONE", "ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
+    if (simulation_constants$exposure_control_method %in% c("NONE", "ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
 
-      segment_record           <- initializeSegmentRecord(constants)
-      exposure_record          <- initializeExposureRecord(config@exposure_control, constants)
-      exposure_record_detailed <- initializeExposureRecordSegmentwise(constants)
+      segment_record             <- initializeSegmentRecord(simulation_constants)
+      exposure_record            <- initializeExposureRecord(config@exposure_control, simulation_constants)
+      diagnostic_exposure_record <- initializeDiagnosticExposureRecord(simulation_constants)
       if (!is.null(config@exposure_control$initial_eligibility_stats)) {
         exposure_record <- config@exposure_control$initial_eligibility_stats
       }
@@ -112,10 +112,10 @@ setMethod(
     }
 
     # Initialize usage matrix
-    usage_matrix <- initializeUsageMatrix(constants)
+    usage_matrix <- initializeUsageMatrix(simulation_constants)
 
     # Loop over nj simulees
-    o_list <- vector(mode = "list", length = constants$nj)
+    o_list <- vector(mode = "list", length = simulation_constants$nj)
 
     has_progress_pkg <- requireNamespace("progress")
     if (has_progress_pkg) {
@@ -125,14 +125,14 @@ setMethod(
       }
       pb <- progress::progress_bar$new(
         format = "[:bar] :spin :current/:total (:percent) eta :eta | ",
-        total = constants$nj, clear = FALSE,
+        total = simulation_constants$nj, clear = FALSE,
         width = w)
       pb$tick(0)
     } else {
-      pb <- txtProgressBar(0, constants$nj, char = "|", style = 3)
+      pb <- txtProgressBar(0, simulation_constants$nj, char = "|", style = 3)
     }
 
-    for (j in 1:constants$nj) {
+    for (j in 1:simulation_constants$nj) {
 
       o <- new("output_Shadow")
       o@simulee_id <- j
@@ -142,18 +142,18 @@ setMethod(
       }
 
       o@prior <- initial_theta$posterior[j, ]
-      o@administered_item_index     <- rep(NA_real_, constants$max_ni)
-      o@administered_item_resp      <- rep(NA_real_, constants$max_ni)
+      o@administered_item_index     <- rep(NA_real_, simulation_constants$max_ni)
+      o@administered_item_resp      <- rep(NA_real_, simulation_constants$max_ni)
       o@administered_stimulus_index <- NaN
-      o@theta_segment_index         <- rep(NA_real_, constants$max_ni)
-      o@interim_theta_est           <- matrix(NA_real_, constants$max_ni, constants$nd)
-      o@interim_se_est              <- matrix(NA_real_, constants$max_ni, constants$nd)
-      o@shadow_test                 <- vector("list", constants$max_ni)
+      o@theta_segment_index         <- rep(NA_real_, simulation_constants$max_ni)
+      o@interim_theta_est           <- matrix(NA_real_, simulation_constants$max_ni, simulation_constants$nd)
+      o@interim_se_est              <- matrix(NA_real_, simulation_constants$max_ni, simulation_constants$nd)
+      o@shadow_test                 <- vector("list", simulation_constants$max_ni)
       o@max_cat_pool                <- item_pool@max_cat
-      o@test_length_constraints     <- constants$max_ni
-      o@ni_pool                     <- constants$ni
-      o@ns_pool                     <- constants$ns
-      o@set_based                   <- constants$group_by_stimulus
+      o@test_length_constraints     <- simulation_constants$max_ni
+      o@ni_pool                     <- simulation_constants$ni
+      o@ns_pool                     <- simulation_constants$ns
+      o@set_based                   <- simulation_constants$group_by_stimulus
       o@item_index_by_stimulus      <- constraints@item_index_by_stimulus
 
       # Simulee: initialize theta estimate
@@ -170,17 +170,17 @@ setMethod(
 
       # Simulee: initialize completed groupings (item sets) record
 
-      if (constants$group_by_stimulus) {
-        o@administered_stimulus_index <- rep(NA_real_, constants$max_ni)
+      if (simulation_constants$group_by_stimulus) {
+        o@administered_stimulus_index <- rep(NA_real_, simulation_constants$max_ni)
         groupings_record <- initializeCompletedGroupingsRecord()
         selection$is_last_item_in_this_set <- TRUE
       }
 
-      # Simulee: initialize shadow test record
+      # Simulee: initialize shadowtest record
 
-      if (constants$use_shadowtest) {
-        o@shadow_test_feasible  <- logical(constants$test_length)
-        o@shadow_test_refreshed <- logical(constants$test_length)
+      if (simulation_constants$use_shadowtest) {
+        o@shadow_test_feasible  <- logical(simulation_constants$test_length)
+        o@shadow_test_refreshed <- logical(simulation_constants$test_length)
       }
 
       theta_change <- 10000
@@ -189,8 +189,8 @@ setMethod(
 
       # Simulee: flag ineligibile items
 
-      if (constants$use_exposure_control) {
-        eligibility_flag <- flagIneligible(exposure_record, constants, constraints@item_index_by_stimulus, seed, j)
+      if (simulation_constants$use_exposure_control) {
+        eligibility_flag <- flagIneligible(exposure_record, simulation_constants, constraints@item_index_by_stimulus, seed, j)
       }
 
       # Simulee: create augmented pool if applicable
@@ -220,12 +220,12 @@ setMethod(
           item_parameter_sample            # Only used if config@item_selection$method = "FB"
         )
 
-        # Item position / simulee: do shadow test assembly
+        # Item position / simulee: do shadowtest assembly
 
-        if (constants$use_shadowtest) {
+        if (simulation_constants$use_shadowtest) {
 
           o@theta_segment_index[position] <- parseThetaSegment(
-            current_theta, position, config@exposure_control, constants
+            current_theta, position, config@exposure_control, simulation_constants
           )
 
           if (shouldShadowTestBeRefreshed(
@@ -245,7 +245,7 @@ setMethod(
               groupings_record,
               info_current_theta,
               config,
-              constants,
+              simulation_constants,
               constraints
             )
             solution_is_optimal <- isSolutionOptimal(shadowtest$status, shadowtest$solver)
@@ -268,10 +268,10 @@ setMethod(
 
           }
 
-          # Select an item from shadow test
+          # Select an item from shadowtest
 
           selection <- selectItemFromShadowTest(
-            shadowtest$shadow_test, position, constants, o,
+            shadowtest$shadow_test, position, simulation_constants, o,
             selection
           )
           o@administered_item_index[position] <- selection$item_selected
@@ -280,7 +280,7 @@ setMethod(
 
         }
 
-        if (!constants$use_shadowtest) {
+        if (!simulation_constants$use_shadowtest) {
 
           # Do traditional CAT
 
@@ -290,7 +290,7 @@ setMethod(
 
         # Item position / simulee: record which stimulus was administered
 
-        if (constants$group_by_stimulus) {
+        if (simulation_constants$group_by_stimulus) {
 
           o@administered_stimulus_index[position] <- selection$stimulus_selected
 
@@ -357,7 +357,7 @@ setMethod(
           include_items_for_estimation,
           item_parameter_sample,
           config,
-          constants,
+          simulation_constants,
           bayesian_constants
         )
 
@@ -368,7 +368,7 @@ setMethod(
 
         # Item position / simulee: prepare for the next item position
 
-        if (position == constants$max_ni) {
+        if (position == simulation_constants$max_ni) {
           done <- TRUE
           o@likelihood <- current_theta$likelihood
           o@posterior  <- current_theta$posterior
@@ -390,12 +390,12 @@ setMethod(
         include_items_for_estimation,
         item_parameter_sample,
         config,
-        constants,
+        simulation_constants,
         bayesian_constants
       )
 
       # Simulee: record item usage
-      usage_matrix <- updateUsageMatrix(usage_matrix, j, o, constants)
+      usage_matrix <- updateUsageMatrix(usage_matrix, j, o, simulation_constants)
 
       # Simulee: do exposure control
       exposure_record <- doExposureControl(
@@ -403,22 +403,22 @@ setMethod(
         o, j,
         current_theta,
         eligibility_flag,
-        constants
+        simulation_constants
       )
-      exposure_record_detailed <- doExposureControlDetailed(
-        exposure_record_detailed,
+      diagnostic_exposure_record <- updateDiagnosticExposureRecord(
+        diagnostic_exposure_record,
         j,
         exposure_record,
         config,
-        constants
+        simulation_constants
       )
 
-      segment_of           <- getSegmentOf(o, constants)
+      segment_of           <- getSegmentOf(o, simulation_constants)
       o@true_theta_segment <- segment_of$true_theta
       o_list[[j]] <- o
 
       if (!is.null(session)) {
-        shinyWidgets::updateProgressBar(session = session, id = "pb", value = j, total = constants$nj)
+        shinyWidgets::updateProgressBar(session = session, id = "pb", value = j, total = simulation_constants$nj)
       } else {
         if (has_progress_pkg) {
           pb$tick()
@@ -435,22 +435,22 @@ setMethod(
       close(pb)
     }
 
-    final_theta_est <- unlist(lapply(1:constants$nj, function(j) o_list[[j]]@final_theta_est))
-    final_se_est    <- unlist(lapply(1:constants$nj, function(j) o_list[[j]]@final_se_est))
+    final_theta_est <- unlist(lapply(1:simulation_constants$nj, function(j) o_list[[j]]@final_theta_est))
+    final_se_est    <- unlist(lapply(1:simulation_constants$nj, function(j) o_list[[j]]@final_se_est))
 
     # Aggregate exposure rates
-    exposure_rate <- aggregateUsageMatrix(usage_matrix, constants, constraints)
+    exposure_rate <- aggregateUsageMatrix(usage_matrix, simulation_constants, constraints)
 
-    # Get exposure control diagnostic stats
-    diagnostic_stats <- parseDiagnosticStats(
+    # Make diagnostic exposure record
+    diagnostic_stats <- makeDiagnosticExposureRecord(
       true_theta, segment_record,
-      exposure_record_detailed,
+      diagnostic_exposure_record,
       config,
-      constants
+      simulation_constants
     )
 
-    if (constants$use_shadowtest) {
-      freq_infeasible <- table(unlist(lapply(1:constants$nj, function(j) sum(!o_list[[j]]@shadow_test_feasible))))
+    if (simulation_constants$use_shadowtest) {
+      freq_infeasible <- table(unlist(lapply(1:simulation_constants$nj, function(j) sum(!o_list[[j]]@shadow_test_feasible))))
     } else {
       freq_infeasible <- NULL
     }

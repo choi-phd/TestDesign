@@ -1,55 +1,82 @@
 #' @include extensions.R
 NULL
 
-#' @noRd
+#' (Internal) Validate item objects
+#'
+#' These are internal functions for validating item objects for their item parameters.
+#'
+#' @param object an item object.
+#'
+#' @returns These functions return an error message string if the input object is not valid.
+#' These do not return anything for valid objects.
+#'
+#' @rdname item_object_validation_methods
+#' @keywords internal
 validateDifficulty <- function(object) {
   if (length(object@difficulty) == 0) {
     return("@difficulty must not be empty")
   }
 }
-#' @noRd
+
+#' @rdname item_object_validation_methods
+#' @keywords internal
 validateSlope <- function(object) {
   if (object@slope <= 0) {
     return("@slope must be non-negative")
   }
 }
 
-#' @noRd
+#' @rdname item_object_validation_methods
+#' @keywords internal
 validateGuessing <- function(object) {
   if (object@guessing < 0 || object@guessing >= 1.0) {
     return("@guessing must be in [0.0, 1.0) range")
   }
 }
 
-#' @noRd
+#' @rdname item_object_validation_methods
+#' @keywords internal
 validateNcat <- function(object) {
   if (length(object@ncat) == 0) {
     return("@ncat must be supplied")
   }
 }
 
-#' @noRd
+#' @rdname item_object_validation_methods
+#' @keywords internal
 validateNthr <- function(object) {
   if (object@ncat != length(object@threshold) + 1) {
     return("length(@threshold) must be equal to @ncat - 1")
   }
 }
 
-#' @noRd
+#' @rdname item_object_validation_methods
+#' @keywords internal
 validateCategory <- function(object) {
   if (object@ncat != length(object@category) + 1) {
     return("length(@category) must be equal to @ncat - 1")
   }
 }
 
-#' @noRd
+#' @rdname item_object_validation_methods
+#' @keywords internal
 validateOrder <- function(object) {
   if (is.unsorted(object@category)) {
     return("@category must be in ascending order")
   }
 }
 
-#' @noRd
+#' (Internal) Return S4 object validation error messages
+#'
+#' \code{\link{returnErrors}} is an internal function for
+#' S4 object validation error messages.
+#'
+#' @param errors a vector containing error messages.
+#'
+#' @returns \code{\link{returnErrors}} returns \code{TRUE} if the input is empty.
+#' otherwise it returns the error messages as a pass-thru.
+#'
+#' @keywords internal
 returnErrors <- function(errors) {
   if (length(errors) == 0) {
     return(TRUE)

@@ -141,8 +141,8 @@
   \item{\code{\linkS4class{item_pool}}}: plot information and expected scores.
   \item{\code{\linkS4class{constraints}}}: plot information range based on the test length constraint.
   \item{\code{\linkS4class{output_Static}}}: plot information and expected scores based on the fixed assembly solution.
-  \item{\code{\linkS4class{output_Shadow_all}}}: plot audit trail, shadow test chart, and exposure rates from the adaptive assembly solution.
-  \item{\code{\linkS4class{output_Shadow}}}: plot audit trail and shadow test chart from the adaptive assembly solution.
+  \item{\code{\linkS4class{output_Shadow_all}}}: plot audit trail, shadowtest chart, and exposure rates from the adaptive assembly solution.
+  \item{\code{\linkS4class{output_Shadow}}}: plot audit trail and shadowtest chart from the adaptive assembly solution.
 }}
 
 \item{y}{not used, exists for compatibility with \code{\link[graphics]{plot}} in the base R package.}
@@ -152,7 +152,7 @@
    \item{\code{info} plots information from \code{\linkS4class{item_pool}}, \code{\linkS4class{output_Static}}, and \code{\linkS4class{output_Shadow_all}}.}
    \item{\code{score} plots expected scores from \code{\linkS4class{item_pool}} and \code{\linkS4class{output_Static}}.}
    \item{\code{audit} plots audit trail from \code{\linkS4class{output_Shadow_all}} and \code{\linkS4class{output_Shadow}}.}
-   \item{\code{shadow} plots shadow test chart from \code{\linkS4class{output_Shadow_all}} and \code{\linkS4class{output_Shadow}}.}
+   \item{\code{shadow} plots shadowtest chart from \code{\linkS4class{output_Shadow_all}} and \code{\linkS4class{output_Shadow}}.}
    \item{\code{exposure} plots exposure rates from \code{\linkS4class{output_Shadow_all}}.}
 }}
 

@@ -28,7 +28,7 @@
 
 \item{\code{administered_stimulus_index}}{stimulus IDs administered at each position.}
 
-\item{\code{shadow_test_refreshed}}{\code{TRUE} indicates the shadow test was refreshed for the position.}
+\item{\code{shadow_test_refreshed}}{\code{TRUE} indicates the shadowtest was refreshed for the position.}
 
 \item{\code{shadow_test_feasible}}{\code{TRUE} indicates the MIP was feasible with all constraints.}
 
@@ -52,7 +52,7 @@
 
 \item{\code{likelihood}}{the likelihood distribution after completing test.}
 
-\item{\code{shadow_test}}{the list containing the item IDs within the shadow test used in each position.}
+\item{\code{shadow_test}}{the list containing the item IDs within the shadowtest used in each position.}
 
 \item{\code{max_cat_pool}}{the maximum number of response categories the item pool had.}
 

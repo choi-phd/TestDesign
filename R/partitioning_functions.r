@@ -1,7 +1,16 @@
 #' @include shadow_functions.R
 NULL
 
-#' @noRd
+#' (Internal) Bind matrices diagonally
+#'
+#' \code{\link{dbind}} is an internal function for binding matrices diagonally.
+#' This is used for constructing constraint matrix-data in \code{\link{Split}}.
+#'
+#' @param ... input matrices.
+#'
+#' @returns \code{\link{dbind}} returns a matrix.
+#'
+#' @keywords internal
 dbind <- function(...) {
 
   x <- list(...)
@@ -29,14 +38,36 @@ dbind <- function(...) {
 
 }
 
-#' @noRd
+#' (Internal) Make decision variables for selecting a pool
+#'
+#' \code{\link{getDecisionVariablesOfPoolForMultipool}} is an internal function for
+#' making decision variables for selecting a single pool, for the purpose of multiple-pool assembly.
+#'
+#' @param pool_idx the target pool index.
+#' @param ni_per_bin the number of items in the pool.
+#' @param nv_per_bin the number of decision variables in the pool if this was a regular ATA.
+#'
+#' @returns \code{\link{getDecisionVariablesOfPoolForMultipool}} returns a vector of indices.
+#'
+#' @keywords internal
 getDecisionVariablesOfPoolForMultipool <- function(pool_idx, ni_per_bin, nv_per_bin) {
   return(
     ((pool_idx - 1) * nv_per_bin) + 1:ni_per_bin
   )
 }
 
-#' @noRd
+#' (Internal) Make decision variables for selecting an item
+#'
+#' \code{\link{getDecisionVariablesOfItemForMultipool}} is an internal function for
+#' making decision variables for selecting a single item, for the purpose of multiple-pool assembly.
+#'
+#' @param item_idx the target item index.
+#' @param nv_per_bin the number of decision variables in the pool if this was a regular ATA.
+#' @param n_bins the number of pools being modeled.
+
+#' @returns \code{\link{getDecisionVariablesOfItemForMultipool}} returns a vector of indices.
+#'
+#' @keywords internal
 getDecisionVariablesOfItemForMultipool <- function(item_idx, nv_per_bin, n_bins) {
   nv_total <- nv_per_bin * n_bins
   return(
@@ -44,7 +75,21 @@ getDecisionVariablesOfItemForMultipool <- function(item_idx, nv_per_bin, n_bins)
   )
 }
 
-#' @noRd
+#' (Internal) Convert a partitioning problem solution to indices
+#'
+#' \code{\link{splitSolutionToBins}} is an internal function for converting a paritioning problem solution to indices.
+#'
+#' @param solution the solution vector from the solver.
+#' @param n_bins the number of bins (i.e., partitions)
+#' @param ni_per_bin the number of decision variables for items in each bin.
+#' This is the number of items in the pool.
+#' @param nv_per_bin the number of decision variables for items+sets in each bin.
+#' This is the number of items in the pool plus the number of sets.
+#' The deviation variable is not counted here.
+#'
+#' @returns \code{\link{splitSolutionToBins}} returns a partition-wise list containing item/set indices.
+#'
+#' @keywords internal
 splitSolutionToBins <- function(solution, n_bins, ni_per_bin, nv_per_bin) {
 
   o <- list()
@@ -107,8 +152,8 @@ getSetStructureConstraints <- function(constraints) {
 #' When constructing parallel tests, each test is constructed to satisfy all constraints.
 #' When constructing parallel pools, each pool is constructed so that it contains a test that satisfies all constraints.
 #'
-#' @template config_Static-param
-#' @template constraints-param
+#' @template parameter_config_Static
+#' @template parameter_constraints
 #' @param n_partition the number of partitions to create.
 #' @param partition_type \code{test} to create tests, or \code{pool} to create pools.
 #' @param partition_size_range (optional) two integer values for the desired range for the size of a partition. Has no effect when \code{partition_type} is \code{test}.
