@@ -71,15 +71,15 @@ setMethod(
 
     results <- runAssembly(config, constraints, objective = objective)
 
-    is_optimal <- isOptimal(results$status, config@MIP$solver)
-    if (!is_optimal) {
+    solution_is_optimal <- isSolutionOptimal(results$status, config@MIP$solver)
+    if (!solution_is_optimal) {
       printSolverNewline(config@MIP$solver)
       msg <- getSolverStatusMessage(results$status, config@MIP$solver)
       warning(msg, immediate. = TRUE)
     }
 
     tmp <- NULL
-    if (is_optimal) {
+    if (solution_is_optimal) {
       tmp <- getSolutionAttributes(
         constraints,
         results$shadow_test$INDEX,

@@ -308,7 +308,7 @@ setMethod(
       gap_limit     = config@MIP$gap_limit
     )
 
-    if (!isOptimal(o1$status, config@MIP$solver)) {
+    if (!isSolutionOptimal(o1$status, config@MIP$solver)) {
       msg <- getSolverStatusMessage(o1$status, config@MIP$solver)
       stop(msg)
     }
@@ -441,10 +441,10 @@ setMethod(
       gap_limit     = config@MIP$gap_limit
     )
 
-    if (isOptimal(o2$status, config@MIP$solver)) {
+    if (isSolutionOptimal(o2$status, config@MIP$solver)) {
       feasible[2] <- TRUE
     }
-    if (!isOptimal(o2$status, config@MIP$solver)) {
+    if (!isSolutionOptimal(o2$status, config@MIP$solver)) {
       feasible[2] <- FALSE
       # retry using partial assignment (some items don't have to be assigned to a bin)
       mat <- rbind(mat_bpa_ub, mat_bs, mat_be, mat_ss, mat_i, mat_l)
@@ -463,7 +463,7 @@ setMethod(
         gap_limit_abs = config@MIP$gap_limit_abs,
         gap_limit     = config@MIP$gap_limit
       )
-      if (!isOptimal(o2$status, config@MIP$solver)) {
+      if (!isSolutionOptimal(o2$status, config@MIP$solver)) {
         msg <- getSolverStatusMessage(o2$status, config@MIP$solver)
         stop(msg)
       }
