@@ -199,17 +199,21 @@ computeInfoAtCurrentTheta <- function(
       item_pool@ipar, item_pool@NCAT, model_code)[, 1]
     return(info)
   }
-  if (item_method == "FB" & info_type == "FISHER") {
+  if (item_method == "FB" && info_type == "FISHER") {
     info <- calc_info_FB(
       matrix(current_theta$posterior_sample),
       item_parameter_sample, item_pool@NCAT, model_code)[, 1]
     return(info)
   }
-  if (item_method == "FB" & info_type %in% c("MI", "MUTUAL")) {
+  if (item_method == "FB" && info_type %in% c("MI", "MUTUAL")) {
     info <- calc_MI_FB(
       matrix(current_theta$posterior_sample),
       item_parameter_sample, item_pool@NCAT, model_code)[, 1]
     return(info)
+  }
+  if (item_method == "RANDOM") {
+    random <- runif(item_pool@ni, min = 0, max = 1)
+    return(random)
   }
 }
 

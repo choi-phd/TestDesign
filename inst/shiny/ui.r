@@ -111,7 +111,7 @@ ui <- fluidPage(
 
       radioGroupButtons(
         inputId = "item_selection_method", justified = TRUE, label = h3("Item selection method"),
-        choices = c("MFI", "MPWI", "FB", "EB")
+        choices = c("MFI", "MPWI", "FB", "EB", "RANDOM")
       ),
 
       dropdownButton(
