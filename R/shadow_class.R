@@ -158,7 +158,7 @@ setClass("config_Shadow",
       }
     }
     if (!object@refresh_policy$method %in%
-      c("ALWAYS", "POSITION", "INTERVAL", "THRESHOLD", "INTERVAL-THRESHOLD", "STIMULUS", "SET", "PASSAGE")) {
+      c("ALWAYS", "NONE", "POSITION", "INTERVAL", "THRESHOLD", "INTERVAL-THRESHOLD", "STIMULUS", "SET", "PASSAGE")) {
       msg <- sprintf("config@refresh_policy: unrecognized $method '%s'", object@refresh_policy$method)
       err <- c(err, msg)
     }

@@ -15,10 +15,12 @@ parseShadowTestRefreshSchedule <- function(constants, refresh_policy) {
   o$use_setbased  <- FALSE
   o$schedule <- rep(FALSE, test_length)
 
-  o$schedule[1] <- TRUE
-
   if (refresh_method %in% c("ALWAYS")) {
     o$schedule[1:test_length] <- TRUE
+  }
+  if (refresh_method %in% c("NONE")) {
+    o$schedule[1] <- TRUE
+    # equivalent to "POSITION" with 'refresh_position' set to 1
   }
   if (refresh_method %in% c("THRESHOLD")) {
     o$dynamic       <- TRUE
