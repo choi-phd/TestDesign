@@ -115,7 +115,8 @@ setClass(
     bias            = "numeric_or_null",
     corr            = "matrix_or_numeric_or_null",
     average_se      = "numeric",
-    achieved        = "dataframe_or_null"
+    achieved        = "dataframe_or_null",
+    score           = "list_or_null"
   ),
   prototype = list(
     n_simulee       = numeric(0),
@@ -128,9 +129,39 @@ setClass(
     bias            = numeric(0),
     corr            = numeric(0),
     average_se      = numeric(0),
-    achieved        = NULL
+    achieved        = NULL,
+    score           = NULL
   ),
   validity = function(object) {
     return(TRUE)
   }
 )
+
+#' @rdname summary-classes
+setClass(
+  "summary_output_Shadow",
+  slots = c(
+    simulee_id      = "numeric",
+    test_length     = "numeric",
+    true_theta      = "matrix_or_numeric_or_null",
+    est_theta       = "matrix_or_numeric_or_null",
+    est_theta_se    = "matrix_or_numeric_or_null",
+    diff            = "matrix_or_numeric_or_null",
+    achieved        = "dataframe_or_null",
+    score           = "dataframe_or_null"
+  ),
+  prototype = list(
+    simulee_id      = numeric(0),
+    test_length     = numeric(0),
+    true_theta      = numeric(0),
+    est_theta       = numeric(0),
+    est_theta_se    = numeric(0),
+    diff            = numeric(0),
+    achieved        = NULL,
+    score           = NULL
+  ),
+  validity = function(object) {
+    return(TRUE)
+  }
+)
+

@@ -9,6 +9,7 @@
 \alias{summary_constraints-class}
 \alias{summary_output_Static-class}
 \alias{summary_output_Shadow_all-class}
+\alias{summary_output_Shadow-class}
 \title{Summary classes}
 \description{
 Summary classes

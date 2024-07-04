@@ -827,6 +827,72 @@ addSolutionToConstraintData <- function(x, attrib, item_idx, all_values) {
 
 }
 
+#' (Internal) Sum scores of items in a solution that match a constraint
+#'
+#' \code{\link{addScoreToConstraintData}} is an internal function for
+#' summing the score of items in a solution that match a constraint.
+#'
+#' @param x a \code{\link{data.frame}} containing a single constraint data.
+#' @param attrib an \code{\linkS4class{item_attrib}} object.
+#' @param item_idx item indices in the solution.
+#' @param item_resp scores of items in the solution.
+#' @param item_ncat number of score categories of items in the solution.
+#'
+#' @returns \code{\link{addScoreToConstraintData}} returns an updated \code{\link{data.frame}}.
+#'
+#' @keywords internal
+addScoreToConstraintData <- function(x, attrib, item_idx, item_resp, item_ncat) {
+
+  # attrib must be item_attrib
+
+  score_name     <- "score"
+  max_score_name <- "max_score"
+
+  x[[score_name]] <- NA
+  x[[max_score_name]] <- NA
+
+  if (x$TYPE %in% c("NUMBER", "COUNT")) {
+
+    if (toupper(x$CONDITION) %in% c("", " ", "PER TEST", "TEST")) {
+
+      if (x$WHAT == "ITEM") {
+        x[[score_name]] <- sum(item_resp)
+        x[[max_score_name]] <- sum(item_ncat - 1)
+      }
+      if (x$WHAT %in% c("STIMULUS", "PASSAGE", "SET", "TESTLET")) {
+        # do nothing
+      }
+    } else if (x$CONDITION %in% names(attrib@data)) {
+      # do nothing
+    } else if (toupper(x$CONDITION) %in% c("PER STIMULUS", "PER PASSAGE", "PER SET", "PER TESTLET")) {
+      # do nothing
+    } else {
+
+      match_vec <- with(attrib@data, eval(parse(text = x$CONDITION)))
+      if (length(match_vec) > 0) {
+        x[[score_name]] <-
+          sum(item_resp[which(item_idx %in% which(match_vec))])
+        x[[max_score_name]] <-
+          sum(item_ncat[which(item_idx %in% which(match_vec))] - 1)
+      }
+
+    }
+  } else if (x$TYPE %in% c("ENEMY", "INCLUDE", "EXCLUDE", "ALLORNONE")) {
+
+    match_vec <- with(attrib@data, eval(parse(text = x$CONDITION)))
+    if (length(match_vec) > 0) {
+      x[[score_name]] <-
+        sum(item_resp[which(item_idx %in% which(match_vec))])
+      x[[max_score_name]] <-
+        sum(item_ncat[which(item_idx %in% which(match_vec))] - 1)
+    }
+
+  }
+
+  return(x)
+
+}
+
 #' Retrieve constraints-related attributes from solution
 #'
 #' \code{\link{getSolutionAttributes}} is a helper function for retrieving constraints-related attributes from a solution.
@@ -899,7 +965,7 @@ getSolutionAttributes <- function(constraints, item_idx, all_values = FALSE) {
 
   if (all_values) {
 
-    o <- list()
+    o <- vector("list", nc)
 
     for (i in 1:nc) {
       o[[i]] <- addSolutionToConstraintData(
