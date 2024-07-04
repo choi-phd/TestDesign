@@ -7,9 +7,9 @@
 generateItemParameterSample(config, item_pool, bayesian_constants)
 }
 \arguments{
-\item{config}{a \code{\linkS4class{config_Shadow}} object.}
+\item{config}{a \code{\linkS4class{config_Shadow}} object. Use \code{\link{createShadowTestConfig}} for this.}
 
-\item{item_pool}{an \code{\linkS4class{item_pool}} object.}
+\item{item_pool}{an \code{\linkS4class{item_pool}} object. Use \code{\link{loadItemPool}} for this.}
 
 \item{bayesian_constants}{a named list containing Bayesian constants.}
 }

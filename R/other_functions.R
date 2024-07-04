@@ -6,8 +6,8 @@ NULL
 #' \code{\link{getConstants}} is an internal function for
 #' parsing constants for adaptive test assembly simulation.
 #'
-#' @param constraints a \code{\linkS4class{constraints}} object.
-#' @param config a \code{\linkS4class{config_Shadow}} object.
+#' @template parameter_constraints
+#' @template parameter_config_Shadow
 #' @param arg_data the \code{data} argument from \code{\link{Shadow}}.
 #' @param true_theta the \code{true_theta} argument from \code{\link{Shadow}}.
 #' @param max_info the maximum possible information attainable by any single item in the pool.

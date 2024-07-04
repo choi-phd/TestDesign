@@ -7,7 +7,7 @@
 getBayesianConstants(config, simulation_constants)
 }
 \arguments{
-\item{config}{a \code{\linkS4class{config_Shadow}} object.}
+\item{config}{a \code{\linkS4class{config_Shadow}} object. Use \code{\link{createShadowTestConfig}} for this.}
 
 \item{simulation_constants}{a named list containing simulation constants.}
 }

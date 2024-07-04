@@ -75,7 +75,7 @@ parsePriorParameters <- function(
 #'
 #' \code{\link{getBayesianConstants}} is an internal function for parsing Bayesian-related constants
 #'
-#' @param config a \code{\linkS4class{config_Shadow}} object.
+#' @template parameter_config_Shadow
 #' @template parameter_simulation_constants
 #'
 #' @returns \code{\link{getBayesianConstants}} returns a named list containing:
@@ -256,9 +256,9 @@ logitHyperPars <- function(mean, sd) {
 #' \code{\link{generateItemParameterSample}} is a function for generating item parameter samples.
 #' Used for the FB (full-Bayesian) estimation method.
 #'
-#' @param config a \code{\linkS4class{config_Shadow}} object.
-#' @param item_pool an \code{\linkS4class{item_pool}} object.
-#' @param bayesian_constants a named list containing Bayesian constants.
+#' @template parameter_config_Shadow
+#' @template parameter_item_pool
+#' @template parameter_bayesian_constants
 #'
 #' @return If either the interim or the final theta estimation method is \code{FB},
 #' \code{\link{generateItemParameterSample}} returns a length-\emph{ni} list of item parameter matrices, with each matrix having \code{n_sample} rows.
@@ -338,7 +338,7 @@ generateDensityFromPriorPar <- function(config_theta, theta_q) {
 #'
 #' @param config_theta a named list containing theta estimation configurations.
 #' @param j the examinee index to perform the sample generation.
-#' @param bayesian_constants a named list containing Bayesian constants.
+#' @template parameter_bayesian_constants
 #'
 #' @returns \code{\link{generateSampleFromPriorPar}} returns \code{n_sample} theta samples.
 #'
@@ -370,7 +370,7 @@ generateSampleFromPriorPar <- function(config_theta, j, bayesian_constants) {
 #' thinning a Markov chain. Burn-in is also applied.
 #'
 #' @param posterior_sample a vector containing values in a Markov chain.
-#' @param bayesian_constants a named list containing Bayesian constants.
+#' @template parameter_bayesian_constants
 #'
 #' @returns \code{\link{applyThin}} returns an updated Markov chain.
 #'

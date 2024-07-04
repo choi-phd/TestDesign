@@ -27,7 +27,7 @@
 
 # Documentation conventions: internal functions --------------------------------
 # - Fully document all internal functions.
-# - in progress (22 to go)
+# - in progress (11 to go)
 
 # Error/validation message conventions -----------------------------------------
 # - Use lower case for the first letter and end with a period.
