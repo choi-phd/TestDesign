@@ -106,7 +106,10 @@ loadItemPool can read item parameters and standard errors from a data.frame or a
 <li><p><code>parms</code> a list containing the item object of each item.</p></li>
 <li><p><code>ipar</code> a matrix containing all item parameters.</p></li>
 <li><p><code>se</code> a matrix containing all item parameter standard errors. The values will be 0 if the argument <code>ipar_se</code> was not supplied.</p></li>
-<li><p><code>raw</code> the original input <code><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></code> used to create this object.</p></li>
+<li><p><code>raw</code> the original input <code>ipar</code> argument used to create this object.</p></li>
+<li><p><code>raw_se</code> the original input <code>ipar_se</code> argument used to create this object.
+  If the argument was not supplied, this will be in the same structure with the <code>ipar</code> argument but the item parameter values will be filled with 0s.</p></li>
+<li><p><code>unique</code> the original input <code>unique</code> argument used to create this object.</p></li>
 </ul></div>
     <div id="see-also">
     <h2>See also</h2>

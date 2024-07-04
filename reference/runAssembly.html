@@ -75,7 +75,8 @@
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>config</dt>
-<dd><p>a <code><a href="createStaticTestConfig.html">config_Static</a></code> or a <code><a href="createShadowTestConfig.html">config_Shadow</a></code> object containing configuration options. Use <code><a href="createStaticTestConfig.html">createStaticTestConfig</a></code> and <code><a href="createShadowTestConfig.html">createShadowTestConfig</a></code> for this.</p></dd>
+<dd><p>a <code><a href="createStaticTestConfig.html">config_Static</a></code> or a <code><a href="createShadowTestConfig.html">config_Shadow</a></code> object containing configuration options.
+Use <code><a href="createStaticTestConfig.html">createStaticTestConfig</a></code> and <code><a href="createShadowTestConfig.html">createShadowTestConfig</a></code> for this.</p></dd>
 
 
 <dt>constraints</dt>
@@ -83,18 +84,22 @@
 
 
 <dt>xdata</dt>
-<dd><p>a list containing extra constraints in MIP form, to force-include previously administered items.</p></dd>
+<dd><p>a list containing extra constraints in MIP form,
+for various purposes such as including previously administered items,
+and excluding ineligible items.</p></dd>
 
 
 <dt>objective</dt>
-<dd><p>the information value for each item in the pool.</p></dd>
+<dd><p>the objective coefficients used for decision variables.
+This is usually the information value for each item in the pool.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     
 
-<p>a list containing the following entries:</p><ul><li><p><code>MIP</code> a list containing the result from MIP solver.</p></li>
+<p><code>runAssembly</code> returns a list containing the following entries:</p><ul><li><p><code>MIP</code> a list containing the result from MIP solver.</p></li>
+<li><p><code>solver</code> the name of the MIP solver.</p></li>
 <li><p><code>status</code> the MIP status value, indicating whether an optimal solution was found.</p></li>
 <li><p><code>shadow_test</code> the attributes of the selected items.</p></li>
 <li><p><code>obj_value</code> the objective value of the solution.</p></li>

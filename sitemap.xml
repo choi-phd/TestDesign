@@ -49,6 +49,45 @@
     <loc>/reference/a_to_alpha.html</loc>
   </url>
   <url>
+    <loc>/reference/addCountsToConstraintData.html</loc>
+  </url>
+  <url>
+    <loc>/reference/addScoreToConstraintData.html</loc>
+  </url>
+  <url>
+    <loc>/reference/addSolutionToConstraintData.html</loc>
+  </url>
+  <url>
+    <loc>/reference/adjustAlphaToReduceSpike.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aggregateUsageMatrix.html</loc>
+  </url>
+  <url>
+    <loc>/reference/appendMeanInfo.html</loc>
+  </url>
+  <url>
+    <loc>/reference/applyEligibilityConstraintsToInfo.html</loc>
+  </url>
+  <url>
+    <loc>/reference/applyEligibilityConstraintsToXdata.html</loc>
+  </url>
+  <url>
+    <loc>/reference/applyFading.html</loc>
+  </url>
+  <url>
+    <loc>/reference/applyShrinkageCorrection.html</loc>
+  </url>
+  <url>
+    <loc>/reference/applyThin.html</loc>
+  </url>
+  <url>
+    <loc>/reference/assembleShadowTest.html</loc>
+  </url>
+  <url>
+    <loc>/reference/assemblyInFinalThetaSegmentWasFeasibleAtLeastOnceInInterimThetaSegments.html</loc>
+  </url>
+  <url>
     <loc>/reference/buildConstraints.html</loc>
   </url>
   <url>
@@ -100,6 +139,21 @@
     <loc>/reference/checkConstraints.html</loc>
   </url>
   <url>
+    <loc>/reference/clipEligibilityRates.html</loc>
+  </url>
+  <url>
+    <loc>/reference/combineConstraintsData.html</loc>
+  </url>
+  <url>
+    <loc>/reference/combineItemPoolData.html</loc>
+  </url>
+  <url>
+    <loc>/reference/computeEAPFromPosterior.html</loc>
+  </url>
+  <url>
+    <loc>/reference/computeInfoAtCurrentTheta.html</loc>
+  </url>
+  <url>
     <loc>/reference/constraint-class.html</loc>
   </url>
   <url>
@@ -127,7 +181,16 @@
     <loc>/reference/dataset_science.html</loc>
   </url>
   <url>
+    <loc>/reference/dbind.html</loc>
+  </url>
+  <url>
     <loc>/reference/detectBestSolver.html</loc>
+  </url>
+  <url>
+    <loc>/reference/doExposureControl.html</loc>
+  </url>
+  <url>
+    <loc>/reference/dot-onAttach.html</loc>
   </url>
   <url>
     <loc>/reference/e_item.html</loc>
@@ -139,13 +202,79 @@
     <loc>/reference/find_segment.html</loc>
   </url>
   <url>
+    <loc>/reference/flagAdministeredAsEligible.html</loc>
+  </url>
+  <url>
+    <loc>/reference/flagIneligible.html</loc>
+  </url>
+  <url>
+    <loc>/reference/generateDensityFromPriorPar.html</loc>
+  </url>
+  <url>
+    <loc>/reference/generateItemParameterSample.html</loc>
+  </url>
+  <url>
+    <loc>/reference/generateSampleFromPriorPar.html</loc>
+  </url>
+  <url>
+    <loc>/reference/getBayesianConstants.html</loc>
+  </url>
+  <url>
+    <loc>/reference/getConstants.html</loc>
+  </url>
+  <url>
+    <loc>/reference/getDecisionVariablesOfItemForMultipool.html</loc>
+  </url>
+  <url>
+    <loc>/reference/getDecisionVariablesOfPoolForMultipool.html</loc>
+  </url>
+  <url>
+    <loc>/reference/getEligibilityFlagInSegment.html</loc>
+  </url>
+  <url>
+    <loc>/reference/getInfoFixedTheta.html</loc>
+  </url>
+  <url>
+    <loc>/reference/getInfoOfExcludedEntry.html</loc>
+  </url>
+  <url>
+    <loc>/reference/getLBUBInConstraintData.html</loc>
+  </url>
+  <url>
+    <loc>/reference/getSegmentOf.html</loc>
+  </url>
+  <url>
+    <loc>/reference/getSegmentProb.html</loc>
+  </url>
+  <url>
+    <loc>/reference/getSegmentsToApply.html</loc>
+  </url>
+  <url>
     <loc>/reference/getSolution-methods.html</loc>
   </url>
   <url>
     <loc>/reference/getSolutionAttributes.html</loc>
   </url>
   <url>
+    <loc>/reference/getXdataOfAdministered.html</loc>
+  </url>
+  <url>
+    <loc>/reference/getXdataOfExcludedEntry.html</loc>
+  </url>
+  <url>
     <loc>/reference/h_item.html</loc>
+  </url>
+  <url>
+    <loc>/reference/incrementAlpha.html</loc>
+  </url>
+  <url>
+    <loc>/reference/incrementN.html</loc>
+  </url>
+  <url>
+    <loc>/reference/incrementPhi.html</loc>
+  </url>
+  <url>
+    <loc>/reference/incrementRho.html</loc>
   </url>
   <url>
     <loc>/reference/index.html</loc>
@@ -154,13 +283,34 @@
     <loc>/reference/info_item.html</loc>
   </url>
   <url>
+    <loc>/reference/initializeCompletedGroupingsRecord.html</loc>
+  </url>
+  <url>
+    <loc>/reference/initializeDiagnosticExposureRecord.html</loc>
+  </url>
+  <url>
+    <loc>/reference/initializeExposureRecord.html</loc>
+  </url>
+  <url>
+    <loc>/reference/initializeSegmentRecord.html</loc>
+  </url>
+  <url>
+    <loc>/reference/initializeUsageMatrix.html</loc>
+  </url>
+  <url>
     <loc>/reference/iparPosteriorSample.html</loc>
+  </url>
+  <url>
+    <loc>/reference/isSolutionOptimal.html</loc>
   </url>
   <url>
     <loc>/reference/item-classes.html</loc>
   </url>
   <url>
     <loc>/reference/item_attrib-operators.html</loc>
+  </url>
+  <url>
+    <loc>/reference/item_object_validation_methods.html</loc>
   </url>
   <url>
     <loc>/reference/item_pool-class.html</loc>
@@ -196,6 +346,9 @@
     <loc>/reference/logitHyperPars.html</loc>
   </url>
   <url>
+    <loc>/reference/makeDiagnosticExposureRecord.html</loc>
+  </url>
+  <url>
     <loc>/reference/makeSimulationDataCache-methods.html</loc>
   </url>
   <url>
@@ -226,13 +379,43 @@
     <loc>/reference/p_item.html</loc>
   </url>
   <url>
+    <loc>/reference/parseConstraintData.html</loc>
+  </url>
+  <url>
+    <loc>/reference/parsePriorParameters.html</loc>
+  </url>
+  <url>
+    <loc>/reference/parseShadowTestRefreshSchedule.html</loc>
+  </url>
+  <url>
     <loc>/reference/plot-methods.html</loc>
+  </url>
+  <url>
+    <loc>/reference/plotExposurePanel.html</loc>
   </url>
   <url>
     <loc>/reference/print-methods.html</loc>
   </url>
   <url>
+    <loc>/reference/returnErrors.html</loc>
+  </url>
+  <url>
     <loc>/reference/runAssembly.html</loc>
+  </url>
+  <url>
+    <loc>/reference/runMIP.html</loc>
+  </url>
+  <url>
+    <loc>/reference/sanitizeConstraintsData.html</loc>
+  </url>
+  <url>
+    <loc>/reference/sanitizeModel.html</loc>
+  </url>
+  <url>
+    <loc>/reference/selectItemFromShadowTest.html</loc>
+  </url>
+  <url>
+    <loc>/reference/shouldShadowTestBeRefreshed.html</loc>
   </url>
   <url>
     <loc>/reference/show-methods.html</loc>
@@ -242,6 +425,9 @@
   </url>
   <url>
     <loc>/reference/simulation_data_cache-class.html</loc>
+  </url>
+  <url>
+    <loc>/reference/splitSolutionToBins.html</loc>
   </url>
   <url>
     <loc>/reference/st_attrib-operators.html</loc>
@@ -275,5 +461,35 @@
   </url>
   <url>
     <loc>/reference/toggleConstraints.html</loc>
+  </url>
+  <url>
+    <loc>/reference/updateCompletedGroupingsRecordForStimulus.html</loc>
+  </url>
+  <url>
+    <loc>/reference/updateDiagnosticExposureRecord.html</loc>
+  </url>
+  <url>
+    <loc>/reference/updateEligibilityRates.html</loc>
+  </url>
+  <url>
+    <loc>/reference/updateSegmentRecord.html</loc>
+  </url>
+  <url>
+    <loc>/reference/updateUsageMatrix.html</loc>
+  </url>
+  <url>
+    <loc>/reference/validateConstraintData.html</loc>
+  </url>
+  <url>
+    <loc>/reference/validateExpression.html</loc>
+  </url>
+  <url>
+    <loc>/reference/validateFullColumn.html</loc>
+  </url>
+  <url>
+    <loc>/reference/validateLBUB.html</loc>
+  </url>
+  <url>
+    <loc>/reference/validateSolver.html</loc>
   </url>
 </urlset>
