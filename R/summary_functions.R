@@ -134,6 +134,15 @@ setMethod("summary", "output_Shadow_all", function(object, simple = FALSE) {
     o@achieved <- NULL
   }
 
+  o@score <- lapply(object@output, function(x) {
+    getScoreAttributes(
+      object@constraints,
+      x@administered_item_index,
+      x@administered_item_resp,
+      x@administered_item_ncat
+    )
+  })
+
   return(o)
 
 })

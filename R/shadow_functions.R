@@ -346,7 +346,6 @@ setMethod(
 
         }
 
-
         # Item position / simulee: estimate theta
         o <- estimateInterimTheta(
           o, j, position,
