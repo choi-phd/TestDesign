@@ -981,3 +981,62 @@ getSolutionAttributes <- function(constraints, item_idx, all_values = FALSE) {
   }
 
 }
+
+#' Retrieve constraints-related scores from solution
+#'
+#' \code{\link{getScoreAttributes}} is a helper function for retrieving constraints-related scores from a solution.
+#'
+#' @param constraints a \code{\linkS4class{constraints}} object.
+#' @param item_idx item indices from a solution.
+#' @param item_resp item scores for \code{item_idx}.
+#' @param item_ncat number of score categories for \code{item_idx}.
+#'
+#' @examples
+#' item_idx <-
+#'   c( 29,  33,  26,  36,  34,
+#'     295, 289, 296, 291, 126,
+#'     133, 124, 134, 129,  38,
+#'      47,  39,  41,  46,  45,
+#'     167, 166, 170, 168, 113,
+#'     116, 119, 117, 118, 114)
+#'
+#' item_resp <-
+#'   c( 1, 0, 1, 1, 0,
+#'      0, 1, 1, 0, 0,
+#'      1, 0, 1, 0, 1,
+#'      1, 1, 1, 0, 1,
+#'      0, 1, 1, 1, 1,
+#'      1, 0, 1, 0, 1)
+#'
+#' item_ncat <-
+#'   c( 2, 2, 2, 2, 2,
+#'      2, 2, 2, 2, 2,
+#'      2, 2, 2, 2, 2,
+#'      2, 2, 2, 2, 2,
+#'      2, 2, 2, 2, 2,
+#'      2, 2, 2, 2, 2)
+#'
+#' getScoreAttributes(constraints_reading, item_idx, item_resp, item_ncat)
+#'
+#' @export
+getScoreAttributes <- function(constraints, item_idx, item_resp, item_ncat) {
+
+  nc  <- length(constraints@list_constraints)
+
+  o <- vector("list", nc)
+
+  for (i in 1:nc) {
+    o[[i]] <- addScoreToConstraintData(
+      constraints@constraints[i, ],
+      constraints@item_attrib,
+      item_idx,
+      item_resp,
+      item_ncat
+    )
+  }
+
+  o <- do.call("rbind", o)
+
+  return(o)
+
+}
