@@ -1,7 +1,33 @@
 #' @include shadow_functions.R
 NULL
 
-#' @noRd
+#' (Internal) Estimate interim theta
+#'
+#' \code{\link{estimateInterimTheta}} is an internal function for
+#' estimating interim theta.
+#'
+#' @template parameter_output_Shadow
+#' @param j the numeric index of the examinee.
+#' @template parameter_position
+#' @param augmented_current_theta current theta estimate, based on any extra items supplied to the simulation.
+#' @param augmented_item_pool the \code{\linkS4class{item_pool}} object, also including any extra items supplied to the simulation.
+#' @template parameter_model_code
+#' @param augmented_item_index item indices of items administered to this examinee, also including any extra items supplied to the simulation.
+#' @param augmented_item_resp responses for items administered to this examinee, also including any extra items supplied to the simulation.
+#' @param include_items_for_estimation an examinee-wise list containing:
+#' \itemize{
+#'   \item{\code{administered_item_pool}} items to include in theta estimation as \code{\linkS4class{item_pool}} object.
+#'   \item{\code{administered_item_resp}} item responses to include in theta estimation.
+#' }
+#' @param item_parameter_sample a list containing numerical samples of item parameters that reflect item parameter estimation uncertainty.
+#' The output of \code{\link{iparPosteriorSample}} goes here.
+#' @template parameter_config_Shadow
+#' @template parameter_simulation_constants
+#' @template parameter_bayesian_constants
+#'
+#' @returns \code{\link{estimateInterimTheta}} returns an updated \code{\linkS4class{output_Shadow}} object.
+#'
+#' @keywords internal
 estimateInterimTheta <- function(
   o, j, position,
   augmented_current_theta,
@@ -177,7 +203,32 @@ estimateInterimTheta <- function(
 
 }
 
-#' @noRd
+#' (Internal) Estimate final theta
+#'
+#' \code{\link{estimateFinalTheta}} is an internal function for
+#' estimating final theta.
+#'
+#' @template parameter_output_Shadow
+#' @param j the numeric index of the examinee.
+#' @template parameter_position
+#' @param augmented_item_pool the \code{\linkS4class{item_pool}} object, also including any extra items supplied to the simulation.
+#' @template parameter_model_code
+#' @param augmented_item_index item indices of items administered to this examinee, also including any extra items supplied to the simulation.
+#' @param augmented_item_resp responses for items administered to this examinee, also including any extra items supplied to the simulation.
+#' @param include_items_for_estimation an examinee-wise list containing:
+#' \itemize{
+#'   \item{\code{administered_item_pool}} items to include in theta estimation as \code{\linkS4class{item_pool}} object.
+#'   \item{\code{administered_item_resp}} item responses to include in theta estimation.
+#' }
+#' @param item_parameter_sample a list containing numerical samples of item parameters that reflect item parameter estimation uncertainty.
+#' The output of \code{\link{iparPosteriorSample}} goes here.
+#' @template parameter_config_Shadow
+#' @template parameter_simulation_constants
+#' @template parameter_bayesian_constants
+#'
+#' @returns \code{\link{estimateFinalTheta}} returns an updated \code{\linkS4class{output_Shadow}} object.
+#'
+#' @keywords internal
 estimateFinalTheta <- function(
   o, j, position,
   augmented_item_pool,
@@ -1171,8 +1222,21 @@ parseInitialThetaOfThisExaminee <- function(config_theta, initial_theta, j, baye
 
 }
 
-#' @noRd
-parseThetaSegment <- function(
+#' (Internal) Determine the current theta segment
+#'
+#' \code{\link{determineCurrentThetaSegment}} is an internal function for
+#' determining the current theta segment.
+#'
+#' @param current_theta a list containing data on the current theta estimate.
+#' @param position the position within the current administration (i.e., test progress)
+#' @param exposure_control the \code{exposure_control} slot of \code{\linkS4class{config_Shadow}}.
+#' Used to read custom first segments if available.
+#' @template parameter_simulation_constants
+#'
+#' @returns \code{\link{determineCurrentThetaSegment}} returns a segment index.
+#'
+#' @keywords internal
+determineCurrentThetaSegment <- function(
   current_theta, position,
   exposure_control, simulation_constants
 ) {
@@ -1203,7 +1267,19 @@ parseThetaSegment <- function(
 
 }
 
-#' @noRd
+#' (Internal) Check if customized first segments are available
+#'
+#' \code{\link{isCustomFirstSegmentAvailable}} is an internal function for
+#' checking if customized first segments are available.
+#'
+#' @param available \code{TRUE} or \code{FALSE}.
+#' This indicates whether segment values have been supplied in the config.
+#' @param n_values the number of supplied values.
+#' @param position the position within the current administration (i.e., test progress)
+#'
+#' @returns \code{\link{isCustomFirstSegmentAvailable}} returns \code{TRUE} or \code{FALSE}.
+#'
+#' @keywords internal
 isCustomFirstSegmentAvailable <- function(available, n_values, position) {
   if (!available) {
     return(FALSE)
@@ -1214,7 +1290,18 @@ isCustomFirstSegmentAvailable <- function(available, n_values, position) {
   return(FALSE)
 }
 
-#' @noRd
+#' (Internal) Update posterior densities
+#'
+#' \code{\link{updateThetaPosterior}} is an internal function
+#' for updating posterior densities using a response probabilty function.
+#'
+#' @param o a named list containing posterior densities and likelihoods.
+#' @param prob_resp a vector containing response probability on a single response category
+#' over a theta grid.
+#'
+#' @returns \code{\link{updateThetaPosterior}} returns an updated list.
+#'
+#' @keywords internal
 updateThetaPosterior <- function(o, prob_resp) {
 
   o$posterior <-

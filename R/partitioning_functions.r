@@ -64,7 +64,7 @@ getDecisionVariablesOfPoolForMultipool <- function(pool_idx, ni_per_bin, nv_per_
 #' @param item_idx the target item index.
 #' @param nv_per_bin the number of decision variables in the pool if this was a regular ATA.
 #' @param n_bins the number of pools being modeled.
-
+#'
 #' @returns \code{\link{getDecisionVariablesOfItemForMultipool}} returns a vector of indices.
 #'
 #' @keywords internal
@@ -121,8 +121,17 @@ splitSolutionToBins <- function(solution, n_bins, ni_per_bin, nv_per_bin) {
 
 }
 
-#' @noRd
-getSetStructureConstraints <- function(constraints) {
+#' (Internal) Make set-based strucutre constraints
+#'
+#' \code{\link{makeSetStructureConstraints}} is an internal function for
+#' making the left-hand side matrix of set-based structure constraints.
+#'
+#' @template parameter_constraints
+
+#' @returns \code{\link{makeSetStructureConstraints}} returns a matrix.
+#'
+#' @keywords internal
+makeSetStructureConstraints <- function(constraints) {
 
   ni <- constraints@ni
   ns <- constraints@ns
@@ -445,7 +454,7 @@ setMethod(
       rhs_ss <- numeric(0)
     }
     if (constraints@set_based) {
-      mat_ss <- getSetStructureConstraints(constraints)
+      mat_ss <- makeSetStructureConstraints(constraints)
       dir_ss <- rep("==", constraints@ns)
       rhs_ss <- rep(0   , constraints@ns)
       mat_list <- vector("list", n_bins)

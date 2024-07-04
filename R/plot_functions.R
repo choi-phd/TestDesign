@@ -532,8 +532,31 @@ plotExposurePanel <- function(
   }
 }
 
-#' @noRd
-plotShadowInfo <- function(x, examinee_id, position, info_type, ylim, theta, color, use_par, ...) {
+#' (Internal) Plot test information of a single shadow test
+#'
+#' \code{\link{plotShadowInfo}} is an internal function for
+#' plotting the test information curve of a single shadow test.
+#'
+#' @param x an \code{\linkS4class{output_Shadow_all}} object.
+#' @param examinee_id the numeric index of an examinee.
+#' @param position the position within the test administration (i.e., test progress), ranging from 1 to test length.
+#' @param info_type the information type. Currently only accepts \code{FISHER}.
+#' @param ylim (optional) the y-axis range. Defaults to 0 to maximum information.
+#' @param theta theta quadrature points to compute information values at.
+#' @param color the color for test information curve.
+#' @param use_par not used.
+#' @param ... not used.
+#'
+#' @keywords internal
+plotShadowInfo <- function(
+  x, examinee_id, position,
+  info_type,
+  ylim = NULL,
+  theta,
+  color,
+  use_par,
+  ...
+) {
 
   o <- x@output[[examinee_id]]
   if (is.null(position)) {
@@ -559,7 +582,8 @@ plotShadowInfo <- function(x, examinee_id, position, info_type, ylim, theta, col
   plot(
     theta, y, xlab = "Theta", ylab = "Information",
     main = sprintf("Examinee ID: %s (%s)", examinee_id, txt),
-    type = "n", ylim = ylim)
+    type = "n", ylim = ylim
+  )
 
   grid()
 
@@ -620,8 +644,23 @@ plotShadowInfo <- function(x, examinee_id, position, info_type, ylim, theta, col
 
 }
 
-#' @noRd
-plotShadowAudit <- function(x, theta_range, z_ci, use_par, ...) {
+#' (Internal) Plot audit trail of a single examinee
+#'
+#' \code{\link{plotShadowAudit}} is an internal function for
+#' plotting audit trail of a single examinee,
+#' showing interim theta estimates over the course of an adaptive test.
+#'
+#' @param x an \code{\linkS4class{output_Shadow}} object.
+#' @param theta_range the theta range to use on the y-axis.
+#' @param z_ci the confindence interval value to use in the \emph{z} metric. \code{z_ci = 1.96} is equivalent to plotting 95\% error bars.
+#' @param use_par \code{TRUE} allows this function to set graphic margins through \code{\link{par}}.
+#' @param ... not used.
+#'
+#' @keywords internal
+plotShadowAudit <- function(
+  x, theta_range, z_ci, use_par,
+  ...
+) {
 
   if (use_par) {
     old_par <- par(no.readonly = TRUE)
@@ -717,7 +756,18 @@ plotShadowAudit <- function(x, theta_range, z_ci, use_par, ...) {
 
 }
 
-#' @noRd
+#' (Internal) Plot shadow chart of a single examinee
+#'
+#' \code{\link{plotShadowAudit}} is an internal function for
+#' plotting shadow chart of a single examinee,
+#' showing all shadowtests over the course of an adaptive test.
+#'
+#' @param x an \code{\linkS4class{output_Shadow}} object.
+#' @param simple \code{TRUE} simplifies the chart by hiding items that were never used in any shadowtest.
+#' @param use_par \code{TRUE} allows this function to set graphic margins through \code{\link{par}}.
+#' @param ... not used.
+#'
+#' @keywords internal
 plotShadowChart <- function(x, simple, use_par, ...) {
 
   if (use_par) {
@@ -1027,11 +1077,27 @@ plotShadowOverlap <- function(x, color, color_stim, use_par, ...) {
 
 }
 
-#' @noRd
+#' (Internal) Plot exposure rates from a simulation
+#'
+#' \code{\link{plotShadowExposure}} is an internal function for
+#' plotting exposure rates from a simulation.
+#'
+#' @param x an \code{\linkS4class{output_Shadow_all}} object.
+#' @param theta_type \code{true} or \code{estimated}. The type of theta to define theta segments for plotting purposes.
+#' @param segment the segment index to do the plotting. \code{NULL} plots all segments.
+#' @param use_segment_label \code{TRUE} labels each segment using the theta range of the segment.
+#' @param color the color for exposure rate bars.
+#' @param color_final the color for exposure rate bars, treating items administered in non-true segments as not exposed.
+#' @param rmse \code{TRUE} shows the theta estimation RMSE in each segment.
+#' @param use_par \code{TRUE} allows this function to set graphic margins through \code{\link{par}}.
+#' @param ... not used.
+#'
+#' @keywords internal
 plotShadowExposure <- function(
   x, theta_type,
   segment, use_segment_label,
-  color, color_final, rmse, use_par, ...) {
+  color, color_final, rmse, use_par, ...
+) {
 
   if (toupper(theta_type) == "TRUE") {
     theta_value <- x@true_theta

@@ -202,7 +202,7 @@ applyEligibilityConstraintsToXdata <- function(
 #'
 #' @param info a length-\emph{ni} vector containing item information on each item, intended for shadow-test assembly.
 #' @template parameter_eligibility_flag_in_current_theta_segment
-#' @param config a config object.
+#' @template parameter_config_Shadow
 #' @template parameter_simulation_constants
 #'
 #' @returns \code{\link{applyEligibilityConstraintsToInfo}} returns an updated item information vector.
@@ -721,7 +721,7 @@ updateEligibilityRates <- function(
 #' @param true_theta examinee's true theta. Used to determine the segment the true theta belongs to.
 #' @template parameter_segment_record
 #' @param diagnostic_exposure_record a named list containing the diagnostic exposure record.
-#' @param config a \code{\linkS4class{config_Shadow}} object.
+#' @template parameter_config_Shadow
 #' @template parameter_simulation_constants
 #'
 #' @returns \code{\link{makeDiagnosticExposureRecord}} returns an updated exposure record.

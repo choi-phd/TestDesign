@@ -98,7 +98,27 @@ getXdataOfAdministered <- function(
 
 }
 
-#' @noRd
+#' (Internal) Convert item IDs to item indices for exclusion
+#'
+#' \code{\link{getIndexOfExcludedEntry}} is an internal function for
+#' converting item IDs to item indices for exclusion.
+#'
+#' Notation:
+#' \itemize{
+#'   \item{\emph{nj} the number of examinees}
+#' }
+#'
+#' @param exclude a length-\emph{nj} list, where each entry is a named list containing:
+#' \itemize{
+#'   \item{\code{i} item IDs to exclude for this examinee}
+#'   \item{\code{s} item set IDs to exclude for this examinee}
+#' }
+#' @template parameter_constraints
+#'
+#' @returns \code{\link{getIndexOfExcludedEntry}} returns a length-\emph{nj} list in the same structure,
+#' with its contents converted to item indices.
+#'
+#' @keywords internal
 getIndexOfExcludedEntry <- function(exclude, constraints) {
 
   if (is.null(exclude)) {
@@ -176,7 +196,14 @@ getXdataOfExcludedEntry <- function(simulation_constants, exclude_index) {
 
 }
 
-#' @noRd
+#' (Internal) Combine two constraint matrix-data
+#'
+#' @param x1,x2 a named list containing constraint matrix-data
+#'
+#' @returns \code{\link{combineXdata}} returns
+#' the combined constraint matrix-data.
+#'
+#' @keywords internal
 combineXdata <- function(x1, x2) {
 
   o <- list()

@@ -16,7 +16,7 @@ applyEligibilityConstraintsToInfo(
 
 \item{eligibility_flag_in_current_theta_segment}{a list containing eligibility flags for the current theta segment.}
 
-\item{config}{a config object.}
+\item{config}{a \code{\linkS4class{config_Shadow}} object. Use \code{\link{createShadowTestConfig}} for this.}
 
 \item{simulation_constants}{a named list containing simulation constants.}
 }

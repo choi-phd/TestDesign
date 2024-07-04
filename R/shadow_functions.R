@@ -251,7 +251,7 @@ setMethod(
 
         if (simulation_constants$use_shadowtest) {
 
-          o@theta_segment_index[position] <- parseThetaSegment(
+          o@theta_segment_index[position] <- determineCurrentThetaSegment(
             current_theta, position, config@exposure_control, simulation_constants
           )
 

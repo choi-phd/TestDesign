@@ -7,9 +7,9 @@
 getConstants(constraints, config, arg_data, true_theta, max_info)
 }
 \arguments{
-\item{constraints}{a \code{\linkS4class{constraints}} object.}
+\item{constraints}{a \code{\linkS4class{constraints}} object representing test specifications. Use \code{\link{loadConstraints}} for this.}
 
-\item{config}{a \code{\linkS4class{config_Shadow}} object.}
+\item{config}{a \code{\linkS4class{config_Shadow}} object. Use \code{\link{createShadowTestConfig}} for this.}
 
 \item{arg_data}{the \code{data} argument from \code{\link{Shadow}}.}
 
