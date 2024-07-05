@@ -187,33 +187,29 @@ getInfoFixedTheta <- function(
 ) {
 
   nj <- simulation_constants$nj
-  o <- list()
+  info_fixed_theta <- NULL
 
   if (!is.null(item_selection$fixed_theta)) {
     if (length(item_selection$fixed_theta) == 1) {
-      o$info_fixed_theta <- lapply(
+      info_fixed_theta <- lapply(
         seq_len(nj), function(j) {
           calc_info(item_selection$fixed_theta, item_pool@ipar, item_pool@NCAT, model)
         }
       )
-      o$select_at_fixed_theta <- TRUE
     }
     if (length(item_selection$fixed_theta) == nj) {
-      o$info_fixed_theta <- lapply(
+      info_fixed_theta <- lapply(
         seq_len(nj), function(j) {
           calc_info(item_selection$fixed_theta[j], item_pool@ipar, item_pool@NCAT, model)
         }
       )
-      o$select_at_fixed_theta <- TRUE
     }
-    if (is.null(o$info_fixed_theta)) {
+    if (is.null(info_fixed_theta)) {
       stop("config@item_selection: length($fixed_theta) must be either 1 or nj")
     }
-  } else {
-    o$select_at_fixed_theta <- FALSE
   }
 
-  return(o)
+  return(info_fixed_theta)
 
 }
 
