@@ -392,7 +392,11 @@ setMethod(
     if (!constraints@set_based & is.null(partition_size_range)) {
       bin_size <- ni / n_bins
       if (bin_size %% 1 != 0) {
-        stop(sprintf("unexpected resulting partition size '%s': this must result in an integer", bin_size))
+        stop(sprintf(
+          "unexpected partition size: item pool size '%s' divided by number of partitions '%s' is not an integer ('%s') (this must be an integer to be a valid partition size). If needed, use 'partition_size_range' argument to manually set partition sizes",
+          ni, n_bins,
+          bin_size
+        ))
       }
       bin_size_lb <- bin_size
       bin_size_ub <- bin_size
