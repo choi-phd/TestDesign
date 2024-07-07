@@ -227,16 +227,16 @@ setClass("config_Shadow",
       msg <- sprintf("config@stopping_criterion: unrecognized $method '%s'", object@stopping_criterion$method)
       err <- c(err, msg)
     }
-    if (!object@interim_theta$method %in% c("EAP", "MLE", "MLEF", "EB", "FB")) {
-      msg <- sprintf("config@interim_theta: unrecognized $method '%s' (accepts EAP, MLE, MLEF, EB, or FB)", object@interim_theta$method)
+    if (!object@interim_theta$method %in% c("EAP", "MLE", "MLEF", "EB", "FB", "CARRYOVER")) {
+      msg <- sprintf("config@interim_theta: unrecognized $method '%s' (accepts EAP, MLE, MLEF, EB, FB, or CARRYOVER)", object@interim_theta$method)
       err <- c(err, msg)
     }
     if (!object@interim_theta$prior_dist %in% c("NORMAL", "UNIFORM")) {
       msg <- sprintf("config@interim_theta: unrecognized $prior_dist '%s' (accepts NORMAL or UNIFORM)", object@interim_theta$prior_dist)
       err <- c(err, msg)
     }
-    if (!object@final_theta$method %in% c("EAP", "MLE", "MLEF", "EB", "FB")) {
-      msg <- sprintf("config@final_theta: unrecognized $method '%s' (accepts EAP, MLE, MLEF, EB, or FB)", object@final_theta$method)
+    if (!object@final_theta$method %in% c("EAP", "MLE", "MLEF", "EB", "FB", "CARRYOVER")) {
+      msg <- sprintf("config@final_theta: unrecognized $method '%s' (accepts EAP, MLE, MLEF, EB, FB, or CARRYOVER)", object@final_theta$method)
       err <- c(err, msg)
     }
     if (toupper(object@final_theta$method) == "EAP") {
@@ -335,7 +335,7 @@ setClass("config_Shadow",
 #' }
 #' @param interim_theta a named list containing interim theta estimation options.
 #' \itemize{
-#'   \item{\code{method}} the type of estimation. Accepts \code{EAP, MLE, MLEF, EB, FB}. (default = \code{EAP})
+#'   \item{\code{method}} the type of estimation. Accepts \code{EAP, MLE, MLEF, EB, FB, CARRYOVER}. (default = \code{EAP})
 #'   \item{\code{shrinkage_correction}} set \code{TRUE} to apply shrinkage correction. Used when \code{method} is \code{EAP}. (default = \code{FALSE})
 #'   \item{\code{prior_dist}} the type of prior distribution. Accepts \code{NORMAL, UNIFORM}. (default = \code{NORMAL})
 #'   \item{\code{prior_par}} distribution parameters for \code{prior_dist}. (default = \code{c(0, 1)})
@@ -353,7 +353,7 @@ setClass("config_Shadow",
 #' }
 #' @param final_theta a named list containing final theta estimation options.
 #' \itemize{
-#'   \item{\code{method}} the type of estimation. Accepts \code{EAP, MLE, MLEF, EB, FB}. (default = \code{EAP})
+#'   \item{\code{method}} the type of estimation. Accepts \code{EAP, MLE, MLEF, EB, FB, CARRYOVER}. (default = \code{EAP})
 #'   \item{\code{shrinkage_correction}} set \code{TRUE} to apply shrinkage correction. Used when \code{method} is \code{EAP}. (default = \code{FALSE})
 #'   \item{\code{prior_dist}} the type of prior distribution. Accepts \code{NORMAL, UNIFORM}. (default = \code{NORMAL})
 #'   \item{\code{prior_par}} distribution parameters for \code{prior_dist}. (default = \code{c(0, 1)})

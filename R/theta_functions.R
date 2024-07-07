@@ -36,6 +36,21 @@ estimateInterimTheta <- function(
     }
   }
 
+  if (toupper(config@interim_theta$method) == "CARRYOVER") {
+
+    if (position == 1) {
+      o@interim_theta_est[position, ] <- o@initial_theta_est$theta
+      o@interim_se_est[position, ]    <- o@initial_theta_est$se
+      return(o)
+    }
+    if (position > 1) {
+      o@interim_theta_est[position, ] <- o@interim_theta_est[position - 1, ]
+      o@interim_se_est[position, ]    <- o@interim_se_est[position - 1, ]
+      return(o)
+    }
+
+  }
+
   if (toupper(config@interim_theta$method) == "EAP") {
 
     interim_EAP <- computeEAPFromPosterior(augmented_current_theta$posterior, simulation_constants$theta_q)
@@ -183,6 +198,14 @@ estimateFinalTheta <- function(
     o@final_theta_est <- o@interim_theta_est[position, ]
     o@final_se_est    <- o@interim_se_est[position, ]
 
+    return(o)
+
+  }
+
+  if (toupper(config@final_theta$method) == "CARRYOVER") {
+
+    o@final_theta_est <- o@interim_theta_est[simulation_constants$max_ni, ]
+    o@final_se_est    <- o@interim_se_est[simulation_constants$max_ni, ]
     return(o)
 
   }
@@ -1085,9 +1108,11 @@ parseInitialTheta <- function(
     }
     if (nrow(config_value) == 1) {
       o$theta <- matrix(config_value, simulation_constants$nj, ncol(config_value), byrow = TRUE)
+      o$se <- o$theta * NA
     }
     if (nrow(config_value) == simulation_constants$nj) {
       o$theta <- config_value
+      o$se <- o$theta * NA
     }
   }
   if (is.null(config_value)) {
@@ -1131,7 +1156,7 @@ parseInitialThetaOfThisExaminee <- function(config_theta, initial_theta, j, baye
   o$posterior  <- initial_theta$posterior[j, ]
   o$theta_q    <- initial_theta$theta_q
 
-  if (theta_method %in% c("EAP", "MLE", "MLEF")) {
+  if (theta_method %in% c("EAP", "MLE", "MLEF", "CARRYOVER")) {
     o$theta <- initial_theta$theta[j, ]
     o$se    <- initial_theta$se[j, ]
   }
