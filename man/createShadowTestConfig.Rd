@@ -100,7 +100,7 @@ createShadowTestConfig(
 
 \item{interim_theta}{a named list containing interim theta estimation options.
 \itemize{
-  \item{\code{method}} the type of estimation. Accepts \code{EAP, MLE, MLEF, EB, FB}. (default = \code{EAP})
+  \item{\code{method}} the type of estimation. Accepts \code{EAP, MLE, MLEF, EB, FB, CARRYOVER}. (default = \code{EAP})
   \item{\code{shrinkage_correction}} set \code{TRUE} to apply shrinkage correction. Used when \code{method} is \code{EAP}. (default = \code{FALSE})
   \item{\code{prior_dist}} the type of prior distribution. Accepts \code{NORMAL, UNIFORM}. (default = \code{NORMAL})
   \item{\code{prior_par}} distribution parameters for \code{prior_dist}. (default = \code{c(0, 1)})
@@ -119,7 +119,7 @@ createShadowTestConfig(
 
 \item{final_theta}{a named list containing final theta estimation options.
 \itemize{
-  \item{\code{method}} the type of estimation. Accepts \code{EAP, MLE, MLEF, EB, FB}. (default = \code{EAP})
+  \item{\code{method}} the type of estimation. Accepts \code{EAP, MLE, MLEF, EB, FB, CARRYOVER}. (default = \code{EAP})
   \item{\code{shrinkage_correction}} set \code{TRUE} to apply shrinkage correction. Used when \code{method} is \code{EAP}. (default = \code{FALSE})
   \item{\code{prior_dist}} the type of prior distribution. Accepts \code{NORMAL, UNIFORM}. (default = \code{NORMAL})
   \item{\code{prior_par}} distribution parameters for \code{prior_dist}. (default = \code{c(0, 1)})
