@@ -373,6 +373,7 @@ setMethod(
       o@constraints          <- constraints
       o@partition_size_range <- partition_size_range
       o@partition_type       <- partition_type
+      o@constraints_by_each_partition <- makeConstraintsByEachPartition(constraints, solution_per_bin)
       return(o)
     }
 
@@ -532,8 +533,55 @@ setMethod(
       o@constraints          <- constraints
       o@partition_size_range <- partition_size_range
       o@partition_type       <- partition_type
+      o@constraints_by_each_partition <- makeConstraintsByEachPartition(constraints, solution_per_bin)
       return(o)
     }
 
   }
 )
+
+#' make constraints objects from Split() solution indices
+#'
+#' \code{\link{makeConstraintsByEachPartition}} is a helper function for making
+#' \code{\linkS4class{constraints}} objects from \code{\link{Split}} solution indices.
+#'
+#' @template parameter_constraints
+#' @param solution_per_bin a list containing item/stimulus indices for each partition.
+#' This accepts a list stored in the \code{output} slot of an \code{\linkS4class{output_Split}} object.
+#'
+#' @returns \code{\link{makeConstraintsByEachPartition}} returns a list of \code{\linkS4class{constraints}} objects.
+#'
+#' @export
+makeConstraintsByEachPartition <- function(constraints, solution_per_bin) {
+
+  o <- list()
+
+  for (idx_partition in names(solution_per_bin)) {
+
+    itempool_thisbin <- constraints@pool[solution_per_bin[[idx_partition]]$i]
+
+    itemattrib_thisbin <- constraints@item_attrib@data[solution_per_bin[[idx_partition]]$i, ]
+    itemattrib_thisbin$INDEX <- NULL
+    itemattrib_thisbin <- loadItemAttrib(itemattrib_thisbin, itempool_thisbin)
+
+    stimattrib_thisbin <- NULL
+    if ("s" %in% names(solution_per_bin[[idx_partition]])) {
+      stimattrib_thisbin <- constraints@st_attrib@data[solution_per_bin[[idx_partition]]$s, ]
+      stimattrib_thisbin$STINDEX <- NULL
+      stimattrib_thisbin <- loadStAttrib(stimattrib_thisbin, itemattrib_thisbin)
+    }
+
+    constraints_thisbin <- constraints@constraints
+    constraints_thisbin$CONSTRAINT <- NULL
+    constraints_thisbin <- loadConstraints(
+      constraints_thisbin,
+      itempool_thisbin,
+      itemattrib_thisbin,
+      stimattrib_thisbin
+    )
+    o[[idx_partition]] <- constraints_thisbin
+  }
+
+  return(o)
+
+}
