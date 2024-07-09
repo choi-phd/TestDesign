@@ -13,6 +13,7 @@ NULL
 #' @slot constraints the \code{\linkS4class{constraints}} used in the assembly.
 #' @slot partition_size_range the partition size range for splitting into sub-pools.
 #' @slot partition_type the partition type. Can be a \code{test} or a \code{pool}.
+#' @slot constraints_by_each_partition a list of \code{\linkS4class{constraints}} objects that represent each partition.
 #'
 #' @export
 setClass("output_Split",
@@ -24,7 +25,8 @@ setClass("output_Split",
     config               = "config_Static",
     constraints          = "constraints",
     partition_size_range = "numeric_or_null",
-    partition_type       = "character"
+    partition_type       = "character",
+    constraints_by_each_partition = "list"
   ),
   prototype = list(
     output               = list(0),
@@ -34,7 +36,8 @@ setClass("output_Split",
     config               = new("config_Static"),
     constraints          = new("constraints"),
     partition_size_range = numeric(0),
-    partition_type       = character(0)
+    partition_type       = character(0),
+    constraints_by_each_partition = list(0)
   ),
   validity = function(object) {
     return(TRUE)
