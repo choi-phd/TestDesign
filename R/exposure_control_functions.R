@@ -439,6 +439,8 @@ aggregateUsageMatrix <- function(
   usage_matrix, simulation_constants, constraints
 ) {
 
+  usage_matrix <- usage_matrix > 0
+
   if (!simulation_constants$group_by_stimulus) {
     o <- matrix(NA, simulation_constants$ni, 2)
     colnames(o) <- c("Item", "Item ER")

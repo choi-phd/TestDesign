@@ -14,6 +14,7 @@ createShadowTestConfig(
   exclude_policy = NULL,
   refresh_policy = NULL,
   exposure_control = NULL,
+  overlap_control = NULL,
   stopping_criterion = NULL,
   interim_theta = NULL,
   final_theta = NULL,
@@ -80,6 +81,12 @@ createShadowTestConfig(
   \item{\code{initial_eligibility_stats}} (optional) initial eligibility statistics to use.
   \item{\code{fading_factor}} the fading factor to apply. (default = \code{.999})
   \item{\code{diagnostic_stats}} set to \code{TRUE} to generate segment-wise diagnostic statistics. (default = \code{FALSE})
+}}
+
+\item{overlap_control}{a named list containing overlap control settings.
+\itemize{
+  \item{\code{method}} the type of overlap control method. Accepts \code{NONE, BIGM, BIGM-BAYESIAN}. (default = \code{NONE})
+  \item{\code{M}} used in methods \code{BIGM, BIGM-BAYESIAN}. the Big M penalty to use on item information.
 }}
 
 \item{stopping_criterion}{a named list containing stopping criterion.

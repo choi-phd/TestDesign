@@ -29,6 +29,8 @@
 
 \item{\code{usage_matrix}}{a *nj* by (*ni* + *ns*) matrix representing whether the item/stimulus was administered to each participant. Stimuli representations are appended to the right side of the matrix.}
 
+\item{\code{cumulative_usage_matrix}}{a *nj* by (*ni* + *ns*) matrix representing the number of times the item/stimulus was administered to each participant over multiple administrations.}
+
 \item{\code{true_segment_count}}{a length-*nj* vector containing the how many examinees are now in their segment based on the true theta. This will tend to increase. This can be reproduced with true theta values alone.}
 
 \item{\code{est_segment_count}}{a length-*nj* vector containing the how many examinees are now in their segment based on the estimated theta. This will tend to increase. This can be reproduced with estimated theta values alone.}

@@ -26,6 +26,7 @@ NULL
 #' @template force_solver_param
 #' @param session (optional) used to communicate with Shiny app \code{\link{TestDesign}}.
 #' @param seed (optional) used to perform data generation internally.
+#' @param cumulative_usage_matrix (optional) a *nj* by (*ni* + *ns*) matrix containing the number of times the item/stimulus was administered previously to each participant. Stimuli representations are appended to the right side of the matrix.
 #'
 #' @return \code{\link{Shadow}} returns an \code{\linkS4class{output_Shadow_all}} object containing assembly results.
 #'
@@ -43,7 +44,7 @@ NULL
 #' @export
 setGeneric(
   name = "Shadow",
-  def = function(config, constraints = NULL, true_theta = NULL, data = NULL, prior = NULL, prior_par = NULL, exclude = NULL, include_items_for_estimation = NULL, force_solver = FALSE, session = NULL, seed = NULL) {
+  def = function(config, constraints = NULL, true_theta = NULL, data = NULL, prior = NULL, prior_par = NULL, exclude = NULL, include_items_for_estimation = NULL, force_solver = FALSE, session = NULL, seed = NULL, cumulative_usage_matrix = NULL) {
     standardGeneric("Shadow")
   }
 )
@@ -53,7 +54,7 @@ setGeneric(
 setMethod(
   f = "Shadow",
   signature = "config_Shadow",
-  definition = function(config, constraints, true_theta, data, prior, prior_par, exclude, include_items_for_estimation, force_solver = FALSE, session, seed = NULL) {
+  definition = function(config, constraints, true_theta, data, prior, prior_par, exclude, include_items_for_estimation, force_solver = FALSE, session, seed = NULL, cumulative_usage_matrix = NULL) {
 
     if (!validObject(config)) {
       stop("'config' argument is not a valid 'config_Shadow' object")
@@ -113,6 +114,16 @@ setMethod(
 
     # Initialize usage matrix
     usage_matrix <- initializeUsageMatrix(simulation_constants)
+
+    if (simulation_constants$use_overlap_control) {
+      if (is.null(cumulative_usage_matrix)) {
+        stop("'cumulative_usage_matrix' must be supplied when overlap control is effective")
+      }
+      if (!is.matrix(cumulative_usage_matrix) ||
+          !identical(dim(cumulative_usage_matrix), dim(usage_matrix))) {
+        stop("'cumulative_usage_matrix' must have the same dimensions as 'usage_matrix'")
+      }
+    }
 
     # Loop over nj simulees
     o_list <- vector(mode = "list", length = simulation_constants$nj)
@@ -193,6 +204,19 @@ setMethod(
         eligibility_flag <- flagIneligible(exposure_record, simulation_constants, constraints@item_index_by_stimulus, seed, j)
       }
 
+      # Simulee: flag previously administered items
+
+      if (simulation_constants$use_overlap_control) {
+        usage_flag <- cumulative_usage_matrix[j, ]
+      }
+
+      # Simulee: flag items to exclude
+
+      exclude_flag = NULL
+      if (!is.null(exclude_index)) {
+        exclude_flag <- exclude_index[[j]]
+      }
+
       # Simulee: create augmented pool if applicable
 
       if (!is.null(include_items_for_estimation)) {
@@ -241,7 +265,8 @@ setMethod(
             shadowtest <- assembleShadowTest(
               j, position, o,
               eligibility_flag,
-              exclude_index,
+              exclude_flag,
+              usage_flag,
               groupings_record,
               info_current_theta,
               config,
@@ -454,6 +479,12 @@ setMethod(
       freq_infeasible <- NULL
     }
 
+    # update cumulative usage matrix
+    if (identical(dim(cumulative_usage_matrix), dim(usage_matrix))) {
+      cumulative_usage_matrix <-
+        cumulative_usage_matrix + usage_matrix
+    }
+
     o                             <- new("output_Shadow_all")
     o@output                      <- o_list
     o@pool                        <- item_pool
@@ -466,6 +497,7 @@ setMethod(
     o@final_se_est                <- final_se_est
     o@exposure_rate               <- exposure_rate
     o@usage_matrix                <- usage_matrix
+    o@cumulative_usage_matrix     <- cumulative_usage_matrix
     o@true_segment_count          <- segment_record$count_true
     o@est_segment_count           <- segment_record$count_est
     o@eligibility_stats           <- exposure_record

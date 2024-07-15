@@ -79,7 +79,8 @@ parseShadowTestRefreshSchedule <- function(simulation_constants, refresh_policy)
 #' @template parameter_position
 #' @param o \code{\linkS4class{output_Shadow}} object.
 #' @template parameter_eligibility_flag
-#' @param exclude_index an examinee-wise list containing item indices to exclude from selection.
+#' @param exclude_flag a list of item/stimulus indices to exclude from selection for the examinee.
+#' @param usage_flag a vector of length \emph{ni} (or \emph{ni + ns}) containing the number of times each item has been administered previously to the examinee.
 #' @template parameter_groupings_record
 #' @param info a vector containing item information of each item in the pool.
 #' @template parameter_config_Shadow
@@ -96,7 +97,8 @@ parseShadowTestRefreshSchedule <- function(simulation_constants, refresh_policy)
 assembleShadowTest <- function(
   j, position, o,
   eligibility_flag,
-  exclude_index,
+  exclude_flag,
+  usage_flag,
   groupings_record,
   info,
   config,
@@ -106,25 +108,41 @@ assembleShadowTest <- function(
 
   administered_stimulus_index <- na.omit(unique(o@administered_stimulus_index))
 
-  xdata         <- getXdataOfAdministered(simulation_constants, position, o, groupings_record, constraints)
+  xdata <- getXdataOfAdministered(simulation_constants, position, o, groupings_record, constraints)
   if (simulation_constants$exclude_method == "HARD") {
-    xdata_exclude <- getXdataOfExcludedEntry(simulation_constants, exclude_index[[j]])
+    xdata_exclude <- getXdataOfExcludedEntry(simulation_constants, exclude_flag)
     xdata         <- combineXdata(xdata, xdata_exclude)
   }
   if (simulation_constants$exclude_method == "SOFT") {
-    info <- getInfoOfExcludedEntry(info, exclude_index[[j]], simulation_constants)
+    info <- getInfoOfExcludedEntry(info, exclude_flag, simulation_constants)
   }
 
-  if (simulation_constants$use_exposure_control) {
+  if (
+    simulation_constants$use_overlap_control &&
+    simulation_constants$overlap_control_method %in% c("BIGM", "BIGM-BAYESIAN")
+  ) {
 
-    # Get eligible items in the current theta segment
-    current_segment <- o@theta_segment_index[position]
-    eligibility_flag_in_current_theta_segment <- getEligibilityFlagInSegment(eligibility_flag, current_segment, simulation_constants)
-    eligibility_flag_in_current_theta_segment <- flagAdministeredAsEligible(eligibility_flag_in_current_theta_segment, o, position, simulation_constants)
+    # Do Big-M based overlap control: penalize item info
+    info <- applyOverlapConstraintsToInfo(
+      info, usage_flag, config, simulation_constants
+    )
 
   }
 
-  if (simulation_constants$use_exposure_control && simulation_constants$exposure_control_method %in% c("ELIGIBILITY")) {
+  if (!simulation_constants$use_exposure_control) {
+
+    shadowtest <- runAssembly(config, constraints, xdata = xdata, objective = info)
+    shadowtest$feasible <- TRUE
+    return(shadowtest)
+
+  }
+
+  # Get eligible items in the current theta segment
+  current_segment <- o@theta_segment_index[position]
+  eligibility_flag_in_current_theta_segment <- getEligibilityFlagInSegment(eligibility_flag, current_segment, simulation_constants)
+  eligibility_flag_in_current_theta_segment <- flagAdministeredAsEligible(eligibility_flag_in_current_theta_segment, o, position, simulation_constants)
+
+  if (simulation_constants$exposure_control_method %in% c("ELIGIBILITY")) {
 
     xdata_elg  <- applyEligibilityConstraintsToXdata(xdata, eligibility_flag_in_current_theta_segment, simulation_constants, constraints)
     shadowtest <- runAssembly(config, constraints, xdata = xdata_elg, objective = info)
@@ -142,29 +160,18 @@ assembleShadowTest <- function(
 
   }
 
-  if (
-    simulation_constants$use_exposure_control &&
-    simulation_constants$exposure_control_method %in% c("BIGM", "BIGM-BAYESIAN")
-  ) {
+  if (simulation_constants$exposure_control_method %in% c("BIGM", "BIGM-BAYESIAN")) {
 
     # Do Big-M based exposure control: penalize item info
     info <- applyEligibilityConstraintsToInfo(
       info, eligibility_flag_in_current_theta_segment, config, simulation_constants
     )
 
-    shadowtest <- runAssembly(config, constraints, xdata = xdata, objective = info)
-    shadowtest$feasible <- TRUE
-    return(shadowtest)
-
   }
 
-  if (!simulation_constants$use_exposure_control) {
-
-    shadowtest <- runAssembly(config, constraints, xdata = xdata, objective = info)
-    shadowtest$feasible <- TRUE
-    return(shadowtest)
-
-  }
+  shadowtest <- runAssembly(config, constraints, xdata = xdata, objective = info)
+  shadowtest$feasible <- TRUE
+  return(shadowtest)
 
 }
 

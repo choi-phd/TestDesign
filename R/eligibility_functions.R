@@ -209,6 +209,38 @@ applyEligibilityConstraintsToInfo <- function(
 
 }
 
+#' (Internal) Modify item information using overlap constraints
+#'
+#' \code{\link{applyOverlapConstraintsToInfo}} is an internal function for modifying item information using eligibility constraints.
+#' This is known as the big M method.
+#' The function penalizes item information of items that have been administered previously (within examinees).
+#' This leads to those items being deterred from selected in shadowtest assembly, unless necessary.
+#'
+#' @param info a length-\emph{ni} vector containing item information on each item, intended for shadow-test assembly.
+#' @param usage_flag a length-\emph{ni} vector containing how many times each item has been administered previously to the examinee.
+#' @param config a config object.
+#' @template parameter_simulation_constants
+#'
+#' @returns \code{\link{applyEligibilityConstraintsToInfo}} returns an updated item information vector.
+#'
+#' @keywords internal
+applyOverlapConstraintsToInfo <- function(
+    info, usage_flag, config, simulation_constants
+) {
+
+  if (config@item_selection$method == "GFI") {
+    info <-
+      info + usage_flag * simulation_constants$overlap_M # add because GFI performs minimization
+    return(info)
+  }
+  if (config@item_selection$method != "GFI") {
+    info <-
+      info - usage_flag * simulation_constants$overlap_M
+    return(info)
+  }
+
+}
+
 #' (Internal) Apply fading to exposure record
 #'
 #' \code{\link{applyFading}} is an internal function for applying fading to exposure record.
