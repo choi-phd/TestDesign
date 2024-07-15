@@ -6,7 +6,7 @@ NULL
 #'   \item{\code{\linkS4class{item_pool}}}: plot information and expected scores.
 #'   \item{\code{\linkS4class{constraints}}}: plot information range based on the test length constraint.
 #'   \item{\code{\linkS4class{output_Static}}}: plot information and expected scores based on the fixed assembly solution.
-#'   \item{\code{\linkS4class{output_Shadow_all}}}: plot audit trail, shadowtest chart, and exposure rates from the adaptive assembly solution.
+#'   \item{\code{\linkS4class{output_Shadow_all}}}: plot audit trail, shadowtest chart, exposure rates, and item overlap data from the adaptive assembly solution.
 #'   \item{\code{\linkS4class{output_Shadow}}}: plot audit trail and shadowtest chart from the adaptive assembly solution.
 #' }
 #' @param y not used, exists for compatibility with \code{\link[graphics]{plot}} in the base R package.
@@ -17,6 +17,7 @@ NULL
 #'    \item{\code{audit} plots audit trail from \code{\linkS4class{output_Shadow_all}} and \code{\linkS4class{output_Shadow}}.}
 #'    \item{\code{shadow} plots shadowtest chart from \code{\linkS4class{output_Shadow_all}} and \code{\linkS4class{output_Shadow}}.}
 #'    \item{\code{exposure} plots exposure rates from \code{\linkS4class{output_Shadow_all}}.}
+#'    \item{\code{overlap} plots item overlap data from \code{\linkS4class{output_Shadow_all}}.}
 #' }
 #' @param theta the theta grid to use in plotting. (default = \code{seq(-3, 3, .1)})
 #' @param info_type the type of information. Currently accepts \code{FISHER}. (default = \code{FISHER})
@@ -36,6 +37,7 @@ NULL
 #' @param simple used in \code{\linkS4class{output_Shadow}} and \code{\linkS4class{output_Shadow_all}} with \code{type = 'shadow'}. If \code{TRUE}, simplify the chart by hiding unused items.
 #' @param theta_type used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. The type of theta to determine exposure segments. Accepts \code{Estimated} or \code{True}. (default = \code{Estimated})
 #' @param color_final used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. The color of item-wise exposure rates, only counting the items administered in the final theta segment as exposed.
+#' @param color_stim used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'} or \code{type = 'overlap'}. The color of stimulus exposure rates or stimulus overlap data.
 #' @param segment used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. (optional) The segment index to draw the plot. Leave empty to use all segments.
 #' @param rmse used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. If \code{TRUE}, display the RMSE value for each segment. (default = \code{FALSE})
 #' @param use_segment_label used in \code{\linkS4class{output_Shadow_all}} with \code{type = 'exposure'}. If \code{TRUE}, display the segment label for each segment. (default = \code{TRUE})
@@ -71,6 +73,7 @@ NULL
 #' plot(solution, type = 'shadow', examinee_id = 1, simple = TRUE)
 #'
 #' ## plot(solution, type = 'exposure')
+#' ## plot(solution, type = 'overlap')
 #'
 #' @docType methods
 #' @rdname plot-methods
@@ -93,6 +96,7 @@ setMethod(
     simple = TRUE,
     theta_type = "Estimated",
     color_final = "blue",
+    color_stim = "red",
     segment = NULL,
     rmse = FALSE,
     use_segment_label = TRUE,
@@ -385,6 +389,7 @@ setMethod(
     simple = FALSE,
     theta_type = "Estimated",
     color_final = "blue",
+    color_stim = "red",
     segment = NULL,
     rmse = FALSE,
     use_segment_label = TRUE,
@@ -392,8 +397,8 @@ setMethod(
     ...
 ) {
 
-  if (!type %in% c("audit", "shadow", "info", "score", "exposure")) {
-    stop("plot(output_Shadow_all): 'type' must be 'audit', 'shadow', 'info', 'score', or 'exposure'")
+  if (!type %in% c("audit", "shadow", "info", "score", "exposure", "overlap")) {
+    stop("plot(output_Shadow_all): 'type' must be 'info', 'audit', 'shadow', 'exposure', or 'overlap'")
   }
   if (!all(examinee_id %in% 1:length(x@output))) {
     stop("plot(output_Shadow_all): 'examinee_id' out of bounds")
@@ -443,6 +448,16 @@ setMethod(
       ...
     )
     return(invisible(NULL))
+  }
+
+  if (type == "overlap") {
+    plotShadowOverlap(
+      x,
+      color,
+      color_stim,
+      use_par,
+      ...
+    )
   }
 
 })
@@ -930,6 +945,115 @@ plotShadowChart <- function(x, simple, use_par, ...) {
 }
 
 #' @noRd
+plotShadowOverlap <- function(x, color, color_stim, use_par, ...) {
+
+  if (use_par) {
+    old_par <- par(no.readonly = TRUE)
+    on.exit({
+      par(old_par)
+    })
+    par(mar = c(4, 4, 4, 1) + 0.1)
+  }
+
+  cumulative_usage_matrix <- x@cumulative_usage_matrix
+  test_length <- x@constraints@test_length
+
+  # number of test administrations
+
+  n_admins <- max(rowSums(cumulative_usage_matrix)) / test_length
+
+  if (n_admins < 2)
+    stop("plot(output_Shadow_all): at a minimum two administrations are needed")
+
+  n_usage <- sapply(1:n_admins, function(n) rowSums(cumulative_usage_matrix == n))
+  n_overlap <- n_usage[, 2:n_admins]
+  p_overlap <- n_overlap %*% matrix(2:n_admins, n_admins - 1) / (test_length * n_admins) * 100
+
+  n_count  <- sapply(0:n_admins, function(n) sum(cumulative_usage_matrix == n))
+  p_count   <- n_count / sum(n_count) * 100
+
+  ni <- x@pool@ni
+  nv <- ncol(cumulative_usage_matrix)
+  nj <- nrow(cumulative_usage_matrix)
+
+  mean_usage <- colSums(cumulative_usage_matrix) / nj
+
+  if (x@constraints@set_based) {
+    stim_mean_usage <- mean_usage[(ni + 1):nv][x@constraints@stimulus_index_by_item]
+    stim_index <- x@constraints@stimulus_index_by_item
+    idx_sort <- order(stim_mean_usage, stim_index, mean_usage, decreasing = TRUE)
+    mean_usage_ordered <- mean_usage[idx_sort]
+    stim_mean_usage_ordered <- stim_mean_usage[idx_sort]
+    stim_index_ordered <- stim_index[idx_sort]
+  } else {
+    stim_mean_usage <- NULL
+    stim_index <- NULL
+    idx_sort <- order(mean_usage, decreasing = TRUE)
+    mean_usage_ordered <- mean_usage[idx_sort]
+  }
+
+  layout(matrix(c(1, 2, 3, 4), nrow = 2, byrow = TRUE))
+
+  plot(
+    1:ni, mean_usage_ordered,
+    type = "n", lwd = 2, ylim = c(0, n_admins),
+    xlab = "Item", ylab = "Mean",
+    las = 1,
+    main = "Average Item Usage Count",
+    ...
+  )
+  points(1:ni, mean_usage_ordered, type = "h", lwd = 1, col = color)
+  if (!is.null(stim_mean_usage)) {
+    lines(1:ni, stim_mean_usage_ordered, col = color_stim, type = "s")
+    for (stim_id in unique(stim_index_ordered)) {
+      x <- mean((1:ni)[which(stim_index_ordered == stim_id)])
+      y <- stim_mean_usage_ordered[which(stim_index_ordered == stim_id)][1]
+      points(x, y, col = color_stim, pch = 21, bg = 'white', cex = .75)
+    }
+  }
+
+  p_usage <- as.data.frame(n_usage / (n_admins * test_length) * 100)
+  names(p_usage) <- paste0("X", 1:n_admins)
+
+  boxplot(p_usage,
+          xlab = "Percentage",
+          ylim = c(0, 100),
+          horizontal = TRUE,
+          las = 1,
+          col = color,
+          main = "Percent Item Overlap",
+          ...
+  )
+
+  p <- barplot(p_count,
+               names.arg = 0:n_admins,
+               xlab = "Item usage",
+               ylab = "Percent",
+               ylim = c(0, 100),
+               las = 1,
+               col = color,
+               main = "Percent Item Usage Count",
+               ...
+  )
+  text(p,
+       y = p_count + 2.5,
+       label = paste(round(p_count, 1), "%")
+  )
+
+  boxplot(p_overlap,
+          xlab = "Percentage",
+          ylim = c(0, 100),
+          yaxt = "n",
+          horizontal = TRUE,
+          col = color,
+          main = "Percent Test Overlap",
+          ...
+  )
+
+  return(invisible(NULL))
+}
+
+#' @noRd
 plotShadowExposure <- function(
   x, theta_type,
   segment, use_segment_label,
@@ -972,7 +1096,7 @@ plotShadowExposure <- function(
   segment_index_table <- matrix(NA, nj, x@constraints@test_length)
 
   usage_matrix       <- x@usage_matrix
-  usage_matrix_final <- x@usage_matrix
+  usage_matrix_final <- usage_matrix
 
   for (j in 1:nj) {
     administered_items <- x@output[[j]]@administered_item_index

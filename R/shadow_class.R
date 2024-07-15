@@ -12,6 +12,7 @@ setClass("config_Shadow",
     exclude_policy     = "list",
     refresh_policy     = "list",
     exposure_control   = "list",
+    overlap_control    = "list",
     stopping_criterion = "list",
     interim_theta      = "list",
     final_theta        = "list",
@@ -45,7 +46,7 @@ setClass("config_Shadow",
     ),
     exclude_policy = list(
       method = "HARD",
-      M = NULL
+      M = 1000
     ),
     refresh_policy = list(
       method                    = "ALWAYS",
@@ -64,6 +65,10 @@ setClass("config_Shadow",
       initial_eligibility_stats = NULL,
       fading_factor             = 0.999,
       diagnostic_stats          = FALSE
+    ),
+    overlap_control = list(
+      method                    = "NONE",
+      M                         = 100
     ),
     stopping_criterion = list(
       method                    = "FIXED",
@@ -169,6 +174,10 @@ setClass("config_Shadow",
       msg <- sprintf("config@exposure_control: unrecognized $method '%s' (accepts NONE, ELIGIBILITY, BIGM, or BIGM-BAYESIAN)", object@exposure_control$method)
       err <- c(err, msg)
     }
+    if (!object@overlap_control$method %in% c("NONE", "BIGM", "BIGM-BAYESIAN")) {
+      msg <- sprintf("config@overlap_control: unrecognized $method '%s' (accepts NONE, BIGM, or BIGM-BAYESIAN)", object@overlap_control$method)
+      err <- c(err, msg)
+    }
     if (object@exposure_control$method %in% c("BIGM", "BIGM-BAYESIAN")) {
       if (!is.numeric(object@exposure_control$M)) {
         if (!is.null(object@exposure_control$M)) {
@@ -178,6 +187,20 @@ setClass("config_Shadow",
       }
       if (is.numeric(object@exposure_control$M)) {
         if (object@exposure_control$M < 0) {
+          msg <- sprintf("$method 'BIGM', 'BIGM-BAYESIAM' requires $M to be a positive value")
+          err <- c(err, msg)
+        }
+      }
+    }
+    if (object@overlap_control$method %in% c("BIGM", "BIGM-BAYESIAN")) {
+      if (!is.numeric(object@overlap_control$M)) {
+        if (!is.null(object@overlap_control$M)) {
+          msg <- sprintf("$method 'BIGM', 'BIGM-BAYESIAM' requires $M to be a positive value")
+          err <- c(err, msg)
+        }
+      }
+      if (is.numeric(object@overlap_control$M)) {
+        if (object@overlap_control$M < 0) {
           msg <- sprintf("$method 'BIGM', 'BIGM-BAYESIAM' requires $M to be a positive value")
           err <- c(err, msg)
         }
@@ -225,6 +248,10 @@ setClass("config_Shadow",
     if ((object@exposure_control$method == c("BIGM-BAYESIAN")) &&
       (!object@interim_theta$method %in% c("EB", "FB"))) {
       err <- c(err, "config@exposure_control: $method 'BIGM-BAYESIAN' requires interim_theta$method to be EB or FB")
+    }
+    if ((object@overlap_control$method == c("BIGM-BAYESIAN")) &&
+        (!object@interim_theta$method %in% c("EB", "FB"))) {
+      err <- c(err, "config@overlap_control: $method 'BIGM-BAYESIAN' requires interim_theta$method to be EB or FB")
     }
     if (length(err) == 0) {
       return(TRUE)
@@ -293,6 +320,11 @@ setClass("config_Shadow",
 #'   \item{\code{fading_factor}} the fading factor to apply. (default = \code{.999})
 #'   \item{\code{diagnostic_stats}} set to \code{TRUE} to generate segment-wise diagnostic statistics. (default = \code{FALSE})
 #' }
+#' @param overlap_control a named list containing overlap control settings.
+#' \itemize{
+#'   \item{\code{method}} the type of overlap control method. Accepts \code{NONE, BIGM, BIGM-BAYESIAN}. (default = \code{NONE})
+#'   \item{\code{M}} used in methods \code{BIGM, BIGM-BAYESIAN}. the Big M penalty to use on item information.
+#' }
 #' @param stopping_criterion a named list containing stopping criterion.
 #' \itemize{
 #'   \item{\code{method}} the type of stopping criterion. Accepts \code{FIXED}. (default = \code{FIXED})
@@ -350,14 +382,14 @@ setClass("config_Shadow",
 #' @export
 createShadowTestConfig <- function(
   item_selection = NULL, content_balancing = NULL, MIP = NULL, MCMC = NULL,
-  exclude_policy = NULL, refresh_policy = NULL, exposure_control = NULL, stopping_criterion = NULL,
-  interim_theta = NULL, final_theta = NULL, theta_grid = seq(-4, 4, .1)) {
+  exclude_policy = NULL, refresh_policy = NULL, exposure_control = NULL, overlap_control = NULL,
+  stopping_criterion = NULL, interim_theta = NULL, final_theta = NULL, theta_grid = seq(-4, 4, .1)) {
   cfg <- new("config_Shadow")
 
   arg_names <- c(
     "item_selection", "content_balancing", "MIP", "MCMC",
-    "exclude_policy", "refresh_policy", "exposure_control", "stopping_criterion",
-    "interim_theta", "final_theta"
+    "exclude_policy", "refresh_policy", "exposure_control", "overlap_control",
+    "stopping_criterion", "interim_theta", "final_theta"
   )
   obj_names <- c()
   for (arg in arg_names) {
@@ -424,6 +456,7 @@ createShadowTestConfig <- function(
 #' @slot final_se_est a length-*nj* vector standard errors of the final theta estimates for each participant.
 #' @slot exposure_rate a matrix containing item-level exposure rates of all items in the pool. Also contains stimulus-level exposure rates if the assembly was set-based.
 #' @slot usage_matrix a *nj* by (*ni* + *ns*) matrix representing whether the item/stimulus was administered to each participant. Stimuli representations are appended to the right side of the matrix.
+#' @slot cumulative_usage_matrix a *nj* by (*ni* + *ns*) matrix representing the number of times the item/stimulus was administered to each participant over multiple administrations.
 #' @slot true_segment_count a length-*nj* vector containing the how many examinees are now in their segment based on the true theta. This will tend to increase. This can be reproduced with true theta values alone.
 #' @slot est_segment_count a length-*nj* vector containing the how many examinees are now in their segment based on the estimated theta. This will tend to increase. This can be reproduced with estimated theta values alone.
 #' @slot eligibility_stats exposure record for diagnostics.
@@ -446,6 +479,7 @@ setClass("output_Shadow_all",
     final_se_est                = "matrix_or_numeric_or_null",
     exposure_rate               = "matrix_or_null",
     usage_matrix                = "matrix_or_null",
+    cumulative_usage_matrix     = "matrix_or_null",
     true_segment_count          = "numeric_or_null",
     est_segment_count           = "numeric_or_null",
     eligibility_stats           = "list_or_null",
@@ -466,6 +500,7 @@ setClass("output_Shadow_all",
     final_se_est                = NULL,
     exposure_rate               = NULL,
     usage_matrix                = NULL,
+    cumulative_usage_matrix     = NULL,
     true_segment_count          = NULL,
     est_segment_count           = NULL,
     eligibility_stats           = NULL,

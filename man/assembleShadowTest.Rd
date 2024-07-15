@@ -9,7 +9,8 @@ assembleShadowTest(
   position,
   o,
   eligibility_flag,
-  exclude_index,
+  exclude_flag,
+  usage_flag,
   groupings_record,
   info,
   config,
@@ -26,7 +27,9 @@ assembleShadowTest(
 
 \item{eligibility_flag}{a named list containing eligibility flags.}
 
-\item{exclude_index}{an examinee-wise list containing item indices to exclude from selection.}
+\item{exclude_flag}{a list of item/stimulus indices to exclude from selection for the examinee.}
+
+\item{usage_flag}{a vector of length \emph{ni} (or \emph{ni + ns}) containing the number of times each item has been administered previously to the examinee.}
 
 \item{groupings_record}{a list containing data on completed item sets.}
 

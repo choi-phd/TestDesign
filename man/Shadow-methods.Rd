@@ -16,7 +16,8 @@ Shadow(
   include_items_for_estimation = NULL,
   force_solver = FALSE,
   session = NULL,
-  seed = NULL
+  seed = NULL,
+  cumulative_usage_matrix = NULL
 )
 
 \S4method{Shadow}{config_Shadow}(
@@ -30,7 +31,8 @@ Shadow(
   include_items_for_estimation = NULL,
   force_solver = FALSE,
   session = NULL,
-  seed = NULL
+  seed = NULL,
+  cumulative_usage_matrix = NULL
 )
 }
 \arguments{
@@ -65,6 +67,8 @@ This overrides \code{prior_dist} and \code{prior_par} in the config.
 \item{session}{(optional) used to communicate with Shiny app \code{\link{TestDesign}}.}
 
 \item{seed}{(optional) used to perform data generation internally.}
+
+\item{cumulative_usage_matrix}{(optional) a *nj* by (*ni* + *ns*) matrix containing the number of times the item/stimulus was administered previously to each participant. Stimuli representations are appended to the right side of the matrix.}
 }
 \value{
 \code{\link{Shadow}} returns an \code{\linkS4class{output_Shadow_all}} object containing assembly results.

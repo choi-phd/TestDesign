@@ -63,6 +63,9 @@ getConstants <- function(constraints, config, arg_data, true_theta, max_info) {
 
   o$exclude_method <- toupper(config@exclude_policy$method)
   o$exclude_M      <- config@exclude_policy$M
+  if (is.null(o$exclude_M)) {
+    o$exclude_M <- max_info * 100 + 1
+  }
 
   o$use_hand_scored <- !is.null(config@interim_theta$hand_scored_attribute)
   if (o$use_hand_scored) {
@@ -132,6 +135,17 @@ getConstants <- function(constraints, config, arg_data, true_theta, max_info) {
 
   if (!length(o$max_exposure_rate) %in% c(1, o$n_segment)) {
     stop("length(max_exposure_rate) must be 1 or n_segment")
+  }
+
+  o$overlap_control_method <- toupper(config@overlap_control$method)
+  if (o$overlap_control_method %in% c("BIGM", "BIGM-BAYESIAN")) {
+    o$use_overlap_control <- TRUE
+  } else {
+    o$use_overlap_control <- FALSE
+  }
+  o$overlap_M <- config@overlap_control$M
+  if (is.null(o$overlap_M)) {
+    o$overlap_M <- max_info * 10 + 1
   }
 
   return(o)
