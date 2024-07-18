@@ -109,6 +109,8 @@ reference:
       - calcLogLikelihood
       - calcLocation-methods
       - getSolutionAttributes
+      - getScoreAttributes
+      - makeConstraintsByEachPartition
       - checkConstraints
       - item_pool_cluster-class
       - makeItemPoolCluster
