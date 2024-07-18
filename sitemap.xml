@@ -1,495 +1,169 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/articles/constraints.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/articles/rsymphony.html</loc>
-  </url>
-  <url>
-    <loc>/articles/split.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/RE.html</loc>
-  </url>
-  <url>
-    <loc>/reference/RMSE.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Shadow-methods.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Split-methods.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Static-methods.html</loc>
-  </url>
-  <url>
-    <loc>/reference/TestDesign.html</loc>
-  </url>
-  <url>
-    <loc>/reference/TestDesign_alias.html</loc>
-  </url>
-  <url>
-    <loc>/reference/a_to_alpha.html</loc>
-  </url>
-  <url>
-    <loc>/reference/addCountsToConstraintData.html</loc>
-  </url>
-  <url>
-    <loc>/reference/addScoreToConstraintData.html</loc>
-  </url>
-  <url>
-    <loc>/reference/addSolutionToConstraintData.html</loc>
-  </url>
-  <url>
-    <loc>/reference/adjustAlphaToReduceSpike.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aggregateUsageMatrix.html</loc>
-  </url>
-  <url>
-    <loc>/reference/appendMeanInfo.html</loc>
-  </url>
-  <url>
-    <loc>/reference/applyEligibilityConstraintsToInfo.html</loc>
-  </url>
-  <url>
-    <loc>/reference/applyEligibilityConstraintsToXdata.html</loc>
-  </url>
-  <url>
-    <loc>/reference/applyFading.html</loc>
-  </url>
-  <url>
-    <loc>/reference/applyShrinkageCorrection.html</loc>
-  </url>
-  <url>
-    <loc>/reference/applyThin.html</loc>
-  </url>
-  <url>
-    <loc>/reference/assembleShadowTest.html</loc>
-  </url>
-  <url>
-    <loc>/reference/assemblyInFinalThetaSegmentWasFeasibleAtLeastOnceInInterimThetaSegments.html</loc>
-  </url>
-  <url>
-    <loc>/reference/buildConstraints.html</loc>
-  </url>
-  <url>
-    <loc>/reference/calcEscore-methods.html</loc>
-  </url>
-  <url>
-    <loc>/reference/calcFisher-methods.html</loc>
-  </url>
-  <url>
-    <loc>/reference/calcHessian-methods.html</loc>
-  </url>
-  <url>
-    <loc>/reference/calcJacobian-methods.html</loc>
-  </url>
-  <url>
-    <loc>/reference/calcLocation-methods.html</loc>
-  </url>
-  <url>
-    <loc>/reference/calcLogLikelihood-methods.html</loc>
-  </url>
-  <url>
-    <loc>/reference/calcProb-methods.html</loc>
-  </url>
-  <url>
-    <loc>/reference/calc_MI_FB.html</loc>
-  </url>
-  <url>
-    <loc>/reference/calc_info.html</loc>
-  </url>
-  <url>
-    <loc>/reference/calc_info_EB.html</loc>
-  </url>
-  <url>
-    <loc>/reference/calc_info_FB.html</loc>
-  </url>
-  <url>
-    <loc>/reference/calc_likelihood.html</loc>
-  </url>
-  <url>
-    <loc>/reference/calc_posterior.html</loc>
-  </url>
-  <url>
-    <loc>/reference/calc_posterior_function.html</loc>
-  </url>
-  <url>
-    <loc>/reference/calc_posterior_single.html</loc>
-  </url>
-  <url>
-    <loc>/reference/checkConstraints.html</loc>
-  </url>
-  <url>
-    <loc>/reference/clipEligibilityRates.html</loc>
-  </url>
-  <url>
-    <loc>/reference/combineConstraintsData.html</loc>
-  </url>
-  <url>
-    <loc>/reference/combineItemPoolData.html</loc>
-  </url>
-  <url>
-    <loc>/reference/computeEAPFromPosterior.html</loc>
-  </url>
-  <url>
-    <loc>/reference/computeInfoAtCurrentTheta.html</loc>
-  </url>
-  <url>
-    <loc>/reference/constraint-class.html</loc>
-  </url>
-  <url>
-    <loc>/reference/constraints-class.html</loc>
-  </url>
-  <url>
-    <loc>/reference/constraints-operators.html</loc>
-  </url>
-  <url>
-    <loc>/reference/createShadowTestConfig.html</loc>
-  </url>
-  <url>
-    <loc>/reference/createStaticTestConfig.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dataset_bayes.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dataset_fatigue.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dataset_reading.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dataset_science.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dbind.html</loc>
-  </url>
-  <url>
-    <loc>/reference/detectBestSolver.html</loc>
-  </url>
-  <url>
-    <loc>/reference/doExposureControl.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dot-onAttach.html</loc>
-  </url>
-  <url>
-    <loc>/reference/e_item.html</loc>
-  </url>
-  <url>
-    <loc>/reference/eap-methods.html</loc>
-  </url>
-  <url>
-    <loc>/reference/find_segment.html</loc>
-  </url>
-  <url>
-    <loc>/reference/flagAdministeredAsEligible.html</loc>
-  </url>
-  <url>
-    <loc>/reference/flagIneligible.html</loc>
-  </url>
-  <url>
-    <loc>/reference/generateDensityFromPriorPar.html</loc>
-  </url>
-  <url>
-    <loc>/reference/generateItemParameterSample.html</loc>
-  </url>
-  <url>
-    <loc>/reference/generateSampleFromPriorPar.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getBayesianConstants.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getConstants.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getDecisionVariablesOfItemForMultipool.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getDecisionVariablesOfPoolForMultipool.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getEligibilityFlagInSegment.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getInfoFixedTheta.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getInfoOfExcludedEntry.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getLBUBInConstraintData.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getSegmentOf.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getSegmentProb.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getSegmentsToApply.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getSolution-methods.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getSolutionAttributes.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getXdataOfAdministered.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getXdataOfExcludedEntry.html</loc>
-  </url>
-  <url>
-    <loc>/reference/h_item.html</loc>
-  </url>
-  <url>
-    <loc>/reference/incrementAlpha.html</loc>
-  </url>
-  <url>
-    <loc>/reference/incrementN.html</loc>
-  </url>
-  <url>
-    <loc>/reference/incrementPhi.html</loc>
-  </url>
-  <url>
-    <loc>/reference/incrementRho.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/info_item.html</loc>
-  </url>
-  <url>
-    <loc>/reference/initializeCompletedGroupingsRecord.html</loc>
-  </url>
-  <url>
-    <loc>/reference/initializeDiagnosticExposureRecord.html</loc>
-  </url>
-  <url>
-    <loc>/reference/initializeExposureRecord.html</loc>
-  </url>
-  <url>
-    <loc>/reference/initializeSegmentRecord.html</loc>
-  </url>
-  <url>
-    <loc>/reference/initializeUsageMatrix.html</loc>
-  </url>
-  <url>
-    <loc>/reference/iparPosteriorSample.html</loc>
-  </url>
-  <url>
-    <loc>/reference/isSolutionOptimal.html</loc>
-  </url>
-  <url>
-    <loc>/reference/item-classes.html</loc>
-  </url>
-  <url>
-    <loc>/reference/item_attrib-operators.html</loc>
-  </url>
-  <url>
-    <loc>/reference/item_object_validation_methods.html</loc>
-  </url>
-  <url>
-    <loc>/reference/item_pool-class.html</loc>
-  </url>
-  <url>
-    <loc>/reference/item_pool-operators.html</loc>
-  </url>
-  <url>
-    <loc>/reference/item_pool_cluster-class.html</loc>
-  </url>
-  <url>
-    <loc>/reference/item_pool_cluster-operators.html</loc>
-  </url>
-  <url>
-    <loc>/reference/j_item.html</loc>
-  </url>
-  <url>
-    <loc>/reference/lnHyperPars.html</loc>
-  </url>
-  <url>
-    <loc>/reference/loadConstraints.html</loc>
-  </url>
-  <url>
-    <loc>/reference/loadItemAttrib.html</loc>
-  </url>
-  <url>
-    <loc>/reference/loadItemPool.html</loc>
-  </url>
-  <url>
-    <loc>/reference/loadStAttrib.html</loc>
-  </url>
-  <url>
-    <loc>/reference/logitHyperPars.html</loc>
-  </url>
-  <url>
-    <loc>/reference/makeDiagnosticExposureRecord.html</loc>
-  </url>
-  <url>
-    <loc>/reference/makeSimulationDataCache-methods.html</loc>
-  </url>
-  <url>
-    <loc>/reference/makeTest-methods.html</loc>
-  </url>
-  <url>
-    <loc>/reference/makeTestCluster-methods.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mle-methods.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mlef-methods.html</loc>
-  </url>
-  <url>
-    <loc>/reference/output_Shadow-class.html</loc>
-  </url>
-  <url>
-    <loc>/reference/output_Shadow_all-class.html</loc>
-  </url>
-  <url>
-    <loc>/reference/output_Split-class.html</loc>
-  </url>
-  <url>
-    <loc>/reference/output_Static-class.html</loc>
-  </url>
-  <url>
-    <loc>/reference/p_item.html</loc>
-  </url>
-  <url>
-    <loc>/reference/parseConstraintData.html</loc>
-  </url>
-  <url>
-    <loc>/reference/parsePriorParameters.html</loc>
-  </url>
-  <url>
-    <loc>/reference/parseShadowTestRefreshSchedule.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot-methods.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plotExposurePanel.html</loc>
-  </url>
-  <url>
-    <loc>/reference/print-methods.html</loc>
-  </url>
-  <url>
-    <loc>/reference/returnErrors.html</loc>
-  </url>
-  <url>
-    <loc>/reference/runAssembly.html</loc>
-  </url>
-  <url>
-    <loc>/reference/runMIP.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sanitizeConstraintsData.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sanitizeModel.html</loc>
-  </url>
-  <url>
-    <loc>/reference/selectItemFromShadowTest.html</loc>
-  </url>
-  <url>
-    <loc>/reference/shouldShadowTestBeRefreshed.html</loc>
-  </url>
-  <url>
-    <loc>/reference/show-methods.html</loc>
-  </url>
-  <url>
-    <loc>/reference/simResp-methods.html</loc>
-  </url>
-  <url>
-    <loc>/reference/simulation_data_cache-class.html</loc>
-  </url>
-  <url>
-    <loc>/reference/splitSolutionToBins.html</loc>
-  </url>
-  <url>
-    <loc>/reference/st_attrib-operators.html</loc>
-  </url>
-  <url>
-    <loc>/reference/summary-classes.html</loc>
-  </url>
-  <url>
-    <loc>/reference/summary-methods.html</loc>
-  </url>
-  <url>
-    <loc>/reference/test-class.html</loc>
-  </url>
-  <url>
-    <loc>/reference/testSolver.html</loc>
-  </url>
-  <url>
-    <loc>/reference/test_cluster-class.html</loc>
-  </url>
-  <url>
-    <loc>/reference/test_operators.html</loc>
-  </url>
-  <url>
-    <loc>/reference/theta_EAP.html</loc>
-  </url>
-  <url>
-    <loc>/reference/theta_EB.html</loc>
-  </url>
-  <url>
-    <loc>/reference/theta_FB.html</loc>
-  </url>
-  <url>
-    <loc>/reference/toggleConstraints.html</loc>
-  </url>
-  <url>
-    <loc>/reference/updateCompletedGroupingsRecordForStimulus.html</loc>
-  </url>
-  <url>
-    <loc>/reference/updateDiagnosticExposureRecord.html</loc>
-  </url>
-  <url>
-    <loc>/reference/updateEligibilityRates.html</loc>
-  </url>
-  <url>
-    <loc>/reference/updateSegmentRecord.html</loc>
-  </url>
-  <url>
-    <loc>/reference/updateUsageMatrix.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateConstraintData.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateExpression.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateFullColumn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateLBUB.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validateSolver.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/articles/constraints.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/articles/rsymphony.html</loc></url>
+<url><loc>/articles/split.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/RE.html</loc></url>
+<url><loc>/reference/RMSE.html</loc></url>
+<url><loc>/reference/Shadow-methods.html</loc></url>
+<url><loc>/reference/Split-methods.html</loc></url>
+<url><loc>/reference/Static-methods.html</loc></url>
+<url><loc>/reference/TestDesign.html</loc></url>
+<url><loc>/reference/TestDesign_alias.html</loc></url>
+<url><loc>/reference/a_to_alpha.html</loc></url>
+<url><loc>/reference/addCountsToConstraintData.html</loc></url>
+<url><loc>/reference/addScoreToConstraintData.html</loc></url>
+<url><loc>/reference/addSolutionToConstraintData.html</loc></url>
+<url><loc>/reference/adjustAlphaToReduceSpike.html</loc></url>
+<url><loc>/reference/aggregateUsageMatrix.html</loc></url>
+<url><loc>/reference/appendMeanInfo.html</loc></url>
+<url><loc>/reference/applyEligibilityConstraintsToInfo.html</loc></url>
+<url><loc>/reference/applyEligibilityConstraintsToXdata.html</loc></url>
+<url><loc>/reference/applyFading.html</loc></url>
+<url><loc>/reference/applyShrinkageCorrection.html</loc></url>
+<url><loc>/reference/applyThin.html</loc></url>
+<url><loc>/reference/assembleShadowTest.html</loc></url>
+<url><loc>/reference/assemblyInFinalThetaSegmentWasFeasibleAtLeastOnceInInterimThetaSegments.html</loc></url>
+<url><loc>/reference/buildConstraints.html</loc></url>
+<url><loc>/reference/calcEscore-methods.html</loc></url>
+<url><loc>/reference/calcFisher-methods.html</loc></url>
+<url><loc>/reference/calcHessian-methods.html</loc></url>
+<url><loc>/reference/calcJacobian-methods.html</loc></url>
+<url><loc>/reference/calcLocation-methods.html</loc></url>
+<url><loc>/reference/calcLogLikelihood-methods.html</loc></url>
+<url><loc>/reference/calcProb-methods.html</loc></url>
+<url><loc>/reference/calc_MI_FB.html</loc></url>
+<url><loc>/reference/calc_info.html</loc></url>
+<url><loc>/reference/calc_info_EB.html</loc></url>
+<url><loc>/reference/calc_info_FB.html</loc></url>
+<url><loc>/reference/calc_likelihood.html</loc></url>
+<url><loc>/reference/calc_posterior.html</loc></url>
+<url><loc>/reference/calc_posterior_function.html</loc></url>
+<url><loc>/reference/calc_posterior_single.html</loc></url>
+<url><loc>/reference/checkConstraints.html</loc></url>
+<url><loc>/reference/clipEligibilityRates.html</loc></url>
+<url><loc>/reference/combineConstraintsData.html</loc></url>
+<url><loc>/reference/combineItemPoolData.html</loc></url>
+<url><loc>/reference/computeEAPFromPosterior.html</loc></url>
+<url><loc>/reference/computeInfoAtCurrentTheta.html</loc></url>
+<url><loc>/reference/constraint-class.html</loc></url>
+<url><loc>/reference/constraints-class.html</loc></url>
+<url><loc>/reference/constraints-operators.html</loc></url>
+<url><loc>/reference/createShadowTestConfig.html</loc></url>
+<url><loc>/reference/createStaticTestConfig.html</loc></url>
+<url><loc>/reference/dataset_bayes.html</loc></url>
+<url><loc>/reference/dataset_fatigue.html</loc></url>
+<url><loc>/reference/dataset_reading.html</loc></url>
+<url><loc>/reference/dataset_science.html</loc></url>
+<url><loc>/reference/dbind.html</loc></url>
+<url><loc>/reference/detectBestSolver.html</loc></url>
+<url><loc>/reference/doExposureControl.html</loc></url>
+<url><loc>/reference/dot-onAttach.html</loc></url>
+<url><loc>/reference/e_item.html</loc></url>
+<url><loc>/reference/eap-methods.html</loc></url>
+<url><loc>/reference/find_segment.html</loc></url>
+<url><loc>/reference/flagAdministeredAsEligible.html</loc></url>
+<url><loc>/reference/flagIneligible.html</loc></url>
+<url><loc>/reference/generateDensityFromPriorPar.html</loc></url>
+<url><loc>/reference/generateItemParameterSample.html</loc></url>
+<url><loc>/reference/generateSampleFromPriorPar.html</loc></url>
+<url><loc>/reference/getBayesianConstants.html</loc></url>
+<url><loc>/reference/getConstants.html</loc></url>
+<url><loc>/reference/getDecisionVariablesOfItemForMultipool.html</loc></url>
+<url><loc>/reference/getDecisionVariablesOfPoolForMultipool.html</loc></url>
+<url><loc>/reference/getEligibilityFlagInSegment.html</loc></url>
+<url><loc>/reference/getInfoFixedTheta.html</loc></url>
+<url><loc>/reference/getInfoOfExcludedEntry.html</loc></url>
+<url><loc>/reference/getLBUBInConstraintData.html</loc></url>
+<url><loc>/reference/getScoreAttributes.html</loc></url>
+<url><loc>/reference/getSegmentOf.html</loc></url>
+<url><loc>/reference/getSegmentProb.html</loc></url>
+<url><loc>/reference/getSegmentsToApply.html</loc></url>
+<url><loc>/reference/getSolution-methods.html</loc></url>
+<url><loc>/reference/getSolutionAttributes.html</loc></url>
+<url><loc>/reference/getXdataOfAdministered.html</loc></url>
+<url><loc>/reference/getXdataOfExcludedEntry.html</loc></url>
+<url><loc>/reference/h_item.html</loc></url>
+<url><loc>/reference/incrementAlpha.html</loc></url>
+<url><loc>/reference/incrementN.html</loc></url>
+<url><loc>/reference/incrementPhi.html</loc></url>
+<url><loc>/reference/incrementRho.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/info_item.html</loc></url>
+<url><loc>/reference/initializeCompletedGroupingsRecord.html</loc></url>
+<url><loc>/reference/initializeDiagnosticExposureRecord.html</loc></url>
+<url><loc>/reference/initializeExposureRecord.html</loc></url>
+<url><loc>/reference/initializeSegmentRecord.html</loc></url>
+<url><loc>/reference/initializeUsageMatrix.html</loc></url>
+<url><loc>/reference/iparPosteriorSample.html</loc></url>
+<url><loc>/reference/isSolutionOptimal.html</loc></url>
+<url><loc>/reference/item-classes.html</loc></url>
+<url><loc>/reference/item_attrib-operators.html</loc></url>
+<url><loc>/reference/item_object_validation_methods.html</loc></url>
+<url><loc>/reference/item_pool-class.html</loc></url>
+<url><loc>/reference/item_pool-operators.html</loc></url>
+<url><loc>/reference/item_pool_cluster-class.html</loc></url>
+<url><loc>/reference/item_pool_cluster-operators.html</loc></url>
+<url><loc>/reference/j_item.html</loc></url>
+<url><loc>/reference/lnHyperPars.html</loc></url>
+<url><loc>/reference/loadConstraints.html</loc></url>
+<url><loc>/reference/loadItemAttrib.html</loc></url>
+<url><loc>/reference/loadItemPool.html</loc></url>
+<url><loc>/reference/loadStAttrib.html</loc></url>
+<url><loc>/reference/logitHyperPars.html</loc></url>
+<url><loc>/reference/makeConstraintsByEachPartition.html</loc></url>
+<url><loc>/reference/makeDiagnosticExposureRecord.html</loc></url>
+<url><loc>/reference/makeSimulationDataCache-methods.html</loc></url>
+<url><loc>/reference/makeTest-methods.html</loc></url>
+<url><loc>/reference/makeTestCluster-methods.html</loc></url>
+<url><loc>/reference/mle-methods.html</loc></url>
+<url><loc>/reference/mlef-methods.html</loc></url>
+<url><loc>/reference/output_Shadow-class.html</loc></url>
+<url><loc>/reference/output_Shadow_all-class.html</loc></url>
+<url><loc>/reference/output_Split-class.html</loc></url>
+<url><loc>/reference/output_Static-class.html</loc></url>
+<url><loc>/reference/p_item.html</loc></url>
+<url><loc>/reference/parseConstraintData.html</loc></url>
+<url><loc>/reference/parsePriorParameters.html</loc></url>
+<url><loc>/reference/parseShadowTestRefreshSchedule.html</loc></url>
+<url><loc>/reference/plot-methods.html</loc></url>
+<url><loc>/reference/plotExposurePanel.html</loc></url>
+<url><loc>/reference/print-methods.html</loc></url>
+<url><loc>/reference/returnErrors.html</loc></url>
+<url><loc>/reference/runAssembly.html</loc></url>
+<url><loc>/reference/runMIP.html</loc></url>
+<url><loc>/reference/sanitizeConstraintsData.html</loc></url>
+<url><loc>/reference/sanitizeModel.html</loc></url>
+<url><loc>/reference/selectItemFromShadowTest.html</loc></url>
+<url><loc>/reference/shouldShadowTestBeRefreshed.html</loc></url>
+<url><loc>/reference/show-methods.html</loc></url>
+<url><loc>/reference/simResp-methods.html</loc></url>
+<url><loc>/reference/simulation_data_cache-class.html</loc></url>
+<url><loc>/reference/splitSolutionToBins.html</loc></url>
+<url><loc>/reference/st_attrib-operators.html</loc></url>
+<url><loc>/reference/summary-classes.html</loc></url>
+<url><loc>/reference/summary-methods.html</loc></url>
+<url><loc>/reference/test-class.html</loc></url>
+<url><loc>/reference/testSolver.html</loc></url>
+<url><loc>/reference/test_cluster-class.html</loc></url>
+<url><loc>/reference/test_operators.html</loc></url>
+<url><loc>/reference/theta_EAP.html</loc></url>
+<url><loc>/reference/theta_EB.html</loc></url>
+<url><loc>/reference/theta_FB.html</loc></url>
+<url><loc>/reference/toggleConstraints.html</loc></url>
+<url><loc>/reference/updateCompletedGroupingsRecordForStimulus.html</loc></url>
+<url><loc>/reference/updateDiagnosticExposureRecord.html</loc></url>
+<url><loc>/reference/updateEligibilityRates.html</loc></url>
+<url><loc>/reference/updateSegmentRecord.html</loc></url>
+<url><loc>/reference/updateUsageMatrix.html</loc></url>
+<url><loc>/reference/validateConstraintData.html</loc></url>
+<url><loc>/reference/validateExpression.html</loc></url>
+<url><loc>/reference/validateFullColumn.html</loc></url>
+<url><loc>/reference/validateLBUB.html</loc></url>
+<url><loc>/reference/validateSolver.html</loc></url>
 </urlset>
+

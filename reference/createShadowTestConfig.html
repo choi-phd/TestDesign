@@ -4,7 +4,7 @@ Default values are used for any unspecified parameters/slots."><!-- mathjax --><
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -29,7 +29,7 @@ Default values are used for any unspecified parameters/slots."><!-- mathjax --><
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -48,20 +48,20 @@ Default values are used for any unspecified parameters/slots."><!-- mathjax --><
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/choi-phd/TestDesign/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create a config_Shadow object</h1>
-    <small class="dont-index">Source: <a href="https://github.com/choi-phd/TestDesign/blob/HEAD/R/shadow_class.R" class="external-link"><code>R/shadow_class.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/choi-phd/TestDesign/blob/main/R/shadow_class.R" class="external-link"><code>R/shadow_class.R</code></a></small>
     <div class="hidden name"><code>createShadowTestConfig.Rd</code></div>
     </div>
 
@@ -88,7 +88,9 @@ Default values are used for any unspecified parameters/slots.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>item_selection</dt>
+
+
+<dl><dt id="arg-item-selection">item_selection<a class="anchor" aria-label="anchor" href="#arg-item-selection"></a></dt>
 <dd><p>a named list containing item selection criteria.</p><ul><li><p><code>method</code> the type of selection criteria. Accepts <code>MFI, MPWI, FB, EB, GFI</code>. (default = <code>MFI</code>)</p></li>
 <li><p><code>info_type</code> the type of information. Accepts <code>FISHER</code>. (default = <code>FISHER</code>)</p></li>
 <li><p><code>initial_theta</code> (optional) initial theta values to use.</p></li>
@@ -97,12 +99,12 @@ Default values are used for any unspecified parameters/slots.</p>
 </ul></dd>
 
 
-<dt>content_balancing</dt>
+<dt id="arg-content-balancing">content_balancing<a class="anchor" aria-label="anchor" href="#arg-content-balancing"></a></dt>
 <dd><p>a named list containing content balancing options.</p><ul><li><p><code>method</code> the type of balancing method. Accepts <code>NONE, STA</code>. (default = <code>STA</code>)</p></li>
 </ul></dd>
 
 
-<dt>MIP</dt>
+<dt id="arg-mip">MIP<a class="anchor" aria-label="anchor" href="#arg-mip"></a></dt>
 <dd><p>a named list containing solver options.</p><ul><li><p><code>solver</code> the type of solver. Accepts <code>Rsymphony, gurobi, lpSolve, Rglpk</code>. (default = <code>LPSOLVE</code>)</p></li>
 <li><p><code>verbosity</code> verbosity level of the solver. (default = <code>-2</code>)</p></li>
 <li><p><code>time_limit</code> time limit in seconds. Used in solvers <code>Rsymphony, gurobi, Rglpk</code>. (default = <code>60</code>)</p></li>
@@ -113,7 +115,7 @@ Default values are used for any unspecified parameters/slots.</p>
 </ul></dd>
 
 
-<dt>MCMC</dt>
+<dt id="arg-mcmc">MCMC<a class="anchor" aria-label="anchor" href="#arg-mcmc"></a></dt>
 <dd><p>a named list containing Markov-chain Monte Carlo configurations for obtaining posterior samples.</p><ul><li><p><code>burn_in</code> the number of chains from the start to discard. (default = <code>100</code>)</p></li>
 <li><p><code>post_burn_in</code> the number of chains to use after discarding the first <code>burn_in</code> chains. (default = <code>500</code>)</p></li>
 <li><p><code>thin</code> thinning interval to apply. <code>1</code> represents no thinning. (default = <code>1</code>)</p></li>
@@ -121,13 +123,13 @@ Default values are used for any unspecified parameters/slots.</p>
 </ul></dd>
 
 
-<dt>exclude_policy</dt>
+<dt id="arg-exclude-policy">exclude_policy<a class="anchor" aria-label="anchor" href="#arg-exclude-policy"></a></dt>
 <dd><p>a named list containing the exclude policy for use with the <code>exclude</code> argument in <code><a href="Shadow-methods.html">Shadow</a></code>.</p><ul><li><p><code>method</code> the type of policy. Accepts <code>HARD, SOFT</code>. (default = <code>HARD</code>)</p></li>
 <li><p><code>M</code> the Big M penalty to use on item information. Used in the <code>SOFT</code> method.</p></li>
 </ul></dd>
 
 
-<dt>refresh_policy</dt>
+<dt id="arg-refresh-policy">refresh_policy<a class="anchor" aria-label="anchor" href="#arg-refresh-policy"></a></dt>
 <dd><p>a named list containing the refresh policy for when to obtain a new shadowtest.</p><ul><li><p><code>method</code> the type of policy. Accepts <code>ALWAYS, POSITION, INTERVAL, THRESHOLD, INTERVAL-THRESHOLD, STIMULUS, SET, PASSAGE</code>. (default = <code>ALWAYS</code>)</p></li>
 <li><p><code>interval</code> used in methods <code>INTERVAL, INTERVAL-THRESHOLD</code>. Set to 1 to refresh at each position, 2 to refresh at every two positions, and so on. (default = <code>1</code>)</p></li>
 <li><p><code>threshold</code> used in methods <code>THRESHOLD, INTERVAL-THRESHOLD</code>. The absolute change in between interim theta estimates to trigger the refresh. (default = <code>0.1</code>)</p></li>
@@ -135,7 +137,7 @@ Default values are used for any unspecified parameters/slots.</p>
 </ul></dd>
 
 
-<dt>exposure_control</dt>
+<dt id="arg-exposure-control">exposure_control<a class="anchor" aria-label="anchor" href="#arg-exposure-control"></a></dt>
 <dd><p>a named list containing exposure control settings.</p><ul><li><p><code>method</code> the type of exposure control method. Accepts <code>NONE, ELIGIBILITY, BIGM, BIGM-BAYESIAN</code>. (default = <code>ELIGIBILITY</code>)</p></li>
 <li><p><code>M</code> used in methods <code>BIGM, BIGM-BAYESIAN</code>. the Big M penalty to use on item information.</p></li>
 <li><p><code>max_exposure_rate</code> target exposure rates for each segment. (default = <code>rep(0.25, 7)</code>)</p></li>
@@ -149,7 +151,7 @@ Default values are used for any unspecified parameters/slots.</p>
 </ul></dd>
 
 
-<dt>stopping_criterion</dt>
+<dt id="arg-stopping-criterion">stopping_criterion<a class="anchor" aria-label="anchor" href="#arg-stopping-criterion"></a></dt>
 <dd><p>a named list containing stopping criterion.</p><ul><li><p><code>method</code> the type of stopping criterion. Accepts <code>FIXED</code>. (default = <code>FIXED</code>)</p></li>
 <li><p><code>test_length</code> test length.</p></li>
 <li><p><code>min_ni</code> the maximum number of items to administer.</p></li>
@@ -158,7 +160,7 @@ Default values are used for any unspecified parameters/slots.</p>
 </ul></dd>
 
 
-<dt>interim_theta</dt>
+<dt id="arg-interim-theta">interim_theta<a class="anchor" aria-label="anchor" href="#arg-interim-theta"></a></dt>
 <dd><p>a named list containing interim theta estimation options.</p><ul><li><p><code>method</code> the type of estimation. Accepts <code>EAP, MLE, MLEF, EB, FB</code>. (default = <code>EAP</code>)</p></li>
 <li><p><code>shrinkage_correction</code> set <code>TRUE</code> to apply shrinkage correction. Used when <code>method</code> is <code>EAP</code>. (default = <code>FALSE</code>)</p></li>
 <li><p><code>prior_dist</code> the type of prior distribution. Accepts <code>NORMAL, UNIFORM</code>. (default = <code>NORMAL</code>)</p></li>
@@ -177,7 +179,7 @@ Default values are used for any unspecified parameters/slots.</p>
 </ul></dd>
 
 
-<dt>final_theta</dt>
+<dt id="arg-final-theta">final_theta<a class="anchor" aria-label="anchor" href="#arg-final-theta"></a></dt>
 <dd><p>a named list containing final theta estimation options.</p><ul><li><p><code>method</code> the type of estimation. Accepts <code>EAP, MLE, MLEF, EB, FB</code>. (default = <code>EAP</code>)</p></li>
 <li><p><code>shrinkage_correction</code> set <code>TRUE</code> to apply shrinkage correction. Used when <code>method</code> is <code>EAP</code>. (default = <code>FALSE</code>)</p></li>
 <li><p><code>prior_dist</code> the type of prior distribution. Accepts <code>NORMAL, UNIFORM</code>. (default = <code>NORMAL</code>)</p></li>
@@ -195,7 +197,7 @@ Default values are used for any unspecified parameters/slots.</p>
 </ul></dd>
 
 
-<dt>theta_grid</dt>
+<dt id="arg-theta-grid">theta_grid<a class="anchor" aria-label="anchor" href="#arg-theta-grid"></a></dt>
 <dd><p>the theta grid to use as quadrature points.</p></dd>
 
 </dl></div>
@@ -223,15 +225,15 @@ Default values are used for any unspecified parameters/slots.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
 
 
-  
+
+
 
   </body></html>
 
