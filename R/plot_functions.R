@@ -969,8 +969,8 @@ plotShadowOverlap <- function(x, color, color_stim, use_par, ...) {
   n_overlap <- n_usage[, 2:n_admins]
   p_overlap <- n_overlap %*% matrix(2:n_admins, n_admins - 1) / (test_length * n_admins) * 100
 
-  n_count  <- sapply(0:n_admins, function(n) sum(cumulative_usage_matrix == n))
-  p_count   <- n_count / sum(n_count) * 100
+  n_count <- sapply(0:n_admins, function(n) sum(cumulative_usage_matrix == n))
+  p_count <- n_count / sum(n_count) * 100
 
   ni <- x@pool@ni
   nv <- ncol(cumulative_usage_matrix)
@@ -1008,49 +1008,54 @@ plotShadowOverlap <- function(x, color, color_stim, use_par, ...) {
     for (stim_id in unique(stim_index_ordered)) {
       x <- mean((1:ni)[which(stim_index_ordered == stim_id)])
       y <- stim_mean_usage_ordered[which(stim_index_ordered == stim_id)][1]
-      points(x, y, col = color_stim, pch = 21, bg = 'white', cex = .75)
+      points(x, y, col = color_stim, pch = 21, bg = "white", cex = .75)
     }
   }
 
   p_usage <- as.data.frame(n_usage / (n_admins * test_length) * 100)
   names(p_usage) <- paste0("X", 1:n_admins)
 
-  boxplot(p_usage,
-          xlab = "Percentage",
-          ylim = c(0, 100),
-          horizontal = TRUE,
-          las = 1,
-          col = color,
-          main = "Percent Item Overlap",
-          ...
+  boxplot(
+    p_usage,
+    xlab = "Percentage",
+    ylim = c(0, 100),
+    horizontal = TRUE,
+    las = 1,
+    col = color,
+    main = "Percent Item Overlap",
+    ...
   )
 
-  p <- barplot(p_count,
-               names.arg = 0:n_admins,
-               xlab = "Item usage",
-               ylab = "Percent",
-               ylim = c(0, 100),
-               las = 1,
-               col = color,
-               main = "Percent Item Usage Count",
-               ...
+  p <- barplot(
+    p_count,
+    names.arg = 0:n_admins,
+    xlab = "Item usage",
+    ylab = "Percent",
+    ylim = c(0, 100),
+    las = 1,
+    col = color,
+    main = "Percent Item Usage Count",
+    ...
   )
-  text(p,
-       y = p_count + 2.5,
-       label = paste(round(p_count, 1), "%")
+  text(
+    p,
+    y = p_count + 2.5,
+    label = paste(round(p_count, 1), "%")
   )
 
-  boxplot(p_overlap,
-          xlab = "Percentage",
-          ylim = c(0, 100),
-          yaxt = "n",
-          horizontal = TRUE,
-          col = color,
-          main = "Percent Test Overlap",
-          ...
+  boxplot(
+    p_overlap,
+    xlab = "Percentage",
+    ylim = c(0, 100),
+    yaxt = "n",
+    horizontal = TRUE,
+    col = color,
+    main = "Percent Test Overlap",
+    ...
   )
 
   return(invisible(NULL))
+
 }
 
 #' @noRd

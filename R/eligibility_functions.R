@@ -225,7 +225,7 @@ applyEligibilityConstraintsToInfo <- function(
 #'
 #' @keywords internal
 applyOverlapConstraintsToInfo <- function(
-    info, usage_flag, config, simulation_constants
+  info, usage_flag, config, simulation_constants
 ) {
 
   if (config@item_selection$method == "GFI") {

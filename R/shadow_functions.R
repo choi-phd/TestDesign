@@ -119,8 +119,10 @@ setMethod(
       if (is.null(cumulative_usage_matrix)) {
         stop("'cumulative_usage_matrix' must be supplied when overlap control is effective")
       }
-      if (!is.matrix(cumulative_usage_matrix) ||
-          !identical(dim(cumulative_usage_matrix), dim(usage_matrix))) {
+      if (
+        !is.matrix(cumulative_usage_matrix) ||
+        !identical(dim(cumulative_usage_matrix), dim(usage_matrix))
+      ) {
         stop("'cumulative_usage_matrix' must have the same dimensions as 'usage_matrix'")
       }
     }
@@ -212,7 +214,7 @@ setMethod(
 
       # Simulee: flag items to exclude
 
-      exclude_flag = NULL
+      exclude_flag <- NULL
       if (!is.null(exclude_index)) {
         exclude_flag <- exclude_index[[j]]
       }
