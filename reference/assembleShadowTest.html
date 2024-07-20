@@ -74,7 +74,8 @@
 <span>  <span class="va">position</span>,</span>
 <span>  <span class="va">o</span>,</span>
 <span>  <span class="va">eligibility_flag</span>,</span>
-<span>  <span class="va">exclude_index</span>,</span>
+<span>  <span class="va">exclude_flag</span>,</span>
+<span>  <span class="va">usage_flag</span>,</span>
 <span>  <span class="va">groupings_record</span>,</span>
 <span>  <span class="va">info</span>,</span>
 <span>  <span class="va">config</span>,</span>
@@ -103,8 +104,12 @@
 <dd><p>a named list containing eligibility flags.</p></dd>
 
 
-<dt id="arg-exclude-index">exclude_index<a class="anchor" aria-label="anchor" href="#arg-exclude-index"></a></dt>
-<dd><p>an examinee-wise list containing item indices to exclude from selection.</p></dd>
+<dt id="arg-exclude-flag">exclude_flag<a class="anchor" aria-label="anchor" href="#arg-exclude-flag"></a></dt>
+<dd><p>a list of item/stimulus indices to exclude from selection for the examinee.</p></dd>
+
+
+<dt id="arg-usage-flag">usage_flag<a class="anchor" aria-label="anchor" href="#arg-usage-flag"></a></dt>
+<dd><p>a vector of length <em>ni</em> (or <em>ni + ns</em>) containing the number of times each item has been administered previously to the examinee.</p></dd>
 
 
 <dt id="arg-groupings-record">groupings_record<a class="anchor" aria-label="anchor" href="#arg-groupings-record"></a></dt>

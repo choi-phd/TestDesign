@@ -79,6 +79,7 @@ Default values are used for any unspecified parameters/slots.</p>
 <span>  exclude_policy <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  refresh_policy <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  exposure_control <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  overlap_control <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  stopping_criterion <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  interim_theta <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  final_theta <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -148,6 +149,12 @@ Default values are used for any unspecified parameters/slots.</p>
 <li><p><code>initial_eligibility_stats</code> (optional) initial eligibility statistics to use.</p></li>
 <li><p><code>fading_factor</code> the fading factor to apply. (default = <code>.999</code>)</p></li>
 <li><p><code>diagnostic_stats</code> set to <code>TRUE</code> to generate segment-wise diagnostic statistics. (default = <code>FALSE</code>)</p></li>
+</ul></dd>
+
+
+<dt id="arg-overlap-control">overlap_control<a class="anchor" aria-label="anchor" href="#arg-overlap-control"></a></dt>
+<dd><p>a named list containing overlap control settings.</p><ul><li><p><code>method</code> the type of overlap control method. Accepts <code>NONE, BIGM, BIGM-BAYESIAN</code>. (default = <code>NONE</code>)</p></li>
+<li><p><code>M</code> used in methods <code>BIGM, BIGM-BAYESIAN</code>. the Big M penalty to use on item information.</p></li>
 </ul></dd>
 
 

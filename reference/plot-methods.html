@@ -87,6 +87,7 @@
 <span>  simple <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  theta_type <span class="op">=</span> <span class="st">"Estimated"</span>,</span>
 <span>  color_final <span class="op">=</span> <span class="st">"blue"</span>,</span>
+<span>  color_stim <span class="op">=</span> <span class="st">"red"</span>,</span>
 <span>  segment <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  rmse <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  use_segment_label <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -172,6 +173,7 @@
 <span>  simple <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  theta_type <span class="op">=</span> <span class="st">"Estimated"</span>,</span>
 <span>  color_final <span class="op">=</span> <span class="st">"blue"</span>,</span>
+<span>  color_stim <span class="op">=</span> <span class="st">"red"</span>,</span>
 <span>  segment <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  rmse <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  use_segment_label <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -208,7 +210,7 @@
 <dd><p>accepts the following signatures:</p><ul><li><p><code><a href="item_pool-class.html">item_pool</a></code>: plot information and expected scores.</p></li>
 <li><p><code><a href="constraints-class.html">constraints</a></code>: plot information range based on the test length constraint.</p></li>
 <li><p><code><a href="output_Static-class.html">output_Static</a></code>: plot information and expected scores based on the fixed assembly solution.</p></li>
-<li><p><code><a href="output_Shadow_all-class.html">output_Shadow_all</a></code>: plot audit trail, shadowtest chart, and exposure rates from the adaptive assembly solution.</p></li>
+<li><p><code><a href="output_Shadow_all-class.html">output_Shadow_all</a></code>: plot audit trail, shadowtest chart, exposure rates, and item overlap data from the adaptive assembly solution.</p></li>
 <li><p><code><a href="output_Shadow-class.html">output_Shadow</a></code>: plot audit trail and shadowtest chart from the adaptive assembly solution.</p></li>
 </ul></dd>
 
@@ -223,6 +225,7 @@
 <li><p><code>audit</code> plots audit trail from <code><a href="output_Shadow_all-class.html">output_Shadow_all</a></code> and <code><a href="output_Shadow-class.html">output_Shadow</a></code>.</p></li>
 <li><p><code>shadow</code> plots shadowtest chart from <code><a href="output_Shadow_all-class.html">output_Shadow_all</a></code> and <code><a href="output_Shadow-class.html">output_Shadow</a></code>.</p></li>
 <li><p><code>exposure</code> plots exposure rates from <code><a href="output_Shadow_all-class.html">output_Shadow_all</a></code>.</p></li>
+<li><p><code>overlap</code> plots item overlap data from <code><a href="output_Shadow_all-class.html">output_Shadow_all</a></code>.</p></li>
 </ul></dd>
 
 
@@ -279,6 +282,10 @@
 
 <dt id="arg-color-final">color_final<a class="anchor" aria-label="anchor" href="#arg-color-final"></a></dt>
 <dd><p>used in <code><a href="output_Shadow_all-class.html">output_Shadow_all</a></code> with <code>type = 'exposure'</code>. The color of item-wise exposure rates, only counting the items administered in the final theta segment as exposed.</p></dd>
+
+
+<dt id="arg-color-stim">color_stim<a class="anchor" aria-label="anchor" href="#arg-color-stim"></a></dt>
+<dd><p>used in <code><a href="output_Shadow_all-class.html">output_Shadow_all</a></code> with <code>type = 'exposure'</code> or <code>type = 'overlap'</code>. The color of stimulus exposure rates or stimulus overlap data.</p></dd>
 
 
 <dt id="arg-segment">segment<a class="anchor" aria-label="anchor" href="#arg-segment"></a></dt>
@@ -341,6 +348,7 @@
 <span class="r-plt img"><img src="plot-methods-9.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## plot(solution, type = 'exposure')</span></span></span>
+<span class="r-in"><span><span class="co">## plot(solution, type = 'overlap')</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

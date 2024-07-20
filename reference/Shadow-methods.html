@@ -80,7 +80,8 @@
 <span>  include_items_for_estimation <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  force_solver <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  session <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  seed <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  cumulative_usage_matrix <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for class 'config_Shadow'</span></span>
@@ -95,7 +96,8 @@
 <span>  include_items_for_estimation <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  force_solver <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  session <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  seed <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  cumulative_usage_matrix <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -153,6 +155,10 @@ This overrides <code>prior_dist</code> and <code>prior_par</code> in the config.
 
 <dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>
 <dd><p>(optional) used to perform data generation internally.</p></dd>
+
+
+<dt id="arg-cumulative-usage-matrix">cumulative_usage_matrix<a class="anchor" aria-label="anchor" href="#arg-cumulative-usage-matrix"></a></dt>
+<dd><p>(optional) a *nj* by (*ni* + *ns*) matrix containing the number of times the item/stimulus was administered previously to each participant. Stimuli representations are appended to the right side of the matrix.</p></dd>
 
 </dl></div>
     <div id="value">
