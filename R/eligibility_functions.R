@@ -24,7 +24,7 @@ NULL
 #' @keywords internal
 flagIneligible <- function(
   exposure_record, simulation_constants,
-  item_index_by_stimulus, seed, j
+  item_index_by_stimulus, seed, j, usage_flag = NULL
 ) {
 
   if (!is.null(seed)) {
@@ -42,6 +42,14 @@ flagIneligible <- function(
   p_random <- matrix(runif(n_segment * ni), n_segment, ni)
   o$i[p_random >= p_e_i] <- 0
 
+  # Randomly flag previously seen items in each segment to be ineligible
+
+  if (!is.null(usage_flag) && simulation_constants$use_overlap_control) {
+    p_random     <- matrix(runif(n_segment * ni), n_segment, ni)
+    overlap_flag <- matrix(rep(usage_flag[1:ni] > 0, n_segment), n_segment, byrow = TRUE)
+    o$i[overlap_flag & p_random >= simulation_constants$max_overlap_rate] <- 0
+  }
+
   if (!simulation_constants$group_by_stimulus) {
     return(o)
   }
@@ -53,6 +61,14 @@ flagIneligible <- function(
   o$s      <- matrix(1, n_segment, ns)
   p_random <- matrix(runif(n_segment * ns), n_segment, ns)
   o$s[p_random >= p_e_s] <- 0
+
+  # Randomly flag previously seen stimuli in each segment to be ineligible
+
+  if (!is.null(usage_flag) && simulation_constants$use_overlap_control) {
+    p_random <- matrix(runif(n_segment * ns), n_segment, ns)
+    overlap_flag <- matrix(rep(usage_flag[(ni + 1):(ni + ns)] > 0, n_segment), n_segment, byrow = TRUE)
+    o$i[overlap_flag & p_random >= simulation_constants$max_overlap_rate] <- 0
+  }
 
   for (k in 1:simulation_constants$n_segment) {
     for (s in which(o$s[k, ] == 1)) {
@@ -228,14 +244,18 @@ applyOverlapConstraintsToInfo <- function(
   info, usage_flag, config, simulation_constants
 ) {
 
+  p_random <- runif(length(usage_flag)) * usage_flag
+
   if (config@item_selection$method == "GFI") {
     info <-
-      info + usage_flag * simulation_constants$overlap_M # add because GFI performs minimization
+      info + (p_random >= simulation_constants$max_overlap_rate) *
+      usage_flag * simulation_constants$overlap_M # add because GFI performs minimization
     return(info)
   }
   if (config@item_selection$method != "GFI") {
     info <-
-      info - usage_flag * simulation_constants$overlap_M
+      info - (p_random >= simulation_constants$max_overlap_rate) *
+      usage_flag * simulation_constants$overlap_M
     return(info)
   }
 

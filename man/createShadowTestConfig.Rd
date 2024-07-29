@@ -85,8 +85,9 @@ createShadowTestConfig(
 
 \item{overlap_control}{a named list containing overlap control settings.
 \itemize{
-  \item{\code{method}} the type of overlap control method. Accepts \code{NONE, BIGM, BIGM-BAYESIAN}. (default = \code{NONE})
+  \item{\code{method}} the type of overlap control method. Accepts \code{NONE, ELIGIBILITY, BIGM, BIGM-BAYESIAN}. (default = \code{NONE})
   \item{\code{M}} used in methods \code{BIGM, BIGM-BAYESIAN}. the Big M penalty to use on item information.
+  \item{\code{max_overlap_rate}} target overlap rate. (default = \code{0.20})
 }}
 
 \item{stopping_criterion}{a named list containing stopping criterion.

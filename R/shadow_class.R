@@ -68,7 +68,8 @@ setClass("config_Shadow",
     ),
     overlap_control = list(
       method                    = "NONE",
-      M                         = 100
+      M                         = 100,
+      max_overlap_rate          = 0.20
     ),
     stopping_criterion = list(
       method                    = "FIXED",
@@ -174,7 +175,7 @@ setClass("config_Shadow",
       msg <- sprintf("config@exposure_control: unrecognized $method '%s' (accepts NONE, ELIGIBILITY, BIGM, or BIGM-BAYESIAN)", object@exposure_control$method)
       err <- c(err, msg)
     }
-    if (!object@overlap_control$method %in% c("NONE", "BIGM", "BIGM-BAYESIAN")) {
+    if (!object@overlap_control$method %in% c("NONE", "ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
       msg <- sprintf("config@overlap_control: unrecognized $method '%s' (accepts NONE, BIGM, or BIGM-BAYESIAN)", object@overlap_control$method)
       err <- c(err, msg)
     }
@@ -204,6 +205,12 @@ setClass("config_Shadow",
           msg <- sprintf("$method 'BIGM', 'BIGM-BAYESIAM' requires $M to be a positive value")
           err <- c(err, msg)
         }
+      }
+    }
+    if (object@overlap_control$method == "ELIGIBILITY") {
+      if (object@exposure_control$method != "ELIGIBILITY") {
+        msg <- sprintf("config@overlap_control: $method 'ELIGIBILITY' also requires @exposure_control$method 'ELIGIBILITY'")
+        err <- c(err, msg)
       }
     }
     if (toupper(object@item_selection$method) %in% c("GFI") &
@@ -322,8 +329,9 @@ setClass("config_Shadow",
 #' }
 #' @param overlap_control a named list containing overlap control settings.
 #' \itemize{
-#'   \item{\code{method}} the type of overlap control method. Accepts \code{NONE, BIGM, BIGM-BAYESIAN}. (default = \code{NONE})
+#'   \item{\code{method}} the type of overlap control method. Accepts \code{NONE, ELIGIBILITY, BIGM, BIGM-BAYESIAN}. (default = \code{NONE})
 #'   \item{\code{M}} used in methods \code{BIGM, BIGM-BAYESIAN}. the Big M penalty to use on item information.
+#'   \item{\code{max_overlap_rate}} target overlap rate. (default = \code{0.20})
 #' }
 #' @param stopping_criterion a named list containing stopping criterion.
 #' \itemize{

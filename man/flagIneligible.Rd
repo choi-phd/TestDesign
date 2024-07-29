@@ -9,7 +9,8 @@ flagIneligible(
   simulation_constants,
   item_index_by_stimulus,
   seed,
-  j
+  j,
+  usage_flag = NULL
 )
 }
 \arguments{

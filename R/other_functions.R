@@ -138,7 +138,7 @@ getConstants <- function(constraints, config, arg_data, true_theta, max_info) {
   }
 
   o$overlap_control_method <- toupper(config@overlap_control$method)
-  if (o$overlap_control_method %in% c("BIGM", "BIGM-BAYESIAN")) {
+  if (o$overlap_control_method %in% c("ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
     o$use_overlap_control <- TRUE
   } else {
     o$use_overlap_control <- FALSE
@@ -147,6 +147,7 @@ getConstants <- function(constraints, config, arg_data, true_theta, max_info) {
   if (is.null(o$overlap_M)) {
     o$overlap_M <- max_info * 10 + 1
   }
+  o$max_overlap_rate <- config@overlap_control$max_overlap_rate
 
   return(o)
 
