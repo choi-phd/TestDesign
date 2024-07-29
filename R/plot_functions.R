@@ -965,12 +965,8 @@ plotShadowOverlap <- function(x, color, color_stim, use_par, ...) {
   if (n_admins < 2)
     stop("plot(output_Shadow_all): at a minimum two administrations are needed")
 
-  n_usage <- sapply(1:n_admins, function(n) rowSums(cumulative_usage_matrix == n))
-  n_overlap <- n_usage[, 2:n_admins]
-  p_overlap <- n_overlap %*% matrix(2:n_admins, n_admins - 1) / (test_length * n_admins) * 100
-
-  n_count <- sapply(0:n_admins, function(n) sum(cumulative_usage_matrix == n))
-  p_count <- n_count / sum(n_count) * 100
+  n_used    <- rowSums(cumulative_usage_matrix > 0)
+  n_times   <- sapply(1:n_admins, function(n) rowSums(cumulative_usage_matrix == n))
 
   ni <- x@pool@ni
   nv <- ncol(cumulative_usage_matrix)
@@ -992,8 +988,9 @@ plotShadowOverlap <- function(x, color, color_stim, use_par, ...) {
     mean_usage_ordered <- mean_usage[idx_sort]
   }
 
-  layout(matrix(c(1, 2, 3, 4), nrow = 2, byrow = TRUE))
+  layout(matrix(c(1, 2), nrow = 1, byrow = TRUE))
 
+  # plot 1
   plot(
     1:ni, mean_usage_ordered,
     type = "n", lwd = 2, ylim = c(0, n_admins),
@@ -1012,46 +1009,18 @@ plotShadowOverlap <- function(x, color, color_stim, use_par, ...) {
     }
   }
 
-  p_usage <- as.data.frame(n_usage / (n_admins * test_length) * 100)
-  names(p_usage) <- paste0("X", 1:n_admins)
+  # plot 2
+  p_usage <- as.data.frame(n_times / n_used * 100)
+  names(p_usage) <- paste("X", 1:n_admins)
 
-  boxplot(
-    p_usage,
-    xlab = "Percentage",
-    ylim = c(0, 100),
-    horizontal = TRUE,
-    las = 1,
-    col = color,
-    main = "Percent Item Overlap",
-    ...
-  )
-
-  p <- barplot(
-    p_count,
-    names.arg = 0:n_admins,
-    xlab = "Item usage",
-    ylab = "Percent",
-    ylim = c(0, 100),
-    las = 1,
-    col = color,
-    main = "Percent Item Usage Count",
-    ...
-  )
-  text(
-    p,
-    y = p_count + 2.5,
-    label = paste(round(p_count, 1), "%")
-  )
-
-  boxplot(
-    p_overlap,
-    xlab = "Percentage",
-    ylim = c(0, 100),
-    yaxt = "n",
-    horizontal = TRUE,
-    col = color,
-    main = "Percent Test Overlap",
-    ...
+  boxplot(p_usage,
+          xlab = "Percentage",
+          ylim = c(0, 100),
+          horizontal = TRUE,
+          las = 1,
+          col = color,
+          main = "Percent Repeated Items",
+          ...
   )
 
   return(invisible(NULL))

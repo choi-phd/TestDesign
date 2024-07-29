@@ -200,16 +200,17 @@ setMethod(
       done         <- FALSE
       position     <- 0
 
+      # Simulee: flag previously administered items
+
+      usage_flag <- NULL
+      if (simulation_constants$use_overlap_control) {
+        usage_flag <- cumulative_usage_matrix[j, ]
+      }
+
       # Simulee: flag ineligibile items
 
       if (simulation_constants$use_exposure_control) {
-        eligibility_flag <- flagIneligible(exposure_record, simulation_constants, constraints@item_index_by_stimulus, seed, j)
-      }
-
-      # Simulee: flag previously administered items
-
-      if (simulation_constants$use_overlap_control) {
-        usage_flag <- cumulative_usage_matrix[j, ]
+        eligibility_flag <- flagIneligible(exposure_record, simulation_constants, constraints@item_index_by_stimulus, seed, j, usage_flag)
       }
 
       # Simulee: flag items to exclude
