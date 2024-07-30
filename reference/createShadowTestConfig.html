@@ -153,8 +153,9 @@ Default values are used for any unspecified parameters/slots.</p>
 
 
 <dt id="arg-overlap-control">overlap_control<a class="anchor" aria-label="anchor" href="#arg-overlap-control"></a></dt>
-<dd><p>a named list containing overlap control settings.</p><ul><li><p><code>method</code> the type of overlap control method. Accepts <code>NONE, BIGM, BIGM-BAYESIAN</code>. (default = <code>NONE</code>)</p></li>
+<dd><p>a named list containing overlap control settings.</p><ul><li><p><code>method</code> the type of overlap control method. Accepts <code>NONE, ELIGIBILITY, BIGM, BIGM-BAYESIAN</code>. (default = <code>NONE</code>)</p></li>
 <li><p><code>M</code> used in methods <code>BIGM, BIGM-BAYESIAN</code>. the Big M penalty to use on item information.</p></li>
+<li><p><code>max_overlap_rate</code> target overlap rate. (default = <code>0.20</code>)</p></li>
 </ul></dd>
 
 
@@ -168,7 +169,7 @@ Default values are used for any unspecified parameters/slots.</p>
 
 
 <dt id="arg-interim-theta">interim_theta<a class="anchor" aria-label="anchor" href="#arg-interim-theta"></a></dt>
-<dd><p>a named list containing interim theta estimation options.</p><ul><li><p><code>method</code> the type of estimation. Accepts <code>EAP, MLE, MLEF, EB, FB</code>. (default = <code>EAP</code>)</p></li>
+<dd><p>a named list containing interim theta estimation options.</p><ul><li><p><code>method</code> the type of estimation. Accepts <code>EAP, MLE, MLEF, EB, FB, CARRYOVER</code>. (default = <code>EAP</code>)</p></li>
 <li><p><code>shrinkage_correction</code> set <code>TRUE</code> to apply shrinkage correction. Used when <code>method</code> is <code>EAP</code>. (default = <code>FALSE</code>)</p></li>
 <li><p><code>prior_dist</code> the type of prior distribution. Accepts <code>NORMAL, UNIFORM</code>. (default = <code>NORMAL</code>)</p></li>
 <li><p><code>prior_par</code> distribution parameters for <code>prior_dist</code>. (default = <code>c(0, 1)</code>)</p></li>
@@ -187,7 +188,7 @@ Default values are used for any unspecified parameters/slots.</p>
 
 
 <dt id="arg-final-theta">final_theta<a class="anchor" aria-label="anchor" href="#arg-final-theta"></a></dt>
-<dd><p>a named list containing final theta estimation options.</p><ul><li><p><code>method</code> the type of estimation. Accepts <code>EAP, MLE, MLEF, EB, FB</code>. (default = <code>EAP</code>)</p></li>
+<dd><p>a named list containing final theta estimation options.</p><ul><li><p><code>method</code> the type of estimation. Accepts <code>EAP, MLE, MLEF, EB, FB, CARRYOVER</code>. (default = <code>EAP</code>)</p></li>
 <li><p><code>shrinkage_correction</code> set <code>TRUE</code> to apply shrinkage correction. Used when <code>method</code> is <code>EAP</code>. (default = <code>FALSE</code>)</p></li>
 <li><p><code>prior_dist</code> the type of prior distribution. Accepts <code>NORMAL, UNIFORM</code>. (default = <code>NORMAL</code>)</p></li>
 <li><p><code>prior_par</code> distribution parameters for <code>prior_dist</code>. (default = <code>c(0, 1)</code>)</p></li>
