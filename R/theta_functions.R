@@ -1180,7 +1180,11 @@ parseThetaSegment <- function(
   n_segment   <- simulation_constants$n_segment
   segment_cut <- simulation_constants$segment_cut
 
-  if (isFirstSegmentValid(exposure_control$first_segment, n_segment, position)) {
+  if (isCustomFirstSegmentAvailable(
+    simulation_constants$custom_first_segment_available,
+    simulation_constants$custom_first_segment_n_values,
+    position
+  )) {
     segment <- exposure_control$first_segment[position]
     return(segment)
   }
@@ -1200,11 +1204,11 @@ parseThetaSegment <- function(
 }
 
 #' @noRd
-isFirstSegmentValid <- function(first_segment, n_segment, position) {
-  if (
-    !is.null(first_segment) &&
-    all(first_segment %in% 1:n_segment) &&
-    length(first_segment) >= position) {
+isCustomFirstSegmentAvailable <- function(available, n_values, position) {
+  if (!available) {
+    return(FALSE)
+  }
+  if (position <= n_values) {
     return(TRUE)
   }
   return(FALSE)

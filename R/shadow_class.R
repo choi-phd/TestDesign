@@ -230,6 +230,18 @@ setClass("config_Shadow",
       msg <- sprintf("config@exposure_control: unexpected length($max_exposure_rate) %s (must be 1 or $n_segment)", length(object@exposure_control$max_exposure_rate))
       err <- c(err, msg)
     }
+    if (!is.null(object@exposure_control$first_segment)) {
+      if (any(
+        !(object@exposure_control$first_segment %in% 1:object@exposure_control$n_segment)
+      )) {
+        msg <- sprintf(
+          "config@exposure_control: out-of-range values in $first_segment %s (must be within 1:n_segment; n_segment is %s)",
+          setdiff(object@exposure_control$first_segment, 1:object@exposure_control$n_segment),
+          object@exposure_control$n_segment
+        )
+        err <- c(err, msg)
+      }
+    }
     if (!object@stopping_criterion$method %in% c("FIXED")) {
       msg <- sprintf("config@stopping_criterion: unrecognized $method '%s'", object@stopping_criterion$method)
       err <- c(err, msg)

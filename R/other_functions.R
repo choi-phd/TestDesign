@@ -132,6 +132,8 @@ getConstants <- function(constraints, config, arg_data, true_theta, max_info) {
   o$segment_cut         <- config@exposure_control$segment_cut
   o$cut_lower           <- o$segment_cut[(1:o$n_segment)]
   o$cut_upper           <- o$segment_cut[(1:o$n_segment) + 1]
+  o$custom_first_segment_available <- !is.null(config@exposure_control$first_segment)
+  o$custom_first_segment_n_values  <- length(config@exposure_control$first_segment)
 
   if (!length(o$max_exposure_rate) %in% c(1, o$n_segment)) {
     stop("length(max_exposure_rate) must be 1 or n_segment")
