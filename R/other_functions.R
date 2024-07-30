@@ -135,10 +135,6 @@ getConstants <- function(constraints, config, arg_data, true_theta, max_info) {
   o$custom_first_segment_available <- !is.null(config@exposure_control$first_segment)
   o$custom_first_segment_n_values  <- length(config@exposure_control$first_segment)
 
-  if (!length(o$max_exposure_rate) %in% c(1, o$n_segment)) {
-    stop("length(max_exposure_rate) must be 1 or n_segment")
-  }
-
   o$overlap_control_method <- toupper(config@overlap_control$method)
   if (o$overlap_control_method %in% c("ELIGIBILITY", "BIGM", "BIGM-BAYESIAN")) {
     o$use_overlap_control <- TRUE
