@@ -71,50 +71,9 @@ setMethod(
 countConstraints <- function(constraints, item_idx) {
 
   # this is an orphaned function; this is not being used anywhere.
-  # getSolutionAttributes() has the same functionality but better.
-  # that function also tallys for ENEMY, INCLUDE, EXCLUDE, ALLORNONE constraints,
-  # this function does not.
 
-  if (!inherits(constraints, "constraints")) {
-    stop("'constraints' must be a 'constraints' class object")
-  }
+  o <- getSolutionAttributes(constraints, item_idx, TRUE)
 
-  group_by_stimulus <- constraints@set_based
-  item_attrib       <- constraints@item_attrib
-  constraints       <- constraints@constraints
-
-  nc <- nrow(constraints)
-  list_constraints <- vector(mode = "list", length = nc)
-  item_constraints <- which(constraints[["WHAT"]] == "ITEM")
-  stim_constraints <- which(constraints[["WHAT"]] %in% c("STIMULUS", "PASSAGE", "SET", "TESTLET"))
-
-  count <- vector('list', nc)
-
-  for (index in item_constraints) {
-    if (constraints[["TYPE"]][index] %in% c("NUMBER", "COUNT")) {
-      if (toupper(constraints[["CONDITION"]][index]) %in% c("", " ", "PER TEST", "TEST")) {
-        count[[index]] <- length(item_idx)
-      } else if (toupper(constraints[["CONDITION"]][index]) %in% c("PER STIMULUS", "PER PASSAGE", "PER SET", "PER TESTLET")) {
-        tmp            <- item_attrib@data[item_idx, ]
-        count[[index]] <- aggregate(tmp[["ID"]], by = list(tmp[["STID"]]), function(x) length(x))[, -1]
-      } else if (constraints[["CONDITION"]][index] %in% names(item_attrib@data)) {
-      } else {
-        match_vec      <- with(item_attrib@data, eval(parse(text = constraints[["CONDITION"]][index])))
-        count[[index]] <- sum(item_idx %in% which(match_vec))
-      }
-
-    }
-  }
-
-  if (group_by_stimulus) {
-    for (index in stim_constraints) {
-      if (constraints[["TYPE"]][index] %in% c("NUMBER", "COUNT")) {
-        tmp <- item_attrib@data[item_idx, ]
-        count[[index]] <- length(na.omit(unique(tmp[["STID"]])))
-      }
-    }
-  }
-
-  return(count)
+  return(o)
 
 }
