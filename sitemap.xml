@@ -49,6 +49,7 @@
 <url><loc>/reference/clipEligibilityRates.html</loc></url>
 <url><loc>/reference/combineConstraintsData.html</loc></url>
 <url><loc>/reference/combineItemPoolData.html</loc></url>
+<url><loc>/reference/combineXdata.html</loc></url>
 <url><loc>/reference/computeEAPFromPosterior.html</loc></url>
 <url><loc>/reference/computeInfoAtCurrentTheta.html</loc></url>
 <url><loc>/reference/constraint-class.html</loc></url>
@@ -62,10 +63,13 @@
 <url><loc>/reference/dataset_science.html</loc></url>
 <url><loc>/reference/dbind.html</loc></url>
 <url><loc>/reference/detectBestSolver.html</loc></url>
+<url><loc>/reference/determineCurrentThetaSegment.html</loc></url>
 <url><loc>/reference/doExposureControl.html</loc></url>
 <url><loc>/reference/dot-onAttach.html</loc></url>
 <url><loc>/reference/e_item.html</loc></url>
 <url><loc>/reference/eap-methods.html</loc></url>
+<url><loc>/reference/estimateFinalTheta.html</loc></url>
+<url><loc>/reference/estimateInterimTheta.html</loc></url>
 <url><loc>/reference/find_segment.html</loc></url>
 <url><loc>/reference/flagAdministeredAsEligible.html</loc></url>
 <url><loc>/reference/flagIneligible.html</loc></url>
@@ -77,6 +81,7 @@
 <url><loc>/reference/getDecisionVariablesOfItemForMultipool.html</loc></url>
 <url><loc>/reference/getDecisionVariablesOfPoolForMultipool.html</loc></url>
 <url><loc>/reference/getEligibilityFlagInSegment.html</loc></url>
+<url><loc>/reference/getIndexOfExcludedEntry.html</loc></url>
 <url><loc>/reference/getInfoFixedTheta.html</loc></url>
 <url><loc>/reference/getInfoOfExcludedEntry.html</loc></url>
 <url><loc>/reference/getLBUBInConstraintData.html</loc></url>
@@ -101,6 +106,7 @@
 <url><loc>/reference/initializeSegmentRecord.html</loc></url>
 <url><loc>/reference/initializeUsageMatrix.html</loc></url>
 <url><loc>/reference/iparPosteriorSample.html</loc></url>
+<url><loc>/reference/isCustomFirstSegmentAvailable.html</loc></url>
 <url><loc>/reference/isSolutionOptimal.html</loc></url>
 <url><loc>/reference/item-classes.html</loc></url>
 <url><loc>/reference/item_attrib-operators.html</loc></url>
@@ -118,6 +124,7 @@
 <url><loc>/reference/logitHyperPars.html</loc></url>
 <url><loc>/reference/makeConstraintsByEachPartition.html</loc></url>
 <url><loc>/reference/makeDiagnosticExposureRecord.html</loc></url>
+<url><loc>/reference/makeSetStructureConstraints.html</loc></url>
 <url><loc>/reference/makeSimulationDataCache-methods.html</loc></url>
 <url><loc>/reference/makeTest-methods.html</loc></url>
 <url><loc>/reference/makeTestCluster-methods.html</loc></url>
@@ -133,6 +140,10 @@
 <url><loc>/reference/parseShadowTestRefreshSchedule.html</loc></url>
 <url><loc>/reference/plot-methods.html</loc></url>
 <url><loc>/reference/plotExposurePanel.html</loc></url>
+<url><loc>/reference/plotShadowAudit.html</loc></url>
+<url><loc>/reference/plotShadowChart.html</loc></url>
+<url><loc>/reference/plotShadowExposure.html</loc></url>
+<url><loc>/reference/plotShadowInfo.html</loc></url>
 <url><loc>/reference/print-methods.html</loc></url>
 <url><loc>/reference/returnErrors.html</loc></url>
 <url><loc>/reference/runAssembly.html</loc></url>
@@ -160,6 +171,7 @@
 <url><loc>/reference/updateDiagnosticExposureRecord.html</loc></url>
 <url><loc>/reference/updateEligibilityRates.html</loc></url>
 <url><loc>/reference/updateSegmentRecord.html</loc></url>
+<url><loc>/reference/updateThetaPosterior.html</loc></url>
 <url><loc>/reference/updateUsageMatrix.html</loc></url>
 <url><loc>/reference/validateConstraintData.html</loc></url>
 <url><loc>/reference/validateExpression.html</loc></url>
