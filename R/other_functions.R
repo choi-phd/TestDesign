@@ -147,6 +147,8 @@ getConstants <- function(constraints, config, arg_data, true_theta, max_info) {
   }
   o$max_overlap_rate <- config@overlap_control$max_overlap_rate
 
+  o$id <- constraints@id
+
   return(o)
 
 }

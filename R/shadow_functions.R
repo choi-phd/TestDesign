@@ -121,9 +121,10 @@ setMethod(
       }
       if (
         !is.matrix(cumulative_usage_matrix) ||
-        !identical(dim(cumulative_usage_matrix), dim(usage_matrix))
+        !identical(dim(cumulative_usage_matrix), dim(usage_matrix)) ||
+        !identical(colnames(cumulative_usage_matrix), colnames(usage_matrix))
       ) {
-        stop("'cumulative_usage_matrix' must have the same dimensions as 'usage_matrix'")
+        stop("'cumulative_usage_matrix' must have the same dimensions and column names as 'usage_matrix'")
       }
     }
 
