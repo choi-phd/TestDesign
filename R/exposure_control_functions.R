@@ -385,13 +385,13 @@ initializeUsageMatrix <- function(simulation_constants) {
 
   if (!simulation_constants$group_by_stimulus) {
     o <- matrix(FALSE, nrow = simulation_constants$nj, ncol = simulation_constants$ni)
-    return(o)
-  }
-  if (simulation_constants$group_by_stimulus) {
+  } else {
     o <- matrix(FALSE, nrow = simulation_constants$nj, ncol = simulation_constants$nv)
-    return(o)
   }
 
+  colnames(o) <- simulation_constants$id
+
+  return(o)
 }
 
 #' (Internal) Update item usage matrix
