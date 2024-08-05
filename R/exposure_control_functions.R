@@ -385,7 +385,8 @@ initializeUsageMatrix <- function(simulation_constants) {
 
   if (!simulation_constants$group_by_stimulus) {
     o <- matrix(FALSE, nrow = simulation_constants$nj, ncol = simulation_constants$ni)
-  } else {
+  }
+  if (simulation_constants$group_by_stimulus) {
     o <- matrix(FALSE, nrow = simulation_constants$nj, ncol = simulation_constants$nv)
   }
 
