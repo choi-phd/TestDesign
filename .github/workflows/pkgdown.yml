@@ -29,6 +29,7 @@ jobs:
         with:
           extra-packages: |
             any::pkgdown
+            any::rlang
             local::.
             gurobi=?ignore
           needs: website
