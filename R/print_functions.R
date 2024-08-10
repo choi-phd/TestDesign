@@ -447,11 +447,17 @@ setMethod("print", "summary_output_Shadow_all", function(x, digits = 3) {
   if (!is.null(x@true_theta)) {
     cat(sprintf("            MSE : % 2.6f\n", x@mse))
     cat(sprintf("           bias : % 2.6f\n", x@bias))
-    cat(sprintf("           corr : % 2.6f\n", x@corr))
+    cat(sprintf("     Average SE : % 2.6f\n", x@average_se))
+    cat(sprintf("           corr : % 2.6f\n\n", x@corr))
   }
-  cat(sprintf("     Average SE : % 2.6f\n", x@average_se))
+  if (!is.null(x@adaptivity)) {
+    cat(sprintf("  adaptivity indices\n"))
+    cat(sprintf("           corr : % 2.6f\n", x@adaptivity$corr))
+    cat(sprintf("       SD ratio : % 2.6f\n", x@adaptivity$ratio))
+    cat(sprintf("            PRV : % 2.6f\n", x@adaptivity$PRV))
+    cat(sprintf("           info : % 2.6f\n\n", x@adaptivity$info))
+  }
   if (!is.null(x@achieved)) {
-    cat("\n")
     idx_to_drop <- which(toupper(names(x@achieved)) == "CONSTRAINT")
     x@achieved  <- x@achieved[, -idx_to_drop]
     for (i in names(x@achieved)) {

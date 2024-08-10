@@ -115,6 +115,7 @@ setClass(
     bias            = "numeric_or_null",
     corr            = "matrix_or_numeric_or_null",
     average_se      = "numeric",
+    adaptivity      = "list_or_null",
     achieved        = "dataframe_or_null",
     score           = "list_or_null"
   ),
@@ -129,6 +130,7 @@ setClass(
     bias            = numeric(0),
     corr            = numeric(0),
     average_se      = numeric(0),
+    adaptivity      = NULL,
     achieved        = NULL,
     score           = NULL
   ),

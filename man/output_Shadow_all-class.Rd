@@ -56,5 +56,7 @@
 \item{\code{prior}}{the \code{prior} argument used in the assembly.}
 
 \item{\code{prior_par}}{the \code{prior_par} argument used in the assembly.}
+
+\item{\code{adaptivity}}{a list of adaptivity indices.}
 }}
 
