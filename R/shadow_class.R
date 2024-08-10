@@ -490,6 +490,7 @@ createShadowTestConfig <- function(
 #' @slot data the \code{data} argument used in the assembly.
 #' @slot prior the \code{prior} argument used in the assembly.
 #' @slot prior_par the \code{prior_par} argument used in the assembly.
+#' @slot adaptivity a list of adaptivity indices.
 #'
 #' @export
 setClass("output_Shadow_all",
@@ -512,7 +513,8 @@ setClass("output_Shadow_all",
     data                        = "matrix_or_null",
     true_theta                  = "matrix_or_numeric_or_null",
     prior                       = "matrix_or_numeric_or_null",
-    prior_par                   = "matrix_or_numeric_or_null"
+    prior_par                   = "matrix_or_numeric_or_null",
+    adaptivity                  = "list_or_null"
   ),
   prototype = list(
     output                      = NULL,
@@ -533,7 +535,8 @@ setClass("output_Shadow_all",
     data                        = NULL,
     true_theta                  = NULL,
     prior                       = NULL,
-    prior_par                   = NULL
+    prior_par                   = NULL,
+    adaptivity                  = NULL
   ),
   validity = function(object) {
     return(TRUE)

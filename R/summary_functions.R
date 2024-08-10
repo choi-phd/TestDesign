@@ -88,16 +88,17 @@ setMethod("summary", "output_Shadow_all", function(object, simple = FALSE) {
   o <- new("summary_output_Shadow_all")
   o@n_simulee    <- length(object@output)
   o@test_length  <- object@constraints@test_length
+  o@true_theta   <- object@true_theta
   o@est_theta    <- sapply(object@output, function(x) x@final_theta_est)
   o@est_theta_se <- sapply(object@output, function(x) x@final_se_est)
-  o@true_theta   <- object@true_theta
   if (!is.null(o@true_theta)) {
-    o@diff <- o@est_theta - o@true_theta
-    o@mse  <- mean(o@diff ** 2)
-    o@bias <- mean(o@diff)
-    o@corr <- cor(o@est_theta, o@true_theta)
+    o@diff       <- o@est_theta - o@true_theta
+    o@mse        <- mean(o@diff^2)
+    o@bias       <- mean(o@diff)
+    o@corr       <- cor(o@est_theta, o@true_theta)
+    o@adaptivity <- object@adaptivity
   }
-  o@average_se <- mean(o@est_theta_se)
+  o@average_se   <- mean(o@est_theta_se)
 
   # achieved attribute matching each constraint
   nc <- length(object@constraints@list_constraints)
