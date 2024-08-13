@@ -484,6 +484,9 @@ setMethod(
     }
 
     # update cumulative usage matrix
+    if (is.null(cumulative_usage_matrix)) {
+      cumulative_usage_matrix <- usage_matrix * 0
+    }
     if (identical(dim(cumulative_usage_matrix), dim(usage_matrix))) {
       cumulative_usage_matrix <-
         cumulative_usage_matrix + usage_matrix
