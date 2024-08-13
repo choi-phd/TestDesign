@@ -370,6 +370,9 @@ setMethod(
     solve_time_stepone <- (proc.time() - solve_time_stepone)[["elapsed"]]
     solve_time[1] <- solve_time_stepone
     feasible[1] <- TRUE
+
+    o1$solution[types == "B"] <- round(o1$solution[types == "B"], 0)
+
     solution_per_bin <- splitSolutionToBins(o1$solution, n_bins, ni, nv)
 
     if (partition_type == "test") {
@@ -530,6 +533,9 @@ setMethod(
 
     solve_time_steptwo <- (proc.time() - solve_time_steptwo)[["elapsed"]]
     solve_time[2] <- solve_time_steptwo
+
+    o2$solution[types == "B"] <- round(o2$solution[types == "B"], 0)
+
     solution_per_bin <- splitSolutionToBins(o2$solution, n_bins, ni, nv)
 
     if (partition_type == "pool") {
