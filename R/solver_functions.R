@@ -317,6 +317,43 @@ runMIP <- function(
 
   }
 
+  if (solver == "HIGHS") {
+
+    lowerbounds <- obj * 0
+    upperbounds <- obj * 0
+    lowerbounds[types == "B"] <- 0
+    upperbounds[types == "B"] <- 1
+    lowerbounds[types == "C"] <- -Inf
+    upperbounds[types == "C"] <- Inf
+
+    types[types == "B"] <- "I"
+
+    # the "lhs", "rhs" arguments in the highs solver are
+    # just lower and upper bounds to be imposed on the objective function
+    # transform accordingly
+
+    lhs_new <- rhs
+    rhs_new <- rhs
+    lhs_new[dir == "<="] <- -Inf
+    rhs_new[dir == ">="] <- Inf
+
+    MIP <- highs::highs_solve(
+      L       = obj,
+      lower   = lowerbounds,
+      upper   = upperbounds,
+      A       = mat,
+      types   = types,
+      maximum = maximize,
+      lhs     = lhs_new,
+      rhs     = rhs_new
+    )
+
+    MIP$solution <- MIP$primal_solution
+
+    return(MIP)
+
+  }
+
   if (solver == "GUROBI") {
 
     constraints_dir <- dir
@@ -383,6 +420,10 @@ isSolutionOptimal <- function(status, solver) {
     is_optimal <- names(status) %in% c("TM_OPTIMAL_SOLUTION_FOUND", "PREP_OPTIMAL_SOLUTION_FOUND", "TM_TARGET_GAP_ACHIEVED")
     return(is_optimal)
   }
+  if (solver == "HIGHS") {
+    is_optimal <- status == 7
+    return(is_optimal)
+  }
   if (solver == "GUROBI") {
     is_optimal <- status %in% c("OPTIMAL")
     return(is_optimal)
@@ -403,6 +444,10 @@ getSolverStatusMessage <- function(status, solver) {
   # this is done only once at config generation
   if (solver == "RSYMPHONY") {
     msg <- sprintf("MIP solver returned non-zero status: %s", names(status))
+    return(msg)
+  }
+  if (solver == "HIGHS") {
+    msg <- sprintf("MIP solver returned non-zero status: %s", status)
     return(msg)
   }
   if (solver == "GUROBI") {
@@ -443,12 +488,12 @@ printSolverNewline <- function(solver) {
 validateSolver <- function(config, constraints, purpose = NULL) {
 
   if (constraints@set_based) {
-    if (!config@MIP$solver %in% c("RSYMPHONY", "GUROBI")) {
+    if (!config@MIP$solver %in% c("RSYMPHONY", "HIGHS", "GUROBI")) {
 
       if (!interactive()) {
         txt <- paste(
           sprintf("Set-based assembly with %s is not allowed in non-interactive mode", config@MIP$solver),
-          "(allowed solvers: RSYMPHONY, or GUROBI)",
+          "(allowed solvers: RSYMPHONY, HIGHS, or GUROBI)",
           sep = " "
         )
         warning(txt)
@@ -457,7 +502,7 @@ validateSolver <- function(config, constraints, purpose = NULL) {
 
       txt <- paste(
         sprintf("Set-based assembly with %s takes a long time.", config@MIP$solver),
-        "Recommended solvers: RSYMPHONY, or GUROBI",
+        "Recommended solvers: RSYMPHONY, HIGHS, or GUROBI",
         sep = "\n"
       )
 
@@ -477,12 +522,12 @@ validateSolver <- function(config, constraints, purpose = NULL) {
   }
 
   if (purpose == "SPLIT") {
-    if (!config@MIP$solver %in% c("RSYMPHONY", "GUROBI")) {
+    if (!config@MIP$solver %in% c("RSYMPHONY", "HIGHS", "GUROBI")) {
 
       if (!interactive()) {
         txt <- paste(
           sprintf("Split() with %s is not allowed in non-interactive mode", config@MIP$solver),
-          "(allowed solvers: RSYMPHONY, or GUROBI)",
+          "(allowed solvers: RSYMPHONY, HIGHS, or GUROBI)",
           sep = " "
         )
         warning(txt)
@@ -491,7 +536,7 @@ validateSolver <- function(config, constraints, purpose = NULL) {
 
       txt <- paste(
         sprintf("Split() with %s takes a long time.", config@MIP$solver),
-        "Recommended solvers: RSYMPHONY, or GUROBI",
+        "Recommended solvers: RSYMPHONY, HIGHS, or GUROBI",
         sep = "\n"
       )
 
@@ -512,7 +557,7 @@ validateSolver <- function(config, constraints, purpose = NULL) {
 
 #' Test solver
 #'
-#' @param solver a solver package name. Accepts \code{lpSolve, Rsymphony, gurobi, Rglpk}.
+#' @param solver a solver package name. Accepts \code{lpSolve, Rsymphony, highs, gurobi, Rglpk}.
 #'
 #' @return empty string \code{""} if solver works. A string containing error messages otherwise.
 #'
@@ -528,7 +573,7 @@ testSolver <- function(solver) {
     byrow = TRUE)
   dir   <- rep("==", 2)
   rhs   <- c(2, 0)
-  types <- "B"
+  types <- rep("B", 5)
 
   solver <- toupper(solver)
   o <- try(
@@ -565,7 +610,7 @@ testSolver <- function(solver) {
 #' @export
 detectBestSolver <- function() {
   solver_list <- c(
-    "gurobi", "Rsymphony", "lpSolve"
+    "gurobi", "Rsymphony", "highs", "lpSolve"
   )
   for (solver in solver_list) {
     is_solver_available <- suppressWarnings(requireNamespace(solver, quietly = TRUE))

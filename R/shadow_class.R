@@ -116,14 +116,14 @@ setClass("config_Shadow",
   validity = function(object) {
 
     err <- NULL
-    if (!object@MIP$solver %in% c("RSYMPHONY", "GUROBI", "LPSOLVE", "RGLPK")) {
+    if (!object@MIP$solver %in% c("RSYMPHONY", "HIGHS", "GUROBI", "LPSOLVE", "RGLPK")) {
       # only capitalized names are valid values;
       # the rest of the package assumes this is capitalized
-      msg <- sprintf("config@MIP: unrecognized $solver '%s' (accepts RSYMPHONY, GUROBI, LPSOLVE, or RGLPK)", object@MIP$solver)
+      msg <- sprintf("config@MIP: unrecognized $solver '%s' (accepts RSYMPHONY, HIGHS, GUROBI, LPSOLVE, or RGLPK)", object@MIP$solver)
       err <- c(err, msg)
     }
 
-    for (solver_name in c("Rsymphony", "gurobi", "Rglpk")) {
+    for (solver_name in c("Rsymphony", "highs", "gurobi", "Rglpk")) {
       if (object@MIP$solver == toupper(solver_name)) {
         if (!requireNamespace(solver_name, quietly = TRUE)) {
           msg <- sprintf("config@MIP: could not find the specified solver package '%s'", solver_name)
@@ -299,7 +299,7 @@ setClass("config_Shadow",
 #' }
 #' @param MIP a named list containing solver options.
 #' \itemize{
-#'   \item{\code{solver}} the type of solver. Accepts \code{Rsymphony, gurobi, lpSolve, Rglpk}. (default = \code{LPSOLVE})
+#'   \item{\code{solver}} the type of solver. Accepts \code{Rsymphony, highs, gurobi, lpSolve, Rglpk}. (default = \code{LPSOLVE})
 #'   \item{\code{verbosity}} verbosity level of the solver. (default = \code{-2})
 #'   \item{\code{time_limit}} time limit in seconds. Used in solvers \code{Rsymphony, gurobi, Rglpk}. (default = \code{60})
 #'   \item{\code{gap_limit}} search termination criterion. Gap limit in relative scale passed onto the solver. Used in solver \code{gurobi}. (default = \code{.05})
