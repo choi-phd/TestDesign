@@ -2,11 +2,18 @@
 
 ## Updates
 
+* Added support for `highs` solver.
+* `Shadow()` now calculates commonly used adaptivity indices.
 * `Split()` now returns a list of `constraints` objects for the created partitions. Added a new helper function `makeConstraintsByEachPartition()` for doing this manually.
 * Added a new item selection method for `Shadow()`: `RANDOM`.
 * Added a new shadowtest refresh policy for `Shadow()`: `NONE`.
 * Added a new interim/final theta estimation method for `Shadow()`: `CARRYOVER`.
+* R version requirement is now > 4.0.
 * Added documentations for many of internal functions.
+
+## Bug fixes
+
+* Fixed where `Split()` would sometimes parse solution indices incorrectly and would return fewer items.
 
 # TestDesign 1.6.1
 
