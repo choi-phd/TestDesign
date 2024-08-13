@@ -88,7 +88,7 @@ NULL
   }
 
   if (!skip_solver_test) {
-    solver_names <- c("lpSolve", "Rsymphony", "gurobi", "Rglpk")
+    solver_names <- c("lpSolve", "Rsymphony", "highs", "gurobi", "Rglpk")
     for (s in solver_names) {
       x <- find.package(s, quiet = TRUE)
       if (length(x) > 0) {
