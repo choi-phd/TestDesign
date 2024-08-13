@@ -1012,8 +1012,9 @@ plotShadowOverlap <- function(x, color, color_stim, use_par, ...) {
 
   n_admins <- max(rowSums(cumulative_usage_matrix)) / test_length
 
-  if (n_admins < 2)
-    stop("plot(output_Shadow_all): at a minimum two administrations are needed")
+  if (n_admins < 2) {
+    stop("plot(output_Shadow_all): at a minimum two administrations are needed to plot overlap rates")
+  }
 
   n_used    <- rowSums(cumulative_usage_matrix > 0)
   n_times   <- sapply(1:n_admins, function(n) rowSums(cumulative_usage_matrix == n))
