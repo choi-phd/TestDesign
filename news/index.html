@@ -68,19 +68,25 @@
 <div class="section level3">
 <h3 id="updates-1-6-1-9000">Updates<a class="anchor" aria-label="anchor" href="#updates-1-6-1-9000"></a></h3>
 <ul><li>Added support for <code>highs</code> solver.</li>
+<li>R version requirement is now &gt; 4.0.</li>
 <li>
 <code><a href="../reference/Shadow-methods.html">Shadow()</a></code> now calculates commonly used adaptivity indices.</li>
+<li>Added configurations for overlap control (item reuse across multiple simulations).</li>
+<li>
+<code><a href="../reference/plot-methods.html">plot()</a></code> for <code>output_Shadow_all</code> object gains <code>type = 'overlap'</code> option for plotting overlap control statitics.</li>
 <li>
 <code><a href="../reference/Split-methods.html">Split()</a></code> now returns a list of <code>constraints</code> objects for the created partitions. Added a new helper function <code><a href="../reference/makeConstraintsByEachPartition.html">makeConstraintsByEachPartition()</a></code> for doing this manually.</li>
 <li>Added a new item selection method for <code><a href="../reference/Shadow-methods.html">Shadow()</a></code>: <code>RANDOM</code>.</li>
 <li>Added a new shadowtest refresh policy for <code><a href="../reference/Shadow-methods.html">Shadow()</a></code>: <code>NONE</code>.</li>
 <li>Added a new interim/final theta estimation method for <code><a href="../reference/Shadow-methods.html">Shadow()</a></code>: <code>CARRYOVER</code>.</li>
-<li>R version requirement is now &gt; 4.0.</li>
+<li>
+<code><a href="../reference/summary-methods.html">summary()</a></code> for <code>output_Shadow_all</code> object now prints scores.</li>
 <li>Added documentations for many of internal functions.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-6-1-9000">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-6-1-9000"></a></h3>
 <ul><li>Fixed where <code><a href="../reference/Split-methods.html">Split()</a></code> would sometimes parse solution indices incorrectly and would return fewer items.</li>
+<li>Fixed where the Shiny app <code><a href="../reference/TestDesign.html">TestDesign()</a></code> was not generating simulee-wise plots.</li>
 </ul></div>
 </div>
     <div class="section level2">
