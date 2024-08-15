@@ -2,18 +2,22 @@
 
 ## Updates
 
-* Added support for `highs` solver.
+* Added support for `highs` solver. This can be a good alternative to `Rsymphony`, because `Rsymphony` sometimes segfaults and would crash Rstudio.
+* R version requirement is now > 4.0.
 * `Shadow()` now calculates commonly used adaptivity indices.
+* Added configurations for overlap control (item reuse across multiple simulations).
+* `plot()` for `output_Shadow_all` object gains `type = 'overlap'` option for plotting overlap control statitics.
 * `Split()` now returns a list of `constraints` objects for the created partitions. Added a new helper function `makeConstraintsByEachPartition()` for doing this manually.
 * Added a new item selection method for `Shadow()`: `RANDOM`.
 * Added a new shadowtest refresh policy for `Shadow()`: `NONE`.
 * Added a new interim/final theta estimation method for `Shadow()`: `CARRYOVER`.
-* R version requirement is now > 4.0.
+* `summary()` for `output_Shadow_all` object now prints scores.
 * Added documentations for many of internal functions.
 
 ## Bug fixes
 
 * Fixed where `Split()` would sometimes parse solution indices incorrectly and would return fewer items.
+* Fixed where the Shiny app `TestDesign()` was not generating simulee-wise plots.
 
 # TestDesign 1.6.1
 
