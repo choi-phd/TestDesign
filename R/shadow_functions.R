@@ -545,8 +545,10 @@ setMethod(
     o@check_eligibility_stats     <- diagnostic_stats$elg_stats
     o@no_fading_eligibility_stats <- diagnostic_stats$elg_stats_nofade
     o@freq_infeasible             <- freq_infeasible
-    o@data <- simulation_data_cache@response_data
-    o@adaptivity <- adaptivity
+    o@data                        <- simulation_data_cache@response_data
+    o@adaptivity                  <- adaptivity
+    o@simulation_constants        <- simulation_constants
+
     return(o)
 
   }
