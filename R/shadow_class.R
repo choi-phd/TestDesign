@@ -471,6 +471,7 @@ createShadowTestConfig <- function(
 #'   }}
 #' }
 #'
+#' @slot call the function call used for obtaining this object.
 #' @slot output a length-*nj* list of \code{\linkS4class{output_Shadow}} objects, containing the assembly results for each participant.
 #' @slot final_theta_est a length-*nj* vector containing final theta estimates for each participant.
 #' @slot final_se_est a length-*nj* vector standard errors of the final theta estimates for each participant.
@@ -495,6 +496,7 @@ createShadowTestConfig <- function(
 #' @export
 setClass("output_Shadow_all",
   slots = c(
+    call                        = "call",
     output                      = "list_or_null",
     final_theta_est             = "matrix_or_numeric_or_null",
     final_se_est                = "matrix_or_numeric_or_null",

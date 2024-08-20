@@ -19,6 +19,8 @@
 \section{Slots}{
 
 \describe{
+\item{\code{call}}{the function call used for obtaining this object.}
+
 \item{\code{output}}{a length-*nj* list of \code{\linkS4class{output_Shadow}} objects, containing the assembly results for each participant.}
 
 \item{\code{final_theta_est}}{a length-*nj* vector containing final theta estimates for each participant.}

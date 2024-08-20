@@ -214,6 +214,8 @@ setMethod(
     force_solver = FALSE
   ) {
 
+    function_call <- match.call()
+
     if (!validObject(config)) {
       stop("'config' object is not valid.")
     }
@@ -374,6 +376,7 @@ setMethod(
 
     if (partition_type == "test") {
       o <- new("output_Split")
+      o@call                 <- function_call
       o@output               <- solution_per_bin
       o@feasible             <- feasible
       o@solve_time           <- solve_time
@@ -534,6 +537,7 @@ setMethod(
 
     if (partition_type == "pool") {
       o <- new("output_Split")
+      o@call                 <- function_call
       o@output               <- solution_per_bin
       o@feasible             <- feasible
       o@solve_time           <- solve_time

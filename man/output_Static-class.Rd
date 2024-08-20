@@ -10,6 +10,8 @@
 \section{Slots}{
 
 \describe{
+\item{\code{call}}{the function call used for obtaining this object.}
+
 \item{\code{MIP}}{a list containing the result from MIP solver.}
 
 \item{\code{selected}}{a \code{\link{data.frame}} containing the selected items and their attributes.}

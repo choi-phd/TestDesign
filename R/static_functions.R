@@ -39,6 +39,8 @@ setMethod(
   signature = c("config_Static"),
   definition = function(config, constraints, force_solver = FALSE) {
 
+    function_call <- match.call()
+
     if (!validObject(config)) {
       stop("the 'config' argument is not a valid 'config_Static' object.")
     }
@@ -88,6 +90,7 @@ setMethod(
     }
 
     o             <- new("output_Static")
+    o@call        <- function_call
     o@MIP         <- list(results$MIP)
     o@selected    <- results$shadow_test
     o@obj_value   <- results$obj_value

@@ -10,6 +10,8 @@
 \section{Slots}{
 
 \describe{
+\item{\code{call}}{the function call used for obtaining this object.}
+
 \item{\code{output}}{a list containing item/set indices of each partition.}
 
 \item{\code{feasible}}{for partitioning into sub-pools, \code{TRUE} indicates the complete assignment problem was feasible.}

@@ -56,6 +56,8 @@ setMethod(
   signature = "config_Shadow",
   definition = function(config, constraints, true_theta, data, prior, prior_par, exclude, include_items_for_estimation, force_solver = FALSE, session, seed = NULL, cumulative_usage_matrix = NULL) {
 
+    function_call <- match.call()
+
     if (!validObject(config)) {
       stop("'config' argument is not a valid 'config_Shadow' object")
     }
@@ -524,6 +526,7 @@ setMethod(
     )
 
     o                             <- new("output_Shadow_all")
+    o@call                        <- function_call
     o@output                      <- o_list
     o@pool                        <- item_pool
     o@config                      <- config
