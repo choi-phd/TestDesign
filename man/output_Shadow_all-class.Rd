@@ -60,5 +60,7 @@
 \item{\code{prior_par}}{the \code{prior_par} argument used in the assembly.}
 
 \item{\code{adaptivity}}{a list of adaptivity indices.}
+
+\item{\code{simulation_constants}}{a list containing simulation constants parsed from input.}
 }}
 
