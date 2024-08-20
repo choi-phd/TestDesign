@@ -5,6 +5,7 @@ NULL
 #'
 #' \code{\linkS4class{output_Split}} is an S4 class for representing the partitioning solution of an item pool.
 #'
+#' @slot call the function call used for obtaining this object.
 #' @slot output a list containing item/set indices of each partition.
 #' @slot feasible for partitioning into sub-pools, \code{TRUE} indicates the complete assignment problem was feasible.
 #' @slot solve_time elapsed time in running the solver.
@@ -18,6 +19,7 @@ NULL
 #' @export
 setClass("output_Split",
   slots = c(
+    call                 = "call",
     output               = "list",
     feasible             = "logical",
     solve_time           = "numeric",
