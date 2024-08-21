@@ -494,37 +494,6 @@ setMethod(
         cumulative_usage_matrix + usage_matrix
     }
 
-    # calculate adaptivity indices
-    adaptivity    <- list()
-    item_location <- list()
-
-    item_location$item_pool <- unlist(calcLocation(item_pool))
-    item_location$items_administered <-
-      lapply(o_list, function(e) {
-        unlist(
-          calcLocation(subsetItemPool(item_pool, e@administered_item_index))
-        )
-      })
-    item_location$mean <- sapply(item_location$items_administered, mean)
-    item_location$var  <- sapply(item_location$items_administered, var)
-
-    adaptivity$corr  <- cor(final_theta_est, item_location$mean)
-    adaptivity$ratio <- sd(item_location$mean) / sd(final_theta_est)
-    adaptivity$PRV   <-
-      (var(item_location$item_pool) - mean(item_location$var)) /
-      var(item_location$item_pool)
-
-    adaptivity$info  <- mean(
-      sapply(o_list, function(e) {
-        info_pool <- as.vector(calcFisher(item_pool, e@final_theta_est))
-        info_best <- mean(sort(info_pool, decreasing = TRUE)[1:length(e@administered_item_index)])
-        info_mean <- mean(info_pool)
-        info_real <- mean(info_pool[e@administered_item_index])
-
-        return((info_real - info_mean) / (info_best - info_mean))
-      })
-    )
-
     o                             <- new("output_Shadow_all")
     o@call                        <- function_call
     o@output                      <- o_list
@@ -546,7 +515,7 @@ setMethod(
     o@no_fading_eligibility_stats <- diagnostic_stats$elg_stats_nofade
     o@freq_infeasible             <- freq_infeasible
     o@data                        <- simulation_data_cache@response_data
-    o@adaptivity                  <- adaptivity
+    o@adaptivity                  <- calculateAdaptivityMeasures(o)
     o@simulation_constants        <- simulation_constants
 
     return(o)

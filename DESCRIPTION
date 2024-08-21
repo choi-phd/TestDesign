@@ -70,6 +70,7 @@ Collate:
     'static_functions.R'
     'shadow_functions.R'
     'bayes_functions.R'
+    'calculate_adaptivity_measures.r'
     'constraint_functions.R'
     'cpp_calc_documents.r'
     'cpp_core_documents.r'
