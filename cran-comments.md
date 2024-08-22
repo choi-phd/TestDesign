@@ -1,34 +1,35 @@
-# TestDesign 1.6.1
-
-This is a resubmission. The previous version 1.6.0 had a markup error in getSolution-methods.Rd; the error was fixed in this submission.
+# TestDesign 1.7.0
 
 ## Test environments
 
 * Local:
-* * macOS 14 (R 4.3.3)
-* * Windows 11 (R 4.3.3)
+* * macOS 14 (R 4.4.1)
+* * Windows 11 (R 4.4.1)
 * GitHub Actions:
 * * macOS 12 (R-release)
 * * Windows Server 2022 (R-release)
 * * Windows Server 2019 (R-release)
-* * Ubuntu 22.04 (R-devel, R-release, R-oldrel, R 3.6.3)
+* * Ubuntu 22.04 (R-devel, R-release, R-oldrel)
 
 ## R CMD check results
 
 ```
-Status: 1 NOTE
+Status: 2 NOTEs
 
-❯ checking package dependencies ... NOTE
-  Package suggested but not available for checking: ‘gurobi’
+* checking CRAN incoming feasibility ... NOTE
+Suggests or Enhances not in mainstream repositories:
+  gurobi
+* checking package dependencies ... NOTE
+Package suggested but not available for checking: 'gurobi'
 ```
 
-NOTE is being raised from 'gurobi' not being available from CRAN. This cannot be fixed while making 'gurobi' available to 'TestDesign'. We tried not declaring 'gurobi' in `suggests:` which produces a WARNING, escalating the severity of the message. Other means of making 'gurobi' available seems to be against CRAN policy.
+The NOTEs are being raised from 'gurobi' not being available from CRAN. This cannot be fixed while making 'gurobi' available to 'TestDesign'. We tried not declaring 'gurobi' in `suggests:` which produces a WARNING, escalating the severity of the message. Other means of making 'gurobi' available seems to be against CRAN policy.
 
 Information on obtaining 'gurobi' is described in `DESCRIPTION`.
 
 ## Downstream dependencies
 
-The previous version 'TestDesign' 1.5.1 has 2 downstream dependencies:
+The previous version 'TestDesign' 1.6.1 has 2 downstream dependencies:
 
 - 'maat' 1.1.0
 - 'PROsetta' 0.4.1
