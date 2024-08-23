@@ -59,6 +59,7 @@ reference:
       - lnHyperPars
       - logitHyperPars
       - detectBestSolver
+      - calculateAdaptivityMeasures
   - title: "Object classes"
     contents:
       - item-classes
