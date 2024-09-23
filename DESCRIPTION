@@ -1,7 +1,7 @@
 Package: TestDesign
 Type: Package
 Title: Optimal Test Design Approach to Fixed and Adaptive Test Construction
-Version: 1.7.0
+Version: 1.7.09999
 Authors@R: c(
     person("Seung W.", "Choi",
         email = "schoi@austin.utexas.edu",

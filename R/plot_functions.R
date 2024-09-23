@@ -852,7 +852,7 @@ plotShadowChart <- function(x, simple, use_par, ...) {
       0,
       1:ni_used,
       used_items,
-      adj = c(0.5, 0.5), cex = 0.7
+      adj = c(0.5, 0.5), cex = 0.3
     )
   } else {
     y_grid <- floor(seq(1, ni_pool, length = 80))
@@ -861,7 +861,7 @@ plotShadowChart <- function(x, simple, use_par, ...) {
       0,
       y_map[idx],
       used_items[idx],
-      adj = c(0.5, 0.5), cex = 0.7
+      adj = c(0.5, 0.5), cex = 0.3
     )
   }
 

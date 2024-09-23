@@ -7,6 +7,8 @@ NULL
 #' calculating commonly used adaptivity measures.
 #'
 #' @param x an \code{\linkS4class{output_Shadow_all}} object.
+#' @param with_constraints \code{TRUE} to calculate best info with content constraints.
+#' @param config \code{NULL} to use default settings for \code{\linkS4class{createStaticTestConfig}}
 #'
 #' @returns \code{\link{calculateAdaptivityMeasures}} returns a named list:
 #' \itemize{
@@ -17,7 +19,7 @@ NULL
 #' }
 #'
 #' @export
-calculateAdaptivityMeasures <- function(x) {
+calculateAdaptivityMeasures <- function(x, with_constraints = FALSE, config = NULL) {
 
   if (!inherits(x, "output_Shadow_all")) {
     stop("unexpected input object: must be an 'output_Shadow_all' object.")
@@ -42,10 +44,21 @@ calculateAdaptivityMeasures <- function(x) {
     (var(item_location$item_pool) - mean(item_location$var)) /
     var(item_location$item_pool)
 
+  if (with_constraints && is.null(config)) {
+    config <- createStaticTestConfig()
+  }
+
   adaptivity_measures$info  <- mean(
     sapply(x@output, function(e) {
       info_pool <- as.vector(calcFisher(x@pool, e@final_theta_est))
-      info_best <- mean(sort(info_pool, decreasing = TRUE)[1:length(e@administered_item_index)])
+      if (with_constraints) {
+        config@item_selection$target_location <- e@final_theta_est
+        config@item_selection$target_weight <- 1
+        solution <- Static(config, x@constraints)
+        info_best <- mean(as.vector(calcFisher(x@pool[solution@selected$INDEX], e@final_theta_est)))
+      } else {
+        info_best <- mean(sort(info_pool, decreasing = TRUE)[1:length(e@administered_item_index)])
+      }
       info_mean <- mean(info_pool)
       info_real <- mean(info_pool[e@administered_item_index])
       return((info_real - info_mean) / (info_best - info_mean))
