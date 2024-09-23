@@ -4,10 +4,14 @@
 \alias{calculateAdaptivityMeasures}
 \title{Calculate Adaptivity Measures}
 \usage{
-calculateAdaptivityMeasures(x)
+calculateAdaptivityMeasures(x, with_constraints = FALSE, config = NULL)
 }
 \arguments{
 \item{x}{an \code{\linkS4class{output_Shadow_all}} object.}
+
+\item{with_constraints}{\code{TRUE} to calculate best info with content constraints.}
+
+\item{config}{\code{NULL} to use default settings for \code{\linkS4class{createStaticTestConfig}}}
 }
 \value{
 \code{\link{calculateAdaptivityMeasures}} returns a named list:

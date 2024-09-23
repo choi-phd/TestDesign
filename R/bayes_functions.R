@@ -23,7 +23,7 @@ parsePriorParameters <- function(
 ) {
 
   # override config with prior arguments supplied to Shadow()
-  if (!is.null(prior_density_override) & !is.null(prior_par_override)) {
+  if (!is.null(prior_density_override) && !is.null(prior_par_override)) {
     stop("unexpected 'prior' and 'prior_par': only one must be supplied to Shadow()")
   }
   if (!is.null(prior_density_override)) {
@@ -39,7 +39,7 @@ parsePriorParameters <- function(
 
   # if prior_par is a vector, expand to an examinee-wise list
   if (
-    is.vector(config_theta$prior_par) &
+    is.vector(config_theta$prior_par) &&
     !is.list(config_theta$prior_par) # because a list is also a vector
   ) {
     config_theta$prior_par <- lapply(1:simulation_constants$nj, function(x) config_theta$prior_par)
@@ -56,13 +56,13 @@ parsePriorParameters <- function(
       stop("unexpected 'prior_par': could not be expanded to a length-nj list (must be a length-2 vector, an nj * 2 matrix, or a length-nj list)")
     }
     n_prior_par <- unlist(lapply(config_theta$prior_par, length))
-    if (config_theta$prior_dist == "NORMAL" & any(n_prior_par != 2)) {
+    if (config_theta$prior_dist == "NORMAL" && any(n_prior_par != 2)) {
       stop("unexpected 'prior_par': for 'NORMAL' distribution, each list element must be a length-2 vector")
     }
-    if (config_theta$prior_dist == "UNIFORM" & any(n_prior_par != 2)) {
+    if (config_theta$prior_dist == "UNIFORM" && any(n_prior_par != 2)) {
       stop("unexpected 'prior_par': for 'UNIFORM' distribution, each list element must be a length-2 vector")
     }
-    if (config_theta$prior_dist == "RAW" & any(n_prior_par != simulation_constants$nq)) {
+    if (config_theta$prior_dist == "RAW" && any(n_prior_par != simulation_constants$nq)) {
       stop("unexpected 'prior_par': for 'RAW' distribution, each list element must be a length-nq vector")
     }
   }

@@ -242,7 +242,7 @@ setMethod("print", "config_Shadow", function(x) {
     ), "\n")
   cat("    prior_par                 :",
     ifelse(
-      toupper(x@interim_theta$method == "EAP"),
+      toupper(x@interim_theta$method) == "EAP" && !is.list(x@interim_theta$prior_par),
       sprintf(
         ifelse(
           toupper(x@interim_theta$prior_dist) == "NORMAL",
@@ -273,7 +273,7 @@ setMethod("print", "config_Shadow", function(x) {
     ), "\n")
   cat("    prior_par                 :",
     ifelse(
-      toupper(x@final_theta$method == "EAP"),
+      toupper(x@final_theta$method) == "EAP" && !is.list(x@final_theta$prior_par),
       sprintf(
         ifelse(
           toupper(x@final_theta$prior_dist) == "NORMAL",
