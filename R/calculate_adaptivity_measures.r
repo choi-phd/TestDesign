@@ -8,7 +8,9 @@ NULL
 #'
 #' @param x an \code{\linkS4class{output_Shadow_all}} object.
 #' @param with_constraints \code{TRUE} to calculate best info with content constraints.
-#' @param config \code{NULL} to use default settings for \code{\linkS4class{createStaticTestConfig}}
+#' @param config only used when \code{with_constraints} is \code{TRUE}.
+#' A \code{\linkS4class{config_Static}} object for calculating best information while satisfying content constraints.
+#' Leave this to \code{NULL} to use default settings of \code{\link{createStaticTestConfig}}.
 #'
 #' @returns \code{\link{calculateAdaptivityMeasures}} returns a named list:
 #' \itemize{
