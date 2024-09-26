@@ -11,7 +11,9 @@ calculateAdaptivityMeasures(x, with_constraints = FALSE, config = NULL)
 
 \item{with_constraints}{\code{TRUE} to calculate best info with content constraints.}
 
-\item{config}{\code{NULL} to use default settings for \code{\linkS4class{createStaticTestConfig}}}
+\item{config}{only used when \code{with_constraints} is \code{TRUE}.
+A \code{\linkS4class{config_Static}} object for calculating best information while satisfying content constraints.
+Leave this to \code{NULL} to use default settings of \code{\link{createStaticTestConfig}}.}
 }
 \value{
 \code{\link{calculateAdaptivityMeasures}} returns a named list:
