@@ -18,7 +18,7 @@ calculating commonly used adaptivity measures."><!-- mathjax --><script src="htt
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TestDesign</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.09999</span>
       </span>
     </div>
 
@@ -71,7 +71,7 @@ calculating commonly used adaptivity measures.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">calculateAdaptivityMeasures</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">calculateAdaptivityMeasures</span><span class="op">(</span><span class="va">x</span>, with_constraints <span class="op">=</span> <span class="cn">FALSE</span>, config <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -80,6 +80,16 @@ calculating commonly used adaptivity measures.</p>
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
 <dd><p>an <code><a href="output_Shadow_all-class.html">output_Shadow_all</a></code> object.</p></dd>
+
+
+<dt id="arg-with-constraints">with_constraints<a class="anchor" aria-label="anchor" href="#arg-with-constraints"></a></dt>
+<dd><p><code>TRUE</code> to calculate best info with content constraints.</p></dd>
+
+
+<dt id="arg-config">config<a class="anchor" aria-label="anchor" href="#arg-config"></a></dt>
+<dd><p>only used when <code>with_constraints</code> is <code>TRUE</code>.
+A <code><a href="createStaticTestConfig.html">config_Static</a></code> object for calculating best information while satisfying content constraints.
+Leave this to <code>NULL</code> to use default settings of <code><a href="createStaticTestConfig.html">createStaticTestConfig</a></code>.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -102,7 +112,7 @@ calculating commonly used adaptivity measures.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer></div>
