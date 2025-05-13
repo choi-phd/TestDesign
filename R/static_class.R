@@ -17,7 +17,7 @@ setClass("config_Static",
       target_weight   = c(1, 1, 1)
     ),
     MIP = list(
-      solver          = "HIGHS",
+      solver          = "LPSOLVE",
       verbosity       = -2,
       time_limit      = 60,
       gap_limit       = 0.05,
@@ -92,7 +92,7 @@ setClass("config_Static",
 #'
 #' @param MIP a named list containing solver options.
 #' \itemize{
-#'   \item{\code{solver}} the type of solver. Accepts \code{Rsymphony, highs, gurobi, lpSolve, Rglpk}. (default = \code{HIGHS})
+#'   \item{\code{solver}} the type of solver. Accepts \code{Rsymphony, highs, gurobi, lpSolve, Rglpk}. (default = \code{LPSOLVE})
 #'   \item{\code{verbosity}} verbosity level of the solver. (default = \code{-2})
 #'   \item{\code{time_limit}} time limit in seconds. Used in solvers \code{Rsymphony, gurobi, Rglpk}. (default = \code{60})
 #'   \item{\code{gap_limit}} search termination criterion. Gap limit in relative scale passed onto the solver. Used in solver \code{gurobi}. (default = \code{.05})

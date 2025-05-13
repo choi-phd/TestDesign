@@ -610,7 +610,7 @@ testSolver <- function(solver) {
 #' @export
 detectBestSolver <- function() {
   solver_list <- c(
-    "gurobi", "Rsymphony", "highs", "lpSolve"
+    "gurobi", "Rsymphony", "lpSolve"
   )
   for (solver in solver_list) {
     is_solver_available <- suppressWarnings(requireNamespace(solver, quietly = TRUE))
