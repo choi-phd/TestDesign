@@ -67,6 +67,12 @@ setClass("config_Static",
       msg <- sprintf("config@MIP: unrecognized $solver '%s' (accepts RSYMPHONY, HIGHS, GUROBI, LPSOLVE, or RGLPK)", object@MIP$solver)
       err <- c(err, msg)
     }
+    if (object@MIP$solver == "HIGHS") {
+      warning(sprintf(
+        "HIGHS solver is unstable as of 1.10.0.1 (installed version: %s) - it sometimes returns 0.5 as a solution for binary decision variables",
+        packageVersion("highs")
+      ))
+    }
 
     if (length(err) == 0) {
       return(TRUE)

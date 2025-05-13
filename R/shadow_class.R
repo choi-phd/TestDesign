@@ -132,6 +132,13 @@ setClass("config_Shadow",
       }
     }
 
+    if (object@MIP$solver == "HIGHS") {
+      warning(sprintf(
+        "HIGHS solver is unstable as of 1.10.0.1 (installed version: %s) - it sometimes returns 0.5 as a solution for binary decision variables",
+        packageVersion("highs")
+      ))
+    }
+
     if (!toupper(object@item_selection$method) %in% c("MFI", "MPWI", "EB", "FB", "GFI", "FIXED", "RANDOM")) {
       msg <- sprintf("config@item_selection: unrecognized $method '%s' (accepts MFI, MPWI, EB, FB, GFI, FIXED or RANDOM)", object@item_selection$method)
       err <- c(err, msg)
