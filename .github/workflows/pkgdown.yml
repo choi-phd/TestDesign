@@ -20,23 +20,30 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: r-lib/actions/setup-pandoc@v2
-      - uses: r-lib/actions/setup-r@v2
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: install pandoc
+        uses: r-lib/actions/setup-pandoc@v2
+      - name: install R
+        uses: r-lib/actions/setup-r@v2
         with:
           use-public-rspm: true
-      - uses: r-lib/actions/setup-r-dependencies@v2
+      - name: install dependencies
+        uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: |
-            any::pkgdown
-            any::rlang
-            local::.
-            gurobi=?ignore
+          cache: false
+          extra-packages: any::pkgdown, any::rlang, gurobi=?ignore
           needs: website
-      - name: Build site
+      - name: install main package
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          cache: false
+          extra-packages: local::., gurobi=?ignore
+          needs: website
+      - name: build site
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
         shell: Rscript {0}
-      - name: Deploy to GitHub pages 🚀
+      - name: deploy to github pages
         if: github.event_name != 'pull_request'
         uses: JamesIves/github-pages-deploy-action@v4.5.0
         with:
