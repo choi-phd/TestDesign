@@ -218,7 +218,7 @@ selectItemFromShadowTest <- function(
 
       shadow_test_filtered <- subset(shadow_test, shadow_test$STINDEX == current_stimulus_index)
 
-      # sometimes this leads to no items available -------------------------------
+      # sometimes this leads to no items available <<= this was addressed as per contribution by @erenasena
       # this is because the # of items in the set may change between shadowtests
       # e.g.) 4 items have been given out from set S1
       # for position 5, set S1 had 6 items
@@ -338,23 +338,33 @@ updateCompletedGroupingsRecordForStimulus <- function(
 ) {
 
   if (selection$is_last_item_in_this_set) {
+    # contributed by erenasena
 
-    # if this item is discrete
-    if (is.na(selection$stimulus_selected)) {
-      return(groupings_record)
+    # define the previous stimulus and the current stimulus
+    previous_stimulus <- if(position > 1) o@administered_stimulus_index[position - 1] else NA_real_
+    current_stimulus <- selection$stimulus_selected
+
+    # if the previous stimulus is a real stimulus (not NA) and it's not the same as the current stimulus,
+    # then we must have switched from a previous stimulus
+    switched_from_previous_stimulus <- (!is.na(previous_stimulus)) && (is.na(current_stimulus) || current_stimulus != previous_stimulus)
+
+    # 1) if we did switch from a real stimulus but haven't recorded it yet, record the previous stimulus
+    if (switched_from_previous_stimulus && !(previous_stimulus %in% groupings_record$completed_stimulus_index)) {
+      groupings_record$completed_stimulus_index <- c(groupings_record$completed_stimulus_index, previous_stimulus)
+      groupings_record$completed_stimulus_size  <- c(
+        groupings_record$completed_stimulus_size,
+        sum(o@administered_stimulus_index == previous_stimulus, na.rm = TRUE)
+      )
     }
 
-    # record the number of items from this set
-    # so that the next shadowtest can take account for it
-
-    groupings_record$completed_stimulus_index <- c(
-      groupings_record$completed_stimulus_index,
-      selection$stimulus_selected
-    )
-    groupings_record$completed_stimulus_size <- c(
-      groupings_record$completed_stimulus_size,
-      sum(o@administered_stimulus_index == selection$stimulus_selected, na.rm = TRUE)
-    )
+    # 2) if the current selection is a real stimulus, record the selection
+    if (!is.na(current_stimulus) && !(current_stimulus %in% groupings_record$completed_stimulus_index)) {
+      groupings_record$completed_stimulus_index <- c(groupings_record$completed_stimulus_index, current_stimulus)
+      groupings_record$completed_stimulus_size  <- c(
+        groupings_record$completed_stimulus_size,
+        sum(o@administered_stimulus_index == current_stimulus, na.rm = TRUE)
+      )
+    }
 
     return(groupings_record)
 

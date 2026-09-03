@@ -1,3 +1,9 @@
+# TestDesign 1.7.1
+
+## Bug fixes
+
+* Fixed where `updateCompletedGroupingsRecordForStimulus()` was not functioning when a previously incomplete stimulus with pending items was wrapped upon refreshing the shadowtest.
+
 # TestDesign 1.7.0
 
 ## Updates
@@ -6,7 +12,7 @@
 * R version requirement is now > 4.0.
 * `Shadow()` now calculates commonly used adaptivity indices.
 * Added configurations for overlap control (item reuse across multiple simulations).
-* `plot()` for `output_Shadow_all` object gains `type = 'overlap'` option for plotting overlap control statitics.
+* `plot()` for `output_Shadow_all` object gains `type = 'overlap'` option for plotting overlap control statistics.
 * `Split()` now returns a list of `constraints` objects for the created partitions. Added a new helper function `makeConstraintsByEachPartition()` for doing this manually.
 * Added a new item selection method for `Shadow()`: `RANDOM`.
 * Added a new shadowtest refresh policy for `Shadow()`: `NONE`.
