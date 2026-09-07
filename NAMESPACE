@@ -195,51 +195,63 @@ import(crayon)
 import(foreach)
 import(lpSolve)
 import(methods)
-importFrom(grDevices,col2rgb)
-importFrom(grDevices,dev.control)
-importFrom(grDevices,dev.cur)
-importFrom(grDevices,dev.new)
-importFrom(grDevices,dev.off)
-importFrom(grDevices,pdf)
-importFrom(grDevices,recordPlot)
-importFrom(graphics,abline)
-importFrom(graphics,axis)
-importFrom(graphics,barplot)
-importFrom(graphics,box)
-importFrom(graphics,boxplot)
-importFrom(graphics,grid)
-importFrom(graphics,layout)
-importFrom(graphics,legend)
-importFrom(graphics,lines)
-importFrom(graphics,mtext)
-importFrom(graphics,par)
-importFrom(graphics,plot.new)
-importFrom(graphics,points)
-importFrom(graphics,rect)
-importFrom(graphics,strheight)
-importFrom(graphics,text)
-importFrom(logitnorm,logit)
-importFrom(logitnorm,rlogitnorm)
-importFrom(methods,new)
-importFrom(methods,show)
-importFrom(methods,validObject)
-importFrom(stats,aggregate)
-importFrom(stats,cor)
-importFrom(stats,dnorm)
-importFrom(stats,dunif)
-importFrom(stats,na.omit)
-importFrom(stats,rlnorm)
-importFrom(stats,rnorm)
-importFrom(stats,runif)
-importFrom(stats,sd)
-importFrom(stats,var)
-importFrom(utils,capture.output)
-importFrom(utils,combn)
-importFrom(utils,menu)
-importFrom(utils,packageDescription)
-importFrom(utils,packageVersion)
-importFrom(utils,read.csv)
-importFrom(utils,setTxtProgressBar)
-importFrom(utils,txtProgressBar)
-importFrom(utils,write.table)
+importFrom(grDevices,
+  col2rgb,
+  dev.control,
+  dev.cur,
+  dev.new,
+  dev.off,
+  pdf,
+  recordPlot
+)
+importFrom(graphics,
+  abline,
+  axis,
+  barplot,
+  box,
+  boxplot,
+  grid,
+  layout,
+  legend,
+  lines,
+  mtext,
+  par,
+  plot.new,
+  points,
+  rect,
+  strheight,
+  text
+)
+importFrom(logitnorm,
+  logit,
+  rlogitnorm
+)
+importFrom(methods,
+  new,
+  show,
+  validObject
+)
+importFrom(stats,
+  aggregate,
+  cor,
+  dnorm,
+  dunif,
+  na.omit,
+  rlnorm,
+  rnorm,
+  runif,
+  sd,
+  var
+)
+importFrom(utils,
+  capture.output,
+  combn,
+  menu,
+  packageDescription,
+  packageVersion,
+  read.csv,
+  setTxtProgressBar,
+  txtProgressBar,
+  write.table
+)
 useDynLib(TestDesign)
