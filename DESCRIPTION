@@ -42,7 +42,6 @@ Suggests:
     pkgdown,
     pkgload
 LinkingTo: Rcpp, RcppArmadillo
-RoxygenNote: 7.3.3
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
@@ -94,3 +93,4 @@ Collate:
     'simulation_data_cache_operators.r'
     'theta_functions.R'
     'xdata_functions.R'
+Config/roxygen2/version: 8.1.0
